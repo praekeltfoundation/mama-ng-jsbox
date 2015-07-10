@@ -6,6 +6,8 @@ var go = {};
 go;
 
 var Q = require('q');
+var vumigo = require('vumigo_v02');
+var JsonApi = vumigo.http.api.JsonApi;
 
 // Shared utils lib
 go.utils = {
@@ -22,6 +24,47 @@ go.utils = {
         return Q();
     },
 
+    control_api_call: function (method, params, payload, endpoint, im) {
+        var api = new JsonApi(im, {
+            headers: {
+                'Authorization': 'Token ' + im.config.control.api_key,
+                'Content-Type': 'application/json',
+            }
+        });
+        switch (method) {
+            case "post":
+                return api.post(im.config.control.url + endpoint, {
+                    data: payload
+                });
+            case "get":
+                return api.get(im.config.control.url + endpoint, {
+                    params: params
+                });
+            case "patch":
+                return api.patch(im.config.control.url + endpoint, {
+                    data: payload
+                });
+            case "put":
+                return api.put(im.config.control.url + endpoint, {
+                    params: params,
+                  data: payload
+                });
+            case "delete":
+                return api.delete(im.config.control.url + endpoint);
+            }
+    },
+
+    create_contact: function(im, name) {
+        payload = {
+            "details": {
+                "name": "Semi-Test",
+                "msisdn": im.user.addr
+            }
+        };
+        return go.utils
+            .control_api_call("post", null, payload, 'contacts/', im);
+    },
+
     "commas": "commas"
 };
 
@@ -29,43 +72,32 @@ go.utils = {
 
 go.app = function() {
     var vumigo = require('vumigo_v02');
-    var MetricsHelper = require('go-jsbox-metrics-helper');
     var App = vumigo.App;
     var EndState = vumigo.states.EndState;
+    var FreeText = vumigo.states.FreeText;
 
 
     var GoApp = App.extend(function(self) {
         App.call(self, 'state_start');
         var $ = self.$;
 
-        self.init = function() {
-
-            // Use the metrics helper to add some metrics
-            mh = new MetricsHelper(self.im);
-            mh
-                // Total unique users
-                .add.total_unique_users('total.app1.unique_users')
-
-                // Total reached end
-                .add.total_state_actions(
-                    {
-                        state: 'state_end',
-                        action: 'enter'
-                    },
-                    'total.ends'
-                );
-
-            // Load self.contact
-            return self.im.contacts
-                .for_user()
-                .then(function(user_contact) {
-                   self.contact = user_contact;
-                });
-        };
-
 
         self.states.add('state_start', function() {
-            return self.states.create("state_end");
+            return self.states.create("state_username");
+        });
+
+
+        self.states.add('state_username', function(name) {
+            return new FreeText(name, {
+                question: $('What is your name?'),
+                next: function(content) {
+                    return go.utils
+                        .create_contact(self.im, content)
+                        .then(function() {
+                            return 'state_end';
+                        });
+                }
+            });
         });
 
 

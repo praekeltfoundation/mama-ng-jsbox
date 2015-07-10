@@ -31,22 +31,14 @@ describe("Mama Nigeria App", function() {
 
             tester
                 .setup.config.app({
-                    name: 'app1'
+                    name: 'app1',
+                    control: {
+                        url: "http://localhost:8000/api/v1/",
+                        api_key: "test_key"
+                    }
                 })
                 .setup(function(api) {
                     fixtures().forEach(api.http.fixtures.add);
-                })
-                .setup(function(api) {
-                    api.metrics.stores = {'app1_test': {}};
-                })
-                .setup(function(api) {
-                    // new user 1
-                    api.contacts.add({
-                        msisdn: '+082001',
-                        extra: {},
-                        key: "contact_key",
-                        user_account: "contact_user_account"
-                    });
                 })
                 ;
         });
@@ -55,11 +47,27 @@ describe("Mama Nigeria App", function() {
         // TEST APP1 IS RUNNING
 
         describe("When you start the app", function() {
-            it("should tell you you've reached the end", function() {
+            it("should ask for your name", function() {
                 return tester
                     .setup.user.addr('082001')
                     .inputs(
                         {session_event: 'new'}
+                    )
+                    .check.interaction({
+                        state: 'state_username',
+                        reply: 'What is your name?'
+                    })
+                    .run();
+            });
+        });
+
+        describe("When you enter your name", function() {
+            it("should tell you you've reached the end", function() {
+                return tester
+                    .setup.user.addr('082001')
+                    .inputs(
+                        {session_event: 'new'},
+                        'Johnny'
                     )
                     .check.interaction({
                         state: 'state_end',
