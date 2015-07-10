@@ -8,19 +8,19 @@ module.exports = function (grunt) {
         paths: {
             src: {
                 app: {
-                    app1: 'src/app1.js',
-                    app2: 'src/app2.js'
+                    voice_reg_change: 'src/voice_reg_change.js',
+                    sms_inbound: 'src/sms_inbound.js'
                 },
-                app1: [
+                voice_reg_change: [
                     'src/index.js',
                     'src/utils.js',
-                    '<%= paths.src.app.app1 %>',
+                    '<%= paths.src.app.voice_reg_change %>',
                     'src/init.js'
                 ],
-                app2: [
+                sms_inbound: [
                     'src/index.js',
                     'src/utils.js',
-                    '<%= paths.src.app.app2 %>',
+                    '<%= paths.src.app.sms_inbound %>',
                     'src/init.js'
                 ],
                 all: [
@@ -28,21 +28,21 @@ module.exports = function (grunt) {
                 ]
             },
             dest: {
-                app1: 'go-app1.js',
-                app2: 'go-app2.js'
+                voice_reg_change: 'go-voice_reg_change.js',
+                sms_inbound: 'go-sms_inbound.js'
             },
             test: {
-                app1: [
+                voice_reg_change: [
                     'test/setup.js',
                     'src/utils.js',
-                    '<%= paths.src.app.app1 %>',
-                    'test/app1.test.js'
+                    '<%= paths.src.app.voice_reg_change %>',
+                    'test/voice_reg_change.test.js'
                 ],
-                app2: [
+                sms_inbound: [
                     'test/setup.js',
                     'src/utils.js',
-                    '<%= paths.src.app.app2 %>',
-                    'test/app2.test.js'
+                    '<%= paths.src.app.sms_inbound %>',
+                    'test/sms_inbound.test.js'
                 ]
             }
         },
@@ -77,14 +77,14 @@ module.exports = function (grunt) {
                 ].join('\n')
             },
 
-            app1: {
-                src: ['<%= paths.src.app1 %>'],
-                dest: '<%= paths.dest.app1 %>'
+            voice_reg_change: {
+                src: ['<%= paths.src.voice_reg_change %>'],
+                dest: '<%= paths.dest.voice_reg_change %>'
             },
 
-            app2: {
-                src: ['<%= paths.src.app2 %>'],
-                dest: '<%= paths.dest.app2 %>'
+            sms_inbound: {
+                src: ['<%= paths.src.sms_inbound %>'],
+                dest: '<%= paths.dest.sms_inbound %>'
             },
 
         },
@@ -93,11 +93,11 @@ module.exports = function (grunt) {
             options: {
                 reporter: 'spec'
             },
-            test_app1: {
-                src: ['<%= paths.test.app1 %>']
+            test_voice_reg_change: {
+                src: ['<%= paths.test.voice_reg_change %>']
             },
-            test_app2: {
-                src: ['<%= paths.test.app2 %>']
+            test_sms_inbound: {
+                src: ['<%= paths.test.sms_inbound %>']
             }
         }
     });
