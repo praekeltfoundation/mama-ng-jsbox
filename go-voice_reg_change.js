@@ -54,13 +54,19 @@ go.utils = {
             }
     },
 
+    get_addresses: function(im) {
+        return "msisdn:" + im.user.addr;
+    },
+
     create_contact: function(im, name) {
         payload = {
             "details": {
-                "name": "Semi-Test",
-                "msisdn": im.user.addr
+                "name": name,
+                "default_addr_type": "msisdn",
+                "addresses": go.utils.get_addresses(im)
             }
         };
+
         return go.utils
             .control_api_call("post", null, payload, 'contacts/', im);
     },

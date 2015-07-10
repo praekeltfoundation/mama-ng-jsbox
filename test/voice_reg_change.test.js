@@ -49,7 +49,7 @@ describe("Mama Nigeria App", function() {
         describe("When you start the app", function() {
             it("should ask for your name", function() {
                 return tester
-                    .setup.user.addr('082001')
+                    .setup.user.addr('+082001')
                     .inputs(
                         {session_event: 'new'}
                     )
@@ -64,7 +64,7 @@ describe("Mama Nigeria App", function() {
         describe("When you enter your name", function() {
             it("should tell you you've reached the end", function() {
                 return tester
-                    .setup.user.addr('082001')
+                    .setup.user.addr('+082001')
                     .inputs(
                         {session_event: 'new'},
                         'Johnny'
