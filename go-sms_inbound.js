@@ -24,7 +24,7 @@ go.utils = {
         return Q();
     },
 
-    control_api_call: function (method, params, payload, endpoint, im) {
+    control_api_call: function(method, params, payload, endpoint, im) {
         var api = new JsonApi(im, {
             headers: {
                 'Authorization': 'Token ' + im.config.control.api_key,
@@ -52,6 +52,38 @@ go.utils = {
             case "delete":
                 return api.delete(im.config.control.url + endpoint);
             }
+    },
+
+    // Determine whether contact is registered
+    is_registered: function(im) {
+        return Q()
+            .then(function() {
+                return false;
+            });
+    },
+
+    // An attempt to solve the insanity of JavaScript numbers
+    check_valid_number: function(content) {
+        var numbers_only = new RegExp('^\\d+$');
+        if (content !== ''
+                && numbers_only.test(content)
+                && !Number.isNaN(Number(content))) {
+            return true;
+        } else {
+            return false;
+        }
+    },
+
+    // Check that it is a number and starts with 0 and more or less correct len
+    check_valid_phone_number: function(content) {
+        if (go.utils.check_valid_number(content)
+                && content[0] === '0'
+                && content.length >= 10
+                && content.length <= 13) {
+            return true;
+        } else {
+            return false;
+        }
     },
 
     get_addresses: function(im) {
