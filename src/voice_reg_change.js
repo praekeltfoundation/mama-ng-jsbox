@@ -86,7 +86,7 @@ go.app = function() {
         });
 
         self.states.add('state_r05', function(name) {
-            // TODO Don't show next year option if current date is Jan / Feb
+            // TODO #6 Don't show next year in Jan / Feb
             var routing = {
                 'this_year': 'state_r07',
                 'next_year': 'state_r08'
@@ -121,7 +121,7 @@ go.app = function() {
         });
 
         self.states.add('state_r07', function(name) {
-            // TODO Dynamically generate months
+            // TODO #6 Dynamically generate months
             var routing = {
                 'july': 'state_r11',
                 'august': 'state_r11',
@@ -147,7 +147,7 @@ go.app = function() {
         });
 
         self.states.add('state_r08', function(name) {
-            // TODO Dynamically generate months
+            // TODO #6 Dynamically generate months
             var routing = {
                 'january': 'state_r11',
                 'february': 'state_r11',
@@ -171,7 +171,7 @@ go.app = function() {
         });
 
         self.states.add('state_r09', function(name) {
-            // TODO Dynamically generate months
+            // TODO #6 Dynamically generate months
             var routing = {
                 'july': 'state_r12',
                 'august': 'state_r12',
@@ -197,7 +197,7 @@ go.app = function() {
         });
 
         self.states.add('state_r10', function(name) {
-            // TODO Dynamically generate months
+            // TODO #6 Dynamically generate months
             var routing = {
                 'january': 'state_r12',
                 'february': 'state_r12',
@@ -225,9 +225,7 @@ go.app = function() {
         });
 
         self.states.add('state_r11', function(name) {
-            // TODO The month assignment is oversimplified and might not
-            // work if the user chooses a month and then goes back to the
-            // main menu and chooses a new month
+            // TODO #7
             var month = self.im.user.answers.state_r07
                      || self.im.user.answers.state_r08;
             return new FreeText(name, {
@@ -238,9 +236,7 @@ go.app = function() {
         });
 
         self.states.add('state_r12', function(name) {
-            // TODO The month assignment is oversimplified and might not
-            // work if the user chooses a month and then goes back to the
-            // main menu and chooses a new month
+            // TODO #7
             var month = self.im.user.answers.state_r09
                      || self.im.user.answers.state_r10;
             return new FreeText(name, {
