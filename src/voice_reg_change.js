@@ -21,7 +21,7 @@ go.app = function() {
                 .is_registered(self.im)
                 .then(function(is_registered) {
                     if (is_registered === true) {
-                        return self.states.create("state_change_1");
+                        return self.states.create("state_c01");
                     } else {
                         return self.states.create("state_r01");
                     }
@@ -71,15 +71,13 @@ go.app = function() {
         self.states.add('state_r04', function(name) {
             var routing = {
                 'pregnant': 'state_r05',
-                'baby': 'state_r06',
-                'menu': 'state_r01'
+                'baby': 'state_r06'
             };
             return new ChoiceState(name, {
                 question: $('Pregnant or baby'),
                 choices: [
                     new Choice('pregnant', $('Pregnant')),
-                    new Choice('baby', $('Baby')),
-                    new Choice('menu', $('Menu')),
+                    new Choice('baby', $('Baby'))
                 ],
                 next: function(choice) {
                     return routing[choice.value];
@@ -91,15 +89,13 @@ go.app = function() {
             // TODO Don't show next year option if current date is Jan / Feb
             var routing = {
                 'this_year': 'state_r07',
-                'next_year': 'state_r08',
-                'menu': 'state_r01'
+                'next_year': 'state_r08'
             };
             return new ChoiceState(name, {
                 question: $('DOB?'),
                 choices: [
                     new Choice('this_year', $('This year')),
-                    new Choice('next_year', $('Next year')),
-                    new Choice('menu', $('Menu')),
+                    new Choice('next_year', $('Next year'))
                 ],
                 next: function(choice) {
                     return routing[choice.value];
@@ -110,15 +106,13 @@ go.app = function() {
         self.states.add('state_r06', function(name) {
             var routing = {
                 'last_year': 'state_r09',
-                'this_year': 'state_r10',
-                'menu': 'state_r01'
+                'this_year': 'state_r10'
             };
             return new ChoiceState(name, {
                 question: $('DOB?'),
                 choices: [
                     new Choice('last_year', $('Last year')),
-                    new Choice('this_year', $('This year')),
-                    new Choice('menu', $('Menu')),
+                    new Choice('this_year', $('This year'))
                 ],
                 next: function(choice) {
                     return routing[choice.value];
@@ -134,8 +128,7 @@ go.app = function() {
                 'september': 'state_r11',
                 'october': 'state_r11',
                 'november': 'state_r11',
-                'december': 'state_r11',
-                'menu': 'state_r01'
+                'december': 'state_r11'
             };
             return new ChoiceState(name, {
                 question: $('Which month?'),
@@ -145,8 +138,7 @@ go.app = function() {
                     new Choice('september', $('september')),
                     new Choice('october', $('october')),
                     new Choice('november', $('november')),
-                    new Choice('december', $('december')),
-                    new Choice('menu', $('Menu')),
+                    new Choice('december', $('december'))
                 ],
                 next: function(choice) {
                     return routing[choice.value];
@@ -161,8 +153,7 @@ go.app = function() {
                 'february': 'state_r11',
                 'march': 'state_r11',
                 'april': 'state_r11',
-                'may': 'state_r11',
-                'menu': 'state_r01'
+                'may': 'state_r11'
             };
             return new ChoiceState(name, {
                 question: $('Which month?'),
@@ -171,8 +162,7 @@ go.app = function() {
                     new Choice('february', $('february')),
                     new Choice('march', $('march')),
                     new Choice('april', $('april')),
-                    new Choice('may', $('may')),
-                    new Choice('menu', $('Menu')),
+                    new Choice('may', $('may'))
                 ],
                 next: function(choice) {
                     return routing[choice.value];
@@ -188,8 +178,7 @@ go.app = function() {
                 'september': 'state_r12',
                 'october': 'state_r12',
                 'november': 'state_r12',
-                'december': 'state_r12',
-                'menu': 'state_r01'
+                'december': 'state_r12'
             };
             return new ChoiceState(name, {
                 question: $('Which month?'),
@@ -199,8 +188,7 @@ go.app = function() {
                     new Choice('september', $('september')),
                     new Choice('october', $('october')),
                     new Choice('november', $('november')),
-                    new Choice('december', $('december')),
-                    new Choice('menu', $('Menu')),
+                    new Choice('december', $('december'))
                 ],
                 next: function(choice) {
                     return routing[choice.value];
@@ -217,8 +205,7 @@ go.app = function() {
                 'april': 'state_r12',
                 'may': 'state_r12',
                 'june': 'state_r12',
-                'july': 'state_r12',
-                'menu': 'state_r01'
+                'july': 'state_r12'
             };
             return new ChoiceState(name, {
                 question: $('Which month?'),
@@ -229,8 +216,7 @@ go.app = function() {
                     new Choice('april', $('april')),
                     new Choice('may', $('may')),
                     new Choice('june', $('june')),
-                    new Choice('july', $('july')),
-                    new Choice('menu', $('Menu')),
+                    new Choice('july', $('july'))
                 ],
                 next: function(choice) {
                     return routing[choice.value];

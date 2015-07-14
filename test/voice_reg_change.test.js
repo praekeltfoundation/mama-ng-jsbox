@@ -157,8 +157,7 @@ describe("Mama Nigeria App", function() {
                             reply: [
                                 'Pregnant or baby',
                                 '1. Pregnant',
-                                '2. Baby',
-                                '3. Menu'
+                                '2. Baby'
                             ].join('\n')
                         })
                         .run();
@@ -203,8 +202,7 @@ describe("Mama Nigeria App", function() {
                             reply: [
                                 'DOB?',
                                 '1. This year',
-                                '2. Next year',
-                                '3. Menu'
+                                '2. Next year'
                             ].join('\n')
                         })
                         .run();
@@ -226,31 +224,30 @@ describe("Mama Nigeria App", function() {
                             reply: [
                                 'DOB?',
                                 '1. Last year',
-                                '2. This year',
-                                '3. Menu'
+                                '2. This year'
                             ].join('\n')
                         })
                         .run();
                 });
             });
 
-            describe("if you choose menu", function() {
-                it("should navigate to state r01", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '08080020002'
-                            , '1'  // r03 - mother
-                            , '3'  // r04 - menu
-                        )
-                        .check.interaction({
-                            state: 'state_r01',
-                            reply: 'Welcome, Number'
-                        })
-                        .run();
-                });
-            });
+            // describe("if you choose menu", function() {
+            //     it("should navigate to state r01", function() {
+            //         return tester
+            //             .setup.user.addr('+07030010001')
+            //             .inputs(
+            //                 {session_event: 'new'},
+            //                 '08080020002'
+            //                 , '1'  // r03 - mother
+            //                 , '3'  // r04 - menu
+            //             )
+            //             .check.interaction({
+            //                 state: 'state_r01',
+            //                 reply: 'Welcome, Number'
+            //             })
+            //             .run();
+            //     });
+            // });
         });
 
         describe("When you enter a choice r05", function() {
@@ -274,8 +271,7 @@ describe("Mama Nigeria App", function() {
                                 '3. september',
                                 '4. october',
                                 '5. november',
-                                '6. december',
-                                '7. Menu'
+                                '6. december'
                             ].join('\n')
                         })
                         .run();
@@ -301,8 +297,7 @@ describe("Mama Nigeria App", function() {
                                 '2. february',
                                 '3. march',
                                 '4. april',
-                                '5. may',
-                                '6. Menu'
+                                '5. may'
                             ].join('\n')
                         })
                         .run();
@@ -331,8 +326,7 @@ describe("Mama Nigeria App", function() {
                                 '3. september',
                                 '4. october',
                                 '5. november',
-                                '6. december',
-                                '7. Menu'
+                                '6. december'
                             ].join('\n')
                         })
                         .run();
@@ -360,8 +354,7 @@ describe("Mama Nigeria App", function() {
                                 '4. april',
                                 '5. may',
                                 '6. june',
-                                '7. july',
-                                '8. Menu'
+                                '7. july'
                             ].join('\n')
                         })
                         .run();
