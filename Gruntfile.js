@@ -8,13 +8,20 @@ module.exports = function (grunt) {
         paths: {
             src: {
                 app: {
-                    voice_reg_change: 'src/voice_reg_change.js',
+                    voice_registration: 'src/voice_registration.js',
+                    voice_change: 'src/voice_change.js',
                     sms_inbound: 'src/sms_inbound.js'
                 },
-                voice_reg_change: [
+                voice_registration: [
                     'src/index.js',
                     'src/utils.js',
-                    '<%= paths.src.app.voice_reg_change %>',
+                    '<%= paths.src.app.voice_registration %>',
+                    'src/init.js'
+                ],
+                voice_change: [
+                    'src/index.js',
+                    'src/utils.js',
+                    '<%= paths.src.app.voice_change %>',
                     'src/init.js'
                 ],
                 sms_inbound: [
@@ -28,15 +35,22 @@ module.exports = function (grunt) {
                 ]
             },
             dest: {
-                voice_reg_change: 'go-voice_reg_change.js',
+                voice_registration: 'go-voice_registration.js',
+                voice_change: 'go-voice_change.js',
                 sms_inbound: 'go-sms_inbound.js'
             },
             test: {
-                voice_reg_change: [
+                voice_registration: [
                     'test/setup.js',
                     'src/utils.js',
-                    '<%= paths.src.app.voice_reg_change %>',
-                    'test/voice_reg_change.test.js'
+                    '<%= paths.src.app.voice_registration %>',
+                    'test/voice_registration.test.js'
+                ],
+                voice_change: [
+                    'test/setup.js',
+                    'src/utils.js',
+                    '<%= paths.src.app.voice_change %>',
+                    'test/voice_change.test.js'
                 ],
                 sms_inbound: [
                     'test/setup.js',
@@ -76,12 +90,14 @@ module.exports = function (grunt) {
                     '\n' // Newline between banner and content.
                 ].join('\n')
             },
-
-            voice_reg_change: {
-                src: ['<%= paths.src.voice_reg_change %>'],
-                dest: '<%= paths.dest.voice_reg_change %>'
+            voice_registration: {
+                src: ['<%= paths.src.voice_registration %>'],
+                dest: '<%= paths.dest.voice_registration %>'
             },
-
+            voice_change: {
+                src: ['<%= paths.src.voice_change %>'],
+                dest: '<%= paths.dest.voice_change %>'
+            },
             sms_inbound: {
                 src: ['<%= paths.src.sms_inbound %>'],
                 dest: '<%= paths.dest.sms_inbound %>'
@@ -93,8 +109,11 @@ module.exports = function (grunt) {
             options: {
                 reporter: 'spec'
             },
-            test_voice_reg_change: {
-                src: ['<%= paths.test.voice_reg_change %>']
+            test_voice_registration: {
+                src: ['<%= paths.test.voice_registration %>']
+            },
+            test_voice_change: {
+                src: ['<%= paths.test.voice_change %>']
             },
             test_sms_inbound: {
                 src: ['<%= paths.test.sms_inbound %>']

@@ -58,7 +58,7 @@ go.utils = {
     is_registered: function(im) {
         return Q()
             .then(function() {
-                return false;
+                return true;
             });
     },
 
@@ -118,23 +118,9 @@ go.app = function() {
 
 
     var GoApp = App.extend(function(self) {
-        App.call(self, 'state_start');
+        App.call(self, 'state_r01');
         var $ = self.$;
 
-
-    // ROUTING
-
-        self.states.add('state_start', function() {
-            return go.utils
-                .is_registered(self.im)
-                .then(function(is_registered) {
-                    if (is_registered === true) {
-                        return self.states.create("state_c01");
-                    } else {
-                        return self.states.create("state_r01");
-                    }
-                });
-        });
 
     // REGISTRATION
 
