@@ -106,53 +106,48 @@ go.utils = {
     "commas": "commas"
 };
 
-// This is a placeholder app
+// This app handles state changes
 
 go.app = function() {
     var vumigo = require('vumigo_v02');
-    var MetricsHelper = require('go-jsbox-metrics-helper');
     var App = vumigo.App;
+    // var ChoiceState = vumigo.states.ChoiceState;
+    // var Choice = vumigo.states.Choice;
     var EndState = vumigo.states.EndState;
+    // var FreeText = vumigo.states.FreeText;
 
 
     var GoApp = App.extend(function(self) {
         App.call(self, 'state_start');
         var $ = self.$;
 
-        self.init = function() {
 
-            // Use the metrics helper to add some metrics
-            mh = new MetricsHelper(self.im);
-            mh
-                // Total unique users
-                .add.total_unique_users('total.app2.unique_users')
-
-                // Total reached end
-                .add.total_state_actions(
-                    {
-                        state: 'state_end',
-                        action: 'enter'
-                    },
-                    'total.ends'
-                );
-
-            // Load self.contact
-            return self.im.contacts
-                .for_user()
-                .then(function(user_contact) {
-                   self.contact = user_contact;
-                });
-        };
-
+    // ROUTING
 
         self.states.add('state_start', function() {
-            return self.states.create("state_end");
+            return go.utils
+                .is_registered(self.im)
+                .then(function(is_registered) {
+                    if (is_registered === true) {
+                        return self.states.create("state_c01");
+                    } else {
+                        return self.states.create("state_c02");
+                    }
+                });
         });
 
+    // CHANGE
 
-        self.states.add('state_end', function(name) {
+        self.states.add('state_c01', function(name) {
             return new EndState(name, {
-                text: $('This is the end.'),
+                text: $('Hello!'),
+                next: 'state_start'
+            });
+        });
+
+        self.states.add('state_c02', function(name) {
+            return new EndState(name, {
+                text: $('Bye!'),
                 next: 'state_start'
             });
         });

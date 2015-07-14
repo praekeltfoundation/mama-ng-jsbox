@@ -51,7 +51,7 @@ go.utils = {
     is_registered: function(im) {
         return Q()
             .then(function() {
-                return false;
+                return true;
             });
     },
 

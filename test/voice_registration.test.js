@@ -44,27 +44,22 @@ describe("Mama Nigeria App", function() {
         });
 
 
-        // TEST START ROUTING
+        // TEST REGISTRATION FLOW
 
         describe("When you start the app", function() {
-            describe("if you are a new user", function() {
-                it("should navigate to state r01", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'}
-                        )
-                        .check.interaction({
-                            state: 'state_r01',
-                            reply: 'Welcome, Number'
-                        })
-                        .run();
-                });
+            it("should navigate to state r01", function() {
+                return tester
+                    .setup.user.addr('+07030010001')
+                    .inputs(
+                        {session_event: 'new'}
+                    )
+                    .check.interaction({
+                        state: 'state_r01',
+                        reply: 'Welcome, Number'
+                    })
+                    .run();
             });
         });
-
-
-        // TEST REGISTRATION FLOW
 
         describe("When you enter a phone number r01", function() {
             describe("if the number validates", function() {
