@@ -1,6 +1,6 @@
 var vumigo = require('vumigo_v02');
 var fixtures = require('./fixtures');
-var assert = require('assert');
+// var assert = require('assert');
 var AppTester = vumigo.AppTester;
 
 
@@ -31,16 +31,36 @@ describe("Mama Nigeria App", function() {
         // TEST START ROUTING
 
         describe("When you start the app", function() {
+            describe("if you are an unregistered user", function() {
+                it("should navigate to state c02_not_registered", function() {
+                    return tester
+                        .setup.user.addr('unknown user')
+                        .inputs(
+                            {session_event: 'new'}
+                        )
+                        .check.interaction({
+                            state: 'state_c02_not_registered',
+                            reply: 'Unrecognised number'
+                        })
+                        .run();
+                });
+            });
+
             describe("if you are a registered user", function() {
-                it("should navigate to state c01", function() {
+                it("should navigate to state c01_main_menu", function() {
                     return tester
                         .setup.user.addr('+07030010001')
                         .inputs(
                             {session_event: 'new'}
                         )
                         .check.interaction({
-                            state: 'state_c01',
-                            reply: 'Hello!'
+                            state: 'state_c01_main_menu',
+                            reply: [
+                                'Baby / Message time / Optout?',
+                                '1. baby',
+                                '2. msg_time',
+                                '3. optout'
+                            ].join('\n')
                         })
                         .run();
                 });
@@ -50,6 +70,47 @@ describe("Mama Nigeria App", function() {
 
         // TEST CHANGE FLOW
 
+        describe("When you enter a choice c01_main_menu", function() {
+            describe("if you choose baby", function() {
+                it("should navigate to state c03_baby_confirm", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '1'  // c01_main_menu - baby
+                        )
+                        .check.interaction({
+                            state: 'state_c03_baby_confirm',
+                            reply: [
+                                'Confirm baby?',
+                                '1. confirm'
+                            ].join('\n')
+                        })
+                        .run();
+                });
+            });
+
+            describe("if you choose msg_time", function() {
+                it("should navigate to state c04_voice_days", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '2'  // c01_main_menu - msg_time
+                        )
+                        .check.interaction({
+                            state: 'state_c04_voice_days',
+                            reply: [
+                                'Message days?',
+                                '1. mon_wed',
+                                '2. tue_thu'
+                            ].join('\n')
+                        })
+                        .run();
+                });
+            });
+
+        });
 
     });
 });

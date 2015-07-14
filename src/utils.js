@@ -51,7 +51,11 @@ go.utils = {
     is_registered: function(im) {
         return Q()
             .then(function() {
-                return true;
+                if (im.user.addr === 'unknown user') {
+                    return false;
+                } else {
+                    return true;
+                }
             });
     },
 

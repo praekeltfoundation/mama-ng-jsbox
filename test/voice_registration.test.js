@@ -21,7 +21,7 @@ describe("Shared Utils", function() {
 
 
 describe("Mama Nigeria App", function() {
-    describe("App1", function() {
+    describe("Voice Registration", function() {
         var app;
         var tester;
 
@@ -31,7 +31,7 @@ describe("Mama Nigeria App", function() {
 
             tester
                 .setup.config.app({
-                    name: 'app1',
+                    name: 'voice_registration',
                     control: {
                         url: "http://localhost:8000/api/v1/",
                         api_key: "test_key"
