@@ -10,54 +10,54 @@ go.app = function() {
 
 
     var GoApp = App.extend(function(self) {
-        App.call(self, 'state_r01');
+        App.call(self, 'state_r01_number');
         var $ = self.$;
 
 
     // REGISTRATION
 
-        self.states.add('state_r01', function(name) {
+        self.states.add('state_r01_number', function(name) {
             return new FreeText(name, {
                 question: $('Welcome, Number'),
 
                 next: function(content) {
                     if (go.utils.check_valid_phone_number(content) === false) {
-                        return 'state_r02';
+                        return 'state_r02_retry_number';
                     } else {
-                        return 'state_r03';
+                        return 'state_r03_receiver';
                     }
                 }
             });
         });
 
-        self.states.add('state_r02', function(name) {
+        self.states.add('state_r02_retry_number', function(name) {
             return new FreeText(name, {
                 question: $('Retry number'),
                 next: function(content) {
                     if (go.utils.check_valid_phone_number(content) === false) {
-                        return 'state_r02';
+                        return 'state_r02_retry_number';
                     } else {
-                        return 'state_r03';
+                        return 'state_r03_receiver';
                     }
                 }
             });
         });
 
-        self.states.add('state_r03', function(name) {
+        self.states.add('state_r03_receiver', function(name) {
             return new ChoiceState(name, {
                 question: $('Choose receiver'),
                 choices: [
                     new Choice('mother', $('Mother')),
                     new Choice('other', $('Other'))
                 ],
-                next: 'state_r04'
+                next: 'state_r04_mom_state'
             });
         });
 
-        self.states.add('state_r04', function(name) {
+        self.states.add('state_r04_mom_state', function(name) {
             var routing = {
-                'pregnant': 'state_r05',
-                'baby': 'state_r06'
+                'pregnant': 'state_r05_pregnant_year',
+                'baby': 'state_r06_baby_year'
             };
             return new ChoiceState(name, {
                 question: $('Pregnant or baby'),
@@ -71,11 +71,11 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_r05', function(name) {
+        self.states.add('state_r05_pregnant_year', function(name) {
             // TODO #6 Don't show next year in Jan / Feb
             var routing = {
-                'this_year': 'state_r07',
-                'next_year': 'state_r08'
+                'this_year': 'state_r07_pregnant_thisyear_month',
+                'next_year': 'state_r08_pregnant_nextyear_month'
             };
             return new ChoiceState(name, {
                 question: $('DOB?'),
@@ -89,10 +89,10 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_r06', function(name) {
+        self.states.add('state_r06_baby_year', function(name) {
             var routing = {
-                'last_year': 'state_r09',
-                'this_year': 'state_r10'
+                'last_year': 'state_r09_baby_lastyear_month',
+                'this_year': 'state_r10_baby_thisyear_month'
             };
             return new ChoiceState(name, {
                 question: $('DOB?'),
@@ -106,15 +106,15 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_r07', function(name) {
+        self.states.add('state_r07_pregnant_thisyear_month', function(name) {
             // TODO #6 Dynamically generate months
             var routing = {
-                'july': 'state_r11',
-                'august': 'state_r11',
-                'september': 'state_r11',
-                'october': 'state_r11',
-                'november': 'state_r11',
-                'december': 'state_r11'
+                'july': 'state_r11_pregnant_day',
+                'august': 'state_r11_pregnant_day',
+                'september': 'state_r11_pregnant_day',
+                'october': 'state_r11_pregnant_day',
+                'november': 'state_r11_pregnant_day',
+                'december': 'state_r11_pregnant_day'
             };
             return new ChoiceState(name, {
                 question: $('Which month?'),
@@ -132,14 +132,14 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_r08', function(name) {
+        self.states.add('state_r08_pregnant_nextyear_month', function(name) {
             // TODO #6 Dynamically generate months
             var routing = {
-                'january': 'state_r11',
-                'february': 'state_r11',
-                'march': 'state_r11',
-                'april': 'state_r11',
-                'may': 'state_r11'
+                'january': 'state_r11_pregnant_day',
+                'february': 'state_r11_pregnant_day',
+                'march': 'state_r11_pregnant_day',
+                'april': 'state_r11_pregnant_day',
+                'may': 'state_r11_pregnant_day'
             };
             return new ChoiceState(name, {
                 question: $('Which month?'),
@@ -156,15 +156,15 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_r09', function(name) {
+        self.states.add('state_r09_baby_lastyear_month', function(name) {
             // TODO #6 Dynamically generate months
             var routing = {
-                'july': 'state_r12',
-                'august': 'state_r12',
-                'september': 'state_r12',
-                'october': 'state_r12',
-                'november': 'state_r12',
-                'december': 'state_r12'
+                'july': 'state_r12_baby_day',
+                'august': 'state_r12_baby_day',
+                'september': 'state_r12_baby_day',
+                'october': 'state_r12_baby_day',
+                'november': 'state_r12_baby_day',
+                'december': 'state_r12_baby_day'
             };
             return new ChoiceState(name, {
                 question: $('Which month?'),
@@ -182,16 +182,16 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_r10', function(name) {
+        self.states.add('state_r10_baby_thisyear_month', function(name) {
             // TODO #6 Dynamically generate months
             var routing = {
-                'january': 'state_r12',
-                'february': 'state_r12',
-                'march': 'state_r12',
-                'april': 'state_r12',
-                'may': 'state_r12',
-                'june': 'state_r12',
-                'july': 'state_r12'
+                'january': 'state_r12_baby_day',
+                'february': 'state_r12_baby_day',
+                'march': 'state_r12_baby_day',
+                'april': 'state_r12_baby_day',
+                'may': 'state_r12_baby_day',
+                'june': 'state_r12_baby_day',
+                'july': 'state_r12_baby_day'
             };
             return new ChoiceState(name, {
                 question: $('Which month?'),
@@ -210,29 +210,29 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_r11', function(name) {
+        self.states.add('state_r11_pregnant_day', function(name) {
             // TODO #7
-            var month = self.im.user.answers.state_r07
-                     || self.im.user.answers.state_r08;
+            var month = self.im.user.answers.state_r07_pregnant_thisyear_month
+                     || self.im.user.answers.state_r08_pregnant_nextyear_month;
             return new FreeText(name, {
                 question: $('Which day of {{ month }}?'
                     ).context({ month: month }),
-                next: 'state_r13'
+                next: 'state_r13_language'
             });
         });
 
-        self.states.add('state_r12', function(name) {
+        self.states.add('state_r12_baby_day', function(name) {
             // TODO #7
-            var month = self.im.user.answers.state_r09
-                     || self.im.user.answers.state_r10;
+            var month = self.im.user.answers.state_r09_baby_lastyear_month
+                     || self.im.user.answers.state_r10_baby_thisyear_month;
             return new FreeText(name, {
                 question: $('Which day of {{ month }}?'
                     ).context({ month: month }),
-                next: 'state_r13'
+                next: 'state_r13_language'
             });
         });
 
-        self.states.add('state_r13', function(name) {
+        self.states.add('state_r13_language', function(name) {
             return new ChoiceState(name, {
                 question: $('Language?'),
                 choices: [
@@ -240,14 +240,14 @@ go.app = function() {
                     new Choice('hausa', $('hausa')),
                     new Choice('igbo', $('igbo')),
                 ],
-                next: 'state_r14'
+                next: 'state_r14_message_type'
             });
         });
 
-        self.states.add('state_r14', function(name) {
+        self.states.add('state_r14_message_type', function(name) {
             var routing = {
-                'sms': 'state_r15',
-                'voice': 'state_r18'
+                'sms': 'state_r15_voice_days',
+                'voice': 'state_r18_end_sms'
             };
             return new ChoiceState(name, {
                 question: $('Channel?'),
@@ -261,31 +261,31 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_r15', function(name) {
+        self.states.add('state_r15_voice_days', function(name) {
             return new ChoiceState(name, {
                 question: $('Message days?'),
                 choices: [
                     new Choice('mon_wed', $('mon_wed')),
                     new Choice('tue_thu', $('tue_thu'))
                 ],
-                next: 'state_r16'
+                next: 'state_r16_voice_times'
             });
         });
 
-        self.states.add('state_r16', function(name) {
+        self.states.add('state_r16_voice_times', function(name) {
             return new ChoiceState(name, {
                 question: $('Message time?'),
                 choices: [
                     new Choice('9_11', $('9_11')),
                     new Choice('2_5', $('2_5'))
                 ],
-                next: 'state_r17'
+                next: 'state_r17_end_voice'
             });
         });
 
-        self.states.add('state_r17', function(name) {
-            var time = self.im.user.answers.state_r16;
-            var days = self.im.user.answers.state_r15;
+        self.states.add('state_r17_end_voice', function(name) {
+            var time = self.im.user.answers.state_r16_voice_times;
+            var days = self.im.user.answers.state_r15_voice_days;
             return new EndState(name, {
                 text: $('Thank you! Time: {{ time }}. Days: {{ days }}.'
                     ).context({ time: time, days: days }),
@@ -293,7 +293,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_r18', function(name) {
+        self.states.add('state_r18_end_sms', function(name) {
             return new EndState(name, {
                 text: $('Thank you!'),
                 next: 'state_start'
