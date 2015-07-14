@@ -230,24 +230,6 @@ describe("Mama Nigeria App", function() {
                         .run();
                 });
             });
-
-            // describe("if you choose menu", function() {
-            //     it("should navigate to state r01", function() {
-            //         return tester
-            //             .setup.user.addr('+07030010001')
-            //             .inputs(
-            //                 {session_event: 'new'},
-            //                 '08080020002'
-            //                 , '1'  // r03 - mother
-            //                 , '3'  // r04 - menu
-            //             )
-            //             .check.interaction({
-            //                 state: 'state_r01',
-            //                 reply: 'Welcome, Number'
-            //             })
-            //             .run();
-            //     });
-            // });
         });
 
         describe("When you enter a choice r05", function() {
