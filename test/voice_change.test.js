@@ -32,7 +32,7 @@ describe("Mama Nigeria App", function() {
 
         describe("When you start the app", function() {
             describe("if you are an unregistered user", function() {
-                it("should navigate to state c02_not_registered", function() {
+                it("should navigate to state_c02_not_registered", function() {
                     return tester
                         .setup.user.addr('unknown user')
                         .inputs(
@@ -47,7 +47,7 @@ describe("Mama Nigeria App", function() {
             });
 
             describe("if you are a registered user", function() {
-                it("should navigate to state c01_main_menu", function() {
+                it("should navigate to state_c01_main_menu", function() {
                     return tester
                         .setup.user.addr('+07030010001')
                         .inputs(
@@ -72,7 +72,7 @@ describe("Mama Nigeria App", function() {
 
         describe("When you enter a choice c01_main_menu", function() {
             describe("if you choose baby", function() {
-                it("should navigate to state c03_baby_confirm", function() {
+                it("should navigate to state_c03_baby_confirm", function() {
                     return tester
                         .setup.user.addr('+07030010001')
                         .inputs(
@@ -91,7 +91,7 @@ describe("Mama Nigeria App", function() {
             });
 
             describe("if you choose msg_time", function() {
-                it("should navigate to state c04_voice_days", function() {
+                it("should navigate to state_c04_voice_days", function() {
                     return tester
                         .setup.user.addr('+07030010001')
                         .inputs(
@@ -110,6 +110,227 @@ describe("Mama Nigeria App", function() {
                 });
             });
 
+            describe("if you choose optout", function() {
+                it("should navigate to state_c05_optout_reason", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '3'  // c01_main_menu - optout
+                        )
+                        .check.interaction({
+                            state: 'state_c05_optout_reason',
+                            reply: [
+                                'Optout reason?',
+                                '1. miscarriage',
+                                '2. stillborn',
+                                '3. baby_died',
+                                '4. not_useful',
+                                '5. other'
+                            ].join('\n')
+                        })
+                        .run();
+                });
+            });
+        });
+
+        describe("When you enter confirm baby c03_baby_confirm", function() {
+            it("should navigate to state_c08_end_baby", function() {
+                return tester
+                    .setup.user.addr('+07030010001')
+                    .inputs(
+                        {session_event: 'new'}
+                        , '1'  // c01_main_menu - baby
+                        , '1'  // c03_baby_confirm - confirm
+                    )
+                    .check.interaction({
+                        state: 'state_c08_end_baby',
+                        reply: 'Thank you - baby'
+                    })
+                    .check.reply.ends_session()
+                    .run();
+            });
+        });
+
+        describe("When you choose a day c04_voice_days", function() {
+            it("should navigate to state_c06_voice_times", function() {
+                return tester
+                    .setup.user.addr('+07030010001')
+                    .inputs(
+                        {session_event: 'new'}
+                        , '2'  // c01_main_menu - msg_time
+                        , '2'  // c04_voice_days - tue_thu
+                    )
+                    .check.interaction({
+                        state: 'state_c06_voice_times',
+                        reply: [
+                            'Message times?',
+                            '1. 9_11',
+                            '2. 2_5'
+                        ].join('\n')
+                    })
+                    .run();
+            });
+        });
+
+        describe("When you choose a time c06_voice_times", function() {
+            it("should navigate to state_c09_end_msg_times", function() {
+                return tester
+                    .setup.user.addr('+07030010001')
+                    .inputs(
+                        {session_event: 'new'}
+                        , '2'  // c01_main_menu - msg_time
+                        , '2'  // c04_voice_days - tue_thu
+                        , '1'  // c06_voice_times - 9-11
+                    )
+                    .check.interaction({
+                        state: 'state_c09_end_msg_times',
+                        reply: 'Thank you! Time: 9_11. Days: tue_thu.'
+                    })
+                    .check.reply.ends_session()
+                    .run();
+            });
+        });
+
+        describe("When you choose optout reason c05_optout_reason", function() {
+            describe("ff you choose miscarriage", function() {
+                it("should navigate to state_c07_loss_opt_in", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '3'  // c01_main_menu - optout
+                            , '1'  // c05_optout_reason - miscarriage
+                        )
+                        .check.interaction({
+                            state: 'state_c07_loss_opt_in',
+                            reply: [
+                                'Receive loss messages?',
+                                '1. opt_in_confirm',
+                                '2. opt_in_deny'
+                            ].join('\n')
+                        })
+                        .run();
+                });
+            });
+
+            describe("ff you choose stillborn", function() {
+                it("should navigate to state_c07_loss_opt_in", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '3'  // c01_main_menu - optout
+                            , '2'  // c05_optout_reason - stillborn
+                        )
+                        .check.interaction({
+                            state: 'state_c07_loss_opt_in',
+                            reply: [
+                                'Receive loss messages?',
+                                '1. opt_in_confirm',
+                                '2. opt_in_deny'
+                            ].join('\n')
+                        })
+                        .run();
+                });
+            });
+
+            describe("ff you choose baby_died", function() {
+                it("should navigate to state_c07_loss_opt_in", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '3'  // c01_main_menu - optout
+                            , '3'  // c05_optout_reason - baby_died
+                        )
+                        .check.interaction({
+                            state: 'state_c07_loss_opt_in',
+                            reply: [
+                                'Receive loss messages?',
+                                '1. opt_in_confirm',
+                                '2. opt_in_deny'
+                            ].join('\n')
+                        })
+                        .run();
+                });
+            });
+
+            describe("ff you choose not_useful", function() {
+                it("should navigate to state_c11_end_optout", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '3'  // c01_main_menu - optout
+                            , '4'  // c05_optout_reason - not_useful
+                        )
+                        .check.interaction({
+                            state: 'state_c11_end_optout',
+                            reply: 'Thank you - optout'
+                        })
+                        .check.reply.ends_session()
+                        .run();
+                });
+            });
+
+            describe("ff you choose other", function() {
+                it("should navigate to state_c11_end_optout", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '3'  // c01_main_menu - optout
+                            , '5'  // c05_optout_reason - other
+                        )
+                        .check.interaction({
+                            state: 'state_c11_end_optout',
+                            reply: 'Thank you - optout'
+                        })
+                        .check.reply.ends_session()
+                        .run();
+                });
+            });
+        });
+
+        describe("When you enter a choice c07_loss_opt_in", function() {
+            describe("if you choose loss messages", function() {
+                it("should navigate to state_c10_end_loss_opt_in", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '3'  // c01_main_menu - optout
+                            , '1'  // c05_optout_reason - miscarriage
+                            , '1'  // c07_loss_opt_in - confirm opt in
+                        )
+                        .check.interaction({
+                            state: 'state_c10_end_loss_opt_in',
+                            reply: 'Thank you - loss opt in'
+                        })
+                        .check.reply.ends_session()
+                        .run();
+                });
+            });
+
+            describe("if you choose no loss messages", function() {
+                it("should navigate to state_c11_end_optout", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '3'  // c01_main_menu - optout
+                            , '1'  // c05_optout_reason - miscarriage
+                            , '2'  // c07_loss_opt_in - deny opt in
+                        )
+                        .check.interaction({
+                            state: 'state_c11_end_optout',
+                            reply: 'Thank you - optout'
+                        })
+                        .check.reply.ends_session()
+                        .run();
+                });
+            });
         });
 
     });
