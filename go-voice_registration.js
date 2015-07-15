@@ -55,10 +55,15 @@ go.utils = {
     },
 
     // Determine whether contact is registered
+    // TODO #12 - this is currently just a temporary workaround
     is_registered: function(im) {
         return Q()
             .then(function() {
-                return true;
+                if (im.user.addr === 'unknown user') {
+                    return false;
+                } else {
+                    return true;
+                }
             });
     },
 
@@ -397,14 +402,14 @@ go.app = function() {
             return new EndState(name, {
                 text: $('Thank you! Time: {{ time }}. Days: {{ days }}.'
                     ).context({ time: time, days: days }),
-                next: 'state_start'
+                next: 'state_r01_number'
             });
         });
 
         self.states.add('state_r18_end_sms', function(name) {
             return new EndState(name, {
                 text: $('Thank you!'),
-                next: 'state_start'
+                next: 'state_r01_number'
             });
         });
 
