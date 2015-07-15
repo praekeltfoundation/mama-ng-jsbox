@@ -134,6 +134,7 @@ go.utils = {
     },
 
     // Determine whether contact is registered
+    // TODO #12 - this is currently just a temporary workaround
     is_registered: function(im) {
         return Q()
             .then(function() {
