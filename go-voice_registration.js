@@ -24,6 +24,78 @@ go.utils = {
         return Q();
     },
 
+    get_speech_option_month: function(month) {
+        month_map = {
+            'january': '01',
+            'february': '02',
+            'march': '03',
+            'april': '04',
+            'may': '05',
+            'june': '06',
+            'july': '07',
+            'august': '08',
+            'september': '09',
+            'october': '10',
+            'november': '11',
+            'december': '12'
+        };
+        return month_map[month];
+    },
+
+    get_speech_option_month_year: function(month, year) {
+        last_year_month_map = {
+            'january': '01',
+            'february': '02',
+            'march': '03',
+            'april': '04',
+            'may': '05',
+            'june': '06',
+            'july': '07',
+            'august': '08',
+            'september': '09',
+            'october': '10',
+            'november': '11',
+            'december': '12'
+        };
+        this_year_month_map = {
+            'january': '13',
+            'february': '14',
+            'march': '15',
+            'april': '16',
+            'may': '17',
+            'june': '18',
+            'july': '19',
+            'august': '20',
+            'september': '21',
+            'october': '22',
+            'november': '23',
+            'december': '24'
+        };
+        return year === 'last_year' ? last_year_month_map[month]
+                                    : this_year_month_map[month];
+    },
+
+    get_speech_option_days: function(days) {
+        day_map = {
+            'mon_wed': '01',
+            'tue_thu': '02'
+        };
+        return day_map[days];
+    },
+
+    get_speech_option_days_time: function(days, time) {
+        day_map_9_11 = {
+            'mon_wed': '01',
+            'tue_thu': '02'
+        };
+        day_map_2_5 = {
+            'mon_wed': '03',
+            'tue_thu': '04'
+        };
+        return time === '9_11' ? day_map_9_11[days]
+                               : day_map_2_5[days];
+    },
+
     // Construct url string
     make_speech_url: function(im, name, lang, num) {
         return im.config.control.url + lang + '/' + name + '_' + num + '.mp3';
@@ -144,6 +216,8 @@ go.app = function() {
     // REGISTRATION
 
         self.states.add('state_r01_number', function(name) {
+            // Reset user answers when restarting the app
+            self.im.user.answers = {};
             var speech_option = '01';
             return new FreeText(name, {
                 question: $('Welcome, Number'),
@@ -367,10 +441,10 @@ go.app = function() {
         });
 
         self.states.add('state_r11_pregnant_day', function(name) {
-            var speech_option = '01';
             // TODO #7
             var month = self.im.user.answers.state_r07_pregnant_thisyear_month
                      || self.im.user.answers.state_r08_pregnant_nextyear_month;
+            var speech_option = go.utils.get_speech_option_month(month);
             return new FreeText(name, {
                 question: $('Which day of {{ month }}?'
                     ).context({ month: month }),
@@ -381,10 +455,11 @@ go.app = function() {
         });
 
         self.states.add('state_r12_baby_day', function(name) {
-            var speech_option = '01';
             // TODO #7
+            var year = self.im.user.answers.state_r06_baby_year;
             var month = self.im.user.answers.state_r09_baby_lastyear_month
                      || self.im.user.answers.state_r10_baby_thisyear_month;
+            var speech_option = go.utils.get_speech_option_month_year(month, year);
             return new FreeText(name, {
                 question: $('Which day of {{ month }}?'
                     ).context({ month: month }),
@@ -444,7 +519,8 @@ go.app = function() {
         });
 
         self.states.add('state_r16_voice_times', function(name) {
-            var speech_option = '01';
+            var days = self.im.user.answers.state_r15_voice_days;
+            var speech_option = go.utils.get_speech_option_days(days);
             return new ChoiceState(name, {
                 question: $('Message time?'),
                 helper_metadata: go.utils.make_voice_helper_data(
@@ -458,9 +534,9 @@ go.app = function() {
         });
 
         self.states.add('state_r17_end_voice', function(name) {
-            var speech_option = '01';
             var time = self.im.user.answers.state_r16_voice_times;
             var days = self.im.user.answers.state_r15_voice_days;
+            var speech_option = go.utils.get_speech_option_days_time(days, time);
             return new EndState(name, {
                 text: $('Thank you! Time: {{ time }}. Days: {{ days }}.'
                     ).context({ time: time, days: days }),

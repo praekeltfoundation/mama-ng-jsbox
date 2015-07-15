@@ -17,6 +17,78 @@ go.utils = {
         return Q();
     },
 
+    get_speech_option_month: function(month) {
+        month_map = {
+            'january': '01',
+            'february': '02',
+            'march': '03',
+            'april': '04',
+            'may': '05',
+            'june': '06',
+            'july': '07',
+            'august': '08',
+            'september': '09',
+            'october': '10',
+            'november': '11',
+            'december': '12'
+        };
+        return month_map[month];
+    },
+
+    get_speech_option_month_year: function(month, year) {
+        last_year_month_map = {
+            'january': '01',
+            'february': '02',
+            'march': '03',
+            'april': '04',
+            'may': '05',
+            'june': '06',
+            'july': '07',
+            'august': '08',
+            'september': '09',
+            'october': '10',
+            'november': '11',
+            'december': '12'
+        };
+        this_year_month_map = {
+            'january': '13',
+            'february': '14',
+            'march': '15',
+            'april': '16',
+            'may': '17',
+            'june': '18',
+            'july': '19',
+            'august': '20',
+            'september': '21',
+            'october': '22',
+            'november': '23',
+            'december': '24'
+        };
+        return year === 'last_year' ? last_year_month_map[month]
+                                    : this_year_month_map[month];
+    },
+
+    get_speech_option_days: function(days) {
+        day_map = {
+            'mon_wed': '01',
+            'tue_thu': '02'
+        };
+        return day_map[days];
+    },
+
+    get_speech_option_days_time: function(days, time) {
+        day_map_9_11 = {
+            'mon_wed': '01',
+            'tue_thu': '02'
+        };
+        day_map_2_5 = {
+            'mon_wed': '03',
+            'tue_thu': '04'
+        };
+        return time === '9_11' ? day_map_9_11[days]
+                               : day_map_2_5[days];
+    },
+
     // Construct url string
     make_speech_url: function(im, name, lang, num) {
         return im.config.control.url + lang + '/' + name + '_' + num + '.mp3';

@@ -44,6 +44,29 @@ describe("Mama Nigeria App", function() {
         });
 
 
+        // TEST ANSWER RESET
+
+        // TODO #9
+        // describe("When you go back to the main menu", function() {
+        //     it("should reset the user answers", function() {
+        //         return tester
+        //             .setup.user.addr('+07030010001')
+        //             .inputs(
+        //                 {session_event: 'new'},
+        //                 '08080020002',
+        //                 '*'
+        //             )
+        //             .check.interaction({
+        //                 state: 'state_r01_number',
+        //                 reply: 'Welcome, Number'
+        //             })
+        //             .check.user.properties({
+        //                 answers: {}
+        //             })
+        //             .run();
+        //     });
+        // });
+
         // TEST REGISTRATION FLOW
 
         describe("When you start the app", function() {
@@ -449,7 +472,7 @@ describe("Mama Nigeria App", function() {
                     .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8000/api/v1/en/state_r11_pregnant_day_01.mp3'
+                                    speech_url: 'http://localhost:8000/api/v1/en/state_r11_pregnant_day_08.mp3'
                                 }
                             }
                         })
@@ -476,7 +499,7 @@ describe("Mama Nigeria App", function() {
                     .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8000/api/v1/en/state_r11_pregnant_day_01.mp3'
+                                    speech_url: 'http://localhost:8000/api/v1/en/state_r11_pregnant_day_02.mp3'
                                 }
                             }
                         })
@@ -503,7 +526,7 @@ describe("Mama Nigeria App", function() {
                     .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8000/api/v1/en/state_r12_baby_day_01.mp3'
+                                    speech_url: 'http://localhost:8000/api/v1/en/state_r12_baby_day_09.mp3'
                                 }
                             }
                         })
@@ -530,7 +553,7 @@ describe("Mama Nigeria App", function() {
                     .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8000/api/v1/en/state_r12_baby_day_01.mp3'
+                                    speech_url: 'http://localhost:8000/api/v1/en/state_r12_baby_day_13.mp3'
                                 }
                             }
                         })
@@ -765,7 +788,7 @@ describe("Mama Nigeria App", function() {
                     .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8000/api/v1/en/state_r17_end_voice_01.mp3'
+                                    speech_url: 'http://localhost:8000/api/v1/en/state_r17_end_voice_03.mp3'
                                 }
                             }
                         })

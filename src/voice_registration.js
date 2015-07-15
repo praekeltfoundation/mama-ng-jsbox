@@ -18,6 +18,8 @@ go.app = function() {
     // REGISTRATION
 
         self.states.add('state_r01_number', function(name) {
+            // Reset user answers when restarting the app
+            self.im.user.answers = {};
             var speech_option = '01';
             return new FreeText(name, {
                 question: $('Welcome, Number'),
@@ -241,10 +243,10 @@ go.app = function() {
         });
 
         self.states.add('state_r11_pregnant_day', function(name) {
-            var speech_option = '01';
             // TODO #7
             var month = self.im.user.answers.state_r07_pregnant_thisyear_month
                      || self.im.user.answers.state_r08_pregnant_nextyear_month;
+            var speech_option = go.utils.get_speech_option_month(month);
             return new FreeText(name, {
                 question: $('Which day of {{ month }}?'
                     ).context({ month: month }),
@@ -255,10 +257,11 @@ go.app = function() {
         });
 
         self.states.add('state_r12_baby_day', function(name) {
-            var speech_option = '01';
             // TODO #7
+            var year = self.im.user.answers.state_r06_baby_year;
             var month = self.im.user.answers.state_r09_baby_lastyear_month
                      || self.im.user.answers.state_r10_baby_thisyear_month;
+            var speech_option = go.utils.get_speech_option_month_year(month, year);
             return new FreeText(name, {
                 question: $('Which day of {{ month }}?'
                     ).context({ month: month }),
@@ -318,7 +321,8 @@ go.app = function() {
         });
 
         self.states.add('state_r16_voice_times', function(name) {
-            var speech_option = '01';
+            var days = self.im.user.answers.state_r15_voice_days;
+            var speech_option = go.utils.get_speech_option_days(days);
             return new ChoiceState(name, {
                 question: $('Message time?'),
                 helper_metadata: go.utils.make_voice_helper_data(
@@ -332,9 +336,9 @@ go.app = function() {
         });
 
         self.states.add('state_r17_end_voice', function(name) {
-            var speech_option = '01';
             var time = self.im.user.answers.state_r16_voice_times;
             var days = self.im.user.answers.state_r15_voice_days;
+            var speech_option = go.utils.get_speech_option_days_time(days, time);
             return new EndState(name, {
                 text: $('Thank you! Time: {{ time }}. Days: {{ days }}.'
                     ).context({ time: time, days: days }),
