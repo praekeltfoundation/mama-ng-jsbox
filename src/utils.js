@@ -17,6 +17,20 @@ go.utils = {
         return Q();
     },
 
+    // Construct url string
+    make_speech_url: function(im, name, lang, num) {
+        return im.config.control.url + lang + '/' + name + '_' + num + '.mp3';
+    },
+
+    // Construct helper_data object
+    make_voice_helper_data: function(im, name, lang, num) {
+        return {
+            voice: {
+                speech_url: go.utils.make_speech_url(im, name, lang, num)
+            }
+        };
+    },
+
     control_api_call: function(method, params, payload, endpoint, im) {
         var api = new JsonApi(im, {
             headers: {

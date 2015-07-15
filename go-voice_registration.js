@@ -24,6 +24,20 @@ go.utils = {
         return Q();
     },
 
+    // Construct url string
+    make_speech_url: function(im, name, lang, num) {
+        return im.config.control.url + lang + '/' + name + '_' + num + '.mp3';
+    },
+
+    // Construct helper_data object
+    make_voice_helper_data: function(im, name, lang, num) {
+        return {
+            voice: {
+                speech_url: go.utils.make_speech_url(im, name, lang, num)
+            }
+        };
+    },
+
     control_api_call: function(method, params, payload, endpoint, im) {
         var api = new JsonApi(im, {
             headers: {
@@ -124,14 +138,17 @@ go.app = function() {
     var GoApp = App.extend(function(self) {
         App.call(self, 'state_r01_number');
         var $ = self.$;
+        var lang = 'en';
 
 
     // REGISTRATION
 
         self.states.add('state_r01_number', function(name) {
+            var speech_option = '01';
             return new FreeText(name, {
                 question: $('Welcome, Number'),
-
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
                 next: function(content) {
                     if (go.utils.check_valid_phone_number(content) === false) {
                         return 'state_r02_retry_number';
@@ -143,8 +160,11 @@ go.app = function() {
         });
 
         self.states.add('state_r02_retry_number', function(name) {
+            var speech_option = '01';
             return new FreeText(name, {
                 question: $('Retry number'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
                 next: function(content) {
                     if (go.utils.check_valid_phone_number(content) === false) {
                         return 'state_r02_retry_number';
@@ -156,8 +176,11 @@ go.app = function() {
         });
 
         self.states.add('state_r03_receiver', function(name) {
+            var speech_option = '01';
             return new ChoiceState(name, {
                 question: $('Choose receiver'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
                 choices: [
                     new Choice('mother', $('Mother')),
                     new Choice('other', $('Other'))
@@ -167,12 +190,15 @@ go.app = function() {
         });
 
         self.states.add('state_r04_mom_state', function(name) {
+            var speech_option = '01';
             var routing = {
                 'pregnant': 'state_r05_pregnant_year',
                 'baby': 'state_r06_baby_year'
             };
             return new ChoiceState(name, {
                 question: $('Pregnant or baby'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
                 choices: [
                     new Choice('pregnant', $('Pregnant')),
                     new Choice('baby', $('Baby'))
@@ -185,12 +211,15 @@ go.app = function() {
 
         self.states.add('state_r05_pregnant_year', function(name) {
             // TODO #6 Don't show next year in Jan / Feb
+            var speech_option = '01';
             var routing = {
                 'this_year': 'state_r07_pregnant_thisyear_month',
                 'next_year': 'state_r08_pregnant_nextyear_month'
             };
             return new ChoiceState(name, {
                 question: $('DOB?'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
                 choices: [
                     new Choice('this_year', $('This year')),
                     new Choice('next_year', $('Next year'))
@@ -202,12 +231,15 @@ go.app = function() {
         });
 
         self.states.add('state_r06_baby_year', function(name) {
+            var speech_option = '01';
             var routing = {
                 'last_year': 'state_r09_baby_lastyear_month',
                 'this_year': 'state_r10_baby_thisyear_month'
             };
             return new ChoiceState(name, {
                 question: $('DOB?'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
                 choices: [
                     new Choice('last_year', $('Last year')),
                     new Choice('this_year', $('This year'))
@@ -219,6 +251,7 @@ go.app = function() {
         });
 
         self.states.add('state_r07_pregnant_thisyear_month', function(name) {
+            var speech_option = '01';
             // TODO #6 Dynamically generate months
             var routing = {
                 'july': 'state_r11_pregnant_day',
@@ -230,6 +263,8 @@ go.app = function() {
             };
             return new ChoiceState(name, {
                 question: $('Which month?'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
                 choices: [
                     new Choice('july', $('july')),
                     new Choice('august', $('august')),
@@ -245,6 +280,7 @@ go.app = function() {
         });
 
         self.states.add('state_r08_pregnant_nextyear_month', function(name) {
+            var speech_option = '01';
             // TODO #6 Dynamically generate months
             var routing = {
                 'january': 'state_r11_pregnant_day',
@@ -255,6 +291,8 @@ go.app = function() {
             };
             return new ChoiceState(name, {
                 question: $('Which month?'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
                 choices: [
                     new Choice('january', $('january')),
                     new Choice('february', $('february')),
@@ -269,6 +307,7 @@ go.app = function() {
         });
 
         self.states.add('state_r09_baby_lastyear_month', function(name) {
+            var speech_option = '01';
             // TODO #6 Dynamically generate months
             var routing = {
                 'july': 'state_r12_baby_day',
@@ -280,6 +319,8 @@ go.app = function() {
             };
             return new ChoiceState(name, {
                 question: $('Which month?'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
                 choices: [
                     new Choice('july', $('july')),
                     new Choice('august', $('august')),
@@ -295,6 +336,7 @@ go.app = function() {
         });
 
         self.states.add('state_r10_baby_thisyear_month', function(name) {
+            var speech_option = '01';
             // TODO #6 Dynamically generate months
             var routing = {
                 'january': 'state_r12_baby_day',
@@ -307,6 +349,8 @@ go.app = function() {
             };
             return new ChoiceState(name, {
                 question: $('Which month?'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
                 choices: [
                     new Choice('january', $('january')),
                     new Choice('february', $('february')),
@@ -323,30 +367,39 @@ go.app = function() {
         });
 
         self.states.add('state_r11_pregnant_day', function(name) {
+            var speech_option = '01';
             // TODO #7
             var month = self.im.user.answers.state_r07_pregnant_thisyear_month
                      || self.im.user.answers.state_r08_pregnant_nextyear_month;
             return new FreeText(name, {
                 question: $('Which day of {{ month }}?'
                     ).context({ month: month }),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
                 next: 'state_r13_language'
             });
         });
 
         self.states.add('state_r12_baby_day', function(name) {
+            var speech_option = '01';
             // TODO #7
             var month = self.im.user.answers.state_r09_baby_lastyear_month
                      || self.im.user.answers.state_r10_baby_thisyear_month;
             return new FreeText(name, {
                 question: $('Which day of {{ month }}?'
                     ).context({ month: month }),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
                 next: 'state_r13_language'
             });
         });
 
         self.states.add('state_r13_language', function(name) {
+            var speech_option = '01';
             return new ChoiceState(name, {
                 question: $('Language?'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
                 choices: [
                     new Choice('english', $('english')),
                     new Choice('hausa', $('hausa')),
@@ -357,12 +410,15 @@ go.app = function() {
         });
 
         self.states.add('state_r14_message_type', function(name) {
+            var speech_option = '01';
             var routing = {
                 'sms': 'state_r15_voice_days',
                 'voice': 'state_r18_end_sms'
             };
             return new ChoiceState(name, {
                 question: $('Channel?'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
                 choices: [
                     new Choice('sms', $('sms')),
                     new Choice('voice', $('voice'))
@@ -374,8 +430,11 @@ go.app = function() {
         });
 
         self.states.add('state_r15_voice_days', function(name) {
+            var speech_option = '01';
             return new ChoiceState(name, {
                 question: $('Message days?'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
                 choices: [
                     new Choice('mon_wed', $('mon_wed')),
                     new Choice('tue_thu', $('tue_thu'))
@@ -385,8 +444,11 @@ go.app = function() {
         });
 
         self.states.add('state_r16_voice_times', function(name) {
+            var speech_option = '01';
             return new ChoiceState(name, {
                 question: $('Message time?'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
                 choices: [
                     new Choice('9_11', $('9_11')),
                     new Choice('2_5', $('2_5'))
@@ -396,18 +458,24 @@ go.app = function() {
         });
 
         self.states.add('state_r17_end_voice', function(name) {
+            var speech_option = '01';
             var time = self.im.user.answers.state_r16_voice_times;
             var days = self.im.user.answers.state_r15_voice_days;
             return new EndState(name, {
                 text: $('Thank you! Time: {{ time }}. Days: {{ days }}.'
                     ).context({ time: time, days: days }),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
                 next: 'state_r01_number'
             });
         });
 
         self.states.add('state_r18_end_sms', function(name) {
+            var speech_option = '01';
             return new EndState(name, {
                 text: $('Thank you!'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
                 next: 'state_r01_number'
             });
         });
