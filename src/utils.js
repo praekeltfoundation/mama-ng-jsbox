@@ -70,23 +70,29 @@ go.utils = {
 
     get_speech_option_days: function(days) {
         day_map = {
-            'mon_wed': '01',
-            'tue_thu': '02'
+            'mon_wed': '1',
+            'tue_thu': '2'
         };
         return day_map[days];
     },
 
     get_speech_option_days_time: function(days, time) {
+        var speech_option;
         day_map_9_11 = {
-            'mon_wed': '01',
-            'tue_thu': '02'
+            'mon_wed': '2',
+            'tue_thu': '3'
         };
         day_map_2_5 = {
-            'mon_wed': '03',
-            'tue_thu': '04'
+            'mon_wed': '4',
+            'tue_thu': '5'
         };
-        return time === '9_11' ? day_map_9_11[days]
-                               : day_map_2_5[days];
+        if (time === undefined) {
+            speech_option = '1';
+        } else {
+            time === '9_11' ? speech_option = day_map_9_11[days]
+                            : speech_option = day_map_2_5[days];
+        }
+        return speech_option;
     },
 
     // Construct url string

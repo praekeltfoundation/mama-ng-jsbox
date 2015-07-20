@@ -20,7 +20,7 @@ go.app = function() {
         self.states.add('state_r01_number', function(name) {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
-            var speech_option = '01';
+            var speech_option = '1';
             return new FreeText(name, {
                 question: $('Welcome, Number'),
                 helper_metadata: go.utils.make_voice_helper_data(
@@ -36,7 +36,7 @@ go.app = function() {
         });
 
         self.states.add('state_r02_retry_number', function(name) {
-            var speech_option = '01';
+            var speech_option = '1';
             return new FreeText(name, {
                 question: $('Retry number'),
                 helper_metadata: go.utils.make_voice_helper_data(
@@ -52,7 +52,7 @@ go.app = function() {
         });
 
         self.states.add('state_r03_receiver', function(name) {
-            var speech_option = '01';
+            var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Choose receiver'),
                 helper_metadata: go.utils.make_voice_helper_data(
@@ -66,11 +66,7 @@ go.app = function() {
         });
 
         self.states.add('state_r04_mom_state', function(name) {
-            var speech_option = '01';
-            var routing = {
-                'pregnant': 'state_r05_pregnant_year',
-                'baby': 'state_r06_baby_year'
-            };
+            var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Pregnant or baby'),
                 helper_metadata: go.utils.make_voice_helper_data(
@@ -79,26 +75,68 @@ go.app = function() {
                     new Choice('pregnant', $('Pregnant')),
                     new Choice('baby', $('Baby'))
                 ],
+                next: 'state_r05_birth_year'
+            });
+        });
+
+        self.states.add('state_r05_birth_year', function(name) {
+            // TODO #6 Don't show next year for pregnancy in Jan / Feb
+            var speech_option;
+            var year_choices = [
+                new Choice('last_year', $('last_year')),
+                new Choice('this_year', $('this_year')),
+                new Choice('next_year', $('next_year'))
+            ];
+            if (self.im.user.answers.state_r04_mom_state === 'pregnant') {
+                choices = year_choices.slice(1,3);
+                speech_option = '1';
+            } else {
+                choices = year_choices.slice(0,2);
+                speech_option = '2';
+            }
+            return new ChoiceState(name, {
+                question: $('Birth year?'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                choices: choices,
                 next: function(choice) {
-                    return routing[choice.value];
+                    return 'state_r06_birth_month';
                 }
             });
         });
 
-        self.states.add('state_r05_pregnant_year', function(name) {
-            // TODO #6 Don't show next year in Jan / Feb
-            var speech_option = '01';
-            var routing = {
-                'this_year': 'state_r07_pregnant_thisyear_month',
-                'next_year': 'state_r08_pregnant_nextyear_month'
-            };
+        self.states.add('state_r06_birth_month', function(name) {
+            var speech_option;
+            self.im.user.answers.state_r04_mom_state === 'pregnant'
+                ? speech_option = '1'
+                : speech_option = '2';
+            // create choices eg. new Choice('1', $('1')) etc.
+            var month_choices = [];
+            for (i=1; i<=12; i++) {
+                month_choices.push(new Choice(i.toString(), $(i.toString())));
+            }
             return new ChoiceState(name, {
-                question: $('DOB?'),
+                question: $('Birth month? 1-12'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                choices: month_choices,
+                next: 'state_r07_confirm_month'
+            });
+        });
+
+        self.states.add('state_r07_confirm_month', function(name) {
+            var routing = {
+                'confirm': 'state_r08_birth_day',
+                'retry': 'state_r06_birth_month'
+            };
+            var speech_option = self.im.user.answers.state_r06_birth_month;
+            return new ChoiceState(name, {
+                question: $('You entered x for Month. Correct?'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('this_year', $('This year')),
-                    new Choice('next_year', $('Next year'))
+                    new Choice('confirm', $('confirm')),
+                    new Choice('retry', $('retry'))
                 ],
                 next: function(choice) {
                     return routing[choice.value];
@@ -106,173 +144,30 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_r06_baby_year', function(name) {
-            var speech_option = '01';
-            var routing = {
-                'last_year': 'state_r09_baby_lastyear_month',
-                'this_year': 'state_r10_baby_thisyear_month'
-            };
-            return new ChoiceState(name, {
-                question: $('DOB?'),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                choices: [
-                    new Choice('last_year', $('Last year')),
-                    new Choice('this_year', $('This year'))
-                ],
-                next: function(choice) {
-                    return routing[choice.value];
-                }
-            });
-        });
-
-        self.states.add('state_r07_pregnant_thisyear_month', function(name) {
-            var speech_option = '01';
-            // TODO #6 Dynamically generate months
-            var routing = {
-                'july': 'state_r11_pregnant_day',
-                'august': 'state_r11_pregnant_day',
-                'september': 'state_r11_pregnant_day',
-                'october': 'state_r11_pregnant_day',
-                'november': 'state_r11_pregnant_day',
-                'december': 'state_r11_pregnant_day'
-            };
-            return new ChoiceState(name, {
-                question: $('Which month?'),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                choices: [
-                    new Choice('july', $('july')),
-                    new Choice('august', $('august')),
-                    new Choice('september', $('september')),
-                    new Choice('october', $('october')),
-                    new Choice('november', $('november')),
-                    new Choice('december', $('december'))
-                ],
-                next: function(choice) {
-                    return routing[choice.value];
-                }
-            });
-        });
-
-        self.states.add('state_r08_pregnant_nextyear_month', function(name) {
-            var speech_option = '01';
-            // TODO #6 Dynamically generate months
-            var routing = {
-                'january': 'state_r11_pregnant_day',
-                'february': 'state_r11_pregnant_day',
-                'march': 'state_r11_pregnant_day',
-                'april': 'state_r11_pregnant_day',
-                'may': 'state_r11_pregnant_day'
-            };
-            return new ChoiceState(name, {
-                question: $('Which month?'),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                choices: [
-                    new Choice('january', $('january')),
-                    new Choice('february', $('february')),
-                    new Choice('march', $('march')),
-                    new Choice('april', $('april')),
-                    new Choice('may', $('may'))
-                ],
-                next: function(choice) {
-                    return routing[choice.value];
-                }
-            });
-        });
-
-        self.states.add('state_r09_baby_lastyear_month', function(name) {
-            var speech_option = '01';
-            // TODO #6 Dynamically generate months
-            var routing = {
-                'july': 'state_r12_baby_day',
-                'august': 'state_r12_baby_day',
-                'september': 'state_r12_baby_day',
-                'october': 'state_r12_baby_day',
-                'november': 'state_r12_baby_day',
-                'december': 'state_r12_baby_day'
-            };
-            return new ChoiceState(name, {
-                question: $('Which month?'),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                choices: [
-                    new Choice('july', $('july')),
-                    new Choice('august', $('august')),
-                    new Choice('september', $('september')),
-                    new Choice('october', $('october')),
-                    new Choice('november', $('november')),
-                    new Choice('december', $('december'))
-                ],
-                next: function(choice) {
-                    return routing[choice.value];
-                }
-            });
-        });
-
-        self.states.add('state_r10_baby_thisyear_month', function(name) {
-            var speech_option = '01';
-            // TODO #6 Dynamically generate months
-            var routing = {
-                'january': 'state_r12_baby_day',
-                'february': 'state_r12_baby_day',
-                'march': 'state_r12_baby_day',
-                'april': 'state_r12_baby_day',
-                'may': 'state_r12_baby_day',
-                'june': 'state_r12_baby_day',
-                'july': 'state_r12_baby_day'
-            };
-            return new ChoiceState(name, {
-                question: $('Which month?'),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                choices: [
-                    new Choice('january', $('january')),
-                    new Choice('february', $('february')),
-                    new Choice('march', $('march')),
-                    new Choice('april', $('april')),
-                    new Choice('may', $('may')),
-                    new Choice('june', $('june')),
-                    new Choice('july', $('july'))
-                ],
-                next: function(choice) {
-                    return routing[choice.value];
-                }
-            });
-        });
-
-        self.states.add('state_r11_pregnant_day', function(name) {
-            // TODO #7
-            var month = self.im.user.answers.state_r07_pregnant_thisyear_month
-                     || self.im.user.answers.state_r08_pregnant_nextyear_month;
-            var speech_option = go.utils.get_speech_option_month(month);
+        self.states.add('state_r08_birth_day', function(name) {
+            var month = self.im.user.answers.state_r06_birth_month;
+            var speech_option_start = 0;
+            if (self.im.user.answers.state_r04_mom_state === 'baby') {
+                self.im.user.answers.state_r05_birth_year === 'last_year'
+                    ? speech_option_start = 12
+                    : speech_option_start = 24;
+            }
+            var speech_option_num = speech_option_start + parseInt(month,10);
+            var speech_option = speech_option_num.toString();
             return new FreeText(name, {
-                question: $('Which day of {{ month }}?'
+                question: $('Birth day in {{ month }}?'
                     ).context({ month: month }),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
-                next: 'state_r13_language'
+                next: function(content) {
+                    // TODO check user has entered a proper month
+                    return 'state_r09_language';
+                }
             });
         });
 
-        self.states.add('state_r12_baby_day', function(name) {
-            // TODO #7
-            var year = self.im.user.answers.state_r06_baby_year;
-            var month = self.im.user.answers.state_r09_baby_lastyear_month
-                     || self.im.user.answers.state_r10_baby_thisyear_month;
-            var speech_option = go.utils.get_speech_option_month_year(month, year);
-            return new FreeText(name, {
-                question: $('Which day of {{ month }}?'
-                    ).context({ month: month }),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                next: 'state_r13_language'
-            });
-        });
-
-        self.states.add('state_r13_language', function(name) {
-            var speech_option = '01';
+        self.states.add('state_r09_language', function(name) {
+            var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Language?'),
                 helper_metadata: go.utils.make_voice_helper_data(
@@ -282,15 +177,15 @@ go.app = function() {
                     new Choice('hausa', $('hausa')),
                     new Choice('igbo', $('igbo')),
                 ],
-                next: 'state_r14_message_type'
+                next: 'state_r10_message_type'
             });
         });
 
-        self.states.add('state_r14_message_type', function(name) {
-            var speech_option = '01';
+        self.states.add('state_r10_message_type', function(name) {
+            var speech_option = '1';
             var routing = {
-                'sms': 'state_r15_voice_days',
-                'voice': 'state_r18_end_sms'
+                'sms': 'state_r13_end',
+                'voice': 'state_r11_voice_days'
             };
             return new ChoiceState(name, {
                 question: $('Channel?'),
@@ -306,8 +201,8 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_r15_voice_days', function(name) {
-            var speech_option = '01';
+        self.states.add('state_r11_voice_days', function(name) {
+            var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Message days?'),
                 helper_metadata: go.utils.make_voice_helper_data(
@@ -316,12 +211,12 @@ go.app = function() {
                     new Choice('mon_wed', $('mon_wed')),
                     new Choice('tue_thu', $('tue_thu'))
                 ],
-                next: 'state_r16_voice_times'
+                next: 'state_r12_voice_times'
             });
         });
 
-        self.states.add('state_r16_voice_times', function(name) {
-            var days = self.im.user.answers.state_r15_voice_days;
+        self.states.add('state_r12_voice_times', function(name) {
+            var days = self.im.user.answers.state_r11_voice_days;
             var speech_option = go.utils.get_speech_option_days(days);
             return new ChoiceState(name, {
                 question: $('Message time?'),
@@ -331,27 +226,21 @@ go.app = function() {
                     new Choice('9_11', $('9_11')),
                     new Choice('2_5', $('2_5'))
                 ],
-                next: 'state_r17_end_voice'
+                next: 'state_r13_end'
             });
         });
 
-        self.states.add('state_r17_end_voice', function(name) {
-            var time = self.im.user.answers.state_r16_voice_times;
-            var days = self.im.user.answers.state_r15_voice_days;
+        self.states.add('state_r13_end', function(name) {
+            var time = self.im.user.answers.state_r12_voice_times;
+            var days = self.im.user.answers.state_r11_voice_days;
             var speech_option = go.utils.get_speech_option_days_time(days, time);
+            var text;
+            time === undefined
+                ? text = $('Thank you!')
+                : text = $('Thank you! Time: {{ time }}. Days: {{ days }}.'
+                           ).context({ time: time, days: days });
             return new EndState(name, {
-                text: $('Thank you! Time: {{ time }}. Days: {{ days }}.'
-                    ).context({ time: time, days: days }),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                next: 'state_r01_number'
-            });
-        });
-
-        self.states.add('state_r18_end_sms', function(name) {
-            var speech_option = '01';
-            return new EndState(name, {
-                text: $('Thank you!'),
+                text: text,
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: 'state_r01_number'
