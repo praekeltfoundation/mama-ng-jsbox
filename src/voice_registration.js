@@ -110,10 +110,10 @@ go.app = function() {
             self.im.user.answers.state_r04_mom_state === 'pregnant'
                 ? speech_option = '1'
                 : speech_option = '2';
-            // create choices eg. new Choice('1', $('1')) etc.
+            // create choices eg. new Choice('1', '1') etc.
             var month_choices = [];
             for (i=1; i<=12; i++) {
-                month_choices.push(new Choice(i.toString(), $(i.toString())));
+                month_choices.push(new Choice(i.toString(), i.toString()));
             }
             return new ChoiceState(name, {
                 question: $('Birth month? 1-12'),
