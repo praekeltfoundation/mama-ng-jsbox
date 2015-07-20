@@ -17,55 +17,15 @@ go.utils = {
         return Q();
     },
 
-    get_speech_option_month: function(month) {
-        month_map = {
-            'january': '01',
-            'february': '02',
-            'march': '03',
-            'april': '04',
-            'may': '05',
-            'june': '06',
-            'july': '07',
-            'august': '08',
-            'september': '09',
-            'october': '10',
-            'november': '11',
-            'december': '12'
-        };
-        return month_map[month];
-    },
-
-    get_speech_option_month_year: function(month, year) {
-        last_year_month_map = {
-            'january': '01',
-            'february': '02',
-            'march': '03',
-            'april': '04',
-            'may': '05',
-            'june': '06',
-            'july': '07',
-            'august': '08',
-            'september': '09',
-            'october': '10',
-            'november': '11',
-            'december': '12'
-        };
-        this_year_month_map = {
-            'january': '13',
-            'february': '14',
-            'march': '15',
-            'april': '16',
-            'may': '17',
-            'june': '18',
-            'july': '19',
-            'august': '20',
-            'september': '21',
-            'october': '22',
-            'november': '23',
-            'december': '24'
-        };
-        return year === 'last_year' ? last_year_month_map[month]
-                                    : this_year_month_map[month];
+    get_speech_option_birth_day: function(im, month) {
+        var speech_option_start = 0;
+        if (im.user.answers.state_r04_mom_state === 'baby') {
+            im.user.answers.state_r05_birth_year === 'last_year'
+                ? speech_option_start = 12
+                : speech_option_start = 24;
+        }
+        var speech_option_num = speech_option_start + parseInt(month, 10);
+        return speech_option_num.toString();
     },
 
     get_speech_option_days: function(days) {

@@ -146,21 +146,15 @@ go.app = function() {
 
         self.states.add('state_r08_birth_day', function(name) {
             var month = self.im.user.answers.state_r06_birth_month;
-            var speech_option_start = 0;
-            if (self.im.user.answers.state_r04_mom_state === 'baby') {
-                self.im.user.answers.state_r05_birth_year === 'last_year'
-                    ? speech_option_start = 12
-                    : speech_option_start = 24;
-            }
-            var speech_option_num = speech_option_start + parseInt(month,10);
-            var speech_option = speech_option_num.toString();
+            var speech_option = go.utils.get_speech_option_birth_day(
+                self.im, month);
             return new FreeText(name, {
                 question: $('Birth day in {{ month }}?'
                     ).context({ month: month }),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(content) {
-                    // TODO check user has entered a proper month
+                    // TODO check user has entered a proper day
                     return 'state_r09_language';
                 }
             });
