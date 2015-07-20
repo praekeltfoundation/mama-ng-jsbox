@@ -44,6 +44,29 @@ describe("Mama Nigeria App", function() {
         });
 
 
+        // TEST ANSWER RESET
+
+        // TODO #9
+        // describe("When you go back to the main menu", function() {
+        //     it("should reset the user answers", function() {
+        //         return tester
+        //             .setup.user.addr('+07030010001')
+        //             .inputs(
+        //                 {session_event: 'new'},
+        //                 '08080020002',
+        //                 '*'
+        //             )
+        //             .check.interaction({
+        //                 state: 'state_r01_number',
+        //                 reply: 'Welcome, Number'
+        //             })
+        //             .check.user.properties({
+        //                 answers: {}
+        //             })
+        //             .run();
+        //     });
+        // });
+
         // TEST REGISTRATION FLOW
 
         describe("When you start the app", function() {
@@ -56,6 +79,13 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_r01_number',
                         reply: 'Welcome, Number'
+                    })
+                    .check.reply.properties({
+                        helper_metadata: {
+                            voice: {
+                                speech_url: 'http://localhost:8000/api/v1/en/state_r01_number_1.mp3'
+                            }
+                        }
                     })
                     .run();
             });
@@ -78,6 +108,13 @@ describe("Mama Nigeria App", function() {
                                 '2. Other'
                             ].join('\n')
                         })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8000/api/v1/en/state_r03_receiver_1.mp3'
+                                }
+                            }
+                        })
                         .run();
                 });
             });
@@ -93,6 +130,13 @@ describe("Mama Nigeria App", function() {
                         .check.interaction({
                             state: 'state_r02_retry_number',
                             reply: 'Retry number'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8000/api/v1/en/state_r02_retry_number_1.mp3'
+                                }
+                            }
                         })
                         .run();
                 });
@@ -110,6 +154,13 @@ describe("Mama Nigeria App", function() {
                         .check.interaction({
                             state: 'state_r02_retry_number',
                             reply: 'Retry number'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8000/api/v1/en/state_r02_retry_number_1.mp3'
+                                }
+                            }
                         })
                         .run();
                 });
@@ -131,6 +182,13 @@ describe("Mama Nigeria App", function() {
                                 '1. Mother',
                                 '2. Other'
                             ].join('\n')
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8000/api/v1/en/state_r03_receiver_1.mp3'
+                                }
+                            }
                         })
                         .run();
                 });
@@ -155,6 +213,13 @@ describe("Mama Nigeria App", function() {
                                 '2. Baby'
                             ].join('\n')
                         })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8000/api/v1/en/state_r04_mom_state_1.mp3'
+                                }
+                            }
+                        })
                         .run();
                 });
             });
@@ -176,6 +241,13 @@ describe("Mama Nigeria App", function() {
                                 '2. Other'
                             ].join('\n')
                         })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8000/api/v1/en/state_r03_receiver_1.mp3'
+                                }
+                            }
+                        })
                         .run();
                 });
             });
@@ -183,7 +255,7 @@ describe("Mama Nigeria App", function() {
 
         describe("When you enter a choice r04_mom_state", function() {
             describe("if you choose pregnant", function() {
-                it("should navigate to state r05_pregnant_year", function() {
+                it("should navigate to state r05_birth_year", function() {
                     return tester
                         .setup.user.addr('+07030010001')
                         .inputs(
@@ -193,19 +265,26 @@ describe("Mama Nigeria App", function() {
                             , '1'  // r04_mom_state - pregnant
                         )
                         .check.interaction({
-                            state: 'state_r05_pregnant_year',
+                            state: 'state_r05_birth_year',
                             reply: [
-                                'DOB?',
-                                '1. This year',
-                                '2. Next year'
+                                'Birth year?',
+                                '1. this_year',
+                                '2. next_year'
                             ].join('\n')
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8000/api/v1/en/state_r05_birth_year_1.mp3'
+                                }
+                            }
                         })
                         .run();
                 });
             });
 
             describe("if you choose baby", function() {
-                it("should navigate to state r06_baby_year", function() {
+                it("should navigate to state r05_birth_year", function() {
                     return tester
                         .setup.user.addr('+07030010001')
                         .inputs(
@@ -215,21 +294,28 @@ describe("Mama Nigeria App", function() {
                             , '2'  // r04_mom_state - baby
                         )
                         .check.interaction({
-                            state: 'state_r06_baby_year',
+                            state: 'state_r05_birth_year',
                             reply: [
-                                'DOB?',
-                                '1. Last year',
-                                '2. This year'
+                                'Birth year?',
+                                '1. last_year',
+                                '2. this_year'
                             ].join('\n')
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8000/api/v1/en/state_r05_birth_year_2.mp3'
+                                }
+                            }
                         })
                         .run();
                 });
             });
         });
 
-        describe("When you enter a choice r05_pregnant_year", function() {
-            describe("if you choose this year", function() {
-                it("should navigate to state r07_pregnant_thisyear_month", function() {
+        describe("When you enter a choice r05_birth_year", function() {
+            describe("if the mother is pregnant", function() {
+                it("should navigate to state r06_birth_month", function() {
                     return tester
                         .setup.user.addr('+07030010001')
                         .inputs(
@@ -237,54 +323,30 @@ describe("Mama Nigeria App", function() {
                             '08080020002'
                             , '1'  // r03_receiver - mother
                             , '1'  // r04_mom_state - pregnant
-                            , '1'  // r05_pregnant_year - this year
+                            , '1'  // r05_birth_year - this year
                         )
                         .check.interaction({
-                            state: 'state_r07_pregnant_thisyear_month',
+                            state: 'state_r06_birth_month',
                             reply: [
-                                'Which month?',
-                                '1. july',
-                                '2. august',
-                                '3. september',
-                                '4. october',
-                                '5. november',
-                                '6. december'
+                                'Birth month? 1-12',
+                                '1. 1', '2. 2', '3. 3', '4. 4', '5. 5', '6. 6',
+                                '7. 7', '8. 8', '9. 9', '10. 10', '11. 11',
+                                '12. 12'
                             ].join('\n')
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8000/api/v1/en/state_r06_birth_month_1.mp3'
+                                }
+                            }
                         })
                         .run();
                 });
             });
 
-            describe("if you choose next year", function() {
-                it("should navigate to state r08_pregnant_nextyear_month", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '08080020002'
-                            , '1'  // r03_receiver - mother
-                            , '1'  // r04_mom_state - pregnant
-                            , '2'  // r05_pregnant_year - next year
-                        )
-                        .check.interaction({
-                            state: 'state_r08_pregnant_nextyear_month',
-                            reply: [
-                                'Which month?',
-                                '1. january',
-                                '2. february',
-                                '3. march',
-                                '4. april',
-                                '5. may'
-                            ].join('\n')
-                        })
-                        .run();
-                });
-            });
-        });
-
-        describe("When you enter a choice r06_baby_year", function() {
-            describe("if you choose last year", function() {
-                it("should navigate to state r09_baby_lastyear_month", function() {
+            describe("if the mother has had her baby", function() {
+                it("should navigate to state r06_birth_month", function() {
                     return tester
                         .setup.user.addr('+07030010001')
                         .inputs(
@@ -292,55 +354,31 @@ describe("Mama Nigeria App", function() {
                             '08080020002'
                             , '1'  // r03_receiver - mother
                             , '2'  // r04_mom_state - baby
-                            , '1'  // r06_baby_year - last year
+                            , '1'  // r05_birth_year - last year
                         )
                         .check.interaction({
-                            state: 'state_r09_baby_lastyear_month',
+                            state: 'state_r06_birth_month',
                             reply: [
-                                'Which month?',
-                                '1. july',
-                                '2. august',
-                                '3. september',
-                                '4. october',
-                                '5. november',
-                                '6. december'
+                                'Birth month? 1-12',
+                                '1. 1', '2. 2', '3. 3', '4. 4', '5. 5', '6. 6',
+                                '7. 7', '8. 8', '9. 9', '10. 10', '11. 11',
+                                '12. 12'
                             ].join('\n')
                         })
-                        .run();
-                });
-            });
-
-            describe("if you choose this year", function() {
-                it("should navigate to state r10_baby_thisyear_month", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '08080020002'
-                            , '1'  // r03_receiver - mother
-                            , '2'  // r04_mom_state - baby
-                            , '2'  // r06_baby_year - this year
-                        )
-                        .check.interaction({
-                            state: 'state_r10_baby_thisyear_month',
-                            reply: [
-                                'Which month?',
-                                '1. january',
-                                '2. february',
-                                '3. march',
-                                '4. april',
-                                '5. may',
-                                '6. june',
-                                '7. july'
-                            ].join('\n')
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8000/api/v1/en/state_r06_birth_month_2.mp3'
+                                }
+                            }
                         })
                         .run();
                 });
             });
         });
 
-        describe("When you enter a month choice r07_pregnant_thisyear_month", function() {
-            it("should navigate to state r11_pregnant_day", function() {
+        describe("When you enter a choice r06_birth_month", function() {
+            it("should ask for month confirmation r07_confirm_month", function() {
                 return tester
                     .setup.user.addr('+07030010001')
                     .inputs(
@@ -348,259 +386,385 @@ describe("Mama Nigeria App", function() {
                         '08080020002'
                         , '1'  // r03_receiver - mother
                         , '1'  // r04_mom_state - pregnant
-                        , '1'  // r05_pregnant_year - this year
-                        , '2'  // r07_pregnant_thisyear_month - august
+                        , '1'  // r05_birth_year - this year
+                        , '6'  // r06_birth_month - june
                     )
                     .check.interaction({
-                        state: 'state_r11_pregnant_day',
-                        reply: 'Which day of august?'
+                        state: 'state_r07_confirm_month',
+                        reply: [
+                            'You entered x for Month. Correct?',
+                            '1. confirm',
+                            '2. retry'
+                        ].join('\n')
+                    })
+                    .check.reply.properties({
+                        helper_metadata: {
+                            voice: {
+                                speech_url: 'http://localhost:8000/api/v1/en/state_r07_confirm_month_6.mp3'
+                            }
+                        }
                     })
                     .run();
             });
         });
 
-        describe("When you enter a month choice r08_pregnant_nextyear_month", function() {
-            it("should navigate to state r11_pregnant_day", function() {
-                return tester
-                    .setup.user.addr('+07030010001')
-                    .inputs(
-                        {session_event: 'new'},
-                        '08080020002'
-                        , '1'  // r03_receiver - mother
-                        , '1'  // r04_mom_state - pregnant
-                        , '2'  // r05_pregnant_year - next year
-                        , '2'  // r08_pregnant_nextyear_month - february
-                    )
-                    .check.interaction({
-                        state: 'state_r11_pregnant_day',
-                        reply: 'Which day of february?'
-                    })
-                    .run();
-            });
-        });
-
-        describe("When you enter a month choice r09_baby_lastyear_month", function() {
-            it("should navigate to state r12_baby_day", function() {
-                return tester
-                    .setup.user.addr('+07030010001')
-                    .inputs(
-                        {session_event: 'new'},
-                        '08080020002'
-                        , '1'  // r03_receiver - mother
-                        , '2'  // r04_mom_state - baby
-                        , '1'  // r06_baby_year - last year
-                        , '3'  // r09_baby_lastyear_month - september
-                    )
-                    .check.interaction({
-                        state: 'state_r12_baby_day',
-                        reply: 'Which day of september?'
-                    })
-                    .run();
-            });
-        });
-
-        describe("When you enter a month choice r10_baby_thisyear_month", function() {
-            it("should navigate to state r12_baby_day", function() {
-                return tester
-                    .setup.user.addr('+07030010001')
-                    .inputs(
-                        {session_event: 'new'},
-                        '08080020002'
-                        , '1'  // r03_receiver - mother
-                        , '2'  // r04_mom_state - baby
-                        , '2'  // r06_baby_year - this year
-                        , '1'  // r10_baby_thisyear_month - january
-                    )
-                    .check.interaction({
-                        state: 'state_r12_baby_day',
-                        reply: 'Which day of january?'
-                    })
-                    .run();
-            });
-        });
-
-        describe("When you've entered a day choice", function() {
-            describe("on state r11_pregnant_day", function() {
-                it("should navigate to state r13_language", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '08080020002'
-                            , '1'  // r03_receiver - mother
-                            , '1'  // r04_mom_state - baby
-                            , '1'  // r05_pregnant_year - this year
-                            , '2'  // r07_pregnant_thisyear_month - august
-                            , '11'  // r11_pregnant_day - 11
-                        )
-                        .check.interaction({
-                            state: 'state_r13_language',
-                            reply: [
-                                'Language?',
-                                '1. english',
-                                '2. hausa',
-                                '3. igbo'
-                            ].join('\n')
-                        })
-                        .run();
-                });
-            });
-
-            describe("on state r12_baby_day", function() {
-                it("should navigate to state r13_language", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
+        describe("When you enter a choice r07_confirm_month", function() {
+            describe("if the mother is pregnant", function() {
+                describe("if you select retry", function() {
+                    it("should navigate to state r06_birth_month again", function() {
+                        return tester
+                            .setup.user.addr('+07030010001')
                             .inputs(
-                            {session_event: 'new'},
-                            '08080020002'
-                            , '1'  // r03_receiver - mother
-                            , '2'  // r04_mom_state - baby
-                            , '2'  // r06_baby_year - this year
-                            , '1'  // r10_baby_thisyear_month - january
-                            , '12'  // r12_baby_day - 12
-                        )
-                        .check.interaction({
-                            state: 'state_r13_language',
-                            reply: [
-                                'Language?',
-                                '1. english',
-                                '2. hausa',
-                                '3. igbo'
-                            ].join('\n')
-                        })
-                        .run();
+                                {session_event: 'new'},
+                                '08080020002'
+                                , '1'  // r03_receiver - mother
+                                , '1'  // r04_mom_state - pregnant
+                                , '1'  // r05_birth_year - this year
+                                , '6'  // r06_birth_month - june
+                                , '2'  // r07_confirm_month - retry
+                            )
+                            .check.interaction({
+                                state: 'state_r06_birth_month',
+                                reply: [
+                                    'Birth month? 1-12',
+                                    '1. 1', '2. 2', '3. 3', '4. 4', '5. 5', '6. 6',
+                                    '7. 7', '8. 8', '9. 9', '10. 10', '11. 11',
+                                    '12. 12'
+                                ].join('\n')
+                            })
+                            .check.reply.properties({
+                                helper_metadata: {
+                                    voice: {
+                                        speech_url: 'http://localhost:8000/api/v1/en/state_r06_birth_month_1.mp3'
+                                    }
+                                }
+                            })
+                            .run();
+                    });
+                });
+
+                describe("if you select confirm", function() {
+                    it("should navigate to state r08_birth_day", function() {
+                        return tester
+                            .setup.user.addr('+07030010001')
+                            .inputs(
+                                {session_event: 'new'},
+                                '08080020002'
+                                , '1'  // r03_receiver - mother
+                                , '1'  // r04_mom_state - pregnant
+                                , '1'  // r05_birth_year - this year
+                                , '6'  // r06_birth_month - june
+                                , '1'  // r07_confirm_month - confirm
+                            )
+                            .check.interaction({
+                                state: 'state_r08_birth_day',
+                                reply: 'Birth day in 6?'
+                            })
+                            .check.reply.properties({
+                                helper_metadata: {
+                                    voice: {
+                                        speech_url: 'http://localhost:8000/api/v1/en/state_r08_birth_day_6.mp3'
+                                    }
+                                }
+                            })
+                            .run();
+                    });
+                });
+            });
+
+            describe("if the mother has had her baby", function() {
+                describe("if you select retry", function() {
+                    it("should navigate to state r06_birth_month again", function() {
+                        return tester
+                            .setup.user.addr('+07030010001')
+                            .inputs(
+                                {session_event: 'new'},
+                                '08080020002'
+                                , '1'  // r03_receiver - mother
+                                , '2'  // r04_mom_state - baby
+                                , '1'  // r05_birth_year - last year
+                                , '11'  // r06_birth_month - november
+                                , '2'  // r07_confirm_month - retry
+                            )
+                            .check.interaction({
+                                state: 'state_r06_birth_month',
+                                reply: [
+                                    'Birth month? 1-12',
+                                    '1. 1', '2. 2', '3. 3', '4. 4', '5. 5', '6. 6',
+                                    '7. 7', '8. 8', '9. 9', '10. 10', '11. 11',
+                                    '12. 12'
+                                ].join('\n')
+                            })
+                            .check.reply.properties({
+                                helper_metadata: {
+                                    voice: {
+                                        speech_url: 'http://localhost:8000/api/v1/en/state_r06_birth_month_2.mp3'
+                                    }
+                                }
+                            })
+                            .run();
+                    });
+                });
+
+                describe("if you select confirm", function() {
+                    it("should navigate to state r08_birth_day", function() {
+                        return tester
+                            .setup.user.addr('+07030010001')
+                            .inputs(
+                                {session_event: 'new'},
+                                '08080020002'
+                                , '1'  // r03_receiver - mother
+                                , '2'  // r04_mom_state - baby
+                                , '1'  // r05_birth_year - last year
+                                , '11'  // r06_birth_month - november
+                                , '1'  // r07_confirm_month - confirm
+                            )
+                            .check.interaction({
+                                state: 'state_r08_birth_day',
+                                reply: 'Birth day in 11?'
+                            })
+                            .check.reply.properties({
+                                helper_metadata: {
+                                    voice: {
+                                        speech_url: 'http://localhost:8000/api/v1/en/state_r08_birth_day_23.mp3'
+                                    }
+                                }
+                            })
+                            .run();
+                    });
+
+                    it("should navigate to state r08_birth_day", function() {
+                        return tester
+                            .setup.user.addr('+07030010001')
+                            .inputs(
+                                {session_event: 'new'},
+                                '08080020002'
+                                , '1'  // r03_receiver - mother
+                                , '2'  // r04_mom_state - baby
+                                , '2'  // r05_birth_year - this year
+                                , '12'  // r06_birth_month - december
+                                , '1'  // r07_confirm_month - confirm
+                            )
+                            .check.interaction({
+                                state: 'state_r08_birth_day',
+                                reply: 'Birth day in 12?'
+                            })
+                            .check.reply.properties({
+                                helper_metadata: {
+                                    voice: {
+                                        speech_url: 'http://localhost:8000/api/v1/en/state_r08_birth_day_36.mp3'
+                                    }
+                                }
+                            })
+                            .run();
+                    });
                 });
             });
         });
 
-        describe("When you choose a language r13_language", function() {
-            it("should navigate to state r14_message_type", function() {
+
+        describe("when you enter a birth day r08_birth_day", function() {
+            it("should navigate to state r09_language", function() {
                 return tester
                     .setup.user.addr('+07030010001')
                     .inputs(
                         {session_event: 'new'},
                         '08080020002'
                         , '1'  // r03_receiver - mother
-                        , '1'  // r04_mom_state - pregnant
-                        , '1'  // r05_pregnant_year - this year
-                        , '2'  // r07_pregnant_thisyear_month - august
-                        , '11'  // r11_pregnant_day - 11
-                        , '1'  // r13_language - english
+                        , '2'  // r04_mom_state - baby
+                        , '2'  // r05_birth_year - this year
+                        , '12'  // r06_birth_month - december
+                        , '1'  // r07_confirm_month - confirm
+                        , '21'  // r08_birth_day - 21st
                     )
                     .check.interaction({
-                        state: 'state_r14_message_type',
+                        state: 'state_r09_language',
+                        reply: [
+                            'Language?',
+                            '1. english',
+                            '2. hausa',
+                            '3. igbo'
+                        ].join('\n')
+                    })
+                    .check.reply.properties({
+                        helper_metadata: {
+                            voice: {
+                                speech_url: 'http://localhost:8000/api/v1/en/state_r09_language_1.mp3'
+                            }
+                        }
+                    })
+                    .run();
+            });
+        });
+
+        describe("When you choose a language r09_language", function() {
+            it("should navigate to state r10_message_type", function() {
+                return tester
+                    .setup.user.addr('+07030010001')
+                    .inputs(
+                        {session_event: 'new'},
+                        '08080020002'
+                        , '1'  // r03_receiver - mother
+                        , '2'  // r04_mom_state - baby
+                        , '2'  // r05_birth_year - this year
+                        , '12'  // r06_birth_month - december
+                        , '1'  // r07_confirm_month - confirm
+                        , '21'  // r08_birth_day - 21st
+                        , '1'  // r09_language - english
+                    )
+                    .check.interaction({
+                        state: 'state_r10_message_type',
                         reply: [
                             'Channel?',
                             '1. sms',
                             '2. voice'
                         ].join('\n')
                     })
+                    .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8000/api/v1/en/state_r10_message_type_1.mp3'
+                                }
+                            }
+                        })
                     .run();
             });
         });
 
-        describe("When you choose a channel r14_message_type", function() {
+        describe("When you choose a channel r10_message_type", function() {
             describe("if you choose sms", function() {
-                it("should navigate to state r15_voice_days", function() {
+                it("should navigate to state r13_end", function() {
                     return tester
                         .setup.user.addr('+07030010001')
                         .inputs(
                             {session_event: 'new'},
                             '08080020002'
                             , '1'  // r03_receiver - mother
-                            , '1'  // r04_mom_state - pregnant
-                            , '1'  // r05_pregnant_year - this year
-                            , '2'  // r07_pregnant_thisyear_month - august
-                            , '11'  // r11_pregnant_day - 11
-                            , '1'  // r13_language - english
-                            , '1'  // r14_message_type - sms
+                            , '2'  // r04_mom_state - baby
+                            , '2'  // r05_birth_year - this year
+                            , '12'  // r06_birth_month - december
+                            , '1'  // r07_confirm_month - confirm
+                            , '21'  // r08_birth_day - 21st
+                            , '1'  // r09_language - english
+                            , '1'  // r10_message_type - sms
                         )
                         .check.interaction({
-                            state: 'state_r15_voice_days',
+                            state: 'state_r13_end',
+                            reply: 'Thank you!'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8000/api/v1/en/state_r13_end_1.mp3'
+                                }
+                            }
+                        })
+                        .check.reply.ends_session()
+                        .run();
+                });
+            });
+
+            describe("if you choose voice", function() {
+                it("should navigate to state r11_voice_days", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'},
+                            '08080020002'
+                            , '1'  // r03_receiver - mother
+                            , '2'  // r04_mom_state - baby
+                            , '2'  // r05_birth_year - this year
+                            , '12'  // r06_birth_month - december
+                            , '1'  // r07_confirm_month - confirm
+                            , '21'  // r08_birth_day - 21st
+                            , '1'  // r09_language - english
+                            , '2'  // r10_message_type - voice
+                        )
+                        .check.interaction({
+                            state: 'state_r11_voice_days',
                             reply: [
                                 'Message days?',
                                 '1. mon_wed',
                                 '2. tue_thu'
                             ].join('\n')
                         })
-                        .run();
-                });
-            });
-
-            describe("if you choose voice", function() {
-                it("should navigate to state r18_end_sms, end session", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '08080020002'
-                            , '1'  // r03_receiver - mother
-                            , '1'  // r04_mom_state - pregnant
-                            , '1'  // r05_pregnant_year - this year
-                            , '2'  // r07_pregnant_thisyear_month - august
-                            , '11'  // r11_pregnant_day - 11
-                            , '1'  // r13_language - english
-                            , '2'  // r14_message_type - voice
-                        )
-                        .check.interaction({
-                            state: 'state_r18_end_sms',
-                            reply: 'Thank you!'
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8000/api/v1/en/state_r11_voice_days_1.mp3'
+                                }
+                            }
                         })
-                        .check.reply.ends_session()
                         .run();
                 });
             });
         });
 
-        describe("When you choose a day r15_voice_days", function() {
-            it("should navigate to state r16_voice_times", function() {
+        describe("When you choose a day r11_voice_days", function() {
+            it("should navigate to state r12_voice_times", function() {
                 return tester
                     .setup.user.addr('+07030010001')
                     .inputs(
                         {session_event: 'new'},
                         '08080020002'
                         , '1'  // r03_receiver - mother
-                        , '1'  // r04_mom_state - pregnant
-                        , '1'  // r05_pregnant_year - this year
-                        , '2'  // r07_pregnant_thisyear_month - august
-                        , '11'  // r11_pregnant_day - 11
-                        , '1'  // r13_language - english
-                        , '1'  // r14_message_type - sms
-                        , '1'  // r15_voice_days - mon_wed
+                        , '2'  // r04_mom_state - baby
+                        , '2'  // r05_birth_year - this year
+                        , '12'  // r06_birth_month - december
+                        , '1'  // r07_confirm_month - confirm
+                        , '21'  // r08_birth_day - 21st
+                        , '1'  // r09_language - english
+                        , '2'  // r10_message_type - voice
+                        , '1'  // r11_voice_days - mon_wed
                     )
                     .check.interaction({
-                        state: 'state_r16_voice_times',
+                        state: 'state_r12_voice_times',
                         reply: [
                             'Message time?',
                             '1. 9_11',
                             '2. 2_5'
                         ].join('\n')
                     })
+                    .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8000/api/v1/en/state_r12_voice_times_1.mp3'
+                                }
+                            }
+                        })
                     .run();
             });
         });
 
-        describe("When you choose a time r16_voice_times", function() {
-            it("should navigate to state r17_end_voice", function() {
+        describe("When you choose a time r12_voice_times", function() {
+            it("should navigate to state r13_end", function() {
                 return tester
                     .setup.user.addr('+07030010001')
                     .inputs(
                         {session_event: 'new'},
                         '08080020002'
                         , '1'  // r03_receiver - mother
-                        , '1'  // r04_mom_state - pregnant
-                        , '1'  // r05_pregnant_year - this year
-                        , '2'  // r07_pregnant_thisyear_month - august
-                        , '11'  // r11_pregnant_day - 11
-                        , '1'  // r13_language - english
-                        , '1'  // r14_message_type - sms
-                        , '1'  // r15_voice_days - mon_wed
-                        , '2'  // r16_voice_times - 2_5
+                        , '2'  // r04_mom_state - baby
+                        , '2'  // r05_birth_year - this year
+                        , '12'  // r06_birth_month - december
+                        , '1'  // r07_confirm_month - confirm
+                        , '21'  // r08_birth_day - 21st
+                        , '1'  // r09_language - english
+                        , '2'  // r10_message_type - voice
+                        , '1'  // r11_voice_days - mon_wed
+                        , '2'  // r12_voice_times - 2_5
                     )
                     .check.interaction({
-                        state: 'state_r17_end_voice',
+                        state: 'state_r13_end',
                         reply: 'Thank you! Time: 2_5. Days: mon_wed.'
                     })
+                    .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8000/api/v1/en/state_r13_end_4.mp3'
+                                }
+                            }
+                        })
                     .check.reply.ends_session()
                     .run();
             });

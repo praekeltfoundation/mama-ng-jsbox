@@ -17,6 +17,58 @@ go.utils = {
         return Q();
     },
 
+    get_speech_option_birth_day: function(im, month) {
+        var speech_option_start = 0;
+        if (im.user.answers.state_r04_mom_state === 'baby') {
+            im.user.answers.state_r05_birth_year === 'last_year'
+                ? speech_option_start = 12
+                : speech_option_start = 24;
+        }
+        var speech_option_num = speech_option_start + parseInt(month, 10);
+        return speech_option_num.toString();
+    },
+
+    get_speech_option_days: function(days) {
+        day_map = {
+            'mon_wed': '1',
+            'tue_thu': '2'
+        };
+        return day_map[days];
+    },
+
+    get_speech_option_days_time: function(days, time) {
+        var speech_option;
+        day_map_9_11 = {
+            'mon_wed': '2',
+            'tue_thu': '3'
+        };
+        day_map_2_5 = {
+            'mon_wed': '4',
+            'tue_thu': '5'
+        };
+        if (time === undefined) {
+            speech_option = '1';
+        } else {
+            time === '9_11' ? speech_option = day_map_9_11[days]
+                            : speech_option = day_map_2_5[days];
+        }
+        return speech_option;
+    },
+
+    // Construct url string
+    make_speech_url: function(im, name, lang, num) {
+        return im.config.control.url + lang + '/' + name + '_' + num + '.mp3';
+    },
+
+    // Construct helper_data object
+    make_voice_helper_data: function(im, name, lang, num) {
+        return {
+            voice: {
+                speech_url: go.utils.make_speech_url(im, name, lang, num)
+            }
+        };
+    },
+
     control_api_call: function(method, params, payload, endpoint, im) {
         var api = new JsonApi(im, {
             headers: {
