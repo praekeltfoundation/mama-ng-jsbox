@@ -20,7 +20,6 @@ go.utils = {
 
         return im.msg.content === '*'
             && no_restart_states.indexOf(im.user.state.name) === -1;
-            // && im.user.state.name !== 'states_start';
     },
 
     return_true: function() {
@@ -174,11 +173,10 @@ go.utils = {
     "commas": "commas"
 };
 
-// This app handles registration and state changes
+// This app handles registration
 
 go.app = function() {
     var vumigo = require('vumigo_v02');
-    // var Q = require('q');
     var App = vumigo.App;
     var ChoiceState = vumigo.states.ChoiceState;
     var Choice = vumigo.states.Choice;
@@ -200,14 +198,11 @@ go.app = function() {
                 interrupt = false;
                 opts = opts || {};
                 opts.name = name;
+                // Prevent previous content being passed to next state
                 self.im.msg.content = null;
                 return self.states.create('state_r01_number', opts);
             });
         };
-
-        // self.states.add('state_restart', function(name) {
-        //     return self.states.create('state_r01_number');
-        // });
 
 
     // REGISTRATION
@@ -349,11 +344,8 @@ go.app = function() {
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(content) {
-                    // if (content === "*") {
-                    //     return 'state_r01_number';
-                    // } else {
-                        return 'state_r09_language';
-                    // }
+                    // TODO check user has entered a proper day
+                    return 'state_r09_language';
                 }
             });
         });
