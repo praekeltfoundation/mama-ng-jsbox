@@ -5,6 +5,17 @@ var JsonApi = vumigo.http.api.JsonApi;
 // Shared utils lib
 go.utils = {
 
+    should_restart: function(im) {
+        var no_restart_states = [
+            'state_r01_number',
+            'state_r02_retry_number'
+        ];
+
+        return im.msg.content === '*'
+            && no_restart_states.indexOf(im.user.state.name) === -1;
+            // && im.user.state.name !== 'states_start';
+    },
+
     return_true: function() {
         return true;
     },
