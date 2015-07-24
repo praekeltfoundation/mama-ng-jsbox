@@ -46,26 +46,25 @@ describe("Mama Nigeria App", function() {
 
         // TEST ANSWER RESET
 
-        // TODO #9
-        // describe("When you go back to the main menu", function() {
-        //     it("should reset the user answers", function() {
-        //         return tester
-        //             .setup.user.addr('+07030010001')
-        //             .inputs(
-        //                 {session_event: 'new'},
-        //                 '08080020002',
-        //                 '*'
-        //             )
-        //             .check.interaction({
-        //                 state: 'state_r01_number',
-        //                 reply: 'Welcome, Number'
-        //             })
-        //             .check.user.properties({
-        //                 answers: {}
-        //             })
-        //             .run();
-        //     });
-        // });
+        describe("When you go back to the main menu", function() {
+            it("should reset the user answers", function() {
+                return tester
+                    .setup.user.addr('+07030010001')
+                    .inputs(
+                        {session_event: 'new'},
+                        '08080020002',
+                        '*'
+                    )
+                    .check.interaction({
+                        state: 'state_r01_number',
+                        reply: 'Welcome, Number'
+                    })
+                    .check.user.properties({
+                        answers: {}
+                    })
+                    .run();
+            });
+        });
 
         // TEST REGISTRATION FLOW
 
@@ -166,6 +165,30 @@ describe("Mama Nigeria App", function() {
                 });
             });
 
+            describe("if the user tries to restart with *", function() {
+                it("should not restart", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'},
+                            '+08080020002',
+                            '*'
+                        )
+                        .check.interaction({
+                            state: 'state_r02_retry_number',
+                            reply: 'Retry number'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8000/api/v1/en/state_r02_retry_number_1.mp3'
+                                }
+                            }
+                        })
+                        .run();
+                });
+            });
+
             describe("if the retried number validates", function() {
                 it("should navigate to state r03_receiver", function() {
                     return tester
@@ -220,6 +243,30 @@ describe("Mama Nigeria App", function() {
                                 }
                             }
                         })
+                        .run();
+                });
+            });
+
+            describe("if it is *", function() {
+                it("should restart", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'},
+                            '08080020002'
+                            , '*'  // r03_receiver - restart
+                        )
+                        .check.interaction({
+                            state: 'state_r01_number',
+                            reply: 'Welcome, Number'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8000/api/v1/en/state_r01_number_1.mp3'
+                                }
+                            }
+                    })
                         .run();
                 });
             });
@@ -564,36 +611,66 @@ describe("Mama Nigeria App", function() {
 
 
         describe("when you enter a birth day r08_birth_day", function() {
-            it("should navigate to state r09_language", function() {
-                return tester
-                    .setup.user.addr('+07030010001')
-                    .inputs(
-                        {session_event: 'new'},
-                        '08080020002'
-                        , '1'  // r03_receiver - mother
-                        , '2'  // r04_mom_state - baby
-                        , '2'  // r05_birth_year - this year
-                        , '12'  // r06_birth_month - december
-                        , '1'  // r07_confirm_month - confirm
-                        , '21'  // r08_birth_day - 21st
-                    )
-                    .check.interaction({
-                        state: 'state_r09_language',
-                        reply: [
-                            'Language?',
-                            '1. english',
-                            '2. hausa',
-                            '3. igbo'
-                        ].join('\n')
-                    })
-                    .check.reply.properties({
-                        helper_metadata: {
-                            voice: {
-                                speech_url: 'http://localhost:8000/api/v1/en/state_r09_language_1.mp3'
+            describe("if it is a valid day", function() {
+                it("should navigate to state r09_language", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'},
+                            '08080020002'
+                            , '1'  // r03_receiver - mother
+                            , '2'  // r04_mom_state - baby
+                            , '2'  // r05_birth_year - this year
+                            , '12'  // r06_birth_month - december
+                            , '1'  // r07_confirm_month - confirm
+                            , '21'  // r08_birth_day - 21st
+                        )
+                        .check.interaction({
+                            state: 'state_r09_language',
+                            reply: [
+                                'Language?',
+                                '1. english',
+                                '2. hausa',
+                                '3. igbo'
+                            ].join('\n')
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8000/api/v1/en/state_r09_language_1.mp3'
+                                }
                             }
-                        }
-                    })
-                    .run();
+                        })
+                        .run();
+                });
+            });
+
+            describe("if it is *", function() {
+                it("should restart", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'},
+                            '08080020002'
+                            , '1'  // r03_receiver - mother
+                            , '2'  // r04_mom_state - baby
+                            , '2'  // r05_birth_year - this year
+                            , '12'  // r06_birth_month - december
+                            , '1'  // r07_confirm_month - confirm
+                            , '*'  // r08_birth_day - restart
+                        )
+                        .check.interaction({
+                            state: 'state_r01_number'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8000/api/v1/en/state_r01_number_1.mp3'
+                                }
+                            }
+                        })
+                        .run();
+                });
             });
         });
 

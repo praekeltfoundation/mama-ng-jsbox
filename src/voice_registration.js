@@ -1,4 +1,4 @@
-// This app handles registration and state changes
+// This app handles registration
 
 go.app = function() {
     var vumigo = require('vumigo_v02');
@@ -13,6 +13,21 @@ go.app = function() {
         App.call(self, 'state_r01_number');
         var $ = self.$;
         var lang = 'en';
+        var interrupt = true;
+
+        self.add = function(name, creator) {
+            self.states.add(name, function(name, opts) {
+                if (!interrupt || !go.utils.should_restart(self.im))
+                    return creator(name, opts);
+
+                interrupt = false;
+                opts = opts || {};
+                opts.name = name;
+                // Prevent previous content being passed to next state
+                self.im.msg.content = null;
+                return self.states.create('state_r01_number', opts);
+            });
+        };
 
 
     // REGISTRATION
@@ -35,7 +50,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_r02_retry_number', function(name) {
+        self.add('state_r02_retry_number', function(name) {
             var speech_option = '1';
             return new FreeText(name, {
                 question: $('Retry number'),
@@ -51,7 +66,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_r03_receiver', function(name) {
+        self.add('state_r03_receiver', function(name) {
             var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Choose receiver'),
@@ -65,7 +80,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_r04_mom_state', function(name) {
+        self.add('state_r04_mom_state', function(name) {
             var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Pregnant or baby'),
@@ -79,7 +94,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_r05_birth_year', function(name) {
+        self.add('state_r05_birth_year', function(name) {
             // TODO #6 Don't show next year for pregnancy in Jan / Feb
             var speech_option;
             var year_choices = [
@@ -105,7 +120,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_r06_birth_month', function(name) {
+        self.add('state_r06_birth_month', function(name) {
             var speech_option;
             self.im.user.answers.state_r04_mom_state === 'pregnant'
                 ? speech_option = '1'
@@ -124,7 +139,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_r07_confirm_month', function(name) {
+        self.add('state_r07_confirm_month', function(name) {
             var routing = {
                 'confirm': 'state_r08_birth_day',
                 'retry': 'state_r06_birth_month'
@@ -144,7 +159,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_r08_birth_day', function(name) {
+        self.add('state_r08_birth_day', function(name) {
             var month = self.im.user.answers.state_r06_birth_month;
             var speech_option = go.utils.get_speech_option_birth_day(
                 self.im, month);
@@ -160,7 +175,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_r09_language', function(name) {
+        self.add('state_r09_language', function(name) {
             var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Language?'),
@@ -175,7 +190,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_r10_message_type', function(name) {
+        self.add('state_r10_message_type', function(name) {
             var speech_option = '1';
             var routing = {
                 'sms': 'state_r13_end',
@@ -195,7 +210,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_r11_voice_days', function(name) {
+        self.add('state_r11_voice_days', function(name) {
             var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Message days?'),
@@ -209,7 +224,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_r12_voice_times', function(name) {
+        self.add('state_r12_voice_times', function(name) {
             var days = self.im.user.answers.state_r11_voice_days;
             var speech_option = go.utils.get_speech_option_days(days);
             return new ChoiceState(name, {
@@ -224,7 +239,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_r13_end', function(name) {
+        self.add('state_r13_end', function(name) {
             var time = self.im.user.answers.state_r12_voice_times;
             var days = self.im.user.answers.state_r11_voice_days;
             var speech_option = go.utils.get_speech_option_days_time(days, time);
