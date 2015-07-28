@@ -1,5 +1,6 @@
 var Q = require('q');
 var vumigo = require('vumigo_v02');
+var moment = require('moment');
 var JsonApi = vumigo.http.api.JsonApi;
 
 // Shared utils lib
@@ -146,22 +147,170 @@ go.utils = {
         }
     },
 
-    get_addresses: function(im) {
-        return "msisdn:" + im.user.addr;
+    get_addresses: function(msisdn) {
+        return "msisdn:" + msisdn;
     },
 
-    create_contact: function(im, name) {
+    get_contact_id_by_msisdn: function(msisdn, im) {
+        var params = {
+            to_addr: msisdn
+        };
+        return go.utils
+            .control_api_call('get', params, null, 'contacts/search/', im)
+            .then(function(json_get_response) {
+                var contacts_found = json_get_response.data.objects;
+                // Return the first contact's id
+                return contacts_found[0].id || "no_contacts_found";
+            });
+    },
+
+    get_contact_by_id: function(contact_id, im) {
+        var endpoint = 'contacts/' + contact_id + '/';
+        return go.utils
+            .control_api_call('get', {}, null, endpoint, im)
+            .then(function(json_get_response) {
+                return json_get_response.data;
+            });
+    },
+
+    // Create a new contact with the minimum required details
+    create_contact: function(msisdn, im) {
         payload = {
             "details": {
-                "name": name,
                 "default_addr_type": "msisdn",
-                "addresses": go.utils.get_addresses(im)
+                "addresses": go.utils.get_addresses(msisdn)
             }
         };
-
         return go.utils
-            .control_api_call("post", null, payload, 'contacts/', im);
+            .control_api_call("post", null, payload, 'contacts/', im)
+            .then(function(json_post_response) {
+                var contact_created = json_post_response.data;
+                // Return the contact's id
+                return contact_created.id;
+            });
     },
+
+    // Gets a contact id if it exists, otherwise creates a new one
+    get_or_create_contact: function(msisdn, im) {
+        return go.utils
+            // Get contact id using msisdn
+            .get_contact_id_by_msisdn(msisdn, im)
+            .then(function(contact_id) {
+                if (contact_id !== "no_contacts_found") {
+                    // If contact exists, return the id
+                    return contact_id;
+                } else {
+                    // If contact doesn't exist, create it
+                    return go.utils
+                        .create_contact(msisdn, im)
+                        .then(function(contact_id) {
+                            return contact_id;
+                        });
+                }
+            });
+    },
+
+    get_today: function(config) {
+        var today;
+        if (config.testing_today) {
+            today = new moment(config.testing_today, 'YYYY-MM-DD');
+        } else {
+            today = new moment();
+        }
+        return today;
+    },
+
+    double_digit_number: function(input) {
+        input_numeric = parseInt(input, 10);
+        if (parseInt(input, 10) < 10) {
+            return "0" + input_numeric.toString();
+        } else {
+            return input_numeric.toString();
+        }
+    },
+
+    get_baby_dob: function(im) {
+        var date_today = go.utils.get_today(im.config);
+        
+        var year_text = im.user.answers.state_r05_birth_year;
+        var year;
+        switch (year_text) {
+            case 'last_year':
+                year = date_today.year() - 1;
+                break;
+            case 'this_year':
+                year = date_today.year();
+                break;
+            case 'next_year':
+                year = date_today.year() + 1;
+                break;
+        }
+
+        var month = im.user.answers.state_r06_birth_month - 1;
+        var day = im.user.answers.state_r08_birth_day;
+
+        var baby_dob = moment({
+            year: year,
+            month: month,
+            day: day
+        });
+        return baby_dob.format('YYYY-MM-DD');
+    },
+
+    get_lang: function(im) {
+        lang_map = {
+            'english': 'eng_NG',
+            'hausa': 'hau_NG',
+            'igbo': 'ibo_NG'
+        };
+        return lang_map[im.user.answers.state_r09_language];
+    },
+
+    update_contact: function(im, contact) {
+        var endpoint = 'contacts/' + contact.id + '/';
+        return go.utils
+            .control_api_call('patch', {}, contact, endpoint, im);
+    },
+
+    save_contacts_info: function(im) {
+        var user_id = im.user.answers.user_id;
+        return go.utils
+            .get_contact_by_id(im.user.answers.mama_id, im)
+            .then(function(mama_contact) {
+                mama_contact.details.opted_out = false;  // ?
+                mama_contact.details.has_registered = true;
+                mama_contact.details.registration_date = go.utils.get_today(im.config).format('YYYY-MM-DD HH:mm:ss ZZ');
+                mama_contact.details.registered_by = user_id;
+                mama_contact.details.baby_dob = go.utils.get_baby_dob(im);
+                mama_contact.details.msg_receiver = im.user.answers.state_r03_receiver;
+                mama_contact.details.state_at_registration = im.user.answers.state_r04_mom_state;
+                mama_contact.details.lang = go.utils.get_lang(im);
+                mama_contact.details.msg_type = im.user.answers.state_r10_message_type;
+                mama_contact.details.voice_days = im.user.answers.state_r11_voice_days;
+                mama_contact.details.voice_times = im.user.answers.state_r12_voice_times;
+                return go.utils
+                    .update_contact(im, mama_contact);
+
+            });
+        // var existing_user = go.utils
+        //     .get_contact_by_id(im.user.answers.user_id, im);
+
+        // var mama_details = {
+        //     registered_by: existing_user.id,
+        // };
+
+        // var user_details = {
+        //     mamas_registered: [existing_mama.id]
+        // };
+
+        // return Q();
+    },
+
+    create_subscription: function(subscription_info) {
+        return Q();
+    },
+    
+
 
     "commas": "commas"
 };
