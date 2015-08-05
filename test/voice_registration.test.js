@@ -32,13 +32,17 @@ describe("Mama Nigeria App", function() {
             tester
                 .setup.config.app({
                     name: 'voice_registration',
+                    testing_today: '2015-07-22',
                     control: {
                         url: "http://localhost:8000/api/v1/",
                         api_key: "test_key"
                     }
                 })
                 .setup(function(api) {
-                    fixtures().forEach(api.http.fixtures.add);
+                    fixtures().forEach(function(d) {
+                        d.repeatable = true;
+                        api.http.fixtures.add(d);
+                    });
                 })
                 ;
         });
@@ -59,9 +63,8 @@ describe("Mama Nigeria App", function() {
                         state: 'state_r01_number',
                         reply: 'Welcome, Number'
                     })
-                    .check.user.properties({
-                        answers: {}
-                    })
+                    .check.user.answer('user_id',
+                        'cb245673-aa41-4302-ac47-00000000001')
                     .run();
             });
         });
@@ -86,6 +89,17 @@ describe("Mama Nigeria App", function() {
                             }
                         }
                     })
+                    .run();
+            });
+
+            it("should set the user answer user_id to the contact id", function() {
+                return tester
+                    .setup.user.addr('+07030010001')
+                    .inputs(
+                        {session_event: 'new'}
+                    )
+                    .check.user.answer('user_id',
+                        'cb245673-aa41-4302-ac47-00000000001')
                     .run();
             });
         });
@@ -114,6 +128,30 @@ describe("Mama Nigeria App", function() {
                                 }
                             }
                         })
+                        .run();
+                });
+
+                it("should set the user answer mama_id to the mama's id", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'},
+                            '08080020002'
+                        )
+                        .check.user.answer('mama_id',
+                            'cb245673-aa41-4302-ac47-00000000002')
+                        .run();
+                });
+
+                it("should create the contact if it doesn't exist", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'},
+                            '08080030003'
+                        )
+                        .check.user.answer('mama_id',
+                            'cb245673-aa41-4302-ac47-00000000003')
                         .run();
                 });
             });
@@ -212,6 +250,23 @@ describe("Mama Nigeria App", function() {
                                     speech_url: 'http://localhost:8000/api/v1/en/state_r03_receiver_1.mp3'
                                 }
                             }
+                        })
+                        .run();
+                });
+
+                it("should set the user answer mama_id to the mama's id", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'},
+                            '+08080020002',
+                            '08080020002'
+                        )
+                        .check.user.answers({
+                            mama_id: 'cb245673-aa41-4302-ac47-00000000002',
+                            user_id: 'cb245673-aa41-4302-ac47-00000000001',
+                            state_r01_number: '+08080020002',
+                            state_r02_retry_number: '08080020002'
                         })
                         .run();
                 });
@@ -716,12 +771,12 @@ describe("Mama Nigeria App", function() {
                         .inputs(
                             {session_event: 'new'},
                             '08080020002'
-                            , '1'  // r03_receiver - mother
-                            , '2'  // r04_mom_state - baby
-                            , '2'  // r05_birth_year - this year
-                            , '12'  // r06_birth_month - december
+                            , '2'  // r03_receiver - other
+                            , '1'  // r04_mom_state - pregnant
+                            , '2'  // r05_birth_year - next year
+                            , '2'  // r06_birth_month - february
                             , '1'  // r07_confirm_month - confirm
-                            , '21'  // r08_birth_day - 21st
+                            , '27'  // r08_birth_day - 27th
                             , '1'  // r09_language - english
                             , '1'  // r10_message_type - sms
                         )
@@ -843,6 +898,41 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                     .check.reply.ends_session()
+                    .run();
+            });
+
+            it("should have the correct answers set", function() {
+                return tester
+                    .setup.user.addr('+07030010001')
+                    .inputs(
+                        {session_event: 'new'},
+                        '08080020002'
+                        , '1'  // r03_receiver - mother
+                        , '2'  // r04_mom_state - baby
+                        , '2'  // r05_birth_year - this year
+                        , '12'  // r06_birth_month - december
+                        , '1'  // r07_confirm_month - confirm
+                        , '21'  // r08_birth_day - 21st
+                        , '1'  // r09_language - english
+                        , '2'  // r10_message_type - voice
+                        , '1'  // r11_voice_days - mon_wed
+                        , '2'  // r12_voice_times - 2_5
+                    )
+                    .check.user.answers({
+                        user_id: "cb245673-aa41-4302-ac47-00000000001",
+                        mama_id: "cb245673-aa41-4302-ac47-00000000002",
+                        state_r01_number: "08080020002",
+                        state_r03_receiver: "mother",
+                        state_r04_mom_state: "baby",
+                        state_r05_birth_year: "this_year",
+                        state_r06_birth_month: "12",
+                        state_r07_confirm_month: "confirm",
+                        state_r08_birth_day: "21",
+                        state_r09_language: "english",
+                        state_r10_message_type: "voice",
+                        state_r11_voice_days: "mon_wed",
+                        state_r12_voice_times: "2_5"
+                    })
                     .run();
             });
         });

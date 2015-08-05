@@ -10,7 +10,7 @@ go.app = function() {
 
 
     var GoApp = App.extend(function(self) {
-        App.call(self, 'state_r01_number');
+        App.call(self, 'state_start');
         var $ = self.$;
         var lang = 'en';
         var interrupt = true;
@@ -25,16 +25,28 @@ go.app = function() {
                 opts.name = name;
                 // Prevent previous content being passed to next state
                 self.im.msg.content = null;
-                return self.states.create('state_r01_number', opts);
+                return self.states.create('state_start', opts);
             });
         };
+
+    // START
+
+        self.states.add('state_start', function(name) {
+            // Reset user answers when restarting the app
+            self.im.user.answers = {};
+            return go.utils
+                // get or create dialer (phone user) contact
+                .get_or_create_contact(self.im.user.addr, self.im)
+                .then(function(user_id) {
+                    self.im.user.set_answer('user_id', user_id);
+                    return self.states.create("state_r01_number");
+                });
+        });
 
 
     // REGISTRATION
 
-        self.states.add('state_r01_number', function(name) {
-            // Reset user answers when restarting the app
-            self.im.user.answers = {};
+        self.add('state_r01_number', function(name) {
             var speech_option = '1';
             return new FreeText(name, {
                 question: $('Welcome, Number'),
@@ -44,7 +56,13 @@ go.app = function() {
                     if (go.utils.check_valid_phone_number(content) === false) {
                         return 'state_r02_retry_number';
                     } else {
-                        return 'state_r03_receiver';
+                        return go.utils
+                            // get or create mama contact
+                            .get_or_create_contact(content, self.im)
+                            .then(function(mama_id) {
+                                self.im.user.set_answer('mama_id', mama_id);
+                                return 'state_r03_receiver';
+                            });
                     }
                 }
             });
@@ -60,7 +78,13 @@ go.app = function() {
                     if (go.utils.check_valid_phone_number(content) === false) {
                         return 'state_r02_retry_number';
                     } else {
-                        return 'state_r03_receiver';
+                        return go.utils
+                            // get or create mama contact
+                            .get_or_create_contact(content, self.im)
+                            .then(function(mama_id) {
+                                self.im.user.set_answer('mama_id', mama_id);
+                                return 'state_r03_receiver';
+                            });
                     }
                 }
             });
@@ -193,7 +217,7 @@ go.app = function() {
         self.add('state_r10_message_type', function(name) {
             var speech_option = '1';
             var routing = {
-                'sms': 'state_r13_end',
+                'sms': 'state_r13_enter',
                 'voice': 'state_r11_voice_days'
             };
             return new ChoiceState(name, {
@@ -235,8 +259,16 @@ go.app = function() {
                     new Choice('9_11', $('9_11')),
                     new Choice('2_5', $('2_5'))
                 ],
-                next: 'state_r13_end'
+                next: 'state_r13_enter'
             });
+        });
+
+        self.add('state_r13_enter', function(name) {
+            return go.utils
+                .save_contacts_info_and_subscribe(self.im)
+                .then(function() {
+                    return self.states.create('state_r13_end');
+                });
         });
 
         self.add('state_r13_end', function(name) {
@@ -252,7 +284,7 @@ go.app = function() {
                 text: text,
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
-                next: 'state_r01_number'
+                next: 'state_start'
             });
         });
 
