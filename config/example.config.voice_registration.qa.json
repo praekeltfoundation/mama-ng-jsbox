@@ -1,0 +1,11 @@
+{
+    "name": "voice-registration-qa",
+    "control": {
+        "url": "http://mama-ng.qa.praekeltfoundation.org/api/v1/",
+        "api_key": "qa_control_api_key"
+    },
+    "voice_content": {
+        "url": "http://voice-content.qa.praekeltfoundation.org/api/v1/",
+        "api_key": "qa_voice_content_api_key"
+    }
+}
