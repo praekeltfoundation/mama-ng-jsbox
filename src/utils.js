@@ -287,7 +287,7 @@ go.utils = {
         mama_contact.details.opted_out = false;  // ?
         mama_contact.details.has_registered = true;
         mama_contact.details.registered_at = go.utils.get_today(im.config
-            ).format('YYYY-MM-DD HH:mm:ss ZZ');
+            ).format('YYYY-MM-DD HH:mm:ss');
         mama_contact.details.registered_by = user_id;
         mama_contact.details.chew_phone_used = chew_phone_used;
         mama_contact.details.msg_receiver = im.user.answers.state_r03_receiver;
