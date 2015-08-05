@@ -546,7 +546,8 @@ go.app = function() {
         });
 
         self.states.add('state_c06_voice_times', function(name) {
-            var speech_option = '1';
+            var days = self.im.user.answers.state_c04_voice_days;
+            var speech_option = go.utils.get_speech_option_days(days);
             return new ChoiceState(name, {
                 question: $('Message times?'),
                 helper_metadata: go.utils.make_voice_helper_data(
@@ -590,9 +591,9 @@ go.app = function() {
         });
 
         self.states.add('state_c09_end_msg_times', function(name) {
-            var speech_option = '1';
-            var time = self.im.user.answers.state_c06_voice_times;
             var days = self.im.user.answers.state_c04_voice_days;
+            var time = self.im.user.answers.state_c06_voice_times;
+            var speech_option = go.utils.get_speech_option_days_time(days, time);
             return new EndState(name, {
                 text: $('Thank you! Time: {{ time }}. Days: {{ days }}.'
                     ).context({ time: time, days: days }),
