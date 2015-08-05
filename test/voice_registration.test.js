@@ -759,12 +759,12 @@ describe("Mama Nigeria App", function() {
                         .inputs(
                             {session_event: 'new'},
                             '08080020002'
-                            , '1'  // r03_receiver - mother
-                            , '2'  // r04_mom_state - baby
-                            , '2'  // r05_birth_year - this year
-                            , '12'  // r06_birth_month - december
+                            , '2'  // r03_receiver - other
+                            , '1'  // r04_mom_state - pregnant
+                            , '2'  // r05_birth_year - next year
+                            , '2'  // r06_birth_month - february
                             , '1'  // r07_confirm_month - confirm
-                            , '21'  // r08_birth_day - 21st
+                            , '27'  // r08_birth_day - 27th
                             , '1'  // r09_language - english
                             , '1'  // r10_message_type - sms
                         )
@@ -889,7 +889,7 @@ describe("Mama Nigeria App", function() {
                     .run();
             });
 
-            it.only("should have the correct answers set", function() {
+            it("should have the correct answers set", function() {
                 return tester
                     .setup.user.addr('+07030010001')
                     .inputs(

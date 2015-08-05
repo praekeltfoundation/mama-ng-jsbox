@@ -165,7 +165,7 @@ go.utils = {
         return go.utils
             .control_api_call('get', params, null, 'contacts/search/', im)
             .then(function(json_get_response) {
-                var contacts_found = json_get_response.data.objects;
+                var contacts_found = json_get_response.data;
                 // Return the first contact's id
                 return contacts_found[0].id || "no_contacts_found";
             });
@@ -182,7 +182,7 @@ go.utils = {
 
     // Create a new contact with the minimum required details
     create_contact: function(msisdn, im) {
-        payload = {
+        var payload = {
             "details": {
                 "default_addr_type": "msisdn",
                 "addresses": go.utils.get_addresses(msisdn)
@@ -238,7 +238,7 @@ go.utils = {
 
     get_baby_dob: function(im) {
         var date_today = go.utils.get_today(im.config);
-        
+
         var year_text = im.user.answers.state_r05_birth_year;
         var year;
         switch (year_text) {
@@ -274,49 +274,145 @@ go.utils = {
     },
 
     update_contact: function(im, contact) {
+        // For patching any field on the contact
         var endpoint = 'contacts/' + contact.id + '/';
         return go.utils
-            .control_api_call('patch', {}, contact, endpoint, im);
+            .control_api_call('patch', {}, contact, endpoint, im)
+            .then(function(response) {
+                return response.data.id;
+            });
     },
 
-    save_contacts_info: function(im) {
-        var user_id = im.user.answers.user_id;
+    update_mama_details: function(im, mama_contact, user_id, chew_phone_used) {
+        if (im.user.answers.state_r04_mom_state === 'baby') {
+            mama_contact.details.baby_dob = go.utils.get_baby_dob(im);
+            mama_contact.details.mama_edd = 'registration_after_baby_born';
+        } else {
+            mama_contact.details.baby_dob = 'mama_is_pregnant';
+            mama_contact.details.mama_edd = go.utils.get_baby_dob(im);
+        }
+        mama_contact.details.opted_out = false;  // ?
+        mama_contact.details.has_registered = true;
+        mama_contact.details.registered_at = go.utils.get_today(im.config
+            ).format('YYYY-MM-DD HH:mm:ss ZZ');
+        mama_contact.details.registered_by = user_id;
+        mama_contact.details.chew_phone_used = chew_phone_used;
+        mama_contact.details.msg_receiver = im.user.answers.state_r03_receiver;
+        mama_contact.details.state_at_registration = im.user.answers.state_r04_mom_state;
+        mama_contact.details.state_current = im.user.answers.state_r04_mom_state;
+        mama_contact.details.lang = go.utils.get_lang(im);
+        mama_contact.details.msg_type = im.user.answers.state_r10_message_type;
+        mama_contact.details.voice_days = im.user.answers.state_r11_voice_days || 'sms';
+        mama_contact.details.voice_times = im.user.answers.state_r12_voice_times || 'sms';
+        return mama_contact;
+    },
+
+    get_messageset_id: function(mama_contact) {
+        return (mama_contact.details.state_at_registration === 'pregnant') ? 1 : 2;
+    },
+
+    get_next_sequence_number: function(mama_contact) {
+        return 1;
+    },
+
+    get_schedule: function(mama_contact) {
+        var schedule_id;
+        var days = mama_contact.details.voice_days;
+        var times = mama_contact.details.voice_times;
+
+        if (days === 'mon_wed' && times === '9_11') {
+            schedule_id = 1;
+        } else if (days === 'mon_wed' && times === '2_5') {
+            schedule_id = 2;
+        } else if (days === 'tue_thu' && times === '9_11') {
+            schedule_id = 3;
+        } else if (days === 'tue_thu' && times === '2_5') {
+            schedule_id = 4;
+        } else {
+            schedule_id = 1;  // for sms
+        }
+        return schedule_id;
+    },
+
+    setup_subscription: function(im, mama_contact) {
+        subscription = {
+            contact: mama_contact.id,
+            version: 1,
+            messageset_id: go.utils.get_messageset_id(mama_contact),
+            next_sequence_number: go.utils.get_next_sequence_number(mama_contact),
+            lang: mama_contact.details.lang,
+            active: true,
+            completed: false,
+            schedule: go.utils.get_schedule(mama_contact),
+            process_status: 0,
+            metadata: {
+                msg_type: mama_contact.details.msg_type
+            }
+        };
+        return subscription;
+    },
+
+    update_chew_details: function(im, chew_contact, mama_id) {
+        var mama_reg_ids = chew_contact.details.mamas_registered_ids || [];
+        var mama_reg_qty = chew_contact.details.mamas_registered_qty || 0;
+        mama_reg_ids.push(mama_id);
+        mama_reg_qty += 1;
+        chew_contact.details.mamas_registered_ids = mama_reg_ids;
+        chew_contact.details.mamas_registered_qty = mama_reg_qty;
+        return chew_contact;
+    },
+
+    subscribe_contact: function(im, subscription) {
+        var payload = subscription;
         return go.utils
-            .get_contact_by_id(im.user.answers.mama_id, im)
+            .control_api_call("post", null, payload, 'subscriptions/', im)
+            .then(function(response) {
+                return response.data.id;
+            });
+    },
+
+    save_contacts_info_and_subscribe: function(im) {
+        var user_id = im.user.answers.user_id;
+        var mama_id = im.user.answers.mama_id;
+        var chew_phone_used = (user_id === mama_id) ? false : true;
+        return go.utils
+            .get_contact_by_id(mama_id, im)
             .then(function(mama_contact) {
-                mama_contact.details.opted_out = false;  // ?
-                mama_contact.details.has_registered = true;
-                mama_contact.details.registration_date = go.utils.get_today(im.config).format('YYYY-MM-DD HH:mm:ss ZZ');
-                mama_contact.details.registered_by = user_id;
-                mama_contact.details.baby_dob = go.utils.get_baby_dob(im);
-                mama_contact.details.msg_receiver = im.user.answers.state_r03_receiver;
-                mama_contact.details.state_at_registration = im.user.answers.state_r04_mom_state;
-                mama_contact.details.lang = go.utils.get_lang(im);
-                mama_contact.details.msg_type = im.user.answers.state_r10_message_type;
-                mama_contact.details.voice_days = im.user.answers.state_r11_voice_days;
-                mama_contact.details.voice_times = im.user.answers.state_r12_voice_times;
-                return go.utils
-                    .update_contact(im, mama_contact);
+                mama_contact = go.utils.update_mama_details(
+                    im, mama_contact, user_id, chew_phone_used);
+                var subscription = go.utils
+                    .setup_subscription(im, mama_contact);
+
+                return Q
+                    .all([
+                        // Update mama's contact
+                        go.utils.update_contact(im, mama_contact),
+                        // Create a subscription for mama
+                        go.utils.subscribe_contact(im, subscription)
+                    ])
+                    .then(function() {
+                        if (chew_phone_used === true) {
+                            // Update chew's info
+                            return go.utils
+                                .get_contact_by_id(user_id, im)
+                                .then(function(chew_contact) {
+                                    chew_contact = go.utils
+                                        .update_chew_details(im, chew_contact, mama_id);
+                                    return go.utils
+                                        .update_contact(im, chew_contact);
+                                });
+                        } else {
+                            return Q();
+                        }
+                    });
 
             });
-        // var existing_user = go.utils
-        //     .get_contact_by_id(im.user.answers.user_id, im);
-
-        // var mama_details = {
-        //     registered_by: existing_user.id,
-        // };
-
-        // var user_details = {
-        //     mamas_registered: [existing_mama.id]
-        // };
-
-        // return Q();
     },
 
     create_subscription: function(subscription_info) {
         return Q();
     },
-    
+
 
 
     "commas": "commas"

@@ -265,13 +265,9 @@ go.app = function() {
 
         self.add('state_r13_enter', function(name) {
             return go.utils
-                .save_contacts_info(self.im)
-                .then(function(subscription_info) {
-                    return go.utils
-                        .create_subscription(subscription_info)
-                        .then(function() {
-                            return self.states.create('state_r13_end');
-                        });
+                .save_contacts_info_and_subscribe(self.im)
+                .then(function() {
+                    return self.states.create('state_r13_end');
                 });
         });
 
