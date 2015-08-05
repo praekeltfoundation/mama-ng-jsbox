@@ -142,6 +142,18 @@ describe("Mama Nigeria App", function() {
                             'cb245673-aa41-4302-ac47-00000000002')
                         .run();
                 });
+
+                it("should create the contact if it doesn't exist", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'},
+                            '08080030003'
+                        )
+                        .check.user.answer('mama_id',
+                            'cb245673-aa41-4302-ac47-00000000003')
+                        .run();
+                });
             });
 
             describe("if the number does not validate", function() {

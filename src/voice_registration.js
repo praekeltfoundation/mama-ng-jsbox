@@ -58,7 +58,7 @@ go.app = function() {
                     } else {
                         return go.utils
                             // get or create mama contact
-                            .get_or_create_contact('+'+content, self.im)
+                            .get_or_create_contact(content, self.im)
                             .then(function(mama_id) {
                                 self.im.user.set_answer('mama_id', mama_id);
                                 return 'state_r03_receiver';

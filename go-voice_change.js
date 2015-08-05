@@ -160,14 +160,16 @@ go.utils = {
 
     get_contact_id_by_msisdn: function(msisdn, im) {
         var params = {
-            to_addr: msisdn
+            msisdn: msisdn
         };
         return go.utils
             .control_api_call('get', params, null, 'contacts/search/', im)
             .then(function(json_get_response) {
-                var contacts_found = json_get_response.data;
+                var contacts_found = json_get_response.data.results;
                 // Return the first contact's id
-                return contacts_found[0].id || "no_contacts_found";
+                return (contacts_found.length > 0)
+                    ? contacts_found[0].id
+                    : null;
             });
     },
 
@@ -197,13 +199,20 @@ go.utils = {
             });
     },
 
+    normalise_ng_msisdn: function(msisdn) {
+        // currently just adds a plus if one is missing,
+        // possibly needs to add country code
+        return (msisdn.substr(0,1) === '+') ? msisdn : '+' + msisdn;
+    },
+
     // Gets a contact id if it exists, otherwise creates a new one
     get_or_create_contact: function(msisdn, im) {
+        msisdn = go.utils.normalise_ng_msisdn(msisdn);
         return go.utils
             // Get contact id using msisdn
             .get_contact_id_by_msisdn(msisdn, im)
             .then(function(contact_id) {
-                if (contact_id !== "no_contacts_found") {
+                if (contact_id !== null) {
                     // If contact exists, return the id
                     return contact_id;
                 } else {
