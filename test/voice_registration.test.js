@@ -32,7 +32,7 @@ describe("Mama Nigeria App", function() {
             tester
                 .setup.config.app({
                     testing_today: '2015-07-22',
-                    name: 'voice_registration',
+                    name: 'voice-registration-test',
                     control: {
                         url: "http://localhost:8000/api/v1/",
                         api_key: "control_test_key"
