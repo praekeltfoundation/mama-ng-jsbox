@@ -442,7 +442,7 @@ go.app = function() {
     var GoApp = App.extend(function(self) {
         App.call(self, 'state_start');
         var $ = self.$;
-        var lang = 'en';
+        var lang = 'eng_NG';
         var interrupt = true;
 
         self.add = function(name, creator) {
