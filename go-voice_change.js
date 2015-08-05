@@ -82,7 +82,8 @@ go.utils = {
     make_voice_helper_data: function(im, name, lang, num) {
         return {
             voice: {
-                speech_url: go.utils.make_speech_url(im, name, lang, num)
+                speech_url: go.utils.make_speech_url(im, name, lang, num),
+                wait_for: '#'
             }
         };
     },
