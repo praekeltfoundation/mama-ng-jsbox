@@ -68,7 +68,7 @@ go.utils = {
 
     // Construct url string
     make_speech_url: function(im, name, lang, num) {
-        return im.config.control.url + lang + '/' + name + '_' + num + '.mp3';
+        return im.config.voice_content.url + lang + '/' + name + '_' + num + '.mp3';
     },
 
     // Construct helper_data object
