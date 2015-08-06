@@ -119,15 +119,15 @@ go.utils = {
     },
 
     // Determine whether contact is registered
-    // TODO #12 - this is currently just a temporary workaround
     is_registered: function(im) {
-        return Q()
-            .then(function() {
-                if (im.user.addr === 'unknown user') {
-                    return false;
-                } else {
-                    return true;
-                }
+        return go.utils
+            .get_or_create_contact(im.user.addr, im)
+            .then(function(contact_id) {
+                return go.utils
+                    .get_contact_by_id(contact_id, im)
+                    .then(function(contact) {
+                        return contact.details.has_registered === true;
+                    });
             });
     },
 

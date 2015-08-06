@@ -77,7 +77,7 @@ describe("Mama Nigeria App", function() {
         // TEST REGISTRATION FLOW
 
         describe("When you start the app", function() {
-            it("should navigate to state r01_number", function() {
+            it.only("should navigate to state r01_number", function() {
                 return tester
                     .setup.user.addr('+07030010001')
                     .inputs(

@@ -32,6 +32,8 @@ describe("Mama Nigeria App", function() {
                         api.http.fixtures.add(d);
                     });
                 })
+                // +08080030003 is an unregistered contact
+                // +07070050005 is a registered contact
                 ;
         });
 
@@ -41,7 +43,7 @@ describe("Mama Nigeria App", function() {
         describe("When you use * to restart", function() {
             it("should reset the user answers", function() {
                 return tester
-                    .setup.user.addr('+07030010001')
+                    .setup.user.addr('+07070050005')
                     .inputs(
                         {session_event: 'new'}
                         , '1'  // c01_main_menu - baby
@@ -69,7 +71,7 @@ describe("Mama Nigeria App", function() {
             describe("if you are an unregistered user", function() {
                 it("should navigate to state_c02_not_registered", function() {
                     return tester
-                        .setup.user.addr('unknown user')
+                        .setup.user.addr('+08080030003')
                         .inputs(
                             {session_event: 'new'}
                         )
@@ -92,7 +94,7 @@ describe("Mama Nigeria App", function() {
             describe("if you are a registered user", function() {
                 it("should navigate to state_c01_main_menu", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
                         )
@@ -125,7 +127,7 @@ describe("Mama Nigeria App", function() {
             describe("if you choose baby", function() {
                 it("should navigate to state_c03_baby_confirm", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
                             , '1'  // c01_main_menu - baby
@@ -152,7 +154,7 @@ describe("Mama Nigeria App", function() {
             describe("if you choose msg_time", function() {
                 it("should navigate to state_c04_voice_days", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
                             , '2'  // c01_main_menu - msg_time
@@ -180,7 +182,7 @@ describe("Mama Nigeria App", function() {
             describe("if you choose optout", function() {
                 it("should navigate to state_c05_optout_reason", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
                             , '3'  // c01_main_menu - optout
@@ -212,7 +214,7 @@ describe("Mama Nigeria App", function() {
         describe("When you enter confirm baby c03_baby_confirm", function() {
             it("should navigate to state_c08_end_baby", function() {
                 return tester
-                    .setup.user.addr('+07030010001')
+                    .setup.user.addr('+07070050005')
                     .inputs(
                         {session_event: 'new'}
                         , '1'  // c01_main_menu - baby
@@ -238,7 +240,7 @@ describe("Mama Nigeria App", function() {
         describe("When you choose a day c04_voice_days", function() {
             it("should navigate to state_c06_voice_times", function() {
                 return tester
-                    .setup.user.addr('+07030010001')
+                    .setup.user.addr('+07070050005')
                     .inputs(
                         {session_event: 'new'}
                         , '2'  // c01_main_menu - msg_time
@@ -267,7 +269,7 @@ describe("Mama Nigeria App", function() {
         describe("When you choose a time c06_voice_times", function() {
             it("should navigate to state_c09_end_msg_times", function() {
                 return tester
-                    .setup.user.addr('+07030010001')
+                    .setup.user.addr('+07070050005')
                     .inputs(
                         {session_event: 'new'}
                         , '2'  // c01_main_menu - msg_time
@@ -295,7 +297,7 @@ describe("Mama Nigeria App", function() {
             describe("if you choose miscarriage", function() {
                 it("should navigate to state_c07_loss_opt_in", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
                             , '3'  // c01_main_menu - optout
@@ -324,7 +326,7 @@ describe("Mama Nigeria App", function() {
             describe("if you choose stillborn", function() {
                 it("should navigate to state_c07_loss_opt_in", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
                             , '3'  // c01_main_menu - optout
@@ -353,7 +355,7 @@ describe("Mama Nigeria App", function() {
             describe("if you choose baby_died", function() {
                 it("should navigate to state_c07_loss_opt_in", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
                             , '3'  // c01_main_menu - optout
@@ -382,7 +384,7 @@ describe("Mama Nigeria App", function() {
             describe("if you choose not_useful", function() {
                 it("should navigate to state_c11_end_optout", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
                             , '3'  // c01_main_menu - optout
@@ -408,7 +410,7 @@ describe("Mama Nigeria App", function() {
             describe("if you choose other", function() {
                 it("should navigate to state_c11_end_optout", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
                             , '3'  // c01_main_menu - optout
@@ -436,7 +438,7 @@ describe("Mama Nigeria App", function() {
             describe("if you choose loss messages", function() {
                 it("should navigate to state_c10_end_loss_opt_in", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
                             , '3'  // c01_main_menu - optout
@@ -463,7 +465,7 @@ describe("Mama Nigeria App", function() {
             describe("if you choose no loss messages", function() {
                 it("should navigate to state_c11_end_optout", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
                             , '3'  // c01_main_menu - optout
@@ -490,7 +492,7 @@ describe("Mama Nigeria App", function() {
             describe("if you choose * to restart", function() {
                 it("should not restart", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
                             , '3'  // c01_main_menu - optout
