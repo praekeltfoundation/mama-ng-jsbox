@@ -68,6 +68,54 @@ module.exports = function() {
             }
         },
 
+        // get contact 07070050005 by msisdn
+        {
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'msisdn': '+07070050005'
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8000/api/v1/contacts/search/',
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [{
+                        "url": "http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000005/",
+                        "id": "cb245673-aa41-4302-ac47-00000000005",
+                        "version": 1,
+                        "details": {
+                            "default_addr_type": "msisdn",
+                            "addresses": "msisdn:+07070050005",
+                            "baby_dob": "2015-12-21",
+                            "mama_edd": "registration_after_baby_born",
+                            "opted_out": false,
+                            "has_registered": true,
+                            "registered_at": "2015-07-22 00:00:00",
+                            "registered_by": "cb245673-aa41-4302-ac47-00000000001",
+                            "chew_phone_used": true,
+                            "msg_receiver": "mother",
+                            "state_at_registration": "baby",
+                            "state_current": "baby",
+                            "lang": "eng_NG",
+                            "msg_type": "voice",
+                            "voice_days": "mon_wed",
+                            "voice_times": "2_5"
+                        },
+                        "created_at": "2015-07-10T06:13:29.693272Z",
+                        "updated_at": "2015-07-10T06:13:29.693298Z"
+                    }]
+                }
+            }
+        },
+
         // get contact 08080030003 by msisdn - no results
         {
             'request': {
@@ -110,6 +158,34 @@ module.exports = function() {
             },
             'response': {
                 "code": 201,
+                "data": {
+                    "url": "http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000003/",
+                    "id": "cb245673-aa41-4302-ac47-00000000003",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": "msisdn:+08080030003"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
+
+        // get contact cb245673-aa41-4302-ac47-00000000003
+        {
+            'repeatable': true,
+            'request': {
+                'method': 'GET',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000003/',
+            },
+            'response': {
+                "code": 200,
                 "data": {
                     "url": "http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000003/",
                     "id": "cb245673-aa41-4302-ac47-00000000003",
@@ -173,6 +249,47 @@ module.exports = function() {
                     "details": {
                         "default_addr_type": "msisdn",
                         "addresses": "msisdn:+08080020002"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
+
+        // get contact cb245673-aa41-4302-ac47-00000000005
+        {
+            'request': {
+                'method': 'GET',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000005/',
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000005/",
+                    "id": "cb245673-aa41-4302-ac47-00000000005",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": "msisdn:+07070050005",
+                        "baby_dob": "2015-12-21",
+                        "mama_edd": "registration_after_baby_born",
+                        "opted_out": false,
+                        "has_registered": true,
+                        "registered_at": "2015-07-22 00:00:00",
+                        "registered_by": "cb245673-aa41-4302-ac47-00000000001",
+                        "chew_phone_used": true,
+                        "msg_receiver": "mother",
+                        "state_at_registration": "baby",
+                        "state_current": "baby",
+                        "lang": "eng_NG",
+                        "msg_type": "voice",
+                        "voice_days": "mon_wed",
+                        "voice_times": "2_5"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"

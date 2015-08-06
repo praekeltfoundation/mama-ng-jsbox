@@ -35,13 +35,18 @@ go.app = function() {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
             return go.utils
-                .is_registered(self.im)
-                .then(function(is_registered) {
-                    if (is_registered === true) {
-                        return self.states.create("state_c01_main_menu");
-                    } else {
-                        return self.states.create("state_c02_not_registered");
-                    }
+                .get_or_create_contact(self.im.user.addr, self.im)
+                .then(function(user_id) {
+                    self.im.user.set_answer('mama_id', user_id);
+                    return go.utils
+                        .is_registered(user_id, self.im)
+                        .then(function(is_registered) {
+                            if (is_registered === true) {
+                                return self.states.create("state_c01_main_menu");
+                            } else {
+                                return self.states.create("state_c02_not_registered");
+                            }
+                        });
                 });
         });
 
