@@ -111,9 +111,9 @@ module.exports = function (grunt) {
             },
             test_voice_registration: {
                 src: ['<%= paths.test.voice_registration %>']
-            // },
-            // test_voice_change: {
-            //     src: ['<%= paths.test.voice_change %>']
+            },
+            test_voice_change: {
+                src: ['<%= paths.test.voice_change %>']
             // },
             // test_sms_inbound: {
             //     src: ['<%= paths.test.sms_inbound %>']
