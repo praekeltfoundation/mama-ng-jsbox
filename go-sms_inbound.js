@@ -133,7 +133,6 @@ go.utils = {
                 return go.utils
                     .get_contact_by_id(contact_id, im)
                     .then(function(contact) {
-                        console.log(contact.id);
                         return contact.details.has_registered === true;
                     });
             });
