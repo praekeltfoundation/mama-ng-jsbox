@@ -67,8 +67,9 @@ describe("Mama Nigeria App", function() {
                         state: 'state_r01_number',
                         reply: 'Welcome, Number'
                     })
-                    .check.user.answer('user_id',
-                        'cb245673-aa41-4302-ac47-00000000001')
+                    .check.user.answers({
+                        'user_id': 'cb245673-aa41-4302-ac47-00000000001'
+                    })
                     .run();
             });
         });

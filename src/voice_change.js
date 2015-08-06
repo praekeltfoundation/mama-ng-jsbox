@@ -12,11 +12,28 @@ go.app = function() {
         App.call(self, 'state_start');
         var $ = self.$;
         var lang = 'eng_NG';
+        var interrupt = true;
+
+        self.add = function(name, creator) {
+            self.states.add(name, function(name, opts) {
+                if (!interrupt || !go.utils.should_restart(self.im))
+                    return creator(name, opts);
+
+                interrupt = false;
+                opts = opts || {};
+                opts.name = name;
+                // Prevent previous content being passed to next state
+                self.im.msg.content = null;
+                return self.states.create('state_start', opts);
+            });
+        };
 
 
     // ROUTING
 
         self.states.add('state_start', function() {
+            // Reset user answers when restarting the app
+            self.im.user.answers = {};
             return go.utils
                 .is_registered(self.im)
                 .then(function(is_registered) {
@@ -30,7 +47,7 @@ go.app = function() {
 
     // CHANGE STATE
 
-        self.states.add('state_c01_main_menu', function(name) {
+        self.add('state_c01_main_menu', function(name) {
             var speech_option = '1';
             var routing = {
                 'baby': 'state_c03_baby_confirm',
@@ -52,7 +69,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_c02_not_registered', function(name) {
+        self.add('state_c02_not_registered', function(name) {
             var speech_option = '1';
             return new EndState(name, {
                 text: $('Unrecognised number'),
@@ -62,7 +79,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_c03_baby_confirm', function(name) {
+        self.add('state_c03_baby_confirm', function(name) {
             var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Confirm baby?'),
@@ -75,7 +92,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_c04_voice_days', function(name) {
+        self.add('state_c04_voice_days', function(name) {
             var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Message days?'),
@@ -89,7 +106,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_c05_optout_reason', function(name) {
+        self.add('state_c05_optout_reason', function(name) {
             var speech_option = '1';
             var routing = {
                 'miscarriage': 'state_c07_loss_opt_in',
@@ -115,7 +132,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_c06_voice_times', function(name) {
+        self.add('state_c06_voice_times', function(name) {
             var days = self.im.user.answers.state_c04_voice_days;
             var speech_option = go.utils.get_speech_option_days(days);
             return new ChoiceState(name, {
@@ -130,7 +147,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_c07_loss_opt_in', function(name) {
+        self.add('state_c07_loss_opt_in', function(name) {
             var speech_option = '1';
             var routing = {
                 'opt_in_confirm': 'state_c10_end_loss_opt_in',
@@ -150,7 +167,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_c08_end_baby', function(name) {
+        self.add('state_c08_end_baby', function(name) {
             var speech_option = '1';
             return new EndState(name, {
                 text: $('Thank you - baby'),
@@ -160,7 +177,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_c09_end_msg_times', function(name) {
+        self.add('state_c09_end_msg_times', function(name) {
             var days = self.im.user.answers.state_c04_voice_days;
             var time = self.im.user.answers.state_c06_voice_times;
             var speech_option = go.utils.get_speech_option_days_time(days, time);
@@ -173,7 +190,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_c10_end_loss_opt_in', function(name) {
+        self.add('state_c10_end_loss_opt_in', function(name) {
             var speech_option = '1';
             return new EndState(name, {
                 text: $('Thank you - loss opt in'),
@@ -183,7 +200,7 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_c11_end_optout', function(name) {
+        self.add('state_c11_end_optout', function(name) {
             var speech_option = '1';
             return new EndState(name, {
                 text: $('Thank you - optout'),

@@ -36,6 +36,33 @@ describe("Mama Nigeria App", function() {
         });
 
 
+        // TEST ANSWER RESET
+
+        describe("When you go back to the main menu", function() {
+            it("should reset the user answers", function() {
+                return tester
+                    .setup.user.addr('+07030010001')
+                    .inputs(
+                        {session_event: 'new'}
+                        , '1'  // c01_main_menu - baby
+                        , '*'  // c03_baby_confirm - restart
+                    )
+                    .check.interaction({
+                        state: 'state_c01_main_menu',
+                        reply: [
+                            'Baby / Message time / Optout?',
+                            '1. baby',
+                            '2. msg_time',
+                            '3. optout'
+                        ].join('\n')
+                    })
+                    .check.user.answers({
+
+                    })
+                    .run();
+            });
+        });
+
         // TEST START ROUTING
 
         describe("When you start the app", function() {
@@ -265,7 +292,7 @@ describe("Mama Nigeria App", function() {
         });
 
         describe("When you choose optout reason c05_optout_reason", function() {
-            describe("ff you choose miscarriage", function() {
+            describe("if you choose miscarriage", function() {
                 it("should navigate to state_c07_loss_opt_in", function() {
                     return tester
                         .setup.user.addr('+07030010001')
@@ -294,7 +321,7 @@ describe("Mama Nigeria App", function() {
                 });
             });
 
-            describe("ff you choose stillborn", function() {
+            describe("if you choose stillborn", function() {
                 it("should navigate to state_c07_loss_opt_in", function() {
                     return tester
                         .setup.user.addr('+07030010001')
@@ -323,7 +350,7 @@ describe("Mama Nigeria App", function() {
                 });
             });
 
-            describe("ff you choose baby_died", function() {
+            describe("if you choose baby_died", function() {
                 it("should navigate to state_c07_loss_opt_in", function() {
                     return tester
                         .setup.user.addr('+07030010001')
@@ -352,7 +379,7 @@ describe("Mama Nigeria App", function() {
                 });
             });
 
-            describe("ff you choose not_useful", function() {
+            describe("if you choose not_useful", function() {
                 it("should navigate to state_c11_end_optout", function() {
                     return tester
                         .setup.user.addr('+07030010001')
@@ -378,7 +405,7 @@ describe("Mama Nigeria App", function() {
                 });
             });
 
-            describe("ff you choose other", function() {
+            describe("if you choose other", function() {
                 it("should navigate to state_c11_end_optout", function() {
                     return tester
                         .setup.user.addr('+07030010001')
@@ -456,6 +483,31 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check.reply.ends_session()
+                        .run();
+                });
+            });
+
+            describe("if you choose * to restart", function() {
+                it("should not restart", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '3'  // c01_main_menu - optout
+                            , '1'  // c05_optout_reason - miscarriage
+                            , '*'  // c07_loss_opt_in - restart attempt
+                        )
+                        .check.interaction({
+                            state: 'state_c07_loss_opt_in'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_c07_loss_opt_in_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
                         .run();
                 });
             });

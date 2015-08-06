@@ -9,7 +9,14 @@ go.utils = {
     should_restart: function(im) {
         var no_restart_states = [
             'state_r01_number',
-            'state_r02_retry_number'
+            'state_r02_retry_number',
+            'state_c01_main_menu',
+            'state_c02_not_registered',
+            'state_c07_loss_opt_in',
+            'state_c08_end_baby',
+            'state_c09_end_msg_times',
+            'state_c10_end_loss_opt_in',
+            'state_c11_end_optout'
         ];
 
         return im.msg.content === '*'
