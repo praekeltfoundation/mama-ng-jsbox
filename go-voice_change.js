@@ -126,15 +126,11 @@ go.utils = {
     },
 
     // Determine whether contact is registered
-    is_registered: function(im) {
+    is_registered: function(contact_id, im) {
         return go.utils
-            .get_or_create_contact(im.user.addr, im)
-            .then(function(contact_id) {
-                return go.utils
-                    .get_contact_by_id(contact_id, im)
-                    .then(function(contact) {
-                        return contact.details.has_registered === true;
-                    });
+            .get_contact_by_id(contact_id, im)
+            .then(function(contact) {
+                return contact.details.has_registered === true;
             });
     },
 
@@ -426,12 +422,6 @@ go.utils = {
             });
     },
 
-    create_subscription: function(subscription_info) {
-        return Q();
-    },
-
-
-
     "commas": "commas"
 };
 
@@ -472,13 +462,18 @@ go.app = function() {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
             return go.utils
-                .is_registered(self.im)
-                .then(function(is_registered) {
-                    if (is_registered === true) {
-                        return self.states.create("state_c01_main_menu");
-                    } else {
-                        return self.states.create("state_c02_not_registered");
-                    }
+                .get_or_create_contact(self.im.user.addr, self.im)
+                .then(function(user_id) {
+                    self.im.user.set_answer('mama_id', user_id);
+                    return go.utils
+                        .is_registered(user_id, self.im)
+                        .then(function(is_registered) {
+                            if (is_registered === true) {
+                                return self.states.create("state_c01_main_menu");
+                            } else {
+                                return self.states.create("state_c02_not_registered");
+                            }
+                        });
                 });
         });
 

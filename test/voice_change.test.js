@@ -59,7 +59,7 @@ describe("Mama Nigeria App", function() {
                         ].join('\n')
                     })
                     .check.user.answers({
-
+                        "mama_id": "cb245673-aa41-4302-ac47-00000000005"
                     })
                     .run();
             });
