@@ -36,9 +36,9 @@ describe("Mama Nigeria App", function() {
         });
 
 
-        // TEST ANSWER RESET
+        // TEST RESTART
 
-        describe("When you go back to the main menu", function() {
+        describe("When you use * to restart", function() {
             it("should reset the user answers", function() {
                 return tester
                     .setup.user.addr('+07030010001')
