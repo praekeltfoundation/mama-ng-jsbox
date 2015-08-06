@@ -415,5 +415,22 @@ go.utils = {
             });
     },
 
+    switch_to_baby: function(im) {
+        var mama_id = im.user.answers.mama_id;
+        // get mama contact
+        return go.utils
+            .get_contact_by_id(mama_id, im)
+            .then(function(mama_contact) {
+
+            });
+        // set mama contact details
+
+        // update mama contact
+
+        // set previous subscription inactive
+
+        // subscribe to baby messages
+    },
+
     "commas": "commas"
 };
