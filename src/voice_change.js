@@ -148,7 +148,7 @@ go.app = function() {
                     new Choice('9_11', $('9_11')),
                     new Choice('2_5', $('2_5'))
                 ],
-                next: 'state_c09_end_msg_times'
+                next: 'state_c09_enter'
             });
         });
 
@@ -188,6 +188,14 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: 'state_start'
             });
+        });
+
+        self.add('state_c09_enter', function(name) {
+            return go.utils
+                .change_msg_times(self.im)
+                .then(function() {
+                    return self.states.create('state_c09_end_msg_times');
+                });
         });
 
         self.add('state_c09_end_msg_times', function(name) {

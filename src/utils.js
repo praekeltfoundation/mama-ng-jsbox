@@ -382,9 +382,14 @@ go.utils = {
         var user_id = im.user.answers.user_id;
         var mama_id = im.user.answers.mama_id;
         var chew_phone_used = (user_id === mama_id) ? false : true;
-        return go.utils
-            .get_contact_by_id(mama_id, im)
-            .then(function(mama_contact) {
+        return Q
+            .all([
+                // get mama contact
+                go.utils.get_contact_by_id(mama_id, im),
+                // deactivate existing subscriptions
+                go.utils.subscriptions_unsubscribe_all(mama_id, im)
+            ])
+            .spread(function(mama_contact, unsubscribe_result) {
                 mama_contact = go.utils.update_mama_details(
                     im, mama_contact, user_id, chew_phone_used);
                 var subscription = go.utils
@@ -416,8 +421,9 @@ go.utils = {
             });
     },
 
-    subscriptions_unsubscribe_all: function(contact_id, im) {
-        // make all subscriptions inactive
+    get_active_subscriptions_by_contact_id: function(contact_id, im) {
+        // returns all active subscriptions - for unlikely case where there
+        // is more than one active subscription
         var params = {
             contact: contact_id,
             active: "True"
@@ -425,7 +431,27 @@ go.utils = {
         return go.utils
             .control_api_call("get", params, null, 'subscriptions/', im)
             .then(function(json_get_response) {
-                var subscriptions = json_get_response.data.results;
+                return json_get_response.data.results;
+            });
+    },
+
+    get_active_subscription_by_contact_id: function(contact_id, im) {
+        // returns first active subscription found
+        return go.utils
+            .get_active_subscriptions_by_contact_id(contact_id, im)
+            .then(function(subscriptions) {
+                return subscriptions[0];
+            });
+    },
+
+    subscriptions_unsubscribe_all: function(contact_id, im) {
+        // make all subscriptions inactive
+        // unlike other functions takes into account that there may be
+        // more than one active subscription returned (unlikely)
+        return go.utils
+            .get_active_subscriptions_by_contact_id(contact_id, im)
+            .then(function(active_subscriptions) {
+                var subscriptions = active_subscriptions;
                 var clean = true;  // clean tracks if api call is unnecessary
                 var patch_calls = [];
                 for (i=0; i<subscriptions.length; i++) {
@@ -448,29 +474,63 @@ go.utils = {
 
     switch_to_baby: function(im) {
         var mama_id = im.user.answers.mama_id;
-        // get mama contact
         return Q
-        .all([
-            // get contact so details can be updated
-            go.utils.get_contact_by_id(mama_id, im),
-            // set existing subscriptions inactive
-            go.utils.subscriptions_unsubscribe_all(mama_id, im)
-        ])
-        .spread(function(mama_contact, unsubscribe_result) {
-            // set new mama contact details
-            mama_contact.details.baby_dob = go.utils.get_today(im.config).format('YYYY-MM-DD');
-            mama_contact.details.state_current = "baby";
+            .all([
+                // get contact so details can be updated
+                go.utils.get_contact_by_id(mama_id, im),
+                // set existing subscriptions inactive
+                go.utils.subscriptions_unsubscribe_all(mama_id, im)
+            ])
+            .spread(function(mama_contact, unsubscribe_result) {
+                // set new mama contact details
+                mama_contact.details.baby_dob = go.utils.get_today(im.config).format('YYYY-MM-DD');
+                mama_contact.details.state_current = "baby";
 
-            // set up baby message subscription
-            baby_subscription = go.utils.setup_subscription(im, mama_contact);
+                // set up baby message subscription
+                baby_subscription = go.utils.setup_subscription(im, mama_contact);
 
-            return Q.all([
-                // update mama contact
-                go.utils.update_contact(im, mama_contact),
-                // subscribe to baby messages
-                go.utils.subscribe_contact(im, baby_subscription)
-            ]);
-        });
+                return Q.all([
+                    // update mama contact
+                    go.utils.update_contact(im, mama_contact),
+                    // subscribe to baby messages
+                    go.utils.subscribe_contact(im, baby_subscription)
+                ]);
+            });
+    },
+
+    update_subscription: function(im, subscription) {
+        var endpoint = 'subscriptions/' + subscription.id + '/';
+        return go.utils
+            .control_api_call('patch', {}, subscription, endpoint, im)
+            .then(function(response) {
+                return response.data.id;
+            });
+    },
+
+    change_msg_times: function(im) {
+        var mama_id = im.user.answers.mama_id;
+        return Q
+            .all([
+                // get contact so details can be updated
+                go.utils.get_contact_by_id(mama_id, im),
+                // get existing subscriptions so schedule can be updated
+                go.utils.get_active_subscription_by_contact_id(mama_id, im)
+            ])
+            .spread(function(mama_contact, subscription) {
+                // set new mama contact details
+                mama_contact.details.voice_days = im.user.answers.state_c04_voice_days;
+                mama_contact.details.voice_times = im.user.answers.state_c06_voice_times;
+
+                // set new subscription schedule
+                subscription.schedule = go.utils.get_schedule(mama_contact);
+
+                return Q.all([
+                    // update mama contact
+                    go.utils.update_contact(im, mama_contact),
+                    // update subscription
+                    go.utils.update_subscription(im, subscription)
+                ]);
+            });
     },
 
     "commas": "commas"
