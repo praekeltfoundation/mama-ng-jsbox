@@ -540,6 +540,35 @@ go.utils = {
             });
     },
 
+    optout_loss_opt_in: function(im) {
+        return go.utils
+            .optout(im)
+            .then(function(contact_id) {
+                // TODO #17 Subscribe to loss messages
+                return Q();
+            });
+    },
+
+    optout: function(im) {
+        var mama_id = im.user.answers.mama_id;
+        return Q
+            .all([
+                // get contact so details can be updated
+                go.utils.get_contact_by_id(mama_id, im),
+                // set existing subscriptions inactive
+                go.utils.subscriptions_unsubscribe_all(mama_id, im)
+            ])
+            .spread(function(mama_contact, unsubscribe_result) {
+                // set new mama contact details
+                mama_contact.details.opted_out = true;
+                mama_contact.details.optout_reason = im.user.answers.state_c05_optout_reason;
+
+                // update mama contact
+                return go.utils
+                    .update_contact(im, mama_contact);
+            });
+    },
+
     "commas": "commas"
 };
 
@@ -662,8 +691,8 @@ go.app = function() {
                 'miscarriage': 'state_c07_loss_opt_in',
                 'stillborn': 'state_c07_loss_opt_in',
                 'baby_died': 'state_c07_loss_opt_in',
-                'not_useful': 'state_c11_end_optout',
-                'other': 'state_c11_end_optout'
+                'not_useful': 'state_c11_enter',
+                'other': 'state_c11_enter'
             };
             return new ChoiceState(name, {
                 question: $('Optout reason?'),
@@ -700,8 +729,8 @@ go.app = function() {
         self.add('state_c07_loss_opt_in', function(name) {
             var speech_option = '1';
             var routing = {
-                'opt_in_confirm': 'state_c10_end_loss_opt_in',
-                'opt_in_deny': 'state_c11_end_optout'
+                'opt_in_confirm': 'state_c10_enter',
+                'opt_in_deny': 'state_c11_enter'
             };
             return new ChoiceState(name, {
                 question: $('Receive loss messages?'),
@@ -756,6 +785,14 @@ go.app = function() {
             });
         });
 
+        self.add('state_c10_enter', function(name) {
+            return go.utils
+                .optout_loss_opt_in(self.im)
+                .then(function() {
+                    return self.states.create('state_c10_end_loss_opt_in');
+                });
+        });
+
         self.add('state_c10_end_loss_opt_in', function(name) {
             var speech_option = '1';
             return new EndState(name, {
@@ -764,6 +801,14 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: 'state_start'
             });
+        });
+
+        self.add('state_c11_enter', function(name) {
+            return go.utils
+                .optout(self.im)
+                .then(function() {
+                    return self.states.create('state_c11_end_optout');
+                });
         });
 
         self.add('state_c11_end_optout', function(name) {

@@ -117,8 +117,8 @@ go.app = function() {
                 'miscarriage': 'state_c07_loss_opt_in',
                 'stillborn': 'state_c07_loss_opt_in',
                 'baby_died': 'state_c07_loss_opt_in',
-                'not_useful': 'state_c11_end_optout',
-                'other': 'state_c11_end_optout'
+                'not_useful': 'state_c11_enter',
+                'other': 'state_c11_enter'
             };
             return new ChoiceState(name, {
                 question: $('Optout reason?'),
@@ -155,8 +155,8 @@ go.app = function() {
         self.add('state_c07_loss_opt_in', function(name) {
             var speech_option = '1';
             var routing = {
-                'opt_in_confirm': 'state_c10_end_loss_opt_in',
-                'opt_in_deny': 'state_c11_end_optout'
+                'opt_in_confirm': 'state_c10_enter',
+                'opt_in_deny': 'state_c11_enter'
             };
             return new ChoiceState(name, {
                 question: $('Receive loss messages?'),
@@ -211,6 +211,14 @@ go.app = function() {
             });
         });
 
+        self.add('state_c10_enter', function(name) {
+            return go.utils
+                .optout_loss_opt_in(self.im)
+                .then(function() {
+                    return self.states.create('state_c10_end_loss_opt_in');
+                });
+        });
+
         self.add('state_c10_end_loss_opt_in', function(name) {
             var speech_option = '1';
             return new EndState(name, {
@@ -219,6 +227,14 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: 'state_start'
             });
+        });
+
+        self.add('state_c11_enter', function(name) {
+            return go.utils
+                .optout(self.im)
+                .then(function() {
+                    return self.states.create('state_c11_end_optout');
+                });
         });
 
         self.add('state_c11_end_optout', function(name) {

@@ -540,6 +540,35 @@ go.utils = {
             });
     },
 
+    optout_loss_opt_in: function(im) {
+        return go.utils
+            .optout(im)
+            .then(function(contact_id) {
+                // TODO #17 Subscribe to loss messages
+                return Q();
+            });
+    },
+
+    optout: function(im) {
+        var mama_id = im.user.answers.mama_id;
+        return Q
+            .all([
+                // get contact so details can be updated
+                go.utils.get_contact_by_id(mama_id, im),
+                // set existing subscriptions inactive
+                go.utils.subscriptions_unsubscribe_all(mama_id, im)
+            ])
+            .spread(function(mama_contact, unsubscribe_result) {
+                // set new mama contact details
+                mama_contact.details.opted_out = true;
+                mama_contact.details.optout_reason = im.user.answers.state_c05_optout_reason;
+
+                // update mama contact
+                return go.utils
+                    .update_contact(im, mama_contact);
+            });
+    },
+
     "commas": "commas"
 };
 

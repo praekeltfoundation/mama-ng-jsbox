@@ -893,5 +893,206 @@ module.exports = function() {
             }
         },
 
+        // patch contact 07070050005 details (optout 1)
+        {
+            'request': {
+                'method': 'PATCH',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                "data": {
+                    "url": "http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000005/",
+                    "id": "cb245673-aa41-4302-ac47-00000000005",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": "msisdn:+07070050005",
+                        "baby_dob": "mama_is_pregnant",
+                        "mama_edd": "2015-12-21",
+                        "opted_out": true,
+                        "optout_reason": "miscarriage",
+                        "has_registered": true,
+                        "registered_at": "2015-07-22 00:00:00",
+                        "registered_by": "cb245673-aa41-4302-ac47-00000000001",
+                        "chew_phone_used": true,
+                        "msg_receiver": "mother",
+                        "state_at_registration": "pregnant",
+                        "state_current": "pregnant",
+                        "lang": "eng_NG",
+                        "msg_type": "voice",
+                        "voice_days": "mon_wed",
+                        "voice_times": "2_5"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                },
+                'url': "http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000005/"
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000005/",
+                    "id": "cb245673-aa41-4302-ac47-00000000005",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": "msisdn:+07070050005",
+                        "baby_dob": "mama_is_pregnant",
+                        "mama_edd": "2015-12-21",
+                        "opted_out": true,
+                        "optout_reason": "miscarriage",
+                        "has_registered": true,
+                        "registered_at": "2015-07-22 00:00:00",
+                        "registered_by": "cb245673-aa41-4302-ac47-00000000001",
+                        "chew_phone_used": true,
+                        "msg_receiver": "mother",
+                        "state_at_registration": "pregnant",
+                        "state_current": "pregnant",
+                        "lang": "eng_NG",
+                        "msg_type": "voice",
+                        "voice_days": "mon_wed",
+                        "voice_times": "2_5"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
+
+        // patch contact 07070050005 details (optout 2)
+        {
+            'request': {
+                'method': 'PATCH',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                "data": {
+                    "url": "http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000005/",
+                    "id": "cb245673-aa41-4302-ac47-00000000005",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": "msisdn:+07070050005",
+                        "baby_dob": "mama_is_pregnant",
+                        "mama_edd": "2015-12-21",
+                        "opted_out": true,
+                        "optout_reason": "not_useful",
+                        "has_registered": true,
+                        "registered_at": "2015-07-22 00:00:00",
+                        "registered_by": "cb245673-aa41-4302-ac47-00000000001",
+                        "chew_phone_used": true,
+                        "msg_receiver": "mother",
+                        "state_at_registration": "pregnant",
+                        "state_current": "pregnant",
+                        "lang": "eng_NG",
+                        "msg_type": "voice",
+                        "voice_days": "mon_wed",
+                        "voice_times": "2_5"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                },
+                'url': "http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000005/"
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000005/",
+                    "id": "cb245673-aa41-4302-ac47-00000000005",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": "msisdn:+07070050005",
+                        "baby_dob": "mama_is_pregnant",
+                        "mama_edd": "2015-12-21",
+                        "opted_out": true,
+                        "optout_reason": "not_useful",
+                        "has_registered": true,
+                        "registered_at": "2015-07-22 00:00:00",
+                        "registered_by": "cb245673-aa41-4302-ac47-00000000001",
+                        "chew_phone_used": true,
+                        "msg_receiver": "mother",
+                        "state_at_registration": "pregnant",
+                        "state_current": "pregnant",
+                        "lang": "eng_NG",
+                        "msg_type": "voice",
+                        "voice_days": "mon_wed",
+                        "voice_times": "2_5"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
+
+        // patch contact 07070050005 details (optout 3)
+        {
+            'request': {
+                'method': 'PATCH',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                "data": {
+                    "url": "http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000005/",
+                    "id": "cb245673-aa41-4302-ac47-00000000005",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": "msisdn:+07070050005",
+                        "baby_dob": "mama_is_pregnant",
+                        "mama_edd": "2015-12-21",
+                        "opted_out": true,
+                        "optout_reason": "other",
+                        "has_registered": true,
+                        "registered_at": "2015-07-22 00:00:00",
+                        "registered_by": "cb245673-aa41-4302-ac47-00000000001",
+                        "chew_phone_used": true,
+                        "msg_receiver": "mother",
+                        "state_at_registration": "pregnant",
+                        "state_current": "pregnant",
+                        "lang": "eng_NG",
+                        "msg_type": "voice",
+                        "voice_days": "mon_wed",
+                        "voice_times": "2_5"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                },
+                'url': "http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000005/"
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000005/",
+                    "id": "cb245673-aa41-4302-ac47-00000000005",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": "msisdn:+07070050005",
+                        "baby_dob": "mama_is_pregnant",
+                        "mama_edd": "2015-12-21",
+                        "opted_out": true,
+                        "optout_reason": "other",
+                        "has_registered": true,
+                        "registered_at": "2015-07-22 00:00:00",
+                        "registered_by": "cb245673-aa41-4302-ac47-00000000001",
+                        "chew_phone_used": true,
+                        "msg_receiver": "mother",
+                        "state_at_registration": "pregnant",
+                        "state_current": "pregnant",
+                        "lang": "eng_NG",
+                        "msg_type": "voice",
+                        "voice_days": "mon_wed",
+                        "voice_times": "2_5"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
+
     ];
 };
