@@ -94,16 +94,16 @@ module.exports = function() {
                         "details": {
                             "default_addr_type": "msisdn",
                             "addresses": "msisdn:+07070050005",
-                            "baby_dob": "2015-12-21",
-                            "mama_edd": "registration_after_baby_born",
+                            "baby_dob": "mama_is_pregnant",
+                            "mama_edd": "2015-12-21",
                             "opted_out": false,
                             "has_registered": true,
                             "registered_at": "2015-07-22 00:00:00",
                             "registered_by": "cb245673-aa41-4302-ac47-00000000001",
                             "chew_phone_used": true,
                             "msg_receiver": "mother",
-                            "state_at_registration": "baby",
-                            "state_current": "baby",
+                            "state_at_registration": "pregnant",
+                            "state_current": "pregnant",
                             "lang": "eng_NG",
                             "msg_type": "voice",
                             "voice_days": "mon_wed",
@@ -276,16 +276,16 @@ module.exports = function() {
                     "details": {
                         "default_addr_type": "msisdn",
                         "addresses": "msisdn:+07070050005",
-                        "baby_dob": "2015-12-21",
-                        "mama_edd": "registration_after_baby_born",
+                        "baby_dob": "mama_is_pregnant",
+                        "mama_edd": "2015-12-21",
                         "opted_out": false,
                         "has_registered": true,
                         "registered_at": "2015-07-22 00:00:00",
                         "registered_by": "cb245673-aa41-4302-ac47-00000000001",
                         "chew_phone_used": true,
                         "msg_receiver": "mother",
-                        "state_at_registration": "baby",
-                        "state_current": "baby",
+                        "state_at_registration": "pregnant",
+                        "state_current": "pregnant",
                         "lang": "eng_NG",
                         "msg_type": "voice",
                         "voice_days": "mon_wed",
@@ -534,6 +534,7 @@ module.exports = function() {
             'response': {
                 "code": 201,
                 "data": {
+                    "id": "1234-00002",
                     "contact": "cb245673-aa41-4302-ac47-00000000002",
                     "version": 1,
                     "messageset_id": 1,
@@ -548,7 +549,211 @@ module.exports = function() {
                     }
                 }
             }
-        }
+        },
+
+        // get subscription for 0005
+        {
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'contact': 'cb245673-aa41-4302-ac47-00000000005',
+                    'active': 'True'
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': "http://localhost:8000/api/v1/subscriptions/"
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            "url": "http://localhost:8000/api/v1/subscriptions/1234-00005/",
+                            "id": "1234-00005",
+                            "version": 1,
+                            "contact": "http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000005/",
+                            "messageset_id": 1,
+                            "next_sequence_number": 7,
+                            "lang": "eng_NG",
+                            "active": true,
+                            "completed": false,
+                            "schedule": 1,
+                            "process_status": 0,
+                            "metadata": {
+                                "msg_type": "voice",
+                            },
+                            "created_at": "2015-07-30T15:19:01.734812Z",
+                            "updated_at": "2015-08-05T07:00:00.826924Z"
+                        }
+                    ]
+                }
+            }
+        },
+
+        // unsubscribe subscriptions for 0005
+        {
+            'request': {
+                'method': 'PATCH',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': "http://localhost:8000/api/v1/subscriptions/1234-00005/",
+                'data': {
+                    "url": "http://localhost:8000/api/v1/subscriptions/1234-00005/",
+                    "id": "1234-00005",
+                    "version": 1,
+                    "contact": "http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000005/",
+                    "messageset_id": 1,
+                    "next_sequence_number": 7,
+                    "lang": "eng_NG",
+                    "active": false,
+                    "completed": false,
+                    "schedule": 1,
+                    "process_status": 0,
+                    "metadata": {
+                        "msg_type": "voice",
+                    },
+                    "created_at": "2015-07-30T15:19:01.734812Z",
+                    "updated_at": "2015-08-05T07:00:00.826924Z"
+                }
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8000/api/v1/subscriptions/1234-00005/",
+                    "id": "1234-00005",
+                    "version": 1,
+                    "contact": "http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000005/",
+                    "messageset_id": 1,
+                    "next_sequence_number": 7,
+                    "lang": "eng_NG",
+                    "active": false,
+                    "completed": false,
+                    "schedule": 1,
+                    "process_status": 0,
+                    "metadata": {
+                        "msg_type": "voice",
+                    },
+                    "created_at": "2015-07-30T15:19:01.734812Z",
+                    "updated_at": "2015-08-05T07:00:00.826924Z"
+                }
+            }
+        },
+
+        // get contact 07070050005 by msisdn
+        {
+            'request': {
+                'method': 'PATCH',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                "data": {
+                    "url": "http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000005/",
+                    "id": "cb245673-aa41-4302-ac47-00000000005",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": "msisdn:+07070050005",
+                        "baby_dob": "2015-07-22",
+                        "mama_edd": "2015-12-21",
+                        "opted_out": false,
+                        "has_registered": true,
+                        "registered_at": "2015-07-22 00:00:00",
+                        "registered_by": "cb245673-aa41-4302-ac47-00000000001",
+                        "chew_phone_used": true,
+                        "msg_receiver": "mother",
+                        "state_at_registration": "pregnant",
+                        "state_current": "baby",
+                        "lang": "eng_NG",
+                        "msg_type": "voice",
+                        "voice_days": "mon_wed",
+                        "voice_times": "2_5"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                },
+                'url': "http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000005/"
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000005/",
+                    "id": "cb245673-aa41-4302-ac47-00000000005",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": "msisdn:+07070050005",
+                        "baby_dob": "2015-07-22",
+                        "mama_edd": "2015-12-21",
+                        "opted_out": false,
+                        "has_registered": true,
+                        "registered_at": "2015-07-22 00:00:00",
+                        "registered_by": "cb245673-aa41-4302-ac47-00000000001",
+                        "chew_phone_used": true,
+                        "msg_receiver": "mother",
+                        "state_at_registration": "pregnant",
+                        "state_current": "baby",
+                        "lang": "eng_NG",
+                        "msg_type": "voice",
+                        "voice_days": "mon_wed",
+                        "voice_times": "2_5"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
+
+        // post subscription for 0005 to baby (baby switch)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': "http://localhost:8000/api/v1/subscriptions/",
+                'data':  {
+                    "contact": "cb245673-aa41-4302-ac47-00000000005",
+                    "version": 1,
+                    "messageset_id": 2,
+                    "next_sequence_number": 1,
+                    "lang": "eng_NG",
+                    "active": true,
+                    "completed": false,
+                    "schedule": 2,
+                    "process_status": 0,
+                    "metadata": {
+                        "msg_type":"voice"
+                    }
+                }
+            },
+            'response': {
+                "code": 201,
+                "data": {
+                    "id": "1234-00002",
+                    "contact": "cb245673-aa41-4302-ac47-00000000002",
+                    "version": 1,
+                    "messageset_id": 1,
+                    "next_sequence_number": 1,
+                    "lang": "eng_NG",
+                    "active": true,
+                    "completed": false,
+                    "schedule": 2,
+                    "process_status": 0,
+                    "metadata": {
+                        "msg_type":"voice"
+                    }
+                }
+            }
+        },
 
     ];
 };

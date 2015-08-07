@@ -93,7 +93,7 @@ go.app = function() {
                 choices: [
                     new Choice('confirm', $('confirm'))
                 ],
-                next: 'state_c08_end_baby'
+                next: 'state_c08_enter'
             });
         });
 
@@ -170,6 +170,14 @@ go.app = function() {
                     return routing[choice.value];
                 }
             });
+        });
+
+        self.add('state_c08_enter', function(name) {
+            return go.utils
+                .switch_to_baby(self.im)
+                .then(function() {
+                    return self.states.create('state_c08_end_baby');
+                });
         });
 
         self.add('state_c08_end_baby', function(name) {
