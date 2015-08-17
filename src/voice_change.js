@@ -6,6 +6,7 @@ go.app = function() {
     var ChoiceState = vumigo.states.ChoiceState;
     var Choice = vumigo.states.Choice;
     var EndState = vumigo.states.EndState;
+    var FreeText = vumigo.states.FreeText;
 
 
     var GoApp = App.extend(function(self) {
@@ -34,23 +35,72 @@ go.app = function() {
         self.states.add('state_start', function() {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
-            return go.utils
-                .get_or_create_contact(self.im.user.addr, self.im)
-                .then(function(user_id) {
-                    self.im.user.set_answer('mama_id', user_id);
-                    return go.utils
-                        .is_registered(user_id, self.im)
-                        .then(function(is_registered) {
-                            if (is_registered === true) {
-                                return self.states.create("state_c01_main_menu");
-                            } else {
-                                return self.states.create("state_c02_not_registered");
-                            }
-                        });
-                });
+            return self.states.create("state_c12_number");
         });
 
+
     // CHANGE STATE
+
+        self.add('state_c12_number', function(name) {
+            var speech_option = '1';
+            return new FreeText(name, {
+                question: $('Welcome, Number'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: function(content) {
+                    if (go.utils.check_valid_phone_number(content) === false) {
+                        return 'state_c13_retry_number';
+                    } else {
+                        return go.utils
+                            // get or create mama contact
+                            .get_or_create_contact(content, self.im)
+                            .then(function(mama_id) {
+                                self.im.user.set_answer('mama_id', mama_id);
+                                return go.utils
+                                    .is_registered(mama_id, self.im)
+                                    .then(function(is_registered) {
+                                        if (is_registered === true) {
+                                            return self.states.create("state_c01_main_menu");
+                                        } else {
+                                            return self.states.create("state_c02_not_registered");
+                                        }
+                                    });
+                            });
+                    }
+                }
+            });
+        });
+
+        self.add('state_c13_retry_number', function(name) {
+            var speech_option = '1';
+            return new FreeText(name, {
+                question: $('Retry number'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: function(content) {
+                    if (go.utils.check_valid_phone_number(content) === false) {
+                        return 'state_c13_retry_number';
+                    } else {
+                        return go.utils
+                            // get or create mama contact
+                            .get_or_create_contact(content, self.im)
+                            .then(function(mama_id) {
+                                self.im.user.set_answer('mama_id', mama_id);
+                                return go.utils
+                                    .is_registered(mama_id, self.im)
+                                    .then(function(is_registered) {
+                                        if (is_registered === true) {
+                                            return self.states.create("state_c01_main_menu");
+                                        } else {
+                                            return self.states.create("state_c02_not_registered");
+                                        }
+                                    });
+                            });
+                    }
+                }
+            });
+        });
+
 
         self.add('state_c01_main_menu', function(name) {
             var speech_option = '1';
