@@ -5,6 +5,7 @@
 var go = {};
 go;
 
+/*jshint -W083 */
 var Q = require('q');
 var vumigo = require('vumigo_v02');
 var moment = require('moment');
@@ -321,7 +322,7 @@ go.utils = {
     },
 
     get_messageset_id: function(mama_contact) {
-        return (mama_contact.details.state_at_registration === 'pregnant') ? 1 : 2;
+        return (mama_contact.details.state_current === 'pregnant') ? 1 : 2;
     },
 
     get_next_sequence_number: function(mama_contact) {
@@ -388,9 +389,14 @@ go.utils = {
         var user_id = im.user.answers.user_id;
         var mama_id = im.user.answers.mama_id;
         var chew_phone_used = (user_id === mama_id) ? false : true;
-        return go.utils
-            .get_contact_by_id(mama_id, im)
-            .then(function(mama_contact) {
+        return Q
+            .all([
+                // get mama contact
+                go.utils.get_contact_by_id(mama_id, im),
+                // deactivate existing subscriptions
+                go.utils.subscriptions_unsubscribe_all(mama_id, im)
+            ])
+            .spread(function(mama_contact, unsubscribe_result) {
                 mama_contact = go.utils.update_mama_details(
                     im, mama_contact, user_id, chew_phone_used);
                 var subscription = go.utils
@@ -419,6 +425,147 @@ go.utils = {
                         }
                     });
 
+            });
+    },
+
+    get_active_subscriptions_by_contact_id: function(contact_id, im) {
+        // returns all active subscriptions - for unlikely case where there
+        // is more than one active subscription
+        var params = {
+            contact: contact_id,
+            active: "True"
+        };
+        return go.utils
+            .control_api_call("get", params, null, 'subscriptions/', im)
+            .then(function(json_get_response) {
+                return json_get_response.data.results;
+            });
+    },
+
+    get_active_subscription_by_contact_id: function(contact_id, im) {
+        // returns first active subscription found
+        return go.utils
+            .get_active_subscriptions_by_contact_id(contact_id, im)
+            .then(function(subscriptions) {
+                return subscriptions[0];
+            });
+    },
+
+    subscriptions_unsubscribe_all: function(contact_id, im) {
+        // make all subscriptions inactive
+        // unlike other functions takes into account that there may be
+        // more than one active subscription returned (unlikely)
+        return go.utils
+            .get_active_subscriptions_by_contact_id(contact_id, im)
+            .then(function(active_subscriptions) {
+                var subscriptions = active_subscriptions;
+                var clean = true;  // clean tracks if api call is unnecessary
+                var patch_calls = [];
+                for (i=0; i<subscriptions.length; i++) {
+                    var updated_subscription = subscriptions[i];
+                    var endpoint = 'subscriptions/' + updated_subscription.id + '/';
+                    updated_subscription.active = false;
+                    // store the patch calls to be made
+                    patch_calls.push(function() {
+                        return go.utils.control_api_call("patch", {}, updated_subscription, endpoint, im);
+                    });
+                    clean = false;
+                }
+                if (!clean) {
+                    return Q.all(patch_calls.map(Q.try));
+            } else {
+                return Q();
+            }
+        });
+    },
+
+    switch_to_baby: function(im) {
+        var mama_id = im.user.answers.mama_id;
+        return Q
+            .all([
+                // get contact so details can be updated
+                go.utils.get_contact_by_id(mama_id, im),
+                // set existing subscriptions inactive
+                go.utils.subscriptions_unsubscribe_all(mama_id, im)
+            ])
+            .spread(function(mama_contact, unsubscribe_result) {
+                // set new mama contact details
+                mama_contact.details.baby_dob = go.utils.get_today(im.config).format('YYYY-MM-DD');
+                mama_contact.details.state_current = "baby";
+
+                // set up baby message subscription
+                baby_subscription = go.utils.setup_subscription(im, mama_contact);
+
+                return Q.all([
+                    // update mama contact
+                    go.utils.update_contact(im, mama_contact),
+                    // subscribe to baby messages
+                    go.utils.subscribe_contact(im, baby_subscription)
+                ]);
+            });
+    },
+
+    update_subscription: function(im, subscription) {
+        var endpoint = 'subscriptions/' + subscription.id + '/';
+        return go.utils
+            .control_api_call('patch', {}, subscription, endpoint, im)
+            .then(function(response) {
+                return response.data.id;
+            });
+    },
+
+    change_msg_times: function(im) {
+        var mama_id = im.user.answers.mama_id;
+        return Q
+            .all([
+                // get contact so details can be updated
+                go.utils.get_contact_by_id(mama_id, im),
+                // get existing subscriptions so schedule can be updated
+                go.utils.get_active_subscription_by_contact_id(mama_id, im)
+            ])
+            .spread(function(mama_contact, subscription) {
+                // set new mama contact details
+                mama_contact.details.voice_days = im.user.answers.state_c04_voice_days;
+                mama_contact.details.voice_times = im.user.answers.state_c06_voice_times;
+
+                // set new subscription schedule
+                subscription.schedule = go.utils.get_schedule(mama_contact);
+
+                return Q.all([
+                    // update mama contact
+                    go.utils.update_contact(im, mama_contact),
+                    // update subscription
+                    go.utils.update_subscription(im, subscription)
+                ]);
+            });
+    },
+
+    optout_loss_opt_in: function(im) {
+        return go.utils
+            .optout(im)
+            .then(function(contact_id) {
+                // TODO #17 Subscribe to loss messages
+                return Q();
+            });
+    },
+
+    optout: function(im) {
+        var mama_id = im.user.answers.mama_id;
+        return Q
+            .all([
+                // get contact so details can be updated
+                go.utils.get_contact_by_id(mama_id, im),
+                // set existing subscriptions inactive
+                go.utils.subscriptions_unsubscribe_all(mama_id, im)
+            ])
+            .spread(function(mama_contact, unsubscribe_result) {
+                // set new mama contact details
+                mama_contact.details.opted_out = true;
+                mama_contact.details.optout_reason = im.user.answers.state_c05_optout_reason;
+
+                // update mama contact
+                return go.utils
+                    .update_contact(im, mama_contact);
             });
     },
 
@@ -520,7 +667,7 @@ go.app = function() {
                 choices: [
                     new Choice('confirm', $('confirm'))
                 ],
-                next: 'state_c08_end_baby'
+                next: 'state_c08_enter'
             });
         });
 
@@ -544,8 +691,8 @@ go.app = function() {
                 'miscarriage': 'state_c07_loss_opt_in',
                 'stillborn': 'state_c07_loss_opt_in',
                 'baby_died': 'state_c07_loss_opt_in',
-                'not_useful': 'state_c11_end_optout',
-                'other': 'state_c11_end_optout'
+                'not_useful': 'state_c11_enter',
+                'other': 'state_c11_enter'
             };
             return new ChoiceState(name, {
                 question: $('Optout reason?'),
@@ -575,15 +722,15 @@ go.app = function() {
                     new Choice('9_11', $('9_11')),
                     new Choice('2_5', $('2_5'))
                 ],
-                next: 'state_c09_end_msg_times'
+                next: 'state_c09_enter'
             });
         });
 
         self.add('state_c07_loss_opt_in', function(name) {
             var speech_option = '1';
             var routing = {
-                'opt_in_confirm': 'state_c10_end_loss_opt_in',
-                'opt_in_deny': 'state_c11_end_optout'
+                'opt_in_confirm': 'state_c10_enter',
+                'opt_in_deny': 'state_c11_enter'
             };
             return new ChoiceState(name, {
                 question: $('Receive loss messages?'),
@@ -599,6 +746,14 @@ go.app = function() {
             });
         });
 
+        self.add('state_c08_enter', function(name) {
+            return go.utils
+                .switch_to_baby(self.im)
+                .then(function() {
+                    return self.states.create('state_c08_end_baby');
+                });
+        });
+
         self.add('state_c08_end_baby', function(name) {
             var speech_option = '1';
             return new EndState(name, {
@@ -607,6 +762,14 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: 'state_start'
             });
+        });
+
+        self.add('state_c09_enter', function(name) {
+            return go.utils
+                .change_msg_times(self.im)
+                .then(function() {
+                    return self.states.create('state_c09_end_msg_times');
+                });
         });
 
         self.add('state_c09_end_msg_times', function(name) {
@@ -622,6 +785,14 @@ go.app = function() {
             });
         });
 
+        self.add('state_c10_enter', function(name) {
+            return go.utils
+                .optout_loss_opt_in(self.im)
+                .then(function() {
+                    return self.states.create('state_c10_end_loss_opt_in');
+                });
+        });
+
         self.add('state_c10_end_loss_opt_in', function(name) {
             var speech_option = '1';
             return new EndState(name, {
@@ -630,6 +801,14 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: 'state_start'
             });
+        });
+
+        self.add('state_c11_enter', function(name) {
+            return go.utils
+                .optout(self.im)
+                .then(function() {
+                    return self.states.create('state_c11_end_optout');
+                });
         });
 
         self.add('state_c11_end_optout', function(name) {
