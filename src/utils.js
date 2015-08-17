@@ -24,18 +24,6 @@ go.utils = {
             && no_restart_states.indexOf(im.user.state.name) === -1;
     },
 
-    return_true: function() {
-        return true;
-    },
-
-    return_false: function() {
-        return false;
-    },
-
-    return_q: function() {
-        return Q();
-    },
-
     get_speech_option_birth_day: function(im, month) {
         var speech_option_start = 0;
         if (im.user.answers.state_r04_mom_state === 'baby') {

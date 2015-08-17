@@ -1,23 +1,6 @@
 var vumigo = require('vumigo_v02');
 var fixtures = require('./fixtures');
-var assert = require('assert');
 var AppTester = vumigo.AppTester;
-
-
-describe("Shared Utils", function() {
-    describe("go.utils.return_true", function() {
-        it("should return true", function(done) {
-            assert.equal(go.utils.return_true(), true);
-            done();
-        });
-    });
-    describe("go.utils.return_false", function() {
-        it("should return false", function(done) {
-            assert.equal(go.utils.return_false(), false);
-            done();
-        });
-    });
-});
 
 
 describe("Mama Nigeria App", function() {
