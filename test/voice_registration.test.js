@@ -50,9 +50,7 @@ describe("Mama Nigeria App", function() {
                         state: 'state_r01_number',
                         reply: 'Welcome, Number'
                     })
-                    .check.user.answers({
-                        'user_id': 'cb245673-aa41-4302-ac47-00000000001'
-                    })
+                    .check.user.answers({})
                     .run();
             });
         });
@@ -78,17 +76,6 @@ describe("Mama Nigeria App", function() {
                             }
                         }
                     })
-                    .run();
-            });
-
-            it("should set the user answer user_id to the contact id", function() {
-                return tester
-                    .setup.user.addr('+07030010001')
-                    .inputs(
-                        {session_event: 'new'}
-                    )
-                    .check.user.answer('user_id',
-                        'cb245673-aa41-4302-ac47-00000000001')
                     .run();
             });
         });
@@ -258,7 +245,6 @@ describe("Mama Nigeria App", function() {
                         )
                         .check.user.answers({
                             mama_id: 'cb245673-aa41-4302-ac47-00000000002',
-                            user_id: 'cb245673-aa41-4302-ac47-00000000001',
                             state_r01_number: '+08080020002',
                             state_r02_retry_number: '08080020002'
                         })
@@ -933,7 +919,6 @@ describe("Mama Nigeria App", function() {
                         , '2'  // r12_voice_times - 2_5
                     )
                     .check.user.answers({
-                        user_id: "cb245673-aa41-4302-ac47-00000000001",
                         mama_id: "cb245673-aa41-4302-ac47-00000000002",
                         state_r01_number: "08080020002",
                         state_r03_receiver: "mother",

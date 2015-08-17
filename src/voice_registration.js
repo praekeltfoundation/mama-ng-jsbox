@@ -34,13 +34,7 @@ go.app = function() {
         self.states.add('state_start', function(name) {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
-            return go.utils
-                // get or create dialer (phone user) contact
-                .get_or_create_contact(self.im.user.addr, self.im)
-                .then(function(user_id) {
-                    self.im.user.set_answer('user_id', user_id);
-                    return self.states.create("state_r01_number");
-                });
+            return self.states.create("state_r01_number");
         });
 
 
@@ -265,7 +259,7 @@ go.app = function() {
 
         self.add('state_r13_enter', function(name) {
             return go.utils
-                .save_contacts_info_and_subscribe(self.im)
+                .save_contact_info_and_subscribe(self.im)
                 .then(function() {
                     return self.states.create('state_r13_end');
                 });
