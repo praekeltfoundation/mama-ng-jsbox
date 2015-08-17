@@ -92,8 +92,8 @@ go.utils = {
     control_api_call: function(method, params, payload, endpoint, im) {
         var api = new JsonApi(im, {
             headers: {
-                'Authorization': 'Token ' + im.config.control.api_key,
-                'Content-Type': 'application/json',
+                'Authorization': ['Token ' + im.config.control.api_key],
+                'Content-Type': ['application/json'],
             }
         });
         switch (method) {
