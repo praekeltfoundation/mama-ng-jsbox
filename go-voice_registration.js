@@ -31,18 +31,6 @@ go.utils = {
             && no_restart_states.indexOf(im.user.state.name) === -1;
     },
 
-    return_true: function() {
-        return true;
-    },
-
-    return_false: function() {
-        return false;
-    },
-
-    return_q: function() {
-        return Q();
-    },
-
     get_speech_option_birth_day: function(im, month) {
         var speech_option_start = 0;
         if (im.user.answers.state_r04_mom_state === 'baby') {
@@ -297,7 +285,7 @@ go.utils = {
             });
     },
 
-    update_mama_details: function(im, mama_contact, user_id, chew_phone_used) {
+    update_mama_details: function(im, mama_contact, chew_phone_used) {
         if (im.user.answers.state_r04_mom_state === 'baby') {
             mama_contact.details.baby_dob = go.utils.get_baby_dob(im);
             mama_contact.details.mama_edd = 'registration_after_baby_born';
@@ -305,12 +293,10 @@ go.utils = {
             mama_contact.details.baby_dob = 'mama_is_pregnant';
             mama_contact.details.mama_edd = go.utils.get_baby_dob(im);
         }
-        mama_contact.details.opted_out = false;  // ?
+        mama_contact.details.opted_out = false;
         mama_contact.details.has_registered = true;
         mama_contact.details.registered_at = go.utils.get_today(im.config
             ).format('YYYY-MM-DD HH:mm:ss');
-        mama_contact.details.registered_by = user_id;
-        mama_contact.details.chew_phone_used = chew_phone_used;
         mama_contact.details.msg_receiver = im.user.answers.state_r03_receiver;
         mama_contact.details.state_at_registration = im.user.answers.state_r04_mom_state;
         mama_contact.details.state_current = im.user.answers.state_r04_mom_state;
@@ -366,16 +352,6 @@ go.utils = {
         return subscription;
     },
 
-    update_chew_details: function(im, chew_contact, mama_id) {
-        var mama_reg_ids = chew_contact.details.mamas_registered_ids || [];
-        var mama_reg_qty = chew_contact.details.mamas_registered_qty || 0;
-        mama_reg_ids.push(mama_id);
-        mama_reg_qty += 1;
-        chew_contact.details.mamas_registered_ids = mama_reg_ids;
-        chew_contact.details.mamas_registered_qty = mama_reg_qty;
-        return chew_contact;
-    },
-
     subscribe_contact: function(im, subscription) {
         var payload = subscription;
         return go.utils
@@ -385,10 +361,8 @@ go.utils = {
             });
     },
 
-    save_contacts_info_and_subscribe: function(im) {
-        var user_id = im.user.answers.user_id;
+    save_contact_info_and_subscribe: function(im) {
         var mama_id = im.user.answers.mama_id;
-        var chew_phone_used = (user_id === mama_id) ? false : true;
         return Q
             .all([
                 // get mama contact
@@ -398,7 +372,7 @@ go.utils = {
             ])
             .spread(function(mama_contact, unsubscribe_result) {
                 mama_contact = go.utils.update_mama_details(
-                    im, mama_contact, user_id, chew_phone_used);
+                    im, mama_contact);
                 var subscription = go.utils
                     .setup_subscription(im, mama_contact);
 
@@ -408,23 +382,7 @@ go.utils = {
                         go.utils.update_contact(im, mama_contact),
                         // Create a subscription for mama
                         go.utils.subscribe_contact(im, subscription)
-                    ])
-                    .then(function() {
-                        if (chew_phone_used === true) {
-                            // Update chew's info
-                            return go.utils
-                                .get_contact_by_id(user_id, im)
-                                .then(function(chew_contact) {
-                                    chew_contact = go.utils
-                                        .update_chew_details(im, chew_contact, mama_id);
-                                    return go.utils
-                                        .update_contact(im, chew_contact);
-                                });
-                        } else {
-                            return Q();
-                        }
-                    });
-
+                    ]);
             });
     },
 
@@ -608,13 +566,7 @@ go.app = function() {
         self.states.add('state_start', function(name) {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
-            return go.utils
-                // get or create dialer (phone user) contact
-                .get_or_create_contact(self.im.user.addr, self.im)
-                .then(function(user_id) {
-                    self.im.user.set_answer('user_id', user_id);
-                    return self.states.create("state_r01_number");
-                });
+            return self.states.create("state_r01_number");
         });
 
 
@@ -839,7 +791,7 @@ go.app = function() {
 
         self.add('state_r13_enter', function(name) {
             return go.utils
-                .save_contacts_info_and_subscribe(self.im)
+                .save_contact_info_and_subscribe(self.im)
                 .then(function() {
                     return self.states.create('state_r13_end');
                 });
