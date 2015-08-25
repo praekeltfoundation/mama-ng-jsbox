@@ -187,8 +187,31 @@ go.app = function() {
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(content) {
-                    // TODO check user has entered a proper day
-                    return 'state_r09_language';
+                    var birth_date = go.utils.get_baby_dob(self.im, content);
+                    if (birth_date === 'invalid date') {
+                        return 'state_r14_retry_birth_day';
+                    } else {
+                        self.im.user.set_answer('birth_date', birth_date);
+                        return 'state_r09_language';
+                    }
+                }
+            });
+        });
+
+        self.add('state_r14_retry_birth_day', function(name) {
+            var speech_option = '1';
+            return new FreeText(name, {
+                question: $('Retry birth day'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: function(content) {
+                    var birth_date = go.utils.get_baby_dob(self.im, content);
+                    if (birth_date === 'invalid date') {
+                        return 'state_r14_retry_birth_day';
+                    } else {
+                        self.im.user.set_answer('birth_date', birth_date);
+                        return 'state_r09_language';
+                    }
                 }
             });
         });
