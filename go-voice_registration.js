@@ -238,7 +238,12 @@ go.utils = {
         }
     },
 
-    get_baby_dob: function(im) {
+    is_valid_date: function(date, format) {
+        // implements strict validation with 'true' below
+        return moment(date, format, true).isValid();
+    },
+
+    get_baby_dob: function(im, day) {
         var date_today = go.utils.get_today(im.config);
 
         var year_text = im.user.answers.state_r05_birth_year;
@@ -255,15 +260,18 @@ go.utils = {
                 break;
         }
 
-        var month = im.user.answers.state_r06_birth_month - 1;
-        var day = im.user.answers.state_r08_birth_day;
+        var month = im.user.answers.state_r06_birth_month;
+        var date_string = [
+            year.toString(),
+            go.utils.double_digit_number(month),
+            go.utils.double_digit_number(day)
+        ].join('-');
 
-        var baby_dob = moment({
-            year: year,
-            month: month,
-            day: day
-        });
-        return baby_dob.format('YYYY-MM-DD');
+        if (go.utils.is_valid_date(date_string, 'YYYY-MM-DD')) {
+            return date_string;
+        } else {
+            return 'invalid date';
+        }
     },
 
     get_lang: function(im) {
@@ -287,11 +295,11 @@ go.utils = {
 
     update_mama_details: function(im, mama_contact, chew_phone_used) {
         if (im.user.answers.state_r04_mom_state === 'baby') {
-            mama_contact.details.baby_dob = go.utils.get_baby_dob(im);
+            mama_contact.details.baby_dob = im.user.answers.birth_date;
             mama_contact.details.mama_edd = 'registration_after_baby_born';
         } else {
             mama_contact.details.baby_dob = 'mama_is_pregnant';
-            mama_contact.details.mama_edd = go.utils.get_baby_dob(im);
+            mama_contact.details.mama_edd = im.user.answers.birth_date;
         }
         mama_contact.details.opted_out = false;
         mama_contact.details.has_registered = true;
@@ -719,8 +727,31 @@ go.app = function() {
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(content) {
-                    // TODO check user has entered a proper day
-                    return 'state_r09_language';
+                    var birth_date = go.utils.get_baby_dob(self.im, content);
+                    if (birth_date === 'invalid date') {
+                        return 'state_r14_retry_birth_day';
+                    } else {
+                        self.im.user.set_answer('birth_date', birth_date);
+                        return 'state_r09_language';
+                    }
+                }
+            });
+        });
+
+        self.add('state_r14_retry_birth_day', function(name) {
+            var speech_option = '1';
+            return new FreeText(name, {
+                question: $('Retry birth day'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: function(content) {
+                    var birth_date = go.utils.get_baby_dob(self.im, content);
+                    if (birth_date === 'invalid date') {
+                        return 'state_r14_retry_birth_day';
+                    } else {
+                        self.im.user.set_answer('birth_date', birth_date);
+                        return 'state_r09_language';
+                    }
                 }
             });
         });

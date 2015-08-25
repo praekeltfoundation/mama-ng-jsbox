@@ -659,6 +659,36 @@ describe("Mama Nigeria App", function() {
 
 
         describe("when you enter a birth day r08_birth_day", function() {
+            describe("if it is an invalid day", function() {
+                it("should navigate to state_r14_retry_birth_day", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'},
+                            '08080020002'
+                            , '1'  // r03_receiver - mother
+                            , '2'  // r04_mom_state - baby
+                            , '2'  // r05_birth_year - this year
+                            , '12'  // r06_birth_month - december
+                            , '1'  // r07_confirm_month - confirm
+                            , '32'  // r08_birth_day - 32nd
+                        )
+                        .check.interaction({
+                            state: 'state_r14_retry_birth_day',
+                            reply: 'Retry birth day'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r14_retry_birth_day_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
+            });
+
             describe("if it is a valid day", function() {
                 it("should navigate to state r09_language", function() {
                     return tester
@@ -715,6 +745,75 @@ describe("Mama Nigeria App", function() {
                             helper_metadata: {
                                 voice: {
                                     speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r01_number_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
+            });
+        });
+
+        describe("when you enter a birth day r08_birth_day", function() {
+            describe("if it is an invalid day", function() {
+                it("should navigate to state_r14_retry_birth_day again", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'},
+                            '08080020002'
+                            , '1'  // r03_receiver - mother
+                            , '2'  // r04_mom_state - baby
+                            , '2'  // r05_birth_year - this year
+                            , '12'  // r06_birth_month - december
+                            , '1'  // r07_confirm_month - confirm
+                            , '32'  // r08_birth_day - 32nd
+                            , '55'  // r14_retry_birth_day - 55th
+                        )
+                        .check.interaction({
+                            state: 'state_r14_retry_birth_day',
+                            reply: 'Retry birth day'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r14_retry_birth_day_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
+            });
+
+            describe("if it is a valid day", function() {
+                it("should navigate to state r09_language", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'},
+                            '08080020002'
+                            , '1'  // r03_receiver - mother
+                            , '2'  // r04_mom_state - baby
+                            , '2'  // r05_birth_year - this year
+                            , '12'  // r06_birth_month - december
+                            , '1'  // r07_confirm_month - confirm
+                            , '32'  // r08_birth_day - 32nd
+                            , '21'  // r14_retry_birth_day - 21st
+                        )
+                        .check.interaction({
+                            state: 'state_r09_language',
+                            reply: [
+                                'Language?',
+                                '1. english',
+                                '2. hausa',
+                                '3. igbo'
+                            ].join('\n')
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r09_language_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -920,6 +1019,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.user.answers({
                         mama_id: "cb245673-aa41-4302-ac47-00000000002",
+                        birth_date: '2015-12-21',
                         state_r01_number: "08080020002",
                         state_r03_receiver: "mother",
                         state_r04_mom_state: "baby",
