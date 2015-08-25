@@ -336,7 +336,7 @@ go.utils = {
 
     setup_subscription: function(im, mama_contact) {
         subscription = {
-            contact: "/api/v1/" + mama_contact.id + "/",
+            contact: "/api/v1/contacts/" + mama_contact.id + "/",
             version: 1,
             messageset_id: go.utils.get_messageset_id(mama_contact),
             next_sequence_number: go.utils.get_next_sequence_number(mama_contact),
