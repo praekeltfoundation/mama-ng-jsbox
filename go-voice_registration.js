@@ -9,6 +9,7 @@ go;
 var Q = require('q');
 var vumigo = require('vumigo_v02');
 var moment = require('moment');
+var querystring = require("querystring");
 var JsonApi = vumigo.http.api.JsonApi;
 
 // Shared utils lib
@@ -91,6 +92,9 @@ go.utils = {
                 'Content-Type': ['application/json'],
             }
         });
+        for(var param in params) {
+            params[param] = querystring.escape(params[param]);
+        }
         switch (method) {
             case "post":
                 return api.post(im.config.control.url + endpoint, {
