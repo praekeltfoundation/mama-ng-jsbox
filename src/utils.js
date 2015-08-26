@@ -116,7 +116,8 @@ go.utils = {
         return go.utils
             .get_contact_by_id(contact_id, im)
             .then(function(contact) {
-                return contact.details.has_registered === true;
+                var true_options = ['true', 'True', true];
+                return true_options.indexOf(contact.details.has_registered) !== -1;
             });
     },
 
