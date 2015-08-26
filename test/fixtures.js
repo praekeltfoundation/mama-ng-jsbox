@@ -5,7 +5,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'msisdn': '%2B07030010001'
+                    'msisdn': '+07030010001'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -39,7 +39,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'msisdn': '%2B08080020002'
+                    'msisdn': '+08080020002'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -73,7 +73,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'msisdn': '%2B07070050005'
+                    'msisdn': '+07070050005'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -121,7 +121,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'msisdn': '%2B08080030003'
+                    'msisdn': '+08080030003'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],

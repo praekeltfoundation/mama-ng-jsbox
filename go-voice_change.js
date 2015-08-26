@@ -9,7 +9,6 @@ go;
 var Q = require('q');
 var vumigo = require('vumigo_v02');
 var moment = require('moment');
-var querystring = require("querystring");
 var JsonApi = vumigo.http.api.JsonApi;
 
 // Shared utils lib
@@ -92,9 +91,6 @@ go.utils = {
                 'Content-Type': ['application/json'],
             }
         });
-        for(var param in params) {
-            params[param] = querystring.escape(params[param]);
-        }
         switch (method) {
             case "post":
                 return api.post(im.config.control.url + endpoint, {
@@ -123,7 +119,8 @@ go.utils = {
         return go.utils
             .get_contact_by_id(contact_id, im)
             .then(function(contact) {
-                return contact.details.has_registered === true;
+                var true_options = ['true', 'True', true];
+                return true_options.indexOf(contact.details.has_registered) !== -1;
             });
     },
 
