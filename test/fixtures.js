@@ -116,6 +116,54 @@ module.exports = function() {
             }
         },
 
+        // get contact 07070060006 by msisdn
+        {
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'msisdn': '+07070060006'
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8000/api/v1/contacts/search/',
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [{
+                        "url": "http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000006/",
+                        "id": "cb245673-aa41-4302-ac47-00000000006",
+                        "version": 1,
+                        "details": {
+                            "default_addr_type": "msisdn",
+                            "addresses": "msisdn:+07070060006",
+                            "baby_dob": "mama_is_pregnant",
+                            "mama_edd": "2015-12-21",
+                            "opted_out": false,
+                            "has_registered": true,
+                            "registered_at": "2015-07-22 00:00:00",
+                            "registered_by": "cb245673-aa41-4302-ac47-00000000001",
+                            "chew_phone_used": true,
+                            "msg_receiver": "mother",
+                            "state_at_registration": "pregnant",
+                            "state_current": "pregnant",
+                            "lang": "eng_NG",
+                            "msg_type": "voice",
+                            "voice_days": "mon_wed",
+                            "voice_times": "2_5"
+                        },
+                        "created_at": "2015-07-10T06:13:29.693272Z",
+                        "updated_at": "2015-07-10T06:13:29.693298Z"
+                    }]
+                }
+            }
+        },
+
         // get contact 08080030003 by msisdn - no results
         {
             'request': {
@@ -295,6 +343,45 @@ module.exports = function() {
             }
         },
 
+        // get contact cb245673-aa41-4302-ac47-00000000006
+        {
+            'request': {
+                'method': 'GET',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000006/',
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000006/",
+                    "id": "cb245673-aa41-4302-ac47-00000000006",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": "msisdn:+07070060006",
+                        "baby_dob": "mama_is_pregnant",
+                        "mama_edd": "2015-12-21",
+                        "opted_out": false,
+                        "has_registered": true,
+                        "registered_at": "2015-07-22 00:00:00",
+                        "msg_receiver": "mother",
+                        "state_at_registration": "pregnant",
+                        "state_current": "pregnant",
+                        "lang": "eng_NG",
+                        "msg_type": "voice",
+                        "voice_days": "mon_wed",
+                        "voice_times": "2_5"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
+
         // patch contact cb245673-aa41-4302-ac47-00000000002 - voice reg mama
         {
             'request': {
@@ -376,7 +463,6 @@ module.exports = function() {
                 }
             }
         },
-
 
         // post subscription for 0002 - voice reg mama
         {
@@ -563,7 +649,7 @@ module.exports = function() {
             }
         },
 
-        // get subscription for 0005
+        // get active subscriptions for 0005
         {
             'request': {
                 'method': 'GET',
@@ -603,6 +689,31 @@ module.exports = function() {
                             "updated_at": "2015-08-05T07:00:00.826924Z"
                         }
                     ]
+                }
+            }
+        },
+
+        // get active subscriptions for 0006
+        {
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'contact': 'cb245673-aa41-4302-ac47-00000000006',
+                    'active': 'True'
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': "http://localhost:8000/api/v1/subscriptions/"
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": []
                 }
             }
         },

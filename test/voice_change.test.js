@@ -163,6 +163,30 @@ describe("Mama Nigeria App", function() {
                         .run();
                 });
             });
+
+            describe("if you enter a registered number without an active subscription", function() {
+                it("should navigate to c14_end_not_active", function() {
+                    return tester
+                        .setup.user.addr('+07070050005')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '07070060006'  // c12_number
+                        )
+                        .check.interaction({
+                            state: 'state_c14_end_not_active',
+                            reply: 'No active subscriptions'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_c14_end_not_active_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
+            });
         });
 
         describe("When you enter a choice c01_main_menu", function() {

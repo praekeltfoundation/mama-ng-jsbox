@@ -411,6 +411,14 @@ go.utils = {
             });
     },
 
+    has_active_subscriptions: function(contact_id, im) {
+        return go.utils
+            .get_active_subscriptions_by_contact_id(contact_id, im)
+            .then(function(subscriptions) {
+                return subscriptions.length > 0;
+            });
+    },
+
     subscriptions_unsubscribe_all: function(contact_id, im) {
         // make all subscriptions inactive
         // unlike other functions takes into account that there may be

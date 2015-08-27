@@ -60,7 +60,15 @@ go.app = function() {
                                     .is_registered(mama_id, self.im)
                                     .then(function(is_registered) {
                                         if (is_registered === true) {
-                                            return self.states.create("state_c01_main_menu");
+                                            return go.utils
+                                                .has_active_subscriptions(mama_id, self.im)
+                                                .then(function(has_active_subscriptions) {
+                                                    if (has_active_subscriptions === true) {
+                                                        return self.states.create("state_c01_main_menu");
+                                                    } else {
+                                                        return self.states.create("state_c14_end_not_active");
+                                                    }
+                                                });
                                         } else {
                                             return self.states.create("state_c02_not_registered");
                                         }
@@ -291,6 +299,16 @@ go.app = function() {
             var speech_option = '1';
             return new EndState(name, {
                 text: $('Thank you - optout'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: 'state_start'
+            });
+        });
+
+        self.add('state_c14_end_not_active', function(name) {
+            var speech_option = '1';
+            return new EndState(name, {
+                text: $('No active subscriptions'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: 'state_start'
