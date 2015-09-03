@@ -5,7 +5,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'msisdn': '+07030010001'
+                    'msisdn': '+2347030010001'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -39,7 +39,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'msisdn': '+08080020002'
+                    'msisdn': '+2348080020002'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -59,7 +59,7 @@ module.exports = function() {
                         "version": 1,
                         "details": {
                             "default_addr_type": "msisdn",
-                            "addresses": "msisdn:+08080020002"
+                            "addresses": "msisdn:+2348080020002"
                         },
                         "created_at": "2015-07-10T06:13:29.693272Z",
                         "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -73,7 +73,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'msisdn': '+07070050005'
+                    'msisdn': '+2347070050005'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -93,7 +93,7 @@ module.exports = function() {
                         "version": 1,
                         "details": {
                             "default_addr_type": "msisdn",
-                            "addresses": "msisdn:+07070050005",
+                            "addresses": "msisdn:+2347070050005",
                             "baby_dob": "mama_is_pregnant",
                             "mama_edd": "2015-12-21",
                             "opted_out": false,
@@ -121,7 +121,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'msisdn': '+07070060006'
+                    'msisdn': '+2347070060006'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -141,7 +141,7 @@ module.exports = function() {
                         "version": 1,
                         "details": {
                             "default_addr_type": "msisdn",
-                            "addresses": "msisdn:+07070060006",
+                            "addresses": "msisdn:+2347070060006",
                             "baby_dob": "mama_is_pregnant",
                             "mama_edd": "2015-12-21",
                             "opted_out": false,
@@ -169,7 +169,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'msisdn': '+08080030003'
+                    'msisdn': '+2348080030003'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -200,7 +200,7 @@ module.exports = function() {
                 'data':  {
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+08080030003"
+                        "addresses": "msisdn:+2348080030003"
                     }
                 }
             },
@@ -212,7 +212,7 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+08080030003"
+                        "addresses": "msisdn:+2348080030003"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -240,7 +240,7 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+08080030003"
+                        "addresses": "msisdn:+2348080030003"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -296,7 +296,7 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+08080020002"
+                        "addresses": "msisdn:+2348080020002"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -323,7 +323,7 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+07070050005",
+                        "addresses": "msisdn:+2347070050005",
                         "baby_dob": "mama_is_pregnant",
                         "mama_edd": "2015-12-21",
                         "opted_out": false,
@@ -362,7 +362,7 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+07070060006",
+                        "addresses": "msisdn:+2347070060006",
                         "baby_dob": "mama_is_pregnant",
                         "mama_edd": "2015-12-21",
                         "opted_out": false,
@@ -397,7 +397,7 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+08080020002",
+                        "addresses": "msisdn:+2348080020002",
                         "baby_dob": "2015-12-21",
                         "mama_edd": "registration_after_baby_born",
                         "opted_out": false,
@@ -423,7 +423,7 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+08080020002",
+                        "addresses": "msisdn:+2348080020002",
                         "baby_dob": "2015-12-21",
                         "mama_edd": "registration_after_baby_born",
                         "opted_out": false,
@@ -559,7 +559,7 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+08080020002",
+                        "addresses": "msisdn:+2348080020002",
                         "baby_dob": "mama_is_pregnant",
                         "mama_edd": "2016-02-27",
                         "opted_out": false,
@@ -585,7 +585,7 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+08080020002",
+                        "addresses": "msisdn:+2348080020002",
                         "baby_dob": "mama_is_pregnant",
                         "mama_edd": "2016-02-27",
                         "opted_out": false,
@@ -783,7 +783,7 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+07070050005",
+                        "addresses": "msisdn:+2347070050005",
                         "baby_dob": "2015-07-22",
                         "mama_edd": "2015-12-21",
                         "opted_out": false,
@@ -810,7 +810,7 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+07070050005",
+                        "addresses": "msisdn:+2347070050005",
                         "baby_dob": "2015-07-22",
                         "mama_edd": "2015-12-21",
                         "opted_out": false,
@@ -888,7 +888,7 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+07070050005",
+                        "addresses": "msisdn:+2347070050005",
                         "baby_dob": "mama_is_pregnant",
                         "mama_edd": "2015-12-21",
                         "opted_out": false,
@@ -915,7 +915,7 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+07070050005",
+                        "addresses": "msisdn:+2347070050005",
                         "baby_dob": "mama_is_pregnant",
                         "mama_edd": "2015-12-21",
                         "opted_out": false,
@@ -1000,7 +1000,7 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+07070050005",
+                        "addresses": "msisdn:+2347070050005",
                         "baby_dob": "mama_is_pregnant",
                         "mama_edd": "2015-12-21",
                         "opted_out": true,
@@ -1028,7 +1028,7 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+07070050005",
+                        "addresses": "msisdn:+2347070050005",
                         "baby_dob": "mama_is_pregnant",
                         "mama_edd": "2015-12-21",
                         "opted_out": true,
@@ -1063,7 +1063,7 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+07070050005",
+                        "addresses": "msisdn:+2347070050005",
                         "baby_dob": "mama_is_pregnant",
                         "mama_edd": "2015-12-21",
                         "opted_out": true,
@@ -1091,7 +1091,7 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+07070050005",
+                        "addresses": "msisdn:+2347070050005",
                         "baby_dob": "mama_is_pregnant",
                         "mama_edd": "2015-12-21",
                         "opted_out": true,
@@ -1126,7 +1126,7 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+07070050005",
+                        "addresses": "msisdn:+2347070050005",
                         "baby_dob": "mama_is_pregnant",
                         "mama_edd": "2015-12-21",
                         "opted_out": true,
@@ -1154,7 +1154,7 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+07070050005",
+                        "addresses": "msisdn:+2347070050005",
                         "baby_dob": "mama_is_pregnant",
                         "mama_edd": "2015-12-21",
                         "opted_out": true,
@@ -1186,7 +1186,7 @@ module.exports = function() {
                 },
                 'url': "https://localhost/api/v1/go/http_api_nostream/conversation_key/messages.json",
                 'data':  {
-                    "to_addr": "+08080020002",
+                    "to_addr": "+2348080020002",
                     "content": "You have been registered on Hello Mama. Welcome! " +
                                "To change the day & time you receive calls, stop " +
                                "them, or tell us you've had the baby, please call " +
