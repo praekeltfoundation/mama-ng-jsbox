@@ -287,7 +287,8 @@ go.app = function() {
                 .save_contact_info_and_subscribe(self.im)
                 .then(function() {
                     return go.utils
-                        .send_welcome_sms(self.im, $)
+                        .vumi_send_text(self.im, self.im.user.answers.mama_num,
+                            self.im.config.reg_complete_sms)
                         .then(function() {
                             return self.states.create('state_r13_end');
                         });

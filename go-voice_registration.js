@@ -193,15 +193,31 @@ go.utils = {
             });
     },
 
-    normalise_ng_msisdn: function(msisdn) {
-        // currently just adds a plus if one is missing,
-        // possibly needs to add country code
-        return (msisdn.substr(0,1) === '+') ? msisdn : '+' + msisdn;
+    normalize_msisdn: function(raw, country_code) {
+        // don't touch shortcodes
+        if (raw.length <= 5) {
+            return raw;
+        }
+        // remove chars that are not numbers or +
+        raw = raw.replace(/[^0-9+]/g);
+        if (raw.substr(0,2) === '00') {
+            return '+' + raw.substr(2);
+        }
+        if (raw.substr(0,1) === '0') {
+            return '+' + country_code + raw.substr(1);
+        }
+        if (raw.substr(0,1) === '+') {
+            return raw;
+        }
+        if (raw.substr(0, country_code.length) === country_code) {
+            return '+' + raw;
+        }
+        return raw;
     },
 
     // Gets a contact id if it exists, otherwise creates a new one
     get_or_create_contact: function(msisdn, im) {
-        msisdn = go.utils.normalise_ng_msisdn(msisdn);
+        msisdn = go.utils.normalize_msisdn(msisdn, '234');  // nigeria
         return go.utils
             // Get contact id using msisdn
             .get_contact_id_by_msisdn(msisdn, im)
@@ -395,7 +411,7 @@ go.utils = {
             });
     },
 
-    send_welcome_sms: function(im, $) {
+    vumi_send_text: function(im, to_addr, sms_message) {
         var api = new JsonApi(im, {
             headers: {
                 'Content-Type': ['application/json; charset=utf-8'],
@@ -408,8 +424,8 @@ go.utils = {
 
         return api.put(im.config.vumi_http.url, {
             data: {
-                "to_addr": go.utils.normalise_ng_msisdn(im.user.answers.mama_num),
-                "content": im.config.reg_complete_sms
+                "to_addr": go.utils.normalize_msisdn(to_addr, '234'),  // nigeria
+                "content": sms_message
             }
         });
     },
@@ -855,7 +871,8 @@ go.app = function() {
                 .save_contact_info_and_subscribe(self.im)
                 .then(function() {
                     return go.utils
-                        .send_welcome_sms(self.im, $)
+                        .vumi_send_text(self.im, self.im.user.answers.mama_num,
+                            self.im.config.reg_complete_sms)
                         .then(function() {
                             return self.states.create('state_r13_end');
                         });
