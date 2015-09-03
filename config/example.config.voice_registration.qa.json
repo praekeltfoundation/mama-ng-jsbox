@@ -7,5 +7,12 @@
     "voice_content": {
         "url": "http://voice-content.qa.praekeltfoundation.org/api/v1/",
         "api_key": "qa_voice_content_api_key"
+    },
+    "reg_complete_sms":
+        "You have been registered on Hello Mama. Welcome! To change the day & time you receive calls, stop them, or tell us you've had the baby, please call {{ voice_change_num }}.",
+    "vumi_http": {
+        "url": "https://localhost/api/v1/go/http_api_nostream/conversation_key/messages.json",
+        "account_key": "acc_key",
+        "conversation_token": "conv_token"
     }
 }

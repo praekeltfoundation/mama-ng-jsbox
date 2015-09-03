@@ -23,6 +23,16 @@ describe("Mama Nigeria App", function() {
                     voice_content: {
                         url: "http://localhost:8001/api/v1/",
                         api_key: "voice_test_key"
+                    },
+                    reg_complete_sms:
+                        "You have been registered on Hello Mama. Welcome! " +
+                        "To change the day & time you receive calls, stop " +
+                        "them, or tell us you've had the baby, please call " +
+                        "{{ voice_change_num }}.",
+                    vumi_http: {
+                        url: "https://localhost/api/v1/go/http_api_nostream/conversation_key/messages.json",
+                        account_key: "acc_key",
+                        conversation_token: "conv_token"
                     }
                 })
                 .setup(function(api) {
@@ -245,6 +255,7 @@ describe("Mama Nigeria App", function() {
                         )
                         .check.user.answers({
                             mama_id: 'cb245673-aa41-4302-ac47-00000000002',
+                            mama_num: '08080020002',
                             state_r01_number: '+08080020002',
                             state_r02_retry_number: '08080020002'
                         })
@@ -1019,6 +1030,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.user.answers({
                         mama_id: "cb245673-aa41-4302-ac47-00000000002",
+                        mama_num: "08080020002",
                         birth_date: '2015-12-21',
                         state_r01_number: "08080020002",
                         state_r03_receiver: "mother",
