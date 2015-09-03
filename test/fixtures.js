@@ -1175,5 +1175,30 @@ module.exports = function() {
             }
         },
 
+        // send sms via vumi http api
+        // post subscription for 0005 to baby (baby switch)
+        {
+            'request': {
+                'method': 'PUT',
+                'headers': {
+                    'Authorization': ['??'],
+                    'Content-Type': ['application/json; charset=utf-8']
+                },
+                'url': "https://localhost/api/v1/go/http_api_nostream/conversation_key/messages.json",
+                'data':  {
+                    "to_addr": "+08080020002",
+                    "content": "You have been registered on Hello Mama. Welcome! " +
+                               "To change the day & time you receive calls, stop " +
+                               "them, or tell us you've had the baby, please call " +
+                               "{{ voice_change_num }}."
+                }
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                }
+            }
+        },
+
     ];
 };

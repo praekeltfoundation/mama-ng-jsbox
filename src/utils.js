@@ -100,7 +100,7 @@ go.utils = {
             case "put":
                 return api.put(im.config.control.url + endpoint, {
                     params: params,
-                  data: payload
+                    data: payload
                 });
             case "delete":
                 return api.delete(im.config.control.url + endpoint);
@@ -386,6 +386,25 @@ go.utils = {
                         go.utils.subscribe_contact(im, subscription)
                     ]);
             });
+    },
+
+    send_welcome_sms: function(im, $) {
+        var api = new JsonApi(im, {
+            headers: {
+                'Content-Type': ['application/json; charset=utf-8'],
+            },
+            auth: {
+                account_key: im.config.vumi_http.account_key,
+                conversation_token: im.config.vumi_http.conversation_token
+            }
+        });
+
+        return api.put(im.config.vumi_http.url, {
+            data: {
+                "to_addr": go.utils.normalise_ng_msisdn(im.user.answers.mama_num),
+                "content": im.config.reg_complete_sms
+            }
+        });
     },
 
     get_active_subscriptions_by_contact_id: function(contact_id, im) {

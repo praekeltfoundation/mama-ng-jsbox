@@ -50,6 +50,7 @@ go.app = function() {
                     if (go.utils.check_valid_phone_number(content) === false) {
                         return 'state_r02_retry_number';
                     } else {
+                        self.im.user.set_answer('mama_num', content);
                         return go.utils
                             // get or create mama contact
                             .get_or_create_contact(content, self.im)
@@ -72,6 +73,7 @@ go.app = function() {
                     if (go.utils.check_valid_phone_number(content) === false) {
                         return 'state_r02_retry_number';
                     } else {
+                        self.im.user.set_answer('mama_num', content);
                         return go.utils
                             // get or create mama contact
                             .get_or_create_contact(content, self.im)
@@ -284,7 +286,11 @@ go.app = function() {
             return go.utils
                 .save_contact_info_and_subscribe(self.im)
                 .then(function() {
-                    return self.states.create('state_r13_end');
+                    return go.utils
+                        .send_welcome_sms(self.im, $)
+                        .then(function() {
+                            return self.states.create('state_r13_end');
+                        });
                 });
         });
 

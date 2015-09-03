@@ -107,7 +107,7 @@ go.utils = {
             case "put":
                 return api.put(im.config.control.url + endpoint, {
                     params: params,
-                  data: payload
+                    data: payload
                 });
             case "delete":
                 return api.delete(im.config.control.url + endpoint);
@@ -395,6 +395,25 @@ go.utils = {
             });
     },
 
+    send_welcome_sms: function(im, $) {
+        var api = new JsonApi(im, {
+            headers: {
+                'Content-Type': ['application/json; charset=utf-8'],
+            },
+            auth: {
+                account_key: im.config.vumi_http.account_key,
+                conversation_token: im.config.vumi_http.conversation_token
+            }
+        });
+
+        return api.put(im.config.vumi_http.url, {
+            data: {
+                "to_addr": go.utils.normalise_ng_msisdn(im.user.answers.mama_num),
+                "content": im.config.reg_complete_sms
+            }
+        });
+    },
+
     get_active_subscriptions_by_contact_id: function(contact_id, im) {
         // returns all active subscriptions - for unlikely case where there
         // is more than one active subscription
@@ -599,6 +618,7 @@ go.app = function() {
                     if (go.utils.check_valid_phone_number(content) === false) {
                         return 'state_r02_retry_number';
                     } else {
+                        self.im.user.set_answer('mama_num', content);
                         return go.utils
                             // get or create mama contact
                             .get_or_create_contact(content, self.im)
@@ -621,6 +641,7 @@ go.app = function() {
                     if (go.utils.check_valid_phone_number(content) === false) {
                         return 'state_r02_retry_number';
                     } else {
+                        self.im.user.set_answer('mama_num', content);
                         return go.utils
                             // get or create mama contact
                             .get_or_create_contact(content, self.im)
@@ -833,7 +854,11 @@ go.app = function() {
             return go.utils
                 .save_contact_info_and_subscribe(self.im)
                 .then(function() {
-                    return self.states.create('state_r13_end');
+                    return go.utils
+                        .send_welcome_sms(self.im, $)
+                        .then(function() {
+                            return self.states.create('state_r13_end');
+                        });
                 });
         });
 
