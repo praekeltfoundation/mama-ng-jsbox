@@ -1,3 +1,6 @@
+# State Diagram
+## Source document
+based off here: [https://docs.google.com/drawings/d/1RGeNlarcnBhGNgIIHVjHuFS59cDGVj806rFaJ4W7p5Y/edit](https://docs.google.com/drawings/d/1RGeNlarcnBhGNgIIHVjHuFS59cDGVj806rFaJ4W7p5Y/edit)
 
 ```
 @startuml
