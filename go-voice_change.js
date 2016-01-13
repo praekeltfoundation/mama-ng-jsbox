@@ -14,6 +14,8 @@ var JsonApi = vumigo.http.api.JsonApi;
 // Shared utils lib
 go.utils = {
 
+// VOICE UTILS
+
     should_restart: function(im) {
         var no_restart_states = [
             'state_r01_number',
@@ -84,6 +86,8 @@ go.utils = {
         };
     },
 
+// CONTROL API CALL
+
     control_api_call: function(method, params, payload, endpoint, im) {
         var api = new JsonApi(im, {
             headers: {
@@ -124,6 +128,8 @@ go.utils = {
             });
     },
 
+// MSISDN & NUMBER HANDLING
+
     // An attempt to solve the insanity of JavaScript numbers
     check_valid_number: function(content) {
         var numbers_only = new RegExp('^\\d+$');
@@ -148,9 +154,38 @@ go.utils = {
         }
     },
 
-    get_addresses: function(msisdn) {
-        return "msisdn:" + msisdn;
+    normalize_msisdn: function(raw, country_code) {
+        // don't touch shortcodes
+        if (raw.length <= 5) {
+            return raw;
+        }
+        // remove chars that are not numbers or +
+        raw = raw.replace(/[^0-9+]/g);
+        if (raw.substr(0,2) === '00') {
+            return '+' + raw.substr(2);
+        }
+        if (raw.substr(0,1) === '0') {
+            return '+' + country_code + raw.substr(1);
+        }
+        if (raw.substr(0,1) === '+') {
+            return raw;
+        }
+        if (raw.substr(0, country_code.length) === country_code) {
+            return '+' + raw;
+        }
+        return raw;
     },
+
+    double_digit_number: function(input) {
+        input_numeric = parseInt(input, 10);
+        if (parseInt(input, 10) < 10) {
+            return "0" + input_numeric.toString();
+        } else {
+            return input_numeric.toString();
+        }
+    },
+
+// CONTACT HANDLING
 
     get_contact_id_by_msisdn: function(msisdn, im) {
         var params = {
@@ -193,28 +228,6 @@ go.utils = {
             });
     },
 
-    normalize_msisdn: function(raw, country_code) {
-        // don't touch shortcodes
-        if (raw.length <= 5) {
-            return raw;
-        }
-        // remove chars that are not numbers or +
-        raw = raw.replace(/[^0-9+]/g);
-        if (raw.substr(0,2) === '00') {
-            return '+' + raw.substr(2);
-        }
-        if (raw.substr(0,1) === '0') {
-            return '+' + country_code + raw.substr(1);
-        }
-        if (raw.substr(0,1) === '+') {
-            return raw;
-        }
-        if (raw.substr(0, country_code.length) === country_code) {
-            return '+' + raw;
-        }
-        return raw;
-    },
-
     // Gets a contact id if it exists, otherwise creates a new one
     get_or_create_contact: function(msisdn, im) {
         msisdn = go.utils.normalize_msisdn(msisdn, '234');  // nigeria
@@ -236,6 +249,49 @@ go.utils = {
             });
     },
 
+    update_contact: function(im, contact) {
+        // For patching any field on the contact
+        var endpoint = 'contacts/' + contact.id + '/';
+        return go.utils
+            .control_api_call('patch', {}, contact, endpoint, im)
+            .then(function(response) {
+                return response.data.id;
+            });
+    },
+
+    update_mama_details: function(im, mama_contact, chew_phone_used) {
+        if (im.user.answers.state_r04_mom_state === 'baby') {
+            mama_contact.details.baby_dob = im.user.answers.birth_date;
+            mama_contact.details.mama_edd = 'registration_after_baby_born';
+        } else {
+            mama_contact.details.baby_dob = 'mama_is_pregnant';
+            mama_contact.details.mama_edd = im.user.answers.birth_date;
+        }
+        mama_contact.details.opted_out = false;
+        mama_contact.details.has_registered = true;
+        mama_contact.details.registered_at = go.utils.get_today(im.config
+            ).format('YYYY-MM-DD HH:mm:ss');
+        mama_contact.details.msg_receiver = im.user.answers.state_r03_receiver;
+        mama_contact.details.state_at_registration = im.user.answers.state_r04_mom_state;
+        mama_contact.details.state_current = im.user.answers.state_r04_mom_state;
+        mama_contact.details.lang = go.utils.get_lang(im);
+        mama_contact.details.msg_type = im.user.answers.state_r10_message_type;
+        mama_contact.details.voice_days = im.user.answers.state_r11_voice_days || 'sms';
+        mama_contact.details.voice_times = im.user.answers.state_r12_voice_times || 'sms';
+        return mama_contact;
+    },
+
+    get_lang: function(im) {
+        lang_map = {
+            'english': 'eng_NG',
+            'hausa': 'hau_NG',
+            'igbo': 'ibo_NG'
+        };
+        return lang_map[im.user.answers.state_r09_language];
+    },
+
+// DATE HANDLING
+
     get_today: function(config) {
         var today;
         if (config.testing_today) {
@@ -244,15 +300,6 @@ go.utils = {
             today = new moment();
         }
         return today;
-    },
-
-    double_digit_number: function(input) {
-        input_numeric = parseInt(input, 10);
-        if (parseInt(input, 10) < 10) {
-            return "0" + input_numeric.toString();
-        } else {
-            return input_numeric.toString();
-        }
     },
 
     is_valid_date: function(date, format) {
@@ -291,45 +338,30 @@ go.utils = {
         }
     },
 
-    get_lang: function(im) {
-        lang_map = {
-            'english': 'eng_NG',
-            'hausa': 'hau_NG',
-            'igbo': 'ibo_NG'
+// OTHER
+
+    get_addresses: function(msisdn) {
+        return "msisdn:" + msisdn;
+    },
+
+// SUBSCRIPTION HANDLING
+
+    setup_subscription: function(im, mama_contact) {
+        subscription = {
+            contact: "/api/v1/contacts/" + mama_contact.id + "/",
+            version: 1,
+            messageset_id: go.utils.get_messageset_id(mama_contact),
+            next_sequence_number: go.utils.get_next_sequence_number(mama_contact),
+            lang: mama_contact.details.lang,
+            active: true,
+            completed: false,
+            schedule: go.utils.get_schedule(mama_contact),
+            process_status: 0,
+            metadata: {
+                msg_type: mama_contact.details.msg_type
+            }
         };
-        return lang_map[im.user.answers.state_r09_language];
-    },
-
-    update_contact: function(im, contact) {
-        // For patching any field on the contact
-        var endpoint = 'contacts/' + contact.id + '/';
-        return go.utils
-            .control_api_call('patch', {}, contact, endpoint, im)
-            .then(function(response) {
-                return response.data.id;
-            });
-    },
-
-    update_mama_details: function(im, mama_contact, chew_phone_used) {
-        if (im.user.answers.state_r04_mom_state === 'baby') {
-            mama_contact.details.baby_dob = im.user.answers.birth_date;
-            mama_contact.details.mama_edd = 'registration_after_baby_born';
-        } else {
-            mama_contact.details.baby_dob = 'mama_is_pregnant';
-            mama_contact.details.mama_edd = im.user.answers.birth_date;
-        }
-        mama_contact.details.opted_out = false;
-        mama_contact.details.has_registered = true;
-        mama_contact.details.registered_at = go.utils.get_today(im.config
-            ).format('YYYY-MM-DD HH:mm:ss');
-        mama_contact.details.msg_receiver = im.user.answers.state_r03_receiver;
-        mama_contact.details.state_at_registration = im.user.answers.state_r04_mom_state;
-        mama_contact.details.state_current = im.user.answers.state_r04_mom_state;
-        mama_contact.details.lang = go.utils.get_lang(im);
-        mama_contact.details.msg_type = im.user.answers.state_r10_message_type;
-        mama_contact.details.voice_days = im.user.answers.state_r11_voice_days || 'sms';
-        mama_contact.details.voice_times = im.user.answers.state_r12_voice_times || 'sms';
-        return mama_contact;
+        return subscription;
     },
 
     get_messageset_id: function(mama_contact) {
@@ -359,24 +391,6 @@ go.utils = {
         return schedule_id;
     },
 
-    setup_subscription: function(im, mama_contact) {
-        subscription = {
-            contact: "/api/v1/contacts/" + mama_contact.id + "/",
-            version: 1,
-            messageset_id: go.utils.get_messageset_id(mama_contact),
-            next_sequence_number: go.utils.get_next_sequence_number(mama_contact),
-            lang: mama_contact.details.lang,
-            active: true,
-            completed: false,
-            schedule: go.utils.get_schedule(mama_contact),
-            process_status: 0,
-            metadata: {
-                msg_type: mama_contact.details.msg_type
-            }
-        };
-        return subscription;
-    },
-
     subscribe_contact: function(im, subscription) {
         var payload = subscription;
         return go.utils
@@ -384,50 +398,6 @@ go.utils = {
             .then(function(response) {
                 return response.data.id;
             });
-    },
-
-    save_contact_info_and_subscribe: function(im) {
-        var mama_id = im.user.answers.mama_id;
-        return Q
-            .all([
-                // get mama contact
-                go.utils.get_contact_by_id(mama_id, im),
-                // deactivate existing subscriptions
-                go.utils.subscriptions_unsubscribe_all(mama_id, im)
-            ])
-            .spread(function(mama_contact, unsubscribe_result) {
-                mama_contact = go.utils.update_mama_details(
-                    im, mama_contact);
-                var subscription = go.utils
-                    .setup_subscription(im, mama_contact);
-
-                return Q
-                    .all([
-                        // Update mama's contact
-                        go.utils.update_contact(im, mama_contact),
-                        // Create a subscription for mama
-                        go.utils.subscribe_contact(im, subscription)
-                    ]);
-            });
-    },
-
-    vumi_send_text: function(im, to_addr, sms_message) {
-        var api = new JsonApi(im, {
-            headers: {
-                'Content-Type': ['application/json; charset=utf-8'],
-            },
-            auth: {
-                account_key: im.config.vumi_http.account_key,
-                conversation_token: im.config.vumi_http.conversation_token
-            }
-        });
-
-        return api.put(im.config.vumi_http.url, {
-            data: {
-                "to_addr": go.utils.normalize_msisdn(to_addr, '234'),  // nigeria
-                "content": sms_message
-            }
-        });
     },
 
     get_active_subscriptions_by_contact_id: function(contact_id, im) {
@@ -524,6 +494,33 @@ go.utils = {
             });
     },
 
+    save_contact_info_and_subscribe: function(im) {
+        var mama_id = im.user.answers.mama_id;
+        return Q
+            .all([
+                // get mama contact
+                go.utils.get_contact_by_id(mama_id, im),
+                // deactivate existing subscriptions
+                go.utils.subscriptions_unsubscribe_all(mama_id, im)
+            ])
+            .spread(function(mama_contact, unsubscribe_result) {
+                mama_contact = go.utils.update_mama_details(
+                    im, mama_contact);
+                var subscription = go.utils
+                    .setup_subscription(im, mama_contact);
+
+                return Q
+                    .all([
+                        // Update mama's contact
+                        go.utils.update_contact(im, mama_contact),
+                        // Create a subscription for mama
+                        go.utils.subscribe_contact(im, subscription)
+                    ]);
+            });
+    },
+
+// CHANGE HANDLING
+
     change_msg_times: function(im) {
         var mama_id = im.user.answers.mama_id;
         return Q
@@ -549,6 +546,8 @@ go.utils = {
                 ]);
             });
     },
+
+// OPTOUT HANDLING
 
     optout_loss_opt_in: function(im) {
         return go.utils
@@ -577,6 +576,40 @@ go.utils = {
                 return go.utils
                     .update_contact(im, mama_contact);
             });
+    },
+
+// SMS HANDLING
+
+    vumi_send_text: function(im, to_addr, sms_message) {
+        var api = new JsonApi(im, {
+            headers: {
+                'Content-Type': ['application/json; charset=utf-8'],
+            },
+            auth: {
+                account_key: im.config.vumi_http.account_key,
+                conversation_token: im.config.vumi_http.conversation_token
+            }
+        });
+
+        return api.put(im.config.vumi_http.url, {
+            data: {
+                "to_addr": go.utils.normalize_msisdn(to_addr, '234'),  // nigeria
+                "content": sms_message
+            }
+        });
+    },
+
+// TIMEOUT HANDLING
+
+    timed_out: function(im) {
+        var no_redirects = [
+            'state_start',
+            'state_end_thank_you',
+            'state_end_thank_translate'
+        ];
+        return im.msg.session_event === 'new'
+            && im.user.state.name
+            && no_redirects.indexOf(im.user.state.name) === -1;
     },
 
     "commas": "commas"

@@ -1,10 +1,9 @@
-// This app handles registration
-
 go.app = function() {
     var vumigo = require('vumigo_v02');
     var App = vumigo.App;
-    var ChoiceState = vumigo.states.ChoiceState;
     var Choice = vumigo.states.Choice;
+    var ChoiceState = vumigo.states.ChoiceState;
+    var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
 
@@ -12,302 +11,405 @@ go.app = function() {
     var GoApp = App.extend(function(self) {
         App.call(self, 'state_start');
         var $ = self.$;
-        var lang = 'eng_NG';
         var interrupt = true;
 
+        self.init = function() {
+
+            // Load self.contact
+            return self.im.contacts
+                .for_user()
+                .then(function(user_contact) {
+                   self.contact = user_contact;
+                });
+        };
+
+
+    // TEXT CONTENT
+
+        var questions = {
+            "state_timed_out":
+                "You have an incomplete registration. Would you like to continue with this registration?",
+            "state_auth_code":
+                "Welcome to FamilyConnect. Please enter your unique personnel code. For example, 12345",
+            "state_msg_receiver":
+                "Please select who will receive the messages on their phone:",
+            "state_msisdn":
+                "Please enter the cellphone number which the messages will be sent to. For example, 0713627893",
+            "state_household_head_name":
+                "Please enter the first name of the Head of the Household of the Pregnant woman. For example, Isaac.",
+            "state_household_head_surname":
+                "Please enter the surname of the Head of the Household of the pregnant woman. For example, Mbire.",
+            "state_last_period_month":
+                "Please select the month when the woman had her last period:",
+            "state_last_period_day":
+                "What day did her last period start on? (For example, 12)",
+            "state_mother_name":
+                "Mother name",
+            "state_mother_surname":
+                "Mother surname",
+            "state_id_type":
+                "What kind of identification does the pregnant woman have?",
+            "state_nin":
+                "Please enter her National Identity Number (NIN).",
+            "state_mother_birth_day":
+                "Please enter the day the she was born. For example, 12.",
+            "state_mother_birth_month":
+                "Please select the month of year the Mother was born:",
+            "state_mother_birth_year":
+                "Please enter the year the mother was born. For example, 1986.",
+            "state_msg_language":
+                "Which language would they want to receive messages in?",
+            "state_hiv_messages":
+                "Would they like to receive additional messages about HIV?",
+            "state_end_thank_you":
+                "Thank you. The pregnant woman will now receive messages.",
+        };
+
+        var smss = {
+            "mother":
+                "Welcome to FamilyConnect {{mother_name}}. Your FamilyConnect ID is {{familyconnect_id}}. Write it down and give it to the Nurse at your next clinic visit.",
+            "gatekeeper":
+                "Welcome to FamilyConnect. {{mother_name}}'s FamilyConnect ID is {{familyconnect_id}}.  Write it down and give it to the Nurse at your next clinic visit."
+        };
+
+        get_sms_text = function(msg_receiver) {
+            return msg_receiver === 'mother_to_be'
+                ? smss.mother : smss.gatekeeper;
+        };
+
+        var errors = {
+            "state_auth_code":
+                "That code is not recognised. Please enter your 5 digit personnel code.",
+        };
+
+        get_error_text = function(name) {
+            return errors[name] || "Sorry not a valid input. " + questions[name];
+        };
+
+
+
+    // TIMEOUT HANDLING
+
+        // override normal state adding
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                if (!interrupt || !go.utils.should_restart(self.im))
+                if (!interrupt || !go.utils.timed_out(self.im))
                     return creator(name, opts);
 
                 interrupt = false;
                 opts = opts || {};
                 opts.name = name;
-                // Prevent previous content being passed to next state
-                self.im.msg.content = null;
-                return self.states.create('state_start', opts);
+                return self.states.create('state_timed_out', opts);
             });
         };
 
-    // START
-
-        self.states.add('state_start', function(name) {
-            // Reset user answers when restarting the app
-            self.im.user.answers = {};
-            return self.states.create("state_r01_number");
-        });
-
-
-    // REGISTRATION
-
-        self.add('state_r01_number', function(name) {
-            var speech_option = '1';
-            return new FreeText(name, {
-                question: $('Welcome, Number'),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                next: function(content) {
-                    if (go.utils.check_valid_phone_number(content) === false) {
-                        return 'state_r02_retry_number';
-                    } else {
-                        self.im.user.set_answer('mama_num', content);
-                        return go.utils
-                            // get or create mama contact
-                            .get_or_create_contact(content, self.im)
-                            .then(function(mama_id) {
-                                self.im.user.set_answer('mama_id', mama_id);
-                                return 'state_r03_receiver';
-                            });
-                    }
-                }
-            });
-        });
-
-        self.add('state_r02_retry_number', function(name) {
-            var speech_option = '1';
-            return new FreeText(name, {
-                question: $('Retry number'),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                next: function(content) {
-                    if (go.utils.check_valid_phone_number(content) === false) {
-                        return 'state_r02_retry_number';
-                    } else {
-                        self.im.user.set_answer('mama_num', content);
-                        return go.utils
-                            // get or create mama contact
-                            .get_or_create_contact(content, self.im)
-                            .then(function(mama_id) {
-                                self.im.user.set_answer('mama_id', mama_id);
-                                return 'state_r03_receiver';
-                            });
-                    }
-                }
-            });
-        });
-
-        self.add('state_r03_receiver', function(name) {
-            var speech_option = '1';
+        // timeout 01
+        self.states.add('state_timed_out', function(name, creator_opts) {
             return new ChoiceState(name, {
-                question: $('Choose receiver'),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                question: $(questions[name]),
                 choices: [
-                    new Choice('mother', $('Mother')),
-                    new Choice('other', $('Other'))
-                ],
-                next: 'state_r04_mom_state'
-            });
-        });
-
-        self.add('state_r04_mom_state', function(name) {
-            var speech_option = '1';
-            return new ChoiceState(name, {
-                question: $('Pregnant or baby'),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                choices: [
-                    new Choice('pregnant', $('Pregnant')),
-                    new Choice('baby', $('Baby'))
-                ],
-                next: 'state_r05_birth_year'
-            });
-        });
-
-        self.add('state_r05_birth_year', function(name) {
-            // TODO #6 Don't show next year for pregnancy in Jan / Feb
-            var speech_option;
-            var year_choices = [
-                new Choice('last_year', $('last_year')),
-                new Choice('this_year', $('this_year')),
-                new Choice('next_year', $('next_year'))
-            ];
-            if (self.im.user.answers.state_r04_mom_state === 'pregnant') {
-                choices = year_choices.slice(1,3);
-                speech_option = '1';
-            } else {
-                choices = year_choices.slice(0,2);
-                speech_option = '2';
-            }
-            return new ChoiceState(name, {
-                question: $('Birth year?'),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                choices: choices,
-                next: function(choice) {
-                    return 'state_r06_birth_month';
-                }
-            });
-        });
-
-        self.add('state_r06_birth_month', function(name) {
-            var speech_option;
-            self.im.user.answers.state_r04_mom_state === 'pregnant'
-                ? speech_option = '1'
-                : speech_option = '2';
-            // create choices eg. new Choice('1', '1') etc.
-            var month_choices = [];
-            for (i=1; i<=12; i++) {
-                month_choices.push(new Choice(i.toString(), i.toString()));
-            }
-            return new ChoiceState(name, {
-                question: $('Birth month? 1-12'),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                choices: month_choices,
-                next: 'state_r07_confirm_month'
-            });
-        });
-
-        self.add('state_r07_confirm_month', function(name) {
-            var routing = {
-                'confirm': 'state_r08_birth_day',
-                'retry': 'state_r06_birth_month'
-            };
-            var speech_option = self.im.user.answers.state_r06_birth_month;
-            return new ChoiceState(name, {
-                question: $('You entered x for Month. Correct?'),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                choices: [
-                    new Choice('confirm', $('confirm')),
-                    new Choice('retry', $('retry'))
+                    new Choice('continue', $("Yes")),
+                    new Choice('restart', $("Start new registration"))
                 ],
                 next: function(choice) {
-                    return routing[choice.value];
-                }
-            });
-        });
-
-        self.add('state_r08_birth_day', function(name) {
-            var month = self.im.user.answers.state_r06_birth_month;
-            var speech_option = go.utils.get_speech_option_birth_day(
-                self.im, month);
-            return new FreeText(name, {
-                question: $('Birth day in {{ month }}?'
-                    ).context({ month: month }),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                next: function(content) {
-                    var birth_date = go.utils.get_baby_dob(self.im, content);
-                    if (birth_date === 'invalid date') {
-                        return 'state_r14_retry_birth_day';
-                    } else {
-                        self.im.user.set_answer('birth_date', birth_date);
-                        return 'state_r09_language';
-                    }
-                }
-            });
-        });
-
-        self.add('state_r14_retry_birth_day', function(name) {
-            var speech_option = '1';
-            return new FreeText(name, {
-                question: $('Retry birth day'),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                next: function(content) {
-                    var birth_date = go.utils.get_baby_dob(self.im, content);
-                    if (birth_date === 'invalid date') {
-                        return 'state_r14_retry_birth_day';
-                    } else {
-                        self.im.user.set_answer('birth_date', birth_date);
-                        return 'state_r09_language';
-                    }
-                }
-            });
-        });
-
-        self.add('state_r09_language', function(name) {
-            var speech_option = '1';
-            return new ChoiceState(name, {
-                question: $('Language?'),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                choices: [
-                    new Choice('english', $('english')),
-                    new Choice('hausa', $('hausa')),
-                    new Choice('igbo', $('igbo')),
-                ],
-                next: 'state_r10_message_type'
-            });
-        });
-
-        self.add('state_r10_message_type', function(name) {
-            var speech_option = '1';
-            var routing = {
-                'sms': 'state_r13_enter',
-                'voice': 'state_r11_voice_days'
-            };
-            return new ChoiceState(name, {
-                question: $('Channel?'),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                choices: [
-                    new Choice('sms', $('sms')),
-                    new Choice('voice', $('voice'))
-                ],
-                next: function(choice) {
-                    return routing[choice.value];
-                }
-            });
-        });
-
-        self.add('state_r11_voice_days', function(name) {
-            var speech_option = '1';
-            return new ChoiceState(name, {
-                question: $('Message days?'),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                choices: [
-                    new Choice('mon_wed', $('mon_wed')),
-                    new Choice('tue_thu', $('tue_thu'))
-                ],
-                next: 'state_r12_voice_times'
-            });
-        });
-
-        self.add('state_r12_voice_times', function(name) {
-            var days = self.im.user.answers.state_r11_voice_days;
-            var speech_option = go.utils.get_speech_option_days(days);
-            return new ChoiceState(name, {
-                question: $('Message time?'),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                choices: [
-                    new Choice('9_11', $('9_11')),
-                    new Choice('2_5', $('2_5'))
-                ],
-                next: 'state_r13_enter'
-            });
-        });
-
-        self.add('state_r13_enter', function(name) {
-            return go.utils
-                .save_contact_info_and_subscribe(self.im)
-                .then(function() {
                     return go.utils
-                        .vumi_send_text(self.im, self.im.user.answers.mama_num,
-                            self.im.config.reg_complete_sms)
+                        .track_redials(self.contact, self.im, choice.value)
                         .then(function() {
-                            return self.states.create('state_r13_end');
+                            if (choice.value === 'continue') {
+                                return {
+                                    name: creator_opts.name,
+                                    creator_opts: creator_opts
+                                };
+                                // return creator_opts.name;
+                            } else if (choice.value === 'restart') {
+                                return 'state_start';
+                            }
                         });
+                }
+            });
+        });
+
+
+    // START STATE
+
+        self.add('state_start', function(name) {
+            return go.utils
+                .check_msisdn_hcp(self.im.user.addr)
+                .then(function(hcp_recognised) {
+                    if (hcp_recognised) {
+                        return self.states.create('state_msg_receiver');
+                    } else {
+                        return self.states.create('state_auth_code');
+                    }
                 });
         });
 
-        self.add('state_r13_end', function(name) {
-            var time = self.im.user.answers.state_r12_voice_times;
-            var days = self.im.user.answers.state_r11_voice_days;
-            var speech_option = go.utils.get_speech_option_days_time(days, time);
-            var text;
-            time === undefined
-                ? text = $('Thank you!')
-                : text = $('Thank you! Time: {{ time }}. Days: {{ days }}.'
-                           ).context({ time: time, days: days });
+
+    // REGISTRATION STATES
+
+        // FreeText st-B
+        self.add('state_auth_code', function(name) {
+            return new FreeText(name, {
+                question: $(questions[name]),
+                check: function(content) {
+                    return go.utils
+                        .validate_personnel_code(self.im, content)
+                        .then(function(valid_clinic_code) {
+                            if (valid_clinic_code) {
+                                return null;  // vumi expects null or undefined if check passes
+                            } else {
+                                return $(get_error_text(name));
+                            }
+                        });
+                },
+                next: 'state_msg_receiver'
+            });
+        });
+
+        // ChoiceState st-01
+        self.add('state_msg_receiver', function(name) {
+            return new ChoiceState(name, {
+                question: $(questions[name]),
+                choices: [
+                    new Choice('head_of_household', $("Head of the Household")),
+                    new Choice('mother_to_be', $("Mother to be")),
+                    new Choice('family_member', $("Family member")),
+                    new Choice('trusted_friend', $("Trusted friend"))
+                ],
+                error: $(get_error_text(name)),
+                next: 'state_msisdn'
+            });
+        });
+
+        // FreeText st-02
+        self.add('state_msisdn', function(name) {
+            return new FreeText(name, {
+                question: $(questions[name]),
+                check: function(content) {
+                    if (go.utils.is_valid_msisdn(content)) {
+                        return null;  // vumi expects null or undefined if check passes
+                    } else {
+                        return $(get_error_text(name));
+                    }
+                },
+                next: 'state_household_head_name'
+            });
+        });
+
+        // FreeText st-03
+        self.add('state_household_head_name', function(name) {
+            return new FreeText(name, {
+                question: $(questions[name]),
+                check: function(content) {
+                    if (go.utils.is_valid_name(content)) {
+                        return null;  // vumi expects null or undefined if check passes
+                    } else {
+                        return $(get_error_text(name));
+                    }
+                },
+                next: 'state_household_head_surname'
+            });
+        });
+
+        // FreeText st-04
+        self.add('state_household_head_surname', function(name) {
+            return new FreeText(name, {
+                question: $(questions[name]),
+                check: function(content) {
+                    if (go.utils.is_valid_name(content)) {
+                        return null;  // vumi expects null or undefined if check passes
+                    } else {
+                        return $(get_error_text(name));
+                    }
+                },
+                next: 'state_last_period_month'
+            });
+        });
+
+        // ChoiceState st-05
+        self.add('state_last_period_month', function(name) {
+            var today = go.utils.get_today(self.im.config);
+            var start_month = today.month();
+            return new ChoiceState(name, {
+                question: $(questions[name]),
+                choices: go.utils.make_month_choices($, start_month, 9, -1),
+                error: $(get_error_text(name)),
+                next: 'state_last_period_day'
+            });
+        });
+
+        // FreeText st-06
+        self.add('state_last_period_day', function(name) {
+            return new FreeText(name, {
+                question: $(questions[name]),
+                check: function(content) {
+                    if (go.utils.is_valid_day_of_month(content)) {
+                        return null;  // vumi expects null or undefined if check passes
+                    } else {
+                        return $(get_error_text(name));
+                    }
+                },
+                next: 'state_mother_name'
+            });
+        });
+
+        // FreeText st-07
+        self.add('state_mother_name', function(name) {
+            return new FreeText(name, {
+                question: $(questions[name]),
+                check: function(content) {
+                    if (go.utils.is_valid_name(content)) {
+                        return null;  // vumi expects null or undefined if check passes
+                    } else {
+                        return $(get_error_text(name));
+                    }
+                },
+                next: 'state_mother_surname'
+            });
+        });
+
+        // FreeText st-08
+        self.add('state_mother_surname', function(name) {
+            return new FreeText(name, {
+                question: $(questions[name]),
+                check: function(content) {
+                    if (go.utils.is_valid_name(content)) {
+                        return null;  // vumi expects null or undefined if check passes
+                    } else {
+                        return $(get_error_text(name));
+                    }
+                },
+                next: 'state_id_type'
+            });
+        });
+
+        // ChoiceState st-09
+        self.add('state_id_type', function(name) {
+            return new ChoiceState(name, {
+                question: $(questions[name]),
+                error: $(get_error_text(name)),
+                choices: [
+                    new Choice('ugandan_id', $("Ugandan National Identity Number")),
+                    new Choice('other', $("Other"))
+                ],
+                next: function(choice) {
+                    return choice.value === 'ugandan_id'
+                        ? 'state_nin'
+                        : 'state_mother_birth_day';
+                }
+            });
+        });
+
+        // FreeText st-10
+        self.add('state_nin', function(name) {
+            return new FreeText(name, {
+                question: $(questions[name]),
+                next: 'state_msg_language'
+            });
+        });
+
+        // FreeText st-17
+        self.add('state_mother_birth_day', function(name) {
+            return new FreeText(name, {
+                question: $(questions[name]),
+                check: function(content) {
+                    if (go.utils.is_valid_day_of_month(content)) {
+                        return null;  // vumi expects null or undefined if check passes
+                    } else {
+                        return $(get_error_text(name));
+                    }
+                },
+                next: 'state_mother_birth_month'
+            });
+        });
+
+        // PaginatedChoiceState st-18 / st-19
+        self.add('state_mother_birth_month', function(name) {
+            return new PaginatedChoiceState(name, {
+                question: $(questions[name]),
+                error: $(get_error_text(name)),
+                characters_per_page: 160,
+                options_per_page: null,
+                more: $('More'),
+                back: $('Back'),
+                choices: [
+                    new Choice('01', $('January')),
+                    new Choice('02', $('February')),
+                    new Choice('03', $('March')),
+                    new Choice('04', $('April')),
+                    new Choice('05', $('May')),
+                    new Choice('06', $('June')),
+                    new Choice('07', $('July')),
+                    new Choice('08', $('August')),
+                    new Choice('09', $('September')),
+                    new Choice('10', $('October')),
+                    new Choice('11', $('November')),
+                    new Choice('12', $('December'))
+                ],
+                next: 'state_mother_birth_year'
+            });
+        });
+
+        // FreeText st-20
+        self.add('state_mother_birth_year', function(name) {
+            return new FreeText(name, {
+                question: $(questions[name]),
+                check: function(content) {
+                    if (go.utils.is_valid_year(content)) {
+                        return null;  // vumi expects null or undefined if check passes
+                    } else {
+                        return $(get_error_text(name));
+                    }
+                },
+                next: 'state_msg_language'
+            });
+        });
+
+        // ChoiceState st-11
+        self.add('state_msg_language', function(name) {
+            return new ChoiceState(name, {
+                question: $(questions[name]),
+                error: $(get_error_text(name)),
+                choices: [
+                    new Choice('english', $('English')),
+                    new Choice('runyakore', $('Runyakore')),
+                    new Choice('lusoga', $('Lusoga'))
+                ],
+                next: 'state_hiv_messages'
+            });
+        });
+
+        // ChoiceState st-12
+        self.add('state_hiv_messages', function(name) {
+            return new ChoiceState(name, {
+                question: $(questions[name]),
+                error: $(get_error_text(name)),
+                choices: [
+                    new Choice('yes_hiv_msgs', $('Yes')),
+                    new Choice('no_hiv_msgs', $('No'))
+                ],
+                next: 'state_end_thank_you_enter'
+            });
+        });
+
+        // Interstitial
+        self.add('state_end_thank_you_enter', function(name) {
+            return self.im.outbound.send_to_user({
+                    endpoint: 'sms',
+                    content: $(get_sms_text(self.im.user.answers.state_msg_receiver)).context({
+                        mother_name: self.im.user.answers.state_mother_name,
+                        familyconnect_id: '7777'
+                    })
+                })
+                .then(function() {
+                    return self.states.create('state_end_thank_you');
+                });
+        });
+
+        // EndState st-13
+        self.add('state_end_thank_you', function(name) {
             return new EndState(name, {
-                text: text,
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                text: $(questions[name]),
                 next: 'state_start'
             });
         });

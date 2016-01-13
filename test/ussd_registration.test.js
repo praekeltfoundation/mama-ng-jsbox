@@ -1,10 +1,11 @@
 var vumigo = require('vumigo_v02');
 var fixtures = require('./fixtures');
 var AppTester = vumigo.AppTester;
-
+var _ = require('lodash');
+var assert = require('assert');
 
 describe("Mama Nigeria App", function() {
-    describe("Voice Registration", function() {
+    describe("USSD Registration", function() {
         var app;
         var tester;
 
@@ -13,22 +14,18 @@ describe("Mama Nigeria App", function() {
             tester = new AppTester(app);
 
             tester
+                .setup.char_limit(182)
                 .setup.config.app({
-                    testing_today: '2015-07-22',
-                    name: 'voice-registration-test',
+                    name: 'ussd-registration-test',
+                    channel: '*120*8864*0000#',
+                    testing_today: '2015-04-03 06:07:08.999',
                     control: {
                         url: "http://localhost:8000/api/v1/",
                         api_key: "control_test_key"
                     },
-                    voice_content: {
-                        url: "http://localhost:8001/api/v1/",
-                        api_key: "voice_test_key"
+                    endpoints: {
+                        "sms": {"delivery_class": "sms"}
                     },
-                    reg_complete_sms:
-                        "You have been registered on Hello Mama. Welcome! " +
-                        "To change the day & time you receive calls, stop " +
-                        "them, or tell us you've had the baby, please call " +
-                        "{{ voice_change_num }}.",
                     vumi_http: {
                         url: "https://localhost/api/v1/go/http_api_nostream/conversation_key/messages.json",
                         account_key: "acc_key",
@@ -36,1017 +33,595 @@ describe("Mama Nigeria App", function() {
                     }
                 })
                 .setup(function(api) {
-                    fixtures().forEach(function(d) {
-                        d.repeatable = true;
-                        api.http.fixtures.add(d);
+                    fixtures().forEach(api.http.fixtures.add);
+                })
+                .setup(function(api) {
+                    // new user 082111
+                    api.contacts.add({
+                        msisdn: '+082111',
+                        extra: {},
+                        key: "contact_key_082111",
+                        user_account: "contact_user_account"
+                    });
+                })
+                .setup(function(api) {
+                    // hcp recognised user 082222
+                    api.contacts.add({
+                        msisdn: '+082222',
+                        extra: {},
+                        key: "contact_key_082222",
+                        user_account: "contact_user_account"
                     });
                 })
                 ;
         });
 
+        // TEST TIMEOUTS
 
-        // TEST ANSWER RESET
-
-        describe("When you go back to the main menu", function() {
-            it("should reset the user answers", function() {
+        describe("Timeout testing", function() {
+            it("should ask about continuing", function() {
                 return tester
-                    .setup.user.addr('+07030010001')
+                    .setup.user.addr('082111')
                     .inputs(
-                        {session_event: 'new'},
-                        '08080020002',
-                        '*'
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , {session_event: 'close'}
+                        , {session_event: 'new'}
                     )
                     .check.interaction({
-                        state: 'state_r01_number',
-                        reply: 'Welcome, Number'
-                    })
-                    .check.user.answers({})
-                    .run();
-            });
-        });
-
-        // TEST REGISTRATION FLOW
-
-        describe("When you start the app", function() {
-            it("should navigate to state r01_number", function() {
-                return tester
-                    .setup.user.addr('+07030010001')
-                    .inputs(
-                        {session_event: 'new'}
-                    )
-                    .check.interaction({
-                        state: 'state_r01_number',
-                        reply: 'Welcome, Number'
-                    })
-                    .check.reply.properties({
-                        helper_metadata: {
-                            voice: {
-                                speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r01_number_1.mp3',
-                                wait_for: '#'
-                            }
-                        }
-                    })
-                    .run();
-            });
-        });
-
-        describe("When you enter a phone number r01_number", function() {
-            describe("if the number validates", function() {
-                it("should navigate to state r03_receiver", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '08080020002'
-                        )
-                        .check.interaction({
-                            state: 'state_r03_receiver',
-                            reply: [
-                                'Choose receiver',
-                                '1. Mother',
-                                '2. Other'
-                            ].join('\n')
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r03_receiver_1.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                        })
-                        .run();
-                });
-
-                it("should set the user answer mama_id to the mama's id", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '08080020002'
-                        )
-                        .check.user.answer('mama_id',
-                            'cb245673-aa41-4302-ac47-00000000002')
-                        .run();
-                });
-
-                it("should create the contact if it doesn't exist", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '08080030003'
-                        )
-                        .check.user.answer('mama_id',
-                            'cb245673-aa41-4302-ac47-00000000003')
-                        .run();
-                });
-            });
-
-            describe("if the number does not validate", function() {
-                it("should navigate to state r02_retry_number", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '+08080020002'
-                        )
-                        .check.interaction({
-                            state: 'state_r02_retry_number',
-                            reply: 'Retry number'
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r02_retry_number_1.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                        })
-                        .run();
-                });
-            });
-
-            describe("if the retried number does not validate", function() {
-                it("should navigate to state r02_retry_number again", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '+08080020002',
-                            '+08080020002'
-                        )
-                        .check.interaction({
-                            state: 'state_r02_retry_number',
-                            reply: 'Retry number'
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r02_retry_number_1.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                        })
-                        .run();
-                });
-            });
-
-            describe("if the user tries to restart with *", function() {
-                it("should not restart", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '+08080020002',
-                            '*'
-                        )
-                        .check.interaction({
-                            state: 'state_r02_retry_number',
-                            reply: 'Retry number'
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r02_retry_number_1.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                        })
-                        .run();
-                });
-            });
-
-            describe("if the retried number validates", function() {
-                it("should navigate to state r03_receiver", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '+08080020002',
-                            '08080020002'
-                        )
-                        .check.interaction({
-                            state: 'state_r03_receiver',
-                            reply: [
-                                'Choose receiver',
-                                '1. Mother',
-                                '2. Other'
-                            ].join('\n')
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r03_receiver_1.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                        })
-                        .run();
-                });
-
-                it("should set the user answer mama_id to the mama's id", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '+08080020002',
-                            '08080020002'
-                        )
-                        .check.user.answers({
-                            mama_id: 'cb245673-aa41-4302-ac47-00000000002',
-                            mama_num: '08080020002',
-                            state_r01_number: '+08080020002',
-                            state_r02_retry_number: '08080020002'
-                        })
-                        .run();
-                });
-            });
-        });
-
-        describe("When you enter a choice r03_receiver", function() {
-            describe("if it is a valid choice", function() {
-                it("should navigate to state r04_mom_state", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '08080020002'
-                            , '1'  // r03_receiver - mother
-                        )
-                        .check.interaction({
-                            state: 'state_r04_mom_state',
-                            reply: [
-                                'Pregnant or baby',
-                                '1. Pregnant',
-                                '2. Baby'
-                            ].join('\n')
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r04_mom_state_1.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                        })
-                        .run();
-                });
-            });
-
-            describe("if it is *", function() {
-                it("should restart", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '08080020002'
-                            , '*'  // r03_receiver - restart
-                        )
-                        .check.interaction({
-                            state: 'state_r01_number',
-                            reply: 'Welcome, Number'
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r01_number_1.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                    })
-                        .run();
-                });
-            });
-
-            describe("if it is an invalid choice", function() {
-                it("should replay r03_receiver", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '08080020002'
-                            , '7'  // r03_receiver - invalid choice
-                        )
-                        .check.interaction({
-                            state: 'state_r03_receiver',
-                            reply: [
-                                'Choose receiver',
-                                '1. Mother',
-                                '2. Other'
-                            ].join('\n')
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r03_receiver_1.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                        })
-                        .run();
-                });
-            });
-        });
-
-        describe("When you enter a choice r04_mom_state", function() {
-            describe("if you choose pregnant", function() {
-                it("should navigate to state r05_birth_year", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '08080020002'
-                            , '1'  // r03_receiver - mother
-                            , '1'  // r04_mom_state - pregnant
-                        )
-                        .check.interaction({
-                            state: 'state_r05_birth_year',
-                            reply: [
-                                'Birth year?',
-                                '1. this_year',
-                                '2. next_year'
-                            ].join('\n')
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r05_birth_year_1.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                        })
-                        .run();
-                });
-            });
-
-            describe("if you choose baby", function() {
-                it("should navigate to state r05_birth_year", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '08080020002'
-                            , '1'  // r03_receiver - mother
-                            , '2'  // r04_mom_state - baby
-                        )
-                        .check.interaction({
-                            state: 'state_r05_birth_year',
-                            reply: [
-                                'Birth year?',
-                                '1. last_year',
-                                '2. this_year'
-                            ].join('\n')
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r05_birth_year_2.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                        })
-                        .run();
-                });
-            });
-        });
-
-        describe("When you enter a choice r05_birth_year", function() {
-            describe("if the mother is pregnant", function() {
-                it("should navigate to state r06_birth_month", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '08080020002'
-                            , '1'  // r03_receiver - mother
-                            , '1'  // r04_mom_state - pregnant
-                            , '1'  // r05_birth_year - this year
-                        )
-                        .check.interaction({
-                            state: 'state_r06_birth_month',
-                            reply: [
-                                'Birth month? 1-12',
-                                '1. 1', '2. 2', '3. 3', '4. 4', '5. 5', '6. 6',
-                                '7. 7', '8. 8', '9. 9', '10. 10', '11. 11',
-                                '12. 12'
-                            ].join('\n')
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r06_birth_month_1.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                        })
-                        .run();
-                });
-            });
-
-            describe("if the mother has had her baby", function() {
-                it("should navigate to state r06_birth_month", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '08080020002'
-                            , '1'  // r03_receiver - mother
-                            , '2'  // r04_mom_state - baby
-                            , '1'  // r05_birth_year - last year
-                        )
-                        .check.interaction({
-                            state: 'state_r06_birth_month',
-                            reply: [
-                                'Birth month? 1-12',
-                                '1. 1', '2. 2', '3. 3', '4. 4', '5. 5', '6. 6',
-                                '7. 7', '8. 8', '9. 9', '10. 10', '11. 11',
-                                '12. 12'
-                            ].join('\n')
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r06_birth_month_2.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                        })
-                        .run();
-                });
-            });
-        });
-
-        describe("When you enter a choice r06_birth_month", function() {
-            it("should ask for month confirmation r07_confirm_month", function() {
-                return tester
-                    .setup.user.addr('+07030010001')
-                    .inputs(
-                        {session_event: 'new'},
-                        '08080020002'
-                        , '1'  // r03_receiver - mother
-                        , '1'  // r04_mom_state - pregnant
-                        , '1'  // r05_birth_year - this year
-                        , '6'  // r06_birth_month - june
-                    )
-                    .check.interaction({
-                        state: 'state_r07_confirm_month',
+                        state: 'state_timed_out',
                         reply: [
-                            'You entered x for Month. Correct?',
-                            '1. confirm',
-                            '2. retry'
+                            "You have an incomplete registration. Would you like to continue with this registration?",
+                            "1. Yes",
+                            "2. Start new registration"
                         ].join('\n')
                     })
-                    .check.reply.properties({
-                        helper_metadata: {
-                            voice: {
-                                speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r07_confirm_month_6.mp3',
-                                wait_for: '#'
-                            }
-                        }
+                    .run();
+            });
+            it("should continue", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , {session_event: 'close'}
+                        , {session_event: 'new'}
+                        , '1'  // state_timed_out - continue
+                    )
+                    .check.interaction({
+                        state: 'state_msg_receiver'
+                    })
+                    .run();
+            });
+            it("should restart", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , {session_event: 'close'}
+                        , {session_event: 'new'}
+                        , '2'  // state_timed_out - restart
+                    )
+                    .check.interaction({
+                        state: 'state_auth_code'
                     })
                     .run();
             });
         });
 
-        describe("When you enter a choice r07_confirm_month", function() {
-            describe("if the mother is pregnant", function() {
-                describe("if you select retry", function() {
-                    it("should navigate to state r06_birth_month again", function() {
-                        return tester
-                            .setup.user.addr('+07030010001')
-                            .inputs(
-                                {session_event: 'new'},
-                                '08080020002'
-                                , '1'  // r03_receiver - mother
-                                , '1'  // r04_mom_state - pregnant
-                                , '1'  // r05_birth_year - this year
-                                , '6'  // r06_birth_month - june
-                                , '2'  // r07_confirm_month - retry
-                            )
-                            .check.interaction({
-                                state: 'state_r06_birth_month',
-                                reply: [
-                                    'Birth month? 1-12',
-                                    '1. 1', '2. 2', '3. 3', '4. 4', '5. 5', '6. 6',
-                                    '7. 7', '8. 8', '9. 9', '10. 10', '11. 11',
-                                    '12. 12'
-                                ].join('\n')
-                            })
-                            .check.reply.properties({
-                                helper_metadata: {
-                                    voice: {
-                                        speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r06_birth_month_1.mp3',
-                                        wait_for: '#'
-                                    }
-                                }
-                            })
-                            .run();
-                    });
-                });
+        // TEST HCP RECOGNISED USER
 
-                describe("if you select confirm", function() {
-                    it("should navigate to state r08_birth_day", function() {
-                        return tester
-                            .setup.user.addr('+07030010001')
-                            .inputs(
-                                {session_event: 'new'},
-                                '08080020002'
-                                , '1'  // r03_receiver - mother
-                                , '1'  // r04_mom_state - pregnant
-                                , '1'  // r05_birth_year - this year
-                                , '6'  // r06_birth_month - june
-                                , '1'  // r07_confirm_month - confirm
-                            )
-                            .check.interaction({
-                                state: 'state_r08_birth_day',
-                                reply: 'Birth day in 6?'
-                            })
-                            .check.reply.properties({
-                                helper_metadata: {
-                                    voice: {
-                                        speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r08_birth_day_6.mp3',
-                                        wait_for: '#'
-                                    }
-                                }
-                            })
-                            .run();
-                    });
-                });
-            });
-
-            describe("if the mother has had her baby", function() {
-                describe("if you select retry", function() {
-                    it("should navigate to state r06_birth_month again", function() {
-                        return tester
-                            .setup.user.addr('+07030010001')
-                            .inputs(
-                                {session_event: 'new'},
-                                '08080020002'
-                                , '1'  // r03_receiver - mother
-                                , '2'  // r04_mom_state - baby
-                                , '1'  // r05_birth_year - last year
-                                , '11'  // r06_birth_month - november
-                                , '2'  // r07_confirm_month - retry
-                            )
-                            .check.interaction({
-                                state: 'state_r06_birth_month',
-                                reply: [
-                                    'Birth month? 1-12',
-                                    '1. 1', '2. 2', '3. 3', '4. 4', '5. 5', '6. 6',
-                                    '7. 7', '8. 8', '9. 9', '10. 10', '11. 11',
-                                    '12. 12'
-                                ].join('\n')
-                            })
-                            .check.reply.properties({
-                                helper_metadata: {
-                                    voice: {
-                                        speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r06_birth_month_2.mp3',
-                                        wait_for: '#'
-                                    }
-                                }
-                            })
-                            .run();
-                    });
-                });
-
-                describe("if you select confirm", function() {
-                    it("should navigate to state r08_birth_day", function() {
-                        return tester
-                            .setup.user.addr('+07030010001')
-                            .inputs(
-                                {session_event: 'new'},
-                                '08080020002'
-                                , '1'  // r03_receiver - mother
-                                , '2'  // r04_mom_state - baby
-                                , '1'  // r05_birth_year - last year
-                                , '11'  // r06_birth_month - november
-                                , '1'  // r07_confirm_month - confirm
-                            )
-                            .check.interaction({
-                                state: 'state_r08_birth_day',
-                                reply: 'Birth day in 11?'
-                            })
-                            .check.reply.properties({
-                                helper_metadata: {
-                                    voice: {
-                                        speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r08_birth_day_23.mp3',
-                                        wait_for: '#'
-                                    }
-                                }
-                            })
-                            .run();
-                    });
-
-                    it("should navigate to state r08_birth_day", function() {
-                        return tester
-                            .setup.user.addr('+07030010001')
-                            .inputs(
-                                {session_event: 'new'},
-                                '08080020002'
-                                , '1'  // r03_receiver - mother
-                                , '2'  // r04_mom_state - baby
-                                , '2'  // r05_birth_year - this year
-                                , '12'  // r06_birth_month - december
-                                , '1'  // r07_confirm_month - confirm
-                            )
-                            .check.interaction({
-                                state: 'state_r08_birth_day',
-                                reply: 'Birth day in 12?'
-                            })
-                            .check.reply.properties({
-                                helper_metadata: {
-                                    voice: {
-                                        speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r08_birth_day_36.mp3',
-                                        wait_for: '#'
-                                    }
-                                }
-                            })
-                            .run();
-                    });
-                });
-            });
-        });
-
-
-        describe("when you enter a birth day r08_birth_day", function() {
-            describe("if it is an invalid day", function() {
-                it("should navigate to state_r14_retry_birth_day", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '08080020002'
-                            , '1'  // r03_receiver - mother
-                            , '2'  // r04_mom_state - baby
-                            , '2'  // r05_birth_year - this year
-                            , '12'  // r06_birth_month - december
-                            , '1'  // r07_confirm_month - confirm
-                            , '32'  // r08_birth_day - 32nd
-                        )
-                        .check.interaction({
-                            state: 'state_r14_retry_birth_day',
-                            reply: 'Retry birth day'
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r14_retry_birth_day_1.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                        })
-                        .run();
-                });
-            });
-
-            describe("if it is a valid day", function() {
-                it("should navigate to state r09_language", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '08080020002'
-                            , '1'  // r03_receiver - mother
-                            , '2'  // r04_mom_state - baby
-                            , '2'  // r05_birth_year - this year
-                            , '12'  // r06_birth_month - december
-                            , '1'  // r07_confirm_month - confirm
-                            , '21'  // r08_birth_day - 21st
-                        )
-                        .check.interaction({
-                            state: 'state_r09_language',
-                            reply: [
-                                'Language?',
-                                '1. english',
-                                '2. hausa',
-                                '3. igbo'
-                            ].join('\n')
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r09_language_1.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                        })
-                        .run();
-                });
-            });
-
-            describe("if it is *", function() {
-                it("should restart", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '08080020002'
-                            , '1'  // r03_receiver - mother
-                            , '2'  // r04_mom_state - baby
-                            , '2'  // r05_birth_year - this year
-                            , '12'  // r06_birth_month - december
-                            , '1'  // r07_confirm_month - confirm
-                            , '*'  // r08_birth_day - restart
-                        )
-                        .check.interaction({
-                            state: 'state_r01_number'
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r01_number_1.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                        })
-                        .run();
-                });
-            });
-        });
-
-        describe("when you enter a birth day r08_birth_day", function() {
-            describe("if it is an invalid day", function() {
-                it("should navigate to state_r14_retry_birth_day again", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '08080020002'
-                            , '1'  // r03_receiver - mother
-                            , '2'  // r04_mom_state - baby
-                            , '2'  // r05_birth_year - this year
-                            , '12'  // r06_birth_month - december
-                            , '1'  // r07_confirm_month - confirm
-                            , '32'  // r08_birth_day - 32nd
-                            , '55'  // r14_retry_birth_day - 55th
-                        )
-                        .check.interaction({
-                            state: 'state_r14_retry_birth_day',
-                            reply: 'Retry birth day'
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r14_retry_birth_day_1.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                        })
-                        .run();
-                });
-            });
-
-            describe("if it is a valid day", function() {
-                it("should navigate to state r09_language", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '08080020002'
-                            , '1'  // r03_receiver - mother
-                            , '2'  // r04_mom_state - baby
-                            , '2'  // r05_birth_year - this year
-                            , '12'  // r06_birth_month - december
-                            , '1'  // r07_confirm_month - confirm
-                            , '32'  // r08_birth_day - 32nd
-                            , '21'  // r14_retry_birth_day - 21st
-                        )
-                        .check.interaction({
-                            state: 'state_r09_language',
-                            reply: [
-                                'Language?',
-                                '1. english',
-                                '2. hausa',
-                                '3. igbo'
-                            ].join('\n')
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r09_language_1.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                        })
-                        .run();
-                });
-            });
-        });
-
-        describe("When you choose a language r09_language", function() {
-            it("should navigate to state r10_message_type", function() {
+        describe("HCP recognised user", function() {
+            it("should not be asked for personnel code", function() {
                 return tester
-                    .setup.user.addr('+07030010001')
+                    .setup.user.addr('082222')
                     .inputs(
-                        {session_event: 'new'},
-                        '08080020002'
-                        , '1'  // r03_receiver - mother
-                        , '2'  // r04_mom_state - baby
-                        , '2'  // r05_birth_year - this year
-                        , '12'  // r06_birth_month - december
-                        , '1'  // r07_confirm_month - confirm
-                        , '21'  // r08_birth_day - 21st
-                        , '1'  // r09_language - english
+                        {session_event: 'new'}  // dial in
                     )
                     .check.interaction({
-                        state: 'state_r10_message_type',
+                        state: 'state_msg_receiver'
+                    })
+                    .run();
+            });
+        });
+
+        // TEST REGISTRATION
+
+        describe("Flow testing", function() {
+            it("to state_auth_code", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                    )
+                    .check.interaction({
+                        state: 'state_auth_code',
+                        reply: "Welcome to FamilyConnect. Please enter your unique personnel code. For example, 12345"
+                    })
+                    .run();
+            });
+            it("to state_msg_receiver", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                    )
+                    .check.interaction({
+                        state: 'state_msg_receiver',
                         reply: [
-                            'Channel?',
-                            '1. sms',
-                            '2. voice'
+                            "Please select who will receive the messages on their phone:",
+                            "1. Head of the Household",
+                            "2. Mother to be",
+                            "3. Family member",
+                            "4. Trusted friend"
                         ].join('\n')
                     })
-                    .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r10_message_type_1.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                        })
                     .run();
             });
-        });
-
-        describe("When you choose a channel r10_message_type", function() {
-            describe("if you choose sms", function() {
-                it("should navigate to state r13_end", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '08080020002'
-                            , '2'  // r03_receiver - other
-                            , '1'  // r04_mom_state - pregnant
-                            , '2'  // r05_birth_year - next year
-                            , '2'  // r06_birth_month - february
-                            , '1'  // r07_confirm_month - confirm
-                            , '27'  // r08_birth_day - 27th
-                            , '1'  // r09_language - english
-                            , '1'  // r10_message_type - sms
-                        )
-                        .check.interaction({
-                            state: 'state_r13_end',
-                            reply: 'Thank you!'
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r13_end_1.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                        })
-                        .check.reply.ends_session()
-                        .run();
-                });
-            });
-
-            describe("if you choose voice", function() {
-                it("should navigate to state r11_voice_days", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '08080020002'
-                            , '1'  // r03_receiver - mother
-                            , '2'  // r04_mom_state - baby
-                            , '2'  // r05_birth_year - this year
-                            , '12'  // r06_birth_month - december
-                            , '1'  // r07_confirm_month - confirm
-                            , '21'  // r08_birth_day - 21st
-                            , '1'  // r09_language - english
-                            , '2'  // r10_message_type - voice
-                        )
-                        .check.interaction({
-                            state: 'state_r11_voice_days',
-                            reply: [
-                                'Message days?',
-                                '1. mon_wed',
-                                '2. tue_thu'
-                            ].join('\n')
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r11_voice_days_1.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                        })
-                        .run();
-                });
-            });
-        });
-
-        describe("When you choose a day r11_voice_days", function() {
-            it("should navigate to state r12_voice_times", function() {
+            it("to state_msisdn", function() {
                 return tester
-                    .setup.user.addr('+07030010001')
+                    .setup.user.addr('082111')
                     .inputs(
-                        {session_event: 'new'},
-                        '08080020002'
-                        , '1'  // r03_receiver - mother
-                        , '2'  // r04_mom_state - baby
-                        , '2'  // r05_birth_year - this year
-                        , '12'  // r06_birth_month - december
-                        , '1'  // r07_confirm_month - confirm
-                        , '21'  // r08_birth_day - 21st
-                        , '1'  // r09_language - english
-                        , '2'  // r10_message_type - voice
-                        , '1'  // r11_voice_days - mon_wed
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '1'  // state_msg_receiver - head of household
                     )
                     .check.interaction({
-                        state: 'state_r12_voice_times',
+                        state: 'state_msisdn',
+                        reply: "Please enter the cellphone number which the messages will be sent to. For example, 0713627893"
+                    })
+                    .run();
+            });
+            it("to state_household_head_name", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '1'  // state_msg_receiver - head of household
+                        , '0713627893'  // state_msisdn
+                    )
+                    .check.interaction({
+                        state: 'state_household_head_name',
+                        reply: "Please enter the first name of the Head of the Household of the Pregnant woman. For example, Isaac."
+                    })
+                    .run();
+            });
+            it("to state_household_head_surname", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '1'  // state_msg_receiver - head of household
+                        , '0713627893'  // state_msisdn
+                        , 'Isaac'  // state_household_head_name
+                    )
+                    .check.interaction({
+                        state: 'state_household_head_surname',
+                        reply: "Please enter the surname of the Head of the Household of the pregnant woman. For example, Mbire."
+                    })
+                    .run();
+            });
+            it("to state_last_period_month", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '1'  // state_msg_receiver - head of household
+                        , '0713627893'  // state_msisdn
+                        , 'Isaac'  // state_household_head_name
+                        , 'Mbire'  // state_household_head_surname
+                    )
+                    .check.interaction({
+                        state: 'state_last_period_month',
                         reply: [
-                            'Message time?',
-                            '1. 9_11',
-                            '2. 2_5'
+                            "Please select the month when the woman had her last period:",
+                            "1. July 15",
+                            "2. June 15",
+                            "3. May 15",
+                            "4. Apr 15",
+                            "5. Mar 15",
+                            "6. Feb 15",
+                            "7. Jan 15",
+                            "8. Dec 14",
+                            "9. Nov 14"
                         ].join('\n')
                     })
-                    .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r12_voice_times_1.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                        })
                     .run();
             });
-        });
-
-        describe("When you choose a time r12_voice_times", function() {
-            it("should navigate to state r13_end", function() {
+            it("to state_last_period_day", function() {
                 return tester
-                    .setup.user.addr('+07030010001')
+                    .setup.user.addr('082111')
                     .inputs(
-                        {session_event: 'new'},
-                        '08080020002'
-                        , '1'  // r03_receiver - mother
-                        , '2'  // r04_mom_state - baby
-                        , '2'  // r05_birth_year - this year
-                        , '12'  // r06_birth_month - december
-                        , '1'  // r07_confirm_month - confirm
-                        , '21'  // r08_birth_day - 21st
-                        , '1'  // r09_language - english
-                        , '2'  // r10_message_type - voice
-                        , '1'  // r11_voice_days - mon_wed
-                        , '2'  // r12_voice_times - 2_5
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '1'  // state_msg_receiver - head of household
+                        , '0713627893'  // state_msisdn
+                        , 'Isaac'  // state_household_head_name
+                        , 'Mbire'  // state_household_head_surname
+                        , '1'  // state_last_period_month - july 2015
                     )
                     .check.interaction({
-                        state: 'state_r13_end',
-                        reply: 'Thank you! Time: 2_5. Days: mon_wed.'
+                        state: 'state_last_period_day',
+                        reply: "What day did her last period start on? (For example, 12)"
                     })
-                    .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r13_end_4.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                        })
-                    .check.reply.ends_session()
+                    .run();
+            });
+            it("to state_mother_name", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '1'  // state_msg_receiver - head of household
+                        , '0713627893'  // state_msisdn
+                        , 'Isaac'  // state_household_head_name
+                        , 'Mbire'  // state_household_head_surname
+                        , '1'  // state_last_period_month - july 2015
+                        , '21'  // state_last_period_day - 21st
+                    )
+                    .check.interaction({
+                        state: 'state_mother_name',
+                        reply: "Mother name"
+                    })
+                    .run();
+            });
+            it("to state_mother_surname", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '1'  // state_msg_receiver - head of household
+                        , '0713627893'  // state_msisdn
+                        , 'Isaac'  // state_household_head_name
+                        , 'Mbire'  // state_household_head_surname
+                        , '1'  // state_last_period_month - july 2015
+                        , '21'  // state_last_period_day - 21st
+                        , 'Sharon'  // state_mother_name
+                    )
+                    .check.interaction({
+                        state: 'state_mother_surname',
+                        reply: "Mother surname"
+                    })
+                    .run();
+            });
+            it("to state_id_type", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '1'  // state_msg_receiver - head of household
+                        , '0713627893'  // state_msisdn
+                        , 'Isaac'  // state_household_head_name
+                        , 'Mbire'  // state_household_head_surname
+                        , '1'  // state_last_period_month - july 2015
+                        , '21'  // state_last_period_day - 21st
+                        , 'Sharon'  // state_mother_name
+                        , 'Nalule'  // state_mother_surname
+                    )
+                    .check.interaction({
+                        state: 'state_id_type',
+                        reply: [
+                            "What kind of identification does the pregnant woman have?",
+                            "1. Ugandan National Identity Number",
+                            "2. Other"
+                        ].join('\n')
+                    })
                     .run();
             });
 
-            it("should have the correct answers set", function() {
+            it("to state_nin", function() {
                 return tester
-                    .setup.user.addr('+07030010001')
+                    .setup.user.addr('082111')
                     .inputs(
-                        {session_event: 'new'},
-                        '08080020002'
-                        , '1'  // r03_receiver - mother
-                        , '2'  // r04_mom_state - baby
-                        , '2'  // r05_birth_year - this year
-                        , '12'  // r06_birth_month - december
-                        , '1'  // r07_confirm_month - confirm
-                        , '21'  // r08_birth_day - 21st
-                        , '1'  // r09_language - english
-                        , '2'  // r10_message_type - voice
-                        , '1'  // r11_voice_days - mon_wed
-                        , '2'  // r12_voice_times - 2_5
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '1'  // state_msg_receiver - head of household
+                        , '0713627893'  // state_msisdn
+                        , 'Isaac'  // state_household_head_name
+                        , 'Mbire'  // state_household_head_surname
+                        , '1'  // state_last_period_month - july 2015
+                        , '21'  // state_last_period_day - 21st
+                        , 'Sharon'  // state_mother_name
+                        , 'Nalule'  // state_mother_surname
+                        , '1'  // state_id_type - ugandan id
                     )
-                    .check.user.answers({
-                        mama_id: "cb245673-aa41-4302-ac47-00000000002",
-                        mama_num: "08080020002",
-                        birth_date: '2015-12-21',
-                        state_r01_number: "08080020002",
-                        state_r03_receiver: "mother",
-                        state_r04_mom_state: "baby",
-                        state_r05_birth_year: "this_year",
-                        state_r06_birth_month: "12",
-                        state_r07_confirm_month: "confirm",
-                        state_r08_birth_day: "21",
-                        state_r09_language: "english",
-                        state_r10_message_type: "voice",
-                        state_r11_voice_days: "mon_wed",
-                        state_r12_voice_times: "2_5"
+                    .check.interaction({
+                        state: 'state_nin',
+                        reply: "Please enter her National Identity Number (NIN)."
+                    })
+                    .run();
+            });
+            it("to state_msg_language (NIN)", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '1'  // state_msg_receiver - head of household
+                        , '0713627893'  // state_msisdn
+                        , 'Isaac'  // state_household_head_name
+                        , 'Mbire'  // state_household_head_surname
+                        , '1'  // state_last_period_month - july 2015
+                        , '21'  // state_last_period_day - 21st
+                        , 'Sharon'  // state_mother_name
+                        , 'Nalule'  // state_mother_surname
+                        , '1'  // state_id_type - ugandan id
+                        , '444'  // state_nin
+                    )
+                    .check.interaction({
+                        state: 'state_msg_language',
+                        reply: [
+                            "Which language would they want to receive messages in?",
+                            "1. English",
+                            "2. Runyakore",
+                            "3. Lusoga",
+                        ].join('\n')
+                    })
+                    .run();
+            });
+
+            it("to state_mother_birth_day", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '1'  // state_msg_receiver - head of household
+                        , '0713627893'  // state_msisdn
+                        , 'Isaac'  // state_household_head_name
+                        , 'Mbire'  // state_household_head_surname
+                        , '1'  // state_last_period_month - july 2015
+                        , '21'  // state_last_period_day - 21st
+                        , 'Sharon'  // state_mother_name
+                        , 'Nalule'  // state_mother_surname
+                        , '2'  // state_id_type - other
+                    )
+                    .check.interaction({
+                        state: 'state_mother_birth_day',
+                        reply: "Please enter the day the she was born. For example, 12."
+                    })
+                    .run();
+            });
+            it("to state_mother_birth_month", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '1'  // state_msg_receiver - head of household
+                        , '0713627893'  // state_msisdn
+                        , 'Isaac'  // state_household_head_name
+                        , 'Mbire'  // state_household_head_surname
+                        , '1'  // state_last_period_month - july 2015
+                        , '21'  // state_last_period_day - 21st
+                        , 'Sharon'  // state_mother_name
+                        , 'Nalule'  // state_mother_surname
+                        , '2'  // state_id_type - other
+                        , '13'  // state_mother_birth_day - 13th
+                    )
+                    .check.interaction({
+                        state: 'state_mother_birth_month',
+                        reply: [
+                            "Please select the month of year the Mother was born:",
+                            "1. January",
+                            "2. February",
+                            "3. March",
+                            "4. April",
+                            "5. May",
+                            "6. June",
+                            "7. July",
+                            "8. August",
+                            "9. September",
+                            "10. More"
+                        ].join('\n')
+                    })
+                    .run();
+            });
+            it("to state_mother_birth_year", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '1'  // state_msg_receiver - head of household
+                        , '0713627893'  // state_msisdn
+                        , 'Isaac'  // state_household_head_name
+                        , 'Mbire'  // state_household_head_surname
+                        , '1'  // state_last_period_month - july 2015
+                        , '21'  // state_last_period_day - 21st
+                        , 'Sharon'  // state_mother_name
+                        , 'Nalule'  // state_mother_surname
+                        , '2'  // state_id_type - other
+                        , '13'  // state_mother_birth_day - 13th
+                        , '5'  // state_mother_birth_month - may
+                    )
+                    .check.interaction({
+                        state: 'state_mother_birth_year',
+                        reply: "Please enter the year the mother was born. For example, 1986."
+                    })
+                    .run();
+            });
+            it("to state_msg_language (Other)", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '1'  // state_msg_receiver - head of household
+                        , '0713627893'  // state_msisdn
+                        , 'Isaac'  // state_household_head_name
+                        , 'Mbire'  // state_household_head_surname
+                        , '1'  // state_last_period_month - july 2015
+                        , '21'  // state_last_period_day - 21st
+                        , 'Sharon'  // state_mother_name
+                        , 'Nalule'  // state_mother_surname
+                        , '2'  // state_id_type - other
+                        , '13'  // state_mother_birth_day - 13th
+                        , '5'  // state_mother_birth_month - may
+                        , '1982'  // state_mother_birth_year - 1982
+                    )
+                    .check.interaction({
+                        state: 'state_msg_language',
+                        reply: [
+                            "Which language would they want to receive messages in?",
+                            "1. English",
+                            "2. Runyakore",
+                            "3. Lusoga",
+                        ].join('\n')
+                    })
+                    .run();
+            });
+
+            it("to state_hiv_messages", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '1'  // state_msg_receiver - head of household
+                        , '0713627893'  // state_msisdn
+                        , 'Isaac'  // state_household_head_name
+                        , 'Mbire'  // state_household_head_surname
+                        , '1'  // state_last_period_month - july 2015
+                        , '21'  // state_last_period_day - 21st
+                        , 'Sharon'  // state_mother_name
+                        , 'Nalule'  // state_mother_surname
+                        , '1'  // state_id_type - ugandan id
+                        , '444'  // state_nin
+                        , '3'  // state_msg_language - lusoga
+                    )
+                    .check.interaction({
+                        state: 'state_hiv_messages',
+                        reply: [
+                            "Would they like to receive additional messages about HIV?",
+                            "1. Yes",
+                            "2. No"
+                        ].join('\n')
+                    })
+                    .run();
+            });
+
+            it("complete flow - uganda ID, english, hiv messages", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '1'  // state_msg_receiver - head of household
+                        , '0713627893'  // state_msisdn
+                        , 'Isaac'  // state_household_head_name
+                        , 'Mbire'  // state_household_head_surname
+                        , '1'  // state_last_period_month - july 2015
+                        , '21'  // state_last_period_day - 21st
+                        , 'Sharon'  // state_mother_name
+                        , 'Nalule'  // state_mother_surname
+                        , '1'  // state_id_type - ugandan id
+                        , '444'  // state_nin
+                        , '3'  // state_msg_language - lusoga
+                        , '1'  // state_hiv_messages - yes
+                    )
+                    .check.interaction({
+                        state: 'state_end_thank_you',
+                        reply: "Thank you. The pregnant woman will now receive messages."
+                    })
+                    .check(function(api) {
+                        var smses = _.where(api.outbound.store, {
+                            endpoint: 'sms'
+                        });
+                        var sms = smses[0];
+                        assert.equal(smses.length,1);
+                        assert.equal(sms.content,
+                            "Welcome to FamilyConnect. Sharon's FamilyConnect ID is 7777.  Write it down and give it to the Nurse at your next clinic visit."
+                        );
+                        assert.equal(sms.to_addr,'082111');
+                    })
+                    .run();
+            });
+            it("complete flow - mother, other ID, lusoga, no hiv msgs", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '2'  // state_msg_receiver - mother to be
+                        , '0713627893'  // state_msisdn
+                        , 'Isaac'  // state_household_head_name
+                        , 'Mbire'  // state_household_head_surname
+                        , '1'  // state_last_period_month - July 2015
+                        , '21'  // state_last_period_day - 21st
+                        , 'Mary'  // state_mother_name
+                        , 'Nalule'  // state_mother_surname
+                        , '2'  // state_id_type - other ID
+                        , '13'  // state_mother_birth_day - 13th
+                        , '5'  // state_mother_birth_month - may
+                        , '1982'  // state_mother_birth_year - 1982
+                        , '3'  // state_msg_language - lusoga
+                        , '2'  // state_hiv_messages - no
+                    )
+                    .check.interaction({
+                        state: 'state_end_thank_you',
+                        reply: "Thank you. The pregnant woman will now receive messages."
+                    })
+                    .check(function(api) {
+                        var smses = _.where(api.outbound.store, {
+                            endpoint: 'sms'
+                        });
+                        var sms = smses[0];
+                        assert.equal(smses.length,1);
+                        assert.equal(sms.content,
+                            "Welcome to FamilyConnect Mary. Your FamilyConnect ID is 7777. Write it down and give it to the Nurse at your next clinic visit."
+                        );
+                        assert.equal(sms.to_addr,'082111');
                     })
                     .run();
             });
         });
 
+        // TEST VALIDATION
+
+        describe("Validation testing", function() {
+            it("validate state_auth_code", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , 'aaaaa'  // state_auth_code - invalid personnel code
+                    )
+                    .check.interaction({
+                        state: 'state_auth_code',
+                        reply: "That code is not recognised. Please enter your 5 digit personnel code."
+                    })
+                    .run();
+            });
+            it("validate state_msg_receiver", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '5'  // state_msg_receiver - invalid choice
+                    )
+                    .check.interaction({
+                        state: 'state_msg_receiver',
+                        reply: [
+                            "Sorry not a valid input. Please select who will receive the messages on their phone:",
+                            "1. Head of the Household",
+                            "2. Mother to be",
+                            "3. Family member",
+                            "4. Trusted friend"
+                        ].join('\n')
+                    })
+                    .run();
+            });
+
+        });
     });
+
 });
