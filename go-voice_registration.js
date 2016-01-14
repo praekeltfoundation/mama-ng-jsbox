@@ -10,6 +10,7 @@ var Q = require('q');
 var vumigo = require('vumigo_v02');
 var moment = require('moment');
 var JsonApi = vumigo.http.api.JsonApi;
+var Choice = vumigo.states.Choice;
 
 // Shared utils lib
 go.utils = {
@@ -133,25 +134,17 @@ go.utils = {
     // An attempt to solve the insanity of JavaScript numbers
     check_valid_number: function(content) {
         var numbers_only = new RegExp('^\\d+$');
-        if (content !== ''
-                && numbers_only.test(content)
-                && !Number.isNaN(Number(content))) {
-            return true;
-        } else {
-            return false;
-        }
+        return content !== ''
+            && numbers_only.test(content)
+            && !Number.isNaN(Number(content));
     },
 
-    // Check that it is a number and starts with 0 and more or less correct len
-    check_valid_phone_number: function(content) {
-        if (go.utils.check_valid_number(content)
-                && content[0] === '0'
-                && content.length >= 10
-                && content.length <= 13) {
-            return true;
-        } else {
-            return false;
-        }
+    // Check that it's a number and starts with 0 and approximate length
+    is_valid_msisdn: function(content) {
+        return go.utils.check_valid_number(content)
+            && content[0] === '0'
+            && content.length >= 10
+            && content.length <= 13;
     },
 
     normalize_msisdn: function(raw, country_code) {
@@ -305,6 +298,18 @@ go.utils = {
     is_valid_date: function(date, format) {
         // implements strict validation with 'true' below
         return moment(date, format, true).isValid();
+    },
+
+    is_valid_year: function(input) {
+        // check that it is a number and has four digits
+        return input.length === 4 && go.utils.check_valid_number(input);
+    },
+
+    is_valid_day_of_month: function(input) {
+        // check that it is a number and between 1 and 31
+        return go.utils.check_valid_number(input)
+            && parseInt(input, 10) >= 1
+            && parseInt(input, 10) <= 31;
     },
 
     get_baby_dob: function(im, day) {
@@ -610,6 +615,63 @@ go.utils = {
         return im.msg.session_event === 'new'
             && im.user.state.name
             && no_redirects.indexOf(im.user.state.name) === -1;
+    },
+
+    // Track redials
+
+    track_redials: function(contact, im, decision) {
+        var status = contact.extra.status || 'unregistered';
+        return Q.all([
+            im.metrics.fire.inc(['total', 'redials', 'choice_made', 'last'].join('.')),
+            im.metrics.fire.sum(['total', 'redials', 'choice_made', 'sum'].join('.'), 1),
+            im.metrics.fire.inc(['total', 'redials', status, 'last'].join('.')),
+            im.metrics.fire.sum(['total', 'redials', status, 'sum'].join('.'), 1),
+            im.metrics.fire.inc(['total', 'redials', decision, 'last'].join('.')),
+            im.metrics.fire.sum(['total', 'redials', decision, 'sum'].join('.'), 1),
+            im.metrics.fire.inc(['total', 'redials', status, decision, 'last'].join('.')),
+            im.metrics.fire.sum(['total', 'redials', status, decision, 'sum'].join('.'), 1),
+        ]);
+    },
+
+// PROJECT SPECIFIC
+
+    check_msisdn_hcp: function(msisdn) {
+        return Q()
+            .then(function(q_response) {
+                return msisdn === '082222' || msisdn === '082333';
+            });
+    },
+
+    validate_personnel_code: function(im, content) {
+        return Q()
+            .then(function(q_response) {
+                return content === '12345';
+            });
+    },
+
+    check_valid_alpha: function(input) {
+        var alpha_only = new RegExp('^[A-Za-z]+$');
+        return input !== '' && alpha_only.test(input);
+    },
+
+    is_valid_name: function(input) {
+        // check that all chars are alphabetical
+        return go.utils.check_valid_alpha(input);
+    },
+
+    make_month_choices: function($, start, limit, increment) {
+        var choices = [
+            new Choice('072015', $('July 15')),
+            new Choice('062015', $('June 15')),
+            new Choice('052015', $('May 15')),
+            new Choice('042015', $('Apr 15')),
+            new Choice('032015', $('Mar 15')),
+            new Choice('022015', $('Feb 15')),
+            new Choice('012015', $('Jan 15')),
+            new Choice('122014', $('Dec 14')),
+            new Choice('112014', $('Nov 14')),
+        ];
+        return choices;
     },
 
     "commas": "commas"
