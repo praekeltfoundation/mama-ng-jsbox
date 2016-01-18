@@ -58,7 +58,7 @@ describe("Mama Nigeria App", function() {
 
         // TEST TIMEOUTS
 
-        /*describe("Timeout testing", function() {
+        describe("Timeout testing", function() {
             it("should ask about continuing", function() {
                 return tester
                     .setup.user.addr('082111')
@@ -108,7 +108,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-        });*/
+        });
 
         // TEST HCP RECOGNISED USER
 
