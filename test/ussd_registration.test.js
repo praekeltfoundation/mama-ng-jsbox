@@ -58,7 +58,7 @@ describe("Mama Nigeria App", function() {
 
         // TEST TIMEOUTS
 
-        describe("Timeout testing", function() {
+        /*describe("Timeout testing", function() {
             it("should ask about continuing", function() {
                 return tester
                     .setup.user.addr('082111')
@@ -89,7 +89,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_timed_out - continue
                     )
                     .check.interaction({
-                        state: 'state_msg_receiver'
+                        state: 'state_msisdn'
                     })
                     .run();
             });
@@ -108,7 +108,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-        });
+        });*/
 
         // TEST HCP RECOGNISED USER
 
@@ -120,7 +120,7 @@ describe("Mama Nigeria App", function() {
                         {session_event: 'new'}  // dial in
                     )
                     .check.interaction({
-                        state: 'state_msg_receiver'
+                        state: 'state_msisdn'
                     })
                     .run();
             });
@@ -128,7 +128,8 @@ describe("Mama Nigeria App", function() {
 
         // TEST REGISTRATION
 
-        describe("Flow testing", function() {
+        // flow testing case 1 - mother is pregnant and opts for voice calls
+        describe("Flow testing - mother pregnant, voice calls", function() {
             it("to state_auth_code", function() {
                 return tester
                     .setup.user.addr('082111')
@@ -137,26 +138,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_auth_code',
-                        reply: "Welcome to FamilyConnect. Please enter your unique personnel code. For example, 12345"
-                    })
-                    .run();
-            });
-            it("to state_msg_receiver", function() {
-                return tester
-                    .setup.user.addr('082111')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '12345'  // state_auth_code - personnel code
-                    )
-                    .check.interaction({
-                        state: 'state_msg_receiver',
-                        reply: [
-                            "Please select who will receive the messages on their phone:",
-                            "1. Head of the Household",
-                            "2. Mother to be",
-                            "3. Family member",
-                            "4. Trusted friend"
-                        ].join('\n')
+                        reply: "Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345"
                     })
                     .run();
             });
@@ -166,42 +148,49 @@ describe("Mama Nigeria App", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'  // state_auth_code - personnel code
-                        , '1'  // state_msg_receiver - head of household
                     )
                     .check.interaction({
                         state: 'state_msisdn',
-                        reply: "Please enter the cellphone number which the messages will be sent to. For example, 0713627893"
+                        reply: "Please enter the mobile number of the person who will receive the weekly messages.  For example 0803304899"
                     })
                     .run();
             });
-            it("to state_household_head_name", function() {
+            it("to state_msg_receiver", function() {
                 return tester
                     .setup.user.addr('082111')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'  // state_auth_code - personnel code
-                        , '1'  // state_msg_receiver - head of household
-                        , '0713627893'  // state_msisdn
+                        , '0803304899' // state_msisdn - mobile number
                     )
                     .check.interaction({
-                        state: 'state_household_head_name',
-                        reply: "Please enter the first name of the Head of the Household of the Pregnant woman. For example, Isaac."
+                        state: 'state_msg_receiver',
+                        reply: [
+                            "Please select who will receive the messages on their phone:",
+                            "1. The Mother",
+                            "2. The Father",
+                            "3. Family member",
+                            "4. Trusted friend"
+                        ].join('\n')
                     })
                     .run();
             });
-            it("to state_household_head_surname", function() {
+            it("to state_pregnancy_status", function() {
                 return tester
                     .setup.user.addr('082111')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '12345'  // state_auth_code - personnel code
-                        , '1'  // state_msg_receiver - head of household
-                        , '0713627893'  // state_msisdn
-                        , 'Isaac'  // state_household_head_name
+                        , '12345'   // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                        , '1'  // state_msg_receiver - mother
                     )
                     .check.interaction({
-                        state: 'state_household_head_surname',
-                        reply: "Please enter the surname of the Head of the Household of the pregnant woman. For example, Mbire."
+                        state: 'state_pregnancy_status',
+                        reply: [
+                            "Please select one of the following:",
+                            "1. The mother is pregnant",
+                            "2. The mother has a baby under 1 year old"
+                        ].join('\n')
                     })
                     .run();
             });
@@ -210,16 +199,15 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('082111')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '12345'  // state_auth_code - personnel code
-                        , '1'  // state_msg_receiver - head of household
-                        , '0713627893'  // state_msisdn
-                        , 'Isaac'  // state_household_head_name
-                        , 'Mbire'  // state_household_head_surname
+                        , '12345'   // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                        , '1'  // state_msg_receiver - mother
+                        , '1'  // state_msg_pregnant - mother
                     )
                     .check.interaction({
                         state: 'state_last_period_month',
                         reply: [
-                            "Please select the month when the woman had her last period:",
+                            "Please select the month the woman had her last period:",
                             "1. July 15",
                             "2. June 15",
                             "3. May 15",
@@ -228,7 +216,7 @@ describe("Mama Nigeria App", function() {
                             "6. Feb 15",
                             "7. Jan 15",
                             "8. Dec 14",
-                            "9. Nov 14"
+                            "9. More"
                         ].join('\n')
                     })
                     .run();
@@ -238,347 +226,310 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('082111')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '12345'  // state_auth_code - personnel code
-                        , '1'  // state_msg_receiver - head of household
-                        , '0713627893'  // state_msisdn
-                        , 'Isaac'  // state_household_head_name
-                        , 'Mbire'  // state_household_head_surname
-                        , '1'  // state_last_period_month - july 2015
+                        , '12345'   // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                        , '1'  // state_msg_receiver - mother
+                        , '1'  // state_msg_pregnant - mother
+                        , '3'  // state_last_period_month - May 15
                     )
                     .check.interaction({
                         state: 'state_last_period_day',
-                        reply: "What day did her last period start on? (For example, 12)"
+                        reply: "What day of the month did the woman start her last period? For example, 12."
                     })
                     .run();
             });
-            it("to state_mother_name", function() {
+            it("to state_msg_language", function() {
                 return tester
                     .setup.user.addr('082111')
                     .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '12345'  // state_auth_code - personnel code
-                        , '1'  // state_msg_receiver - head of household
-                        , '0713627893'  // state_msisdn
-                        , 'Isaac'  // state_household_head_name
-                        , 'Mbire'  // state_household_head_surname
-                        , '1'  // state_last_period_month - july 2015
-                        , '21'  // state_last_period_day - 21st
-                    )
-                    .check.interaction({
-                        state: 'state_mother_name',
-                        reply: "Mother name"
-                    })
-                    .run();
-            });
-            it("to state_mother_surname", function() {
-                return tester
-                    .setup.user.addr('082111')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '12345'  // state_auth_code - personnel code
-                        , '1'  // state_msg_receiver - head of household
-                        , '0713627893'  // state_msisdn
-                        , 'Isaac'  // state_household_head_name
-                        , 'Mbire'  // state_household_head_surname
-                        , '1'  // state_last_period_month - july 2015
-                        , '21'  // state_last_period_day - 21st
-                        , 'Sharon'  // state_mother_name
-                    )
-                    .check.interaction({
-                        state: 'state_mother_surname',
-                        reply: "Mother surname"
-                    })
-                    .run();
-            });
-            it("to state_id_type", function() {
-                return tester
-                    .setup.user.addr('082111')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '12345'  // state_auth_code - personnel code
-                        , '1'  // state_msg_receiver - head of household
-                        , '0713627893'  // state_msisdn
-                        , 'Isaac'  // state_household_head_name
-                        , 'Mbire'  // state_household_head_surname
-                        , '1'  // state_last_period_month - july 2015
-                        , '21'  // state_last_period_day - 21st
-                        , 'Sharon'  // state_mother_name
-                        , 'Nalule'  // state_mother_surname
-                    )
-                    .check.interaction({
-                        state: 'state_id_type',
-                        reply: [
-                            "What kind of identification does the pregnant woman have?",
-                            "1. Ugandan National Identity Number",
-                            "2. Other"
-                        ].join('\n')
-                    })
-                    .run();
-            });
-
-            it("to state_nin", function() {
-                return tester
-                    .setup.user.addr('082111')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '12345'  // state_auth_code - personnel code
-                        , '1'  // state_msg_receiver - head of household
-                        , '0713627893'  // state_msisdn
-                        , 'Isaac'  // state_household_head_name
-                        , 'Mbire'  // state_household_head_surname
-                        , '1'  // state_last_period_month - july 2015
-                        , '21'  // state_last_period_day - 21st
-                        , 'Sharon'  // state_mother_name
-                        , 'Nalule'  // state_mother_surname
-                        , '1'  // state_id_type - ugandan id
-                    )
-                    .check.interaction({
-                        state: 'state_nin',
-                        reply: "Please enter her National Identity Number (NIN)."
-                    })
-                    .run();
-            });
-            it("to state_msg_language (NIN)", function() {
-                return tester
-                    .setup.user.addr('082111')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '12345'  // state_auth_code - personnel code
-                        , '1'  // state_msg_receiver - head of household
-                        , '0713627893'  // state_msisdn
-                        , 'Isaac'  // state_household_head_name
-                        , 'Mbire'  // state_household_head_surname
-                        , '1'  // state_last_period_month - july 2015
-                        , '21'  // state_last_period_day - 21st
-                        , 'Sharon'  // state_mother_name
-                        , 'Nalule'  // state_mother_surname
-                        , '1'  // state_id_type - ugandan id
-                        , '444'  // state_nin
+                      {session_event: 'new'}  // dial in
+                      , '12345'   // state_auth_code - personnel code
+                      , '0803304899' // state_msisdn - mobile number
+                      , '1'  // state_msg_receiver - mother
+                      , '1'  // state_msg_pregnant - mother
+                      , '3'  // state_last_period_month - May 15
+                      , '12'
                     )
                     .check.interaction({
                         state: 'state_msg_language',
                         reply: [
-                            "Which language would they want to receive messages in?",
+                            "Which language would this person like to receive these messages in?",
                             "1. English",
-                            "2. Runyakore",
-                            "3. Lusoga",
+                            "2. Hausa",
+                            "3. Igbo"
                         ].join('\n')
                     })
                     .run();
             });
-
-            it("to state_mother_birth_day", function() {
+            it("state_msg_call_or_text", function() {
                 return tester
                     .setup.user.addr('082111')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '12345'  // state_auth_code - personnel code
-                        , '1'  // state_msg_receiver - head of household
-                        , '0713627893'  // state_msisdn
-                        , 'Isaac'  // state_household_head_name
-                        , 'Mbire'  // state_household_head_surname
-                        , '1'  // state_last_period_month - july 2015
-                        , '21'  // state_last_period_day - 21st
-                        , 'Sharon'  // state_mother_name
-                        , 'Nalule'  // state_mother_surname
-                        , '2'  // state_id_type - other
+                        , '12345'   // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                        , '1'  // state_msg_receiver - mother
+                        , '1'  // state_msg_pregnant - mother
+                        , '3'  // state_last_period_month - May 15
+                        , '12' // state_last_period_day - 12
+                        , '1'  // state_msg_language - english
                     )
                     .check.interaction({
-                        state: 'state_mother_birth_day',
-                        reply: "Please enter the day the she was born. For example, 12."
-                    })
-                    .run();
-            });
-            it("to state_mother_birth_month", function() {
-                return tester
-                    .setup.user.addr('082111')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '12345'  // state_auth_code - personnel code
-                        , '1'  // state_msg_receiver - head of household
-                        , '0713627893'  // state_msisdn
-                        , 'Isaac'  // state_household_head_name
-                        , 'Mbire'  // state_household_head_surname
-                        , '1'  // state_last_period_month - july 2015
-                        , '21'  // state_last_period_day - 21st
-                        , 'Sharon'  // state_mother_name
-                        , 'Nalule'  // state_mother_surname
-                        , '2'  // state_id_type - other
-                        , '13'  // state_mother_birth_day - 13th
-                    )
-                    .check.interaction({
-                        state: 'state_mother_birth_month',
+                        state: 'state_msg_call_or_text',
                         reply: [
-                            "Please select the month of year the Mother was born:",
-                            "1. January",
-                            "2. February",
-                            "3. March",
-                            "4. April",
-                            "5. May",
-                            "6. June",
-                            "7. July",
-                            "8. August",
-                            "9. September",
-                            "10. More"
+                            "How would this person like to get messages?",
+                            "1. Voice calls",
+                            "2. Text SMSs"
                         ].join('\n')
                     })
                     .run();
             });
-            it("to state_mother_birth_year", function() {
+            it("to state_receive_calls_days", function() {
                 return tester
                     .setup.user.addr('082111')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '12345'  // state_auth_code - personnel code
-                        , '1'  // state_msg_receiver - head of household
-                        , '0713627893'  // state_msisdn
-                        , 'Isaac'  // state_household_head_name
-                        , 'Mbire'  // state_household_head_surname
-                        , '1'  // state_last_period_month - july 2015
-                        , '21'  // state_last_period_day - 21st
-                        , 'Sharon'  // state_mother_name
-                        , 'Nalule'  // state_mother_surname
-                        , '2'  // state_id_type - other
-                        , '13'  // state_mother_birth_day - 13th
-                        , '5'  // state_mother_birth_month - may
+                        , '12345'   // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                        , '1'  // state_msg_receiver - mother
+                        , '1'  // state_msg_pregnant - mother
+                        , '3'  // state_last_period_month - May 15
+                        , '12' // state_last_period_day - 12
+                        , '1'  // state_msg_language - english
+                        , '1'   // state_msg_call_or_text - voice calls
                     )
                     .check.interaction({
-                        state: 'state_mother_birth_year',
-                        reply: "Please enter the year the mother was born. For example, 1986."
+                        state: 'state_receive_calls_days',
+                        reply: [
+                            "We will call them twice a week. On what days would the person like to receive these calls?",
+                            "1. Monday and Wednesday",
+                            "2. Tuesday and Thursday"
+                        ].join('\n')
                     })
                     .run();
             });
-            it("to state_msg_language (Other)", function() {
+            it("to state_receive_calls_time", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                        , '1'  // state_msg_receiver - mother
+                        , '1'  // state_msg_pregnant - mother
+                        , '3'  // state_last_period_month - May 15
+                        , '12' // state_last_period_day - 12
+                        , '1'  // state_msg_language - english
+                        , '1'   // state_msg_call_or_text - voice calls
+                        , '2'   // state_receive_calls_days - tuesdays and thursdays
+                    )
+                    .check.interaction({
+                        state: 'state_receive_calls_time',
+                        reply: [
+                            "Thank you. At what time would they like to receive these calls?",
+                            "1. Between 9-11am",
+                            "2. Between 2-5pm"
+                        ].join('\n')
+                    })
+                    .run();
+            });
+            it("complete flow - mother pregnant, voice calls", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                        , '1'  // state_msg_receiver - mother
+                        , '1'  // state_msg_pregnant - mother
+                        , '3'  // state_last_period_month - May 15
+                        , '12' // state_last_period_day - 12
+                        , '1'  // state_msg_language - english
+                        , '1'   // state_msg_call_or_text - voice calls
+                        , '2'   // state_receive_calls_days - tuesdays and thursdays
+                        , '2'   // state_receive_calls_time - between 2-5pm
+                    )
+                    .check.interaction({
+                        state: 'state_end_thank_you_calls',
+                        reply: "Thank you. The person will now start receiving calls on [day and day] between [time - time]."
+                    })
+                    .run();
+            });
+        });
+
+        // flow testing case 2 - mother has baby and opts for text sms's
+        describe("Flow testing - mother with baby, text sms's", function() {
+            it("to state_auth_code", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                    )
+                    .check.interaction({
+                        state: 'state_auth_code',
+                        reply: "Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345"
+                    })
+                    .run();
+            });
+            it("to state_msisdn", function() {
                 return tester
                     .setup.user.addr('082111')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'  // state_auth_code - personnel code
-                        , '1'  // state_msg_receiver - head of household
-                        , '0713627893'  // state_msisdn
-                        , 'Isaac'  // state_household_head_name
-                        , 'Mbire'  // state_household_head_surname
-                        , '1'  // state_last_period_month - july 2015
-                        , '21'  // state_last_period_day - 21st
-                        , 'Sharon'  // state_mother_name
-                        , 'Nalule'  // state_mother_surname
-                        , '2'  // state_id_type - other
-                        , '13'  // state_mother_birth_day - 13th
-                        , '5'  // state_mother_birth_month - may
-                        , '1982'  // state_mother_birth_year - 1982
+                    )
+                    .check.interaction({
+                        state: 'state_msisdn',
+                        reply: "Please enter the mobile number of the person who will receive the weekly messages.  For example 0803304899"
+                    })
+                    .run();
+            });
+            it("to state_msg_receiver", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                    )
+                    .check.interaction({
+                        state: 'state_msg_receiver',
+                        reply: [
+                            "Please select who will receive the messages on their phone:",
+                            "1. The Mother",
+                            "2. The Father",
+                            "3. Family member",
+                            "4. Trusted friend"
+                        ].join('\n')
+                    })
+                    .run();
+            });
+            it("to state_pregnancy_status", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                        , '1'  // state_msg_receiver - mother
+                    )
+                    .check.interaction({
+                        state: 'state_pregnancy_status',
+                        reply: [
+                            "Please select one of the following:",
+                            "1. The mother is pregnant",
+                            "2. The mother has a baby under 1 year old"
+                        ].join('\n')
+                    })
+                    .run();
+            });
+            it("to state_last_period_month", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                        , '1'  // state_msg_receiver - mother
+                        , '1'  // state_msg_pregnant - mother
+                    )
+                    .check.interaction({
+                        state: 'state_last_period_month',
+                        reply: [
+                            "Please select the month the woman had her last period:",
+                            "1. July 15",
+                            "2. June 15",
+                            "3. May 15",
+                            "4. Apr 15",
+                            "5. Mar 15",
+                            "6. Feb 15",
+                            "7. Jan 15",
+                            "8. Dec 14",
+                            "9. More"
+                        ].join('\n')
+                    })
+                    .run();
+            });
+            it("to state_last_period_day", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                        , '1'  // state_msg_receiver - mother
+                        , '1'  // state_msg_pregnant - mother
+                        , '3'  // state_last_period_month - May 15
+                    )
+                    .check.interaction({
+                        state: 'state_last_period_day',
+                        reply: "What day of the month did the woman start her last period? For example, 12."
+                    })
+                    .run();
+            });
+            it("to state_msg_language", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                      {session_event: 'new'}  // dial in
+                      , '12345'   // state_auth_code - personnel code
+                      , '0803304899' // state_msisdn - mobile number
+                      , '1'  // state_msg_receiver - mother
+                      , '1'  // state_msg_pregnant - mother
+                      , '3'  // state_last_period_month - May 15
+                      , '12'
                     )
                     .check.interaction({
                         state: 'state_msg_language',
                         reply: [
-                            "Which language would they want to receive messages in?",
+                            "Which language would this person like to receive these messages in?",
                             "1. English",
-                            "2. Runyakore",
-                            "3. Lusoga",
+                            "2. Hausa",
+                            "3. Igbo"
                         ].join('\n')
                     })
                     .run();
             });
-
-            it("to state_hiv_messages", function() {
+            it("state_msg_call_or_text", function() {
                 return tester
                     .setup.user.addr('082111')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '12345'  // state_auth_code - personnel code
-                        , '1'  // state_msg_receiver - head of household
-                        , '0713627893'  // state_msisdn
-                        , 'Isaac'  // state_household_head_name
-                        , 'Mbire'  // state_household_head_surname
-                        , '1'  // state_last_period_month - july 2015
-                        , '21'  // state_last_period_day - 21st
-                        , 'Sharon'  // state_mother_name
-                        , 'Nalule'  // state_mother_surname
-                        , '1'  // state_id_type - ugandan id
-                        , '444'  // state_nin
-                        , '3'  // state_msg_language - lusoga
+                        , '12345'   // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                        , '1'  // state_msg_receiver - mother
+                        , '1'  // state_msg_pregnant - mother
+                        , '3'  // state_last_period_month - May 15
+                        , '12' // state_last_period_day - 12
+                        , '1'  // state_msg_language - english
                     )
                     .check.interaction({
-                        state: 'state_hiv_messages',
+                        state: 'state_msg_call_or_text',
                         reply: [
-                            "Would they like to receive additional messages about HIV?",
-                            "1. Yes",
-                            "2. No"
+                            "How would this person like to get messages?",
+                            "1. Voice calls",
+                            "2. Text SMSs"
                         ].join('\n')
                     })
                     .run();
             });
-
-            it("complete flow - uganda ID, english, hiv messages", function() {
+            it("complete flow - mother with baby, text sms's", function() {
                 return tester
                     .setup.user.addr('082111')
                     .inputs(
                         {session_event: 'new'}  // dial in
-                        , '12345'  // state_auth_code - personnel code
-                        , '1'  // state_msg_receiver - head of household
-                        , '0713627893'  // state_msisdn
-                        , 'Isaac'  // state_household_head_name
-                        , 'Mbire'  // state_household_head_surname
-                        , '1'  // state_last_period_month - july 2015
-                        , '21'  // state_last_period_day - 21st
-                        , 'Sharon'  // state_mother_name
-                        , 'Nalule'  // state_mother_surname
-                        , '1'  // state_id_type - ugandan id
-                        , '444'  // state_nin
-                        , '3'  // state_msg_language - lusoga
-                        , '1'  // state_hiv_messages - yes
+                        , '12345'   // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                        , '1'  // state_msg_receiver - mother
+                        , '1'  // state_msg_pregnant - mother
+                        , '3'  // state_last_period_month - May 15
+                        , '12' // state_last_period_day - 12
+                        , '1'  // state_msg_language - english
+                        , '2'   // state_msg_call_or_text - text smss
                     )
                     .check.interaction({
-                        state: 'state_end_thank_you',
-                        reply: "Thank you. The pregnant woman will now receive messages."
-                    })
-                    .check(function(api) {
-                        var smses = _.where(api.outbound.store, {
-                            endpoint: 'sms'
-                        });
-                        var sms = smses[0];
-                        assert.equal(smses.length,1);
-                        assert.equal(sms.content,
-                            "Welcome to FamilyConnect. Sharon's FamilyConnect ID is 7777.  Write it down and give it to the Nurse at your next clinic visit."
-                        );
-                        assert.equal(sms.to_addr,'082111');
-                    })
-                    .run();
-            });
-            it("complete flow - mother, other ID, lusoga, no hiv msgs", function() {
-                return tester
-                    .setup.user.addr('082111')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '12345'  // state_auth_code - personnel code
-                        , '2'  // state_msg_receiver - mother to be
-                        , '0713627893'  // state_msisdn
-                        , 'Isaac'  // state_household_head_name
-                        , 'Mbire'  // state_household_head_surname
-                        , '1'  // state_last_period_month - July 2015
-                        , '21'  // state_last_period_day - 21st
-                        , 'Mary'  // state_mother_name
-                        , 'Nalule'  // state_mother_surname
-                        , '2'  // state_id_type - other ID
-                        , '13'  // state_mother_birth_day - 13th
-                        , '5'  // state_mother_birth_month - may
-                        , '1982'  // state_mother_birth_year - 1982
-                        , '3'  // state_msg_language - lusoga
-                        , '2'  // state_hiv_messages - no
-                    )
-                    .check.interaction({
-                        state: 'state_end_thank_you',
-                        reply: "Thank you. The pregnant woman will now receive messages."
-                    })
-                    .check(function(api) {
-                        var smses = _.where(api.outbound.store, {
-                            endpoint: 'sms'
-                        });
-                        var sms = smses[0];
-                        assert.equal(smses.length,1);
-                        assert.equal(sms.content,
-                            "Welcome to FamilyConnect Mary. Your FamilyConnect ID is 7777. Write it down and give it to the Nurse at your next clinic visit."
-                        );
-                        assert.equal(sms.to_addr,'082111');
+                        state: 'state_end_thank_you_texts',
+                        reply: "Thank you. The person will now start receiving messages three times a week."
                     })
                     .run();
             });
@@ -596,11 +547,11 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_auth_code',
-                        reply: "That code is not recognised. Please enter your 5 digit personnel code."
+                        reply: "Sorry, that is not a valid number. Please enter your unique personnel code. For example, 12345."
                     })
                     .run();
             });
-            it("validate state_msg_receiver", function() {
+          /*  it("validate state_msg_receiver", function() {
                 return tester
                     .setup.user.addr('082111')
                     .inputs(
@@ -619,7 +570,7 @@ describe("Mama Nigeria App", function() {
                         ].join('\n')
                     })
                     .run();
-            });
+            });*/
 
         });
     });
