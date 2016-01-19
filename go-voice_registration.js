@@ -726,7 +726,7 @@ go.app = function() {
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(content) {
-                    if (go.utils.check_valid_phone_number(content) === false) {
+                    if (go.utils.is_valid_msisdn(content) === false) {
                         return 'state_r02_retry_number';
                     } else {
                         self.im.user.set_answer('mama_num', content);
@@ -749,7 +749,7 @@ go.app = function() {
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(content) {
-                    if (go.utils.check_valid_phone_number(content) === false) {
+                    if (go.utils.is_valid_msisdn(content) === false) {
                         return 'state_r02_retry_number';
                     } else {
                         self.im.user.set_answer('mama_num', content);
