@@ -237,8 +237,31 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
+            it("to state_msg_language", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                      {session_event: 'new'}  // dial in
+                      , '12345'   // state_auth_code - personnel code
+                      , '0803304899' // state_msisdn - mobile number
+                      , '1'  // state_msg_receiver - mother
+                      , '1'  // state_msg_pregnant - mother
+                      , '3'  // state_last_period_month - May 15
+                      , '12'  // state_last_period_day
+                    )
+                    .check.interaction({
+                        state: 'state_msg_language',
+                        reply: [
+                            "Which language would this person like to receive these messages in?",
+                            "1. English",
+                            "2. Hausa",
+                            "3. Igbo"
+                        ].join('\n')
+                    })
+                    .run();
+            });
             // mother has baby
-            it("to state_baby_birth_date", function() {
+            it("to state_baby_birth_month_year", function() {
                 return tester
                     .setup.user.addr('082111')
                     .inputs(
@@ -249,7 +272,7 @@ describe("Mama Nigeria App", function() {
                         , '2'  // state_msg_pregnancy_status - baby
                     )
                     .check.interaction({
-                        state: 'state_baby_birth_date',
+                        state: 'state_baby_birth_month_year',
                         reply: [
                             "Select the month & year the baby was born:",
                             "1. July 15",
@@ -274,7 +297,7 @@ describe("Mama Nigeria App", function() {
                         , '0803304899' // state_msisdn - mobile number
                         , '1'  // state_msg_receiver - mother
                         , '2'  // state_msg_pregnancy_status - baby
-                        , '3'  // state_baby_birth_date - May 15
+                        , '3'  // state_baby_birth_month_year - May 15
                     )
                     .check.interaction({
                         state: 'state_baby_birth_day',
@@ -290,37 +313,16 @@ describe("Mama Nigeria App", function() {
                       , '12345'   // state_auth_code - personnel code
                       , '0803304899' // state_msisdn - mobile number
                       , '1'  // state_msg_receiver - mother
-                      , '1'  // state_msg_pregnant - mother
-                      , '3'  // state_last_period_month - May 15
-                      , '12'
-                    )
-                    .run();
-            });
-
-
-            it("to state_msg_language", function() {
-                return tester
-                    .setup.user.addr('082111')
-                    .inputs(
-                      {session_event: 'new'}  // dial in
-                      , '12345'   // state_auth_code - personnel code
-                      , '0803304899' // state_msisdn - mobile number
-                      , '1'  // state_msg_receiver - mother
-                      , '1'  // state_msg_pregnant - mother
-                      , '3'  // state_last_period_month - May 15
-                      , '12'
+                      , '2'  // state_msg_pregnancy_status - baby
+                      , '3'  // state_baby_birth_month_year - May 15
+                      , '12'  // state_baby_birth_day
                     )
                     .check.interaction({
                         state: 'state_msg_language',
-                        reply: [
-                            "Which language would this person like to receive these messages in?",
-                            "1. English",
-                            "2. Hausa",
-                            "3. Igbo"
-                        ].join('\n')
                     })
                     .run();
             });
+
             it("to state_msg_type", function() {
                 return tester
                     .setup.user.addr('082111')
@@ -395,6 +397,29 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
+            it("to state_end_voice", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                        , '1'  // state_msg_receiver - mother
+                        , '1'  // state_msg_pregnant - mother
+                        , '3'  // state_last_period_month - May 15
+                        , '12' // state_last_period_day - 12
+                        , '1'  // state_msg_language - english
+                        , '1'   // state_msg_type - voice calls
+                        , '2'   // state_voice_days - tuesdays and thursdays
+                        , '2'   // state_voice_times - between 2-5pm
+                    )
+                    .check.interaction({
+                        state: 'state_end_voice',
+                        reply: "Thank you. The person will now start receiving calls on [day and day] between [time - time]."
+                    })
+                    .check.reply.ends_session()
+                    .run();
+            });
             //user wants text sms's
             it("to state_end_sms", function() {
                 return tester
@@ -438,9 +463,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_end_voice',
-                        reply: "Thank you. The person will now start receiving calls on [day and day] between [time - time]."
                     })
-                    .check.reply.ends_session()
                     .run();
             });
             it("complete flow 2 - mother baby, sms", function() {
@@ -452,14 +475,13 @@ describe("Mama Nigeria App", function() {
                         , '0803304899' // state_msisdn - mobile number
                         , '1'  // state_msg_receiver - mother
                         , '2'  // state_msg_pregnant - baby
-                        , '4'  // state_baby_birth_date - May 15
+                        , '4'  // state_baby_birth_month_year - May 15
                         , '12' // state_baby_birth_day - 12
                         , '3'  // state_msg_language - igbo
                         , '2'   // state_msg_type - sms
                     )
                     .check.interaction({
                         state: 'state_end_sms',
-                        reply: "Thank you. The person will now start receiving messages three times a week."
                     })
                     .run();
             });
@@ -522,7 +544,7 @@ describe("Mama Nigeria App", function() {
                         , '0803304899' // state_msisdn - mobile number
                         , '1'  // state_msg_receiver - mother
                         , '2'  // state_msg_pregnancy_status - baby
-                        , '3'  // state_baby_birth_date - May 15
+                        , '3'  // state_baby_birth_month_year - May 15
                         , 'a'  // state_baby_birth_day
                     )
                     .check.interaction({

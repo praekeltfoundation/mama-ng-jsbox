@@ -720,7 +720,7 @@ go.app = function() {
                 "Please select the month the woman had her last period:",
             "state_last_period_day":
                 "What day of the month did the woman start her last period? For example, 12.",
-            "state_baby_birth_date":
+            "state_baby_birth_month_year":
                 "Select the month & year the baby was born:",
             "state_baby_birth_day":
                 "What day of the month was the baby born? For example, 12.",
@@ -876,7 +876,7 @@ go.app = function() {
                 next: function(choice) {
                     return choice.value === 'pregnant'
                         ? 'state_last_period_month'
-                        : 'state_baby_birth_date';
+                        : 'state_baby_birth_month_year';
                 }
             });
         });
@@ -969,7 +969,7 @@ go.app = function() {
         });
 
         // PaginatedChoiceState st-12 & 13
-        self.add('state_baby_birth_date', function(name) {
+        self.add('state_baby_birth_month_year', function(name) {
             var today = go.utils.get_today(self.im.config);
             var start_month = today.month();
             return new PaginatedChoiceState(name, {
