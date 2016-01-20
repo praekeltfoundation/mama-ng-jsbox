@@ -128,8 +128,7 @@ describe("Mama Nigeria App", function() {
 
         // TEST REGISTRATION
 
-        // flow testing case 1 - mother is pregnant and opts for voice calls
-        describe("Flow testing - mother pregnant, voice calls", function() {
+        describe("Flow testing - registration", function() {
             it("to state_auth_code", function() {
                 return tester
                     .setup.user.addr('082111')
@@ -194,6 +193,8 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
+
+            // mother is pregnant
             it("to state_last_period_month", function() {
                 return tester
                     .setup.user.addr('082111')
@@ -238,191 +239,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            it("to state_msg_language", function() {
-                return tester
-                    .setup.user.addr('082111')
-                    .inputs(
-                      {session_event: 'new'}  // dial in
-                      , '12345'   // state_auth_code - personnel code
-                      , '0803304899' // state_msisdn - mobile number
-                      , '1'  // state_msg_receiver - mother
-                      , '1'  // state_msg_pregnant - mother
-                      , '3'  // state_last_period_month - May 15
-                      , '12'
-                    )
-                    .check.interaction({
-                        state: 'state_msg_language',
-                        reply: [
-                            "Which language would this person like to receive these messages in?",
-                            "1. English",
-                            "2. Hausa",
-                            "3. Igbo"
-                        ].join('\n')
-                    })
-                    .run();
-            });
-            it("to state_msg_type", function() {
-                return tester
-                    .setup.user.addr('082111')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '12345'   // state_auth_code - personnel code
-                        , '0803304899' // state_msisdn - mobile number
-                        , '1'  // state_msg_receiver - mother
-                        , '1'  // state_msg_pregnant - mother
-                        , '3'  // state_last_period_month - May 15
-                        , '12' // state_last_period_day - 12
-                        , '1'  // state_msg_language - english
-                    )
-                    .check.interaction({
-                        state: 'state_msg_type',
-                        reply: [
-                            "How would this person like to get messages?",
-                            "1. Voice calls",
-                            "2. Text SMSs"
-                        ].join('\n')
-                    })
-                    .run();
-            });
-            it("to state_voice_days", function() {
-                return tester
-                    .setup.user.addr('082111')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '12345'   // state_auth_code - personnel code
-                        , '0803304899' // state_msisdn - mobile number
-                        , '1'  // state_msg_receiver - mother
-                        , '1'  // state_msg_pregnant - mother
-                        , '3'  // state_last_period_month - May 15
-                        , '12' // state_last_period_day - 12
-                        , '1'  // state_msg_language - english
-                        , '1'   // state_msg_type - voice calls
-                    )
-                    .check.interaction({
-                        state: 'state_voice_days',
-                        reply: [
-                            "We will call them twice a week. On what days would the person like to receive these calls?",
-                            "1. Monday and Wednesday",
-                            "2. Tuesday and Thursday"
-                        ].join('\n')
-                    })
-                    .run();
-            });
-            it("to state_voice_times", function() {
-                return tester
-                    .setup.user.addr('082111')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '12345'   // state_auth_code - personnel code
-                        , '0803304899' // state_msisdn - mobile number
-                        , '1'  // state_msg_receiver - mother
-                        , '1'  // state_msg_pregnant - mother
-                        , '3'  // state_last_period_month - May 15
-                        , '12' // state_last_period_day - 12
-                        , '1'  // state_msg_language - english
-                        , '1'   // state_msg_type - voice calls
-                        , '2'   // state_voice_days - tuesdays and thursdays
-                    )
-                    .check.interaction({
-                        state: 'state_voice_times',
-                        reply: [
-                            "Thank you. At what time would they like to receive these calls?",
-                            "1. Between 9-11am",
-                            "2. Between 2-5pm"
-                        ].join('\n')
-                    })
-                    .run();
-            });
-            it("complete flow - mother pregnant, voice calls", function() {
-                return tester
-                    .setup.user.addr('082111')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '12345'   // state_auth_code - personnel code
-                        , '0803304899' // state_msisdn - mobile number
-                        , '1'  // state_msg_receiver - mother
-                        , '1'  // state_msg_pregnant - mother
-                        , '3'  // state_last_period_month - May 15
-                        , '12' // state_last_period_day - 12
-                        , '1'  // state_msg_language - english
-                        , '1'   // state_msg_type - voice calls
-                        , '2'   // state_voice_days - tuesdays and thursdays
-                        , '2'   // state_voice_times - between 2-5pm
-                    )
-                    .check.interaction({
-                        state: 'state_end_voice',
-                        reply: "Thank you. The person will now start receiving calls on [day and day] between [time - time]."
-                    })
-                    .run();
-            });
-        });
-
-        // flow testing case 2 - mother has baby and opts for text sms's
-        describe("Flow testing - mother with baby, text sms's", function() {
-            it("to state_auth_code", function() {
-                return tester
-                    .setup.user.addr('082111')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                    )
-                    .check.interaction({
-                        state: 'state_auth_code',
-                        reply: "Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345"
-                    })
-                    .run();
-            });
-            it("to state_msisdn", function() {
-                return tester
-                    .setup.user.addr('082111')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '12345'  // state_auth_code - personnel code
-                    )
-                    .check.interaction({
-                        state: 'state_msisdn',
-                        reply: "Please enter the mobile number of the person who will receive the weekly messages. For example, 08033046899"
-                    })
-                    .run();
-            });
-            it("to state_msg_receiver", function() {
-                return tester
-                    .setup.user.addr('082111')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '12345'  // state_auth_code - personnel code
-                        , '0803304899' // state_msisdn - mobile number
-                    )
-                    .check.interaction({
-                        state: 'state_msg_receiver',
-                        reply: [
-                            "Please select who will receive the messages on their phone:",
-                            "1. The Mother",
-                            "2. The Father",
-                            "3. Family member",
-                            "4. Trusted friend"
-                        ].join('\n')
-                    })
-                    .run();
-            });
-            it("to state_pregnancy_status", function() {
-                return tester
-                    .setup.user.addr('082111')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '12345'   // state_auth_code - personnel code
-                        , '0803304899' // state_msisdn - mobile number
-                        , '1'  // state_msg_receiver - mother
-                    )
-                    .check.interaction({
-                        state: 'state_pregnancy_status',
-                        reply: [
-                            "Please select one of the following:",
-                            "1. The mother is pregnant",
-                            "2. The mother has a baby under 1 year old"
-                        ].join('\n')
-                    })
-                    .run();
-            });
+            // mother has baby
             it("to state_baby_birth_date", function() {
                 return tester
                     .setup.user.addr('082111')
@@ -479,6 +296,22 @@ describe("Mama Nigeria App", function() {
                       , '3'  // state_last_period_month - May 15
                       , '12'
                     )
+                    .run();
+            });
+
+
+            it("to state_msg_language", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                      {session_event: 'new'}  // dial in
+                      , '12345'   // state_auth_code - personnel code
+                      , '0803304899' // state_msisdn - mobile number
+                      , '1'  // state_msg_receiver - mother
+                      , '1'  // state_msg_pregnant - mother
+                      , '3'  // state_last_period_month - May 15
+                      , '12'
+                    )
                     .check.interaction({
                         state: 'state_msg_language',
                         reply: [
@@ -501,7 +334,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_msg_pregnant - mother
                         , '3'  // state_last_period_month - May 15
                         , '12' // state_last_period_day - 12
-                        , '2'  // state_msg_language - huasa
+                        , '1'  // state_msg_language - english
                     )
                     .check.interaction({
                         state: 'state_msg_type',
@@ -513,7 +346,59 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            it("complete flow - mother with baby, text sms's", function() {
+
+            // user wants voice calls
+            it("to state_voice_days", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                        , '1'  // state_msg_receiver - mother
+                        , '1'  // state_msg_pregnant - mother
+                        , '3'  // state_last_period_month - May 15
+                        , '12' // state_last_period_day - 12
+                        , '1'  // state_msg_language - english
+                        , '1'   // state_msg_type - voice calls
+                    )
+                    .check.interaction({
+                        state: 'state_voice_days',
+                        reply: [
+                            "We will call them twice a week. On what days would the person like to receive these calls?",
+                            "1. Monday and Wednesday",
+                            "2. Tuesday and Thursday"
+                        ].join('\n')
+                    })
+                    .run();
+            });
+            it("to state_voice_times", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                        , '1'  // state_msg_receiver - mother
+                        , '1'  // state_msg_pregnant - mother
+                        , '3'  // state_last_period_month - May 15
+                        , '12' // state_last_period_day - 12
+                        , '1'  // state_msg_language - english
+                        , '1'   // state_msg_type - voice calls
+                        , '2'   // state_voice_days - tuesdays and thursdays
+                    )
+                    .check.interaction({
+                        state: 'state_voice_times',
+                        reply: [
+                            "Thank you. At what time would they like to receive these calls?",
+                            "1. Between 9-11am",
+                            "2. Between 2-5pm"
+                        ].join('\n')
+                    })
+                    .run();
+            });
+            //user wants text sms's
+            it("to state_end_sms", function() {
                 return tester
                     .setup.user.addr('082111')
                     .inputs(
@@ -526,6 +411,53 @@ describe("Mama Nigeria App", function() {
                         , '12' // state_last_period_day - 12
                         , '2'  // state_msg_language - hausa
                         , '2'   // state_msg_type - text smss
+                    )
+                    .check.interaction({
+                        state: 'state_end_sms',
+                        reply: "Thank you. The person will now start receiving messages three times a week."
+                    })
+                    .check.reply.ends_session()
+                    .run();
+            });
+        });
+
+        describe("Flow testing - complete flows", function() {
+            it("complete flow 1 - mother pregnant, voice", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                        , '1'  // state_msg_receiver - mother
+                        , '1'  // state_msg_pregnant - mother
+                        , '3'  // state_last_period_month - May 15
+                        , '12' // state_last_period_day - 12
+                        , '1'  // state_msg_language - english
+                        , '1'   // state_msg_type - voice calls
+                        , '2'   // state_voice_days - tuesdays and thursdays
+                        , '2'   // state_voice_times - between 2-5pm
+                    )
+                    .check.interaction({
+                        state: 'state_end_voice',
+                        reply: "Thank you. The person will now start receiving calls on [day and day] between [time - time]."
+                    })
+                    .check.reply.ends_session()
+                    .run();
+            });
+            it("complete flow 2 - mother baby, sms", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                        , '1'  // state_msg_receiver - mother
+                        , '2'  // state_msg_pregnant - baby
+                        , '4'  // state_last_period_month - May 15
+                        , '12' // state_last_period_day - 12
+                        , '3'  // state_msg_language - igbo
+                        , '2'   // state_msg_type - sms
                     )
                     .check.interaction({
                         state: 'state_end_sms',
