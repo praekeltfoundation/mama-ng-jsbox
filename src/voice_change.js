@@ -48,7 +48,7 @@ go.app = function() {
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(content) {
-                    if (go.utils.check_valid_phone_number(content) === false) {
+                    if (go.utils.is_valid_msisdn(content) === false) {
                         return 'state_c13_retry_number';
                     } else {
                         return go.utils
@@ -86,7 +86,7 @@ go.app = function() {
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(content) {
-                    if (go.utils.check_valid_phone_number(content) === false) {
+                    if (go.utils.is_valid_msisdn(content) === false) {
                         return 'state_c13_retry_number';
                     } else {
                         return go.utils
