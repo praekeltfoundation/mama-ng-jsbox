@@ -1,8 +1,6 @@
 var vumigo = require('vumigo_v02');
 var fixtures = require('./fixtures');
 var AppTester = vumigo.AppTester;
-var _ = require('lodash');
-var assert = require('assert');
 
 describe("Mama Nigeria App", function() {
     describe("USSD Registration", function() {
