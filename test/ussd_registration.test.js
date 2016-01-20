@@ -151,7 +151,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_msisdn',
-                        reply: "Please enter the mobile number of the person who will receive the weekly messages.  For example 0803304899"
+                        reply: "Please enter the mobile number of the person who will receive the weekly messages. For example, 08033046899"
                     })
                     .run();
             });
@@ -202,7 +202,7 @@ describe("Mama Nigeria App", function() {
                         , '12345'   // state_auth_code - personnel code
                         , '0803304899' // state_msisdn - mobile number
                         , '1'  // state_msg_receiver - mother
-                        , '1'  // state_msg_pregnant - mother
+                        , '1'  // state_msg_pregnancy_status - pregnant
                     )
                     .check.interaction({
                         state: 'state_last_period_month',
@@ -261,7 +261,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            it("state_msg_call_or_text", function() {
+            it("to state_msg_type", function() {
                 return tester
                     .setup.user.addr('082111')
                     .inputs(
@@ -275,7 +275,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_msg_language - english
                     )
                     .check.interaction({
-                        state: 'state_msg_call_or_text',
+                        state: 'state_msg_type',
                         reply: [
                             "How would this person like to get messages?",
                             "1. Voice calls",
@@ -284,7 +284,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            it("to state_receive_calls_days", function() {
+            it("to state_voice_days", function() {
                 return tester
                     .setup.user.addr('082111')
                     .inputs(
@@ -296,10 +296,10 @@ describe("Mama Nigeria App", function() {
                         , '3'  // state_last_period_month - May 15
                         , '12' // state_last_period_day - 12
                         , '1'  // state_msg_language - english
-                        , '1'   // state_msg_call_or_text - voice calls
+                        , '1'   // state_msg_type - voice calls
                     )
                     .check.interaction({
-                        state: 'state_receive_calls_days',
+                        state: 'state_voice_days',
                         reply: [
                             "We will call them twice a week. On what days would the person like to receive these calls?",
                             "1. Monday and Wednesday",
@@ -308,7 +308,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            it("to state_receive_calls_time", function() {
+            it("to state_voice_times", function() {
                 return tester
                     .setup.user.addr('082111')
                     .inputs(
@@ -320,11 +320,11 @@ describe("Mama Nigeria App", function() {
                         , '3'  // state_last_period_month - May 15
                         , '12' // state_last_period_day - 12
                         , '1'  // state_msg_language - english
-                        , '1'   // state_msg_call_or_text - voice calls
-                        , '2'   // state_receive_calls_days - tuesdays and thursdays
+                        , '1'   // state_msg_type - voice calls
+                        , '2'   // state_voice_days - tuesdays and thursdays
                     )
                     .check.interaction({
-                        state: 'state_receive_calls_time',
+                        state: 'state_voice_times',
                         reply: [
                             "Thank you. At what time would they like to receive these calls?",
                             "1. Between 9-11am",
@@ -345,12 +345,12 @@ describe("Mama Nigeria App", function() {
                         , '3'  // state_last_period_month - May 15
                         , '12' // state_last_period_day - 12
                         , '1'  // state_msg_language - english
-                        , '1'   // state_msg_call_or_text - voice calls
-                        , '2'   // state_receive_calls_days - tuesdays and thursdays
-                        , '2'   // state_receive_calls_time - between 2-5pm
+                        , '1'   // state_msg_type - voice calls
+                        , '2'   // state_voice_days - tuesdays and thursdays
+                        , '2'   // state_voice_times - between 2-5pm
                     )
                     .check.interaction({
-                        state: 'state_end_thank_you_calls',
+                        state: 'state_end_voice',
                         reply: "Thank you. The person will now start receiving calls on [day and day] between [time - time]."
                     })
                     .run();
@@ -380,7 +380,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_msisdn',
-                        reply: "Please enter the mobile number of the person who will receive the weekly messages.  For example 0803304899"
+                        reply: "Please enter the mobile number of the person who will receive the weekly messages. For example, 08033046899"
                     })
                     .run();
             });
@@ -423,7 +423,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            it("to state_last_period_month", function() {
+            it("to state_baby_birth_date", function() {
                 return tester
                     .setup.user.addr('082111')
                     .inputs(
@@ -431,12 +431,12 @@ describe("Mama Nigeria App", function() {
                         , '12345'   // state_auth_code - personnel code
                         , '0803304899' // state_msisdn - mobile number
                         , '1'  // state_msg_receiver - mother
-                        , '1'  // state_msg_pregnant - mother
+                        , '2'  // state_msg_pregnancy_status - baby
                     )
                     .check.interaction({
-                        state: 'state_last_period_month',
+                        state: 'state_baby_birth_date',
                         reply: [
-                            "Please select the month the woman had her last period:",
+                            "Select the month & year the baby was born:",
                             "1. July 15",
                             "2. June 15",
                             "3. May 15",
@@ -445,12 +445,12 @@ describe("Mama Nigeria App", function() {
                             "6. Feb 15",
                             "7. Jan 15",
                             "8. Dec 14",
-                            "9. More"
+                            "9. Nov 14"
                         ].join('\n')
                     })
                     .run();
             });
-            it("to state_last_period_day", function() {
+            it("to state_baby_birth_day", function() {
                 return tester
                     .setup.user.addr('082111')
                     .inputs(
@@ -458,12 +458,12 @@ describe("Mama Nigeria App", function() {
                         , '12345'   // state_auth_code - personnel code
                         , '0803304899' // state_msisdn - mobile number
                         , '1'  // state_msg_receiver - mother
-                        , '1'  // state_msg_pregnant - mother
-                        , '3'  // state_last_period_month - May 15
+                        , '2'  // state_msg_pregnancy_status - baby
+                        , '3'  // state_baby_birth_date - May 15
                     )
                     .check.interaction({
-                        state: 'state_last_period_day',
-                        reply: "What day of the month did the woman start her last period? For example, 12."
+                        state: 'state_baby_birth_day',
+                        reply: "What day of the month was the baby born? For example, 12."
                     })
                     .run();
             });
@@ -490,7 +490,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            it("state_msg_call_or_text", function() {
+            it("to state_msg_type", function() {
                 return tester
                     .setup.user.addr('082111')
                     .inputs(
@@ -501,10 +501,10 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_msg_pregnant - mother
                         , '3'  // state_last_period_month - May 15
                         , '12' // state_last_period_day - 12
-                        , '1'  // state_msg_language - english
+                        , '2'  // state_msg_language - huasa
                     )
                     .check.interaction({
-                        state: 'state_msg_call_or_text',
+                        state: 'state_msg_type',
                         reply: [
                             "How would this person like to get messages?",
                             "1. Voice calls",
@@ -524,11 +524,11 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_msg_pregnant - mother
                         , '3'  // state_last_period_month - May 15
                         , '12' // state_last_period_day - 12
-                        , '1'  // state_msg_language - english
-                        , '2'   // state_msg_call_or_text - text smss
+                        , '2'  // state_msg_language - hausa
+                        , '2'   // state_msg_type - text smss
                     )
                     .check.interaction({
-                        state: 'state_end_thank_you_texts',
+                        state: 'state_end_sms',
                         reply: "Thank you. The person will now start receiving messages three times a week."
                     })
                     .run();
@@ -547,31 +547,60 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_auth_code',
-                        reply: "Sorry, that is not a valid number. Please enter your unique personnel code. For example, 12345."
+                        reply: "Sorry, that is not a valid number. Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345"
                     })
                     .run();
             });
-          /*  it("validate state_msg_receiver", function() {
+            it("validate state_msisdn", function() {
                 return tester
                     .setup.user.addr('082111')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'  // state_auth_code - personnel code
-                        , '5'  // state_msg_receiver - invalid choice
+                        , 'aaaabbbbb'  // state_msisdn - mobile number
                     )
                     .check.interaction({
-                        state: 'state_msg_receiver',
-                        reply: [
-                            "Sorry not a valid input. Please select who will receive the messages on their phone:",
-                            "1. Head of the Household",
-                            "2. Mother to be",
-                            "3. Family member",
-                            "4. Trusted friend"
-                        ].join('\n')
+                        state: 'state_msisdn',
+                        reply: "Sorry, that is not a valid number. Please enter the mobile number of the person who will receive the weekly messages. For example, 08033046899"
                     })
                     .run();
-            });*/
-
+            });
+            it("validate state_last_period_day", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                        , '1'  // state_msg_receiver - mother
+                        , '1'  // state_msg_pregnant - mother
+                        , '3'  // state_last_period_month - May 15
+                        , '32'
+                    )
+                    .check.interaction({
+                        state: 'state_last_period_day',
+                        reply: "Sorry, that is not a valid number. What day of the month did the woman start her last period? For example, 12."
+                    })
+                    .run();
+            });
+            it("validate state_baby_birth_day", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                        , '1'  // state_msg_receiver - mother
+                        , '2'  // state_msg_pregnancy_status - baby
+                        , '3'  // state_baby_birth_date - May 15
+                        , 'a'
+                    )
+                    .check.interaction({
+                        state: 'state_baby_birth_day',
+                        reply: "Sorry, that is not a valid number. What day of the month was the baby born? For example, 12."
+                    })
+                    .run();
+            });
         });
     });
 

@@ -32,7 +32,7 @@ go.app = function() {
             "state_auth_code":
                 "Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345",
             "state_msisdn":
-                "Please enter the mobile number of the person who will receive the weekly messages.  For example 0803304899",
+                "Please enter the mobile number of the person who will receive the weekly messages. For example, 08033046899",
             "state_msg_receiver":
                 "Please select who will receive the messages on their phone:",
             "state_pregnancy_status":
@@ -47,15 +47,15 @@ go.app = function() {
                 "What day of the month was the baby born? For example, 12.",
             "state_msg_language":
                 "Which language would this person like to receive these messages in?",
-            "state_msg_call_or_text":
+            "state_msg_type":
                 "How would this person like to get messages?",
-            "state_receive_calls_days":
+            "state_voice_days":
                 "We will call them twice a week. On what days would the person like to receive these calls?",
-            "state_receive_calls_time":
+            "state_voice_times":
                 "Thank you. At what time would they like to receive these calls?",
-            "state_end_thank_you_calls":
+            "state_end_voice":
                 "Thank you. The person will now start receiving calls on [day and day] between [time - time].",
-            "state_end_thank_you_texts":
+            "state_end_sms":
                 "Thank you. The person will now start receiving messages three times a week."
         };
 
@@ -69,10 +69,7 @@ go.app = function() {
                 ? smss.time_out : null;
         };
 
-        var errors = {
-            "state_auth_code":
-                "Sorry, that is not a valid number. Please enter your unique personnel code. For example, 12345."
-        };
+        var errors = {};
 
         get_error_text = function(name) {
             return errors[name] || "Sorry, that is not a valid number. " + questions[name];
@@ -177,12 +174,11 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 choices: [
-                    new Choice('the_mother', $("The Mother")),
-                    new Choice('the_father', $("The Father")),
+                    new Choice('mother', $("The Mother")),
+                    new Choice('father', $("The Father")),
                     new Choice('family_member', $("Family member")),
                     new Choice('trusted_friend', $("Trusted friend"))
                 ],
-                error: $(get_error_text(name)),
                 next: 'state_pregnancy_status'
             });
         });
@@ -192,12 +188,11 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 choices: [
-                    new Choice('the_mother_pregnant', $("The mother is pregnant")),
-                    new Choice('the_mother_baby', $("The mother has a baby under 1 year old"))
+                    new Choice('pregnant', $("The mother is pregnant")),
+                    new Choice('baby', $("The mother has a baby under 1 year old"))
                 ],
-                error: $(get_error_text(name)),
                 next: function(choice) {
-                    return choice.value === 'the_mother_pregnant'
+                    return choice.value === 'pregnant'
                         ? 'state_last_period_month'
                         : 'state_baby_birth_date';
                 }
@@ -211,7 +206,6 @@ go.app = function() {
             return new PaginatedChoiceState(name, {
                 question: $(questions[name]),
                 choices: go.utils.make_month_choices($, start_month, 9, -1),
-                error: $(get_error_text(name)),
                 next: 'state_last_period_day'
             });
         });
@@ -235,75 +229,70 @@ go.app = function() {
         self.add('state_msg_language', function(name) {
             return new ChoiceState(name, {
                 question: $(questions[name]),
-                error: $(get_error_text(name)),
                 choices: [
                     new Choice('english', $('English')),
                     new Choice('hausa', $('Hausa')),
                     new Choice('igbo', $('Igbo'))
                 ],
-                next: 'state_msg_call_or_text'
+                next: 'state_msg_type'
             });
         });
 
         // ChoiceState st-08
-        self.add('state_msg_call_or_text', function(name) {
+        self.add('state_msg_type', function(name) {
             return new ChoiceState(name, {
                 question: $(questions[name]),
-                error: $(get_error_text(name)),
                 choices: [
-                    new Choice('voice_calls', $('Voice calls')),
-                    new Choice('text_smss', $('Text SMSs'))
+                    new Choice('voice', $('Voice calls')),
+                    new Choice('sms', $('Text SMSs'))
                 ],
                 next: function(choice) {
-                    return choice.value === 'voice_calls'
-                        ? 'state_receive_calls_days'
-                        : 'state_end_thank_you_texts';
+                    return choice.value === 'voice'
+                        ? 'state_voice_days'
+                        : 'state_end_sms';
                 }
             });
         });
 
         // ChoiceState st-09
-        self.add('state_receive_calls_days', function(name) {
+        self.add('state_voice_days', function(name) {
             return new ChoiceState(name, {
                 question: $(questions[name]),
-                error: $(get_error_text(name)),
                 choices: [
-                    new Choice('monday_and_wednesday', $('Monday and Wednesday')),
-                    new Choice('tuesday_and_thursday', $('Tuesday and Thursday'))
+                    new Choice('mon_wed', $('Monday and Wednesday')),
+                    new Choice('tue_thu', $('Tuesday and Thursday'))
                 ],
-                next: 'state_receive_calls_time'
+                next: 'state_voice_times'
             });
         });
 
         // ChoiceState st-10
-        self.add('state_receive_calls_time', function(name) {
+        self.add('state_voice_times', function(name) {
             return new ChoiceState(name, {
                 question: $(questions[name]),
-                error: $(get_error_text(name)),
                 choices: [
-                    new Choice('between_9_11am', $('Between 9-11am')),
-                    new Choice('between_2_5pm', $('Between 2-5pm'))
+                    new Choice('9_11', $('Between 9-11am')),
+                    new Choice('2_5', $('Between 2-5pm'))
                 ],
-                next: 'state_end_thank_you_calls'
+                next: 'state_end_voice'
             });
         });
 
         // EndState st-11
-        self.add('state_end_thank_you_calls', function(name) {
+        self.add('state_end_voice', function(name) {
             return new EndState(name, {
                 text: $(questions[name]),
                 next: 'state_start'
             });
         });
 
-        // PaginatedChoiceState st-12
+        // PaginatedChoiceState st-12 & 13
         self.add('state_baby_birth_date', function(name) {
             var today = go.utils.get_today(self.im.config);
             var start_month = today.month();
             return new PaginatedChoiceState(name, {
                 question: $(questions[name]),
-                error: $(get_error_text(name)),
-                characters_per_page: 160,
+                characters_per_page: 182,
                 options_per_page: null,
                 more: $('More'),
                 back: $('Back'),
@@ -328,7 +317,7 @@ go.app = function() {
         });
 
         // EndState st-15
-        self.add('state_end_thank_you_texts', function(name) {
+        self.add('state_end_sms', function(name) {
             return new EndState(name, {
                 text: $(questions[name]),
                 next: 'state_start'
