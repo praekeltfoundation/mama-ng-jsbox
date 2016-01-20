@@ -748,7 +748,10 @@ go.app = function() {
                 ? smss.time_out : null;
         };
 
-        var errors = {};
+        var errors = {
+            "state_auth_code":
+                "Sorry, that is not a valid number. Please enter your unique personnel code. For example, 12345"
+        };
 
         get_error_text = function(name) {
             return errors[name] || "Sorry, that is not a valid number. " + questions[name];

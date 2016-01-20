@@ -454,8 +454,8 @@ describe("Mama Nigeria App", function() {
                         , '0803304899' // state_msisdn - mobile number
                         , '1'  // state_msg_receiver - mother
                         , '2'  // state_msg_pregnant - baby
-                        , '4'  // state_last_period_month - May 15
-                        , '12' // state_last_period_day - 12
+                        , '4'  // state_baby_birth_date - May 15
+                        , '12' // state_baby_birth_day - 12
                         , '3'  // state_msg_language - igbo
                         , '2'   // state_msg_type - sms
                     )
@@ -479,7 +479,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_auth_code',
-                        reply: "Sorry, that is not a valid number. Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345"
+                        reply: "Sorry, that is not a valid number. Please enter your unique personnel code. For example, 12345"
                     })
                     .run();
             });
@@ -507,7 +507,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_msg_receiver - mother
                         , '1'  // state_msg_pregnant - mother
                         , '3'  // state_last_period_month - May 15
-                        , '32'
+                        , '32' // state_last_period_day
                     )
                     .check.interaction({
                         state: 'state_last_period_day',
@@ -525,7 +525,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_msg_receiver - mother
                         , '2'  // state_msg_pregnancy_status - baby
                         , '3'  // state_baby_birth_date - May 15
-                        , 'a'
+                        , 'a'  // state_baby_birth_day
                     )
                     .check.interaction({
                         state: 'state_baby_birth_day',
