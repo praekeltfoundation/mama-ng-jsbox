@@ -10,9 +10,12 @@ var Q = require('q');
 var vumigo = require('vumigo_v02');
 var moment = require('moment');
 var JsonApi = vumigo.http.api.JsonApi;
+var Choice = vumigo.states.Choice;
 
 // Shared utils lib
 go.utils = {
+
+// VOICE UTILS
 
     should_restart: function(im) {
         var no_restart_states = [
@@ -84,6 +87,8 @@ go.utils = {
         };
     },
 
+// CONTROL API CALL
+
     control_api_call: function(method, params, payload, endpoint, im) {
         var api = new JsonApi(im, {
             headers: {
@@ -124,33 +129,56 @@ go.utils = {
             });
     },
 
+// MSISDN & NUMBER HANDLING
+
     // An attempt to solve the insanity of JavaScript numbers
     check_valid_number: function(content) {
         var numbers_only = new RegExp('^\\d+$');
-        if (content !== ''
-                && numbers_only.test(content)
-                && !Number.isNaN(Number(content))) {
-            return true;
+        return content !== ''
+            && numbers_only.test(content)
+            && !Number.isNaN(Number(content));
+    },
+
+    // Check that it's a number and starts with 0 and approximate length
+    is_valid_msisdn: function(content) {
+        return go.utils.check_valid_number(content)
+            && content[0] === '0'
+            && content.length >= 10
+            && content.length <= 13;
+    },
+
+    normalize_msisdn: function(raw, country_code) {
+        // don't touch shortcodes
+        if (raw.length <= 5) {
+            return raw;
+        }
+        // remove chars that are not numbers or +
+        raw = raw.replace(/[^0-9+]/g);
+        if (raw.substr(0,2) === '00') {
+            return '+' + raw.substr(2);
+        }
+        if (raw.substr(0,1) === '0') {
+            return '+' + country_code + raw.substr(1);
+        }
+        if (raw.substr(0,1) === '+') {
+            return raw;
+        }
+        if (raw.substr(0, country_code.length) === country_code) {
+            return '+' + raw;
+        }
+        return raw;
+    },
+
+    double_digit_number: function(input) {
+        input_numeric = parseInt(input, 10);
+        if (parseInt(input, 10) < 10) {
+            return "0" + input_numeric.toString();
         } else {
-            return false;
+            return input_numeric.toString();
         }
     },
 
-    // Check that it is a number and starts with 0 and more or less correct len
-    check_valid_phone_number: function(content) {
-        if (go.utils.check_valid_number(content)
-                && content[0] === '0'
-                && content.length >= 10
-                && content.length <= 13) {
-            return true;
-        } else {
-            return false;
-        }
-    },
-
-    get_addresses: function(msisdn) {
-        return "msisdn:" + msisdn;
-    },
+// CONTACT HANDLING
 
     get_contact_id_by_msisdn: function(msisdn, im) {
         var params = {
@@ -193,28 +221,6 @@ go.utils = {
             });
     },
 
-    normalize_msisdn: function(raw, country_code) {
-        // don't touch shortcodes
-        if (raw.length <= 5) {
-            return raw;
-        }
-        // remove chars that are not numbers or +
-        raw = raw.replace(/[^0-9+]/g);
-        if (raw.substr(0,2) === '00') {
-            return '+' + raw.substr(2);
-        }
-        if (raw.substr(0,1) === '0') {
-            return '+' + country_code + raw.substr(1);
-        }
-        if (raw.substr(0,1) === '+') {
-            return raw;
-        }
-        if (raw.substr(0, country_code.length) === country_code) {
-            return '+' + raw;
-        }
-        return raw;
-    },
-
     // Gets a contact id if it exists, otherwise creates a new one
     get_or_create_contact: function(msisdn, im) {
         msisdn = go.utils.normalize_msisdn(msisdn, '234');  // nigeria
@@ -234,70 +240,6 @@ go.utils = {
                         });
                 }
             });
-    },
-
-    get_today: function(config) {
-        var today;
-        if (config.testing_today) {
-            today = new moment(config.testing_today, 'YYYY-MM-DD');
-        } else {
-            today = new moment();
-        }
-        return today;
-    },
-
-    double_digit_number: function(input) {
-        input_numeric = parseInt(input, 10);
-        if (parseInt(input, 10) < 10) {
-            return "0" + input_numeric.toString();
-        } else {
-            return input_numeric.toString();
-        }
-    },
-
-    is_valid_date: function(date, format) {
-        // implements strict validation with 'true' below
-        return moment(date, format, true).isValid();
-    },
-
-    get_baby_dob: function(im, day) {
-        var date_today = go.utils.get_today(im.config);
-
-        var year_text = im.user.answers.state_r05_birth_year;
-        var year;
-        switch (year_text) {
-            case 'last_year':
-                year = date_today.year() - 1;
-                break;
-            case 'this_year':
-                year = date_today.year();
-                break;
-            case 'next_year':
-                year = date_today.year() + 1;
-                break;
-        }
-
-        var month = im.user.answers.state_r06_birth_month;
-        var date_string = [
-            year.toString(),
-            go.utils.double_digit_number(month),
-            go.utils.double_digit_number(day)
-        ].join('-');
-
-        if (go.utils.is_valid_date(date_string, 'YYYY-MM-DD')) {
-            return date_string;
-        } else {
-            return 'invalid date';
-        }
-    },
-
-    get_lang: function(im) {
-        lang_map = {
-            'english': 'eng_NG',
-            'hausa': 'hau_NG',
-            'igbo': 'ibo_NG'
-        };
-        return lang_map[im.user.answers.state_r09_language];
     },
 
     update_contact: function(im, contact) {
@@ -332,6 +274,101 @@ go.utils = {
         return mama_contact;
     },
 
+    get_lang: function(im) {
+        lang_map = {
+            'english': 'eng_NG',
+            'hausa': 'hau_NG',
+            'igbo': 'ibo_NG'
+        };
+        return lang_map[im.user.answers.state_r09_language];
+    },
+
+// DATE HANDLING
+
+    get_today: function(config) {
+        var today;
+        if (config.testing_today) {
+            today = new moment(config.testing_today, 'YYYY-MM-DD');
+        } else {
+            today = new moment();
+        }
+        return today;
+    },
+
+    is_valid_date: function(date, format) {
+        // implements strict validation with 'true' below
+        return moment(date, format, true).isValid();
+    },
+
+    is_valid_year: function(input) {
+        // check that it is a number and has four digits
+        return input.length === 4 && go.utils.check_valid_number(input);
+    },
+
+    is_valid_day_of_month: function(input) {
+        // check that it is a number and between 1 and 31
+        return go.utils.check_valid_number(input)
+            && parseInt(input, 10) >= 1
+            && parseInt(input, 10) <= 31;
+    },
+
+    get_baby_dob: function(im, day) {
+        var date_today = go.utils.get_today(im.config);
+
+        var year_text = im.user.answers.state_r05_birth_year;
+        var year;
+        switch (year_text) {
+            case 'last_year':
+                year = date_today.year() - 1;
+                break;
+            case 'this_year':
+                year = date_today.year();
+                break;
+            case 'next_year':
+                year = date_today.year() + 1;
+                break;
+        }
+
+        var month = im.user.answers.state_r06_birth_month;
+        var date_string = [
+            year.toString(),
+            go.utils.double_digit_number(month),
+            go.utils.double_digit_number(day)
+        ].join('-');
+
+        if (go.utils.is_valid_date(date_string, 'YYYY-MM-DD')) {
+            return date_string;
+        } else {
+            return 'invalid date';
+        }
+    },
+
+// OTHER
+
+    get_addresses: function(msisdn) {
+        return "msisdn:" + msisdn;
+    },
+
+// SUBSCRIPTION HANDLING
+
+    setup_subscription: function(im, mama_contact) {
+        subscription = {
+            contact: "/api/v1/contacts/" + mama_contact.id + "/",
+            version: 1,
+            messageset_id: go.utils.get_messageset_id(mama_contact),
+            next_sequence_number: go.utils.get_next_sequence_number(mama_contact),
+            lang: mama_contact.details.lang,
+            active: true,
+            completed: false,
+            schedule: go.utils.get_schedule(mama_contact),
+            process_status: 0,
+            metadata: {
+                msg_type: mama_contact.details.msg_type
+            }
+        };
+        return subscription;
+    },
+
     get_messageset_id: function(mama_contact) {
         return (mama_contact.details.state_current === 'pregnant') ? 1 : 2;
     },
@@ -359,24 +396,6 @@ go.utils = {
         return schedule_id;
     },
 
-    setup_subscription: function(im, mama_contact) {
-        subscription = {
-            contact: "/api/v1/contacts/" + mama_contact.id + "/",
-            version: 1,
-            messageset_id: go.utils.get_messageset_id(mama_contact),
-            next_sequence_number: go.utils.get_next_sequence_number(mama_contact),
-            lang: mama_contact.details.lang,
-            active: true,
-            completed: false,
-            schedule: go.utils.get_schedule(mama_contact),
-            process_status: 0,
-            metadata: {
-                msg_type: mama_contact.details.msg_type
-            }
-        };
-        return subscription;
-    },
-
     subscribe_contact: function(im, subscription) {
         var payload = subscription;
         return go.utils
@@ -384,50 +403,6 @@ go.utils = {
             .then(function(response) {
                 return response.data.id;
             });
-    },
-
-    save_contact_info_and_subscribe: function(im) {
-        var mama_id = im.user.answers.mama_id;
-        return Q
-            .all([
-                // get mama contact
-                go.utils.get_contact_by_id(mama_id, im),
-                // deactivate existing subscriptions
-                go.utils.subscriptions_unsubscribe_all(mama_id, im)
-            ])
-            .spread(function(mama_contact, unsubscribe_result) {
-                mama_contact = go.utils.update_mama_details(
-                    im, mama_contact);
-                var subscription = go.utils
-                    .setup_subscription(im, mama_contact);
-
-                return Q
-                    .all([
-                        // Update mama's contact
-                        go.utils.update_contact(im, mama_contact),
-                        // Create a subscription for mama
-                        go.utils.subscribe_contact(im, subscription)
-                    ]);
-            });
-    },
-
-    vumi_send_text: function(im, to_addr, sms_message) {
-        var api = new JsonApi(im, {
-            headers: {
-                'Content-Type': ['application/json; charset=utf-8'],
-            },
-            auth: {
-                account_key: im.config.vumi_http.account_key,
-                conversation_token: im.config.vumi_http.conversation_token
-            }
-        });
-
-        return api.put(im.config.vumi_http.url, {
-            data: {
-                "to_addr": go.utils.normalize_msisdn(to_addr, '234'),  // nigeria
-                "content": sms_message
-            }
-        });
     },
 
     get_active_subscriptions_by_contact_id: function(contact_id, im) {
@@ -524,6 +499,33 @@ go.utils = {
             });
     },
 
+    save_contact_info_and_subscribe: function(im) {
+        var mama_id = im.user.answers.mama_id;
+        return Q
+            .all([
+                // get mama contact
+                go.utils.get_contact_by_id(mama_id, im),
+                // deactivate existing subscriptions
+                go.utils.subscriptions_unsubscribe_all(mama_id, im)
+            ])
+            .spread(function(mama_contact, unsubscribe_result) {
+                mama_contact = go.utils.update_mama_details(
+                    im, mama_contact);
+                var subscription = go.utils
+                    .setup_subscription(im, mama_contact);
+
+                return Q
+                    .all([
+                        // Update mama's contact
+                        go.utils.update_contact(im, mama_contact),
+                        // Create a subscription for mama
+                        go.utils.subscribe_contact(im, subscription)
+                    ]);
+            });
+    },
+
+// CHANGE HANDLING
+
     change_msg_times: function(im) {
         var mama_id = im.user.answers.mama_id;
         return Q
@@ -549,6 +551,8 @@ go.utils = {
                 ]);
             });
     },
+
+// OPTOUT HANDLING
 
     optout_loss_opt_in: function(im) {
         return go.utils
@@ -577,6 +581,97 @@ go.utils = {
                 return go.utils
                     .update_contact(im, mama_contact);
             });
+    },
+
+// SMS HANDLING
+
+    vumi_send_text: function(im, to_addr, sms_message) {
+        var api = new JsonApi(im, {
+            headers: {
+                'Content-Type': ['application/json; charset=utf-8'],
+            },
+            auth: {
+                account_key: im.config.vumi_http.account_key,
+                conversation_token: im.config.vumi_http.conversation_token
+            }
+        });
+
+        return api.put(im.config.vumi_http.url, {
+            data: {
+                "to_addr": go.utils.normalize_msisdn(to_addr, '234'),  // nigeria
+                "content": sms_message
+            }
+        });
+    },
+
+// TIMEOUT HANDLING
+
+    timed_out: function(im) {
+        var no_redirects = [
+            'state_start',
+            'state_end_thank_you',
+            'state_end_thank_translate'
+        ];
+        return im.msg.session_event === 'new'
+            && im.user.state.name
+            && no_redirects.indexOf(im.user.state.name) === -1;
+    },
+
+    // Track redials
+
+    track_redials: function(contact, im, decision) {
+        var status = contact.extra.status || 'unregistered';
+        return Q.all([
+            im.metrics.fire.inc(['total', 'redials', 'choice_made', 'last'].join('.')),
+            im.metrics.fire.sum(['total', 'redials', 'choice_made', 'sum'].join('.'), 1),
+            im.metrics.fire.inc(['total', 'redials', status, 'last'].join('.')),
+            im.metrics.fire.sum(['total', 'redials', status, 'sum'].join('.'), 1),
+            im.metrics.fire.inc(['total', 'redials', decision, 'last'].join('.')),
+            im.metrics.fire.sum(['total', 'redials', decision, 'sum'].join('.'), 1),
+            im.metrics.fire.inc(['total', 'redials', status, decision, 'last'].join('.')),
+            im.metrics.fire.sum(['total', 'redials', status, decision, 'sum'].join('.'), 1),
+        ]);
+    },
+
+// PROJECT SPECIFIC
+
+    check_msisdn_hcp: function(msisdn) {
+        return Q()
+            .then(function(q_response) {
+                return msisdn === '082222' || msisdn === '082333';
+            });
+    },
+
+    validate_personnel_code: function(im, content) {
+        return Q()
+            .then(function(q_response) {
+                return content === '12345';
+            });
+    },
+
+    check_valid_alpha: function(input) {
+        var alpha_only = new RegExp('^[A-Za-z]+$');
+        return input !== '' && alpha_only.test(input);
+    },
+
+    is_valid_name: function(input) {
+        // check that all chars are alphabetical
+        return go.utils.check_valid_alpha(input);
+    },
+
+    make_month_choices: function($, start, limit, increment) {
+        var choices = [
+            new Choice('072015', $('July 15')),
+            new Choice('062015', $('June 15')),
+            new Choice('052015', $('May 15')),
+            new Choice('042015', $('Apr 15')),
+            new Choice('032015', $('Mar 15')),
+            new Choice('022015', $('Feb 15')),
+            new Choice('012015', $('Jan 15')),
+            new Choice('122014', $('Dec 14')),
+            new Choice('112014', $('Nov 14')),
+        ];
+        return choices;
     },
 
     "commas": "commas"
@@ -631,7 +726,7 @@ go.app = function() {
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(content) {
-                    if (go.utils.check_valid_phone_number(content) === false) {
+                    if (go.utils.is_valid_msisdn(content) === false) {
                         return 'state_r02_retry_number';
                     } else {
                         self.im.user.set_answer('mama_num', content);
@@ -654,7 +749,7 @@ go.app = function() {
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(content) {
-                    if (go.utils.check_valid_phone_number(content) === false) {
+                    if (go.utils.is_valid_msisdn(content) === false) {
                         return 'state_r02_retry_number';
                     } else {
                         self.im.user.set_answer('mama_num', content);

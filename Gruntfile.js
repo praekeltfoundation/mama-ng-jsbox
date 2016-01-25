@@ -10,8 +10,9 @@ module.exports = function (grunt) {
                 app: {
                     voice_registration: 'src/voice_registration.js',
                     voice_change: 'src/voice_change.js',
-                    sms_inbound: 'src/sms_inbound.js',
-                    ussd_public: 'src/ussd_public.js'
+                    ussd_public: 'src/ussd_public.js',
+                    ussd_registration: 'src/ussd_registration.js',
+                    sms_inbound: 'src/sms_inbound.js'
                 },
                 voice_registration: [
                     'src/index.js',
@@ -23,6 +24,12 @@ module.exports = function (grunt) {
                     'src/index.js',
                     'src/utils.js',
                     '<%= paths.src.app.voice_change %>',
+                    'src/init.js'
+                ],
+                ussd_registration: [
+                    'src/index.js',
+                    'src/utils.js',
+                    '<%= paths.src.app.ussd_registration %>',
                     'src/init.js'
                 ],
                 sms_inbound: [
@@ -45,7 +52,8 @@ module.exports = function (grunt) {
                 voice_registration: 'go-voice_registration.js',
                 voice_change: 'go-voice_change.js',
                 sms_inbound: 'go-sms_inbound.js',
-                ussd_public: 'go-ussd_public.js'
+                ussd_public: 'go-ussd_public.js',
+                ussd_registration: 'go-ussd_registration.js'
             },
             test: {
                 voice_registration: [
@@ -59,6 +67,12 @@ module.exports = function (grunt) {
                     'src/utils.js',
                     '<%= paths.src.app.voice_change %>',
                     'test/voice_change.test.js'
+                ],
+                ussd_registration: [
+                    'test/setup.js',
+                    'src/utils.js',
+                    '<%= paths.src.app.ussd_registration %>',
+                    'test/ussd_registration.test.js'
                 ],
                 sms_inbound: [
                     'test/setup.js',
@@ -112,6 +126,10 @@ module.exports = function (grunt) {
                 src: ['<%= paths.src.voice_change %>'],
                 dest: '<%= paths.dest.voice_change %>'
             },
+            ussd_registration: {
+                src: ['<%= paths.src.ussd_registration %>'],
+                dest: '<%= paths.dest.ussd_registration %>'
+            },
             sms_inbound: {
                 src: ['<%= paths.src.sms_inbound %>'],
                 dest: '<%= paths.dest.sms_inbound %>'
@@ -126,7 +144,10 @@ module.exports = function (grunt) {
         mochaTest: {
             options: {
                 reporter: 'spec'
-            /*},
+            },
+            test_ussd_registration: {
+                src: ['<%= paths.test.ussd_registration %>']
+            },
             test_voice_registration: {
                 src: ['<%= paths.test.voice_registration %>']
             },
