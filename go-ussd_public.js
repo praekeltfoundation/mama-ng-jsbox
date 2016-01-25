@@ -132,7 +132,7 @@ go.utils = {
     check_baby_subscription: function(msisdn) {
         return Q()
             .then(function(q_response) {
-                return msisdn === '082333';
+                return (msisdn === '082333');
             });
     },
 
@@ -630,7 +630,7 @@ go.utils = {
     timed_out: function(im) {
         var no_redirects = [
             'state_start',
-            'state_end_thank_you',
+            'state_end',
             'state_end_thank_translate'
         ];
         return im.msg.session_event === 'new'
@@ -789,15 +789,13 @@ go.app = function() {
             "state_optout_reason":
                 "Please tell us why you no longer want to receive messages so we can help you further.",
             "state_msg_loss_subscription":
-                "We are sorry for you loss. Would you like to receive a small set of free messages from Hello Mama that could help in this difficult time?",
+                "We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?",
             "state_msg_loss_subscription_confirm":
                 "Thank you. You will now receive messages to support you during this difficult time.",
             "state_msg_end_subscription":
                 "Thank you. You will no longer receive messages",
-            "state_end_thank_you":
-                "Thank you for using the Hello Mama service",
             "state_end":
-                " "
+                "Thank you for using the Hello Mama service"
         };
 
         var errors = {
@@ -853,9 +851,6 @@ go.app = function() {
                 });
         });*/
 
-        self.add('state_end', function(name) {
-            return new EndState(name, {});
-        });
 
     // INITIAL STATES
 
@@ -918,7 +913,7 @@ go.app = function() {
                 choices: [
                     new Choice('state_check_baby_subscription', $("Start Baby messages")),
                     new Choice('state_check_msg_type', $("Change message preferences")),
-                    new Choice('state_msg_msisdn', $("Change my number")),
+                    new Choice('state_msg_new_msisdn', $("Change my number")),
                     new Choice('state_msg_language', $("Change language")),
                     new Choice('state_optout_reason', $("Stop receiving messages"))
                 ],
@@ -974,8 +969,7 @@ go.app = function() {
         // EndState st-02
         self.add('state_msg_new_registeration_baby', function(name) {
             return new EndState(name, {
-                text: $(questions[name]),
-                next: 'state_start'
+                text: $(questions[name])
             });
         });
 
@@ -1026,7 +1020,6 @@ go.app = function() {
         self.add('state_voice_confirm', function(name) {
             return new EndState(name, {
                 text: $(questions[name])
-                //next: 'state_start'
             });
         });
 
@@ -1050,15 +1043,123 @@ go.app = function() {
         self.add('state_sms_confirm', function(name) {
             return new EndState(name, {
                 text: $(questions[name])
-                //next: 'state_start'
+            });
+        });
+
+        // FreeText st-09
+        self.add('state_msg_new_msisdn', function(name) {
+            return new FreeText(name, {
+                question: $(questions[name]),
+                check: function(content) {
+                    if (go.utils.is_valid_msisdn(content)) {
+                        return null;  // vumi expects null or undefined if check passes
+                    } else {
+                        return $(get_error_text(name));
+                    }
+                },
+                next: 'state_msg_receiver'
+            });
+        });
+
+        // ChoiceState st-10
+        self.add('state_msg_receiver', function(name) {
+            return new ChoiceState(name, {
+                question: $(questions[name]),
+                error: $(get_error_text(name)),
+                choices: [
+                    new Choice('', $("The Mother")),
+                    new Choice('', $("The Father")),
+                    new Choice('', $("Family member")),
+                    new Choice('', $("Trusted friend"))
+                ],
+                next: 'state_msg_receiver_confirm'
+            });
+        });
+
+        // EndState st-11
+        self.add('state_msg_receiver_confirm', function(name) {
+            return new EndState(name, {
+                text: $(questions[name])
+            });
+        });
+
+        // ChoiceState st-12
+        self.add('state_msg_language', function(name) {
+            return new ChoiceState(name, {
+                question: $(questions[name]),
+                error: $(get_error_text(name)),
+                choices: [
+                    new Choice('english', $("English")),
+                    new Choice('hausa', $("Hausa")),
+                    new Choice('igbo', $("Igbo"))
+                ],
+                next: 'state_msg_language_confirm'
             });
         });
 
         // EndState st-13
-        self.add('state_end_thank_you', function(name) {
+        self.add('state_msg_language_confirm', function(name) {
             return new EndState(name, {
-                text: $(questions[name]),
-                next: 'state_start'
+                text: $(questions[name])
+            });
+        });
+
+        // ChoiceState st-14
+        self.add('state_optout_reason', function(name) {
+            return new ChoiceState(name, {
+                question: $(questions[name]),
+                error: $(get_error_text(name)),
+                choices: [
+                    new Choice('state_msg_loss_subscription', $("Mother miscarried")),
+                    new Choice('state_msg_loss_subscription', $("Baby stillborn")),
+                    new Choice('state_msg_loss_subscription', $("Baby passed away")),
+                    new Choice('state_msg_end_subscription', $("Messages not useful")),
+                    new Choice('state_msg_end_subscription', $("Other"))
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+        // ChoiceState st-15
+        self.add('state_msg_loss_subscription', function(name) {
+            return new ChoiceState(name, {
+                question: $(questions[name]),
+                error: $(get_error_text(name)),
+                choices: [
+                    new Choice('yes', $("Yes")),
+                    new Choice('no', $("No"))
+                ],
+                next: function(choice) {
+                    if(choice.value === 'yes') {
+                        return 'state_msg_loss_subscription_confirm';
+                    }
+                    else {
+                        return 'state_msg_end_subscription';
+                    }
+                }
+            });
+        });
+
+        // EndState st-16
+        self.add('state_msg_loss_subscription_confirm', function(name) {
+            return new EndState(name, {
+                text: $(questions[name])
+            });
+        });
+
+        // EndState st-17
+        self.add('state_msg_end_subscription', function(name) {
+            return new EndState(name, {
+                text: $(questions[name])
+            });
+        });
+
+        // EndState st-18
+        self.add('state_end', function(name) {
+            return new EndState(name, {
+                text: $(questions[name])
             });
         });
 

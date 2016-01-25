@@ -344,6 +344,243 @@ describe("hello mama public app", function() {
                     })
                     .run();
             });
+            it("to state_msg_new_msisdn", function() {
+                return tester
+                    .setup.user.addr('082222')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '1'  // state_msisdn_permission - yes
+                        , '3'  // state_main_menu - change number
+                    )
+                    .check.interaction({
+                        state: 'state_msg_new_msisdn',
+                        reply: "Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899"
+                    })
+                    .run();
+            });
+            it("to state_msg_receiver", function() {
+                return tester
+                    .setup.user.addr('082222')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '1'  // state_msisdn_permission - yes
+                        , '3'  // state_main_menu - change number
+                        , '0803304899' // state_msg_new_msisdn
+                    )
+                    .check.interaction({
+                        state: 'state_msg_receiver',
+                        reply: [
+                            "Who will receive these messages?",
+                            "1. The Mother",
+                            "2. The Father",
+                            "3. Family member",
+                            "4. Trusted friend"
+                        ].join('\n')
+                    })
+                    .run();
+            });
+            it("to state_msg_receiver_confirm", function() {
+                return tester
+                    .setup.user.addr('082222')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '1'  // state_msisdn_permission - yes
+                        , '3'  // state_main_menu - change number
+                        , '0803304899' // state_msg_new_msisdn
+                        , '4'  // state_msg_receiver - trusted friend
+                    )
+                    .check.interaction({
+                        state: 'state_msg_receiver_confirm',
+                        reply: "Thank you. The number which receives messages has been updated."
+                    })
+                    .run();
+            });
+            it("to state_msg_language", function() {
+                return tester
+                    .setup.user.addr('082222')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '1'  // state_msisdn_permission - yes
+                        , '4'  // state_main_menu - change language
+                    )
+                    .check.interaction({
+                        state: 'state_msg_language',
+                        reply: [
+                            "What language would this person like to receive these messages in?",
+                            "1. English",
+                            "2. Hausa",
+                            "3. Igbo"
+                        ].join('\n')
+                    })
+                    .run();
+            });
+            it("to state_optout_reason", function() {
+                return tester
+                    .setup.user.addr('082222')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '1'  // state_msisdn_permission - yes
+                        , '5'  // state_main_menu - stop receiving messages
+                    )
+                    .check.interaction({
+                        state: 'state_optout_reason',
+                        reply: [
+                            "Please tell us why you no longer want to receive messages so we can help you further.",
+                            "1. Mother miscarried",
+                            "2. Baby stillborn",
+                            "3. Baby passed away",
+                            "4. Messages not useful",
+                            "5. Other"
+                        ].join('\n')
+                    })
+                    .run();
+            });
+            it("to state_msg_loss_subscription", function() {
+                return tester
+                    .setup.user.addr('082222')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '1'  // state_msisdn_permission - yes
+                        , '5'  // state_main_menu - stop receiving messages
+                        , '2'  // state_optout_reason - baby stillborn
+                    )
+                    .check.interaction({
+                        state: 'state_msg_loss_subscription',
+                        reply: [
+                            "We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?",
+                            "1. Yes",
+                            "2. No"
+                        ].join('\n')
+                    })
+                    .run();
+            });
+            it("to state_msg_loss_subscription_confirm", function() {
+                return tester
+                    .setup.user.addr('082222')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '1'  // state_msisdn_permission - yes
+                        , '5'  // state_main_menu - stop receiving messages
+                        , '3'  // state_optout_reason - baby passed away
+                        , '1'  // state_msg_loss_subscription - yes
+                    )
+                    .check.interaction({
+                        state: 'state_msg_loss_subscription_confirm',
+                        reply: "Thank you. You will now receive messages to support you during this difficult time."
+                    })
+                    .run();
+            });
+            it("to state_msg_end_subscription", function() {
+                return tester
+                    .setup.user.addr('082222')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '1'  // state_msisdn_permission - yes
+                        , '5'  // state_main_menu - stop receiving messages
+                        , '4'  // state_optout_reason - messages not useful
+                    )
+                    .check.interaction({
+                        state: 'state_msg_end_subscription',
+                        reply: "Thank you. You will no longer receive messages"
+                    })
+                    .run();
+            });
+
+            describe("navigation loop flows", function() {
+                it(" - baby messages, back to main menu", function() {
+                    return tester
+                        .setup.user.addr('082333')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'   // state_msisdn_permission - yes
+                            , '1'   // state_main_menu - start baby messages
+                            , '1'   // state_msg_already_registered_baby - back to main menu
+                        )
+                        .check.interaction({
+                            state: 'state_main_menu'
+                        })
+                        .run();
+                });
+                it(" - changing message format and time, back to main menu", function() {
+                    return tester
+                        .setup.user.addr('082444')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'   // state_msisdn_permission - yes
+                            , '2'   // state_main_menu - change message preferences
+                            , '2'   // state_change_menu_sms - back to main menu (via text)
+                        )
+                        .check.interaction({
+                            state: 'state_main_menu'
+                        })
+                        .run();
+                });
+                it(" - changing message format and time, back to main menu", function() {
+                    return tester
+                        .setup.user.addr('082555')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'   // state_msisdn_permission - yes
+                            , '2'   // state_main_menu - change message preferences
+                            , '3'   // state_change_menu_voice - back to main menu (via voice)
+                        )
+                        .check.interaction({
+                            state: 'state_main_menu'
+                        })
+                        .run();
+                });
+            });
+
+            describe("complete flows", function() {
+                it(" - via baby messages", function() {
+                    return tester
+                        .setup.user.addr('082333')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'   // state_msisdn_permission - yes
+                            , '1'   // state_main_menu - start baby messages
+                            , '2'   // state_msg_already_registered_baby - exit
+                        )
+                        .check.interaction({
+                            state: 'state_end',
+                            reply: "Thank you for using the Hello Mama service"
+                        })
+                        .run();
+                });
+                it(" - via changing messages preferences", function() {
+                    return tester
+                        .setup.user.addr('082555')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'  // state_msisdn_permission - yes
+                            , '2'  // state_main_menu - change message preferences (registered for voice)
+                            , '1'  // state_change_menu_voice - change date/time to receive messages
+                            , '1'  // state_voice_days - monday & wednesday
+                            , '2'  // state_voice_time - 2-5pm
+                        )
+                        .check.interaction({
+                            state: 'state_voice_confirm',
+                            reply: "Thank you. You will now start receiving voice calls between [time] on [days]."
+                        })
+                        .run();
+                });
+                it("- via opt-out", function() {
+                    return tester
+                        .setup.user.addr('082222')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'  // state_msisdn_permission - yes
+                            , '5'  // state_main_menu - stop receiving messages
+                            , '2'  // state_optout_reason - baby stillborn
+                            , '2'  // state_msg_loss_subscription - no
+                        )
+                        .check.interaction({
+                            state: 'state_msg_end_subscription',
+                            reply: "Thank you. You will no longer receive messages"
+                        })
+                        .run();
+                });
+            });
         });
 
         // TEST VALIDATION

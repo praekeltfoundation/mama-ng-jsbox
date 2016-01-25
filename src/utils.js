@@ -125,7 +125,7 @@ go.utils = {
     check_baby_subscription: function(msisdn) {
         return Q()
             .then(function(q_response) {
-                return msisdn === '082333';
+                return (msisdn === '082333');
             });
     },
 
@@ -623,7 +623,7 @@ go.utils = {
     timed_out: function(im) {
         var no_redirects = [
             'state_start',
-            'state_end_thank_you',
+            'state_end',
             'state_end_thank_translate'
         ];
         return im.msg.session_event === 'new'
