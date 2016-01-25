@@ -144,7 +144,7 @@ module.exports = function (grunt) {
         mochaTest: {
             options: {
                 reporter: 'spec'
-            },
+            /*},
             test_ussd_registration: {
                 src: ['<%= paths.test.ussd_registration %>']
             },
@@ -155,7 +155,7 @@ module.exports = function (grunt) {
                 src: ['<%= paths.test.voice_change %>']
             // },
             // test_sms_inbound: {
-            //     src: ['<%= paths.test.sms_inbound %>']
+            //     src: ['<%= paths.test.sms_inbound %>']*/
             },
             test_ussd_public: {
                 src: ['<%= paths.test.ussd_public %>']

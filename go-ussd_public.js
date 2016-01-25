@@ -10,9 +10,12 @@ var Q = require('q');
 var vumigo = require('vumigo_v02');
 var moment = require('moment');
 var JsonApi = vumigo.http.api.JsonApi;
+var Choice = vumigo.states.Choice;
 
 // Shared utils lib
 go.utils = {
+
+// VOICE UTILS
 
     should_restart: function(im) {
         var no_restart_states = [
@@ -84,6 +87,8 @@ go.utils = {
         };
     },
 
+// CONTROL API CALL
+
     control_api_call: function(method, params, payload, endpoint, im) {
         var api = new JsonApi(im, {
             headers: {
@@ -124,33 +129,77 @@ go.utils = {
             });
     },
 
+    check_baby_subscription: function(msisdn) {
+        return Q()
+            .then(function(q_response) {
+                return msisdn === '082333';
+            });
+    },
+
+    check_sms_subscription: function(msisdn) {
+        return Q()
+            .then(function(q_response) {
+                return msisdn === '082444';
+            });
+    },
+
+    check_voice_subscription: function(msisdn) {
+        return Q()
+            .then(function(q_response) {
+                return msisdn === '082555';
+            });
+    },
+
+// MSISDN & NUMBER HANDLING
+
     // An attempt to solve the insanity of JavaScript numbers
     check_valid_number: function(content) {
         var numbers_only = new RegExp('^\\d+$');
-        if (content !== ''
-                && numbers_only.test(content)
-                && !Number.isNaN(Number(content))) {
-            return true;
+        return content !== ''
+            && numbers_only.test(content)
+            && !Number.isNaN(Number(content));
+    },
+
+    // Check that it's a number and starts with 0 and approximate length
+    is_valid_msisdn: function(content) {
+        return go.utils.check_valid_number(content)
+            && content[0] === '0'
+            && content.length >= 10
+            && content.length <= 13;
+    },
+
+    normalize_msisdn: function(raw, country_code) {
+        // don't touch shortcodes
+        if (raw.length <= 5) {
+            return raw;
+        }
+        // remove chars that are not numbers or +
+        raw = raw.replace(/[^0-9+]/g);
+        if (raw.substr(0,2) === '00') {
+            return '+' + raw.substr(2);
+        }
+        if (raw.substr(0,1) === '0') {
+            return '+' + country_code + raw.substr(1);
+        }
+        if (raw.substr(0,1) === '+') {
+            return raw;
+        }
+        if (raw.substr(0, country_code.length) === country_code) {
+            return '+' + raw;
+        }
+        return raw;
+    },
+
+    double_digit_number: function(input) {
+        input_numeric = parseInt(input, 10);
+        if (parseInt(input, 10) < 10) {
+            return "0" + input_numeric.toString();
         } else {
-            return false;
+            return input_numeric.toString();
         }
     },
 
-    // Check that it is a number and starts with 0 and more or less correct len
-    check_valid_phone_number: function(content) {
-        if (go.utils.check_valid_number(content)
-                && content[0] === '0'
-                && content.length >= 10
-                && content.length <= 13) {
-            return true;
-        } else {
-            return false;
-        }
-    },
-
-    get_addresses: function(msisdn) {
-        return "msisdn:" + msisdn;
-    },
+// CONTACT HANDLING
 
     get_contact_id_by_msisdn: function(msisdn, im) {
         var params = {
@@ -193,28 +242,6 @@ go.utils = {
             });
     },
 
-    normalize_msisdn: function(raw, country_code) {
-        // don't touch shortcodes
-        if (raw.length <= 5) {
-            return raw;
-        }
-        // remove chars that are not numbers or +
-        raw = raw.replace(/[^0-9+]/g);
-        if (raw.substr(0,2) === '00') {
-            return '+' + raw.substr(2);
-        }
-        if (raw.substr(0,1) === '0') {
-            return '+' + country_code + raw.substr(1);
-        }
-        if (raw.substr(0,1) === '+') {
-            return raw;
-        }
-        if (raw.substr(0, country_code.length) === country_code) {
-            return '+' + raw;
-        }
-        return raw;
-    },
-
     // Gets a contact id if it exists, otherwise creates a new one
     get_or_create_contact: function(msisdn, im) {
         msisdn = go.utils.normalize_msisdn(msisdn, '234');  // nigeria
@@ -234,70 +261,6 @@ go.utils = {
                         });
                 }
             });
-    },
-
-    get_today: function(config) {
-        var today;
-        if (config.testing_today) {
-            today = new moment(config.testing_today, 'YYYY-MM-DD');
-        } else {
-            today = new moment();
-        }
-        return today;
-    },
-
-    double_digit_number: function(input) {
-        input_numeric = parseInt(input, 10);
-        if (parseInt(input, 10) < 10) {
-            return "0" + input_numeric.toString();
-        } else {
-            return input_numeric.toString();
-        }
-    },
-
-    is_valid_date: function(date, format) {
-        // implements strict validation with 'true' below
-        return moment(date, format, true).isValid();
-    },
-
-    get_baby_dob: function(im, day) {
-        var date_today = go.utils.get_today(im.config);
-
-        var year_text = im.user.answers.state_r05_birth_year;
-        var year;
-        switch (year_text) {
-            case 'last_year':
-                year = date_today.year() - 1;
-                break;
-            case 'this_year':
-                year = date_today.year();
-                break;
-            case 'next_year':
-                year = date_today.year() + 1;
-                break;
-        }
-
-        var month = im.user.answers.state_r06_birth_month;
-        var date_string = [
-            year.toString(),
-            go.utils.double_digit_number(month),
-            go.utils.double_digit_number(day)
-        ].join('-');
-
-        if (go.utils.is_valid_date(date_string, 'YYYY-MM-DD')) {
-            return date_string;
-        } else {
-            return 'invalid date';
-        }
-    },
-
-    get_lang: function(im) {
-        lang_map = {
-            'english': 'eng_NG',
-            'hausa': 'hau_NG',
-            'igbo': 'ibo_NG'
-        };
-        return lang_map[im.user.answers.state_r09_language];
     },
 
     update_contact: function(im, contact) {
@@ -332,6 +295,101 @@ go.utils = {
         return mama_contact;
     },
 
+    get_lang: function(im) {
+        lang_map = {
+            'english': 'eng_NG',
+            'hausa': 'hau_NG',
+            'igbo': 'ibo_NG'
+        };
+        return lang_map[im.user.answers.state_r09_language];
+    },
+
+// DATE HANDLING
+
+    get_today: function(config) {
+        var today;
+        if (config.testing_today) {
+            today = new moment(config.testing_today, 'YYYY-MM-DD');
+        } else {
+            today = new moment();
+        }
+        return today;
+    },
+
+    is_valid_date: function(date, format) {
+        // implements strict validation with 'true' below
+        return moment(date, format, true).isValid();
+    },
+
+    is_valid_year: function(input) {
+        // check that it is a number and has four digits
+        return input.length === 4 && go.utils.check_valid_number(input);
+    },
+
+    is_valid_day_of_month: function(input) {
+        // check that it is a number and between 1 and 31
+        return go.utils.check_valid_number(input)
+            && parseInt(input, 10) >= 1
+            && parseInt(input, 10) <= 31;
+    },
+
+    get_baby_dob: function(im, day) {
+        var date_today = go.utils.get_today(im.config);
+
+        var year_text = im.user.answers.state_r05_birth_year;
+        var year;
+        switch (year_text) {
+            case 'last_year':
+                year = date_today.year() - 1;
+                break;
+            case 'this_year':
+                year = date_today.year();
+                break;
+            case 'next_year':
+                year = date_today.year() + 1;
+                break;
+        }
+
+        var month = im.user.answers.state_r06_birth_month;
+        var date_string = [
+            year.toString(),
+            go.utils.double_digit_number(month),
+            go.utils.double_digit_number(day)
+        ].join('-');
+
+        if (go.utils.is_valid_date(date_string, 'YYYY-MM-DD')) {
+            return date_string;
+        } else {
+            return 'invalid date';
+        }
+    },
+
+// OTHER
+
+    get_addresses: function(msisdn) {
+        return "msisdn:" + msisdn;
+    },
+
+// SUBSCRIPTION HANDLING
+
+    setup_subscription: function(im, mama_contact) {
+        subscription = {
+            contact: "/api/v1/contacts/" + mama_contact.id + "/",
+            version: 1,
+            messageset_id: go.utils.get_messageset_id(mama_contact),
+            next_sequence_number: go.utils.get_next_sequence_number(mama_contact),
+            lang: mama_contact.details.lang,
+            active: true,
+            completed: false,
+            schedule: go.utils.get_schedule(mama_contact),
+            process_status: 0,
+            metadata: {
+                msg_type: mama_contact.details.msg_type
+            }
+        };
+        return subscription;
+    },
+
     get_messageset_id: function(mama_contact) {
         return (mama_contact.details.state_current === 'pregnant') ? 1 : 2;
     },
@@ -359,24 +417,6 @@ go.utils = {
         return schedule_id;
     },
 
-    setup_subscription: function(im, mama_contact) {
-        subscription = {
-            contact: "/api/v1/contacts/" + mama_contact.id + "/",
-            version: 1,
-            messageset_id: go.utils.get_messageset_id(mama_contact),
-            next_sequence_number: go.utils.get_next_sequence_number(mama_contact),
-            lang: mama_contact.details.lang,
-            active: true,
-            completed: false,
-            schedule: go.utils.get_schedule(mama_contact),
-            process_status: 0,
-            metadata: {
-                msg_type: mama_contact.details.msg_type
-            }
-        };
-        return subscription;
-    },
-
     subscribe_contact: function(im, subscription) {
         var payload = subscription;
         return go.utils
@@ -384,50 +424,6 @@ go.utils = {
             .then(function(response) {
                 return response.data.id;
             });
-    },
-
-    save_contact_info_and_subscribe: function(im) {
-        var mama_id = im.user.answers.mama_id;
-        return Q
-            .all([
-                // get mama contact
-                go.utils.get_contact_by_id(mama_id, im),
-                // deactivate existing subscriptions
-                go.utils.subscriptions_unsubscribe_all(mama_id, im)
-            ])
-            .spread(function(mama_contact, unsubscribe_result) {
-                mama_contact = go.utils.update_mama_details(
-                    im, mama_contact);
-                var subscription = go.utils
-                    .setup_subscription(im, mama_contact);
-
-                return Q
-                    .all([
-                        // Update mama's contact
-                        go.utils.update_contact(im, mama_contact),
-                        // Create a subscription for mama
-                        go.utils.subscribe_contact(im, subscription)
-                    ]);
-            });
-    },
-
-    vumi_send_text: function(im, to_addr, sms_message) {
-        var api = new JsonApi(im, {
-            headers: {
-                'Content-Type': ['application/json; charset=utf-8'],
-            },
-            auth: {
-                account_key: im.config.vumi_http.account_key,
-                conversation_token: im.config.vumi_http.conversation_token
-            }
-        });
-
-        return api.put(im.config.vumi_http.url, {
-            data: {
-                "to_addr": go.utils.normalize_msisdn(to_addr, '234'),  // nigeria
-                "content": sms_message
-            }
-        });
     },
 
     get_active_subscriptions_by_contact_id: function(contact_id, im) {
@@ -524,6 +520,33 @@ go.utils = {
             });
     },
 
+    save_contact_info_and_subscribe: function(im) {
+        var mama_id = im.user.answers.mama_id;
+        return Q
+            .all([
+                // get mama contact
+                go.utils.get_contact_by_id(mama_id, im),
+                // deactivate existing subscriptions
+                go.utils.subscriptions_unsubscribe_all(mama_id, im)
+            ])
+            .spread(function(mama_contact, unsubscribe_result) {
+                mama_contact = go.utils.update_mama_details(
+                    im, mama_contact);
+                var subscription = go.utils
+                    .setup_subscription(im, mama_contact);
+
+                return Q
+                    .all([
+                        // Update mama's contact
+                        go.utils.update_contact(im, mama_contact),
+                        // Create a subscription for mama
+                        go.utils.subscribe_contact(im, subscription)
+                    ]);
+            });
+    },
+
+// CHANGE HANDLING
+
     change_msg_times: function(im) {
         var mama_id = im.user.answers.mama_id;
         return Q
@@ -549,6 +572,8 @@ go.utils = {
                 ]);
             });
     },
+
+// OPTOUT HANDLING
 
     optout_loss_opt_in: function(im) {
         return go.utils
@@ -579,6 +604,97 @@ go.utils = {
             });
     },
 
+// SMS HANDLING
+
+    vumi_send_text: function(im, to_addr, sms_message) {
+        var api = new JsonApi(im, {
+            headers: {
+                'Content-Type': ['application/json; charset=utf-8'],
+            },
+            auth: {
+                account_key: im.config.vumi_http.account_key,
+                conversation_token: im.config.vumi_http.conversation_token
+            }
+        });
+
+        return api.put(im.config.vumi_http.url, {
+            data: {
+                "to_addr": go.utils.normalize_msisdn(to_addr, '234'),  // nigeria
+                "content": sms_message
+            }
+        });
+    },
+
+// TIMEOUT HANDLING
+
+    timed_out: function(im) {
+        var no_redirects = [
+            'state_start',
+            'state_end_thank_you',
+            'state_end_thank_translate'
+        ];
+        return im.msg.session_event === 'new'
+            && im.user.state.name
+            && no_redirects.indexOf(im.user.state.name) === -1;
+    },
+
+    // Track redials
+
+    track_redials: function(contact, im, decision) {
+        var status = contact.extra.status || 'unregistered';
+        return Q.all([
+            im.metrics.fire.inc(['total', 'redials', 'choice_made', 'last'].join('.')),
+            im.metrics.fire.sum(['total', 'redials', 'choice_made', 'sum'].join('.'), 1),
+            im.metrics.fire.inc(['total', 'redials', status, 'last'].join('.')),
+            im.metrics.fire.sum(['total', 'redials', status, 'sum'].join('.'), 1),
+            im.metrics.fire.inc(['total', 'redials', decision, 'last'].join('.')),
+            im.metrics.fire.sum(['total', 'redials', decision, 'sum'].join('.'), 1),
+            im.metrics.fire.inc(['total', 'redials', status, decision, 'last'].join('.')),
+            im.metrics.fire.sum(['total', 'redials', status, decision, 'sum'].join('.'), 1),
+        ]);
+    },
+
+// PROJECT SPECIFIC
+
+    check_msisdn_hcp: function(msisdn) {
+        return Q()
+            .then(function(q_response) {
+                return msisdn === '082222' || msisdn === '082333';
+            });
+    },
+
+    validate_personnel_code: function(im, content) {
+        return Q()
+            .then(function(q_response) {
+                return content === '12345';
+            });
+    },
+
+    check_valid_alpha: function(input) {
+        var alpha_only = new RegExp('^[A-Za-z]+$');
+        return input !== '' && alpha_only.test(input);
+    },
+
+    is_valid_name: function(input) {
+        // check that all chars are alphabetical
+        return go.utils.check_valid_alpha(input);
+    },
+
+    make_month_choices: function($, start, limit, increment) {
+        var choices = [
+            new Choice('072015', $('July 15')),
+            new Choice('062015', $('June 15')),
+            new Choice('052015', $('May 15')),
+            new Choice('042015', $('Apr 15')),
+            new Choice('032015', $('Mar 15')),
+            new Choice('022015', $('Feb 15')),
+            new Choice('012015', $('Jan 15')),
+            new Choice('122014', $('Dec 14')),
+            new Choice('112014', $('Nov 14')),
+        ];
+        return choices;
+    },
+
     "commas": "commas"
 };
 
@@ -588,7 +704,7 @@ go.app = function() {
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
-    var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
+    //var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
 
@@ -634,6 +750,8 @@ go.app = function() {
                 "You have an incomplete registration. Would you like to continue with this registration?",
             "state_msisdn_permission":  //B
                 "Welcome to Hello Mama. Do you have permission to manage the number [MSISDN]?",
+            "state_msisdn_no_permission":
+                "We're sorry, you do not have permission to update the preferences for this subscriber.",
             "state_language":   //D
                 "Welcome to Hello Mama. Please choose your language",
             "state_msg_registered_msisdn":  //C
@@ -646,17 +764,17 @@ go.app = function() {
                 "You are already registered for baby messages.",
             "state_msg_new_registeration_baby":
                 "Thank you. You will now receive messages about caring for baby",
-            "state_change_menu_text_smss":
+            "state_change_menu_sms":
                 "Please select what you would like to do:",
             "state_voice_days":
                 "We will call twice a week. On what days would the person like to receive messages?",
             "state_voice_times":
                 "Thank you. At what time would they like to receive these calls?",
-            "state_voice_calls_confirm":
+            "state_voice_confirm":
                 "Thank you. You will now start receiving voice calls between [time] on [days].",
-            "state_change_menu_voice_calls":
+            "state_change_menu_voice":
                 "Please select what you would like to do:",
-            "state_text_smss_confirm":
+            "state_sms_confirm":
                 "Thank you. You will now receive text messages.",
             "state_msg_new_msisdn":
                 "Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899",
@@ -677,7 +795,9 @@ go.app = function() {
             "state_msg_end_subscription":
                 "Thank you. You will no longer receive messages",
             "state_end_thank_you":
-                "Thank you for using the Hello Mama service"
+                "Thank you for using the Hello Mama service",
+            "state_end":
+                " "
         };
 
         var errors = {
@@ -713,7 +833,7 @@ go.app = function() {
         self.states.add('state_start', function() {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
-            return self.states.create("state_language"); //** should be state_check_msisdn
+            return self.states.create("state_msisdn_permission"); //** should be state_check_msisdn
         });
 
         // Interstitial start state - evaluating whether user is registered
@@ -733,6 +853,10 @@ go.app = function() {
                 });
         });*/
 
+        self.add('state_end', function(name) {
+            return new EndState(name, {});
+        });
+
     // INITIAL STATES
 
         // ChoiceState st-B
@@ -749,6 +873,13 @@ go.app = function() {
                       return choice.value;
                   }
               });
+        });
+
+        self.add('state_msisdn_no_permission', function(name) {
+            return new EndState(name, {
+                text: $(questions[name]),
+                //next: 'state_start'
+            });
         });
 
         // ChoiceState st-D
@@ -770,7 +901,7 @@ go.app = function() {
             return new FreeText(name, {
                 question: $(questions[name]),
                 check: function(content) {
-                    if (go.utils.check_valid_phone_number(content)) {
+                    if (go.utils.is_valid_msisdn(content)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return $(get_error_text(name));
@@ -786,7 +917,7 @@ go.app = function() {
                 question: $(questions[name]),
                 choices: [
                     new Choice('state_check_baby_subscription', $("Start Baby messages")),
-                    new Choice('state_check_text_or_calls', $("Change message preferences")),
+                    new Choice('state_check_msg_type', $("Change message preferences")),
                     new Choice('state_msg_msisdn', $("Change my number")),
                     new Choice('state_msg_language', $("Change language")),
                     new Choice('state_optout_reason', $("Stop receiving messages"))
@@ -800,27 +931,27 @@ go.app = function() {
 
         // CHANGE STATES
 
-        // Interstitial
+        // Interstitials
         self.add('state_check_baby_subscription', function(name) {
             return go.utils
                 .check_baby_subscription(self.im.user.addr)
                 .then(function(is_subscribed) {
                     if (is_subscribed) {
-                        return self.states.create('state_already_baby');
+                        return self.states.create('state_msg_already_registered_baby');
                     } else {
-                        return self.states.create('state_end_baby');
+                        return self.states.create('state_msg_new_registeration_baby');
                     }
                 });
         });
 
-        self.add('state_check_text_or_calls', function(name) {
+        self.add('state_check_msg_type', function(name) {
             return go.utils
-                .check_baby_subscription(self.im.user.addr)
-                .then(function(is_subscribed) {
+                .check_sms_subscription(self.im.user.addr)
+                .then(function(is_subscribed) {   //assuming a registered user always has a default subscription
                     if (is_subscribed) {
-                        return self.states.create('state_already_baby');
+                        return self.states.create('state_change_menu_sms');
                     } else {
-                        return self.states.create('state_end_baby');
+                        return self.states.create('state_change_menu_voice');
                     }
                 });
         });
@@ -831,13 +962,11 @@ go.app = function() {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
                 choices: [
-                    new Choice('back', $("Back to main menu")),
-                    new Choice('exit', $("Exit"))
+                    new Choice('state_main_menu', $("Back to main menu")),
+                    new Choice('state_end', $("Exit"))
                 ],
                 next: function(choice) {
-                    return choice.value === 'back'
-                        ? 'state_main_menu'
-                        : 'state_main_menu';// should exit... how to exit..? state_start..?!
+                    return choice.value;
                 }
             });
         });
@@ -851,7 +980,7 @@ go.app = function() {
         });
 
         // ChoiceState st-03
-        self.add('state_change_menu_text_smss', function(name) {
+        self.add('state_change_menu_sms', function(name) {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
@@ -889,144 +1018,39 @@ go.app = function() {
                     new Choice('', $("Between 9-11am")),
                     new Choice('', $("Between 2-5pm"))
                 ],
-                next: 'state_voice_calls_confirm'
+                next: 'state_voice_confirm'
             });
         });
 
-        // FreeText st-07
-        self.add('state_mother_name', function(name) {
-            return new FreeText(name, {
-                question: $(questions[name]),
-                check: function(content) {
-                    if (go.utils.is_valid_name(content)) {
-                        return null;  // vumi expects null or undefined if check passes
-                    } else {
-                        return $(get_error_text(name));
-                    }
-                },
-                next: 'state_mother_surname'
+        // EndState st-06
+        self.add('state_voice_confirm', function(name) {
+            return new EndState(name, {
+                text: $(questions[name])
+                //next: 'state_start'
             });
         });
 
-        // FreeText st-08
-        self.add('state_mother_surname', function(name) {
-            return new FreeText(name, {
-                question: $(questions[name]),
-                check: function(content) {
-                    if (go.utils.is_valid_name(content)) {
-                        return null;  // vumi expects null or undefined if check passes
-                    } else {
-                        return $(get_error_text(name));
-                    }
-                },
-                next: 'state_id_type'
-            });
-        });
-
-        // ChoiceState st-09
-        self.add('state_msg_new_msisdn', function(name) {
-            return new FreeText(name, {
-                question: $(questions[name]),
-                check: function(content) {
-                    if (go.utils.is_valid_msisdn(content)) {
-                        return null;  // vumi expects null or undefined if check passes
-                    } else {
-                        return $(get_error_text(name));
-                    }
-                },
-                next: 'state_msg_receiver'
-            });
-        });
-
-        // FreeText st-10
-        self.add('state_nin', function(name) {
-            return new FreeText(name, {
-                question: $(questions[name]),
-                next: 'state_msg_language'
-            });
-        });
-
-        // FreeText st-17
-        self.add('state_mother_birth_day', function(name) {
-            return new FreeText(name, {
-                question: $(questions[name]),
-                check: function(content) {
-                    if (go.utils.is_valid_day_of_month(content)) {
-                        return null;  // vumi expects null or undefined if check passes
-                    } else {
-                        return $(get_error_text(name));
-                    }
-                },
-                next: 'state_mother_birth_month'
-            });
-        });
-
-        // PaginatedChoiceState st-18 / st-19
-        self.add('state_mother_birth_month', function(name) {
-            return new PaginatedChoiceState(name, {
-                question: $(questions[name]),
-                error: $(get_error_text(name)),
-                characters_per_page: 160,
-                options_per_page: null,
-                more: $('More'),
-                back: $('Back'),
-                choices: [
-                    new Choice('01', $('January')),
-                    new Choice('02', $('February')),
-                    new Choice('03', $('March')),
-                    new Choice('04', $('April')),
-                    new Choice('05', $('May')),
-                    new Choice('06', $('June')),
-                    new Choice('07', $('July')),
-                    new Choice('08', $('August')),
-                    new Choice('09', $('September')),
-                    new Choice('10', $('October')),
-                    new Choice('11', $('November')),
-                    new Choice('12', $('December'))
-                ],
-                next: 'state_mother_birth_year'
-            });
-        });
-
-        // FreeText st-20
-        self.add('state_mother_birth_year', function(name) {
-            return new FreeText(name, {
-                question: $(questions[name]),
-                check: function(content) {
-                    if (go.utils.is_valid_year(content)) {
-                        return null;  // vumi expects null or undefined if check passes
-                    } else {
-                        return $(get_error_text(name));
-                    }
-                },
-                next: 'state_msg_language'
-            });
-        });
-
-        // ChoiceState st-11
-        self.add('state_msg_language', function(name) {
+        // ChoiceState st-07
+        self.add('state_change_menu_voice', function(name) {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
                 choices: [
-                    new Choice('english', $('English')),
-                    new Choice('runyakore', $('Runyakore')),
-                    new Choice('lusoga', $('Lusoga'))
+                    new Choice('state_voice_days', $("Change the day and time I receive messages")),
+                    new Choice('state_sms_confirm', $("Change from voice to text messages")),
+                    new Choice('state_main_menu', $("Back to main menu"))
                 ],
-                next: 'state_hiv_messages'
+                next: function(choice) {
+                    return choice.value;
+                }
             });
         });
 
-        // ChoiceState st-12
-        self.add('state_hiv_messages', function(name) {
-            return new ChoiceState(name, {
-                question: $(questions[name]),
-                error: $(get_error_text(name)),
-                choices: [
-                    new Choice('yes_hiv_msgs', $('Yes')),
-                    new Choice('no_hiv_msgs', $('No'))
-                ],
-                next: 'state_end_thank_you'
+        // EndState st-08
+        self.add('state_sms_confirm', function(name) {
+            return new EndState(name, {
+                text: $(questions[name])
+                //next: 'state_start'
             });
         });
 

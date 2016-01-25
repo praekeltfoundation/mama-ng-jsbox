@@ -4,7 +4,7 @@ go.app = function() {
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
-    var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
+    //var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
 
@@ -50,6 +50,8 @@ go.app = function() {
                 "You have an incomplete registration. Would you like to continue with this registration?",
             "state_msisdn_permission":  //B
                 "Welcome to Hello Mama. Do you have permission to manage the number [MSISDN]?",
+            "state_msisdn_no_permission":
+                "We're sorry, you do not have permission to update the preferences for this subscriber.",
             "state_language":   //D
                 "Welcome to Hello Mama. Please choose your language",
             "state_msg_registered_msisdn":  //C
@@ -62,17 +64,17 @@ go.app = function() {
                 "You are already registered for baby messages.",
             "state_msg_new_registeration_baby":
                 "Thank you. You will now receive messages about caring for baby",
-            "state_change_menu_text_smss":
+            "state_change_menu_sms":
                 "Please select what you would like to do:",
             "state_voice_days":
                 "We will call twice a week. On what days would the person like to receive messages?",
             "state_voice_times":
                 "Thank you. At what time would they like to receive these calls?",
-            "state_voice_calls_confirm":
+            "state_voice_confirm":
                 "Thank you. You will now start receiving voice calls between [time] on [days].",
-            "state_change_menu_voice_calls":
+            "state_change_menu_voice":
                 "Please select what you would like to do:",
-            "state_text_smss_confirm":
+            "state_sms_confirm":
                 "Thank you. You will now receive text messages.",
             "state_msg_new_msisdn":
                 "Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899",
@@ -93,7 +95,9 @@ go.app = function() {
             "state_msg_end_subscription":
                 "Thank you. You will no longer receive messages",
             "state_end_thank_you":
-                "Thank you for using the Hello Mama service"
+                "Thank you for using the Hello Mama service",
+            "state_end":
+                " "
         };
 
         var errors = {
@@ -129,7 +133,7 @@ go.app = function() {
         self.states.add('state_start', function() {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
-            return self.states.create("state_language"); //** should be state_check_msisdn
+            return self.states.create("state_msisdn_permission"); //** should be state_check_msisdn
         });
 
         // Interstitial start state - evaluating whether user is registered
@@ -149,6 +153,10 @@ go.app = function() {
                 });
         });*/
 
+        self.add('state_end', function(name) {
+            return new EndState(name, {});
+        });
+
     // INITIAL STATES
 
         // ChoiceState st-B
@@ -165,6 +173,13 @@ go.app = function() {
                       return choice.value;
                   }
               });
+        });
+
+        self.add('state_msisdn_no_permission', function(name) {
+            return new EndState(name, {
+                text: $(questions[name]),
+                //next: 'state_start'
+            });
         });
 
         // ChoiceState st-D
@@ -186,7 +201,7 @@ go.app = function() {
             return new FreeText(name, {
                 question: $(questions[name]),
                 check: function(content) {
-                    if (go.utils.check_valid_phone_number(content)) {
+                    if (go.utils.is_valid_msisdn(content)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return $(get_error_text(name));
@@ -202,7 +217,7 @@ go.app = function() {
                 question: $(questions[name]),
                 choices: [
                     new Choice('state_check_baby_subscription', $("Start Baby messages")),
-                    new Choice('state_check_text_or_calls', $("Change message preferences")),
+                    new Choice('state_check_msg_type', $("Change message preferences")),
                     new Choice('state_msg_msisdn', $("Change my number")),
                     new Choice('state_msg_language', $("Change language")),
                     new Choice('state_optout_reason', $("Stop receiving messages"))
@@ -216,27 +231,27 @@ go.app = function() {
 
         // CHANGE STATES
 
-        // Interstitial
+        // Interstitials
         self.add('state_check_baby_subscription', function(name) {
             return go.utils
                 .check_baby_subscription(self.im.user.addr)
                 .then(function(is_subscribed) {
                     if (is_subscribed) {
-                        return self.states.create('state_already_baby');
+                        return self.states.create('state_msg_already_registered_baby');
                     } else {
-                        return self.states.create('state_end_baby');
+                        return self.states.create('state_msg_new_registeration_baby');
                     }
                 });
         });
 
-        self.add('state_check_text_or_calls', function(name) {
+        self.add('state_check_msg_type', function(name) {
             return go.utils
-                .check_baby_subscription(self.im.user.addr)
-                .then(function(is_subscribed) {
+                .check_sms_subscription(self.im.user.addr)
+                .then(function(is_subscribed) {   //assuming a registered user always has a default subscription
                     if (is_subscribed) {
-                        return self.states.create('state_already_baby');
+                        return self.states.create('state_change_menu_sms');
                     } else {
-                        return self.states.create('state_end_baby');
+                        return self.states.create('state_change_menu_voice');
                     }
                 });
         });
@@ -247,13 +262,11 @@ go.app = function() {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
                 choices: [
-                    new Choice('back', $("Back to main menu")),
-                    new Choice('exit', $("Exit"))
+                    new Choice('state_main_menu', $("Back to main menu")),
+                    new Choice('state_end', $("Exit"))
                 ],
                 next: function(choice) {
-                    return choice.value === 'back'
-                        ? 'state_main_menu'
-                        : 'state_main_menu';// should exit... how to exit..? state_start..?!
+                    return choice.value;
                 }
             });
         });
@@ -267,7 +280,7 @@ go.app = function() {
         });
 
         // ChoiceState st-03
-        self.add('state_change_menu_text_smss', function(name) {
+        self.add('state_change_menu_sms', function(name) {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
@@ -305,144 +318,39 @@ go.app = function() {
                     new Choice('', $("Between 9-11am")),
                     new Choice('', $("Between 2-5pm"))
                 ],
-                next: 'state_voice_calls_confirm'
+                next: 'state_voice_confirm'
             });
         });
 
-        // FreeText st-07
-        self.add('state_mother_name', function(name) {
-            return new FreeText(name, {
-                question: $(questions[name]),
-                check: function(content) {
-                    if (go.utils.is_valid_name(content)) {
-                        return null;  // vumi expects null or undefined if check passes
-                    } else {
-                        return $(get_error_text(name));
-                    }
-                },
-                next: 'state_mother_surname'
+        // EndState st-06
+        self.add('state_voice_confirm', function(name) {
+            return new EndState(name, {
+                text: $(questions[name])
+                //next: 'state_start'
             });
         });
 
-        // FreeText st-08
-        self.add('state_mother_surname', function(name) {
-            return new FreeText(name, {
-                question: $(questions[name]),
-                check: function(content) {
-                    if (go.utils.is_valid_name(content)) {
-                        return null;  // vumi expects null or undefined if check passes
-                    } else {
-                        return $(get_error_text(name));
-                    }
-                },
-                next: 'state_id_type'
-            });
-        });
-
-        // ChoiceState st-09
-        self.add('state_msg_new_msisdn', function(name) {
-            return new FreeText(name, {
-                question: $(questions[name]),
-                check: function(content) {
-                    if (go.utils.is_valid_msisdn(content)) {
-                        return null;  // vumi expects null or undefined if check passes
-                    } else {
-                        return $(get_error_text(name));
-                    }
-                },
-                next: 'state_msg_receiver'
-            });
-        });
-
-        // FreeText st-10
-        self.add('state_nin', function(name) {
-            return new FreeText(name, {
-                question: $(questions[name]),
-                next: 'state_msg_language'
-            });
-        });
-
-        // FreeText st-17
-        self.add('state_mother_birth_day', function(name) {
-            return new FreeText(name, {
-                question: $(questions[name]),
-                check: function(content) {
-                    if (go.utils.is_valid_day_of_month(content)) {
-                        return null;  // vumi expects null or undefined if check passes
-                    } else {
-                        return $(get_error_text(name));
-                    }
-                },
-                next: 'state_mother_birth_month'
-            });
-        });
-
-        // PaginatedChoiceState st-18 / st-19
-        self.add('state_mother_birth_month', function(name) {
-            return new PaginatedChoiceState(name, {
-                question: $(questions[name]),
-                error: $(get_error_text(name)),
-                characters_per_page: 160,
-                options_per_page: null,
-                more: $('More'),
-                back: $('Back'),
-                choices: [
-                    new Choice('01', $('January')),
-                    new Choice('02', $('February')),
-                    new Choice('03', $('March')),
-                    new Choice('04', $('April')),
-                    new Choice('05', $('May')),
-                    new Choice('06', $('June')),
-                    new Choice('07', $('July')),
-                    new Choice('08', $('August')),
-                    new Choice('09', $('September')),
-                    new Choice('10', $('October')),
-                    new Choice('11', $('November')),
-                    new Choice('12', $('December'))
-                ],
-                next: 'state_mother_birth_year'
-            });
-        });
-
-        // FreeText st-20
-        self.add('state_mother_birth_year', function(name) {
-            return new FreeText(name, {
-                question: $(questions[name]),
-                check: function(content) {
-                    if (go.utils.is_valid_year(content)) {
-                        return null;  // vumi expects null or undefined if check passes
-                    } else {
-                        return $(get_error_text(name));
-                    }
-                },
-                next: 'state_msg_language'
-            });
-        });
-
-        // ChoiceState st-11
-        self.add('state_msg_language', function(name) {
+        // ChoiceState st-07
+        self.add('state_change_menu_voice', function(name) {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
                 choices: [
-                    new Choice('english', $('English')),
-                    new Choice('runyakore', $('Runyakore')),
-                    new Choice('lusoga', $('Lusoga'))
+                    new Choice('state_voice_days', $("Change the day and time I receive messages")),
+                    new Choice('state_sms_confirm', $("Change from voice to text messages")),
+                    new Choice('state_main_menu', $("Back to main menu"))
                 ],
-                next: 'state_hiv_messages'
+                next: function(choice) {
+                    return choice.value;
+                }
             });
         });
 
-        // ChoiceState st-12
-        self.add('state_hiv_messages', function(name) {
-            return new ChoiceState(name, {
-                question: $(questions[name]),
-                error: $(get_error_text(name)),
-                choices: [
-                    new Choice('yes_hiv_msgs', $('Yes')),
-                    new Choice('no_hiv_msgs', $('No'))
-                ],
-                next: 'state_end_thank_you'
+        // EndState st-08
+        self.add('state_sms_confirm', function(name) {
+            return new EndState(name, {
+                text: $(questions[name])
+                //next: 'state_start'
             });
         });
 

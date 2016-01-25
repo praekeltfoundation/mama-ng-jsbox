@@ -122,6 +122,27 @@ go.utils = {
             });
     },
 
+    check_baby_subscription: function(msisdn) {
+        return Q()
+            .then(function(q_response) {
+                return msisdn === '082333';
+            });
+    },
+
+    check_sms_subscription: function(msisdn) {
+        return Q()
+            .then(function(q_response) {
+                return msisdn === '082444';
+            });
+    },
+
+    check_voice_subscription: function(msisdn) {
+        return Q()
+            .then(function(q_response) {
+                return msisdn === '082555';
+            });
+    },
+
 // MSISDN & NUMBER HANDLING
 
     // An attempt to solve the insanity of JavaScript numbers
