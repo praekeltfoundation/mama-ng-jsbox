@@ -207,14 +207,14 @@ describe("Mama Nigeria App", function() {
                         state: 'state_last_period_month',
                         reply: [
                             "Please select the month the woman had her last period:",
-                            "1. July 15",
-                            "2. June 15",
-                            "3. May 15",
-                            "4. Apr 15",
-                            "5. Mar 15",
-                            "6. Feb 15",
-                            "7. Jan 15",
-                            "8. Dec 14",
+                            "1. April 16",
+                            "2. March 16",
+                            "3. February 16",
+                            "4. January 16",
+                            "5. December 15",
+                            "6. November 15",
+                            "7. October 15",
+                            "8. September 15",
                             "9. More"
                         ].join('\n')
                     })
@@ -275,15 +275,15 @@ describe("Mama Nigeria App", function() {
                         state: 'state_baby_birth_month_year',
                         reply: [
                             "Select the month & year the baby was born:",
-                            "1. July 15",
-                            "2. June 15",
-                            "3. May 15",
-                            "4. Apr 15",
-                            "5. Mar 15",
-                            "6. Feb 15",
-                            "7. Jan 15",
-                            "8. Dec 14",
-                            "9. Nov 14"
+                            "1. April 16",
+                            "2. March 16",
+                            "3. February 16",
+                            "4. January 16",
+                            "5. December 15",
+                            "6. November 15",
+                            "7. October 15",
+                            "8. September 15",
+                            "9. More"
                         ].join('\n')
                     })
                     .run();

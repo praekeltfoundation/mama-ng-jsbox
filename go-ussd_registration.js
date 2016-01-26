@@ -660,17 +660,15 @@ go.utils = {
     },
 
     make_month_choices: function($, start, limit, increment) {
-        var choices = [
-            new Choice('072015', $('July 15')),
-            new Choice('062015', $('June 15')),
-            new Choice('052015', $('May 15')),
-            new Choice('042015', $('Apr 15')),
-            new Choice('032015', $('Mar 15')),
-            new Choice('022015', $('Feb 15')),
-            new Choice('012015', $('Jan 15')),
-            new Choice('122014', $('Dec 14')),
-            new Choice('112014', $('Nov 14')),
-        ];
+        var choices = [];
+
+        var monthIterator = new moment();
+        monthIterator.month(start.month());
+        for (var i=0; i<limit; i++) {
+            choices.push(new Choice(monthIterator.format("MMYYYY"), $(monthIterator.format("MMMM YY"))));
+            monthIterator.add(increment, 'months');
+        }
+
         return choices;
     },
 
@@ -884,10 +882,13 @@ go.app = function() {
         // PaginatedChoiceState st-05
         self.add('state_last_period_month', function(name) {
             var today = go.utils.get_today(self.im.config);
-            var start_month = today.month();
             return new PaginatedChoiceState(name, {
                 question: $(questions[name]),
-                choices: go.utils.make_month_choices($, start_month, 9, -1),
+                characters_per_page: 182,
+                //options_per_page: null,
+                more: $('More'),
+                back: $('Back'),
+                choices: go.utils.make_month_choices($, today, 9, -1),
                 next: 'state_last_period_day'
             });
         });
@@ -971,14 +972,13 @@ go.app = function() {
         // PaginatedChoiceState st-12 & 13
         self.add('state_baby_birth_month_year', function(name) {
             var today = go.utils.get_today(self.im.config);
-            var start_month = today.month();
             return new PaginatedChoiceState(name, {
                 question: $(questions[name]),
                 characters_per_page: 182,
-                options_per_page: null,
+                //options_per_page: null,
                 more: $('More'),
                 back: $('Back'),
-                choices: go.utils.make_month_choices($, start_month, 9, -1),
+                choices: go.utils.make_month_choices($, today, 12, -1),
                 next: 'state_baby_birth_day'
             });
         });
