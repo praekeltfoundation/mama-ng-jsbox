@@ -50,7 +50,7 @@ go.app = function() {
                 "You have an incomplete registration. Would you like to continue with this registration?",
             "state_msisdn_permission":  //B
                 "Welcome to Hello Mama. Do you have permission to manage the number [MSISDN]?",
-            "state_msisdn_no_permission":
+            "state_msisdn_no_permission":  // unnamed state on flow diagram
                 "We're sorry, you do not have permission to update the preferences for this subscriber.",
             "state_language":   //D
                 "Welcome to Hello Mama. Please choose your language",
@@ -114,14 +114,14 @@ go.app = function() {
         // override normal state adding
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                if (!interrupt || !go.utils.should_restart(self.im))
+                if (!interrupt || !go.utils.timed_out(self.im) /*|| !go.utils.should_restart(self.im)*/)
                     return creator(name, opts);
                 interrupt = false;
                 opts = opts || {};
                 opts.name = name;
                 // Prevent previous content being passed to next state
                 self.im.msg.content = null;  ///????
-                return self.states.create('state_start', opts);
+                return self.states.create('state_msisdn_permission', opts);  // ** no timed-out state/message..??!!
             });
         };
 
@@ -131,7 +131,7 @@ go.app = function() {
         self.states.add('state_start', function() {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
-            return self.states.create("state_msisdn_permission"); //** should be state_check_msisdn
+            return self.states.create("state_check_msisdn");
         });
 
         // Interstitial start state - evaluating whether user is registered
@@ -150,6 +150,18 @@ go.app = function() {
                         });
                 });
         });*/
+
+        self.add('state_check_msisdn', function(name) {
+            return go.utils
+                .check_msisdn_hcp(self.im.user.addr)
+                .then(function(recognised) {
+                    if (recognised) {
+                        return self.states.create('state_msisdn_permission');
+                    } else {
+                        return self.states.create('state_language');
+                    }
+                });
+        });
 
 
     // INITIAL STATES
@@ -170,10 +182,18 @@ go.app = function() {
               });
         });
 
+        // unnamed on flow diagram
         self.add('state_msisdn_no_permission', function(name) {
             return new EndState(name, {
                 text: $(questions[name]),
                 //next: 'state_start'
+            });
+        });
+
+        // EndState st-F
+        self.add('state_msisdn_not_recognised', function(name) {
+            return new EndState(name, {
+                text: $(questions[name])
             });
         });
 
@@ -202,7 +222,17 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: 'state_main_menu'//'state_check_msisdn'  // ensure unregistered outcome goes to state F and not loop to state_language again
+                next: function(content) {
+                        return go.utils
+                            .check_msisdn_hcp(content)
+                            .then(function(recognised) {
+                                if (recognised) {
+                                    return 'state_main_menu';
+                                } else {
+                                    return 'state_msisdn_not_recognised';
+                                }
+                            });
+                }
             });
         });
 

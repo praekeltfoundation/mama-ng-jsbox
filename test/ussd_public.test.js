@@ -63,7 +63,8 @@ describe("hello mama public app", function() {
                         key: "contact_key_082333",
                         user_account: "contact_user_account"
                     });
-                }).setup(function(api) {
+                })
+                .setup(function(api) {
                     // registered user 082444, registered for sms
                     api.contacts.add({
                         msisdn: '+082444',
@@ -72,15 +73,15 @@ describe("hello mama public app", function() {
                         user_account: "contact_user_account"
                     });
                 })
-                /*}).setup(function(api) {
-                    // registered user 082444, registered for sms
+                .setup(function(api) {
+                    // registered user 082555, registered for voice
                     api.contacts.add({
-                        msisdn: '+082444',
+                        msisdn: '+082555',
                         extra: {},
-                        key: "contact_key_082444",
+                        key: "contact_key_082555",
                         user_account: "contact_user_account"
                     });
-                })*/
+                })
         });
 
         // TEST TIMEOUTS
@@ -169,7 +170,7 @@ describe("hello mama public app", function() {
         // TEST CHANGE FLOW
 
         describe("Flow testing - ", function() {
-            it.skip("to state_language", function() {  //state D
+            it("to state_language", function() {  //state D
                 return tester
                     .setup.user.addr('082111')
                     .inputs(
@@ -186,7 +187,7 @@ describe("hello mama public app", function() {
                     })
                     .run();
             });
-            it.skip("to state_msg_registered_msisdn", function() { //state C
+            it("to state_msg_registered_msisdn", function() { //state C
                 return tester
                     .setup.user.addr('082111')
                     .inputs(
@@ -199,7 +200,6 @@ describe("hello mama public app", function() {
                     })
                     .run();
             });
-
             // assuming flow via registered user...
             it("to state_msisdn_permission", function() {  //state B
                 return tester
@@ -218,7 +218,45 @@ describe("hello mama public app", function() {
                     })
                     .run();
             });
-            it("to state_main_menu", function() {  //state A  via state B
+            // assuming flow via unregistered user...
+            it("to state_msisdn_not_recognised", function() {  //state F
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '3'   // state_language - igbo
+                        , '0803304111'  // state_msg_registered_msisdn
+                    )
+                    .check.interaction({
+                        state: 'state_msisdn_not_recognised',
+                        reply: "We do not recognise this number. Please dial from the registered number or sign up with your local Community Health Extension worker."
+                    })
+                    .run();
+            });
+            // assuming flow via unregistered/registered user...
+            it("to state_main_menu (via state C)", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '2'   // state_language - hausa
+                        , '0803304899'  // state_msg_registered_msisdn
+                    )
+                    .check.interaction({
+                        state: 'state_main_menu',
+                        reply: [
+                            "Select:",
+                            "1. Start Baby messages",
+                            "2. Change message preferences",
+                            "3. Change my number",
+                            "4. Change language",
+                            "5. Stop receiving messages"
+                        ].join('\n')
+                    })
+                    .run();
+            });
+            // registered user with permission to manage number
+            it("to state_main_menu (via state B)", function() {
                 return tester
                     .setup.user.addr('082222')
                     .inputs(
@@ -238,7 +276,20 @@ describe("hello mama public app", function() {
                     })
                     .run();
             });
-            it.skip("to state_msg_already_registered_baby", function() {
+            it("to state_msisdn_no_permission", function() {  // via state B
+                return tester
+                    .setup.user.addr('082222')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '2'   // state_msisdn_permission - yes
+                    )
+                    .check.interaction({
+                        state: 'state_msisdn_no_permission',
+                        reply: "We're sorry, you do not have permission to update the preferences for this subscriber."
+                    })
+                    .run();
+            });
+            it("to state_msg_already_registered_baby", function() {
                 return tester
                     .setup.user.addr('082333')
                     .inputs(
@@ -252,7 +303,7 @@ describe("hello mama public app", function() {
                             "You are already registered for baby messages.",
                             "1. Back to main menu",
                             "2. Exit"
-                        ]
+                        ].join('\n')
                     })
                     .run();
             });

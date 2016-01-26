@@ -659,7 +659,8 @@ go.utils = {
     check_msisdn_hcp: function(msisdn) {
         return Q()
             .then(function(q_response) {
-                return msisdn === '082222' || msisdn === '082333';
+                return msisdn === '082222' || msisdn === '082333'
+                    || msisdn === '082444' || msisdn === '082555' || msisdn === '0803304899';
             });
     },
 
