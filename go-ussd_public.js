@@ -821,8 +821,8 @@ go.app = function() {
                 opts = opts || {};
                 opts.name = name;
                 // Prevent previous content being passed to next state
-                self.im.msg.content = null;  ///????
-                return self.states.create('state_msisdn_permission', opts);  // ** no timed-out state/message..??!!
+                self.im.msg.content = null;
+                return self.states.create('state_msisdn_permission', opts);
             });
         };
 
