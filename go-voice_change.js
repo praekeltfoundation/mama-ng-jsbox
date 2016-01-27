@@ -659,11 +659,10 @@ go.utils = {
         return go.utils.check_valid_alpha(input);
     },
 
-    make_month_choices: function($, start, limit, increment) {
+    make_month_choices: function($, startDate, limit, increment) {
         var choices = [];
 
-        var monthIterator = new moment();
-        monthIterator.month(start.month());
+        var monthIterator = startDate;
         for (var i=0; i<limit; i++) {
             choices.push(new Choice(monthIterator.format("MMYYYY"), $(monthIterator.format("MMMM YY"))));
             monthIterator.add(increment, 'months');
