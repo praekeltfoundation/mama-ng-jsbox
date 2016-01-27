@@ -755,7 +755,7 @@ go.app = function() {
                 "We're sorry, you do not have permission to update the preferences for this subscriber.",
             "state_language":   //st-D
                 "Welcome to Hello Mama. Please choose your language",
-            "state_msg_registered_msisdn":  //st-C
+            "state_registered_msisdn":  //st-C
                 "Please enter the number which is registered to receive messages. For example, 0803304899",
             "state_main_menu":  //st-A
                 "Select:",
@@ -777,7 +777,7 @@ go.app = function() {
                 "Please select what you would like to do:",
             "state_sms_confirm":
                 "Thank you. You will now receive text messages.",
-            "state_msg_new_msisdn":
+            "state_new_msisdn":
                 "Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899",
             "state_msg_receiver":
                 "Who will receive these messages?",
@@ -800,7 +800,7 @@ go.app = function() {
         };
 
         var errors = {
-            "state_msg_registered_msisdn":
+            "state_registered_msisdn":
                 "Mobile number not registered."
         };
 
@@ -874,7 +874,7 @@ go.app = function() {
                 choices: [
                     new Choice('state_main_menu', $("Yes")),
                     new Choice('state_msisdn_no_permission', $("No")),
-                    new Choice('state_msg_msisdn', $("Change the number I'd like to manage"))
+                    new Choice('state_registered_msisdn', $("Change the number I'd like to manage"))
                   ],
                   error: $(get_error_text(name)),
                   next: function(choice) {
@@ -908,12 +908,12 @@ go.app = function() {
                     new Choice('igbo', $("Igbo"))
                   ],
                   error: $(get_error_text(name)),
-                  next: 'state_msg_registered_msisdn'
+                  next: 'state_registered_msisdn'
               });
         });
 
         // FreeText st-C
-        self.add('state_msg_registered_msisdn', function(name) {
+        self.add('state_registered_msisdn', function(name) {
             return new FreeText(name, {
                 question: $(questions[name]),
                 check: function(content) {
@@ -944,7 +944,7 @@ go.app = function() {
                 choices: [
                     new Choice('state_check_baby_subscription', $("Start Baby messages")),
                     new Choice('check_msg_type', $("Change message preferences")),
-                    new Choice('state_msg_new_msisdn', $("Change my number")),
+                    new Choice('state_new_msisdn', $("Change my number")),
                     new Choice('state_msg_language', $("Change language")),
                     new Choice('state_optout_reason', $("Stop receiving messages"))
                 ],
@@ -1078,7 +1078,7 @@ go.app = function() {
         });
 
         // FreeText st-09
-        self.add('state_msg_new_msisdn', function(name) {
+        self.add('state_new_msisdn', function(name) {
             return new FreeText(name, {
                 question: $(questions[name]),
                 check: function(content) {

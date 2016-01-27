@@ -105,7 +105,7 @@ describe("hello mama public app", function() {
                     })
                     .run();
             });
-            it("to state_msg_registered_msisdn", function() { //st-C
+            it("to state_registered_msisdn", function() { //st-C
                 return tester
                     .setup.user.addr('082111')
                     .inputs(
@@ -113,7 +113,7 @@ describe("hello mama public app", function() {
                         , '2'   // state_language - Hausa
                     )
                     .check.interaction({
-                        state: 'state_msg_registered_msisdn',
+                        state: 'state_registered_msisdn',
                         reply: "Please enter the number which is registered to receive messages. For example, 0803304899"
                     })
                     .run();
@@ -136,6 +136,19 @@ describe("hello mama public app", function() {
                     })
                     .run();
             });
+            it("to state_registered_msisdn", function() {  //st-C
+                return tester
+                    .setup.user.addr('082222')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '3'
+                    )
+                    .check.interaction({
+                        state: 'state_registered_msisdn',
+                        reply: "Please enter the number which is registered to receive messages. For example, 0803304899"
+                    })
+                    .run();
+            });
             // assuming flow via unregistered user...
             it("to state_msisdn_not_recognised", function() {  //st-F
                 return tester
@@ -143,7 +156,7 @@ describe("hello mama public app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '3'   // state_language - igbo
-                        , '0803304111'  // state_msg_registered_msisdn
+                        , '0803304111'  // state_registered_msisdn
                     )
                     .check.interaction({
                         state: 'state_msisdn_not_recognised',
@@ -158,7 +171,7 @@ describe("hello mama public app", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '2'   // state_language - hausa
-                        , '0803304899'  // state_msg_registered_msisdn
+                        , '0803304899'  // state_registered_msisdn
                     )
                     .check.interaction({
                         state: 'state_main_menu',
@@ -313,7 +326,7 @@ describe("hello mama public app", function() {
                     })
                     .run();
             });
-            it("to state_msg_new_msisdn", function() {
+            it("to state_new_msisdn", function() {
                 return tester
                     .setup.user.addr('082222')
                     .inputs(
@@ -322,7 +335,7 @@ describe("hello mama public app", function() {
                         , '3'  // state_main_menu - change number
                     )
                     .check.interaction({
-                        state: 'state_msg_new_msisdn',
+                        state: 'state_new_msisdn',
                         reply: "Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899"
                     })
                     .run();
@@ -334,7 +347,7 @@ describe("hello mama public app", function() {
                         {session_event: 'new'}  // dial in
                         , '1'  // state_msisdn_permission - yes
                         , '3'  // state_main_menu - change number
-                        , '0803304899' // state_msg_new_msisdn
+                        , '0803304899' // state_new_msisdn
                     )
                     .check.interaction({
                         state: 'state_msg_receiver',
@@ -355,7 +368,7 @@ describe("hello mama public app", function() {
                         {session_event: 'new'}  // dial in
                         , '1'  // state_msisdn_permission - yes
                         , '3'  // state_main_menu - change number
-                        , '0803304899' // state_msg_new_msisdn
+                        , '0803304899' // state_new_msisdn
                         , '4'  // state_msg_receiver - trusted friend
                     )
                     .check.interaction({
@@ -533,7 +546,7 @@ describe("hello mama public app", function() {
                         })
                         .run();
                 });
-                it("- via opt-out", function() {
+                it(" - via opt-out", function() {
                     return tester
                         .setup.user.addr('082222')
                         .inputs(
