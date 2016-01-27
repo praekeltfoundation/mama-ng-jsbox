@@ -553,6 +553,44 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
+            /*describe("Validate overall date", function() {
+                it("state_validate_date - via st-06/19 looping back to st-05", function() {
+                    return tester
+                        .setup.user.addr('082111')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '12345'   // state_auth_code - personnel code
+                            , '0803304899' // state_msisdn - mobile number
+                            , '1'  // state_msg_receiver - mother
+                            , '2'  // state_msg_pregnancy_status - baby
+                            , '3'  // state_baby_birth_month_year - May 15
+                            , 'a'  // state_baby_birth_day
+                        )
+                        .check.interaction({
+                            state: 'state_validate_date',
+                            //reply: "Sorry, that is not a valid number. What day of the month was the baby born? For example, 12."
+                        })
+                        .run();
+                });
+                it("state_validate_date - via st-14/18 looping back to st-12", function() {
+                    return tester
+                        .setup.user.addr('082111')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '12345'   // state_auth_code - personnel code
+                            , '0803304899' // state_msisdn - mobile number
+                            , '1'  // state_msg_receiver - mother
+                            , '2'  // state_msg_pregnancy_status - baby
+                            , '3'  // state_baby_birth_month_year - May 15
+                            , 'a'  // state_baby_birth_day
+                        )
+                        .check.interaction({
+                            state: 'state_validate_date',
+                            //reply: "Sorry, that is not a valid number. What day of the month was the baby born? For example, 12."
+                        })
+                        .run();
+                });
+            });*/
         });
     });
 

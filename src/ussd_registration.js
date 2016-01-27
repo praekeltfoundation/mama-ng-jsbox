@@ -327,6 +327,18 @@ go.app = function() {
             });
         });
 
+        // to validate overall date
+        /*self.add('state_validate_date', function(name, opts) {
+            return go.utils
+                .is_valid_date(opts.)
+                .then(function(validDate) {
+                    if (validDate) {
+                        return self.states.create('state_msg_language');
+                    } else {
+                        return self.states.create('state_last_period_month');
+                    }
+                });
+        });*/
     });
 
     return {
