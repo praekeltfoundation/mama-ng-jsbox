@@ -82,6 +82,7 @@ describe("hello mama public app", function() {
                         user_account: "contact_user_account"
                     });
                 })
+                ;
         });
 
         // TEST TIMEOUTS
