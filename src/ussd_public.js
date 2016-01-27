@@ -48,17 +48,17 @@ go.app = function() {
         var questions = {
             "state_timed_out":
                 "You have an incomplete registration. Would you like to continue with this registration?",
-            "state_msisdn_permission":  //B
+            "state_msisdn_permission":  //st-B
                 "Welcome to Hello Mama. Do you have permission to manage the number [MSISDN]?",
             "state_msisdn_no_permission":  // unnamed state on flow diagram
                 "We're sorry, you do not have permission to update the preferences for this subscriber.",
-            "state_language":   //D
+            "state_language":   //st-D
                 "Welcome to Hello Mama. Please choose your language",
-            "state_msg_registered_msisdn":  //C
+            "state_msg_registered_msisdn":  //st-C
                 "Please enter the number which is registered to receive messages. For example, 0803304899",
-            "state_main_menu":  //A
+            "state_main_menu":  //st-A
                 "Select:",
-            "state_msisdn_not_recognised":  //F
+            "state_msisdn_not_recognised":  //st-F
                 "We do not recognise this number. Please dial from the registered number or sign up with your local Community Health Extension worker.",
             "state_msg_already_registered_baby":
                 "You are already registered for baby messages.",
