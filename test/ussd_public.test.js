@@ -594,7 +594,7 @@ describe("hello mama public app", function() {
                             , '2'   // state_already_registered_baby - exit
                         )
                         .check.interaction({
-                            state: 'state_end',
+                            state: 'state_end_exit',
                             reply: "Thank you for using the Hello Mama service"
                         })
                         .run();

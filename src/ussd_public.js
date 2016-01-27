@@ -94,7 +94,7 @@ go.app = function() {
                 "Thank you. You will now receive messages to support you during this difficult time.",
             "state_end_optout":
                 "Thank you. You will no longer receive messages",
-            "state_end":
+            "state_end_exit":
                 "Thank you for using the Hello Mama service"
         };
 
@@ -288,7 +288,7 @@ go.app = function() {
                 error: $(get_error_text(name)),
                 choices: [
                     new Choice('state_main_menu', $("Back to main menu")),
-                    new Choice('state_end', $("Exit"))
+                    new Choice('state_end_exit', $("Exit"))
                 ],
                 next: function(choice) {
                     return choice.value;
@@ -487,7 +487,7 @@ go.app = function() {
         });
 
         // EndState st-18
-        self.add('state_end', function(name) {
+        self.add('state_end_exit', function(name) {
             return new EndState(name, {
                 text: $(questions[name])
             });
