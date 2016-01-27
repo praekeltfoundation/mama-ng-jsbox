@@ -339,8 +339,8 @@ go.app = function() {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
                 choices: [
-                    new Choice('', $("Between 9-11am")),
-                    new Choice('', $("Between 2-5pm"))
+                    new Choice('9_11', $("Between 9-11am")),
+                    new Choice('2_5', $("Between 2-5pm"))
                 ],
                 next: 'state_voice_confirm'
             });
@@ -397,10 +397,10 @@ go.app = function() {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
                 choices: [
-                    new Choice('', $("The Mother")),
-                    new Choice('', $("The Father")),
-                    new Choice('', $("Family member")),
-                    new Choice('', $("Trusted friend"))
+                    new Choice('mother', $("The Mother")),
+                    new Choice('father', $("The Father")),
+                    new Choice('family_member', $("Family member")),
+                    new Choice('trusted_friend', $("Trusted friend"))
                 ],
                 next: 'state_msg_receiver_confirm'
             });
