@@ -522,7 +522,7 @@ describe("hello mama public app", function() {
                     })
                     .run();
             });
-            it("to state_end_subscription", function() {
+            it("to state_end_optout", function() {
                 return tester
                     .setup.user.addr('082222')
                     .inputs(
@@ -532,7 +532,7 @@ describe("hello mama public app", function() {
                         , '4'  // state_optout_reason - messages not useful
                     )
                     .check.interaction({
-                        state: 'state_end_subscription',
+                        state: 'state_end_optout',
                         reply: "Thank you. You will no longer receive messages"
                     })
                     .run();
@@ -627,7 +627,7 @@ describe("hello mama public app", function() {
                             , '2'  // state_loss_subscription - no
                         )
                         .check.interaction({
-                            state: 'state_end_subscription',
+                            state: 'state_end_optout',
                             reply: "Thank you. You will no longer receive messages"
                         })
                         .run();

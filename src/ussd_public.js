@@ -92,7 +92,7 @@ go.app = function() {
                 "We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?",
             "state_loss_subscription_confirm":
                 "Thank you. You will now receive messages to support you during this difficult time.",
-            "state_end_subscription":
+            "state_end_optout":
                 "Thank you. You will no longer receive messages",
             "state_end":
                 "Thank you for using the Hello Mama service"
@@ -443,8 +443,8 @@ go.app = function() {
                     new Choice('state_loss_subscription', $("Mother miscarried")),
                     new Choice('state_loss_subscription', $("Baby stillborn")),
                     new Choice('state_loss_subscription', $("Baby passed away")),
-                    new Choice('state_end_subscription', $("Messages not useful")),
-                    new Choice('state_end_subscription', $("Other"))
+                    new Choice('state_end_optout', $("Messages not useful")),
+                    new Choice('state_end_optout', $("Other"))
                 ],
                 next: function(choice) {
                     return choice.value;
@@ -466,7 +466,7 @@ go.app = function() {
                         return 'state_loss_subscription_confirm';
                     }
                     else {
-                        return 'state_end_subscription';
+                        return 'state_end_optout';
                     }
                 }
             });
@@ -480,7 +480,7 @@ go.app = function() {
         });
 
         // EndState st-17
-        self.add('state_end_subscription', function(name) {
+        self.add('state_end_optout', function(name) {
             return new EndState(name, {
                 text: $(questions[name])
             });
