@@ -749,21 +749,21 @@ go.app = function() {
         var questions = {
             "state_timed_out":
                 "You have an incomplete registration. Would you like to continue with this registration?",
-            "state_msisdn_permission":  //B
+            "state_msisdn_permission":  //st-B
                 "Welcome to Hello Mama. Do you have permission to manage the number [MSISDN]?",
             "state_msisdn_no_permission":  // unnamed state on flow diagram
                 "We're sorry, you do not have permission to update the preferences for this subscriber.",
-            "state_language":   //D
+            "state_language":   //st-D
                 "Welcome to Hello Mama. Please choose your language",
-            "state_msg_registered_msisdn":  //C
+            "state_msg_registered_msisdn":  //st-C
                 "Please enter the number which is registered to receive messages. For example, 0803304899",
-            "state_main_menu":  //A
+            "state_main_menu":  //st-A
                 "Select:",
-            "state_msisdn_not_recognised":  //F
+            "state_msisdn_not_recognised":  //st-F
                 "We do not recognise this number. Please dial from the registered number or sign up with your local Community Health Extension worker.",
-            "state_msg_already_registered_baby":
+            "state_already_registered_baby":
                 "You are already registered for baby messages.",
-            "state_msg_new_registeration_baby":
+            "state_new_registeration_baby":
                 "Thank you. You will now receive messages about caring for baby",
             "state_change_menu_sms":
                 "Please select what you would like to do:",
@@ -963,9 +963,9 @@ go.app = function() {
                 .check_baby_subscription(self.im.user.addr)
                 .then(function(is_subscribed) {
                     if (is_subscribed) {
-                        return self.states.create('state_msg_already_registered_baby');
+                        return self.states.create('state_already_registered_baby');
                     } else {
-                        return self.states.create('state_msg_new_registeration_baby');
+                        return self.states.create('state_new_registeration_baby');
                     }
                 });
         });
@@ -983,7 +983,7 @@ go.app = function() {
         });
 
         // ChoiceState st-01
-        self.add('state_msg_already_registered_baby', function(name) {
+        self.add('state_already_registered_baby', function(name) {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
@@ -998,7 +998,7 @@ go.app = function() {
         });
 
         // EndState st-02
-        self.add('state_msg_new_registeration_baby', function(name) {
+        self.add('state_new_registeration_baby', function(name) {
             return new EndState(name, {
                 text: $(questions[name])
             });

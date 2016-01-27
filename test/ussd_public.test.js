@@ -290,7 +290,7 @@ describe("hello mama public app", function() {
                     })
                     .run();
             });
-            it("to state_msg_already_registered_baby", function() {
+            it("to state_already_registered_baby", function() {
                 return tester
                     .setup.user.addr('082333')
                     .inputs(
@@ -299,7 +299,7 @@ describe("hello mama public app", function() {
                         , '1'   // state_main_menu - start baby messages
                     )
                     .check.interaction({
-                        state: 'state_msg_already_registered_baby',
+                        state: 'state_already_registered_baby',
                         reply: [
                             "You are already registered for baby messages.",
                             "1. Back to main menu",
@@ -308,7 +308,7 @@ describe("hello mama public app", function() {
                     })
                     .run();
             });
-            it("to state_msg_new_registeration_baby", function() {
+            it("to state_new_registeration_baby", function() {
                 return tester
                     .setup.user.addr('082222')
                     .inputs(
@@ -317,7 +317,7 @@ describe("hello mama public app", function() {
                         , '1'   // state_main_menu - start baby messages
                     )
                     .check.interaction({
-                        state: 'state_msg_new_registeration_baby',
+                        state: 'state_new_registeration_baby',
                         reply: "Thank you. You will now receive messages about caring for baby"
                     })
                     .run();
@@ -546,7 +546,7 @@ describe("hello mama public app", function() {
                             {session_event: 'new'}  // dial in
                             , '1'   // state_msisdn_permission - yes
                             , '1'   // state_main_menu - start baby messages
-                            , '1'   // state_msg_already_registered_baby - back to main menu
+                            , '1'   // state_already_registered_baby - back to main menu
                         )
                         .check.interaction({
                             state: 'state_main_menu'
@@ -591,7 +591,7 @@ describe("hello mama public app", function() {
                             {session_event: 'new'}  // dial in
                             , '1'   // state_msisdn_permission - yes
                             , '1'   // state_main_menu - start baby messages
-                            , '2'   // state_msg_already_registered_baby - exit
+                            , '2'   // state_already_registered_baby - exit
                         )
                         .check.interaction({
                             state: 'state_end',
