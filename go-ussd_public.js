@@ -943,7 +943,7 @@ go.app = function() {
                 question: $(questions[name]),
                 choices: [
                     new Choice('state_check_baby_subscription', $("Start Baby messages")),
-                    new Choice('state_check_msg_type', $("Change message preferences")),
+                    new Choice('check_msg_type', $("Change message preferences")),
                     new Choice('state_msg_new_msisdn', $("Change my number")),
                     new Choice('state_msg_language', $("Change language")),
                     new Choice('state_optout_reason', $("Stop receiving messages"))
@@ -970,7 +970,7 @@ go.app = function() {
                 });
         });
 
-        self.add('state_check_msg_type', function(name) {
+        self.add('check_msg_type', function(name) {
             return go.utils
                 .check_sms_subscription(self.im.user.addr)
                 .then(function(is_subscribed) {   //assuming a registered user always has a default subscription
