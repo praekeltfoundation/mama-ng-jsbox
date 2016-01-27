@@ -14,10 +14,10 @@ describe("hello mama public app", function() {
             tester
                 .setup.char_limit(182)
                 .setup.config.app({
-                    name: 'ussd_public_test',  //?  name ok..?
+                    name: 'ussd-public-test',
                     channel: '*120*8864*0000#',
                     testing_today: '2015-04-03 06:07:08.999',
-                    //metric_store: 'mama_ng_test',  // _env at the end  ? hello mama
+                    //metric_store: 'mama_ng_test',  // _env at the end
                     control: {
                         url: "http://localhost:8000/api/v1/",
                         api_key: "control_test_key"
@@ -85,93 +85,10 @@ describe("hello mama public app", function() {
                 ;
         });
 
-        // TEST TIMEOUTS
-
-        /*describe("Timeout testing", function() {
-            it("should ask about continuing", function() {
-                return tester
-                    .setup.user.addr('082111')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '12345'  // state_auth_code - personnel code
-                        , {session_event: 'close'}
-                        , {session_event: 'new'}
-                    )
-                    .check.interaction({
-                        state: 'state_timed_out',
-                        reply: [
-                            "You have an incomplete registration. Would you like to continue with this registration?",
-                            "1. Yes",
-                            "2. No, start new registration"
-                        ].join('\n')
-                    })
-                    .run();
-            });
-            it("should continue", function() {
-                return tester
-                    .setup.user.addr('082111')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '12345'  // state_auth_code - personnel code
-                        , {session_event: 'close'}
-                        , {session_event: 'new'}
-                        , '1'  // state_timed_out - continue
-                    )
-                    .check.interaction({
-                        state: 'state_msg_receiver'
-                    })
-                    .run();
-            });
-            it("should restart", function() {
-                return tester
-                    .setup.user.addr('082111')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '12345'  // state_auth_code - personnel code
-                        , {session_event: 'close'}
-                        , {session_event: 'new'}
-                        , '2'  // state_timed_out - restart
-                    )
-                    .check.interaction({
-                        state: 'state_auth_code'
-                    })
-                    .run();
-            });
-        });*/
-
-        // TEST START ROUTING
-
-        /*describe("When you start the app", function() {
-            it("should navigate to either state_msisdn_permission or state_language via state_check_msisdn", function() {
-                tester.setup.user.addr('08080020002')
-                console.log(tester.setup.user.addr)
-                return tester
-                    .setup.user.addr('08080020002')  //user not registered; registered user = 07070050005; not = 08080020002
-                    .inputs(
-                        {session_event: 'new'}
-                    )
-                    .check.interaction({
-                        state: (tester.setup.user.addr === '08080020002'
-                                ? 'state_msisdn_permission'   //via state_check_msisdn
-                                : 'state_language') */ //via state_check_msisdn
-                        //reply: 'Welcome, Number'
-                    //})
-                    /*.check.reply.properties({
-                        helper_metadata: {
-                            voice: {
-                                speech_url: 'http://localhost:8001/api/v1/eng_NG/state_c12_number_1.mp3',
-                                wait_for: '#'
-                            }
-                        }
-                    })*/
-                //    .run();
-        //    });
-        //});
-
         // TEST CHANGE FLOW
 
         describe("Flow testing - ", function() {
-            it("to state_language", function() {  //state D
+            it("to state_language", function() {  //st-D
                 return tester
                     .setup.user.addr('082111')
                     .inputs(
@@ -188,7 +105,7 @@ describe("hello mama public app", function() {
                     })
                     .run();
             });
-            it("to state_msg_registered_msisdn", function() { //state C
+            it("to state_msg_registered_msisdn", function() { //st-C
                 return tester
                     .setup.user.addr('082111')
                     .inputs(
@@ -202,7 +119,7 @@ describe("hello mama public app", function() {
                     .run();
             });
             // assuming flow via registered user...
-            it("to state_msisdn_permission", function() {  //state B
+            it("to state_msisdn_permission", function() {  //st-B
                 return tester
                     .setup.user.addr('082222')
                     .inputs(
@@ -220,7 +137,7 @@ describe("hello mama public app", function() {
                     .run();
             });
             // assuming flow via unregistered user...
-            it("to state_msisdn_not_recognised", function() {  //state F
+            it("to state_msisdn_not_recognised", function() {  //st-F
                 return tester
                     .setup.user.addr('082111')
                     .inputs(
@@ -277,7 +194,7 @@ describe("hello mama public app", function() {
                     })
                     .run();
             });
-            it("to state_msisdn_no_permission", function() {  // via state B
+            it("to state_msisdn_no_permission", function() {  // via st-B
                 return tester
                     .setup.user.addr('082222')
                     .inputs(
