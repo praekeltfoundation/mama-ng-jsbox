@@ -487,7 +487,7 @@ describe("hello mama public app", function() {
                     })
                     .run();
             });
-            it("to state_msg_loss_subscription", function() {
+            it("to state_loss_subscription", function() {
                 return tester
                     .setup.user.addr('082222')
                     .inputs(
@@ -497,7 +497,7 @@ describe("hello mama public app", function() {
                         , '2'  // state_optout_reason - baby stillborn
                     )
                     .check.interaction({
-                        state: 'state_msg_loss_subscription',
+                        state: 'state_loss_subscription',
                         reply: [
                             "We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?",
                             "1. Yes",
@@ -506,7 +506,7 @@ describe("hello mama public app", function() {
                     })
                     .run();
             });
-            it("to state_msg_loss_subscription_confirm", function() {
+            it("to state_loss_subscription_confirm", function() {
                 return tester
                     .setup.user.addr('082222')
                     .inputs(
@@ -514,15 +514,15 @@ describe("hello mama public app", function() {
                         , '1'  // state_msisdn_permission - yes
                         , '5'  // state_main_menu - stop receiving messages
                         , '3'  // state_optout_reason - baby passed away
-                        , '1'  // state_msg_loss_subscription - yes
+                        , '1'  // state_loss_subscription - yes
                     )
                     .check.interaction({
-                        state: 'state_msg_loss_subscription_confirm',
+                        state: 'state_loss_subscription_confirm',
                         reply: "Thank you. You will now receive messages to support you during this difficult time."
                     })
                     .run();
             });
-            it("to state_msg_end_subscription", function() {
+            it("to state_end_subscription", function() {
                 return tester
                     .setup.user.addr('082222')
                     .inputs(
@@ -532,7 +532,7 @@ describe("hello mama public app", function() {
                         , '4'  // state_optout_reason - messages not useful
                     )
                     .check.interaction({
-                        state: 'state_msg_end_subscription',
+                        state: 'state_end_subscription',
                         reply: "Thank you. You will no longer receive messages"
                     })
                     .run();
@@ -624,10 +624,10 @@ describe("hello mama public app", function() {
                             , '1'  // state_msisdn_permission - yes
                             , '5'  // state_main_menu - stop receiving messages
                             , '2'  // state_optout_reason - baby stillborn
-                            , '2'  // state_msg_loss_subscription - no
+                            , '2'  // state_loss_subscription - no
                         )
                         .check.interaction({
-                            state: 'state_msg_end_subscription',
+                            state: 'state_end_subscription',
                             reply: "Thank you. You will no longer receive messages"
                         })
                         .run();

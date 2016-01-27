@@ -88,11 +88,11 @@ go.app = function() {
                 "Thank you. You language preference has been updated and you will start to receive messages in this language.",
             "state_optout_reason":
                 "Please tell us why you no longer want to receive messages so we can help you further.",
-            "state_msg_loss_subscription":
+            "state_loss_subscription":
                 "We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?",
-            "state_msg_loss_subscription_confirm":
+            "state_loss_subscription_confirm":
                 "Thank you. You will now receive messages to support you during this difficult time.",
-            "state_msg_end_subscription":
+            "state_end_subscription":
                 "Thank you. You will no longer receive messages",
             "state_end":
                 "Thank you for using the Hello Mama service"
@@ -440,11 +440,11 @@ go.app = function() {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
                 choices: [
-                    new Choice('state_msg_loss_subscription', $("Mother miscarried")),
-                    new Choice('state_msg_loss_subscription', $("Baby stillborn")),
-                    new Choice('state_msg_loss_subscription', $("Baby passed away")),
-                    new Choice('state_msg_end_subscription', $("Messages not useful")),
-                    new Choice('state_msg_end_subscription', $("Other"))
+                    new Choice('state_loss_subscription', $("Mother miscarried")),
+                    new Choice('state_loss_subscription', $("Baby stillborn")),
+                    new Choice('state_loss_subscription', $("Baby passed away")),
+                    new Choice('state_end_subscription', $("Messages not useful")),
+                    new Choice('state_end_subscription', $("Other"))
                 ],
                 next: function(choice) {
                     return choice.value;
@@ -453,7 +453,7 @@ go.app = function() {
         });
 
         // ChoiceState st-15
-        self.add('state_msg_loss_subscription', function(name) {
+        self.add('state_loss_subscription', function(name) {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
@@ -463,24 +463,24 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     if(choice.value === 'yes') {
-                        return 'state_msg_loss_subscription_confirm';
+                        return 'state_loss_subscription_confirm';
                     }
                     else {
-                        return 'state_msg_end_subscription';
+                        return 'state_end_subscription';
                     }
                 }
             });
         });
 
         // EndState st-16
-        self.add('state_msg_loss_subscription_confirm', function(name) {
+        self.add('state_loss_subscription_confirm', function(name) {
             return new EndState(name, {
                 text: $(questions[name])
             });
         });
 
         // EndState st-17
-        self.add('state_msg_end_subscription', function(name) {
+        self.add('state_end_subscription', function(name) {
             return new EndState(name, {
                 text: $(questions[name])
             });
