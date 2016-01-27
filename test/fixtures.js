@@ -1166,46 +1166,5 @@ module.exports = function() {
             }
         },
 
-        // get or create contact 08080020002 by msisdn
-        //   normalize_msisdn  add +... if necessary
-        //   get_contact_id_by_msisdn
-        //      control_api_call('get', params, null, 'contacts/search/', im)
-        /*          return api.get(im.config.control.url + endpoint, {
-                        params: params
-                    });*/
-        // return contact_id or return create_id
-        /*{
-            'request': {
-                'method': 'GET',
-                'params': {
-                    'msisdn': '+2348080020002'
-                },
-                'headers': {
-                    'Authorization': ['Token test_key'],
-                    'Content-Type': ['application/json']
-                },
-                'url': 'http://localhost:8000/api/v1/contacts/search/',
-            },
-            'response': {
-                "code": 200,
-                "data": {
-                    "count": 1,
-                    "next": null,
-                    "previous": null,
-                    "results": [{
-                        "url": "http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000002/",
-                        "id": "cb245673-aa41-4302-ac47-00000000002",
-                        "version": 1,
-                        "details": {
-                            "default_addr_type": "msisdn",
-                            "addresses": "msisdn:+2348080020002"
-                        },
-                        "created_at": "2015-07-10T06:13:29.693272Z",
-                        "updated_at": "2015-07-10T06:13:29.693298Z"
-                    }]
-                }
-            }
-        },*/
-
     ];
 };
