@@ -664,7 +664,7 @@ go.utils = {
 
         var monthIterator = startDate;
         for (var i=0; i<limit; i++) {
-            choices.push(new Choice(monthIterator.format("MMYYYY"), $(monthIterator.format("MMMM YY"))));
+            choices.push(new Choice(monthIterator.format("YYYYMM"), $(monthIterator.format("MMMM YY"))));
             monthIterator.add(increment, 'months');
         }
 

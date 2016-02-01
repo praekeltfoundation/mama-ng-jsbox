@@ -574,12 +574,12 @@ describe("Mama Nigeria App", function() {
 
                     // expected results
                     assert.equal(expectedChoiceArray.length, limit);
-                    assert.equal(expectedChoiceArray[0].value, "042015");
-                    assert.equal(expectedChoiceArray[1].value, "052015");
-                    assert.equal(expectedChoiceArray[2].value, "062015");
-                    assert.equal(expectedChoiceArray[3].value, "072015");
-                    assert.equal(expectedChoiceArray[4].value, "082015");
-                    assert.equal(expectedChoiceArray[5].value, "092015");
+                    assert.equal(expectedChoiceArray[0].value, "201504");
+                    assert.equal(expectedChoiceArray[1].value, "201505");
+                    assert.equal(expectedChoiceArray[2].value, "201506");
+                    assert.equal(expectedChoiceArray[3].value, "201507");
+                    assert.equal(expectedChoiceArray[4].value, "201508");
+                    assert.equal(expectedChoiceArray[5].value, "201509");
                 });
                 it('should return a Choice array of correct size - backwards in same year', function() {
                     // test data
@@ -592,13 +592,13 @@ describe("Mama Nigeria App", function() {
 
                     // expected results
                     assert.equal(expectedChoiceArray.length, limit);
-                    assert.equal(expectedChoiceArray[0].value, "072015");
-                    assert.equal(expectedChoiceArray[1].value, "062015");
-                    assert.equal(expectedChoiceArray[2].value, "052015");
-                    assert.equal(expectedChoiceArray[3].value, "042015");
-                    assert.equal(expectedChoiceArray[4].value, "032015");
-                    assert.equal(expectedChoiceArray[5].value, "022015");
-                    assert.equal(expectedChoiceArray[6].value, "012015");
+                    assert.equal(expectedChoiceArray[0].value, "201507");
+                    assert.equal(expectedChoiceArray[1].value, "201506");
+                    assert.equal(expectedChoiceArray[2].value, "201505");
+                    assert.equal(expectedChoiceArray[3].value, "201504");
+                    assert.equal(expectedChoiceArray[4].value, "201503");
+                    assert.equal(expectedChoiceArray[5].value, "201502");
+                    assert.equal(expectedChoiceArray[6].value, "201501");
                 });
                 it('should return a Choice array of correct size - forward across years', function() {
                     // test data
@@ -611,10 +611,10 @@ describe("Mama Nigeria App", function() {
 
                     // expected results
                     assert.equal(expectedChoiceArray.length, limit);
-                    assert.equal(expectedChoiceArray[0].value, "122015");
-                    assert.equal(expectedChoiceArray[1].value, "012016");
-                    assert.equal(expectedChoiceArray[2].value, "022016");
-                    assert.equal(expectedChoiceArray[3].value, "032016");
+                    assert.equal(expectedChoiceArray[0].value, "201512");
+                    assert.equal(expectedChoiceArray[1].value, "201601");
+                    assert.equal(expectedChoiceArray[2].value, "201602");
+                    assert.equal(expectedChoiceArray[3].value, "201603");
                 });
                 it('should return an array of choices - backwards across years', function() {
                     // test data
@@ -627,30 +627,11 @@ describe("Mama Nigeria App", function() {
 
                     // expected results
                     assert.equal(expectedChoiceArray.length, limit);
-                    assert.equal(expectedChoiceArray[0].value, "012015");
-                    assert.equal(expectedChoiceArray[1].value, "122014");
-                    assert.equal(expectedChoiceArray[2].value, "112014");
+                    assert.equal(expectedChoiceArray[0].value, "201501");
+                    assert.equal(expectedChoiceArray[1].value, "201412");
+                    assert.equal(expectedChoiceArray[2].value, "201411");
                 });
-                //
-                /*it('should return an array of months, ascending or descending, depending on positive/negative increment parameter', function() {
-                    var today;
-                    var dateWithIncrementOffset;
-                    var increment = [1, -1];  //test data
-                    var monthChoiceArray;
-
-                    for (var i=0; i<increment.length; i++) {  //iterating over values increment array
-                        today = new moment();
-                        monthChoiceArray = go.utils.make_month_choices($, today, 6, increment[i]);
-                        dateWithIncrementOffset = today.add(increment[i], 'months');
-
-                        for (var j=1; j<monthChoiceArray.length; j++) {  //iterating over array of Choice objects
-                            assert.equal(monthChoiceArray[j].value, dateWithIncrementOffset.format("MMYYYY"));
-                            dateWithIncrementOffset.add(increment[i], 'months');
-                        }
-                    }
-                });*/
             });
         });
     });
-
 });
