@@ -129,6 +129,27 @@ go.utils = {
             });
     },
 
+    check_baby_subscription: function(msisdn) {
+        return Q()
+            .then(function(q_response) {
+                return (msisdn === '082333');
+            });
+    },
+
+    check_sms_subscription: function(msisdn) {
+        return Q()
+            .then(function(q_response) {
+                return msisdn === '082444';
+            });
+    },
+
+    check_voice_subscription: function(msisdn) {
+        return Q()
+            .then(function(q_response) {
+                return msisdn === '082555';
+            });
+    },
+
 // MSISDN & NUMBER HANDLING
 
     // An attempt to solve the insanity of JavaScript numbers
@@ -609,7 +630,7 @@ go.utils = {
     timed_out: function(im) {
         var no_redirects = [
             'state_start',
-            'state_end_thank_you',
+            'state_end',
             'state_end_thank_translate'
         ];
         return im.msg.session_event === 'new'
@@ -638,7 +659,8 @@ go.utils = {
     check_msisdn_hcp: function(msisdn) {
         return Q()
             .then(function(q_response) {
-                return msisdn === '082222' || msisdn === '082333';
+                return msisdn === '082222' || msisdn === '082333'
+                    || msisdn === '082444' || msisdn === '082555' || msisdn === '0803304899';
             });
     },
 
