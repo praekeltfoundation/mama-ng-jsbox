@@ -288,7 +288,8 @@ describe("Mama Nigeria App", function() {
                             "6. November 14",
                             "7. October 14",
                             "8. September 14",
-                            "9. More"
+                            "9. August 14",
+                            "10. More"
                         ].join('\n')
                     })
                     .run();

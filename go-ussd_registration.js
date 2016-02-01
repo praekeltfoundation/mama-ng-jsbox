@@ -974,7 +974,7 @@ go.app = function() {
             return new PaginatedChoiceState(name, {
                 question: $(questions[name]),
                 characters_per_page: 182,
-                //options_per_page: null,
+                options_per_page: null,
                 more: $('More'),
                 back: $('Back'),
                 choices: go.utils.make_month_choices($, today, 12, -1),
