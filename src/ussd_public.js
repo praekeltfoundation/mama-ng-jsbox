@@ -272,8 +272,8 @@ go.app = function() {
         self.add('state_check_msg_type', function(name) {
             return go.utils
                 .check_msg_type(self.im.user.addr)
-                .then(function(is_subscribed_for_sms) {   //assuming a registered user always has a default subscription
-                    if (is_subscribed_for_sms) {
+                .then(function(msgType) {   //assuming a registered user always has a default subscription
+                    if (msgType == 'sms') {
                         return self.states.create('state_change_menu_sms');
                     } else {
                         return self.states.create('state_change_menu_voice');

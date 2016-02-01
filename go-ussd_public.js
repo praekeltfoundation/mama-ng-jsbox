@@ -136,25 +136,17 @@ go.utils = {
             });
     },
 
-    check_sms_subscription: function(msisdn) {
-        return Q()
-            .then(function(q_response) {
-                return msisdn === '082444';
-            });
-    },
-
-    check_voice_subscription: function(msisdn) {
-        return Q()
-            .then(function(q_response) {
-                return msisdn === '082555';
-            });
-    },
-
     check_msg_type: function(msisdn) {
-        return go.utils
-            .check_sms_subscription(msisdn)
-            .then(function(is_subscribed_for_sms) {
-                return is_subscribed_for_sms ? true : false;
+        return Q()
+            .then(function(q_response) {
+                if (msisdn === '082444') {
+                    return 'sms';
+                } else if (msisdn === '082555') {
+                    return 'voice';
+                }
+                else {
+                    return 'none';
+                }
             });
     },
 
@@ -981,8 +973,8 @@ go.app = function() {
         self.add('state_check_msg_type', function(name) {
             return go.utils
                 .check_msg_type(self.im.user.addr)
-                .then(function(is_subscribed_for_sms) {   //assuming a registered user always has a default subscription
-                    if (is_subscribed_for_sms) {
+                .then(function(msgType) {   //assuming a registered user always has a default subscription
+                    if (msgType == 'sms') {
                         return self.states.create('state_change_menu_sms');
                     } else {
                         return self.states.create('state_change_menu_voice');

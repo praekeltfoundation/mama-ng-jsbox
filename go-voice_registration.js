@@ -136,25 +136,17 @@ go.utils = {
             });
     },
 
-    check_sms_subscription: function(msisdn) {
-        return Q()
-            .then(function(q_response) {
-                return msisdn === '082444';
-            });
-    },
-
-    check_voice_subscription: function(msisdn) {
-        return Q()
-            .then(function(q_response) {
-                return msisdn === '082555';
-            });
-    },
-
     check_msg_type: function(msisdn) {
-        return go.utils
-            .check_sms_subscription(msisdn)
-            .then(function(is_subscribed_for_sms) {
-                return is_subscribed_for_sms ? true : false;
+        return Q()
+            .then(function(q_response) {
+                if (msisdn === '082444') {
+                    return 'sms';
+                } else if (msisdn === '082555') {
+                    return 'voice';
+                }
+                else {
+                    return 'none';
+                }
             });
     },
 
