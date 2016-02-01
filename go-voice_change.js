@@ -150,6 +150,14 @@ go.utils = {
             });
     },
 
+    check_msg_type: function(msisdn) {
+        return go.utils
+            .check_sms_subscription(msisdn)
+            .then(function(is_subscribed_for_sms) {
+                return is_subscribed_for_sms ? true : false;
+            });
+    },
+
 // MSISDN & NUMBER HANDLING
 
     // An attempt to solve the insanity of JavaScript numbers

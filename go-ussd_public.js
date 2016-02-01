@@ -150,6 +150,14 @@ go.utils = {
             });
     },
 
+    check_msg_type: function(msisdn) {
+        return go.utils
+            .check_sms_subscription(msisdn)
+            .then(function(is_subscribed_for_sms) {
+                return is_subscribed_for_sms ? true : false;
+            });
+    },
+
 // MSISDN & NUMBER HANDLING
 
     // An attempt to solve the insanity of JavaScript numbers
@@ -943,7 +951,7 @@ go.app = function() {
                 question: $(questions[name]),
                 choices: [
                     new Choice('state_check_baby_subscription', $("Start Baby messages")),
-                    new Choice('check_msg_type', $("Change message preferences")),
+                    new Choice('state_check_msg_type', $("Change message preferences")),
                     new Choice('state_new_msisdn', $("Change my number")),
                     new Choice('state_msg_language', $("Change language")),
                     new Choice('state_optout_reason', $("Stop receiving messages"))
@@ -970,11 +978,11 @@ go.app = function() {
                 });
         });
 
-        self.add('check_msg_type', function(name) {
+        self.add('state_check_msg_type', function(name) {
             return go.utils
-                .check_sms_subscription(self.im.user.addr)
-                .then(function(is_subscribed) {   //assuming a registered user always has a default subscription
-                    if (is_subscribed) {
+                .check_msg_type(self.im.user.addr)
+                .then(function(is_subscribed_for_sms) {   //assuming a registered user always has a default subscription
+                    if (is_subscribed_for_sms) {
                         return self.states.create('state_change_menu_sms');
                     } else {
                         return self.states.create('state_change_menu_voice');
