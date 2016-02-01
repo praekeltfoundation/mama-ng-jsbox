@@ -903,7 +903,7 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: 'state_msg_language'
+                next: 'state_validate_date'
             });
         });
 
@@ -1007,17 +1007,18 @@ go.app = function() {
         });
 
         // to validate overall date
-        /*self.add('state_validate_date', function(name, opts) {
-            return go.utils
-                .is_valid_date(opts.)
-                .then(function(validDate) {
-                    if (validDate) {
-                        return self.states.create('state_msg_language');
-                    } else {
-                        return self.states.create('state_last_period_month');
-                    }
-                });
-        });*/
+        self.add('state_validate_date', function(name) {
+            var monthAndYear = self.im.user.answers.state_last_period_month;
+            var month = monthAndYear.substr(0,2);
+            var year = monthAndYear.substr(2,4);
+            var day = self.im.user.answers.state_last_period_day;
+            var dateToValidate = year+'-'+month+'-'+day;
+
+            if (go.utils.is_valid_date(dateToValidate, 'YYYY-MM-DD')) {
+                return self.states.create('state_msg_language');
+            }
+            else return self.states.create('state_last_period_month');
+        });
     });
 
     return {
