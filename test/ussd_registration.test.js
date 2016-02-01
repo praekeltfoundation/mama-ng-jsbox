@@ -631,6 +631,21 @@ describe("Mama Nigeria App", function() {
                     assert.equal(expectedChoiceArray[1].value, "201412");
                     assert.equal(expectedChoiceArray[2].value, "201411");
                 });
+                it('should return an array of choices - forwards, with elements separated by 3 months', function() {
+                    // test data
+                    var testDate = moment("2015-01-26");
+                    var limit = 3;     // should determine the size of the returned array
+                    var increment = 3; // should determine subsequent direction of array elements
+
+                    // function call
+                    var expectedChoiceArray = go.utils.make_month_choices($, testDate, limit, increment);
+
+                    // expected results
+                    assert.equal(expectedChoiceArray.length, limit);
+                    assert.equal(expectedChoiceArray[0].value, "201501");
+                    assert.equal(expectedChoiceArray[1].value, "201504");
+                    assert.equal(expectedChoiceArray[2].value, "201507");
+                });
             });
         });
     });
