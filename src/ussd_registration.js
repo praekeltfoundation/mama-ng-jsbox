@@ -124,6 +124,7 @@ go.app = function() {
     // START STATE
 
         self.add('state_start', function(name) {
+            self.im.user.answers = {};
             return go.utils
                 .check_msisdn_hcp(self.im.user.addr)
                 .then(function(hcp_recognised) {
@@ -317,7 +318,7 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: 'state_msg_language'
+                next: 'state_validate_date'
             });
         });
 
@@ -331,16 +332,26 @@ go.app = function() {
 
         // to validate overall date
         self.add('state_validate_date', function(name) {
-            var monthAndYear = self.im.user.answers.state_last_period_month;
-            var month = monthAndYear.substr(0,2);
-            var year = monthAndYear.substr(2,4);
-            var day = self.im.user.answers.state_last_period_day;
-            var dateToValidate = year+'-'+month+'-'+day;
-
-            if (go.utils.is_valid_date(dateToValidate, 'YYYY-MM-DD')) {
-                return self.states.create('state_msg_language');
+            var monthAndYear;
+            var day;
+            if (self.im.user.answers.state_last_period_month) {    // flow via st-05 & st-06
+                monthAndYear = self.im.user.answers.state_last_period_month;
+                day = self.im.user.answers.state_last_period_day;
             }
-            else return self.states.create('state_last_period_month');
+            else {          // flow via st-12 & st-13
+                monthAndYear = self.im.user.answers.state_baby_birth_month_year;
+                day = self.im.user.answers.state_baby_birth_day;
+            }
+            var dateToValidate = monthAndYear+day;
+
+            if (go.utils.is_valid_date(dateToValidate, 'YYYYMMDD')) {
+                return self.states.create('state_msg_language');
+            } else if (self.im.user.answers.state_last_period_day) {  // flow via st-05 & st-06
+                    return self.states.create('state_last_period_month');
+                }
+                else if (self.im.user.answers.state_baby_birth_day) { // flow via st-12 & st-13
+                    return self.states.create('state_baby_birth_month_year');
+                }
         });
     });
 
