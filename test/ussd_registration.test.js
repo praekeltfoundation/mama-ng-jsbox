@@ -225,6 +225,56 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
+            it("to state_last_period_month - after selecting 'More'", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                        , '1'  // state_msg_receiver - mother
+                        , '1'  // state_msg_pregnancy_status - pregnant
+                        , '9'   // state_last_period_month - More
+                    )
+                    .check.interaction({
+                        state: 'state_last_period_month',
+                        reply: [
+                            "Please select the month the woman had her last period:",
+                            "1. August 14",
+                            "2. Back"
+                        ].join('\n')
+                    })
+                    .run();
+            });
+            it("to state_last_period_month - after selecting 'More' and 'Back'", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                        , '1'  // state_msg_receiver - mother
+                        , '1'  // state_msg_pregnancy_status - pregnant
+                        , '9'   // state_last_period_month - More
+                        , '2'   // state_last_period_month - Back
+                    )
+                    .check.interaction({
+                        state: 'state_last_period_month',
+                        reply: [
+                            "Please select the month the woman had her last period:",
+                            "1. April 15",
+                            "2. March 15",
+                            "3. February 15",
+                            "4. January 15",
+                            "5. December 14",
+                            "6. November 14",
+                            "7. October 14",
+                            "8. September 14",
+                            "9. More"
+                        ].join('\n')
+                    })
+                    .run();
+            });
             it("to state_last_period_day", function() {
                 return tester
                     .setup.user.addr('082111')
@@ -293,7 +343,30 @@ describe("Mama Nigeria App", function() {
                         ].join('\n')
                     })
                     .run();
+            });it("to state_baby_birth_month_year - after selecting 'More'", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                        , '1'  // state_msg_receiver - mother
+                        , '2'  // state_msg_pregnancy_status - baby
+                        , '10' // state_baby_birth_month_year - More
+                    )
+                    .check.interaction({
+                        state: 'state_baby_birth_month_year',
+                        reply: [
+                            "Select the month & year the baby was born:",
+                            "1. July 14",
+                            "2. June 14",
+                            "3. May 14",
+                            "4. Back"
+                        ].join('\n')
+                    })
+                    .run();
             });
+
             it("to state_baby_birth_day", function() {
                 return tester
                     .setup.user.addr('082111')
