@@ -1,6 +1,11 @@
 var vumigo = require('vumigo_v02');
 var fixtures = require('./fixtures');
+var moment = require('moment');
+var assert = require('assert');
 var AppTester = vumigo.AppTester;
+var App = vumigo.App;
+App.call(App);
+var $ = App.$;
 
 describe("Mama Nigeria App", function() {
     describe("USSD Registration", function() {
@@ -207,14 +212,64 @@ describe("Mama Nigeria App", function() {
                         state: 'state_last_period_month',
                         reply: [
                             "Please select the month the woman had her last period:",
-                            "1. July 15",
-                            "2. June 15",
-                            "3. May 15",
-                            "4. Apr 15",
-                            "5. Mar 15",
-                            "6. Feb 15",
-                            "7. Jan 15",
-                            "8. Dec 14",
+                            "1. April 15",
+                            "2. March 15",
+                            "3. February 15",
+                            "4. January 15",
+                            "5. December 14",
+                            "6. November 14",
+                            "7. October 14",
+                            "8. September 14",
+                            "9. More"
+                        ].join('\n')
+                    })
+                    .run();
+            });
+            it("to state_last_period_month - after selecting 'More'", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                        , '1'  // state_msg_receiver - mother
+                        , '1'  // state_msg_pregnancy_status - pregnant
+                        , '9'   // state_last_period_month - More
+                    )
+                    .check.interaction({
+                        state: 'state_last_period_month',
+                        reply: [
+                            "Please select the month the woman had her last period:",
+                            "1. August 14",
+                            "2. Back"
+                        ].join('\n')
+                    })
+                    .run();
+            });
+            it("to state_last_period_month - after selecting 'More' and 'Back'", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                        , '1'  // state_msg_receiver - mother
+                        , '1'  // state_msg_pregnancy_status - pregnant
+                        , '9'   // state_last_period_month - More
+                        , '2'   // state_last_period_month - Back
+                    )
+                    .check.interaction({
+                        state: 'state_last_period_month',
+                        reply: [
+                            "Please select the month the woman had her last period:",
+                            "1. April 15",
+                            "2. March 15",
+                            "3. February 15",
+                            "4. January 15",
+                            "5. December 14",
+                            "6. November 14",
+                            "7. October 14",
+                            "8. September 14",
                             "9. More"
                         ].join('\n')
                     })
@@ -275,19 +330,43 @@ describe("Mama Nigeria App", function() {
                         state: 'state_baby_birth_month_year',
                         reply: [
                             "Select the month & year the baby was born:",
-                            "1. July 15",
-                            "2. June 15",
-                            "3. May 15",
-                            "4. Apr 15",
-                            "5. Mar 15",
-                            "6. Feb 15",
-                            "7. Jan 15",
-                            "8. Dec 14",
-                            "9. Nov 14"
+                            "1. April 15",
+                            "2. March 15",
+                            "3. February 15",
+                            "4. January 15",
+                            "5. December 14",
+                            "6. November 14",
+                            "7. October 14",
+                            "8. September 14",
+                            "9. August 14",
+                            "10. More"
+                        ].join('\n')
+                    })
+                    .run();
+            });it("to state_baby_birth_month_year - after selecting 'More'", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '0803304899' // state_msisdn - mobile number
+                        , '1'  // state_msg_receiver - mother
+                        , '2'  // state_msg_pregnancy_status - baby
+                        , '10' // state_baby_birth_month_year - More
+                    )
+                    .check.interaction({
+                        state: 'state_baby_birth_month_year',
+                        reply: [
+                            "Select the month & year the baby was born:",
+                            "1. July 14",
+                            "2. June 14",
+                            "3. May 14",
+                            "4. Back"
                         ].join('\n')
                     })
                     .run();
             });
+
             it("to state_baby_birth_day", function() {
                 return tester
                     .setup.user.addr('082111')
@@ -592,6 +671,93 @@ describe("Mama Nigeria App", function() {
                 });
             });*/
         });
-    });
 
+        describe("utils function testing", function() {
+            describe("make_month_choices", function() {
+                it('should return a Choice array of correct size - forward in same year', function() {
+                    // test data
+                    var testDate = moment("2015-04-26");
+                    var limit = 6;     // should determine the size of the returned array
+                    var increment = 1; // should determine subsequent direction of array elements
+
+                    // function call
+                    var expectedChoiceArray = go.utils.make_month_choices($, testDate, limit, increment);
+
+                    // expected results
+                    assert.equal(expectedChoiceArray.length, limit);
+                    assert.equal(expectedChoiceArray[0].value, "201504");
+                    assert.equal(expectedChoiceArray[1].value, "201505");
+                    assert.equal(expectedChoiceArray[2].value, "201506");
+                    assert.equal(expectedChoiceArray[3].value, "201507");
+                    assert.equal(expectedChoiceArray[4].value, "201508");
+                    assert.equal(expectedChoiceArray[5].value, "201509");
+                });
+                it('should return a Choice array of correct size - backwards in same year', function() {
+                    // test data
+                    var testDate = moment("2015-07-26");
+                    var limit = 7;     // should determine the size of the returned array
+                    var increment = -1; // should determine subsequent direction of array elements
+
+                    // function call
+                    var expectedChoiceArray = go.utils.make_month_choices($, testDate, limit, increment);
+
+                    // expected results
+                    assert.equal(expectedChoiceArray.length, limit);
+                    assert.equal(expectedChoiceArray[0].value, "201507");
+                    assert.equal(expectedChoiceArray[1].value, "201506");
+                    assert.equal(expectedChoiceArray[2].value, "201505");
+                    assert.equal(expectedChoiceArray[3].value, "201504");
+                    assert.equal(expectedChoiceArray[4].value, "201503");
+                    assert.equal(expectedChoiceArray[5].value, "201502");
+                    assert.equal(expectedChoiceArray[6].value, "201501");
+                });
+                it('should return a Choice array of correct size - forward across years', function() {
+                    // test data
+                    var testDate = moment("2015-12-26");
+                    var limit = 4;     // should determine the size of the returned array
+                    var increment = 1; // should determine subsequent direction of array elements
+
+                    // function call
+                    var expectedChoiceArray = go.utils.make_month_choices($, testDate, limit, increment);
+
+                    // expected results
+                    assert.equal(expectedChoiceArray.length, limit);
+                    assert.equal(expectedChoiceArray[0].value, "201512");
+                    assert.equal(expectedChoiceArray[1].value, "201601");
+                    assert.equal(expectedChoiceArray[2].value, "201602");
+                    assert.equal(expectedChoiceArray[3].value, "201603");
+                });
+                it('should return an array of choices - backwards across years', function() {
+                    // test data
+                    var testDate = moment("2015-01-26");
+                    var limit = 3;     // should determine the size of the returned array
+                    var increment = -1; // should determine subsequent direction of array elements
+
+                    // function call
+                    var expectedChoiceArray = go.utils.make_month_choices($, testDate, limit, increment);
+
+                    // expected results
+                    assert.equal(expectedChoiceArray.length, limit);
+                    assert.equal(expectedChoiceArray[0].value, "201501");
+                    assert.equal(expectedChoiceArray[1].value, "201412");
+                    assert.equal(expectedChoiceArray[2].value, "201411");
+                });
+                it('should return an array of choices - forwards, with elements separated by 3 months', function() {
+                    // test data
+                    var testDate = moment("2015-01-26");
+                    var limit = 3;     // should determine the size of the returned array
+                    var increment = 3; // should determine subsequent direction of array elements
+
+                    // function call
+                    var expectedChoiceArray = go.utils.make_month_choices($, testDate, limit, increment);
+
+                    // expected results
+                    assert.equal(expectedChoiceArray.length, limit);
+                    assert.equal(expectedChoiceArray[0].value, "201501");
+                    assert.equal(expectedChoiceArray[1].value, "201504");
+                    assert.equal(expectedChoiceArray[2].value, "201507");
+                });
+            });
+        });
+    });
 });

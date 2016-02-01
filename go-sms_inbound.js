@@ -129,6 +129,27 @@ go.utils = {
             });
     },
 
+    check_baby_subscription: function(msisdn) {
+        return Q()
+            .then(function(q_response) {
+                return (msisdn === '082333');
+            });
+    },
+
+    check_sms_subscription: function(msisdn) {
+        return Q()
+            .then(function(q_response) {
+                return msisdn === '082444';
+            });
+    },
+
+    check_voice_subscription: function(msisdn) {
+        return Q()
+            .then(function(q_response) {
+                return msisdn === '082555';
+            });
+    },
+
 // MSISDN & NUMBER HANDLING
 
     // An attempt to solve the insanity of JavaScript numbers
@@ -609,7 +630,7 @@ go.utils = {
     timed_out: function(im) {
         var no_redirects = [
             'state_start',
-            'state_end_thank_you',
+            'state_end',
             'state_end_thank_translate'
         ];
         return im.msg.session_event === 'new'
@@ -638,7 +659,8 @@ go.utils = {
     check_msisdn_hcp: function(msisdn) {
         return Q()
             .then(function(q_response) {
-                return msisdn === '082222' || msisdn === '082333';
+                return msisdn === '082222' || msisdn === '082333'
+                    || msisdn === '082444' || msisdn === '082555' || msisdn === '0803304899';
             });
     },
 
@@ -659,18 +681,15 @@ go.utils = {
         return go.utils.check_valid_alpha(input);
     },
 
-    make_month_choices: function($, start, limit, increment) {
-        var choices = [
-            new Choice('072015', $('July 15')),
-            new Choice('062015', $('June 15')),
-            new Choice('052015', $('May 15')),
-            new Choice('042015', $('Apr 15')),
-            new Choice('032015', $('Mar 15')),
-            new Choice('022015', $('Feb 15')),
-            new Choice('012015', $('Jan 15')),
-            new Choice('122014', $('Dec 14')),
-            new Choice('112014', $('Nov 14')),
-        ];
+    make_month_choices: function($, startDate, limit, increment) {
+        var choices = [];
+
+        var monthIterator = startDate;
+        for (var i=0; i<limit; i++) {
+            choices.push(new Choice(monthIterator.format("YYYYMM"), $(monthIterator.format("MMMM YY"))));
+            monthIterator.add(increment, 'months');
+        }
+
         return choices;
     },
 
