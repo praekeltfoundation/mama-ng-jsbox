@@ -136,8 +136,7 @@ go.utils = {
                     return 'sms';
                 } else if (msisdn === '082555') {
                     return 'voice';
-                }
-                else {
+                } else {
                     return 'none';
                 }
             });

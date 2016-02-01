@@ -143,8 +143,7 @@ go.utils = {
                     return 'sms';
                 } else if (msisdn === '082555') {
                     return 'voice';
-                }
-                else {
+                } else {
                     return 'none';
                 }
             });
@@ -961,8 +960,8 @@ go.app = function() {
         self.add('state_check_baby_subscription', function(name) {
             return go.utils
                 .check_baby_subscription(self.im.user.addr)
-                .then(function(is_subscribed) {
-                    if (is_subscribed) {
+                .then(function(isSubscribed) {
+                    if (isSubscribed) {
                         return self.states.create('state_already_registered_baby');
                     } else {
                         return self.states.create('state_new_registeration_baby');
@@ -973,11 +972,13 @@ go.app = function() {
         self.add('state_check_msg_type', function(name) {
             return go.utils
                 .check_msg_type(self.im.user.addr)
-                .then(function(msgType) {   //assuming a registered user always has a default subscription
+                .then(function(msgType) {
                     if (msgType == 'sms') {
                         return self.states.create('state_change_menu_sms');
-                    } else {
+                    } else if (msgType === 'voice') {
                         return self.states.create('state_change_menu_voice');
+                    } else {
+                        return self.state.create('state_end_exit');
                     }
                 });
         });
