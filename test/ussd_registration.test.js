@@ -646,7 +646,11 @@ describe("Mama Nigeria App", function() {
                             , '31'  // state_last_period_day - 31 (invalid day)
                         )
                         .check.interaction({
-                            state: 'state_invalid_date'
+                            state: 'state_invalid_date',
+                            reply: [
+                                "The date you entered (20150231) is not a real date. Please try again.",
+                                "1. Continue"
+                            ].join('\n')
                         })
                         .run();
                 });
@@ -681,7 +685,11 @@ describe("Mama Nigeria App", function() {
                             , '31'  // state_baby_birth_day - 30 (invalid day)
                         )
                         .check.interaction({
-                            state: 'state_invalid_date'
+                            state: 'state_invalid_date',
+                            reply: [
+                                "The date you entered (20150231) is not a real date. Please try again.",
+                                "1. Continue"
+                            ].join('\n')
                         })
                         .run();
                 });

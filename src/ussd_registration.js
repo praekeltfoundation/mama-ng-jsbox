@@ -347,16 +347,16 @@ go.app = function() {
             if (go.utils.is_valid_date(dateToValidate, 'YYYYMMDD')) {
                 return self.states.create('state_msg_language');
             } else {
-                return self.states.create('state_invalid_date');
+                return self.states.create('state_invalid_date', {date: dateToValidate});
             }
         });
 
         self.add('state_invalid_date', function(name, opts) {
             return new ChoiceState(name, {
                 question:
-                    $('The date you entered ({{ dob }}) is not a ' +
+                    $('The date you entered ({{ date }}) is not a ' +
                         'real date. Please try again.'
-                     ).context({ dob: opts.dob }),
+                    ).context({date: opts.date}),
 
                 choices: [
                     new Choice('continue', $('Continue'))
