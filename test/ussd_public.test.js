@@ -38,6 +38,15 @@ describe("Hello Mama app", function() {
                     api.metrics.stores = {'mama_ng_test': {}};  // hello mama
                 })*/
                 .setup(function(api) {
+                    // new user 082101  (*** assume father role ***)
+                    api.contacts.add({
+                        msisdn: '+082101',
+                        extra: {},
+                        key: "contact_key_082111",
+                        user_account: "contact_user_account"
+                    });
+                })
+                .setup(function(api) {
                     // new user 082111
                     api.contacts.add({
                         msisdn: '+082111',
@@ -74,7 +83,7 @@ describe("Hello Mama app", function() {
                     });
                 })
                 .setup(function(api) {
-                    // registered user 082555, registered for voice
+                    // registered user 082555, registered for voice (*** assume father role ***)
                     api.contacts.add({
                         msisdn: '+082555',
                         extra: {},
@@ -165,7 +174,7 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
-                // assuming flow via unregistered/registered user...
+                // assuming flow via unregistered user...
                 it("to state_main_menu (via state C)", function() {
                     return tester
                         .setup.user.addr('082111')
@@ -187,6 +196,27 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
+                // assuming flow via unregistered user... ** father role
+                it("to state_main_menu_father (via state C)", function() {
+                    return tester
+                        .setup.user.addr('082101')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '2'   // state_language - hausa
+                            , '0803304899'  // state_registered_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_main_menu_father',
+                            reply: [
+                                "Select:",
+                                "1. Start Baby messages",
+                                "2. Change my number",
+                                "3. Change language",
+                                "4. Stop receiving messages"
+                            ].join('\n')
+                        })
+                        .run();
+                });
                 // registered user with permission to manage number
                 it("to state_main_menu (via state B)", function() {
                     return tester
@@ -204,6 +234,26 @@ describe("Hello Mama app", function() {
                                 "3. Change my number",
                                 "4. Change language",
                                 "5. Stop receiving messages"
+                            ].join('\n')
+                        })
+                        .run();
+                });
+                // registered user with permission to manage number.  *** father role
+                it("to state_main_menu_father (via state B)", function() {
+                    return tester
+                        .setup.user.addr('082555')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'   // state_msisdn_permission - yes
+                        )
+                        .check.interaction({
+                            state: 'state_main_menu_father',
+                            reply: [
+                                "Select:",
+                                "1. Start Baby messages",
+                                "2. Change my number",
+                                "3. Change language",
+                                "4. Stop receiving messages"
                             ].join('\n')
                         })
                         .run();
@@ -561,7 +611,7 @@ describe("Hello Mama app", function() {
                 });
                 it(" - via changing messages preferences to end of the line", function() {
                     return tester
-                        .setup.user.addr('082555')
+                        .setup.user.addr('082111')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_msisdn_permission - yes

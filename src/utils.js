@@ -142,6 +142,18 @@ go.utils = {
             });
     },
 
+    check_role: function(msisdn) {
+        return Q()
+            .then(function(q_response) {
+                if (msisdn === '082101' || msisdn === '082555') {
+                    return 'father_role';
+                }
+                else {
+                    return 'mother_role';
+                }
+            });
+    },
+
 // MSISDN & NUMBER HANDLING
 
     // An attempt to solve the insanity of JavaScript numbers

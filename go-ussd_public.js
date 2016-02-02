@@ -149,6 +149,18 @@ go.utils = {
             });
     },
 
+    check_role: function(msisdn) {
+        return Q()
+            .then(function(q_response) {
+                if (msisdn === '082101' || msisdn === '082555') {
+                    return 'father_role';
+                }
+                else {
+                    return 'mother_role';
+                }
+            });
+    },
+
 // MSISDN & NUMBER HANDLING
 
     // An attempt to solve the insanity of JavaScript numbers
@@ -749,13 +761,15 @@ go.app = function() {
                 "Welcome to Hello Mama. Do you have permission to manage the number [MSISDN]?",
             "state_msisdn_no_permission":  // unnamed state on flow diagram
                 "We're sorry, you do not have permission to update the preferences for this subscriber.",
-            "state_language":   //st-D
+            "state_language":   // st-D
                 "Welcome to Hello Mama. Please choose your language",
-            "state_registered_msisdn":  //st-C
+            "state_registered_msisdn":  // st-C
                 "Please enter the number which is registered to receive messages. For example, 0803304899",
-            "state_main_menu":  //st-A
+            "state_main_menu":  // st-A
                 "Select:",
-            "state_msisdn_not_recognised":  //st-F
+            "state_main_menu_father": // st-A1
+                "Select:",
+            "state_msisdn_not_recognised":  // st-F
                 "We do not recognise this number. Please dial from the registered number or sign up with your local Community Health Extension worker.",
             "state_already_registered_baby":
                 "You are already registered for baby messages.",
@@ -870,13 +884,13 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 choices: [
-                    new Choice('state_main_menu', $("Yes")),
+                    new Choice('state_check_receiver_role', $("Yes")),
                     new Choice('state_msisdn_no_permission', $("No")),
                     new Choice('state_registered_msisdn', $("Change the number I'd like to manage"))
                   ],
                   error: $(get_error_text(name)),
                   next: function(choice) {
-                      return choice.value;
+                          return choice.value;
                   }
               });
         });
@@ -921,17 +935,7 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: function(content) {
-                        return go.utils
-                            .check_msisdn_hcp(content)
-                            .then(function(recognised) {
-                                if (recognised) {
-                                    return 'state_main_menu';
-                                } else {
-                                    return 'state_msisdn_not_recognised';
-                                }
-                            });
-                }
+                next: 'state_check_receiver_role'
             });
         });
 
@@ -942,6 +946,22 @@ go.app = function() {
                 choices: [
                     new Choice('state_check_baby_subscription', $("Start Baby messages")),
                     new Choice('state_check_msg_type', $("Change message preferences")),
+                    new Choice('state_new_msisdn', $("Change my number")),
+                    new Choice('state_msg_language', $("Change language")),
+                    new Choice('state_optout_reason', $("Stop receiving messages"))
+                ],
+                error: $(get_error_text(name)),
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+        // ChoiceState st-A1
+        self.add('state_main_menu_father', function(name) {
+            return new ChoiceState(name, {
+                question: $(questions[name]),
+                choices: [
+                    new Choice('state_check_baby_subscription', $("Start Baby messages")),
                     new Choice('state_new_msisdn', $("Change my number")),
                     new Choice('state_msg_language', $("Change language")),
                     new Choice('state_optout_reason', $("Stop receiving messages"))
@@ -982,13 +1002,27 @@ go.app = function() {
                 });
         });
 
+        self.add('state_check_receiver_role', function(name) {
+            return go.utils
+                .check_role(self.im.user.addr)
+                .then(function(role) {
+                    if (role == 'father_role') {
+                        return self.states.create('state_main_menu_father');
+                    } else if (role == 'mother_role') {
+                        return self.states.create('state_main_menu');
+                    } else {
+                        return self.state.create('state_main_menu');
+                    }
+                });
+        });
+
         // ChoiceState st-01
         self.add('state_already_registered_baby', function(name) {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
                 choices: [
-                    new Choice('state_main_menu', $("Back to main menu")),
+                    new Choice('state_check_receiver_role', $("Back to main menu")),
                     new Choice('state_end_exit', $("Exit"))
                 ],
                 next: function(choice) {
@@ -1062,7 +1096,7 @@ go.app = function() {
                 choices: [
                     new Choice('state_voice_days', $("Change the day and time I receive messages")),
                     new Choice('state_sms_confirm', $("Change from voice to text messages")),
-                    new Choice('state_main_menu', $("Back to main menu"))
+                    new Choice('state_check_receiver_role', $("Back to main menu"))
                 ],
                 next: function(choice) {
                     return choice.value;
