@@ -633,7 +633,7 @@ describe("Mama Nigeria App", function() {
                     .run();
             });
             describe("Validate overall date", function() {
-                it("validate state_last_period_month - via st-06/19 looping back to st-05", function() {
+                it("reaches state_invalid_date - via st-06/19", function() {
                     return tester
                         .setup.user.addr('082111')
                         .inputs(
@@ -646,8 +646,42 @@ describe("Mama Nigeria App", function() {
                             , '31'  // state_last_period_day - 31 (invalid day)
                         )
                         .check.interaction({
+                            state: 'state_invalid_date'
+                        })
+                        .run();
+                });
+                it("validate state_last_period_month - via st-06/19 looping back to st-05", function() {
+                    return tester
+                        .setup.user.addr('082111')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '12345'   // state_auth_code - personnel code
+                            , '0803304899' // state_msisdn - mobile number
+                            , '1'  // state_msg_receiver - mother
+                            , '1'  // state_msg_pregnancy_status - pregnant
+                            , '3'  // state_last_period_month - Feb 15
+                            , '31'  // state_last_period_day - 31 (invalid day)
+                            , '1'  // state_invalid_date - continue
+                        )
+                        .check.interaction({
                             state: 'state_last_period_month'
-                            //reply: "Sorry, that is not a valid number. What day of the month was the baby born? For example, 12."
+                        })
+                        .run();
+                });
+                it("reaches state_invalid_date - via st-14/18", function() {
+                    return tester
+                        .setup.user.addr('082111')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '12345'   // state_auth_code - personnel code
+                            , '0803304899' // state_msisdn - mobile number
+                            , '1'  // state_msg_receiver - mother
+                            , '2'  // state_msg_pregnancy_status - baby
+                            , '3'  // state_baby_birth_month_year - Feb 15
+                            , '31'  // state_baby_birth_day - 30 (invalid day)
+                        )
+                        .check.interaction({
+                            state: 'state_invalid_date'
                         })
                         .run();
                 });
@@ -662,10 +696,10 @@ describe("Mama Nigeria App", function() {
                             , '2'  // state_msg_pregnancy_status - baby
                             , '3'  // state_baby_birth_month_year - Feb 15
                             , '31'  // state_baby_birth_day - 30 (invalid day)
+                            , '1'   // state_invalid_date - continue
                         )
                         .check.interaction({
-                            state: 'state_baby_birth_month_year',
-                            //reply: "Sorry, that is not a valid number. What day of the month was the baby born? For example, 12."
+                            state: 'state_baby_birth_month_year'
                         })
                         .run();
                 });
