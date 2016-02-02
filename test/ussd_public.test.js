@@ -349,27 +349,6 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
-                it("to state_msg_receiver", function() {
-                    return tester
-                        .setup.user.addr('082222')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_msisdn_permission - yes
-                            , '3'  // state_main_menu - change number
-                            , '0803304899' // state_new_msisdn
-                        )
-                        .check.interaction({
-                            state: 'state_msg_receiver',
-                            reply: [
-                                "Who will receive these messages?",
-                                "1. The Mother",
-                                "2. The Father",
-                                "3. Family member",
-                                "4. Trusted friend"
-                            ].join('\n')
-                        })
-                        .run();
-                });
                 it("to state_msg_receiver_confirm", function() {
                     return tester
                         .setup.user.addr('082222')
@@ -377,8 +356,7 @@ describe("Hello Mama app", function() {
                             {session_event: 'new'}  // dial in
                             , '1'  // state_msisdn_permission - yes
                             , '3'  // state_main_menu - change number
-                            , '0803304899' // state_new_msisdn
-                            , '4'  // state_msg_receiver - trusted friend
+                            , '08033048990' // state_new_msisdn
                         )
                         .check.interaction({
                             state: 'state_msg_receiver_confirm',
@@ -482,6 +460,26 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
+                it("to state_optout_receiver", function() {
+                    return tester
+                        .setup.user.addr('082222')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'  // state_msisdn_permission - yes
+                            , '5'  // state_main_menu - stop receiving messages
+                            , '5'  // state_optout_reason - other
+                        )
+                        .check.interaction({
+                            state: 'state_optout_receiver',
+                            reply: [
+                                "Who would you like to stop receiving messages?",
+                                "1. Only me",
+                                "2. The Father",
+                                "3. The Father and the Mother"
+                            ].join('\n')
+                        })
+                        .run();
+                });
                 it("to state_end_optout", function() {
                     return tester
                         .setup.user.addr('082222')
@@ -490,6 +488,7 @@ describe("Hello Mama app", function() {
                             , '1'  // state_msisdn_permission - yes
                             , '5'  // state_main_menu - stop receiving messages
                             , '4'  // state_optout_reason - messages not useful
+                            , '1'  // state_optout_receiver - only me
                         )
                         .check.interaction({
                             state: 'state_end_optout',
@@ -577,7 +576,7 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
-                it(" - via opt-out to end of the line", function() {
+                it(" - via opt-out, loss-subscription, to end of the line", function() {
                     return tester
                         .setup.user.addr('082222')
                         .inputs(
@@ -586,6 +585,22 @@ describe("Hello Mama app", function() {
                             , '5'  // state_main_menu - stop receiving messages
                             , '2'  // state_optout_reason - baby stillborn
                             , '2'  // state_loss_subscription - no
+                        )
+                        .check.interaction({
+                            state: 'state_end_optout',
+                            reply: "Thank you. You will no longer receive messages"
+                        })
+                        .run();
+                });
+                it(" - via opt-out, state_optout_receiver, to end of the line", function() {
+                    return tester
+                        .setup.user.addr('082222')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'  // state_msisdn_permission - yes
+                            , '5'  // state_main_menu - stop receiving messages
+                            , '4'  // state_optout_reason - baby stillborn
+                            , '2'  // state_optout_receiver - father
                         )
                         .check.interaction({
                             state: 'state_end_optout',

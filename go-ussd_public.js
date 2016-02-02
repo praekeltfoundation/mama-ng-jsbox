@@ -680,18 +680,15 @@ go.utils = {
         return go.utils.check_valid_alpha(input);
     },
 
-    make_month_choices: function($, start, limit, increment) {
-        var choices = [
-            new Choice('072015', $('July 15')),
-            new Choice('062015', $('June 15')),
-            new Choice('052015', $('May 15')),
-            new Choice('042015', $('Apr 15')),
-            new Choice('032015', $('Mar 15')),
-            new Choice('022015', $('Feb 15')),
-            new Choice('012015', $('Jan 15')),
-            new Choice('122014', $('Dec 14')),
-            new Choice('112014', $('Nov 14')),
-        ];
+    make_month_choices: function($, startDate, limit, increment) {
+        var choices = [];
+
+        var monthIterator = startDate;
+        for (var i=0; i<limit; i++) {
+            choices.push(new Choice(monthIterator.format("YYYYMM"), $(monthIterator.format("MMMM YY"))));
+            monthIterator.add(increment, 'months');
+        }
+
         return choices;
     },
 
@@ -792,6 +789,8 @@ go.app = function() {
                 "We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?",
             "state_loss_subscription_confirm":
                 "Thank you. You will now receive messages to support you during this difficult time.",
+            "state_optout_receiver":
+                "Who would you like to stop receiving messages?",
             "state_end_optout":
                 "Thank you. You will no longer receive messages",
             "state_end_exit":
@@ -1089,33 +1088,18 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: 'state_msg_receiver'
-            });
-        });
-
-        // ChoiceState st-10
-        self.add('state_msg_receiver', function(name) {
-            return new ChoiceState(name, {
-                question: $(questions[name]),
-                error: $(get_error_text(name)),
-                choices: [
-                    new Choice('mother', $("The Mother")),
-                    new Choice('father', $("The Father")),
-                    new Choice('family_member', $("Family member")),
-                    new Choice('trusted_friend', $("Trusted friend"))
-                ],
                 next: 'state_msg_receiver_confirm'
             });
         });
 
-        // EndState st-11
+        // EndState st-10
         self.add('state_msg_receiver_confirm', function(name) {
             return new EndState(name, {
                 text: $(questions[name])
             });
         });
 
-        // ChoiceState st-12
+        // ChoiceState st-11
         self.add('state_msg_language', function(name) {
             return new ChoiceState(name, {
                 question: $(questions[name]),
@@ -1129,14 +1113,14 @@ go.app = function() {
             });
         });
 
-        // EndState st-13
+        // EndState st-12
         self.add('state_msg_language_confirm', function(name) {
             return new EndState(name, {
                 text: $(questions[name])
             });
         });
 
-        // ChoiceState st-14
+        // ChoiceState st-13
         self.add('state_optout_reason', function(name) {
             return new ChoiceState(name, {
                 question: $(questions[name]),
@@ -1145,8 +1129,8 @@ go.app = function() {
                     new Choice('state_loss_subscription', $("Mother miscarried")),
                     new Choice('state_loss_subscription', $("Baby stillborn")),
                     new Choice('state_loss_subscription', $("Baby passed away")),
-                    new Choice('state_end_optout', $("Messages not useful")),
-                    new Choice('state_end_optout', $("Other"))
+                    new Choice('state_optout_receiver', $("Messages not useful")),
+                    new Choice('state_optout_receiver', $("Other"))
                 ],
                 next: function(choice) {
                     return choice.value;
@@ -1154,7 +1138,7 @@ go.app = function() {
             });
         });
 
-        // ChoiceState st-15
+        // ChoiceState st-14
         self.add('state_loss_subscription', function(name) {
             return new ChoiceState(name, {
                 question: $(questions[name]),
@@ -1174,10 +1158,31 @@ go.app = function() {
             });
         });
 
-        // EndState st-16
+        // EndState st-15
         self.add('state_loss_subscription_confirm', function(name) {
             return new EndState(name, {
                 text: $(questions[name])
+            });
+        });
+
+        // ChoiceState st-16
+        self.add('state_optout_receiver', function(name) {
+            return new ChoiceState(name, {
+                question: $(questions[name]),
+                error: $(get_error_text(name)),
+                choices: [
+                    new Choice('me', $("Only me")),
+                    new Choice('father', $("The Father")),
+                    new Choice('father_mother', $("The Father and the Mother"))
+                ],
+                next: function(choice) {
+                    switch (choice.value) {
+                        case 'me':  // deliberate fall-through to default
+                        case 'father':
+                        case 'father_mother':
+                            return 'state_end_optout';
+                    }
+                }
             });
         });
 
