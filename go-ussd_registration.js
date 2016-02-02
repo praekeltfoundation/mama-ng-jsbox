@@ -728,10 +728,14 @@ go.app = function() {
                 "You have an incomplete registration. Would you like to continue with this registration?",
             "state_auth_code":
                 "Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345",
-            "state_msisdn":
-                "Please enter the mobile number of the person who will receive the weekly messages. For example, 08033046899",
             "state_msg_receiver":
-                "Please select who will receive the messages on their phone:",
+                "Please select who will receive the messages on their phone?",
+            "state_msisdn":
+                "Please enter the mobile number of the person who will receive the weekly messages. For example, 08033048990",
+            "state_msisdn_father":
+                "Please enter the mobile number of the FATHER. For example, 08033048990",
+            "state_msisdn_mother":
+                "Please enter the mobile number of the MOTHER. For example, 08033048990",
             "state_pregnancy_status":
                 "Please select one of the following:",
             "state_last_period_month":
@@ -825,7 +829,7 @@ go.app = function() {
                 .check_msisdn_hcp(self.im.user.addr)
                 .then(function(hcp_recognised) {
                     if (hcp_recognised) {
-                        return self.states.create('state_msisdn');
+                        return self.states.create('state_msg_receiver');
                     } else {
                         return self.states.create('state_auth_code');
                     }
@@ -850,11 +854,37 @@ go.app = function() {
                             }
                         });
                 },
-                next: 'state_msisdn'
+                next: 'state_msg_receiver'
             });
         });
 
-        // FreeState st-02
+        // ChoiceState st-02
+        self.add('state_msg_receiver', function(name) {
+            return new ChoiceState(name, {
+                question: $(questions[name]),
+                choices: [
+                    new Choice('mother_father', $("The Mother & Father")),
+                    new Choice('mother_only', $("The Mother only")),
+                    new Choice('father_only', $("The Father only")),
+                    new Choice('family_member', $("A family member")),
+                    new Choice('trusted_friend', $("A trusted friend"))
+                ],
+                next: function(choice) {
+                    switch (choice.value) {
+                        case 'mother_father':
+                            return 'state_msisdn_father';
+                        case 'father_only':
+                            // to register to both "Mother" & "Father" messages
+                            return 'state_msisdn';
+                        default:
+                            // to register only to "Mother" messages
+                            return 'state_msisdn';
+                    }
+                }
+            });
+        });
+
+        // FreeText st-03
         self.add('state_msisdn', function(name) {
             return new FreeText(name, {
                 question: $(questions[name]),
@@ -865,20 +895,36 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: 'state_msg_receiver'
+                next: 'state_pregnancy_status'
             });
         });
 
-        // ChoiceState st-03
-        self.add('state_msg_receiver', function(name) {
-            return new ChoiceState(name, {
+        // FreeText st-3A
+        self.add('state_msisdn_father', function(name) {
+            return new FreeText(name, {
                 question: $(questions[name]),
-                choices: [
-                    new Choice('mother', $("The Mother")),
-                    new Choice('father', $("The Father")),
-                    new Choice('family_member', $("Family member")),
-                    new Choice('trusted_friend', $("Trusted friend"))
-                ],
+                check: function(content) {
+                    if (go.utils.is_valid_msisdn(content)) {
+                        return null;  // vumi expects null or undefined if check passes
+                    } else {
+                        return $(get_error_text(name));
+                    }
+                },
+                next: 'state_msisdn_mother'
+            });
+        });
+
+        // FreeText st-3A
+        self.add('state_msisdn_mother', function(name) {
+            return new FreeText(name, {
+                question: $(questions[name]),
+                check: function(content) {
+                    if (go.utils.is_valid_msisdn(content)) {
+                        return null;  // vumi expects null or undefined if check passes
+                    } else {
+                        return $(get_error_text(name));
+                    }
+                },
                 next: 'state_pregnancy_status'
             });
         });
