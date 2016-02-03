@@ -124,7 +124,7 @@ go.app = function() {
     // START STATE
 
         self.add('state_start', function(name) {
-            self.im.user.answers = {};
+            self.im.user.answers = {};      // resets user answers
             return go.utils
                 .check_msisdn_hcp(self.im.user.addr)
                 .then(function(hcp_recognised) {
@@ -332,16 +332,19 @@ go.app = function() {
 
         // to validate overall date
         self.add('state_validate_date', function(name) {
-            var monthAndYear;
-            var day;
-            if (self.im.user.answers.state_last_period_month) {     // flow via st-05 & st-06
+            var monthAndYear = self.im.user.answers.state_last_period_month ||  // flow via st-05 & st-06
+                                self.im.user.answers.state_baby_birth_month_year;
+            var day = self.im.user.answers.state_last_period_day ||
+                        self.im.user.answers.state_baby_birth_day;          // flow via st-12 & st-13
+
+            /*if (self.im.user.answers.state_last_period_month) {     // flow via st-05 & st-06
                 monthAndYear = self.im.user.answers.state_last_period_month;
                 day = self.im.user.answers.state_last_period_day;
             }
             else {                                                  // flow via st-12 & st-13
                 monthAndYear = self.im.user.answers.state_baby_birth_month_year;
                 day = self.im.user.answers.state_baby_birth_day;
-            }
+            }*/
             var dateToValidate = monthAndYear+day;
 
             if (go.utils.is_valid_date(dateToValidate, 'YYYYMMDD')) {

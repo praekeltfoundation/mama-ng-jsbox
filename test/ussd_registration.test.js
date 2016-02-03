@@ -113,6 +113,23 @@ describe("Mama Nigeria App", function() {
             });
         });
 
+        // TEST START OF SESSION ACTIONS
+        describe("Start of session", function() {
+            it("should reset user answers", function() {
+                return tester
+                    .setup.user.addr('082111')
+                    .setup.user.answers({       // set up answers to be reset
+                        state_auth_code: '12345',
+                        state_msisdn: '08033046899'
+                    })
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                    )
+                    .check.user.answers({})
+                    .run();
+            });
+        });
+
         // TEST HCP RECOGNISED USER
 
         describe("HCP recognised user", function() {
