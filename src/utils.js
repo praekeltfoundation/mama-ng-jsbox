@@ -134,7 +134,7 @@ go.utils = {
             .then(function(q_response) {
                 if (msisdn === '082444') {
                     return 'sms';
-                } else if (msisdn === '082555') {
+                } else if (msisdn === '082222') {
                     return 'voice';
                 } else {
                     return 'none';
