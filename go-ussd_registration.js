@@ -821,6 +821,7 @@ go.app = function() {
     // START STATE
 
         self.add('state_start', function(name) {
+            self.im.user.answers = {};
             return go.utils
                 .check_msisdn_hcp(self.im.user.addr)
                 .then(function(hcp_recognised) {
@@ -924,7 +925,7 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: 'state_msg_language'
+                next: 'state_validate_date'
             });
         });
 
@@ -1014,7 +1015,7 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: 'state_msg_language'
+                next: 'state_validate_date'
             });
         });
 
@@ -1026,6 +1027,42 @@ go.app = function() {
             });
         });
 
+        // to validate overall date
+        self.add('state_validate_date', function(name) {
+            var monthAndYear = self.im.user.answers.state_last_period_month ||  // flow via st-05 & st-06
+                                self.im.user.answers.state_baby_birth_month_year;
+            var day = self.im.user.answers.state_last_period_day ||
+                        self.im.user.answers.state_baby_birth_day;          // flow via st-12 & st-13
+
+            var dateToValidate = monthAndYear+day;
+
+            if (go.utils.is_valid_date(dateToValidate, 'YYYYMMDD')) {
+                return self.states.create('state_msg_language');
+            } else {
+                return self.states.create('state_invalid_date', {date: dateToValidate});
+            }
+        });
+
+        self.add('state_invalid_date', function(name, opts) {
+            return new ChoiceState(name, {
+                question:
+                    $('The date you entered ({{ date }}) is not a ' +
+                        'real date. Please try again.'
+                    ).context({date: opts.date}),
+
+                choices: [
+                    new Choice('continue', $('Continue'))
+                ],
+                next: function() {
+                    if (self.im.user.answers.state_last_period_day) {  // flow via st-05 & st-06
+                        return self.states.create('state_last_period_month');
+                    }
+                    else if (self.im.user.answers.state_baby_birth_day) { // flow via st-12 & st-13
+                        return self.states.create('state_baby_birth_month_year');
+                    }
+                }
+            });
+        });
     });
 
     return {
