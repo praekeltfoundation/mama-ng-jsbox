@@ -14,7 +14,7 @@ describe("Mama Nigeria App", function() {
 
             tester
                 .setup.config.app({
-                    testing_today: '2015-07-22',
+                    testing_today: '2017-01-22',
                     name: 'voice-registration-test',
                     control: {
                         url: "http://localhost:8000/api/v1/",
@@ -57,8 +57,8 @@ describe("Mama Nigeria App", function() {
                         '*'
                     )
                     .check.interaction({
-                        state: 'state_r01_number',
-                        reply: 'Welcome, Number'
+                        state: 'state_personnel_auth',
+                        reply: 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
                     })
                     .check.user.answers({})
                     .run();
@@ -68,20 +68,20 @@ describe("Mama Nigeria App", function() {
         // TEST REGISTRATION FLOW
 
         describe("When you start the app", function() {
-            it("should navigate to state r01_number", function() {
+            it("should navigate to state_personnel_auth", function() {
                 return tester
                     .setup.user.addr('+07030010001')
                     .inputs(
                         {session_event: 'new'}
                     )
                     .check.interaction({
-                        state: 'state_r01_number',
-                        reply: 'Welcome, Number'
+                        state: 'state_personnel_auth',
+                        reply: 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
                     })
                     .check.reply.properties({
                         helper_metadata: {
                             voice: {
-                                speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r01_number_1.mp3',
+                                speech_url: 'http://localhost:8001/api/v1/eng_NG/state_personnel_auth_1.mp3',
                                 wait_for: '#'
                             }
                         }
@@ -90,9 +90,9 @@ describe("Mama Nigeria App", function() {
             });
         });
 
-        describe("When you enter a phone number r01_number", function() {
-            describe("if the number validates", function() {
-                it("should navigate to state r03_receiver", function() {
+        describe("Initial personnel code authorization", function() {
+            describe("if code validates", function() {
+                it("should navigate to state_msg_receiver", function() {
                     return tester
                         .setup.user.addr('+07030010001')
                         .inputs(
@@ -100,17 +100,20 @@ describe("Mama Nigeria App", function() {
                             '08080020002'
                         )
                         .check.interaction({
-                            state: 'state_r03_receiver',
+                            state: 'state_msg_receiver',
                             reply: [
-                                'Choose receiver',
-                                '1. Mother',
-                                '2. Other'
+                                'Choose message receiver',
+                                '1. Mother & Father',
+                                '2. Only Mother',
+                                '3. Only Father',
+                                '4. Family member',
+                                '5. Trusted friend'
                             ].join('\n')
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r03_receiver_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_msg_receiver_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -123,7 +126,7 @@ describe("Mama Nigeria App", function() {
                         .setup.user.addr('+07030010001')
                         .inputs(
                             {session_event: 'new'},
-                            '08080020002'
+                            '12345'
                         )
                         .check.user.answer('mama_id',
                             'cb245673-aa41-4302-ac47-00000000002')
@@ -135,7 +138,7 @@ describe("Mama Nigeria App", function() {
                         .setup.user.addr('+07030010001')
                         .inputs(
                             {session_event: 'new'},
-                            '08080030003'
+                            '12345'
                         )
                         .check.user.answer('mama_id',
                             'cb245673-aa41-4302-ac47-00000000003')
@@ -143,8 +146,8 @@ describe("Mama Nigeria App", function() {
                 });
             });
 
-            describe("if the number does not validate", function() {
-                it("should navigate to state r02_retry_number", function() {
+            describe("if personnel code does not validate", function() {
+                it("should retry", function() {
                     return tester
                         .setup.user.addr('+07030010001')
                         .inputs(
@@ -153,7 +156,7 @@ describe("Mama Nigeria App", function() {
                         )
                         .check.interaction({
                             state: 'state_r02_retry_number',
-                            reply: 'Retry number'
+                            reply: 'Sorry, that is not a valid number. Retry...'
                         })
                         .check.reply.properties({
                             helper_metadata: {
@@ -167,8 +170,8 @@ describe("Mama Nigeria App", function() {
                 });
             });
 
-            describe("if the retried number does not validate", function() {
-                it("should navigate to state r02_retry_number again", function() {
+            describe("if the retried code does not validate", function() {
+                it("should retry again", function() {
                     return tester
                         .setup.user.addr('+07030010001')
                         .inputs(
@@ -178,7 +181,7 @@ describe("Mama Nigeria App", function() {
                         )
                         .check.interaction({
                             state: 'state_r02_retry_number',
-                            reply: 'Retry number'
+                            reply: 'Sorry, that is not a valid number. Retry...'
                         })
                         .check.reply.properties({
                             helper_metadata: {
@@ -203,7 +206,7 @@ describe("Mama Nigeria App", function() {
                         )
                         .check.interaction({
                             state: 'state_r02_retry_number',
-                            reply: 'Retry number'
+                            reply: 'Sorry, that is not a valid number. Retry...'
                         })
                         .check.reply.properties({
                             helper_metadata: {
@@ -217,21 +220,25 @@ describe("Mama Nigeria App", function() {
                 });
             });
 
-            describe("if the retried number validates", function() {
-                it("should navigate to state r03_receiver", function() {
+            describe("if the retried personnel code validates", function() {
+                it("should navigate to state_msg_receiver", function() {
                     return tester
                         .setup.user.addr('+07030010001')
                         .inputs(
                             {session_event: 'new'},
-                            '+08080020002',
-                            '08080020002'
+                            '12456',        // state_personnel_auth
+                            '12345'   // state...
+
                         )
                         .check.interaction({
-                            state: 'state_r03_receiver',
+                            state: 'state_msg_receiver',
                             reply: [
-                                'Choose receiver',
-                                '1. Mother',
-                                '2. Other'
+                                'Choose message receiver',
+                                '1. Mother & Father',
+                                '2. Only Mother',
+                                '3. Only Father',
+                                '4. Family member',
+                                '5. Trusted friend'
                             ].join('\n')
                         })
                         .check.reply.properties({
@@ -256,8 +263,89 @@ describe("Mama Nigeria App", function() {
                         .check.user.answers({
                             mama_id: 'cb245673-aa41-4302-ac47-00000000002',
                             mama_num: '08080020002',
-                            state_r01_number: '+08080020002',
+                            state_personnel_auth: '+08080020002',
                             state_r02_retry_number: '08080020002'
+                        })
+                        .run();
+                });
+            });
+        });
+
+        describe("Flows from chosen message receiver options", function() {
+            describe("(option 1 - Mother & Father as receivers)", function() {
+                it("to state_father_msisdn", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'       // state_personnel_auth
+                            , '1'           // state_msg_receiver - mother & father
+                        )
+                        .check.interaction({
+                            state: 'state_father_msisdn',
+                            reply: 'Please enter number (Father)'
+                        })
+                        .run();
+                });
+                it("to state_mother_msisdn", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'       // state_personnel_auth
+                            , '1'           // state_msg_receiver - mother & father
+                            , '08080020002' // state_father_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_mother_msisdn',
+                            reply: 'Please enter number (Mother)'
+                        })
+                        .run();
+                });
+                it("to state_pregnancy_status", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'       // state_personnel_auth
+                            , '1'           // state_msg_receiver - mother & father
+                            , '08080020002' // state_father_msisdn
+                            , '08080020003' // state_mother_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_pregnancy_status',
+                            reply: 'Pregnant or baby'
+                        })
+                        .run();
+                });
+            });
+            describe("(option 2,4,5 - Mother or others)", function() {
+                it("to state_receiver_msisdn", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'},
+                            '08080020002'   // state_personnel_auth
+                            , '4'           // state_msg_receiver - family member
+                        )
+                        .check.interaction({
+                            state: 'state_receiver_msisdn',
+                            reply: 'Please enter number'
+                        })
+                        .run();
+                });
+                it("to state_pregnancy_status", function() {
+                    return tester
+                        .setup.user.addr('+07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'       // state_personnel_auth
+                            , '4'           // state_msg_receiver - family member
+                            , '08080020002' // state_receiver_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_pregnancy_status',
+                            reply: 'Pregnant or baby'
                         })
                         .run();
                 });

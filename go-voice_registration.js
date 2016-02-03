@@ -704,6 +704,7 @@ go.app = function() {
     var Choice = vumigo.states.Choice;
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
+    var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
 
 
     var GoApp = App.extend(function(self) {
@@ -731,20 +732,20 @@ go.app = function() {
         self.states.add('state_start', function(name) {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
-            return self.states.create("state_r01_number");
+            return self.states.create("state_personnel_auth");
         });
 
 
     // REGISTRATION
 
-        self.add('state_r01_number', function(name) {
+        self.add('state_personnel_auth', function(name) {
             var speech_option = '1';
             return new FreeText(name, {
-                question: $('Welcome, Number'),
+                question: $('Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(content) {
-                    if (go.utils.is_valid_msisdn(content) === false) {
+                    if (content != '12345') {      // temporarily hard-coded
                         return 'state_r02_retry_number';
                     } else {
                         self.im.user.set_answer('mama_num', content);
@@ -753,7 +754,7 @@ go.app = function() {
                             .get_or_create_contact(content, self.im)
                             .then(function(mama_id) {
                                 self.im.user.set_answer('mama_id', mama_id);
-                                return 'state_r03_receiver';
+                                return 'state_msg_receiver';
                             });
                     }
                 }
@@ -763,7 +764,7 @@ go.app = function() {
         self.add('state_r02_retry_number', function(name) {
             var speech_option = '1';
             return new FreeText(name, {
-                question: $('Retry number'),
+                question: $('Sorry, that is not a valid number. Retry...'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(content) {
@@ -776,28 +777,87 @@ go.app = function() {
                             .get_or_create_contact(content, self.im)
                             .then(function(mama_id) {
                                 self.im.user.set_answer('mama_id', mama_id);
-                                return 'state_r03_receiver';
+                                return 'state_msg_receiver';
                             });
                     }
                 }
             });
         });
 
-        self.add('state_r03_receiver', function(name) {
+        self.add('state_msg_receiver', function(name) {
             var speech_option = '1';
             return new ChoiceState(name, {
-                question: $('Choose receiver'),
+                question: $('Choose message receiver'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('mother', $('Mother')),
-                    new Choice('other', $('Other'))
+                    new Choice('mother_father', $('Mother & Father')),
+                    new Choice('mother_only', $('Only Mother')),
+                    new Choice('father_ony', $('Only Father')),
+                    new Choice('family_member', $('Family member')),
+                    new Choice('trusted_friend', $('Trusted friend'))
+
                 ],
-                next: 'state_r04_mom_state'
+                next: function(choice) {
+                    if (choice.value == 'mother_father') {
+                        return 'state_father_msisdn';
+                    }
+                    else {
+                        return 'state_receiver_msisdn';
+                    }
+                }
             });
         });
 
-        self.add('state_r04_mom_state', function(name) {
+        self.add('state_receiver_msisdn', function(name) {
+            var speech_option = '1';
+            return new FreeText(name, {
+                question: $('Please enter number'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: function(content) {
+                    if (go.utils.is_valid_msisdn(content) === false) {
+                        return 'state_r02_retry_number';  // error message, allow retry
+                    } else {
+                        return 'state_pregnancy_status';
+                    }
+                }
+            });
+        });
+
+        self.add('state_father_msisdn', function(name) {
+            var speech_option = '1';
+            return new FreeText(name, {
+                question: $('Please enter number (Father)'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: function(content) {
+                    if (go.utils.is_valid_msisdn(content) === false) {
+                        return 'state_r02_retry_number';  // error message, allow retry
+                    } else {
+                        return 'state_mother_msisdn';
+                    }
+                }
+            });
+        });
+
+        self.add('state_mother_msisdn', function(name) {
+            var speech_option = '1';
+            return new FreeText(name, {
+                question: $('Please enter number (Mother)'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: function(content) {
+                    if (go.utils.is_valid_msisdn(content) === false) {
+                        return 'state_r02_retry_number'; // error message, allow retry
+                    } else {
+                        return 'state_pregnancy_status';
+                    }
+                }
+            });
+        });
+
+        self.add('state_pregnancy_status', function(name) {
             var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Pregnant or baby'),
@@ -811,35 +871,62 @@ go.app = function() {
             });
         });
 
-        self.add('state_r05_birth_year', function(name) {
-            // TODO #6 Don't show next year for pregnancy in Jan / Feb
-            var speech_option;
-            var year_choices = [
-                new Choice('last_year', $('last_year')),
-                new Choice('this_year', $('this_year')),
-                new Choice('next_year', $('next_year'))
-            ];
-            if (self.im.user.answers.state_r04_mom_state === 'pregnant') {
-                choices = year_choices.slice(1,3);
-                speech_option = '1';
-            } else {
-                choices = year_choices.slice(0,2);
-                speech_option = '2';
-            }
+        self.add('state_r05_last_period', function(name) {
+            var speech_option = '1';
             return new ChoiceState(name, {
-                question: $('Birth year?'),
+                question: $('Last period?'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
-                choices: choices,
+                choices: [
+                    new Choice('state_r5A_period_month', $('This year')),
+                    new Choice('state_r5B_period_month', $('Last year'))
+                ],
                 next: function(choice) {
-                    return 'state_r06_birth_month';
+                    return choice.value;
                 }
+            });
+        });
+
+        self.add('state_r5A_period_month', function(name) {
+            var startDate = go.utils.get_today(self.im.config);
+            var currentMonth = today.format("MM");
+            var monthsToDisplay = currentMonth <= 10 ? currentMonth : 10;
+            if (currentMonth > 10) {
+                startDate.add('month', (12 - currentMonth));
+            }
+            console.log('today month: '+currentMonth);
+            console.log('monthsToDisplay: '+monthsToDisplay);
+            console.log('startDate: '+startDate);
+            return new PaginatedChoiceState(name, {
+                question: $(questions[name]),
+                characters_per_page: 182,
+                options_per_page: null,
+                more: $('More'),
+                back: $('Back'),
+                choices: go.utils.make_month_choices($, today, monthsToDisplay, 1),
+                next: 'state_last_period_day'
+            });
+        });
+
+        self.add('state_r05_birth_year', function(name) {
+            var today = go.utils.get_today(self.im.config);
+            var monthsToDisplay = today.format("MM");
+            console.log('today: '+today);
+            console.log('monthsToDisplay: '+monthsToDisplay);
+            return new PaginatedChoiceState(name, {
+                question: $(questions[name]),
+                characters_per_page: 182,
+                options_per_page: null,
+                more: $('More'),
+                back: $('Back'),
+                choices: go.utils.make_month_choices($, today, monthsToDisplay, 1),
+                next: 'state_last_period_day'
             });
         });
 
         self.add('state_r06_birth_month', function(name) {
             var speech_option;
-            self.im.user.answers.state_r04_mom_state === 'pregnant'
+            self.im.user.answers.state_pregnancy_status === 'pregnant'
                 ? speech_option = '1'
                 : speech_option = '2';
             // create choices eg. new Choice('1', '1') etc.
