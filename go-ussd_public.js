@@ -935,7 +935,7 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: 'state_check_receiver_role'
+                next: 'state_check_receiver_role'  // needs to be able to make it to st-F
             });
         });
 

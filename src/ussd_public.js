@@ -4,7 +4,6 @@ go.app = function() {
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
-    //var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
 
@@ -226,7 +225,7 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: 'state_check_receiver_role'
+                next: 'state_check_receiver_role'  // needs to be able to make it to st-F
             });
         });
 
