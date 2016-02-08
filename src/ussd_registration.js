@@ -32,7 +32,7 @@ go.app = function() {
             "state_auth_code":
                 "Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345",
             "state_msg_receiver":
-                "Please select who will receive the messages on their phone?",
+                "Please select who will receive the messages on their phone:",
             "state_msisdn":
                 "Please enter the mobile number of the person who will receive the weekly messages. For example, 08033048990",
             "state_msisdn_father":

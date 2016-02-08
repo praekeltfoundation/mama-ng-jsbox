@@ -154,7 +154,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_msg_receiver',
                         reply: [
-                            "Please select who will receive the messages on their phone?",
+                            "Please select who will receive the messages on their phone:",
                             "1. The Mother & Father",
                             "2. The Mother only",
                             "3. The Father only",
