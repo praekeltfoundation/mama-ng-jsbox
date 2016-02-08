@@ -159,7 +159,7 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
-                // assuming flow via unregistered user...
+                // assuming flow via unregistered user...  (*** intentionally skipping for now)
                 it.skip("to state_msisdn_not_recognised", function() {  //st-F
                     return tester
                         .setup.user.addr('082111')
@@ -510,27 +510,65 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
-                it("to state_optout_receiver", function() {
+                it("to state_end_optout (via state 14)", function() {
                     return tester
                         .setup.user.addr('082222')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_msisdn_permission - yes
                             , '5'  // state_main_menu - stop receiving messages
-                            , '5'  // state_optout_reason - other
+                            , '3'  // state_optout_reason - baby passed away
+                            , '2'  // state_loss_subscription - yes
                         )
                         .check.interaction({
-                            state: 'state_optout_receiver',
-                            reply: [
-                                "Who would you like to stop receiving messages?",
-                                "1. Only me",
-                                "2. The Father",
-                                "3. The Father and the Mother"
-                            ].join('\n')
+                            state: 'state_end_optout',
+                            reply: "Thank you. You will no longer receive messages"
                         })
                         .run();
                 });
-                it("to state_end_optout", function() {
+                it("to state_optout_receiver", function() {
+                    var role = go.utils.check_role(tester.im.user.addr);
+                    if (role === 'father_role') {
+                        return tester
+                            .setup.user.addr('082222')
+                            .inputs(
+                                {session_event: 'new'}  // dial in
+                                , '1'  // state_msisdn_permission - yes
+                                , '5'  // state_main_menu - stop receiving messages
+                                , '5'  // state_optout_reason - other
+                            )
+                            .check.interaction({
+                                state: 'state_optout_receiver',
+                                reply: [
+                                    "Who would you like to stop receiving messages?",
+                                    "1. Only me",
+                                    "2. The Father and the Mother"
+                                ].join('\n')
+                            })
+                            .run();
+                    }
+                    else {
+                        return tester
+                            .setup.user.addr('082222')
+                            .inputs(
+                                {session_event: 'new'}  // dial in
+                                , '1'  // state_msisdn_permission - yes
+                                , '5'  // state_main_menu - stop receiving messages
+                                , '5'  // state_optout_reason - other
+                            )
+                            .check.interaction({
+                                state: 'state_optout_receiver',
+                                reply: [
+                                    "Who would you like to stop receiving messages?",
+                                    "1. Only me",
+                                    "2. The Father",
+                                    "3. The Father and the Mother"
+                                ].join('\n')
+                            })
+                            .run();
+                    }
+                });
+                it("to state_end_optout (via state 16)", function() {
                     return tester
                         .setup.user.addr('082222')
                         .inputs(

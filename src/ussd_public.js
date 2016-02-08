@@ -491,23 +491,43 @@ go.app = function() {
 
         // ChoiceState st-16
         self.add('state_optout_receiver', function(name) {
-            return new ChoiceState(name, {
-                question: $(questions[name]),
-                error: $(get_error_text(name)),
-                choices: [
-                    new Choice('me', $("Only me")),
-                    new Choice('father', $("The Father")),
-                    new Choice('father_mother', $("The Father and the Mother"))
-                ],
-                next: function(choice) {
-                    switch (choice.value) {
-                        case 'me':  // deliberate fall-through to default
-                        case 'father':
-                        case 'father_mother':
-                            return 'state_end_optout';
+            var role = go.utils.check_role(self.im.user.addr);
+            if (role === 'father_role') {
+                return new ChoiceState(name, {
+                    question: $(questions[name]),
+                    error: $(get_error_text(name)),
+                    choices: [
+                        new Choice('me', $("Only me")),
+                        new Choice('father_mother', $("The Father and the Mother"))
+                    ],
+                    next: function(choice) {
+                        switch (choice.value) {
+                            case 'me':  // deliberate fall-through to default
+                            case 'father_mother':
+                                return 'state_end_optout';
+                        }
                     }
-                }
-            });
+                });
+            }
+            else {
+                return new ChoiceState(name, {
+                    question: $(questions[name]),
+                    error: $(get_error_text(name)),
+                    choices: [
+                        new Choice('me', $("Only me")),
+                        new Choice('father', $("The Father")),
+                        new Choice('father_mother', $("The Father and the Mother"))
+                    ],
+                    next: function(choice) {
+                        switch (choice.value) {
+                            case 'me':  // deliberate fall-through to default
+                            case 'father':
+                            case 'father_mother':
+                                return 'state_end_optout';
+                        }
+                    }
+                });
+            }
         });
 
         // EndState st-17
