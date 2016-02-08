@@ -335,7 +335,7 @@ go.utils = {
     get_baby_dob: function(im, day) {
         var date_today = go.utils.get_today(im.config);
 
-        var year_text = im.user.answers.state_r05_birth_year;
+        var year_text = im.user.answers.state_baby_birth_year;
         var year;
         switch (year_text) {
             case 'last_year':
@@ -349,7 +349,8 @@ go.utils = {
                 break;
         }
 
-        var month = im.user.answers.state_r06_birth_month;
+        var month = im.user.answers.state_12A_baby_birth_month ||
+                    im.user.answers.state_12B_baby_birth_month;
         var date_string = [
             year.toString(),
             go.utils.double_digit_number(month),

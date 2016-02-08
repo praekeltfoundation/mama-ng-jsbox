@@ -14,7 +14,7 @@ describe("Mama Nigeria App", function() {
 
             tester
                 .setup.config.app({
-                    testing_today: '2017-01-22',
+                    testing_today: '2017-07-22',
                     name: 'voice-registration-test',
                     control: {
                         url: "http://localhost:8000/api/v1/",
@@ -53,7 +53,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('+07030010001')
                     .inputs(
                         {session_event: 'new'},
-                        '12345',
+                        '12345',        // state_personnel_auth
                         '*'
                     )
                     .check.interaction({
@@ -121,7 +121,7 @@ describe("Mama Nigeria App", function() {
                         .run();
                 });
 
-                it("should set the user answer mama_id to the mama's id", function() {
+                /*it("should set the user answer mama_id to the mama's id", function() {
                     return tester
                         .setup.user.addr('+07030010001')
                         .inputs(
@@ -143,7 +143,7 @@ describe("Mama Nigeria App", function() {
                         .check.user.answer('mama_id',
                             'cb245673-aa41-4302-ac47-00000000003')
                         .run();
-                });
+                });*/
             });
 
             describe("if personnel code does not validate", function() {
@@ -314,7 +314,11 @@ describe("Mama Nigeria App", function() {
                         )
                         .check.interaction({
                             state: 'state_pregnancy_status',
-                            reply: 'Pregnant or baby'
+                            reply: [
+                                'Pregnant or baby',
+                                '1. Pregnant',
+                                '2. Baby'
+                            ].join('\n')
                         })
                         .run();
                 });
@@ -379,7 +383,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r04_mom_state_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_pregnancy_status_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -404,7 +408,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r01_number_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_personnel_auth_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -470,7 +474,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r05_birth_year_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_last_period_year_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -485,7 +489,7 @@ describe("Mama Nigeria App", function() {
                         .setup.user.addr('+07030010001')
                         .inputs(
                             {session_event: 'new'}
-                            , '12345'
+                            , '12345'           // state_personnel_auth
                             , '1'               // state_msg_receiver - mother&father
                             , '08080020002'     // state_father_msisdn
                             , '08080020003'     // state_mother_msisdn
@@ -494,7 +498,7 @@ describe("Mama Nigeria App", function() {
                         .check.interaction({
                             state: 'state_baby_birth_year',
                             reply: [
-                                'Birth year?',
+                                'Baby born?',
                                 '1. this year',
                                 '2. last year'
                             ].join('\n')
@@ -502,7 +506,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_baby_birth_year_2.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_baby_birth_year_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -529,7 +533,7 @@ describe("Mama Nigeria App", function() {
                         .check.interaction({
                             state: 'state_12A_baby_birth_month',
                             reply: [
-                                'Baby month?'
+                                'Baby month?',
                             ].join('\n')
                         })
                         .check.reply.properties({
@@ -584,7 +588,8 @@ describe("Mama Nigeria App", function() {
                         , '5'           // state_msg_receiver - trusted friend
                         , '08080020002' // state_receiver_msisdn
                         , '2'           // state_pregnancy_status - baby
-                        , '2'           // state_12B_baby_birth_month -
+                        , '2'           // state_baby_birth_year
+                        , '4'           // state_12B_baby_birth_month -
                     )
                     .check.interaction({
                         state: 'state_baby_birth_day',
@@ -679,7 +684,7 @@ describe("Mama Nigeria App", function() {
                             , '12345'       // state_personnel_auth
                             , '5'           // state_msg_receiver - trusted friend
                             , '08080020002' // state_receiver_msisdn
-                            , '2'           // state_pregnancy_status - babyk
+                            , '2'           // state_pregnancy_status - baby
                             , '2'           // state_baby_birth_year - last year
                             , '2'           // state_12B_baby_birth_month -
                             , '32'          // state_baby_birth_day
@@ -710,7 +715,6 @@ describe("Mama Nigeria App", function() {
                             , '5'           // state_msg_receiver - trusted friend
                             , '08080020002' // state_receiver_msisdn
                             , '2'           // state_pregnancy_status - baby
-                            , '2'           // state_pregnancy_status - babyk
                             , '2'           // state_baby_birth_year - last year
                             , '2'           // state_12B_baby_birth_month -
                             , '12'          // state_baby_birth_day
@@ -757,7 +761,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_r01_number_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_personnel_auth_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -779,7 +783,6 @@ describe("Mama Nigeria App", function() {
                         , '5'           // state_msg_receiver - trusted friend
                         , '08080020002' // state_receiver_msisdn
                         , '2'           // state_pregnancy_status - baby
-                        , '2'           // state_pregnancy_status - babyk
                         , '2'           // state_baby_birth_year - last year
                         , '2'           // state_12B_baby_birth_month -
                         , '13'          // state_baby_birth_day
@@ -816,12 +819,11 @@ describe("Mama Nigeria App", function() {
                             , '5'           // state_msg_receiver - trusted friend
                             , '08080020002' // state_receiver_msisdn
                             , '2'           // state_pregnancy_status - baby
-                            , '2'           // state_pregnancy_status - babyk
                             , '2'           // state_baby_birth_year - last year
-                            , '2'           // state_12B_baby_birth_month -
+                            , '7'           // state_12B_baby_birth_month -
                             , '13'          // state_baby_birth_day
-                            , '3'           // state_msg-language - igbo
-                            , '1'           // state_msg_type - sms
+                            , '3'           // state_msg_language - igbo
+                            , '2'           // state_msg_type - sms
                         )
                         .check.interaction({
                             state: 'state_end_sms',
@@ -850,12 +852,11 @@ describe("Mama Nigeria App", function() {
                             , '5'           // state_msg_receiver - trusted friend
                             , '08080020002' // state_receiver_msisdn
                             , '2'           // state_pregnancy_status - baby
-                            , '2'           // state_pregnancy_status - babyk
                             , '2'           // state_baby_birth_year - last year
                             , '2'           // state_12B_baby_birth_month -
                             , '13'          // state_baby_birth_day
                             , '3'           // state_msg-language - igbo
-                            , '2'           // state_msg_type - voice
+                            , '1'           // state_msg_type - voice
                         )
                         .check.interaction({
                             state: 'state_voice_days',
@@ -889,12 +890,11 @@ describe("Mama Nigeria App", function() {
                         , '5'           // state_msg_receiver - trusted friend
                         , '08080020002' // state_receiver_msisdn
                         , '2'           // state_pregnancy_status - baby
-                        , '2'           // state_pregnancy_status - babyk
                         , '2'           // state_baby_birth_year - last year
                         , '2'           // state_12B_baby_birth_month -
                         , '13'          // state_baby_birth_day
                         , '3'           // state_msg-language - igbo
-                        , '2'           // state_msg_type - voice
+                        , '1'           // state_msg_type - voice
                         , '1'           // state_voice_days - monday and wednesday
                     )
                     .check.interaction({
@@ -927,7 +927,6 @@ describe("Mama Nigeria App", function() {
                         , '5'           // state_msg_receiver - trusted friend
                         , '08080020002' // state_receiver_msisdn
                         , '2'           // state_pregnancy_status - baby
-                        , '2'           // state_pregnancy_status - babyk
                         , '2'           // state_baby_birth_year - last year
                         , '2'           // state_12B_baby_birth_month -
                         , '13'          // state_baby_birth_day

@@ -51,14 +51,7 @@ go.app = function() {
                     if (content != '12345') {      // temporarily hard-coded
                         return 'state_retry_personnel_auth';
                     } else {
-                        self.im.user.set_answer('mama_num', content);
-                        return go.utils
-                            // get or create mama contact
-                            .get_or_create_contact(content, self.im)
-                            .then(function(mama_id) {
-                                self.im.user.set_answer('mama_id', mama_id);
-                                return 'state_msg_receiver';
-                            });
+                        return 'state_msg_receiver';
                     }
                 }
             });
@@ -75,14 +68,7 @@ go.app = function() {
                     if (content == '12345') {
                         return 'state_msg_receiver';
                     } else {
-                        self.im.user.set_answer('mama_num', content);
-                        return go.utils
-                            // get or create mama contact
-                            .get_or_create_contact(content, self.im)
-                            .then(function(mama_id) {
-                                self.im.user.set_answer('mama_id', mama_id);
-                                return 'state_msg_receiver';
-                            });
+                        return 'state_retry_personnel_auth';
                     }
                 }
             });
@@ -207,9 +193,9 @@ go.app = function() {
             if (currentMonth > 10) {
                 startDate.add('month', (12 - currentMonth));
             }
-            console.log('today month: '+currentMonth);
+            /*console.log('today month: '+currentMonth);
             console.log('monthsToDisplay: '+monthsToDisplay);
-            console.log('startDate: '+startDate);
+            console.log('startDate: '+startDate);*/
             return new ChoiceState(name, {
                 question: $('Period month?'),
                 choices: go.utils.make_month_choices($, today, monthsToDisplay, 1),
@@ -221,8 +207,8 @@ go.app = function() {
         self.add('state_5B_period_month', function(name) {
             var today = go.utils.get_today(self.im.config);
             var monthsToDisplay = today.format("MM");
-            console.log('today: '+today);
-            console.log('monthsToDisplay: '+monthsToDisplay);
+            /*console.log('today: '+today);
+            console.log('monthsToDisplay: '+monthsToDisplay);*/
             return new ChoiceState(name, {
                 question: $("Period month?"),
                 choices: go.utils.make_month_choices($, today, monthsToDisplay, 1),
@@ -250,25 +236,25 @@ go.app = function() {
         // ChoiceState st-12A
         self.add('state_12A_baby_birth_month', function(name) {
             var startDate = go.utils.get_today(self.im.config);
-            var currentMonth = today.format("MM");
+            var currentMonth = startDate.format("MM");
             var monthsToDisplay = currentMonth <= 10 ? currentMonth : 10;
             if (currentMonth > 10) {
                 startDate.add('month', (12 - currentMonth));
             }
-            console.log('today month: '+currentMonth);
+            /*console.log('today month: '+currentMonth);
             console.log('monthsToDisplay: '+monthsToDisplay);
-            console.log('startDate: '+startDate);
+            console.log('startDate: '+startDate);*/
             return new ChoiceState(name, {
                 question: $('Period month?'),
-                choices: go.utils.make_month_choices($, today, monthsToDisplay, 1),
-                next: 'state_12B_baby_birth_month'
+                choices: go.utils.make_month_choices($, startDate, monthsToDisplay, 1),
+                next: 'state_baby_birth_day'
             });
         });
 
         // ChoiceState st-12B
         self.add('state_12B_baby_birth_month', function(name) {
             var startDate = go.utils.get_today(self.im.config);
-            var currentMonth = today.format("MM");
+            var currentMonth = startDate.format("MM");
             var monthsToDisplay = currentMonth <= 10 ? currentMonth : 10;
             if (currentMonth > 10) {
                 startDate.add('month', (12 - currentMonth));
@@ -278,13 +264,13 @@ go.app = function() {
             console.log('startDate: '+startDate);
             return new ChoiceState(name, {
                 question: $('Period month?'),
-                choices: go.utils.make_month_choices($, today, monthsToDisplay, 1),
+                choices: go.utils.make_month_choices($, startDate, monthsToDisplay, 1),
                 next: 'state_baby_birth_day'
             });
         });
 
         // FreeText st-13
-        self.add('state_baby_birth_year_birth_day', function(name) {
+        self.add('state_baby_birth_day', function(name) {
             var month = self.im.user.answers.state_12A_baby_birth_month ||
                         self.im.user.answers.state_12B_baby_birth_month;
             var year = self.im.user.answers.baby_birth_year;
@@ -320,7 +306,7 @@ go.app = function() {
                         return 'state_retry_baby_birth_day';
                     } else {
                         self.im.user.set_answer('birth_date', birth_date);
-                        return 'state_r09_language';
+                        return 'state_msg_language';
                     }
                 }
             });
