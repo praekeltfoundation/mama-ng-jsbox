@@ -189,15 +189,7 @@ go.app = function() {
         // ChoiceState st-5A
         self.add('state_5A_period_month', function(name) {
             var speech_option = 1;
-            /*var startDate = go.utils.get_today(self.im.config);
-            var currentMonth = today.format("MM");
-            var monthsToDisplay = currentMonth <= 10 ? currentMonth : 10;
-            if (currentMonth > 10) {
-                startDate.add('month', (12 - currentMonth));
-            }
-            console.log('today month: '+currentMonth);
-            console.log('monthsToDisplay: '+monthsToDisplay);
-            console.log('startDate: '+startDate);*/
+
             return new ChoiceState(name, {
                 question: $('Period month?'),
                 helper_metadata: go.utils.make_voice_helper_data(
@@ -216,17 +208,30 @@ go.app = function() {
                     new Choice('nov', $('November')),
                     new Choice('dec', $('December'))
                 ],
-                next: 'state_last_period_day'
+                next: function(choice) {
+                    var today = go.utils.get_today(self.im.config);
+                    var currentMonth = parseInt(today.format("MM"));
+                    var validStartMonth = currentMonth <= 10 ? 0 : currentMonth-10;
+
+                    console.log('A today month: '+currentMonth);
+                    console.log('A validStartMonth: '+validStartMonth);
+                    var choiceMonth = today.month(choice.value).format("MM");
+                    console.log('A choice month: '+choiceMonth);
+                    if (choiceMonth <= currentMonth && choiceMonth > validStartMonth)
+                    {
+                        return 'state_last_period_day';
+                    }
+                    else {
+                        return 'state_retry_5A_period_month';
+                    }
+                }
             });
         });
 
         // ChoiceState st-5B
         self.add('state_5B_period_month', function(name) {
             var speech_option = 1;
-            /*var today = go.utils.get_today(self.im.config);
-            var monthsToDisplay = today.format("MM");
-            console.log('today: '+today);
-            console.log('monthsToDisplay: '+monthsToDisplay);*/
+
             return new ChoiceState(name, {
                 question: $("Period month?"),
                 helper_metadata: go.utils.make_voice_helper_data(
@@ -245,7 +250,29 @@ go.app = function() {
                     new Choice('nov', $('November')),
                     new Choice('dec', $('December'))
                 ],
-                next: 'state_last_period_day'
+                next: function(choice) {
+                    var today = go.utils.get_today(self.im.config);
+                    today.subtract('year', 1);
+                    var currentMonth = parseInt(today.format("MM"));
+                    var validStartMonth = currentMonth <= 10 ? ((currentMonth+13) % 10) : -1;
+                    validStartMonth = validStartMonth === 0 ? 10 : validStartMonth+10;
+                    /*if (currentMonth > 10) {
+                        startDate.add('month', (12 - currentMonth));
+                    }*/
+                    console.log('B today month: '+currentMonth);
+                    console.log('B validStartMonth: '+validStartMonth);
+                    var choiceMonth = today.month(choice.value).format("MM");
+                    console.log('B choice month: '+choiceMonth);
+                    if (validStartMonth !== -1){
+                        if (choiceMonth > currentMonth && choiceMonth >= validStartMonth)
+                        {
+                            return 'state_last_period_day';
+                        }
+                        else {
+                            return 'state_retry_5B_period_month';
+                        }
+                    }
+                }
             });
         });
 

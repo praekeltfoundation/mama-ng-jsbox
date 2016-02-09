@@ -14,7 +14,7 @@ describe("Mama Nigeria App", function() {
 
             tester
                 .setup.config.app({
-                    testing_today: '2017-07-22',
+                    testing_today: '2017-09-22',
                     name: 'voice-registration-test',
                     control: {
                         url: "http://localhost:8000/api/v1/",
