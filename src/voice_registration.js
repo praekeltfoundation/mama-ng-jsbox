@@ -212,11 +212,47 @@ go.app = function() {
                     var today = go.utils.get_today(self.im.config);
                     var currentMonth = parseInt(today.format("MM"));
                     var validStartMonth = currentMonth <= 10 ? 0 : currentMonth-10;
+                    var choiceMonth = parseInt(today.month(choice.value).format("MM"));
 
-                    console.log('A today month: '+currentMonth);
-                    console.log('A validStartMonth: '+validStartMonth);
-                    var choiceMonth = today.month(choice.value).format("MM");
-                    console.log('A choice month: '+choiceMonth);
+                    if (choiceMonth <= currentMonth && choiceMonth > validStartMonth)
+                    {
+                        return 'state_last_period_day';
+                    }
+                    else {
+                        return 'state_retry_5A_period_month';
+                    }
+                }
+            });
+        });
+
+        // retry state
+        self.add('state_retry_5A_period_month', function(name) {
+            var speech_option = 1;
+
+            return new ChoiceState(name, {
+                question: $("Invalid input. Period month?"),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                choices: [
+                    new Choice('jan', $('January')),
+                    new Choice('feb', $('February')),
+                    new Choice('mar', $('March')),
+                    new Choice('apr', $('April')),
+                    new Choice('may', $('May')),
+                    new Choice('jun', $('June')),
+                    new Choice('jul', $('July')),
+                    new Choice('aug', $('August')),
+                    new Choice('sep', $('September')),
+                    new Choice('oct', $('October')),
+                    new Choice('nov', $('November')),
+                    new Choice('dec', $('December'))
+                ],
+                next: function(choice) {
+                    var today = go.utils.get_today(self.im.config);
+                    var currentMonth = parseInt(today.format("MM"));
+                    var validStartMonth = currentMonth <= 10 ? 0 : currentMonth-10;
+                    var choiceMonth = parseInt(today.month(choice.value).format("MM"));
+
                     if (choiceMonth <= currentMonth && choiceMonth > validStartMonth)
                     {
                         return 'state_last_period_day';
@@ -256,13 +292,50 @@ go.app = function() {
                     var currentMonth = parseInt(today.format("MM"));
                     var validStartMonth = currentMonth <= 10 ? ((currentMonth+13) % 10) : -1;
                     validStartMonth = validStartMonth === 0 ? 10 : validStartMonth+10;
-                    /*if (currentMonth > 10) {
-                        startDate.add('month', (12 - currentMonth));
-                    }*/
-                    console.log('B today month: '+currentMonth);
-                    console.log('B validStartMonth: '+validStartMonth);
-                    var choiceMonth = today.month(choice.value).format("MM");
-                    console.log('B choice month: '+choiceMonth);
+                    var choiceMonth = parseInt(today.month(choice.value).format("MM"));
+
+                    if (validStartMonth !== -1){
+                        if (choiceMonth > currentMonth && choiceMonth >= validStartMonth)
+                        {
+                            return 'state_last_period_day';
+                        }
+                        else {
+                            return 'state_retry_5B_period_month';
+                        }
+                    }
+                }
+            });
+        });
+
+        // retry state
+        self.add('state_retry_5B_period_month', function(name) {
+            var speech_option = 1;
+
+            return new ChoiceState(name, {
+                question: $("Invalid input. Period month?"),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                choices: [
+                    new Choice('jan', $('January')),
+                    new Choice('feb', $('February')),
+                    new Choice('mar', $('March')),
+                    new Choice('apr', $('April')),
+                    new Choice('may', $('May')),
+                    new Choice('jun', $('June')),
+                    new Choice('jul', $('July')),
+                    new Choice('aug', $('August')),
+                    new Choice('sep', $('September')),
+                    new Choice('oct', $('October')),
+                    new Choice('nov', $('November')),
+                    new Choice('dec', $('December'))
+                ],
+                next: function(choice) {
+                    var today = go.utils.get_today(self.im.config);
+                    today.subtract('year', 1);
+                    var currentMonth = parseInt(today.format("MM"));
+                    var validStartMonth = currentMonth <= 10 ? ((currentMonth+13) % 10) : -1;
+                    validStartMonth = validStartMonth === 0 ? 10 : validStartMonth+10;
+                    var choiceMonth = parseInt(today.month(choice.value).format("MM"));
                     if (validStartMonth !== -1){
                         if (choiceMonth > currentMonth && choiceMonth >= validStartMonth)
                         {
@@ -388,22 +461,60 @@ go.app = function() {
                     new Choice('nov', $('November')),
                     new Choice('dec', $('December'))
                 ],
-                next: 'state_baby_birth_day'
+                next: function(choice) {
+                    var today = go.utils.get_today(self.im.config);
+                    var currentMonth = parseInt(today.format("MM"));
+                    var choiceMonth = parseInt(today.month(choice.value).format("MM"));
+
+                    if (choiceMonth > currentMonth) {
+                        return 'state_retry_12A_baby_birth_month';
+                    } else {
+                        return 'state_baby_birth_day';
+                    }
+                }
+            });
+        });
+
+        self.add('state_retry_12A_baby_birth_month', function(name) {
+            var speech_option = '1';
+
+            return new ChoiceState(name, {
+                question: $('Invalid input. Baby month?'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                choices: //go.utils.make_month_choices($, startDate, monthsToDisplay, 1),
+                [
+                    new Choice('jan', $('January')),
+                    new Choice('feb', $('February')),
+                    new Choice('mar', $('March')),
+                    new Choice('apr', $('April')),
+                    new Choice('may', $('May')),
+                    new Choice('jun', $('June')),
+                    new Choice('jul', $('July')),
+                    new Choice('aug', $('August')),
+                    new Choice('sep', $('September')),
+                    new Choice('oct', $('October')),
+                    new Choice('nov', $('November')),
+                    new Choice('dec', $('December'))
+                ],
+                next: function(choice) {
+                    var today = go.utils.get_today(self.im.config);
+                    var currentMonth = parseInt(today.format("MM"));
+                    var choiceMonth = parseInt(today.month(choice.value).format("MM"));
+
+                    if (choiceMonth > currentMonth) {
+                        return 'state_retry_12A_baby_birth_month';
+                    } else {
+                        return 'state_baby_birth_day';
+                    }
+                }
             });
         });
 
         // ChoiceState st-12B
         self.add('state_12B_baby_birth_month', function(name) {
             var speech_option = 1;
-            /*var startDate = go.utils.get_today(self.im.config);
-            var currentMonth = startDate.format("MM");
-            var monthsToDisplay = currentMonth <= 10 ? currentMonth : 10;
-            if (currentMonth > 10) {
-                startDate.add('month', (12 - currentMonth));
-            }
-            console.log('today month: '+currentMonth);
-            console.log('monthsToDisplay: '+monthsToDisplay);
-            console.log('startDate: '+startDate);*/
+
             return new ChoiceState(name, {
                 question: $('Baby month?'),
                 helper_metadata: go.utils.make_voice_helper_data(
@@ -422,7 +533,51 @@ go.app = function() {
                     new Choice('nov', $('November')),
                     new Choice('dec', $('December'))
                 ],
-                next: 'state_baby_birth_day'
+                next: function(choice) {
+                    var today = go.utils.get_today(self.im.config);
+                    var currentMonth = parseInt(today.format("MM"));
+                    var choiceMonth =  parseInt(today.month(choice.value).format("MM"));
+                    if (choiceMonth < currentMonth) {
+                        return 'state_retry_12B_baby_birth_month';
+                    } else {
+                        return 'state_baby_birth_day';
+                    }
+                }
+            });
+        });
+
+        self.add('state_retry_12B_baby_birth_month', function(name) {
+            var speech_option = 1;
+
+            return new ChoiceState(name, {
+                question: $('Invalid input. Baby month?'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                choices: [
+                    new Choice('jan', $('January')),
+                    new Choice('feb', $('February')),
+                    new Choice('mar', $('March')),
+                    new Choice('apr', $('April')),
+                    new Choice('may', $('May')),
+                    new Choice('jun', $('June')),
+                    new Choice('jul', $('July')),
+                    new Choice('aug', $('August')),
+                    new Choice('sep', $('September')),
+                    new Choice('oct', $('October')),
+                    new Choice('nov', $('November')),
+                    new Choice('dec', $('December'))
+                ],
+                next: function(choice) {
+                    var today = go.utils.get_today(self.im.config);
+                    var currentMonth = parseInt(today.format("MM"));
+                    var choiceMonth = parseInt(today.month(choice.value).format("MM"));
+
+                    if (choiceMonth < currentMonth) {
+                        return 'state_retry_12B_baby_birth_month';
+                    } else {
+                        return 'state_baby_birth_day';
+                    }
+                }
             });
         });
 
