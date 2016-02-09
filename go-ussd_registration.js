@@ -227,6 +227,21 @@ go.utils = {
             });
     },
 
+    get_contact_by_msisdn: function(msisdn, im) {
+        var params = {
+            msisdn: msisdn
+        };
+        return go.utils
+            .control_api_call('get', params, null, 'contacts/search/', im)
+            .then(function(json_get_response) {
+                var contacts_found = json_get_response.data.results;
+                // Return the first contact's id
+                return (contacts_found.length > 0)
+                    ? contacts_found[0]
+                    : null;
+            });
+    },
+
     get_contact_by_id: function(contact_id, im) {
         var endpoint = 'contacts/' + contact_id + '/';
         return go.utils
@@ -254,7 +269,7 @@ go.utils = {
     },
 
     // Gets a contact id if it exists, otherwise creates a new one
-    get_or_create_contact: function(msisdn, im) {
+    get_or_create_contact_id: function(msisdn, im) {
         msisdn = go.utils.normalize_msisdn(msisdn, '234');  // nigeria
         return go.utils
             // Get contact id using msisdn
@@ -263,6 +278,26 @@ go.utils = {
                 if (contact_id !== null) {
                     // If contact exists, return the id
                     return contact_id;
+                } else {
+                    // If contact doesn't exist, create it
+                    return go.utils
+                        .create_contact(msisdn, im)
+                        .then(function(contact_id) {
+                            return contact_id;
+                        });
+                }
+            });
+    },
+
+    get_or_create_contact: function(msisdn, im) {
+        msisdn = go.utils.normalize_msisdn(msisdn, '234');  // nigeria
+        return go.utils
+            // Get contact id using msisdn
+            .get_contact_by_msisdn(msisdn, im)
+            .then(function(contact) {
+                if (contact !== null) {
+                    // If contact exists, return the id
+                    return contact;
                 } else {
                     // If contact doesn't exist, create it
                     return go.utils
@@ -675,6 +710,18 @@ go.utils = {
             });
     },
 
+    check_health_worker_msisdn: function(msisdn, im) {
+        return go.utils
+            .get_or_create_contact(msisdn, im)
+            .then(function(contact) {
+                if (contact.details.personnel_code) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+    },
+
     validate_personnel_code: function(im, content) {
         return Q()
             .then(function(q_response) {
@@ -839,9 +886,9 @@ go.app = function() {
         self.add('state_start', function(name) {
             self.im.user.answers = {};
             return go.utils
-                .check_msisdn_hcp(self.im.user.addr)
-                .then(function(hcp_recognised) {
-                    if (hcp_recognised) {
+                .check_health_worker_msisdn(self.im.user.addr, self.im)
+                .then(function(recognised) {
+                    if (recognised) {
                         return self.states.create('state_msg_receiver');
                     } else {
                         return self.states.create('state_auth_code');

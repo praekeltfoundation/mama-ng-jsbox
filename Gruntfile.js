@@ -148,18 +148,18 @@ module.exports = function (grunt) {
             test_ussd_registration: {
                 src: ['<%= paths.test.ussd_registration %>']
             },
-            test_voice_registration: {
+            /*test_voice_registration: {
                 src: ['<%= paths.test.voice_registration %>']
             },
             test_voice_change: {
                 src: ['<%= paths.test.voice_change %>']
             },
-            /* test_sms_inbound: {
+            test_sms_inbound: {
             //     src: ['<%= paths.test.sms_inbound %>']
-            }*/
+            }
             test_ussd_public: {
                 src: ['<%= paths.test.ussd_public %>']
-            }
+            }*/
         }
     });
 
