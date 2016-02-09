@@ -141,10 +141,22 @@ go.utils = {
             .then(function(q_response) {
                 if (msisdn === '082444') {
                     return 'sms';
-                } else if (msisdn === '082555') {
+                } else if (msisdn === '082222') {
                     return 'voice';
                 } else {
                     return 'none';
+                }
+            });
+    },
+
+    check_role: function(msisdn) {
+        return Q()
+            .then(function(q_response) {
+                if (msisdn === '082101' || msisdn === '082555') {
+                    return 'father_role';
+                }
+                else {
+                    return 'mother_role';
                 }
             });
     },
@@ -701,7 +713,6 @@ go.app = function() {
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
-    //var PaginatedChoiceState = vumigo.states.PaginatedChoiceState;
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
 
@@ -749,13 +760,15 @@ go.app = function() {
                 "Welcome to Hello Mama. Do you have permission to manage the number [MSISDN]?",
             "state_msisdn_no_permission":  // unnamed state on flow diagram
                 "We're sorry, you do not have permission to update the preferences for this subscriber.",
-            "state_language":   //st-D
+            "state_language":   // st-D
                 "Welcome to Hello Mama. Please choose your language",
-            "state_registered_msisdn":  //st-C
+            "state_registered_msisdn":  // st-C
                 "Please enter the number which is registered to receive messages. For example, 0803304899",
-            "state_main_menu":  //st-A
+            "state_main_menu":  // st-A
                 "Select:",
-            "state_msisdn_not_recognised":  //st-F
+            "state_main_menu_father": // st-A1
+                "Select:",
+            "state_msisdn_not_recognised":  // st-F
                 "We do not recognise this number. Please dial from the registered number or sign up with your local Community Health Extension worker.",
             "state_already_registered_baby":
                 "You are already registered for baby messages.",
@@ -789,6 +802,8 @@ go.app = function() {
                 "We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?",
             "state_loss_subscription_confirm":
                 "Thank you. You will now receive messages to support you during this difficult time.",
+            "state_optout_receiver":
+                "Who would you like to stop receiving messages?",
             "state_end_optout":
                 "Thank you. You will no longer receive messages",
             "state_end_exit":
@@ -868,13 +883,13 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 choices: [
-                    new Choice('state_main_menu', $("Yes")),
+                    new Choice('state_check_receiver_role', $("Yes")),
                     new Choice('state_msisdn_no_permission', $("No")),
                     new Choice('state_registered_msisdn', $("Change the number I'd like to manage"))
                   ],
                   error: $(get_error_text(name)),
                   next: function(choice) {
-                      return choice.value;
+                          return choice.value;
                   }
               });
         });
@@ -919,17 +934,7 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: function(content) {
-                        return go.utils
-                            .check_msisdn_hcp(content)
-                            .then(function(recognised) {
-                                if (recognised) {
-                                    return 'state_main_menu';
-                                } else {
-                                    return 'state_msisdn_not_recognised';
-                                }
-                            });
-                }
+                next: 'state_check_receiver_role'  // needs to be able to make it to st-F
             });
         });
 
@@ -940,6 +945,22 @@ go.app = function() {
                 choices: [
                     new Choice('state_check_baby_subscription', $("Start Baby messages")),
                     new Choice('state_check_msg_type', $("Change message preferences")),
+                    new Choice('state_new_msisdn', $("Change my number")),
+                    new Choice('state_msg_language', $("Change language")),
+                    new Choice('state_optout_reason', $("Stop receiving messages"))
+                ],
+                error: $(get_error_text(name)),
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+        // ChoiceState st-A1
+        self.add('state_main_menu_father', function(name) {
+            return new ChoiceState(name, {
+                question: $(questions[name]),
+                choices: [
+                    new Choice('state_check_baby_subscription', $("Start Baby messages")),
                     new Choice('state_new_msisdn', $("Change my number")),
                     new Choice('state_msg_language', $("Change language")),
                     new Choice('state_optout_reason', $("Stop receiving messages"))
@@ -980,13 +1001,27 @@ go.app = function() {
                 });
         });
 
+        self.add('state_check_receiver_role', function(name) {
+            return go.utils
+                .check_role(self.im.user.addr)
+                .then(function(role) {
+                    if (role == 'father_role') {
+                        return self.states.create('state_main_menu_father');
+                    } else if (role == 'mother_role') {
+                        return self.states.create('state_main_menu');
+                    } else {
+                        return self.state.create('state_main_menu');
+                    }
+                });
+        });
+
         // ChoiceState st-01
         self.add('state_already_registered_baby', function(name) {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
                 choices: [
-                    new Choice('state_main_menu', $("Back to main menu")),
+                    new Choice('state_check_receiver_role', $("Back to main menu")),
                     new Choice('state_end_exit', $("Exit"))
                 ],
                 next: function(choice) {
@@ -1060,7 +1095,7 @@ go.app = function() {
                 choices: [
                     new Choice('state_voice_days', $("Change the day and time I receive messages")),
                     new Choice('state_sms_confirm', $("Change from voice to text messages")),
-                    new Choice('state_main_menu', $("Back to main menu"))
+                    new Choice('state_check_receiver_role', $("Back to main menu"))
                 ],
                 next: function(choice) {
                     return choice.value;
@@ -1086,33 +1121,18 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: 'state_msg_receiver'
-            });
-        });
-
-        // ChoiceState st-10
-        self.add('state_msg_receiver', function(name) {
-            return new ChoiceState(name, {
-                question: $(questions[name]),
-                error: $(get_error_text(name)),
-                choices: [
-                    new Choice('mother', $("The Mother")),
-                    new Choice('father', $("The Father")),
-                    new Choice('family_member', $("Family member")),
-                    new Choice('trusted_friend', $("Trusted friend"))
-                ],
                 next: 'state_msg_receiver_confirm'
             });
         });
 
-        // EndState st-11
+        // EndState st-10
         self.add('state_msg_receiver_confirm', function(name) {
             return new EndState(name, {
                 text: $(questions[name])
             });
         });
 
-        // ChoiceState st-12
+        // ChoiceState st-11
         self.add('state_msg_language', function(name) {
             return new ChoiceState(name, {
                 question: $(questions[name]),
@@ -1126,14 +1146,14 @@ go.app = function() {
             });
         });
 
-        // EndState st-13
+        // EndState st-12
         self.add('state_msg_language_confirm', function(name) {
             return new EndState(name, {
                 text: $(questions[name])
             });
         });
 
-        // ChoiceState st-14
+        // ChoiceState st-13
         self.add('state_optout_reason', function(name) {
             return new ChoiceState(name, {
                 question: $(questions[name]),
@@ -1142,8 +1162,8 @@ go.app = function() {
                     new Choice('state_loss_subscription', $("Mother miscarried")),
                     new Choice('state_loss_subscription', $("Baby stillborn")),
                     new Choice('state_loss_subscription', $("Baby passed away")),
-                    new Choice('state_end_optout', $("Messages not useful")),
-                    new Choice('state_end_optout', $("Other"))
+                    new Choice('state_optout_receiver', $("Messages not useful")),
+                    new Choice('state_optout_receiver', $("Other"))
                 ],
                 next: function(choice) {
                     return choice.value;
@@ -1151,7 +1171,7 @@ go.app = function() {
             });
         });
 
-        // ChoiceState st-15
+        // ChoiceState st-14
         self.add('state_loss_subscription', function(name) {
             return new ChoiceState(name, {
                 question: $(questions[name]),
@@ -1171,11 +1191,52 @@ go.app = function() {
             });
         });
 
-        // EndState st-16
+        // EndState st-15
         self.add('state_loss_subscription_confirm', function(name) {
             return new EndState(name, {
                 text: $(questions[name])
             });
+        });
+
+        // ChoiceState st-16
+        self.add('state_optout_receiver', function(name) {
+            var role = go.utils.check_role(self.im.user.addr);
+            if (role === 'father_role') {
+                return new ChoiceState(name, {
+                    question: $(questions[name]),
+                    error: $(get_error_text(name)),
+                    choices: [
+                        new Choice('me', $("Only me")),
+                        new Choice('father_mother', $("The Father and the Mother"))
+                    ],
+                    next: function(choice) {
+                        switch (choice.value) {
+                            case 'me':  // deliberate fall-through to default
+                            case 'father_mother':
+                                return 'state_end_optout';
+                        }
+                    }
+                });
+            }
+            else {
+                return new ChoiceState(name, {
+                    question: $(questions[name]),
+                    error: $(get_error_text(name)),
+                    choices: [
+                        new Choice('me', $("Only me")),
+                        new Choice('father', $("The Father")),
+                        new Choice('father_mother', $("The Father and the Mother"))
+                    ],
+                    next: function(choice) {
+                        switch (choice.value) {
+                            case 'me':  // deliberate fall-through to default
+                            case 'father':
+                            case 'father_mother':
+                                return 'state_end_optout';
+                        }
+                    }
+                });
+            }
         });
 
         // EndState st-17
