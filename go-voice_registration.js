@@ -682,11 +682,7 @@ go.utils = {
         return go.utils
             .get_or_create_contact(msisdn, im)
             .then(function(contact) {
-                if (contact.details.personnel_code) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return contact.details.personnel_code ? true : false;
             });
     },
 
