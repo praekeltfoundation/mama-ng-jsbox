@@ -1038,6 +1038,7 @@ go.app = function() {
                     var validStartMonth = currentMonth <= 10 ? ((currentMonth+13) % 10) : -1;
                     validStartMonth = validStartMonth === 0 ? 10 : validStartMonth+10;
                     var choiceMonth = parseInt(today.month(choice.value).format("MM"));
+                    
                     if (validStartMonth !== -1){
                         if (choiceMonth > currentMonth && choiceMonth >= validStartMonth)
                         {
@@ -1066,6 +1067,7 @@ go.app = function() {
             var monthNum = dateRef.month(month).format("MM");
             var speech_option = go.utils.get_speech_option_birth_day(
                 self.im, monthNum);
+
             return new FreeText(name, {
                 question: $('Last period day {{ month }} [{{ year}}]'
             ).context({ month: month, year: year }),
@@ -1098,6 +1100,7 @@ go.app = function() {
             var monthNum = dateRef.month(month).format("MM");
             var speech_option = go.utils.get_speech_option_birth_day(
                 self.im, monthNum);
+
             return new FreeText(name, {
                 question: $('Retry period day'
             ).context({ month: month, year: year }),
@@ -1135,20 +1138,12 @@ go.app = function() {
         // ChoiceState st-12A
         self.add('state_12A_baby_birth_month', function(name) {
             var speech_option = '1';
-            /*var startDate = go.utils.get_today(self.im.config);
-            var currentMonth = startDate.format("MM");
-            var monthsToDisplay = currentMonth <= 10 ? currentMonth : 10;
-            if (currentMonth > 10) {
-                startDate.add('month', (12 - currentMonth));
-            }
-            console.log('today month: '+currentMonth);
-            console.log('monthsToDisplay: '+monthsToDisplay);
-            console.log('startDate: '+startDate);*/
+
             return new ChoiceState(name, {
                 question: $('Baby month?'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
-                choices: //go.utils.make_month_choices($, startDate, monthsToDisplay, 1),
+                choices:
                 [
                     new Choice('jan', $('January')),
                     new Choice('feb', $('February')),
@@ -1184,7 +1179,7 @@ go.app = function() {
                 question: $('Invalid input. Baby month?'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
-                choices: //go.utils.make_month_choices($, startDate, monthsToDisplay, 1),
+                choices:
                 [
                     new Choice('jan', $('January')),
                     new Choice('feb', $('February')),
@@ -1298,6 +1293,7 @@ go.app = function() {
             var monthNum = dateRef.month(month).format("MM");
             var speech_option = go.utils.get_speech_option_birth_day(
                 self.im, monthNum);
+
             return new FreeText(name, {
                 question: $('Birth day in {{ month }} [{{ year}}]'
             ).context({ month: month, year: year }),
@@ -1330,6 +1326,7 @@ go.app = function() {
             var monthNum = dateRef.month(month).format("MM");
             var speech_option = go.utils.get_speech_option_birth_day(
                 self.im, monthNum);
+
             return new FreeText(name, {
                 question: $('Retry birth day'
             ).context({ month: month, year: year }),
