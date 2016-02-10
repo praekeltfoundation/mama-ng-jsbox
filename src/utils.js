@@ -691,13 +691,6 @@ go.utils = {
             });
     },
 
-
-    //     return Q()
-    //         .then(function(q_response) {
-    //             return content === '12345';
-    //         });
-    // },
-
     check_valid_alpha: function(input) {
         var alpha_only = new RegExp('^[A-Za-z]+$');
         return input !== '' && alpha_only.test(input);
