@@ -37,6 +37,7 @@ module.exports = function() {
 
         // get contact 08080020002 by msisdn
         {
+            'repeatable': true,  // necessary for timeout restart testing
             'request': {
                 'method': 'GET',
                 'params': {

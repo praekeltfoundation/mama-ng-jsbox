@@ -96,7 +96,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            it.skip("should restart", function() {
+            it("should restart", function() {
                 return tester
                     .setup.user.addr('08080020002')
                     .inputs(
