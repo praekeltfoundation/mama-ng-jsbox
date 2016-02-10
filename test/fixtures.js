@@ -6,7 +6,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'msisdn': '+2348080070007'
+                    'details__addresses__msisdn': '+2348080070007'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -42,7 +42,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'msisdn': '+2348080020002'
+                    'details__addresses__msisdn': '+2348080020002'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -76,7 +76,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'msisdn': '+2347070050005'
+                    'details__addresses__msisdn': '+2347070050005'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -124,7 +124,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'msisdn': '+2347070060006'
+                    'details__addresses__msisdn': '+2347070060006'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -172,7 +172,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'msisdn': '+2348080030003'
+                    'details__addresses__msisdn': '+2348080030003'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -197,7 +197,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'personnel_code': '12345'
+                    'details__personnel_code': '12345'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -232,7 +232,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'personnel_code': 'aaaaa'
+                    'details__personnel_code': 'aaaaa'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],

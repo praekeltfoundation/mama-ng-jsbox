@@ -214,7 +214,7 @@ go.utils = {
 
     get_contact_by_msisdn: function(msisdn, im) {
         var params = {
-            msisdn: msisdn
+            "details__addresses__msisdn": msisdn
         };
         return go.utils
             .service_api_call('identities', 'get', params, null, 'search/', im)
@@ -687,7 +687,7 @@ go.utils = {
 
     validate_personnel_code: function(im, content) {
         var params = {
-            "personnel_code": content
+            "details__personnel_code": content
         };
         return go.utils
             .service_api_call('identities', 'get', params, null, 'search/', im)
@@ -760,7 +760,8 @@ go.app = function() {
         self.states.add('state_start', function() {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
-            return self.states.create("state_c12_number");
+
+            return self.states.create('state_c12_number');
         });
 
 

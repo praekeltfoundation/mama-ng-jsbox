@@ -35,7 +35,15 @@ go.app = function() {
         self.states.add('state_start', function(name) {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
-            return self.states.create("state_personnel_auth");
+            return go.utils
+                .check_health_worker_msisdn(self.im.user.addr, self.im)
+                .then(function(recognised) {
+                    if (recognised) {
+                        return self.states.create('state_msg_receiver');
+                    } else {
+                        return self.states.create('state_personnel_auth');
+                    }
+            });
         });
 
 
