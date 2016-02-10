@@ -679,11 +679,24 @@ go.utils = {
     },
 
     validate_personnel_code: function(im, content) {
-        return Q()
-            .then(function(q_response) {
-                return content === '12345';
+        var params = {
+            "personnel_code": content
+        };
+        return go.utils
+            .service_api_call('identities', 'get', params, null, 'search/', im)
+            .then(function(json_get_response) {
+                var contacts_found = json_get_response.data.results;
+                // Return the first contact's id
+                return contacts_found.length > 0;
             });
     },
+
+
+    //     return Q()
+    //         .then(function(q_response) {
+    //             return content === '12345';
+    //         });
+    // },
 
     check_valid_alpha: function(input) {
         var alpha_only = new RegExp('^[A-Za-z]+$');
