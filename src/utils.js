@@ -206,21 +206,6 @@ go.utils = {
 
 // CONTACT HANDLING
 
-    /*get_contact_id_by_msisdn: function(msisdn, im) {
-        var params = {
-            msisdn: msisdn
-        };
-        return go.utils
-            .control_api_call('get', params, null, 'contacts/search/', im)
-            .then(function(json_get_response) {
-                var contacts_found = json_get_response.data.results;
-                // Return the first contact's id
-                return (contacts_found.length > 0)
-                    ? contacts_found[0].id
-                    : null;
-            });
-    },*/
-
     get_contact_by_msisdn: function(msisdn, im) {
         var params = {
             msisdn: msisdn
@@ -262,27 +247,7 @@ go.utils = {
             });
     },
 
-    // Gets a contact id if it exists, otherwise creates a new one
-    /*get_or_create_contact_id: function(msisdn, im) {
-        msisdn = go.utils.normalize_msisdn(msisdn, '234');  // nigeria
-        return go.utils
-            // Get contact id using msisdn
-            .get_contact_id_by_msisdn(msisdn, im)
-            .then(function(contact_id) {
-                if (contact_id !== null) {
-                    // If contact exists, return the id
-                    return contact_id;
-                } else {
-                    // If contact doesn't exist, create it
-                    return go.utils
-                        .create_contact(msisdn, im)
-                        .then(function(contact_id) {
-                            return contact_id;
-                        });
-                }
-            });
-    },*/
-
+    // Gets a contact if it exists, otherwise creates a new one
     get_or_create_contact: function(msisdn, im) {
         msisdn = go.utils.normalize_msisdn(msisdn, '234');  // nigeria
         return go.utils
