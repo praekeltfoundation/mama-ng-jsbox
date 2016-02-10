@@ -58,7 +58,7 @@ go.app = function() {
             "state_voice_times":
                 "Thank you. At what time would they like to receive these calls?",
             "state_end_voice":
-                "Thank you. The person will now start receiving calls on [{{first_day}} and {{second_day}}] between [{{start_time}} - {{end_time}}].",
+                "Thank you. The person will now start receiving calls on {{first_day}} and {{second_day}} between {{start_time}} - {{end_time}}.",
             "state_end_sms":
                 "Thank you. The person will now start receiving messages three times a week."
         };
