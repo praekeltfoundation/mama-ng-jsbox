@@ -899,6 +899,43 @@ describe("Mama Nigeria App", function() {
                     assert.equal(expectedChoiceArray[2].value, "201507");
                 });
             });
+
+            describe("is_valid_msisdn", function() {
+                it('should return true/false if the msisdn is valid', function() {
+                    // test data
+                        // needs to start with 0 and be 10 - 13 characters in length to Validate
+                    var testDataArray = [
+                        '12345',
+                        'abcde',
+                        '082123',
+                        '12345678910',
+                        '01987654321',
+                        '08033048990',
+                        '080330ab990',
+                        '08033048990123',    // 14 chars in length
+                        '0803304899012'      // 13 chars in length
+                    ];
+
+                    // function call
+                    var resultsArray = [];
+                    for (var i=0; i<testDataArray.length; i++) {
+                        resultsArray.push(go.utils.is_valid_msisdn(testDataArray[i]));
+                    }
+
+                    // expected results
+                    assert.equal(resultsArray.length, 9);
+                    assert.equal(resultsArray[0], false);
+                    assert.equal(resultsArray[1], false);
+                    assert.equal(resultsArray[2], false);
+                    assert.equal(resultsArray[3], false);
+                    assert.equal(resultsArray[4], true);
+                    assert.equal(resultsArray[5], true);
+                    assert.equal(resultsArray[6], false);
+                    assert.equal(resultsArray[7], false);
+                    assert.equal(resultsArray[8], true);
+                });
+            });
+
         });
     });
 });
