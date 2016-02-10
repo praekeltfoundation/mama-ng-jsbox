@@ -135,7 +135,7 @@ describe("Mama Nigeria App", function() {
         describe("HCP recognised user", function() {
             it("should not be asked for personnel code", function() {
                 return tester
-                    .setup.user.addr('08080021232')
+                    .setup.user.addr('08080070007')
                     .inputs(
                         {session_event: 'new'}  // dial in
                     )
@@ -163,7 +163,7 @@ describe("Mama Nigeria App", function() {
             });
             it("to state_msg_receiver", function() {
                 return tester
-                    .setup.user.addr('08080021232')
+                    .setup.user.addr('08080070007')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'  // state_auth_code - personnel code

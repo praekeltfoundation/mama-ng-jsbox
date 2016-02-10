@@ -1,11 +1,11 @@
 module.exports = function() {
     return [
-        // get contact 08080021232 by msisdn (to validate personnel_code)
+        // get contact 08080070007 by msisdn (to validate personnel_code)
         {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'msisdn': '+2348080021232'
+                    'msisdn': '+2348080070007'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -20,12 +20,12 @@ module.exports = function() {
                     "next": null,
                     "previous": null,
                     "results": [{
-                        "url": "http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000002/",
-                        "id": "cb245673-aa41-4302-ac47-00000000002",
+                        "url": "http://localhost:8000/api/v1/contacts/cb245673-aa41-4302-ac47-00000000007/",
+                        "id": "cb245673-aa41-4302-ac47-00000000007",
                         "version": 1,
                         "details": {
                             "default_addr_type": "msisdn",
-                            "addresses": "msisdn:+2348080021232",
+                            "addresses": "msisdn:+2348080070007",
                             "personnel_code": "12345"
                         },
                         "created_at": "2015-07-10T06:13:29.693272Z",
