@@ -661,16 +661,21 @@ go.app = function() {
         // ChoiceState st-08
         self.add('state_msg_type', function(name) {
             var speech_option = '1';
+            var routing = {
+                        'sms': 'state_end_sms',
+                        'voice': 'state_voice_days'
+            };
+
             return new ChoiceState(name, {
                 question: $('Channel?'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('state_voice_days', $('voice')),
-                    new Choice('state_end_sms', $('sms'))
+                    new Choice('voice', $('voice')),
+                    new Choice('sms', $('sms'))
                 ],
                 next: function(choice) {
-                    return choice.value;
+                    return routing[choice.value];
                 }
             });
         });
