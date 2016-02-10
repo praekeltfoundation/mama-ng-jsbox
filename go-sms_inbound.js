@@ -88,35 +88,34 @@ go.utils = {
         };
     },
 
-// CONTROL API CALL
+// SERVICE API CALL
 
-    control_api_call: function(method, params, payload, endpoint, im) {
-        var api = new JsonApi(im, {
+    service_api_call: function (service, method, params, payload, endpoint, im) {
+        var http = new JsonApi(im, {
             headers: {
-                'Authorization': ['Token ' + im.config.control.api_key],
-                'Content-Type': ['application/json'],
+                'Authorization': ['Token ' + im.config.services[service].api_token]
             }
         });
         switch (method) {
             case "post":
-                return api.post(im.config.control.url + endpoint, {
+                return http.post(im.config.services[service].url + endpoint, {
                     data: payload
                 });
             case "get":
-                return api.get(im.config.control.url + endpoint, {
+                return http.get(im.config.services[service].url + endpoint, {
                     params: params
                 });
             case "patch":
-                return api.patch(im.config.control.url + endpoint, {
+                return http.patch(im.config.services[service].url + endpoint, {
                     data: payload
                 });
             case "put":
-                return api.put(im.config.control.url + endpoint, {
+                return http.put(im.config.services[service].url + endpoint, {
                     params: params,
-                    data: payload
+                  data: payload
                 });
             case "delete":
-                return api.delete(im.config.control.url + endpoint);
+                return http.delete(im.config.services[service].url + endpoint);
             }
     },
 
@@ -218,7 +217,7 @@ go.utils = {
             msisdn: msisdn
         };
         return go.utils
-            .control_api_call('get', params, null, 'identities/search/', im)
+            .service_api_call('identities', 'get', params, null, 'search/', im)
             .then(function(json_get_response) {
                 var contacts_found = json_get_response.data.results;
                 // Return the first contact's id
@@ -229,9 +228,9 @@ go.utils = {
     },
 
     get_contact_by_id: function(contact_id, im) {
-        var endpoint = 'identities/' + contact_id + '/';
+        var endpoint = contact_id + '/';
         return go.utils
-            .control_api_call('get', {}, null, endpoint, im)
+            .service_api_call('identities', 'get', {}, null, endpoint, im)
             .then(function(json_get_response) {
                 return json_get_response.data;
             });
@@ -246,7 +245,7 @@ go.utils = {
             }
         };
         return go.utils
-            .control_api_call("post", null, payload, 'identities/', im)
+            .service_api_call("identities", "post", null, payload, '', im)
             .then(function(json_post_response) {
                 var contact_created = json_post_response.data;
                 // Return the contact's id
@@ -277,9 +276,9 @@ go.utils = {
 
     update_contact: function(im, contact) {
         // For patching any field on the contact
-        var endpoint = 'identities/' + contact.id + '/';
+        var endpoint = contact.id + '/';
         return go.utils
-            .control_api_call('patch', {}, contact, endpoint, im)
+            .service_api_call("identities", 'patch', {}, contact, endpoint, im)
             .then(function(response) {
                 return response.data.id;
             });
@@ -433,7 +432,7 @@ go.utils = {
     subscribe_contact: function(im, subscription) {
         var payload = subscription;
         return go.utils
-            .control_api_call("post", null, payload, 'subscriptions/', im)
+            .service_api_call("subscriptions", "post", null, payload, '', im)
             .then(function(response) {
                 return response.data.id;
             });
@@ -447,7 +446,7 @@ go.utils = {
             active: "True"
         };
         return go.utils
-            .control_api_call("get", params, null, 'subscriptions/', im)
+            .service_api_call("subscriptions", "get", params, null, "", im)
             .then(function(json_get_response) {
                 return json_get_response.data.results;
             });
@@ -482,11 +481,11 @@ go.utils = {
                 var patch_calls = [];
                 for (i=0; i<subscriptions.length; i++) {
                     var updated_subscription = subscriptions[i];
-                    var endpoint = 'subscriptions/' + updated_subscription.id + '/';
+                    var endpoint = updated_subscription.id + '/';
                     updated_subscription.active = false;
                     // store the patch calls to be made
                     patch_calls.push(function() {
-                        return go.utils.control_api_call("patch", {}, updated_subscription, endpoint, im);
+                        return go.utils.service_api_call("subscriptions", "patch", {}, updated_subscription, endpoint, im);
                     });
                     clean = false;
                 }
@@ -525,9 +524,9 @@ go.utils = {
     },
 
     update_subscription: function(im, subscription) {
-        var endpoint = 'subscriptions/' + subscription.id + '/';
+        var endpoint = subscription.id + '/';
         return go.utils
-            .control_api_call('patch', {}, subscription, endpoint, im)
+            .service_api_call("subscriptions", 'patch', {}, subscription, endpoint, im)
             .then(function(response) {
                 return response.data.id;
             });

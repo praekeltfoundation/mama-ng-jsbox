@@ -16,9 +16,15 @@ describe("Mama Nigeria App", function() {
                 .setup.config.app({
                     testing_today: '2017-07-22',
                     name: 'voice-registration-test',
-                    control: {
-                        url: "http://localhost:8000/api/v1/",
-                        api_key: "control_test_key"
+                    services: {
+                        identities: {
+                            api_token: 'test_token_identities',
+                            url: "http://localhost:8000/api/v1/identities/"
+                        },
+                        subscriptions: {
+                            api_token: 'test_token_subscriptions',
+                            url: "http://localhost:8000/api/v1/subscriptions/"
+                        },
                     },
                     voice_content: {
                         url: "http://localhost:8001/api/v1/",

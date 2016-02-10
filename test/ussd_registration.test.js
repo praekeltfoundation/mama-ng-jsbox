@@ -22,9 +22,15 @@ describe("Mama Nigeria App", function() {
                     name: 'ussd-registration-test',
                     channel: '*120*8864*0000#',
                     testing_today: '2015-04-03 06:07:08.999',
-                    control: {
-                        url: "http://localhost:8000/api/v1/",
-                        api_key: "control_test_key"
+                    services: {
+                        identities: {
+                            api_token: 'test_token_identities',
+                            url: "http://localhost:8000/api/v1/identities/"
+                        },
+                        subscriptions: {
+                            api_token: 'test_token_subscriptions',
+                            url: "http://localhost:8000/api/v1/subscriptions/"
+                        },
                     },
                     endpoints: {
                         "sms": {"delivery_class": "sms"}
