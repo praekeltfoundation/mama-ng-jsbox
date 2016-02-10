@@ -539,7 +539,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_end_voice',
-                        reply: "Thank you. The person will now start receiving calls on [day and day] between [time - time]."
+                        reply: "Thank you. The person will now start receiving calls on [Tuesday and Thursday] between [2pm - 5pm]."
                     })
                     .check.reply.ends_session()
                     .run();
