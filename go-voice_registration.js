@@ -919,14 +919,14 @@ go.app = function() {
                         return 'state_last_period_day';
                     }
                     else {
-                        return 'state_retry_5A_period_month';
+                        return 'state_retry_this_year_period_month';
                     }
                 }
             });
         });
 
         // retry state
-        self.add('state_retry_5A_period_month', function(name) {
+        self.add('state_retry_this_year_period_month', function(name) {
             var speech_option = 1;
 
             return new ChoiceState(name, {
@@ -958,7 +958,7 @@ go.app = function() {
                         return 'state_last_period_day';
                     }
                     else {
-                        return 'state_retry_5A_period_month';
+                        return 'state_retry_this_year_period_month';
                     }
                 }
             });
@@ -1000,7 +1000,7 @@ go.app = function() {
                             return 'state_last_period_day';
                         }
                         else {
-                            return 'state_retry_5B_period_month';
+                            return 'state_retry_last_year_period_month';
                         }
                     }
                 }
@@ -1008,7 +1008,7 @@ go.app = function() {
         });
 
         // retry state
-        self.add('state_retry_5B_period_month', function(name) {
+        self.add('state_retry_last_year_period_month', function(name) {
             var speech_option = 1;
 
             return new ChoiceState(name, {
@@ -1043,7 +1043,7 @@ go.app = function() {
                             return 'state_last_period_day';
                         }
                         else {
-                            return 'state_retry_5B_period_month';
+                            return 'state_retry_last_year_period_month';
                         }
                     }
                 }
@@ -1109,7 +1109,7 @@ go.app = function() {
                     if (!go.utils.is_valid_date(period_date, 'DD-MM-YYYY')) {
                         return 'state_retry_last_period_day';
                     } else {
-                        self.im.user.set_answer('last_period_date', period_date);  //temp hard-coded
+                        self.im.user.set_answer('last_period_date', period_date);
                         return 'state_msg_language';
                     }
                 }
@@ -1162,7 +1162,7 @@ go.app = function() {
                     var choiceMonth = parseInt(today.month(choice.value).format("MM"));
 
                     if (choiceMonth > currentMonth) {
-                        return 'state_retry_12A_baby_birth_month';
+                        return 'state_retry_this_year_baby_birth_month';
                     } else {
                         return 'state_baby_birth_day';
                     }
@@ -1170,7 +1170,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_retry_12A_baby_birth_month', function(name) {
+        self.add('state_retry_this_year_baby_birth_month', function(name) {
             var speech_option = '1';
 
             return new ChoiceState(name, {
@@ -1198,7 +1198,7 @@ go.app = function() {
                     var choiceMonth = parseInt(today.month(choice.value).format("MM"));
 
                     if (choiceMonth > currentMonth) {
-                        return 'state_retry_12A_baby_birth_month';
+                        return 'state_retry_this_year_baby_birth_month';
                     } else {
                         return 'state_baby_birth_day';
                     }
@@ -1233,7 +1233,7 @@ go.app = function() {
                     var currentMonth = parseInt(today.format("MM"));
                     var choiceMonth =  parseInt(today.month(choice.value).format("MM"));
                     if (choiceMonth < currentMonth) {
-                        return 'state_retry_12B_baby_birth_month';
+                        return 'state_retry_last_year_baby_birth_month';
                     } else {
                         return 'state_baby_birth_day';
                     }
@@ -1241,7 +1241,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_retry_12B_baby_birth_month', function(name) {
+        self.add('state_retry_last_year_baby_birth_month', function(name) {
             var speech_option = 1;
 
             return new ChoiceState(name, {
@@ -1268,7 +1268,7 @@ go.app = function() {
                     var choiceMonth = parseInt(today.month(choice.value).format("MM"));
 
                     if (choiceMonth < currentMonth) {
-                        return 'state_retry_12B_baby_birth_month';
+                        return 'state_retry_last_year_baby_birth_month';
                     } else {
                         return 'state_baby_birth_day';
                     }
@@ -1362,9 +1362,9 @@ go.app = function() {
         self.add('state_msg_type', function(name) {
             var speech_option = '1';
             var routing = {
-                        'sms': 'state_end_sms',
-                        'voice': 'state_voice_days'
-                        };
+                    'sms': 'state_end_sms',
+                    'voice': 'state_voice_days'
+            };
 
             return new ChoiceState(name, {
                 question: $('Channel?'),
