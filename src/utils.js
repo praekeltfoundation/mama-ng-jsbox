@@ -206,7 +206,7 @@ go.utils = {
 
 // CONTACT HANDLING
 
-    get_contact_id_by_msisdn: function(msisdn, im) {
+    /*get_contact_id_by_msisdn: function(msisdn, im) {
         var params = {
             msisdn: msisdn
         };
@@ -219,7 +219,7 @@ go.utils = {
                     ? contacts_found[0].id
                     : null;
             });
-    },
+    },*/
 
     get_contact_by_msisdn: function(msisdn, im) {
         var params = {
@@ -263,7 +263,7 @@ go.utils = {
     },
 
     // Gets a contact id if it exists, otherwise creates a new one
-    get_or_create_contact_id: function(msisdn, im) {
+    /*get_or_create_contact_id: function(msisdn, im) {
         msisdn = go.utils.normalize_msisdn(msisdn, '234');  // nigeria
         return go.utils
             // Get contact id using msisdn
@@ -281,7 +281,7 @@ go.utils = {
                         });
                 }
             });
-    },
+    },*/
 
     get_or_create_contact: function(msisdn, im) {
         msisdn = go.utils.normalize_msisdn(msisdn, '234');  // nigeria
@@ -563,7 +563,7 @@ go.utils = {
 
     save_contact_info_and_subscribe: function(im) {
         var mama_id = im.user.answers.mama_id;
-        
+
         return Q
             .all([
                 // get mama contact

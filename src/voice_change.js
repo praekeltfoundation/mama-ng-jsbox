@@ -54,14 +54,14 @@ go.app = function() {
                         return go.utils
                             // get or create mama contact
                             .get_or_create_contact(content, self.im)
-                            .then(function(mama_id) {
-                                self.im.user.set_answer('mama_id', mama_id);
+                            .then(function(contact) {
+                                self.im.user.set_answer('mama_id', contact.id);
                                 return go.utils
-                                    .is_registered(mama_id, self.im)
+                                    .is_registered(contact.id, self.im)
                                     .then(function(is_registered) {
                                         if (is_registered === true) {
                                             return go.utils
-                                                .has_active_subscriptions(mama_id, self.im)
+                                                .has_active_subscriptions(contact.id, self.im)
                                                 .then(function(has_active_subscriptions) {
                                                     if (has_active_subscriptions === true) {
                                                         return self.states.create("state_c01_main_menu");
@@ -92,10 +92,10 @@ go.app = function() {
                         return go.utils
                             // get or create mama contact
                             .get_or_create_contact(content, self.im)
-                            .then(function(mama_id) {
-                                self.im.user.set_answer('mama_id', mama_id);
+                            .then(function(contact) {
+                                self.im.user.set_answer('mama_id', contact.id);
                                 return go.utils
-                                    .is_registered(mama_id, self.im)
+                                    .is_registered(contact.id, self.im)
                                     .then(function(is_registered) {
                                         if (is_registered === true) {
                                             return self.states.create("state_c01_main_menu");

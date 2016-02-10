@@ -213,7 +213,7 @@ go.utils = {
 
 // CONTACT HANDLING
 
-    get_contact_id_by_msisdn: function(msisdn, im) {
+    /*get_contact_id_by_msisdn: function(msisdn, im) {
         var params = {
             msisdn: msisdn
         };
@@ -226,7 +226,7 @@ go.utils = {
                     ? contacts_found[0].id
                     : null;
             });
-    },
+    },*/
 
     get_contact_by_msisdn: function(msisdn, im) {
         var params = {
@@ -270,7 +270,7 @@ go.utils = {
     },
 
     // Gets a contact id if it exists, otherwise creates a new one
-    get_or_create_contact_id: function(msisdn, im) {
+    /*get_or_create_contact_id: function(msisdn, im) {
         msisdn = go.utils.normalize_msisdn(msisdn, '234');  // nigeria
         return go.utils
             // Get contact id using msisdn
@@ -288,7 +288,7 @@ go.utils = {
                         });
                 }
             });
-    },
+    },*/
 
     get_or_create_contact: function(msisdn, im) {
         msisdn = go.utils.normalize_msisdn(msisdn, '234');  // nigeria
@@ -570,7 +570,7 @@ go.utils = {
 
     save_contact_info_and_subscribe: function(im) {
         var mama_id = im.user.answers.mama_id;
-        
+
         return Q
             .all([
                 // get mama contact
@@ -813,14 +813,14 @@ go.app = function() {
                         return go.utils
                             // get or create mama contact
                             .get_or_create_contact(content, self.im)
-                            .then(function(mama_id) {
-                                self.im.user.set_answer('mama_id', mama_id);
+                            .then(function(contact) {
+                                self.im.user.set_answer('mama_id', contact.id);
                                 return go.utils
-                                    .is_registered(mama_id, self.im)
+                                    .is_registered(contact.id, self.im)
                                     .then(function(is_registered) {
                                         if (is_registered === true) {
                                             return go.utils
-                                                .has_active_subscriptions(mama_id, self.im)
+                                                .has_active_subscriptions(contact.id, self.im)
                                                 .then(function(has_active_subscriptions) {
                                                     if (has_active_subscriptions === true) {
                                                         return self.states.create("state_c01_main_menu");
@@ -851,10 +851,10 @@ go.app = function() {
                         return go.utils
                             // get or create mama contact
                             .get_or_create_contact(content, self.im)
-                            .then(function(mama_id) {
-                                self.im.user.set_answer('mama_id', mama_id);
+                            .then(function(contact) {
+                                self.im.user.set_answer('mama_id', contact.id);
                                 return go.utils
-                                    .is_registered(mama_id, self.im)
+                                    .is_registered(contact.id, self.im)
                                     .then(function(is_registered) {
                                         if (is_registered === true) {
                                             return self.states.create("state_c01_main_menu");
