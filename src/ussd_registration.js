@@ -341,31 +341,20 @@ go.app = function() {
             if (self.im.user.answers.state_voice_days == 'mon_wed') {
                 first_voice_day = 'Monday';
                 second_voice_day = 'Wednesday';
-
-                switch (self.im.user.answers.state_voice_times) {
-                    case '9_11':
-                        voice_start_time = '9am';
-                        voice_end_time = '11am';
-                        break;
-                    case '2_5':
-                        voice_start_time = '2pm';
-                        voice_end_time = '5pm';
-                        break;
-                }
             } else if (self.im.user.answers.state_voice_days == 'tue_thu') {
                 first_voice_day = 'Tuesday';
                 second_voice_day = 'Thursday';
+            }
 
-                switch (self.im.user.answers.state_voice_times) {
-                    case '9_11':
-                        voice_start_time = '9am';
-                        voice_end_time = '11am';
-                        break;
-                    case '2_5':
-                        voice_start_time = '2pm';
-                        voice_end_time = '5pm';
-                        break;
-                }
+            switch (self.im.user.answers.state_voice_times) {
+                case '9_11':
+                    voice_start_time = '9am';
+                    voice_end_time = '11am';
+                    break;
+                case '2_5':
+                    voice_start_time = '2pm';
+                    voice_end_time = '5pm';
+                    break;
             }
 
             return new EndState(name, {
