@@ -110,7 +110,7 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     if (go.utils.is_valid_msisdn(content) === false) {
-                        return 'state_retry_personnel_auth';  // error message, allow retry
+                        return 'state_retry_receiver_msisdn';  // error message, allow retry
                     } else {
                         return 'state_pregnancy_status';
                     }
@@ -127,7 +127,7 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     if (go.utils.is_valid_msisdn(content) === false) {
-                        return 'state_retry_personnel_auth';  // error message, allow retry
+                        return 'state_retry_father_msisdn';  // error message, allow retry
                     } else {
                         return 'state_mother_msisdn';
                     }
@@ -144,7 +144,7 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     if (go.utils.is_valid_msisdn(content) === false) {
-                        return 'state_retry_personnel_auth'; // error message, allow retry
+                        return 'state_retry_mother_msisdn'; // error message, allow retry
                     } else {
                         return 'state_pregnancy_status';
                     }
@@ -177,8 +177,8 @@ go.app = function() {
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('state_5A_period_month', $('This year')),
-                    new Choice('state_5B_period_month', $('Last year'))
+                    new Choice('state_this_year_period_month', $('This year')),
+                    new Choice('state_last_year_period_month', $('Last year'))
                 ],
                 next: function(choice) {
                     return choice.value;
@@ -187,11 +187,11 @@ go.app = function() {
         });
 
         // ChoiceState st-5A
-        self.add('state_5A_period_month', function(name) {
+        self.add('state_this_year_period_month', function(name) {
             var speech_option = 1;
 
             return new ChoiceState(name, {
-                question: $('Period month?'),
+                question: $('Period month this year?'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
@@ -265,11 +265,11 @@ go.app = function() {
         });
 
         // ChoiceState st-5B
-        self.add('state_5B_period_month', function(name) {
+        self.add('state_last_year_period_month', function(name) {
             var speech_option = 1;
 
             return new ChoiceState(name, {
-                question: $("Period month?"),
+                question: $("Period month last year?"),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
@@ -336,7 +336,7 @@ go.app = function() {
                     var validStartMonth = currentMonth <= 10 ? ((currentMonth+13) % 10) : -1;
                     validStartMonth = validStartMonth === 0 ? 10 : validStartMonth+10;
                     var choiceMonth = parseInt(today.month(choice.value).format("MM"));
-                    
+
                     if (validStartMonth !== -1){
                         if (choiceMonth > currentMonth && choiceMonth >= validStartMonth)
                         {
@@ -353,10 +353,10 @@ go.app = function() {
         // FreeText st-06
         self.add('state_last_period_day', function(name) {
             var dateRef = go.utils.get_today(self.im.config);
-            var month = self.im.user.answers.state_5A_period_month ||
-                        self.im.user.answers.state_5B_period_month;
+            var month = self.im.user.answers.state_this_year_period_month ||
+                        self.im.user.answers.state_last_year_period_month;
             var year;
-            if (self.im.user.answers.state_5A_period_month) {
+            if (self.im.user.answers.state_this_year_period_month) {
                 year = dateRef.format("YYYY");
             }
             else {
@@ -386,10 +386,10 @@ go.app = function() {
         // FreeText st-19
         self.add('state_retry_last_period_day', function(name) {
             var dateRef = go.utils.get_today(self.im.config);
-            var month = self.im.user.answers.state_5A_period_month ||
-                        self.im.user.answers.state_5B_period_month;
+            var month = self.im.user.answers.state_this_year_period_month ||
+                        self.im.user.answers.state_last_year_period_month;
             var year;
-            if (self.im.user.answers.state_5A_period_month) {
+            if (self.im.user.answers.state_this_year_period_month) {
                 year = dateRef.format("YYYY");
             }
             else {
@@ -424,8 +424,8 @@ go.app = function() {
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('state_12A_baby_birth_month', $('this year')),
-                    new Choice('state_12B_baby_birth_month', $('last year'))
+                    new Choice('state_this_year_baby_birth_month', $('this year')),
+                    new Choice('state_last_year_baby_birth_month', $('last year'))
                 ],
                 next: function(choice) {
                     return choice.value;
@@ -434,11 +434,11 @@ go.app = function() {
         });
 
         // ChoiceState st-12A
-        self.add('state_12A_baby_birth_month', function(name) {
+        self.add('state_this_year_baby_birth_month', function(name) {
             var speech_option = '1';
 
             return new ChoiceState(name, {
-                question: $('Baby month?'),
+                question: $('Baby month this year?'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices:
@@ -507,11 +507,11 @@ go.app = function() {
         });
 
         // ChoiceState st-12B
-        self.add('state_12B_baby_birth_month', function(name) {
+        self.add('state_last_year_baby_birth_month', function(name) {
             var speech_option = 1;
 
             return new ChoiceState(name, {
-                question: $('Baby month?'),
+                question: $('Baby month last year?'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
@@ -579,10 +579,10 @@ go.app = function() {
         // FreeText st-13
         self.add('state_baby_birth_day', function(name) {
             var dateRef = go.utils.get_today(self.im.config);
-            var month = self.im.user.answers.state_12A_baby_birth_month ||
-                        self.im.user.answers.state_12B_baby_birth_month;
+            var month = self.im.user.answers.state_this_year_baby_birth_month ||
+                        self.im.user.answers.state_last_year_baby_birth_month;
             var year;
-            if (self.im.user.answers.state_12A_baby_birth_month) {
+            if (self.im.user.answers.state_this_year_baby_birth_month) {
                 year = dateRef.format("YYYY");
             }
             else {
@@ -612,8 +612,8 @@ go.app = function() {
         // FreeText st-18
         self.add('state_retry_baby_birth_day', function(name) {
             var dateRef = go.utils.get_today(self.im.config);
-            var month = self.im.user.answers.state_12A_baby_birth_month ||
-                        self.im.user.answers.state_12B_baby_birth_month;
+            var month = self.im.user.answers.state_this_year_baby_birth_month ||
+                        self.im.user.answers.state_last_year_baby_birth_month;
             var year;
             if (self.im.user.answers.state_12A_baby_birth_month) {
                 year = dateRef.format("YYYY");
