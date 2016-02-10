@@ -224,10 +224,6 @@ go.app = function() {
                 question: $(questions[name]),
                 check: function(content) {
                     if (go.utils.is_valid_msisdn(content)) {
-                        if (self.im.user.answers.state_msisdn_father == self.im.user.answers.state_msisdn_father) {
-                            // submit 'father_only' as msg receiver
-                            self.im.user.set_answer('state_msg_receiver', 'father_only'); //?
-                        }
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return $(get_error_text(name));
