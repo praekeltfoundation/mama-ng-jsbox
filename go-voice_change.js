@@ -747,13 +747,13 @@ go.app = function() {
         self.states.add('state_start', function() {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
-            return self.states.create("state_c12_number");
+            return self.states.create("state_msg_receiver_msisdn");
         });
 
 
     // CHANGE STATE
 
-        self.add('state_c12_number', function(name) {
+        self.add('state_msg_receiver_msisdn', function(name) {
             var speech_option = '1';
             return new FreeText(name, {
                 question: $('Welcome, Number'),
@@ -761,7 +761,7 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     if (go.utils.is_valid_msisdn(content) === false) {
-                        return 'state_c13_retry_number';
+                        return 'state_retry_msg_receiver_msisdn';
                     } else {
                         return go.utils
                             // get or create mama contact
@@ -776,13 +776,13 @@ go.app = function() {
                                                 .has_active_subscriptions(mama_id, self.im)
                                                 .then(function(has_active_subscriptions) {
                                                     if (has_active_subscriptions === true) {
-                                                        return self.states.create("state_c01_main_menu");
+                                                        return self.states.create("state_main_menu");
                                                     } else {
                                                         return self.states.create("state_c14_end_not_active");
                                                     }
                                                 });
                                         } else {
-                                            return self.states.create("state_c02_not_registered");
+                                            return self.states.create("state_not_recognised_msg_receiver_msisdn");
                                         }
                                     });
                             });
@@ -791,7 +791,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_c13_retry_number', function(name) {
+        self.add('state_retry_msg_receiver_msisdn', function(name) {
             var speech_option = '1';
             return new FreeText(name, {
                 question: $('Retry number'),
@@ -799,7 +799,7 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     if (go.utils.is_valid_msisdn(content) === false) {
-                        return 'state_c13_retry_number';
+                        return 'state_retry_msg_receiver_msisdn';
                     } else {
                         return go.utils
                             // get or create mama contact
@@ -810,9 +810,9 @@ go.app = function() {
                                     .is_registered(mama_id, self.im)
                                     .then(function(is_registered) {
                                         if (is_registered === true) {
-                                            return self.states.create("state_c01_main_menu");
+                                            return self.states.create("state_main_menu");
                                         } else {
-                                            return self.states.create("state_c02_not_registered");
+                                            return self.states.create("state_not_recognised_msg_receiver_msisdn");
                                         }
                                     });
                             });
@@ -822,12 +822,12 @@ go.app = function() {
         });
 
 
-        self.add('state_c01_main_menu', function(name) {
+        self.add('state_main_menu', function(name) {
             var speech_option = '1';
             var routing = {
-                'baby': 'state_c03_baby_confirm',
-                'msg_time': 'state_c04_voice_days',
-                'optout': 'state_c05_optout_reason'
+                'baby': 'state_baby_confirm',
+                'msg_time': 'state_voice_days',
+                'optout': 'state_optout_reason'
             };
             return new ChoiceState(name, {
                 question: $('Baby / Message time / Optout?'),
@@ -844,7 +844,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_c02_not_registered', function(name) {
+        self.add('state_not_recognised_msg_receiver_msisdn', function(name) {
             var speech_option = '1';
             return new EndState(name, {
                 text: $('Unrecognised number'),
@@ -854,7 +854,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_c03_baby_confirm', function(name) {
+        self.add('state_baby_confirm', function(name) {
             var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Confirm baby?'),
@@ -867,7 +867,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_c04_voice_days', function(name) {
+        self.add('state_voice_days', function(name) {
             var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Message days?'),
@@ -877,18 +877,18 @@ go.app = function() {
                     new Choice('mon_wed', $('mon_wed')),
                     new Choice('tue_thu', $('tue_thu'))
                 ],
-                next: 'state_c06_voice_times'
+                next: 'state_voice_times'
             });
         });
 
-        self.add('state_c05_optout_reason', function(name) {
+        self.add('state_optout_reason', function(name) {
             var speech_option = '1';
             var routing = {
-                'miscarriage': 'state_c07_loss_opt_in',
-                'stillborn': 'state_c07_loss_opt_in',
-                'baby_died': 'state_c07_loss_opt_in',
-                'not_useful': 'state_c11_enter',
-                'other': 'state_c11_enter'
+                'miscarriage': 'state_loss_opt_in',
+                'stillborn': 'state_loss_opt_in',
+                'baby_died': 'state_loss_opt_in',
+                'not_useful': 'state_optin_deny',
+                'other': 'state_optin_deny'
             };
             return new ChoiceState(name, {
                 question: $('Optout reason?'),
@@ -907,8 +907,8 @@ go.app = function() {
             });
         });
 
-        self.add('state_c06_voice_times', function(name) {
-            var days = self.im.user.answers.state_c04_voice_days;
+        self.add('state_voice_times', function(name) {
+            var days = self.im.user.answers.state_voice_days;
             var speech_option = go.utils.get_speech_option_days(days);
             return new ChoiceState(name, {
                 question: $('Message times?'),
@@ -922,11 +922,11 @@ go.app = function() {
             });
         });
 
-        self.add('state_c07_loss_opt_in', function(name) {
+        self.add('state_loss_opt_in', function(name) {
             var speech_option = '1';
             var routing = {
-                'opt_in_confirm': 'state_c10_enter',
-                'opt_in_deny': 'state_c11_enter'
+                'opt_in_confirm': 'state_optin_confirm',
+                'opt_in_deny': 'state_optin_deny'
             };
             return new ChoiceState(name, {
                 question: $('Receive loss messages?'),
@@ -969,8 +969,8 @@ go.app = function() {
         });
 
         self.add('state_c09_end_msg_times', function(name) {
-            var days = self.im.user.answers.state_c04_voice_days;
-            var time = self.im.user.answers.state_c06_voice_times;
+            var days = self.im.user.answers.state_voice_days;
+            var time = self.im.user.answers.state_voice_times;
             var speech_option = go.utils.get_speech_option_days_time(days, time);
             return new EndState(name, {
                 text: $('Thank you! Time: {{ time }}. Days: {{ days }}.'
@@ -981,7 +981,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_c10_enter', function(name) {
+        self.add('state_optin_confirm', function(name) {
             return go.utils
                 .optout_loss_opt_in(self.im)
                 .then(function() {
@@ -999,7 +999,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_c11_enter', function(name) {
+        self.add('state_optin_deny', function(name) {
             return go.utils
                 .optout(self.im)
                 .then(function() {
