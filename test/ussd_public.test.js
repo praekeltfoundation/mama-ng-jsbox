@@ -38,6 +38,15 @@ describe("Hello Mama app", function() {
                     api.metrics.stores = {'mama_ng_test': {}};  // hello mama
                 })*/
                 .setup(function(api) {
+                    // new user 082101  (*** assume father role ***)
+                    api.contacts.add({
+                        msisdn: '+082101',
+                        extra: {},
+                        key: "contact_key_082111",
+                        user_account: "contact_user_account"
+                    });
+                })
+                .setup(function(api) {
                     // new user 082111
                     api.contacts.add({
                         msisdn: '+082111',
@@ -74,7 +83,7 @@ describe("Hello Mama app", function() {
                     });
                 })
                 .setup(function(api) {
-                    // registered user 082555, registered for voice
+                    // registered user 082555, registered for voice (*** assume father role ***)
                     api.contacts.add({
                         msisdn: '+082555',
                         extra: {},
@@ -150,8 +159,8 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
-                // assuming flow via unregistered user...
-                it("to state_msisdn_not_recognised", function() {  //st-F
+                // assuming flow via unregistered user...  (*** intentionally skipping for now)
+                it.skip("to state_msisdn_not_recognised", function() {  //st-F
                     return tester
                         .setup.user.addr('082111')
                         .inputs(
@@ -165,7 +174,7 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
-                // assuming flow via unregistered/registered user...
+                // assuming flow via unregistered user...
                 it("to state_main_menu (via state C)", function() {
                     return tester
                         .setup.user.addr('082111')
@@ -187,6 +196,27 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
+                // assuming flow via unregistered user... ** father role
+                it("to state_main_menu_father (via state C)", function() {
+                    return tester
+                        .setup.user.addr('082101')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '2'   // state_language - hausa
+                            , '0803304899'  // state_registered_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_main_menu_father',
+                            reply: [
+                                "Select:",
+                                "1. Start Baby messages",
+                                "2. Change my number",
+                                "3. Change language",
+                                "4. Stop receiving messages"
+                            ].join('\n')
+                        })
+                        .run();
+                });
                 // registered user with permission to manage number
                 it("to state_main_menu (via state B)", function() {
                     return tester
@@ -204,6 +234,26 @@ describe("Hello Mama app", function() {
                                 "3. Change my number",
                                 "4. Change language",
                                 "5. Stop receiving messages"
+                            ].join('\n')
+                        })
+                        .run();
+                });
+                // registered user with permission to manage number.  *** father role
+                it("to state_main_menu_father (via state B)", function() {
+                    return tester
+                        .setup.user.addr('082555')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'   // state_msisdn_permission - yes
+                        )
+                        .check.interaction({
+                            state: 'state_main_menu_father',
+                            reply: [
+                                "Select:",
+                                "1. Start Baby messages",
+                                "2. Change my number",
+                                "3. Change language",
+                                "4. Stop receiving messages"
                             ].join('\n')
                         })
                         .run();
@@ -349,27 +399,6 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
-                it("to state_msg_receiver", function() {
-                    return tester
-                        .setup.user.addr('082222')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_msisdn_permission - yes
-                            , '3'  // state_main_menu - change number
-                            , '0803304899' // state_new_msisdn
-                        )
-                        .check.interaction({
-                            state: 'state_msg_receiver',
-                            reply: [
-                                "Who will receive these messages?",
-                                "1. The Mother",
-                                "2. The Father",
-                                "3. Family member",
-                                "4. Trusted friend"
-                            ].join('\n')
-                        })
-                        .run();
-                });
                 it("to state_msg_receiver_confirm", function() {
                     return tester
                         .setup.user.addr('082222')
@@ -377,8 +406,7 @@ describe("Hello Mama app", function() {
                             {session_event: 'new'}  // dial in
                             , '1'  // state_msisdn_permission - yes
                             , '3'  // state_main_menu - change number
-                            , '0803304899' // state_new_msisdn
-                            , '4'  // state_msg_receiver - trusted friend
+                            , '08033048990' // state_new_msisdn
                         )
                         .check.interaction({
                             state: 'state_msg_receiver_confirm',
@@ -482,7 +510,65 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
-                it("to state_end_optout", function() {
+                it("to state_end_optout (via state 14)", function() {
+                    return tester
+                        .setup.user.addr('082222')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'  // state_msisdn_permission - yes
+                            , '5'  // state_main_menu - stop receiving messages
+                            , '3'  // state_optout_reason - baby passed away
+                            , '2'  // state_loss_subscription - yes
+                        )
+                        .check.interaction({
+                            state: 'state_end_optout',
+                            reply: "Thank you. You will no longer receive messages"
+                        })
+                        .run();
+                });
+                it("to state_optout_receiver", function() {
+                    var role = go.utils.check_role(tester.im.user.addr);
+                    if (role === 'father_role') {
+                        return tester
+                            .setup.user.addr('082222')
+                            .inputs(
+                                {session_event: 'new'}  // dial in
+                                , '1'  // state_msisdn_permission - yes
+                                , '5'  // state_main_menu - stop receiving messages
+                                , '5'  // state_optout_reason - other
+                            )
+                            .check.interaction({
+                                state: 'state_optout_receiver',
+                                reply: [
+                                    "Who would you like to stop receiving messages?",
+                                    "1. Only me",
+                                    "2. The Father and the Mother"
+                                ].join('\n')
+                            })
+                            .run();
+                    }
+                    else {
+                        return tester
+                            .setup.user.addr('082222')
+                            .inputs(
+                                {session_event: 'new'}  // dial in
+                                , '1'  // state_msisdn_permission - yes
+                                , '5'  // state_main_menu - stop receiving messages
+                                , '5'  // state_optout_reason - other
+                            )
+                            .check.interaction({
+                                state: 'state_optout_receiver',
+                                reply: [
+                                    "Who would you like to stop receiving messages?",
+                                    "1. Only me",
+                                    "2. The Father",
+                                    "3. The Father and the Mother"
+                                ].join('\n')
+                            })
+                            .run();
+                    }
+                });
+                it("to state_end_optout (via state 16)", function() {
                     return tester
                         .setup.user.addr('082222')
                         .inputs(
@@ -490,6 +576,7 @@ describe("Hello Mama app", function() {
                             , '1'  // state_msisdn_permission - yes
                             , '5'  // state_main_menu - stop receiving messages
                             , '4'  // state_optout_reason - messages not useful
+                            , '1'  // state_optout_receiver - only me
                         )
                         .check.interaction({
                             state: 'state_end_optout',
@@ -530,7 +617,7 @@ describe("Hello Mama app", function() {
                 });
                 it(" - changing message format and time, back to main menu", function() {
                     return tester
-                        .setup.user.addr('082555')
+                        .setup.user.addr('082222')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'   // state_msisdn_permission - yes
@@ -562,7 +649,7 @@ describe("Hello Mama app", function() {
                 });
                 it(" - via changing messages preferences to end of the line", function() {
                     return tester
-                        .setup.user.addr('082555')
+                        .setup.user.addr('082222')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_msisdn_permission - yes
@@ -577,7 +664,7 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
-                it(" - via opt-out to end of the line", function() {
+                it(" - via opt-out, loss-subscription, to end of the line", function() {
                     return tester
                         .setup.user.addr('082222')
                         .inputs(
@@ -586,6 +673,22 @@ describe("Hello Mama app", function() {
                             , '5'  // state_main_menu - stop receiving messages
                             , '2'  // state_optout_reason - baby stillborn
                             , '2'  // state_loss_subscription - no
+                        )
+                        .check.interaction({
+                            state: 'state_end_optout',
+                            reply: "Thank you. You will no longer receive messages"
+                        })
+                        .run();
+                });
+                it(" - via opt-out, state_optout_receiver, to end of the line", function() {
+                    return tester
+                        .setup.user.addr('082222')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'  // state_msisdn_permission - yes
+                            , '5'  // state_main_menu - stop receiving messages
+                            , '4'  // state_optout_reason - baby stillborn
+                            , '2'  // state_optout_receiver - father
                         )
                         .check.interaction({
                             state: 'state_end_optout',

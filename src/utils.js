@@ -135,10 +135,22 @@ go.utils = {
             .then(function(q_response) {
                 if (msisdn === '082444') {
                     return 'sms';
-                } else if (msisdn === '082555') {
+                } else if (msisdn === '082222') {
                     return 'voice';
                 } else {
                     return 'none';
+                }
+            });
+    },
+
+    check_role: function(msisdn) {
+        return Q()
+            .then(function(q_response) {
+                if (msisdn === '082101' || msisdn === '082555') {
+                    return 'father_role';
+                }
+                else {
+                    return 'mother_role';
                 }
             });
     },
