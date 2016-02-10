@@ -36,8 +36,8 @@ go.utils = {
 
     get_speech_option_birth_day: function(im, month) {
         var speech_option_start = 0;
-        if (im.user.answers.state_r04_mom_state === 'baby') {
-            im.user.answers.state_r05_birth_year === 'last_year'
+        if (im.user.answers.state_pregnancy_status === 'baby') {
+            im.user.answers.state_baby_birth_year === 'last_year'
                 ? speech_option_start = 12
                 : speech_option_start = 24;
         }
@@ -55,6 +55,7 @@ go.utils = {
 
     get_speech_option_days_time: function(days, time) {
         var speech_option;
+
         day_map_9_11 = {
             'mon_wed': '2',
             'tue_thu': '3'
@@ -136,17 +137,28 @@ go.utils = {
             });
     },
 
-    check_sms_subscription: function(msisdn) {
+    check_msg_type: function(msisdn) {
         return Q()
             .then(function(q_response) {
-                return msisdn === '082444';
+                if (msisdn === '082444') {
+                    return 'sms';
+                } else if (msisdn === '082222') {
+                    return 'voice';
+                } else {
+                    return 'none';
+                }
             });
     },
 
-    check_voice_subscription: function(msisdn) {
+    check_role: function(msisdn) {
         return Q()
             .then(function(q_response) {
-                return msisdn === '082555';
+                if (msisdn === '082101' || msisdn === '082555') {
+                    return 'father_role';
+                }
+                else {
+                    return 'mother_role';
+                }
             });
     },
 
@@ -201,7 +213,7 @@ go.utils = {
 
 // CONTACT HANDLING
 
-    get_contact_id_by_msisdn: function(msisdn, im) {
+    /*get_contact_id_by_msisdn: function(msisdn, im) {
         var params = {
             msisdn: msisdn
         };
@@ -212,6 +224,21 @@ go.utils = {
                 // Return the first contact's id
                 return (contacts_found.length > 0)
                     ? contacts_found[0].id
+                    : null;
+            });
+    },*/
+
+    get_contact_by_msisdn: function(msisdn, im) {
+        var params = {
+            msisdn: msisdn
+        };
+        return go.utils
+            .control_api_call('get', params, null, 'contacts/search/', im)
+            .then(function(json_get_response) {
+                var contacts_found = json_get_response.data.results;
+                // Return the first contact's id
+                return (contacts_found.length > 0)
+                    ? contacts_found[0]
                     : null;
             });
     },
@@ -243,7 +270,7 @@ go.utils = {
     },
 
     // Gets a contact id if it exists, otherwise creates a new one
-    get_or_create_contact: function(msisdn, im) {
+    /*get_or_create_contact_id: function(msisdn, im) {
         msisdn = go.utils.normalize_msisdn(msisdn, '234');  // nigeria
         return go.utils
             // Get contact id using msisdn
@@ -252,6 +279,26 @@ go.utils = {
                 if (contact_id !== null) {
                     // If contact exists, return the id
                     return contact_id;
+                } else {
+                    // If contact doesn't exist, create it
+                    return go.utils
+                        .create_contact(msisdn, im)
+                        .then(function(contact_id) {
+                            return contact_id;
+                        });
+                }
+            });
+    },*/
+
+    get_or_create_contact: function(msisdn, im) {
+        msisdn = go.utils.normalize_msisdn(msisdn, '234');  // nigeria
+        return go.utils
+            // Get contact id using msisdn
+            .get_contact_by_msisdn(msisdn, im)
+            .then(function(contact) {
+                if (contact !== null) {
+                    // If contact exists, return the id
+                    return contact;
                 } else {
                     // If contact doesn't exist, create it
                     return go.utils
@@ -336,7 +383,7 @@ go.utils = {
     get_baby_dob: function(im, day) {
         var date_today = go.utils.get_today(im.config);
 
-        var year_text = im.user.answers.state_r05_birth_year;
+        var year_text = im.user.answers.state_baby_birth_year;
         var year;
         switch (year_text) {
             case 'last_year':
@@ -350,7 +397,8 @@ go.utils = {
                 break;
         }
 
-        var month = im.user.answers.state_r06_birth_month;
+        var month = im.user.answers.state_12A_baby_birth_month ||
+                    im.user.answers.state_12B_baby_birth_month;
         var date_string = [
             year.toString(),
             go.utils.double_digit_number(month),
@@ -522,6 +570,7 @@ go.utils = {
 
     save_contact_info_and_subscribe: function(im) {
         var mama_id = im.user.answers.mama_id;
+
         return Q
             .all([
                 // get mama contact
@@ -661,6 +710,18 @@ go.utils = {
             .then(function(q_response) {
                 return msisdn === '082222' || msisdn === '082333'
                     || msisdn === '082444' || msisdn === '082555' || msisdn === '0803304899';
+            });
+    },
+
+    check_health_worker_msisdn: function(msisdn, im) {
+        return go.utils
+            .get_or_create_contact(msisdn, im)
+            .then(function(contact) {
+                if (contact.details.personnel_code) {
+                    return true;
+                } else {
+                    return false;
+                }
             });
     },
 
