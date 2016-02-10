@@ -88,35 +88,34 @@ go.utils = {
         };
     },
 
-// CONTROL API CALL
+// SERVICE API CALL
 
-    control_api_call: function(method, params, payload, endpoint, im) {
-        var api = new JsonApi(im, {
+    service_api_call: function (service, method, params, payload, endpoint, im) {
+        var http = new JsonApi(im, {
             headers: {
-                'Authorization': ['Token ' + im.config.control.api_key],
-                'Content-Type': ['application/json'],
+                'Authorization': ['Token ' + im.config.services[service].api_token]
             }
         });
         switch (method) {
             case "post":
-                return api.post(im.config.control.url + endpoint, {
+                return http.post(im.config.services[service].url + endpoint, {
                     data: payload
                 });
             case "get":
-                return api.get(im.config.control.url + endpoint, {
+                return http.get(im.config.services[service].url + endpoint, {
                     params: params
                 });
             case "patch":
-                return api.patch(im.config.control.url + endpoint, {
+                return http.patch(im.config.services[service].url + endpoint, {
                     data: payload
                 });
             case "put":
-                return api.put(im.config.control.url + endpoint, {
+                return http.put(im.config.services[service].url + endpoint, {
                     params: params,
-                    data: payload
+                  data: payload
                 });
             case "delete":
-                return api.delete(im.config.control.url + endpoint);
+                return http.delete(im.config.services[service].url + endpoint);
             }
     },
 
@@ -213,25 +212,25 @@ go.utils = {
 
 // CONTACT HANDLING
 
-    get_contact_id_by_msisdn: function(msisdn, im) {
+    get_contact_by_msisdn: function(msisdn, im) {
         var params = {
             msisdn: msisdn
         };
         return go.utils
-            .control_api_call('get', params, null, 'contacts/search/', im)
+            .service_api_call('identities', 'get', params, null, 'search/', im)
             .then(function(json_get_response) {
                 var contacts_found = json_get_response.data.results;
                 // Return the first contact's id
                 return (contacts_found.length > 0)
-                    ? contacts_found[0].id
+                    ? contacts_found[0]
                     : null;
             });
     },
 
     get_contact_by_id: function(contact_id, im) {
-        var endpoint = 'contacts/' + contact_id + '/';
+        var endpoint = contact_id + '/';
         return go.utils
-            .control_api_call('get', {}, null, endpoint, im)
+            .service_api_call('identities', 'get', {}, null, endpoint, im)
             .then(function(json_get_response) {
                 return json_get_response.data;
             });
@@ -246,7 +245,7 @@ go.utils = {
             }
         };
         return go.utils
-            .control_api_call("post", null, payload, 'contacts/', im)
+            .service_api_call("identities", "post", null, payload, '', im)
             .then(function(json_post_response) {
                 var contact_created = json_post_response.data;
                 // Return the contact's id
@@ -254,16 +253,16 @@ go.utils = {
             });
     },
 
-    // Gets a contact id if it exists, otherwise creates a new one
+    // Gets a contact if it exists, otherwise creates a new one
     get_or_create_contact: function(msisdn, im) {
         msisdn = go.utils.normalize_msisdn(msisdn, '234');  // nigeria
         return go.utils
             // Get contact id using msisdn
-            .get_contact_id_by_msisdn(msisdn, im)
-            .then(function(contact_id) {
-                if (contact_id !== null) {
+            .get_contact_by_msisdn(msisdn, im)
+            .then(function(contact) {
+                if (contact !== null) {
                     // If contact exists, return the id
-                    return contact_id;
+                    return contact;
                 } else {
                     // If contact doesn't exist, create it
                     return go.utils
@@ -277,9 +276,9 @@ go.utils = {
 
     update_contact: function(im, contact) {
         // For patching any field on the contact
-        var endpoint = 'contacts/' + contact.id + '/';
+        var endpoint = contact.id + '/';
         return go.utils
-            .control_api_call('patch', {}, contact, endpoint, im)
+            .service_api_call("identities", 'patch', {}, contact, endpoint, im)
             .then(function(response) {
                 return response.data.id;
             });
@@ -387,7 +386,7 @@ go.utils = {
 
     setup_subscription: function(im, mama_contact) {
         subscription = {
-            contact: "/api/v1/contacts/" + mama_contact.id + "/",
+            contact: "/api/v1/identities/" + mama_contact.id + "/",
             version: 1,
             messageset_id: go.utils.get_messageset_id(mama_contact),
             next_sequence_number: go.utils.get_next_sequence_number(mama_contact),
@@ -433,7 +432,7 @@ go.utils = {
     subscribe_contact: function(im, subscription) {
         var payload = subscription;
         return go.utils
-            .control_api_call("post", null, payload, 'subscriptions/', im)
+            .service_api_call("subscriptions", "post", null, payload, '', im)
             .then(function(response) {
                 return response.data.id;
             });
@@ -447,7 +446,7 @@ go.utils = {
             active: "True"
         };
         return go.utils
-            .control_api_call("get", params, null, 'subscriptions/', im)
+            .service_api_call("subscriptions", "get", params, null, "", im)
             .then(function(json_get_response) {
                 return json_get_response.data.results;
             });
@@ -482,11 +481,11 @@ go.utils = {
                 var patch_calls = [];
                 for (i=0; i<subscriptions.length; i++) {
                     var updated_subscription = subscriptions[i];
-                    var endpoint = 'subscriptions/' + updated_subscription.id + '/';
+                    var endpoint = updated_subscription.id + '/';
                     updated_subscription.active = false;
                     // store the patch calls to be made
                     patch_calls.push(function() {
-                        return go.utils.control_api_call("patch", {}, updated_subscription, endpoint, im);
+                        return go.utils.service_api_call("subscriptions", "patch", {}, updated_subscription, endpoint, im);
                     });
                     clean = false;
                 }
@@ -525,9 +524,9 @@ go.utils = {
     },
 
     update_subscription: function(im, subscription) {
-        var endpoint = 'subscriptions/' + subscription.id + '/';
+        var endpoint = subscription.id + '/';
         return go.utils
-            .control_api_call('patch', {}, subscription, endpoint, im)
+            .service_api_call("subscriptions", 'patch', {}, subscription, endpoint, im)
             .then(function(response) {
                 return response.data.id;
             });
@@ -535,7 +534,7 @@ go.utils = {
 
     save_contact_info_and_subscribe: function(im) {
         var mama_id = im.user.answers.mama_id;
-        
+
         return Q
             .all([
                 // get mama contact
@@ -678,6 +677,14 @@ go.utils = {
             });
     },
 
+    check_health_worker_msisdn: function(msisdn, im) {
+        return go.utils
+            .get_or_create_contact(msisdn, im)
+            .then(function(contact) {
+                return contact.details.personnel_code ? true : false;
+            });
+    },
+
     validate_personnel_code: function(im, content) {
         return Q()
             .then(function(q_response) {
@@ -766,14 +773,14 @@ go.app = function() {
                         return go.utils
                             // get or create mama contact
                             .get_or_create_contact(content, self.im)
-                            .then(function(mama_id) {
-                                self.im.user.set_answer('mama_id', mama_id);
+                            .then(function(contact) {
+                                self.im.user.set_answer('mama_id', contact.id);
                                 return go.utils
-                                    .is_registered(mama_id, self.im)
+                                    .is_registered(contact.id, self.im)
                                     .then(function(is_registered) {
                                         if (is_registered === true) {
                                             return go.utils
-                                                .has_active_subscriptions(mama_id, self.im)
+                                                .has_active_subscriptions(contact.id, self.im)
                                                 .then(function(has_active_subscriptions) {
                                                     if (has_active_subscriptions === true) {
                                                         return self.states.create("state_c01_main_menu");
@@ -804,10 +811,10 @@ go.app = function() {
                         return go.utils
                             // get or create mama contact
                             .get_or_create_contact(content, self.im)
-                            .then(function(mama_id) {
-                                self.im.user.set_answer('mama_id', mama_id);
+                            .then(function(contact) {
+                                self.im.user.set_answer('mama_id', contact.id);
                                 return go.utils
-                                    .is_registered(mama_id, self.im)
+                                    .is_registered(contact.id, self.im)
                                     .then(function(is_registered) {
                                         if (is_registered === true) {
                                             return self.states.create("state_c01_main_menu");

@@ -22,9 +22,15 @@ describe("Mama Nigeria App", function() {
                     name: 'ussd-registration-test',
                     channel: '*120*8864*0000#',
                     testing_today: '2015-04-03 06:07:08.999',
-                    control: {
-                        url: "http://localhost:8000/api/v1/",
-                        api_key: "control_test_key"
+                    services: {
+                        identities: {
+                            api_token: 'test_token_identities',
+                            url: "http://localhost:8000/api/v1/identities/"
+                        },
+                        subscriptions: {
+                            api_token: 'test_token_subscriptions',
+                            url: "http://localhost:8000/api/v1/subscriptions/"
+                        },
                     },
                     endpoints: {
                         "sms": {"delivery_class": "sms"}
@@ -64,7 +70,7 @@ describe("Mama Nigeria App", function() {
         describe("Timeout testing", function() {
             it("should ask about continuing", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'  // state_auth_code - personnel code
@@ -83,7 +89,7 @@ describe("Mama Nigeria App", function() {
             });
             it("should continue", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'  // state_auth_code - personnel code
@@ -98,7 +104,7 @@ describe("Mama Nigeria App", function() {
             });
             it("should restart", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'  // state_auth_code - personnel code
@@ -117,7 +123,7 @@ describe("Mama Nigeria App", function() {
         describe("Start of session", function() {
             it("should reset user answers", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .setup.user.answers({       // set up answers to be reset
                         state_auth_code: '12345',
                         state_msisdn: '08033046899'
@@ -135,7 +141,7 @@ describe("Mama Nigeria App", function() {
         describe("HCP recognised user", function() {
             it("should not be asked for personnel code", function() {
                 return tester
-                    .setup.user.addr('082222')
+                    .setup.user.addr('08080070007')
                     .inputs(
                         {session_event: 'new'}  // dial in
                     )
@@ -151,7 +157,7 @@ describe("Mama Nigeria App", function() {
         describe("Flow testing - registration", function() {
             it("to state_auth_code", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                     )
@@ -163,7 +169,7 @@ describe("Mama Nigeria App", function() {
             });
             it("to state_msg_receiver", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080070007')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'  // state_auth_code - personnel code
@@ -183,7 +189,7 @@ describe("Mama Nigeria App", function() {
             });
             it("to state_msisdn", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'  // state_auth_code - personnel code
@@ -197,7 +203,7 @@ describe("Mama Nigeria App", function() {
             });
             it("to state_msisdn_father", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'  // state_auth_code - personnel code
@@ -211,7 +217,7 @@ describe("Mama Nigeria App", function() {
             });
             it("to state_msisdn_mother", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'  // state_auth_code - personnel code
@@ -226,7 +232,7 @@ describe("Mama Nigeria App", function() {
             });
             it("to state_pregnancy_status", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'   // state_auth_code - personnel code
@@ -246,7 +252,7 @@ describe("Mama Nigeria App", function() {
             // mother is pregnant
             it("to state_last_period_month", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'   // state_auth_code - personnel code
@@ -273,7 +279,7 @@ describe("Mama Nigeria App", function() {
             });
             it("to state_last_period_month - after selecting 'More'", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'   // state_auth_code - personnel code
@@ -294,7 +300,7 @@ describe("Mama Nigeria App", function() {
             });
             it("to state_last_period_month - after selecting 'More' and 'Back'", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'   // state_auth_code - personnel code
@@ -323,7 +329,7 @@ describe("Mama Nigeria App", function() {
             });
             it("to state_last_period_day", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'   // state_auth_code - personnel code
@@ -340,7 +346,7 @@ describe("Mama Nigeria App", function() {
             });
             it("to state_msg_language", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                       {session_event: 'new'}  // dial in
                       , '12345'   // state_auth_code - personnel code
@@ -364,7 +370,7 @@ describe("Mama Nigeria App", function() {
             // mother has baby
             it("to state_baby_birth_month_year", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'   // state_auth_code - personnel code
@@ -392,7 +398,7 @@ describe("Mama Nigeria App", function() {
             });
             it("to state_baby_birth_month_year - after selecting 'More'", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'   // state_auth_code - personnel code
@@ -416,7 +422,7 @@ describe("Mama Nigeria App", function() {
 
             it("to state_baby_birth_day", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'   // state_auth_code - personnel code
@@ -433,7 +439,7 @@ describe("Mama Nigeria App", function() {
             });
             it("to state_msg_language", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                       {session_event: 'new'}  // dial in
                       , '12345'   // state_auth_code - personnel code
@@ -450,7 +456,7 @@ describe("Mama Nigeria App", function() {
             });
             it("to state_msg_type", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'   // state_auth_code - personnel code
@@ -474,7 +480,7 @@ describe("Mama Nigeria App", function() {
             // user wants voice calls
             it("to state_voice_days", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'   // state_auth_code - personnel code
@@ -498,7 +504,7 @@ describe("Mama Nigeria App", function() {
             });
             it("to state_voice_times", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'   // state_auth_code - personnel code
@@ -523,7 +529,7 @@ describe("Mama Nigeria App", function() {
             });
             it("to state_end_voice", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'   // state_auth_code - personnel code
@@ -547,7 +553,7 @@ describe("Mama Nigeria App", function() {
             //user wants text sms's
             it("to state_end_sms", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'   // state_auth_code - personnel code
@@ -571,7 +577,7 @@ describe("Mama Nigeria App", function() {
         describe("Flow testing - complete flows", function() {
             it("complete flow 1 - receiver: trusted friend; mother pregnant, voice", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'   // state_auth_code - personnel code
@@ -592,7 +598,7 @@ describe("Mama Nigeria App", function() {
             });
             it("complete flow 2 - receiver: mother & father; mother pregnant, voice", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'   // state_auth_code - personnel code
@@ -614,7 +620,7 @@ describe("Mama Nigeria App", function() {
             });
             it("complete flow 3 - receiver: father only; mother baby, sms", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'   // state_auth_code - personnel code
@@ -638,7 +644,7 @@ describe("Mama Nigeria App", function() {
         describe("Validation testing", function() {
             it("validate state_auth_code", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , 'aaaaa'  // state_auth_code - invalid personnel code
@@ -651,7 +657,7 @@ describe("Mama Nigeria App", function() {
             });
             it("validate state_msisdn", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'  // state_auth_code - personnel code
@@ -666,7 +672,7 @@ describe("Mama Nigeria App", function() {
             });
             it("validate state_msisdn_father", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'  // state_auth_code - personnel code
@@ -681,7 +687,7 @@ describe("Mama Nigeria App", function() {
             });
             it("validate state_msisdn_mother", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'  // state_auth_code - personnel code
@@ -697,7 +703,7 @@ describe("Mama Nigeria App", function() {
             });
             it("validate state_last_period_day", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'   // state_auth_code - personnel code
@@ -715,7 +721,7 @@ describe("Mama Nigeria App", function() {
             });
             it("validate state_baby_birth_day", function() {
                 return tester
-                    .setup.user.addr('082111')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'   // state_auth_code - personnel code
@@ -734,7 +740,7 @@ describe("Mama Nigeria App", function() {
             describe("Validate overall date", function() {
                 it("reaches state_invalid_date - via st-06/19", function() {
                     return tester
-                        .setup.user.addr('082111')
+                        .setup.user.addr('08080020002')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '12345'   // state_auth_code - personnel code
@@ -755,7 +761,7 @@ describe("Mama Nigeria App", function() {
                 });
                 it("validate state_last_period_month - via st-06/19 looping back to st-05", function() {
                     return tester
-                        .setup.user.addr('082111')
+                        .setup.user.addr('08080020002')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '12345'   // state_auth_code - personnel code
@@ -773,7 +779,7 @@ describe("Mama Nigeria App", function() {
                 });
                 it("reaches state_invalid_date - via st-14/18", function() {
                     return tester
-                        .setup.user.addr('082111')
+                        .setup.user.addr('08080020002')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '12345'   // state_auth_code - personnel code
@@ -794,7 +800,7 @@ describe("Mama Nigeria App", function() {
                 });
                 it("validate state_baby_birth_month_year - via st-14/18 looping back to st-12", function() {
                     return tester
-                        .setup.user.addr('082111')
+                        .setup.user.addr('08080020002')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '12345'   // state_auth_code - personnel code

@@ -32,12 +32,12 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.ussd_registration %>',
                     'src/init.js'
                 ],
-                /*sms_inbound: [
+                sms_inbound: [
                     'src/index.js',
                     'src/utils.js',
                     '<%= paths.src.app.sms_inbound %>',
                     'src/init.js'
-                ],*/
+                ],
                 ussd_public: [
                     'src/index.js',
                     'src/utils.js',
@@ -74,12 +74,12 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.ussd_registration %>',
                     'test/ussd_registration.test.js'
                 ],
-                /*sms_inbound: [
+                sms_inbound: [
                     'test/setup.js',
                     'src/utils.js',
                     '<%= paths.src.app.sms_inbound %>',
                     'test/sms_inbound.test.js'
-                ],*/
+                ],
                 ussd_public: [
                     'test/setup.js',
                     'src/utils.js',
@@ -130,10 +130,10 @@ module.exports = function (grunt) {
                 src: ['<%= paths.src.ussd_registration %>'],
                 dest: '<%= paths.dest.ussd_registration %>'
             },
-            /*sms_inbound: {
+            sms_inbound: {
                 src: ['<%= paths.src.sms_inbound %>'],
                 dest: '<%= paths.dest.sms_inbound %>'
-            },*/
+            },
             ussd_public: {
                 src: ['<%= paths.src.ussd_public %>'],
                 dest: '<%= paths.dest.ussd_public %>'
@@ -154,9 +154,9 @@ module.exports = function (grunt) {
             test_voice_change: {
                 src: ['<%= paths.test.voice_change %>']
             },
-            /* test_sms_inbound: {
-            //     src: ['<%= paths.test.sms_inbound %>']
-            }*/
+            test_sms_inbound: {
+                 src: ['<%= paths.test.sms_inbound %>']
+            },
             test_ussd_public: {
                 src: ['<%= paths.test.ussd_public %>']
             }
