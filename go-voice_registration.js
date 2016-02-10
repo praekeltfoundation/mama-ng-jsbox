@@ -1073,10 +1073,10 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     var period_date = content+"-"+monthNum+"-"+year;
-                    if (!(new moment(period_date, "DD-MM-YYYY").isValid())) {
+                    if (!go.utils.is_valid_date(period_date, "DD-MM-YYYY")) {
                         return 'state_retry_last_period_day';
                     } else {
-                        self.im.user.set_answer('last_period_date', content+'-04-'+year);  //temp hard-coded
+                        self.im.user.set_answer('last_period_date', period_date);
                         return 'state_msg_language';
                     }
                 }
@@ -1106,10 +1106,10 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     var period_date = content+"-"+monthNum+"-"+year;
-                    if (!(new moment(period_date, "DD-MM-YYYY").isValid())) {
+                    if (!go.utils.is_valid_date(period_date, 'DD-MM-YYYY')) {
                         return 'state_retry_last_period_day';
                     } else {
-                        self.im.user.set_answer('last_period_date', content+'-04-'+year);  //temp hard-coded
+                        self.im.user.set_answer('last_period_date', period_date);  //temp hard-coded
                         return 'state_msg_language';
                     }
                 }
