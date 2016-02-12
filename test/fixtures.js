@@ -1,7 +1,7 @@
 // Contact roles
 // 08080070007: registered nurse - personnel code 12345
-// 07030010001: unregistered mother but with existing contact
-// 08080020002: unregistered mother but with existing contact
+// 07030010001: unregistered mother but with existing contact (voice)
+// 08080020002: unregistered mother but with existing contact (ussd)
 // 08080030003: unrecognised contact - contact gets created
 // 07070050005: registered mother
 // 07070060006: registered mother
@@ -71,6 +71,41 @@ module.exports = function() {
                         "details": {
                             "default_addr_type": "msisdn",
                             "addresses": "msisdn:+2348080020002"
+                        },
+                        "created_at": "2015-07-10T06:13:29.693272Z",
+                        "updated_at": "2015-07-10T06:13:29.693298Z"
+                    }]
+                }
+            }
+        },
+
+        // get contact 07030010001 by msisdn
+        {
+            'repeatable': true,  // necessary for timeout restart testing
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'details__addresses__msisdn': '+2347030010001'
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8000/api/v1/identities/search/',
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [{
+                        "url": "http://localhost:8000/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/",
+                        "id": "cb245673-aa41-4302-ac47-00000000001",
+                        "version": 1,
+                        "details": {
+                            "default_addr_type": "msisdn",
+                            "addresses": "msisdn:+2347030010001"
                         },
                         "created_at": "2015-07-10T06:13:29.693272Z",
                         "updated_at": "2015-07-10T06:13:29.693298Z"
