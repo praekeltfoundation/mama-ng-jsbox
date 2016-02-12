@@ -636,28 +636,12 @@ go.utils = {
     timed_out: function(im) {
         var no_redirects = [
             'state_start',
-            'state_end',
-            'state_end_thank_translate'
+            'state_end_voice',
+            'state_end_sms'
         ];
         return im.msg.session_event === 'new'
             && im.user.state.name
             && no_redirects.indexOf(im.user.state.name) === -1;
-    },
-
-    // Track redials
-
-    track_redials: function(contact, im, decision) {
-        var status = contact.extra.status || 'unregistered';
-        return Q.all([
-            im.metrics.fire.inc(['total', 'redials', 'choice_made', 'last'].join('.')),
-            im.metrics.fire.sum(['total', 'redials', 'choice_made', 'sum'].join('.'), 1),
-            im.metrics.fire.inc(['total', 'redials', status, 'last'].join('.')),
-            im.metrics.fire.sum(['total', 'redials', status, 'sum'].join('.'), 1),
-            im.metrics.fire.inc(['total', 'redials', decision, 'last'].join('.')),
-            im.metrics.fire.sum(['total', 'redials', decision, 'sum'].join('.'), 1),
-            im.metrics.fire.inc(['total', 'redials', status, decision, 'last'].join('.')),
-            im.metrics.fire.sum(['total', 'redials', status, decision, 'sum'].join('.'), 1),
-        ]);
     },
 
 // PROJECT SPECIFIC
