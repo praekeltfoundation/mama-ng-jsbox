@@ -13,15 +13,7 @@ go.app = function() {
         var $ = self.$;
         var interrupt = true;
 
-        self.init = function() {
-
-            // Load self.contact
-            return self.im.contacts
-                .for_user()
-                .then(function(user_contact) {
-                   self.contact = user_contact;
-                });
-        };
+        self.init = function() {};
 
 
     // TEXT CONTENT
@@ -104,22 +96,17 @@ go.app = function() {
                 question: $(questions[name]),
                 choices: [
                     new Choice('continue', $("Yes")),
-                    new Choice('restart', $("Start new registration"))
+                    new Choice('restart', $("No, start new registration"))
                 ],
                 next: function(choice) {
-                    return go.utils
-                        .track_redials(self.contact, self.im, choice.value)
-                        .then(function() {
-                            if (choice.value === 'continue') {
-                                return {
-                                    name: creator_opts.name,
-                                    creator_opts: creator_opts
-                                };
-                                // return creator_opts.name;
-                            } else if (choice.value === 'restart') {
-                                return 'state_start';
-                            }
-                        });
+                    if (choice.value === 'continue') {
+                        return {
+                            name: creator_opts.name,
+                            creator_opts: creator_opts
+                        };
+                    } else if (choice.value === 'restart') {
+                        return 'state_start';
+                    }
                 }
             });
         });
@@ -128,7 +115,7 @@ go.app = function() {
     // START STATE
 
         self.add('state_start', function(name) {
-            self.im.user.answers = {};
+            self.im.user.answers = {};  // reset answers
             return go.utils
                 .check_health_worker_msisdn(self.im.user.addr, self.im)
                 .then(function(recognised) {

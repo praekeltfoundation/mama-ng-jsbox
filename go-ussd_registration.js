@@ -643,8 +643,8 @@ go.utils = {
     timed_out: function(im) {
         var no_redirects = [
             'state_start',
-            'state_end',
-            'state_end_thank_translate'
+            'state_end_voice',
+            'state_end_sms'
         ];
         return im.msg.session_event === 'new'
             && im.user.state.name
@@ -653,19 +653,19 @@ go.utils = {
 
     // Track redials
 
-    track_redials: function(contact, im, decision) {
-        var status = contact.extra.status || 'unregistered';
-        return Q.all([
-            im.metrics.fire.inc(['total', 'redials', 'choice_made', 'last'].join('.')),
-            im.metrics.fire.sum(['total', 'redials', 'choice_made', 'sum'].join('.'), 1),
-            im.metrics.fire.inc(['total', 'redials', status, 'last'].join('.')),
-            im.metrics.fire.sum(['total', 'redials', status, 'sum'].join('.'), 1),
-            im.metrics.fire.inc(['total', 'redials', decision, 'last'].join('.')),
-            im.metrics.fire.sum(['total', 'redials', decision, 'sum'].join('.'), 1),
-            im.metrics.fire.inc(['total', 'redials', status, decision, 'last'].join('.')),
-            im.metrics.fire.sum(['total', 'redials', status, decision, 'sum'].join('.'), 1),
-        ]);
-    },
+    // track_redials: function(contact, im, decision) {
+    //     var status = contact.extra.status || 'unregistered';
+    //     return Q.all([
+    //         im.metrics.fire.inc(['total', 'redials', 'choice_made', 'last'].join('.')),
+    //         im.metrics.fire.sum(['total', 'redials', 'choice_made', 'sum'].join('.'), 1),
+    //         im.metrics.fire.inc(['total', 'redials', status, 'last'].join('.')),
+    //         im.metrics.fire.sum(['total', 'redials', status, 'sum'].join('.'), 1),
+    //         im.metrics.fire.inc(['total', 'redials', decision, 'last'].join('.')),
+    //         im.metrics.fire.sum(['total', 'redials', decision, 'sum'].join('.'), 1),
+    //         im.metrics.fire.inc(['total', 'redials', status, decision, 'last'].join('.')),
+    //         im.metrics.fire.sum(['total', 'redials', status, decision, 'sum'].join('.'), 1),
+    //     ]);
+    // },
 
 // PROJECT SPECIFIC
 
@@ -732,15 +732,7 @@ go.app = function() {
         var $ = self.$;
         var interrupt = true;
 
-        self.init = function() {
-
-            // Load self.contact
-            return self.im.contacts
-                .for_user()
-                .then(function(user_contact) {
-                   self.contact = user_contact;
-                });
-        };
+        self.init = function() {};
 
 
     // TEXT CONTENT
@@ -823,22 +815,17 @@ go.app = function() {
                 question: $(questions[name]),
                 choices: [
                     new Choice('continue', $("Yes")),
-                    new Choice('restart', $("Start new registration"))
+                    new Choice('restart', $("No, start new registration"))
                 ],
                 next: function(choice) {
-                    return go.utils
-                        .track_redials(self.contact, self.im, choice.value)
-                        .then(function() {
-                            if (choice.value === 'continue') {
-                                return {
-                                    name: creator_opts.name,
-                                    creator_opts: creator_opts
-                                };
-                                // return creator_opts.name;
-                            } else if (choice.value === 'restart') {
-                                return 'state_start';
-                            }
-                        });
+                    if (choice.value === 'continue') {
+                        return {
+                            name: creator_opts.name,
+                            creator_opts: creator_opts
+                        };
+                    } else if (choice.value === 'restart') {
+                        return 'state_start';
+                    }
                 }
             });
         });
@@ -847,7 +834,7 @@ go.app = function() {
     // START STATE
 
         self.add('state_start', function(name) {
-            self.im.user.answers = {};
+            self.im.user.answers = {};  // reset answers
             return go.utils
                 .check_health_worker_msisdn(self.im.user.addr, self.im)
                 .then(function(recognised) {
