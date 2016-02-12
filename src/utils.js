@@ -692,14 +692,6 @@ go.utils = {
             });
     },
 
-    check_health_worker_registered: function(user_id, im) {
-        return go.utils
-            .get_contact_by_id(user_id, im)
-            .then(function(contact) {
-                return contact.details.personnel_code ? true : false;
-            });
-    },
-
     validate_personnel_code: function(im, content) {
         var params = {
             "details__personnel_code": content
