@@ -651,22 +651,6 @@ go.utils = {
             && no_redirects.indexOf(im.user.state.name) === -1;
     },
 
-    // Track redials
-
-    // track_redials: function(contact, im, decision) {
-    //     var status = contact.extra.status || 'unregistered';
-    //     return Q.all([
-    //         im.metrics.fire.inc(['total', 'redials', 'choice_made', 'last'].join('.')),
-    //         im.metrics.fire.sum(['total', 'redials', 'choice_made', 'sum'].join('.'), 1),
-    //         im.metrics.fire.inc(['total', 'redials', status, 'last'].join('.')),
-    //         im.metrics.fire.sum(['total', 'redials', status, 'sum'].join('.'), 1),
-    //         im.metrics.fire.inc(['total', 'redials', decision, 'last'].join('.')),
-    //         im.metrics.fire.sum(['total', 'redials', decision, 'sum'].join('.'), 1),
-    //         im.metrics.fire.inc(['total', 'redials', status, decision, 'last'].join('.')),
-    //         im.metrics.fire.sum(['total', 'redials', status, decision, 'sum'].join('.'), 1),
-    //     ]);
-    // },
-
 // PROJECT SPECIFIC
 
     check_msisdn_hcp: function(msisdn) {
