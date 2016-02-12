@@ -56,7 +56,7 @@ describe("Mama Nigeria App", function() {
         describe("When you go back to the main menu", function() {
             it("should reset the user answers", function() {
                 return tester
-                    .setup.user.addr('+07030010001')
+                    .setup.user.addr('07030010001')
                     .inputs(
                         {session_event: 'new'},
                         '12345',        // state_personnel_auth
@@ -74,33 +74,64 @@ describe("Mama Nigeria App", function() {
         // TEST REGISTRATION FLOW
 
         describe("When you start the app", function() {
-            it("should navigate to state_personnel_auth", function() {
-                return tester
-                    .setup.user.addr('+07030010001')
-                    .inputs(
-                        {session_event: 'new'}
-                    )
-                    .check.interaction({
-                        state: 'state_personnel_auth',
-                        reply: 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
-                    })
-                    .check.reply.properties({
-                        helper_metadata: {
-                            voice: {
-                                speech_url: 'http://localhost:8001/api/v1/eng_NG/state_personnel_auth_1.mp3',
-                                wait_for: '#'
+            describe("if the user is a registered nurse (has personnel code)", function() {
+                it("should navigate to state_msg_receiver", function() {
+                    return tester
+                        .setup.user.addr('08080070007')
+                        .inputs(
+                            {session_event: 'new'}
+                        )
+                        .check.interaction({
+                            state: 'state_msg_receiver',
+                            reply: [
+                                'Choose message receiver',
+                                '1. Mother & Father',
+                                '2. Only Mother',
+                                '3. Only Father',
+                                '4. Family member',
+                                '5. Trusted friend'
+                            ].join('\n')
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_msg_receiver_1.mp3',
+                                    wait_for: '#'
+                                }
                             }
-                        }
-                    })
-                    .run();
+                        })
+                        .run();
+                });
+            });
+            describe("if the user is not a registered nurse", function() {
+                it("should navigate to state_personnel_auth", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                        )
+                        .check.interaction({
+                            state: 'state_personnel_auth',
+                            reply: 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_personnel_auth_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
             });
         });
 
-        describe("Initial personnel code authorization", function() {
+        describe("Entering a personnel (chew) code", function() {
             describe("if code validates", function() {
                 it("should navigate to state_msg_receiver", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'},
                             '12345'
@@ -127,9 +158,9 @@ describe("Mama Nigeria App", function() {
                         .run();
                 });
 
-                /*it("should set the user answer mama_id to the mama's id", function() {
+                it.skip("should set the user answer mama_id to the mama's id", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'},
                             '12345'
@@ -139,9 +170,9 @@ describe("Mama Nigeria App", function() {
                         .run();
                 });
 
-                it("should create the contact if it doesn't exist", function() {
+                it.skip("should create the contact if it doesn't exist", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'},
                             '12345'
@@ -149,16 +180,16 @@ describe("Mama Nigeria App", function() {
                         .check.user.answer('mama_id',
                             'cb245673-aa41-4302-ac47-00000000003')
                         .run();
-                });*/
+                });
             });
 
             describe("if personnel code does not validate", function() {
                 it("should retry", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'},
-                            '+08080020002'
+                            'aaaaa'
                         )
                         .check.interaction({
                             state: 'state_retry_personnel_auth',
@@ -179,11 +210,11 @@ describe("Mama Nigeria App", function() {
             describe("if the retried code does not validate", function() {
                 it("should retry again", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
-                            ,'12346'        // state_personnel_auth
-                            ,'12346'         // state_retry_personnel_auth
+                            ,'aaaaa'        // state_personnel_auth
+                            ,'aaaaa'         // state_retry_personnel_auth
 
                         )
                         .check.interaction({
@@ -205,10 +236,10 @@ describe("Mama Nigeria App", function() {
             describe("if the user tries to restart with *", function() {
                 it("should not restart", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
-                            ,'12346'         // state_personnel_auth
+                            ,'aaaaa'         // state_personnel_auth
                             ,'*'             // state_retry_personnel_auth
                         )
                         .check.interaction({
@@ -230,10 +261,10 @@ describe("Mama Nigeria App", function() {
             describe("if the retried personnel code validates", function() {
                 it("should navigate to state_msg_receiver", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
-                            ,'12456'        // state_personnel_auth
+                            ,'aaaaa'        // state_personnel_auth
                             ,'12345'        // state_retry_personnel_auth
                         )
                         .check.interaction({
@@ -258,18 +289,18 @@ describe("Mama Nigeria App", function() {
                         .run();
                 });
 
-                it("should set the user answer mama_id to the mama's id", function() {
+                it.skip("should set the user answer mama_id to the mama's id", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'},
-                            '12346',
+                            'aaaaa',
                             '12347'
                         )
                         .check.user.answers({
                             /*mama_id: 'cb245673-aa41-4302-ac47-00000000002',
                             mama_num: '08080020002',*/
-                            state_personnel_auth: '12346',
+                            state_personnel_auth: 'aaaaa',
                             state_retry_personnel_auth: '12347'
                         })
                         .run();
@@ -281,11 +312,11 @@ describe("Mama Nigeria App", function() {
             describe("(option 1 - Mother & Father as receivers)", function() {
                 it("to state_father_msisdn", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
-                            , '12345'       // state_personnel_auth
-                            , '1'           // state_msg_receiver - mother & father
+                            , '12345'  // state_personnel_auth
+                            , '1'      // state_msg_receiver - mother & father
                         )
                         .check.interaction({
                             state: 'state_father_msisdn',
@@ -295,12 +326,12 @@ describe("Mama Nigeria App", function() {
                 });
                 it("to state_mother_msisdn", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
-                            , '12345'       // state_personnel_auth
-                            , '1'           // state_msg_receiver - mother & father
-                            , '08080020002' // state_father_msisdn
+                            , '12345'        // state_personnel_auth
+                            , '1'            // state_msg_receiver - mother & father
+                            , '08080020002'  // state_father_msisdn
                         )
                         .check.interaction({
                             state: 'state_mother_msisdn',
@@ -310,13 +341,13 @@ describe("Mama Nigeria App", function() {
                 });
                 it("to state_pregnancy_status", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
-                            , '12345'       // state_personnel_auth
-                            , '1'           // state_msg_receiver - mother & father
-                            , '08080020002' // state_father_msisdn
-                            , '08080020003' // state_mother_msisdn
+                            , '12345'        // state_personnel_auth
+                            , '1'            // state_msg_receiver - mother & father
+                            , '08080020002'  // state_father_msisdn
+                            , '08080020003'  // state_mother_msisdn
                         )
                         .check.interaction({
                             state: 'state_pregnancy_status',
@@ -332,11 +363,11 @@ describe("Mama Nigeria App", function() {
             describe("(option 2,4,5 - Mother or others)", function() {
                 it("to state_receiver_msisdn", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'},
-                            '12345'   // state_personnel_auth
-                            , '4'           // state_msg_receiver - family member
+                            '12345'  // state_personnel_auth
+                            , '4'    // state_msg_receiver - family member
                         )
                         .check.interaction({
                             state: 'state_receiver_msisdn',
@@ -346,12 +377,12 @@ describe("Mama Nigeria App", function() {
                 });
                 it("to state_pregnancy_status", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
-                            , '12345'       // state_personnel_auth
-                            , '4'           // state_msg_receiver - family member
-                            , '08080020002' // state_receiver_msisdn
+                            , '12345'        // state_personnel_auth
+                            , '4'            // state_msg_receiver - family member
+                            , '08080020002'  // state_receiver_msisdn
                         )
                         .check.interaction({
                             state: 'state_pregnancy_status',
@@ -370,13 +401,13 @@ describe("Mama Nigeria App", function() {
             describe("if it is a valid choice", function() {
                 it("should navigate to state state_pregnancy_status", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
-                            , '12345'           // state_personnel_auth
-                            , '1'               // state_msg_receiver - mother&father
-                            , '08080020002'     // state_father_msisdn
-                            , '08080020003'     // state_mother_msisdn
+                            , '12345'        // state_personnel_auth
+                            , '1'            // state_msg_receiver - mother&father
+                            , '08080020002'  // state_father_msisdn
+                            , '08080020003'  // state_mother_msisdn
                         )
                         .check.interaction({
                             state: 'state_pregnancy_status',
@@ -401,11 +432,11 @@ describe("Mama Nigeria App", function() {
             describe("if it is *", function() {
                 it("should restart", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'},
-                            '12345'     // state_personnel_auth
-                            , '*'       // state_msg_receiver - restart
+                            '12345'  // state_personnel_auth
+                            , '*'    // state_msg_receiver - restart
                         )
                         .check.interaction({
                             state: 'state_personnel_auth',
@@ -426,7 +457,7 @@ describe("Mama Nigeria App", function() {
             describe("if it is an invalid choice", function() {
                 it("should replay state_msg_receiver", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'},
                             '12345'
@@ -460,14 +491,14 @@ describe("Mama Nigeria App", function() {
             describe("if you choose pregnant", function() {
                 it("should navigate to state_last_period_year", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
-                            , '12345'           // state_personnel_auth
-                            , '1'               // state_msg_receiver - mother&father
-                            , '08080020002'     // state_father_msisdn
-                            , '08080020003'     // state_mother_msisdn
-                            , '1'               // state_pregnancy_status
+                            , '12345'        // state_personnel_auth
+                            , '1'            // state_msg_receiver - mother&father
+                            , '08080020002'  // state_father_msisdn
+                            , '08080020003'  // state_mother_msisdn
+                            , '1'            // state_pregnancy_status
                         )
                         .check.interaction({
                             state: 'state_last_period_year',
@@ -492,14 +523,14 @@ describe("Mama Nigeria App", function() {
             describe("if you choose baby", function() {
                 it("should navigate to state_baby_birth_year", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
-                            , '12345'           // state_personnel_auth
-                            , '1'               // state_msg_receiver - mother&father
-                            , '08080020002'     // state_father_msisdn
-                            , '08080020003'     // state_mother_msisdn
-                            , '2'               // state_pregnancy_status - baby
+                            , '12345'        // state_personnel_auth
+                            , '1'            // state_msg_receiver - mother&father
+                            , '08080020002'  // state_father_msisdn
+                            , '08080020003'  // state_mother_msisdn
+                            , '2'            // state_pregnancy_status - baby
                         )
                         .check.interaction({
                             state: 'state_baby_birth_year',
@@ -522,211 +553,12 @@ describe("Mama Nigeria App", function() {
             });
         });
 
-        describe("When you enter a baby_birth_year", function() {
-            describe("if 'this year' chosen", function() {
-                it("should navigate to state_this_year_baby_birth_month", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'}
-                            , '12345'           // state_personnel_auth
-                            , '1'               // state_msg_receiver - mother&father
-                            , '08080020002'     // state_father_msisdn
-                            , '08080020003'     // state_mother_msisdn
-                            , '2'               // state_pregnancy_status - baby
-                            , '1'               // state_baby_birth_year - this year
-                        )
-                        .check.interaction({
-                            state: 'state_this_year_baby_birth_month',
-                            reply: [
-                                'Baby month this year?',
-                                '1. January',
-                                '2. February',
-                                '3. March',
-                                '4. April',
-                                '5. May',
-                                '6. June',
-                                '7. July',
-                                '8. August',
-                                '9. September',
-                                '10. October',
-                                '11. November',
-                                '12. December'
-                            ].join('\n')
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_this_year_baby_birth_month_1.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                        })
-                        .run();
-                });
-
-                it("should navigate to state_retry_this_year_baby_birth_month", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'}
-                            , '12345'           // state_personnel_auth
-                            , '1'               // state_msg_receiver - mother&father
-                            , '08080020002'     // state_father_msisdn
-                            , '08080020003'     // state_mother_msisdn
-                            , '2'               // state_pregnancy_status - baby
-                            , '1'               // state_baby_birth_year - this year
-                            , '8'               // state_last_year_baby_birth_month - aug
-                        )
-                        .check.interaction({
-                            state: 'state_retry_this_year_baby_birth_month',
-                            reply: [
-                                'Invalid input. Baby month?',
-                                '1. January',
-                                '2. February',
-                                '3. March',
-                                '4. April',
-                                '5. May',
-                                '6. June',
-                                '7. July',
-                                '8. August',
-                                '9. September',
-                                '10. October',
-                                '11. November',
-                                '12. December'
-                            ].join('\n')
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_this_year_baby_birth_month_1.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                        })
-                        .run();
-                });
-            });
-
-            describe("if 'last year' chosen", function() {
-                it("should navigate to state_last_year_baby_birth_month", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'}
-                            , '12345'           // state_personnel_auth
-                            , '1'               // state_msg_receiver - mother&father
-                            , '08080020002'     // state_father_msisdn
-                            , '08080020003'     // state_mother_msisdn
-                            , '2'               // state_pregnancy_status
-                            , '2'               // state_baby_birth_year
-                        )
-                        .check.interaction({
-                            state: 'state_last_year_baby_birth_month',
-                            reply: [
-                                'Baby month last year?',
-                                '1. January',
-                                '2. February',
-                                '3. March',
-                                '4. April',
-                                '5. May',
-                                '6. June',
-                                '7. July',
-                                '8. August',
-                                '9. September',
-                                '10. October',
-                                '11. November',
-                                '12. December'
-                            ].join('\n')
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_last_year_baby_birth_month_1.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                        })
-                        .run();
-                });
-
-                it("should navigate to state_retry_last_year_baby_birth_month", function() {
-                    return tester
-                        .setup.user.addr('+07030010001')
-                        .inputs(
-                            {session_event: 'new'}
-                            , '12345'           // state_personnel_auth
-                            , '1'               // state_msg_receiver - mother&father
-                            , '08080020002'     // state_father_msisdn
-                            , '08080020003'     // state_mother_msisdn
-                            , '2'               // state_pregnancy_status - baby
-                            , '2'               // state_baby_birth_year - last year
-                            , '5'               // state_last_year_baby_birth_month - may
-                        )
-                        .check.interaction({
-                            state: 'state_retry_last_year_baby_birth_month',
-                            reply: [
-                                'Invalid input. Baby month?',
-                                '1. January',
-                                '2. February',
-                                '3. March',
-                                '4. April',
-                                '5. May',
-                                '6. June',
-                                '7. July',
-                                '8. August',
-                                '9. September',
-                                '10. October',
-                                '11. November',
-                                '12. December'
-                            ].join('\n')
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_last_year_baby_birth_month_1.mp3',
-                                    wait_for: '#'
-                                }
-                            }
-                        })
-                        .run();
-                });
-            });
-
-            it("should converge at state_baby_birth_day", function() {
-                return tester
-                    .setup.user.addr('+07030010001')
-                    .inputs(
-                        {session_event: 'new'}
-                        , '12345'       // state_personnel_auth
-                        , '5'           // state_msg_receiver - trusted friend
-                        , '08080020002' // state_receiver_msisdn
-                        , '2'           // state_pregnancy_status - baby
-                        , '2'           // state_baby_birth_year - last year
-                        , '9'           // state_last_year_baby_birth_month - sep
-                    )
-                    .check.interaction({
-                        state: 'state_baby_birth_day',
-                        reply: 'Birth day in sep [2016]'
-                    })
-                    .check.reply.properties({
-                        helper_metadata: {
-                            voice: {
-                                speech_url: 'http://localhost:8001/api/v1/eng_NG/state_baby_birth_day_9.mp3',
-                                wait_for: '#'
-                            }
-                        }
-                    })
-                    .run();
-            });
-        });
-
+        // pregnant
         describe("when you enter a last period year", function() {
-
             describe("if 'this year' is chosen", function() {
                 it("should navigate to state_this_year_period_month", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
                             , '12345'           // state_personnel_auth
@@ -767,7 +599,7 @@ describe("Mama Nigeria App", function() {
 
                     it("should navigate to state_retry_this_year_period_month", function() {
                         return tester
-                            .setup.user.addr('+07030010001')
+                            .setup.user.addr('07030010001')
                             .inputs(
                                 {session_event: 'new'}
                                 , '12345'           // state_personnel_auth
@@ -811,7 +643,7 @@ describe("Mama Nigeria App", function() {
             describe("if 'last year' is chosen", function() {
                 it("should navigate to state_last_year_period_month", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
                             , '12345'           // state_personnel_auth
@@ -849,19 +681,113 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
+            });
+        });
 
-                it("should navigate to state_retry_last_year_period_month", function() {
+        // baby
+        describe("When you enter a baby_birth year", function() {
+            describe("if 'this year' chosen", function() {
+                it("should navigate to state_this_year_baby_birth_month", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
-                            , '12345'           // state_personnel_auth
-                            , '1'               // state_msg_receiver - mother&father
-                            , '08080020002'     // state_father_msisdn
-                            , '08080020003'     // state_mother_msisdn
-                            , '1'               // state_pregnancy_status - pregnant
-                            , '2'               // state_last_period_year - last year
-                            , '3'               // state_last_year_period_month - mar
+                            , '12345'        // state_personnel_auth
+                            , '1'            // state_msg_receiver - mother&father
+                            , '08080020002'  // state_father_msisdn
+                            , '08080020003'  // state_mother_msisdn
+                            , '2'            // state_pregnancy_status - baby
+                            , '1'            // state_baby_birth_year - this year
+                        )
+                        .check.interaction({
+                            state: 'state_this_year_baby_birth_month',
+                            reply: [
+                                'Baby month this year?',
+                                '1. January',
+                                '2. February',
+                                '3. March',
+                                '4. April',
+                                '5. May',
+                                '6. June',
+                                '7. July',
+                                '8. August',
+                                '9. September',
+                                '10. October',
+                                '11. November',
+                                '12. December'
+                            ].join('\n')
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_this_year_baby_birth_month_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
+            });
+
+            describe("if 'last year' chosen", function() {
+                it("should navigate to state_last_year_baby_birth_month", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'        // state_personnel_auth
+                            , '1'            // state_msg_receiver - mother&father
+                            , '08080020002'  // state_father_msisdn
+                            , '08080020003'  // state_mother_msisdn
+                            , '2'            // state_pregnancy_status
+                            , '2'            // state_baby_birth_year
+                        )
+                        .check.interaction({
+                            state: 'state_last_year_baby_birth_month',
+                            reply: [
+                                'Baby month last year?',
+                                '1. January',
+                                '2. February',
+                                '3. March',
+                                '4. April',
+                                '5. May',
+                                '6. June',
+                                '7. July',
+                                '8. August',
+                                '9. September',
+                                '10. October',
+                                '11. November',
+                                '12. December'
+                            ].join('\n')
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_last_year_baby_birth_month_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
+            });
+        });
+
+        // pregnant
+        describe("When you enter a last period month", function() {
+            describe("if the month choice is invalid", function() {
+                it("should navigate to state_retry_last_year_period_month", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'        // state_personnel_auth
+                            , '1'            // state_msg_receiver - mother&father
+                            , '08080020002'  // state_father_msisdn
+                            , '08080020003'  // state_mother_msisdn
+                            , '1'            // state_pregnancy_status - pregnant
+                            , '2'            // state_last_period_year - last year
+                            , '3'            // state_last_year_period_month - mar
                         )
                         .check.interaction({
                             state: 'state_retry_last_year_period_month',
@@ -891,17 +817,20 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
+            });
 
-                it("should converge at state_last_period_day", function() {
+            describe("if the month choice is valid", function() {
+                it("should navigate to state_last_period_day", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
-                            , '12345'       // state_personnel_auth
-                            , '5'           // state_msg_receiver - trusted friend
-                            , '08080020002' // state_receiver_msisdn
-                            , '1'           // state_pregnancy_status - period
-                            , '2'           // state_last_period_year - last year
+                            , '12345'        // state_personnel_auth
+                            , '1'            // state_msg_receiver - mother&father
+                            , '08080020002'  // state_father_msisdn
+                            , '08080020003'  // state_mother_msisdn
+                            , '1'            // state_pregnancy_status - pregnant
+                            , '2'            // state_last_period_year - last year
                             , '12'          // state_last_year_period_month - dec
                         )
                         .check.interaction({
@@ -921,11 +850,88 @@ describe("Mama Nigeria App", function() {
             });
         });
 
+        // baby
+        describe("When you enter a baby_birth_month", function() {
+            describe("if the month choice is invalid", function() {
+                it("should navigate to state_retry_this_year_baby_birth_month", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'           // state_personnel_auth
+                            , '1'               // state_msg_receiver - mother&father
+                            , '08080020002'     // state_father_msisdn
+                            , '08080020003'     // state_mother_msisdn
+                            , '2'               // state_pregnancy_status - baby
+                            , '1'               // state_baby_birth_year - this year
+                            , '8'               // state_last_year_baby_birth_month - aug
+                        )
+                        .check.interaction({
+                            state: 'state_retry_this_year_baby_birth_month',
+                            reply: [
+                                'Invalid input. Baby month?',
+                                '1. January',
+                                '2. February',
+                                '3. March',
+                                '4. April',
+                                '5. May',
+                                '6. June',
+                                '7. July',
+                                '8. August',
+                                '9. September',
+                                '10. October',
+                                '11. November',
+                                '12. December'
+                            ].join('\n')
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_this_year_baby_birth_month_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
+            });
+
+            describe("if the month choice is valid", function() {
+                it("should navigate to state_baby_birth_day", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'       // state_personnel_auth
+                            , '5'           // state_msg_receiver - trusted friend
+                            , '08080020002' // state_receiver_msisdn
+                            , '2'           // state_pregnancy_status - baby
+                            , '2'           // state_baby_birth_year - last year
+                            , '9'           // state_last_year_baby_birth_month - sep
+                        )
+                        .check.interaction({
+                            state: 'state_baby_birth_day',
+                            reply: 'Birth day in sep [2016]'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_baby_birth_day_9.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
+            });
+        });
+
+        // pregnant
         describe("when you enter a last period day", function() {
             describe("if it is an invalid day", function() {
                 it("should navigate to state_retry_last_period_day", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
                             , '12345'       // state_personnel_auth
@@ -955,7 +961,7 @@ describe("Mama Nigeria App", function() {
             describe("if it is a valid day", function() {
                 it("should navigate to state_msg_language", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
                             , '12345'       // state_personnel_auth
@@ -993,7 +999,7 @@ describe("Mama Nigeria App", function() {
             describe("if it is an invalid day", function() {
                 it("should navigate to state_retry_baby_birth_day", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
                             , '12345'       // state_personnel_auth
@@ -1023,7 +1029,7 @@ describe("Mama Nigeria App", function() {
             describe("if it is a valid day", function() {
                 it("should navigate to state_msg_language", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
                             , '12345'       // state_personnel_auth
@@ -1058,7 +1064,7 @@ describe("Mama Nigeria App", function() {
             describe("if it is *", function() {
                 it("should restart", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
                             , '12345'       // state_personnel_auth
@@ -1091,7 +1097,7 @@ describe("Mama Nigeria App", function() {
         describe("When you choose a language state_msg_language", function() {
             it("should navigate to state state_msg_type", function() {
                 return tester
-                    .setup.user.addr('+07030010001')
+                    .setup.user.addr('07030010001')
                     .inputs(
                         {session_event: 'new'}
                         , '12345'       // state_personnel_auth
@@ -1127,7 +1133,7 @@ describe("Mama Nigeria App", function() {
             describe("if you choose sms", function() {
                 it("should navigate to state_end_sms", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
                             , '12345'       // state_personnel_auth
@@ -1160,7 +1166,7 @@ describe("Mama Nigeria App", function() {
             describe("if you choose voice", function() {
                 it("should navigate to state_voice_days", function() {
                     return tester
-                        .setup.user.addr('+07030010001')
+                        .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
                             , '12345'       // state_personnel_auth
@@ -1197,7 +1203,7 @@ describe("Mama Nigeria App", function() {
         describe("When you choose a day state_voice_days", function() {
             it("should navigate to state_voice_times", function() {
                 return tester
-                    .setup.user.addr('+07030010001')
+                    .setup.user.addr('07030010001')
                     .inputs(
                         {session_event: 'new'}
                         , '12345'       // state_personnel_auth
@@ -1234,7 +1240,7 @@ describe("Mama Nigeria App", function() {
         describe("When you choose a time state_voice_times", function() {
             it.skip("should navigate to state_voice_end", function() {
                 return tester
-                    .setup.user.addr('+07030010001')
+                    .setup.user.addr('07030010001')
                     .inputs(
                         {session_event: 'new'}
                         , '12345'       // state_personnel_auth
@@ -1267,7 +1273,7 @@ describe("Mama Nigeria App", function() {
 
             it.skip("should have the correct answers set", function() {
                 return tester
-                    .setup.user.addr('+07030010001')
+                    .setup.user.addr('07030010001')
                     .inputs(
                         {session_event: 'new'}
                         ,'12345'        // state_personnel_auth
