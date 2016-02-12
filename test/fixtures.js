@@ -34,8 +34,12 @@ module.exports = function() {
                         "version": 1,
                         "details": {
                             "default_addr_type": "msisdn",
-                            "addresses": "msisdn:+2348080070007",
-                            "personnel_code": "12345"
+                            "personnel_code": "12345",
+                            "addresses": {
+                                "msisdn": {
+                                    "+2348080070007": {}
+                                }
+                            }
                         },
                         "created_at": "2015-07-10T06:13:29.693272Z",
                         "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -70,7 +74,11 @@ module.exports = function() {
                         "version": 1,
                         "details": {
                             "default_addr_type": "msisdn",
-                            "addresses": "msisdn:+2348080020002"
+                            "addresses": {
+                                "msisdn": {
+                                    "+2348080020002": {}
+                                }
+                            }
                         },
                         "created_at": "2015-07-10T06:13:29.693272Z",
                         "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -105,7 +113,11 @@ module.exports = function() {
                         "version": 1,
                         "details": {
                             "default_addr_type": "msisdn",
-                            "addresses": "msisdn:+2347030010001"
+                            "addresses": {
+                                "msisdn": {
+                                    "+2347030010001": {}
+                                }
+                            }
                         },
                         "created_at": "2015-07-10T06:13:29.693272Z",
                         "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -139,7 +151,11 @@ module.exports = function() {
                         "version": 1,
                         "details": {
                             "default_addr_type": "msisdn",
-                            "addresses": "msisdn:+2347070050005",
+                            "addresses": {
+                                "msisdn": {
+                                    "+2347070050005": {}
+                                }
+                            },
                             "baby_dob": "mama_is_pregnant",
                             "mama_edd": "2015-12-21",
                             "opted_out": false,
@@ -187,7 +203,11 @@ module.exports = function() {
                         "version": 1,
                         "details": {
                             "default_addr_type": "msisdn",
-                            "addresses": "msisdn:+2347070060006",
+                            "addresses": {
+                                "msisdn": {
+                                    "+2347070060006": {}
+                                }
+                            },
                             "baby_dob": "mama_is_pregnant",
                             "mama_edd": "2015-12-21",
                             "opted_out": false,
@@ -259,8 +279,12 @@ module.exports = function() {
                         "version": 1,
                         "details": {
                             "default_addr_type": "msisdn",
-                            "addresses": "msisdn:+2348080070007",
-                            "personnel_code": "12345"
+                            "personnel_code": "12345",
+                            "addresses": {
+                                "msisdn": {
+                                    "+2348080070007": {}
+                                }
+                            }
                         },
                         "created_at": "2015-07-10T06:13:29.693272Z",
                         "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -317,7 +341,11 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+2348080030003"
+                        "addresses": {
+                            "msisdn": {
+                                "+2348080030003": {}
+                            }
+                        }
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -345,7 +373,11 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+2348080030003"
+                        "addresses": {
+                            "msisdn": {
+                                "+2348080030003": {}
+                            }
+                        }
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -373,7 +405,11 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+07030010001"
+                        "addresses": {
+                            "msisdn": {
+                                "+07030010001": {}
+                            }
+                        }
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -400,7 +436,11 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+2348080020002"
+                        "addresses": {
+                            "msisdn": {
+                                "+2348080020002": {}
+                            }
+                        }
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -427,7 +467,11 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+2347070050005",
+                        "addresses": {
+                            "msisdn": {
+                                "+2347070050005": {}
+                            }
+                        },
                         "baby_dob": "mama_is_pregnant",
                         "mama_edd": "2015-12-21",
                         "opted_out": false,
@@ -466,7 +510,11 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+2347070060006",
+                        "addresses": {
+                            "msisdn": {
+                                "+2347070060006": {}
+                            }
+                        },
                         "baby_dob": "mama_is_pregnant",
                         "mama_edd": "2015-12-21",
                         "opted_out": false,
@@ -501,7 +549,11 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+2348080020002",
+                        "addresses": {
+                            "msisdn": {
+                                "+2348080020002": {}
+                            }
+                        },
                         "baby_dob": "2015-12-21",
                         "mama_edd": "registration_after_baby_born",
                         "opted_out": false,
@@ -527,7 +579,11 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+2348080020002",
+                        "addresses": {
+                            "msisdn": {
+                                "+2348080020002": {}
+                            }
+                        },
                         "baby_dob": "2015-12-21",
                         "mama_edd": "registration_after_baby_born",
                         "opted_out": false,
@@ -622,7 +678,11 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+07030010001",
+                        "addresses": {
+                            "msisdn": {
+                                "+2347030010001": {}
+                            }
+                        },
                         "mamas_registered_ids": ["cb245673-aa41-4302-ac47-00000000002"],
                         "mamas_registered_qty": 1
                     },
@@ -638,7 +698,11 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+07030010001",
+                        "addresses": {
+                            "msisdn": {
+                                "+2347030010001": {}
+                            }
+                        },
                         "mamas_registered_ids": ["cb245673-aa41-4302-ac47-00000000002"],
                         "mamas_registered_qty": 1
                     },
@@ -663,7 +727,11 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+2348080020002",
+                        "addresses": {
+                            "msisdn": {
+                                "+2348080020002": {}
+                            }
+                        },
                         "baby_dob": "mama_is_pregnant",
                         "mama_edd": "2016-02-27",
                         "opted_out": false,
@@ -689,7 +757,11 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+2348080020002",
+                        "addresses": {
+                            "msisdn": {
+                                "+2348080020002": {}
+                            }
+                        },
                         "baby_dob": "mama_is_pregnant",
                         "mama_edd": "2016-02-27",
                         "opted_out": false,
@@ -887,7 +959,11 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+2347070050005",
+                        "addresses": {
+                            "msisdn": {
+                                "+2347070050005": {}
+                            }
+                        },
                         "baby_dob": "2015-07-22",
                         "mama_edd": "2015-12-21",
                         "opted_out": false,
@@ -914,7 +990,11 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+2347070050005",
+                        "addresses": {
+                            "msisdn": {
+                                "+2347070050005": {}
+                            }
+                        },
                         "baby_dob": "2015-07-22",
                         "mama_edd": "2015-12-21",
                         "opted_out": false,
@@ -992,7 +1072,11 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+2347070050005",
+                        "addresses": {
+                            "msisdn": {
+                                "+2347070050005": {}
+                            }
+                        },
                         "baby_dob": "mama_is_pregnant",
                         "mama_edd": "2015-12-21",
                         "opted_out": false,
@@ -1019,7 +1103,11 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+2347070050005",
+                        "addresses": {
+                            "msisdn": {
+                                "+2347070050005": {}
+                            }
+                        },
                         "baby_dob": "mama_is_pregnant",
                         "mama_edd": "2015-12-21",
                         "opted_out": false,
@@ -1104,7 +1192,11 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+2347070050005",
+                        "addresses": {
+                            "msisdn": {
+                                "+2347070050005": {}
+                            }
+                        },
                         "baby_dob": "mama_is_pregnant",
                         "mama_edd": "2015-12-21",
                         "opted_out": true,
@@ -1132,7 +1224,11 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+2347070050005",
+                        "addresses": {
+                            "msisdn": {
+                                "+2347070050005": {}
+                            }
+                        },
                         "baby_dob": "mama_is_pregnant",
                         "mama_edd": "2015-12-21",
                         "opted_out": true,
@@ -1167,7 +1263,11 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+2347070050005",
+                        "addresses": {
+                            "msisdn": {
+                                "+2347070050005": {}
+                            }
+                        },
                         "baby_dob": "mama_is_pregnant",
                         "mama_edd": "2015-12-21",
                         "opted_out": true,
@@ -1195,7 +1295,11 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+2347070050005",
+                        "addresses": {
+                            "msisdn": {
+                                "+2347070050005": {}
+                            }
+                        },
                         "baby_dob": "mama_is_pregnant",
                         "mama_edd": "2015-12-21",
                         "opted_out": true,
@@ -1230,7 +1334,11 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+2347070050005",
+                        "addresses": {
+                            "msisdn": {
+                                "+2347070050005": {}
+                            }
+                        },
                         "baby_dob": "mama_is_pregnant",
                         "mama_edd": "2015-12-21",
                         "opted_out": true,
@@ -1258,7 +1366,11 @@ module.exports = function() {
                     "version": 1,
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+2347070050005",
+                        "addresses": {
+                            "msisdn": {
+                                "+2347070050005": {}
+                            }
+                        },
                         "baby_dob": "mama_is_pregnant",
                         "mama_edd": "2015-12-21",
                         "opted_out": true,
