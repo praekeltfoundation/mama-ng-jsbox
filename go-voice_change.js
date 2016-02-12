@@ -214,7 +214,7 @@ go.utils = {
 
     get_contact_by_msisdn: function(msisdn, im) {
         var params = {
-            msisdn: msisdn
+            "details__addresses__msisdn": msisdn
         };
         return go.utils
             .service_api_call('identities', 'get', params, null, 'search/', im)
@@ -686,9 +686,15 @@ go.utils = {
     },
 
     validate_personnel_code: function(im, content) {
-        return Q()
-            .then(function(q_response) {
-                return content === '12345';
+        var params = {
+            "details__personnel_code": content
+        };
+        return go.utils
+            .service_api_call('identities', 'get', params, null, 'search/', im)
+            .then(function(json_get_response) {
+                var contacts_found = json_get_response.data.results;
+                // Return the number of contact's found
+                return contacts_found.length > 0;
             });
     },
 
@@ -754,7 +760,8 @@ go.app = function() {
         self.states.add('state_start', function() {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
-            return self.states.create("state_c12_number");
+
+            return self.states.create('state_c12_number');
         });
 
 
