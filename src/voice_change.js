@@ -35,7 +35,8 @@ go.app = function() {
         self.states.add('state_start', function() {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
-            return self.states.create("state_c12_number");
+
+            return self.states.create('state_c12_number');
         });
 
 

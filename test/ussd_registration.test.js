@@ -44,24 +44,6 @@ describe("Mama Nigeria App", function() {
                 .setup(function(api) {
                     fixtures().forEach(api.http.fixtures.add);
                 })
-                .setup(function(api) {
-                    // new user 082111
-                    api.contacts.add({
-                        msisdn: '+082111',
-                        extra: {},
-                        key: "contact_key_082111",
-                        user_account: "contact_user_account"
-                    });
-                })
-                .setup(function(api) {
-                    // hcp recognised user 082222
-                    api.contacts.add({
-                        msisdn: '+082222',
-                        extra: {},
-                        key: "contact_key_082222",
-                        user_account: "contact_user_account"
-                    });
-                })
                 ;
         });
 
