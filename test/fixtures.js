@@ -1,7 +1,15 @@
+// Contact roles
+// 08080070007: registered nurse - personnel code 12345
+// 07030010001: unregistered mother but with existing contact
+// 08080020002: unregistered mother but with existing contact
+// 08080030003: unrecognised contact - contact gets created
+// 07070050005: registered mother
+// 07070060006: registered mother
+
+
 module.exports = function() {
     return [
         // get contact 08080070007 by msisdn (to validate personnel_code)
-        // this is a registered nurse
         {
             'request': {
                 'method': 'GET',
@@ -192,7 +200,6 @@ module.exports = function() {
         },
 
         // get contact 08080070007 by personnel code
-        // this is a registered nurse
         {
             'request': {
                 'method': 'GET',
@@ -341,7 +348,6 @@ module.exports = function() {
 
         // get contact cb245673-aa41-4302-ac47-00000000002
         {
-
             'request': {
                 'method': 'GET',
                 'params': {},
