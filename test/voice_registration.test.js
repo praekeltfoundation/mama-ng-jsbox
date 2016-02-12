@@ -66,7 +66,8 @@ describe("Mama Nigeria App", function() {
                         state: 'state_personnel_auth',
                         reply: 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
                     })
-                    .check.user.answers({})
+                    .check.user.answers(
+                        {"user_id": "cb245673-aa41-4302-ac47-00000000001"})
                     .run();
             });
         });

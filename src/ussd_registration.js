@@ -13,7 +13,15 @@ go.app = function() {
         var $ = self.$;
         var interrupt = true;
 
-        self.init = function() {};
+        self.init = function() {
+            // Send a dial back reminder via sms the first time someone times out
+            self.im.on('session:close', function(e) {
+                return go.utils.eval_dialback_reminder(
+                    e, self.im, self.im.user.answers.user_id, $,
+                    "Please dial back in to complete the Hello MAMA registration"
+                    );
+            });
+        };
 
 
     // TEXT CONTENT
@@ -53,16 +61,6 @@ go.app = function() {
                 "Thank you. The person will now start receiving calls on {{first_day}} and {{second_day}} between {{start_time}} - {{end_time}}.",
             "state_end_sms":
                 "Thank you. The person will now start receiving messages three times a week."
-        };
-
-        var smss = {
-            "time_out":
-                "Please dial back in to *XXX*XX# to complete the Hello MAMA registration."
-        };
-
-        get_sms_text = function(msg_receiver) {
-            return msg_receiver === 'time_out'
-                ? smss.time_out : null;
         };
 
         var errors = {
@@ -117,9 +115,10 @@ go.app = function() {
         self.add('state_start', function(name) {
             self.im.user.answers = {};  // reset answers
             return go.utils
-                .check_health_worker_msisdn(self.im.user.addr, self.im)
-                .then(function(recognised) {
-                    if (recognised) {
+                .get_or_create_contact(self.im.user.addr, self.im)
+                .then(function(user) {
+                    self.im.user.set_answer('user_id', user.id);
+                    if (user.details.personnel_code) {
                         return self.states.create('state_msg_receiver');
                     } else {
                         return self.states.create('state_auth_code');

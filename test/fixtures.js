@@ -3,13 +3,14 @@
 // 07030010001: unregistered mother but with existing contact (voice)
 // 08080020002: unregistered mother but with existing contact (ussd)
 // 08080030003: unrecognised contact - contact gets created
+// 08080040004: clone of 0002 but with dialback_sent = true
 // 07070050005: registered mother
 // 07070060006: registered mother
 
 
 module.exports = function() {
     return [
-        // get contact 08080070007 by msisdn (to validate personnel_code)
+        // 0: get contact 08080070007 by msisdn (to validate personnel_code)
         {
             'request': {
                 'method': 'GET',
@@ -48,7 +49,7 @@ module.exports = function() {
             }
         },
 
-        // get contact 08080020002 by msisdn
+        // 1: get contact 08080020002 by msisdn
         {
             'repeatable': true,  // necessary for timeout restart testing
             'request': {
@@ -87,7 +88,7 @@ module.exports = function() {
             }
         },
 
-        // get contact 07030010001 by msisdn
+        // 2: get contact 07030010001 by msisdn
         {
             'repeatable': true,  // necessary for timeout restart testing
             'request': {
@@ -126,7 +127,7 @@ module.exports = function() {
             }
         },
 
-        // get contact 07070050005 by msisdn
+        // 3: get contact 07070050005 by msisdn
         {
             'request': {
                 'method': 'GET',
@@ -178,7 +179,7 @@ module.exports = function() {
             }
         },
 
-        // get contact 07070060006 by msisdn
+        // 4: get contact 07070060006 by msisdn
         {
             'request': {
                 'method': 'GET',
@@ -230,7 +231,7 @@ module.exports = function() {
             }
         },
 
-        // get contact 08080030003 by msisdn - no results
+        // 5: get contact 08080030003 by msisdn - no results
         {
             'request': {
                 'method': 'GET',
@@ -254,7 +255,7 @@ module.exports = function() {
             }
         },
 
-        // get contact 08080070007 by personnel code
+        // 6: get contact 08080070007 by personnel code
         {
             'request': {
                 'method': 'GET',
@@ -293,7 +294,7 @@ module.exports = function() {
             }
         },
 
-        // get contact by personnel code - no results
+        // 7: get contact by personnel code - no results
         {
             'request': {
                 'method': 'GET',
@@ -317,7 +318,7 @@ module.exports = function() {
             }
         },
 
-        // create contact 08080030003
+        // 8: create contact 08080030003
         {
             'request': {
                 'method': 'POST',
@@ -329,7 +330,11 @@ module.exports = function() {
                 'data':  {
                     "details": {
                         "default_addr_type": "msisdn",
-                        "addresses": "msisdn:+2348080030003"
+                        "addresses": {
+                            "msisdn": {
+                                "+2348080030003": {}
+                            }
+                        }
                     }
                 }
             },
@@ -353,7 +358,7 @@ module.exports = function() {
             }
         },
 
-        // get contact cb245673-aa41-4302-ac47-00000000003
+        // 9: get contact cb245673-aa41-4302-ac47-00000000003
         {
             'repeatable': true,
             'request': {
@@ -385,7 +390,7 @@ module.exports = function() {
             }
         },
 
-        // get contact cb245673-aa41-4302-ac47-00000000001
+        // 10: 10: get contact cb245673-aa41-4302-ac47-00000000001
         {
             'repeatable': true,
             'request': {
@@ -417,7 +422,7 @@ module.exports = function() {
             }
         },
 
-        // get contact cb245673-aa41-4302-ac47-00000000002
+        // 11: get contact cb245673-aa41-4302-ac47-00000000002
         {
             'request': {
                 'method': 'GET',
@@ -448,7 +453,7 @@ module.exports = function() {
             }
         },
 
-        // get contact cb245673-aa41-4302-ac47-00000000005
+        // 12: get contact cb245673-aa41-4302-ac47-00000000005
         {
             'request': {
                 'method': 'GET',
@@ -491,7 +496,7 @@ module.exports = function() {
             }
         },
 
-        // get contact cb245673-aa41-4302-ac47-00000000006
+        // 13: get contact cb245673-aa41-4302-ac47-00000000006
         {
             'request': {
                 'method': 'GET',
@@ -534,7 +539,7 @@ module.exports = function() {
             }
         },
 
-        // patch contact cb245673-aa41-4302-ac47-00000000002 - voice reg mama
+        // 14: patch contact cb245673-aa41-4302-ac47-00000000002 - voice reg mama
         {
             'request': {
                 'method': 'PATCH',
@@ -603,7 +608,7 @@ module.exports = function() {
             }
         },
 
-        // unsubscribe all active for 0002 - mama
+        // 15: unsubscribe all active for 0002 - mama
         {
             'request': {
                 'method': 'GET',
@@ -624,7 +629,7 @@ module.exports = function() {
             }
         },
 
-        // post subscription for 0002 - voice reg mama
+        // 16: post subscription for 0002 - voice reg mama
         {
             'request': {
                 'method': 'POST',
@@ -667,7 +672,7 @@ module.exports = function() {
             }
         },
 
-        // patch contact cb245673-aa41-4302-ac47-00000000001 - voice / sms reg chew
+        // 17: patch contact cb245673-aa41-4302-ac47-00000000001 - voice / sms reg chew
         {
             'request': {
                 'method': 'PATCH',
@@ -712,7 +717,7 @@ module.exports = function() {
             }
         },
 
-        // patch contact cb245673-aa41-4302-ac47-00000000002 - sms reg mama
+        // 18: patch contact cb245673-aa41-4302-ac47-00000000002 - sms reg mama
         {
             'request': {
                 'method': 'PATCH',
@@ -781,7 +786,7 @@ module.exports = function() {
             }
         },
 
-        // post subscription for 0002 - sms reg mama
+        // 19: post subscription for 0002 - sms reg mama
         {
             'request': {
                 'method': 'POST',
@@ -825,7 +830,7 @@ module.exports = function() {
             }
         },
 
-        // get active subscriptions for 0005
+        // 20: get active subscriptions for 0005
         {
             'request': {
                 'method': 'GET',
@@ -869,7 +874,7 @@ module.exports = function() {
             }
         },
 
-        // get active subscriptions for 0006
+        // 21: get active subscriptions for 0006
         {
             'request': {
                 'method': 'GET',
@@ -894,7 +899,7 @@ module.exports = function() {
             }
         },
 
-        // unsubscribe subscriptions for 0005
+        // 22: unsubscribe subscriptions for 0005
         {
             'request': {
                 'method': 'PATCH',
@@ -945,7 +950,7 @@ module.exports = function() {
             }
         },
 
-        // patch contact 07070050005 details (baby switch)
+        // 23: patch contact 07070050005 details (baby switch)
         {
             'request': {
                 'method': 'PATCH',
@@ -1014,7 +1019,7 @@ module.exports = function() {
             }
         },
 
-        // post subscription for 0005 to baby (baby switch)
+        // 24: post subscription for 0005 to baby (baby switch)
         {
             'request': {
                 'method': 'POST',
@@ -1058,7 +1063,7 @@ module.exports = function() {
             }
         },
 
-        // patch contact 07070050005 details (time change)
+        // 25: patch contact 07070050005 details (time change)
         {
             'request': {
                 'method': 'PATCH',
@@ -1127,7 +1132,7 @@ module.exports = function() {
             }
         },
 
-        // patch subscription 1234-00005 (time change)
+        // 26: patch subscription 1234-00005 (time change)
         {
             'request': {
                 'method': 'PATCH',
@@ -1178,7 +1183,7 @@ module.exports = function() {
             }
         },
 
-        // patch contact 07070050005 details (optout 1)
+        // 27: patch contact 07070050005 details (optout 1)
         {
             'request': {
                 'method': 'PATCH',
@@ -1249,7 +1254,7 @@ module.exports = function() {
             }
         },
 
-        // patch contact 07070050005 details (optout 2)
+        // 28: patch contact 07070050005 details (optout 2)
         {
             'request': {
                 'method': 'PATCH',
@@ -1320,7 +1325,7 @@ module.exports = function() {
             }
         },
 
-        // patch contact 07070050005 details (optout 3)
+        // 29: patch contact 07070050005 details (optout 3)
         {
             'request': {
                 'method': 'PATCH',
@@ -1391,27 +1396,94 @@ module.exports = function() {
             }
         },
 
-        // send sms via vumi http api
-        // post subscription for 0005 to baby (baby switch)
+        // 30: send sms via post to outbound
         {
             'request': {
-                'method': 'PUT',
+                'method': 'POST',
                 'headers': {
-                    'Authorization': ['??'],
-                    'Content-Type': ['application/json; charset=utf-8']
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
                 },
-                'url': "https://localhost/api/v1/go/http_api_nostream/conversation_key/messages.json",
+                'url': "http://localhost:8000/api/v1/outbound/",
                 'data':  {
-                    "to_addr": "+2348080020002",
-                    "content": "You have been registered on Hello Mama. Welcome! " +
-                               "To change the day & time you receive calls, stop " +
-                               "them, or tell us you've had the baby, please call " +
-                               "{{ voice_change_num }}."
+                    "contact": "cb245673-aa41-4302-ac47-00000000002",
+                    "content": "Please dial back in to complete the Hello MAMA registration"
                 }
+            },
+            'response': {
+                "code": 201,
+                "data": {
+                }
+            }
+        },
+
+        // 31: get contact 08080040004 by msisdn
+        {
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'details__addresses__msisdn': '+2348080040004'
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8000/api/v1/identities/search/',
             },
             'response': {
                 "code": 200,
                 "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [{
+                        "url": "http://localhost:8000/api/v1/identities/cb245673-aa41-4302-ac47-00000000004/",
+                        "id": "cb245673-aa41-4302-ac47-00000000004",
+                        "version": 1,
+                        "details": {
+                            "default_addr_type": "msisdn",
+                            "addresses": {
+                                "msisdn": {
+                                    "+2348080040004": {}
+                                }
+                            },
+                            "dialback_sent": true
+                        },
+                        "created_at": "2015-07-10T06:13:29.693272Z",
+                        "updated_at": "2015-07-10T06:13:29.693298Z"
+                    }]
+                }
+            }
+        },
+
+        // 32: get contact cb245673-aa41-4302-ac47-00000000004
+        {
+            'request': {
+                'method': 'GET',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8000/api/v1/identities/cb245673-aa41-4302-ac47-00000000004/',
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8000/api/v1/identities/cb245673-aa41-4302-ac47-00000000004/",
+                    "id": "cb245673-aa41-4302-ac47-00000000004",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2348080040004": {}
+                            }
+                        },
+                        "dialback_sent": true
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
             }
         },

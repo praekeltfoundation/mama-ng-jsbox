@@ -267,8 +267,8 @@ go.utils = {
                     // If contact doesn't exist, create it
                     return go.utils
                         .create_contact(msisdn, im)
-                        .then(function(contact_id) {
-                            return contact_id;
+                        .then(function(contact) {
+                            return contact;
                         });
                 }
             });
@@ -619,23 +619,52 @@ go.utils = {
 
 // SMS HANDLING
 
-    vumi_send_text: function(im, to_addr, sms_message) {
-        var api = new JsonApi(im, {
-            headers: {
-                'Content-Type': ['application/json; charset=utf-8'],
-            },
-            auth: {
-                account_key: im.config.vumi_http.account_key,
-                conversation_token: im.config.vumi_http.conversation_token
-            }
-        });
+    check_dialback_sent: function(user_id, im) {
+        return go.utils
+            .get_contact_by_id(user_id, im)
+            .then(function(contact) {
+                return contact.details.dialback_sent;
+            });
+    },
 
-        return api.put(im.config.vumi_http.url, {
-            data: {
-                "to_addr": go.utils.normalize_msisdn(to_addr, '234'),  // nigeria
-                "content": sms_message
-            }
-        });
+    eval_dialback_reminder: function(e, im, user_id, $, sms_content) {
+        var close_state = e.im.state.name;
+        var non_dialback_sms_states = [
+            'state_start',
+            'state_auth_code',
+            'state_end_voice',
+            'state_end_sms'
+        ];
+        if (non_dialback_sms_states.indexOf(close_state) === -1
+          && e.user_terminated) {
+            return go.utils
+                .check_dialback_sent(user_id, im)
+                .then(function(dialback_sent) {
+                    if (!dialback_sent) {
+                        return go.utils
+                            .send_text(im, user_id, sms_content, $)
+                            .then(function() {
+                                // TODO: patch contact dialback_sent = 'true'
+                            });
+                    }
+                });
+        } else {
+            return Q();
+        }
+    },
+
+    send_text: function(im, user_id, sms_content, $) {
+        var payload = {
+            "contact": user_id,
+            "content": sms_content
+        };
+        return go.utils
+            .service_api_call("outbound", "post", null, payload, '', im)
+            .then(function(json_post_response) {
+                var outbound_response = json_post_response.data;
+                // Return the outbound id
+                return outbound_response.id;
+            });
     },
 
 // TIMEOUT HANDLING
@@ -661,9 +690,9 @@ go.utils = {
             });
     },
 
-    check_health_worker_msisdn: function(msisdn, im) {
+    check_health_worker_registered: function(user_id, im) {
         return go.utils
-            .get_or_create_contact(msisdn, im)
+            .get_contact_by_id(user_id, im)
             .then(function(contact) {
                 return contact.details.personnel_code ? true : false;
             });
@@ -745,14 +774,15 @@ go.app = function() {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
             return go.utils
-                .check_health_worker_msisdn(self.im.user.addr, self.im)
-                .then(function(recognised) {
-                    if (recognised) {
+                .get_or_create_contact(self.im.user.addr, self.im)
+                .then(function(user) {
+                    self.im.user.set_answer('user_id', user.id);
+                    if (user.details.personnel_code) {
                         return self.states.create('state_msg_receiver');
                     } else {
                         return self.states.create('state_personnel_auth');
                     }
-            });
+                });
         });
 
 
