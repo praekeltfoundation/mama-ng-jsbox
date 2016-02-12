@@ -271,7 +271,7 @@ go.utils = {
         // For patching any field on the contact
         var endpoint = contact.id + '/';
         return go.utils
-            .service_api_call("identities", 'patch', {}, contact, endpoint, im)
+            .service_api_call('identities', 'patch', {}, contact, endpoint, im)
             .then(function(response) {
                 return response.data.id;
             });
@@ -635,9 +635,18 @@ go.utils = {
                 .then(function(dialback_sent) {
                     if (!dialback_sent) {
                         return go.utils
+                            // send sms
                             .send_text(im, user_id, sms_content)
                             .then(function() {
-                                // TODO: patch contact dialback_sent = 'true'
+                                // get contact so details can be updated
+                                return go.utils
+                                    .get_contact_by_id(user_id, im)
+                                    .then(function(user) {
+                                        // change dialback_sent detail
+                                        user.details.dialback_sent = true;
+                                        // update contact
+                                        return go.utils.update_contact(im, user);
+                                    });
                             });
                     }
                 });

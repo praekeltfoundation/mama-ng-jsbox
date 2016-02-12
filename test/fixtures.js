@@ -424,6 +424,7 @@ module.exports = function() {
 
         // 11: get contact cb245673-aa41-4302-ac47-00000000002
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {},
@@ -1481,6 +1482,53 @@ module.exports = function() {
                             }
                         },
                         "dialback_sent": true
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
+
+        // 33: patch contact 08080020002 details (time change)
+        {
+            'request': {
+                'method': 'PATCH',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                "data": {
+                    "url": "http://localhost:8000/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/",
+                    "id": "cb245673-aa41-4302-ac47-00000000002",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2348080020002": {}
+                            }
+                        },
+                        "dialback_sent":true
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                },
+                'url': "http://localhost:8000/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/"
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8000/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/",
+                    "id": "cb245673-aa41-4302-ac47-00000000002",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2348080020002": {}
+                            }
+                        },
+                        "dialback_sent":true
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
