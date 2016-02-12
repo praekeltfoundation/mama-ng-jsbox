@@ -390,7 +390,7 @@ module.exports = function() {
             }
         },
 
-        // 10: 10: get contact cb245673-aa41-4302-ac47-00000000001
+        // 10: get contact cb245673-aa41-4302-ac47-00000000001
         {
             'repeatable': true,
             'request': {
