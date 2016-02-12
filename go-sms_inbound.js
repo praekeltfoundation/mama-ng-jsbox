@@ -619,14 +619,6 @@ go.utils = {
 
 // SMS HANDLING
 
-    check_dialback_sent: function(user_id, im) {
-        return go.utils
-            .get_contact_by_id(user_id, im)
-            .then(function(contact) {
-                return contact.details.dialback_sent;
-            });
-    },
-
     eval_dialback_reminder: function(e, im, user_id, $, sms_content) {
         var close_state = e.im.state.name;
         var non_dialback_sms_states = [
@@ -638,23 +630,14 @@ go.utils = {
         if (non_dialback_sms_states.indexOf(close_state) === -1
           && e.user_terminated) {
             return go.utils
-                .check_dialback_sent(user_id, im)
-                .then(function(dialback_sent) {
-                    if (!dialback_sent) {
-                        return go.utils
-                            // send sms
-                            .send_text(im, user_id, sms_content)
-                            .then(function() {
-                                // get contact so details can be updated
-                                return go.utils
-                                    .get_contact_by_id(user_id, im)
-                                    .then(function(user) {
-                                        // change dialback_sent detail
-                                        user.details.dialback_sent = true;
-                                        // update contact
-                                        return go.utils.update_contact(im, user);
-                                    });
-                            });
+                .get_contact_by_id(user_id, im)
+                .then(function(user) {
+                    if (!user.details.dialback_sent) {
+                        user.details.dialback_sent = true;
+                        return Q.all([
+                            go.utils.send_text(im, user_id, sms_content),
+                            go.utils.update_contact(im, user)
+                        ]);
                     }
                 });
         } else {
