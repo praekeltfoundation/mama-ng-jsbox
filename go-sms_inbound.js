@@ -649,6 +649,7 @@ go.utils = {
         var payload = {
             "contact": user_id,
             "content": sms_content.replace("{{channel}}", im.config.channel)
+                // $ does not work well with fixtures here since it's an object
         };
         return go.utils
             .service_api_call("outbound", "post", null, payload, 'outbound/', im)
