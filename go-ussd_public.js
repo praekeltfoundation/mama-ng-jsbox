@@ -217,7 +217,7 @@ go.utils = {
             "details__addresses__msisdn": msisdn
         };
         return go.utils
-            .service_api_call('identities', 'get', params, null, 'search/', im)
+            .service_api_call('identities', 'get', params, null, 'identities/search/', im)
             .then(function(json_get_response) {
                 var contacts_found = json_get_response.data.results;
                 // Return the first contact's id
@@ -228,7 +228,7 @@ go.utils = {
     },
 
     get_contact_by_id: function(contact_id, im) {
-        var endpoint = contact_id + '/';
+        var endpoint = 'identities/' + contact_id + '/';
         return go.utils
             .service_api_call('identities', 'get', {}, null, endpoint, im)
             .then(function(json_get_response) {
@@ -245,7 +245,7 @@ go.utils = {
             }
         };
         return go.utils
-            .service_api_call("identities", "post", null, payload, '', im)
+            .service_api_call("identities", "post", null, payload, 'identities', im)
             .then(function(json_post_response) {
                 var contact_created = json_post_response.data;
                 // Return the contact's id
@@ -276,7 +276,7 @@ go.utils = {
 
     update_contact: function(im, contact) {
         // For patching any field on the contact
-        var endpoint = contact.id + '/';
+        var endpoint = 'identities/' + contact.id + '/';
         return go.utils
             .service_api_call('identities', 'patch', {}, contact, endpoint, im)
             .then(function(response) {
@@ -432,7 +432,7 @@ go.utils = {
     subscribe_contact: function(im, subscription) {
         var payload = subscription;
         return go.utils
-            .service_api_call("subscriptions", "post", null, payload, '', im)
+            .service_api_call("subscriptions", "post", null, payload, "subscriptions/", im)
             .then(function(response) {
                 return response.data.id;
             });
@@ -446,7 +446,7 @@ go.utils = {
             active: "True"
         };
         return go.utils
-            .service_api_call("subscriptions", "get", params, null, "", im)
+            .service_api_call("subscriptions", "get", params, null, "subscriptions/", im)
             .then(function(json_get_response) {
                 return json_get_response.data.results;
             });
@@ -481,7 +481,7 @@ go.utils = {
                 var patch_calls = [];
                 for (i=0; i<subscriptions.length; i++) {
                     var updated_subscription = subscriptions[i];
-                    var endpoint = updated_subscription.id + '/';
+                    var endpoint = "subscriptions/" + updated_subscription.id + '/';
                     updated_subscription.active = false;
                     // store the patch calls to be made
                     patch_calls.push(function() {
@@ -524,7 +524,7 @@ go.utils = {
     },
 
     update_subscription: function(im, subscription) {
-        var endpoint = subscription.id + '/';
+        var endpoint = "subscriptions/" + subscription.id + '/';
         return go.utils
             .service_api_call("subscriptions", 'patch', {}, subscription, endpoint, im)
             .then(function(response) {
@@ -651,7 +651,7 @@ go.utils = {
             "content": sms_content.replace("{{channel}}", im.config.channel)
         };
         return go.utils
-            .service_api_call("outbound", "post", null, payload, '', im)
+            .service_api_call("outbound", "post", null, payload, 'outbound/', im)
             .then(function(json_post_response) {
                 var outbound_response = json_post_response.data;
                 // Return the outbound id
@@ -687,7 +687,7 @@ go.utils = {
             "details__personnel_code": content
         };
         return go.utils
-            .service_api_call('identities', 'get', params, null, 'search/', im)
+            .service_api_call('identities', 'get', params, null, 'identities/search/', im)
             .then(function(json_get_response) {
                 var contacts_found = json_get_response.data.results;
                 // Return the number of contact's found

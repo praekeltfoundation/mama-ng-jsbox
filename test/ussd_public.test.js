@@ -21,11 +21,11 @@ describe("Hello Mama app", function() {
                     services: {
                         identities: {
                             api_token: 'test_token_identities',
-                            url: "http://localhost:8000/api/v1/identities/"
+                            url: "http://localhost:8001/api/v1/"
                         },
                         subscriptions: {
                             api_token: 'test_token_subscriptions',
-                            url: "http://localhost:8000/api/v1/subscriptions/"
+                            url: "http://localhost:8002/api/v1/"
                         },
                     },
                     endpoints: {
