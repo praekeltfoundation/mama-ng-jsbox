@@ -18,7 +18,7 @@ go.app = function() {
             self.im.on('session:close', function(e) {
                 return go.utils.eval_dialback_reminder(
                     e, self.im, self.im.user.answers.user_id, $,
-                    "Please dial back in to complete the Hello MAMA registration"
+                    "Please dial back in to {{channel}} to complete the Hello MAMA registration"
                     );
             });
         };

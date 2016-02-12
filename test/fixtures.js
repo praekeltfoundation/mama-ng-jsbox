@@ -1407,7 +1407,7 @@ module.exports = function() {
                 'url': "http://localhost:8000/api/v1/outbound/",
                 'data':  {
                     "contact": "cb245673-aa41-4302-ac47-00000000002",
-                    "content": "Please dial back in to complete the Hello MAMA registration"
+                    "content": "Please dial back in to *120*8864*0000# to complete the Hello MAMA registration"
                 }
             },
             'response': {

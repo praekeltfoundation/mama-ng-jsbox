@@ -642,7 +642,7 @@ go.utils = {
                 .then(function(dialback_sent) {
                     if (!dialback_sent) {
                         return go.utils
-                            .send_text(im, user_id, sms_content, $)
+                            .send_text(im, user_id, sms_content)
                             .then(function() {
                                 // TODO: patch contact dialback_sent = 'true'
                             });
@@ -653,10 +653,10 @@ go.utils = {
         }
     },
 
-    send_text: function(im, user_id, sms_content, $) {
+    send_text: function(im, user_id, sms_content) {
         var payload = {
             "contact": user_id,
-            "content": sms_content
+            "content": sms_content.replace("{{channel}}", im.config.channel)
         };
         return go.utils
             .service_api_call("outbound", "post", null, payload, '', im)
@@ -756,7 +756,7 @@ go.app = function() {
             self.im.on('session:close', function(e) {
                 return go.utils.eval_dialback_reminder(
                     e, self.im, self.im.user.answers.user_id, $,
-                    "Please dial back in to complete the Hello MAMA registration"
+                    "Please dial back in to {{channel}} to complete the Hello MAMA registration"
                     );
             });
         };
