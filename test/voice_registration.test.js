@@ -157,30 +157,6 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-
-                it.skip("should set the user answer mama_id to the mama's id", function() {
-                    return tester
-                        .setup.user.addr('07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '12345'
-                        )
-                        .check.user.answer('mama_id',
-                            'cb245673-aa41-4302-ac47-00000000002')
-                        .run();
-                });
-
-                it.skip("should create the contact if it doesn't exist", function() {
-                    return tester
-                        .setup.user.addr('07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '12345'
-                        )
-                        .check.user.answer('mama_id',
-                            'cb245673-aa41-4302-ac47-00000000003')
-                        .run();
-                });
             });
 
             describe("if personnel code does not validate", function() {
@@ -285,23 +261,6 @@ describe("Mama Nigeria App", function() {
                                     wait_for: '#'
                                 }
                             }
-                        })
-                        .run();
-                });
-
-                it.skip("should set the user answer mama_id to the mama's id", function() {
-                    return tester
-                        .setup.user.addr('07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            'aaaaa',
-                            '12347'
-                        )
-                        .check.user.answers({
-                            /*mama_id: 'cb245673-aa41-4302-ac47-00000000002',
-                            mama_num: '08080020002',*/
-                            state_personnel_auth: 'aaaaa',
-                            state_retry_personnel_auth: '12347'
                         })
                         .run();
                 });
