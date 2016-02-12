@@ -686,7 +686,7 @@ go.utils = {
             .service_api_call('identities', 'get', params, null, 'search/', im)
             .then(function(json_get_response) {
                 var contacts_found = json_get_response.data.results;
-                // Return the first contact's id
+                // Return the number of contact's found
                 return contacts_found.length > 0;
             });
     },
