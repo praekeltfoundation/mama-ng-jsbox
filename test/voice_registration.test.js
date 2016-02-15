@@ -19,11 +19,11 @@ describe("Mama Nigeria App", function() {
                     services: {
                         identities: {
                             api_token: 'test_token_identities',
-                            url: "http://localhost:8000/api/v1/identities/"
+                            url: "http://localhost:8001/api/v1/"
                         },
                         subscriptions: {
                             api_token: 'test_token_subscriptions',
-                            url: "http://localhost:8000/api/v1/subscriptions/"
+                            url: "http://localhost:8002/api/v1/"
                         },
                     },
                     voice_content: {
@@ -66,7 +66,8 @@ describe("Mama Nigeria App", function() {
                         state: 'state_personnel_auth',
                         reply: 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
                     })
-                    .check.user.answers({})
+                    .check.user.answers(
+                        {"user_id": "cb245673-aa41-4302-ac47-00000000001"})
                     .run();
             });
         });
