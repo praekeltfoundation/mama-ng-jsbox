@@ -697,5 +697,37 @@ go.utils = {
         return choices;
     },
 
+    is_valid_month_last_period: function(im, periodLastYear, choiceValue) {
+        var today = go.utils.get_today(im.config);
+        if (periodLastYear) { today.subtract('year', 1); }
+        var currentMonth = parseInt(today.format("MM"));
+        var validStartMonth = currentMonth <= 10 ? ((currentMonth+13) % 10) : -1;
+        if (periodLastYear) { validStartMonth = validStartMonth === 0 ? 10 : validStartMonth+10; }
+        var choiceMonth = parseInt(today.month(choiceValue).format("MM"));
+
+        if (validStartMonth !== -1) {
+            if (periodLastYear) {
+                return (choiceMonth > currentMonth && choiceMonth >= validStartMonth);
+            }
+            else {
+                return (choiceMonth <= currentMonth && choiceMonth > validStartMonth);
+            }
+        }
+    },
+
+    is_valid_month_baby_born: function(im, bornLastYear, choiceValue) {
+        var today = go.utils.get_today(im.config);
+        var currentMonth = parseInt(today.format("MM"));
+        var choiceMonth = parseInt(today.month(choiceValue).format("MM"));
+
+        if (bornLastYear) {
+            return (choiceMonth > currentMonth);
+        }
+        else {
+            return (choiceMonth < currentMonth);
+        }
+    },
+
+
     "commas": "commas"
 };

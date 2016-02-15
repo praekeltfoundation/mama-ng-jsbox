@@ -1267,5 +1267,36 @@ describe("Mama Nigeria App", function() {
             });
         });
 
+        describe("Testing month validation functions", function() {
+            /*describe("is_valid_month_last_period function:", function() {
+                it('should return true/false if valid', function() {
+                    // test data
+                    var testDataArray = [
+
+                    ];
+
+                    // function call
+
+
+                    // expected results
+                    assert.equal(...
+
+                });
+            });
+            describe("is_valid_month_baby_born function:", function() {
+                it('should return true/false if valid', function() {
+                    // test data
+                    var testDataArray = [
+
+                    ];
+
+                    // function call
+
+
+                    // expected results
+                    assert.equal(...
+                });
+            });*/
+        });
     });
 });

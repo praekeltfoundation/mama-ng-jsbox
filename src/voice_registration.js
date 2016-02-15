@@ -224,12 +224,7 @@ go.app = function() {
                     new Choice('dec', $('December'))
                 ],
                 next: function(choice) {
-                    var today = go.utils.get_today(self.im.config);
-                    var currentMonth = parseInt(today.format("MM"));
-                    var validStartMonth = currentMonth <= 10 ? 0 : currentMonth-10;
-                    var choiceMonth = parseInt(today.month(choice.value).format("MM"));
-
-                    if (choiceMonth <= currentMonth && choiceMonth > validStartMonth)
+                    if (go.utils.is_valid_month_last_period(self.im, false, choice.value))
                     {
                         return 'state_last_period_day';
                     }
@@ -262,12 +257,8 @@ go.app = function() {
                     new Choice('dec', $('December'))
                 ],
                 next: function(choice) {
-                    var today = go.utils.get_today(self.im.config);
-                    var currentMonth = parseInt(today.format("MM"));
-                    var validStartMonth = currentMonth <= 10 ? 0 : currentMonth-10;
-                    var choiceMonth = parseInt(today.month(choice.value).format("MM"));
 
-                    if (choiceMonth <= currentMonth && choiceMonth > validStartMonth)
+                    if (go.utils.is_valid_month_last_period(self.im, false, choice.value))
                     {
                         return 'state_last_period_day';
                     }
@@ -300,21 +291,12 @@ go.app = function() {
                     new Choice('dec', $('December'))
                 ],
                 next: function(choice) {
-                    var today = go.utils.get_today(self.im.config);
-                    today.subtract('year', 1);
-                    var currentMonth = parseInt(today.format("MM"));
-                    var validStartMonth = currentMonth <= 10 ? ((currentMonth+13) % 10) : -1;
-                    validStartMonth = validStartMonth === 0 ? 10 : validStartMonth+10;
-                    var choiceMonth = parseInt(today.month(choice.value).format("MM"));
-
-                    if (validStartMonth !== -1){
-                        if (choiceMonth > currentMonth && choiceMonth >= validStartMonth)
-                        {
-                            return 'state_last_period_day';
-                        }
-                        else {
-                            return 'state_retry_last_year_period_month';
-                        }
+                    if (go.utils.is_valid_month_last_period(self.im, true, choice.value))
+                    {
+                        return 'state_last_period_day';
+                    }
+                    else {
+                        return 'state_retry_last_year_period_month';
                     }
                 }
             });
@@ -342,21 +324,12 @@ go.app = function() {
                     new Choice('dec', $('December'))
                 ],
                 next: function(choice) {
-                    var today = go.utils.get_today(self.im.config);
-                    today.subtract('year', 1);
-                    var currentMonth = parseInt(today.format("MM"));
-                    var validStartMonth = currentMonth <= 10 ? ((currentMonth+13) % 10) : -1;
-                    validStartMonth = validStartMonth === 0 ? 10 : validStartMonth+10;
-                    var choiceMonth = parseInt(today.month(choice.value).format("MM"));
-
-                    if (validStartMonth !== -1){
-                        if (choiceMonth > currentMonth && choiceMonth >= validStartMonth)
-                        {
-                            return 'state_last_period_day';
-                        }
-                        else {
-                            return 'state_retry_last_year_period_month';
-                        }
+                    if (go.utils.is_valid_month_last_period(self.im, true, choice.value))
+                    {
+                        return 'state_last_period_day';
+                    }
+                    else {
+                        return 'state_retry_last_year_period_month';
                     }
                 }
             });
@@ -467,11 +440,7 @@ go.app = function() {
                     new Choice('dec', $('December'))
                 ],
                 next: function(choice) {
-                    var today = go.utils.get_today(self.im.config);
-                    var currentMonth = parseInt(today.format("MM"));
-                    var choiceMonth = parseInt(today.month(choice.value).format("MM"));
-
-                    if (choiceMonth > currentMonth) {
+                    if (go.utils.is_valid_month_baby_born(self.im, true, choice.value)) {
                         return 'state_retry_this_year_baby_birth_month';
                     } else {
                         return 'state_baby_birth_day';
@@ -503,11 +472,7 @@ go.app = function() {
                     new Choice('dec', $('December'))
                 ],
                 next: function(choice) {
-                    var today = go.utils.get_today(self.im.config);
-                    var currentMonth = parseInt(today.format("MM"));
-                    var choiceMonth = parseInt(today.month(choice.value).format("MM"));
-
-                    if (choiceMonth > currentMonth) {
+                    if (go.utils.is_valid_month_baby_born(self.im, false, choice.value)) {
                         return 'state_retry_this_year_baby_birth_month';
                     } else {
                         return 'state_baby_birth_day';
@@ -538,10 +503,7 @@ go.app = function() {
                     new Choice('dec', $('December'))
                 ],
                 next: function(choice) {
-                    var today = go.utils.get_today(self.im.config);
-                    var currentMonth = parseInt(today.format("MM"));
-                    var choiceMonth =  parseInt(today.month(choice.value).format("MM"));
-                    if (choiceMonth < currentMonth) {
+                    if (go.utils.is_valid_month_baby_born(self.im, true, choice.value)) {
                         return 'state_retry_last_year_baby_birth_month';
                     } else {
                         return 'state_baby_birth_day';
@@ -573,11 +535,7 @@ go.app = function() {
                     new Choice('dec', $('December'))
                 ],
                 next: function(choice) {
-                    var today = go.utils.get_today(self.im.config);
-                    var currentMonth = parseInt(today.format("MM"));
-                    var choiceMonth = parseInt(today.month(choice.value).format("MM"));
-
-                    if (choiceMonth < currentMonth) {
+                    if (go.utils.is_valid_month_baby_born(self.im, true, choice.value)) {
                         return 'state_retry_last_year_baby_birth_month';
                     } else {
                         return 'state_baby_birth_day';
