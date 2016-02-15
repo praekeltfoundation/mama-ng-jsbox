@@ -284,6 +284,21 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
+                it("to state_retry_father_msisdn", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'   // state_personnel_auth
+                            , '1'       // state_msg_receiver - mother & father
+                            , '12345'   // state_father_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_retry_father_msisdn',
+                            reply: 'Sorry, invalid input. Please enter number (Father)'
+                        })
+                        .run();
+                });
                 it("to state_mother_msisdn", function() {
                     return tester
                         .setup.user.addr('07030010001')
@@ -296,6 +311,22 @@ describe("Mama Nigeria App", function() {
                         .check.interaction({
                             state: 'state_mother_msisdn',
                             reply: 'Please enter number (Mother)'
+                        })
+                        .run();
+                });
+                it("to state_retry_mother_msisdn", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'       // state_personnel_auth
+                            , '1'           // state_msg_receiver - mother & father
+                            , '08080020002' // state_father_msisdn
+                            , '08020002'    // state_mother_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_retry_mother_msisdn',
+                            reply: 'Sorry, invalid input. Please enter number (Mother)'
                         })
                         .run();
                 });
