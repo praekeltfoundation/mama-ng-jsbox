@@ -704,34 +704,42 @@ go.utils = {
         return choices;
     },
 
-    is_valid_month_last_period: function(im, periodLastYear, choiceValue) {
-        var today = go.utils.get_today(im.config);
-        if (periodLastYear) { today.subtract('year', 1); }
+
+    // function used to validate months for states 5A/5B
+    is_valid_month_last_period: function(today, periodLastYear, choiceValue) {
+        if (periodLastYear) { today.subtract('year', 1); }     // substract year if last period happened the previous year
         var currentMonth = parseInt(today.format("MM"));
-        var validStartMonth = currentMonth <= 10 ? ((currentMonth+13) % 10) : -1;
-        if (periodLastYear) { validStartMonth = validStartMonth === 0 ? 10 : validStartMonth+10; }
+
+        var validStartMonth = 0;
+        if (!periodLastYear) {
+            // this year
+            validStartMonth = currentMonth <= 10 ? 1 : currentMonth-9;    // logic to determine valid month range (10 month window)
+        } else {
+            // last year
+            validStartMonth = currentMonth <= 10 ? ((currentMonth+13) % 10) : -1;  // logic to determine valid month range (10 month window)
+            validStartMonth = validStartMonth === 0 ? 10 : validStartMonth+10;   // making necessary adjustment in logic for month of Oct
+        }
+
         var choiceMonth = parseInt(today.month(choiceValue).format("MM"));
 
-        if (validStartMonth !== -1) {
+        if (validStartMonth !== -1) {   // -1 will be the result if Nov/Dec is current month in year (last period can't be more than 10 months ago)
             if (periodLastYear) {
                 return (choiceMonth > currentMonth && choiceMonth >= validStartMonth);
-            }
-            else {
+            } else {
                 return (choiceMonth <= currentMonth && choiceMonth > validStartMonth);
             }
         }
     },
 
-    is_valid_month_baby_born: function(im, bornLastYear, choiceValue) {
-        var today = go.utils.get_today(im.config);
+    // function used to validate months for states 12A/12B
+    is_valid_month_baby_born: function(today, bornLastYear, choiceValue) {
         var currentMonth = parseInt(today.format("MM"));
         var choiceMonth = parseInt(today.month(choiceValue).format("MM"));
 
-        if (bornLastYear) {
-            return (choiceMonth > currentMonth);
-        }
-        else {
-            return (choiceMonth < currentMonth);
+        if (bornLastYear) {    // if baby was born in previous year
+            return (choiceMonth >= currentMonth);
+        } else {
+            return (choiceMonth <= currentMonth);
         }
     },
 
@@ -965,7 +973,7 @@ go.app = function() {
                     new Choice('dec', $('December'))
                 ],
                 next: function(choice) {
-                    if (go.utils.is_valid_month_last_period(self.im, false, choice.value))
+                    if (go.utils.is_valid_month_last_period(go.utils.get_today(self.im.config), false, choice.value))
                     {
                         return 'state_last_period_day';
                     }
@@ -999,7 +1007,7 @@ go.app = function() {
                 ],
                 next: function(choice) {
 
-                    if (go.utils.is_valid_month_last_period(self.im, false, choice.value))
+                    if (go.utils.is_valid_month_last_period(go.utils.get_today(self.im.config), false, choice.value))
                     {
                         return 'state_last_period_day';
                     }
@@ -1032,7 +1040,7 @@ go.app = function() {
                     new Choice('dec', $('December'))
                 ],
                 next: function(choice) {
-                    if (go.utils.is_valid_month_last_period(self.im, true, choice.value))
+                    if (go.utils.is_valid_month_last_period(go.utils.get_today(self.im.config), true, choice.value))
                     {
                         return 'state_last_period_day';
                     }
@@ -1065,7 +1073,7 @@ go.app = function() {
                     new Choice('dec', $('December'))
                 ],
                 next: function(choice) {
-                    if (go.utils.is_valid_month_last_period(self.im, true, choice.value))
+                    if (go.utils.is_valid_month_last_period(go.utils.get_today(self.im.config), true, choice.value))
                     {
                         return 'state_last_period_day';
                     }
@@ -1181,10 +1189,10 @@ go.app = function() {
                     new Choice('dec', $('December'))
                 ],
                 next: function(choice) {
-                    if (go.utils.is_valid_month_baby_born(self.im, true, choice.value)) {
-                        return 'state_retry_this_year_baby_birth_month';
-                    } else {
+                    if (go.utils.is_valid_month_baby_born(go.utils.get_today(self.im.config), false, choice.value)) {
                         return 'state_baby_birth_day';
+                    } else {
+                        return 'state_retry_this_year_baby_birth_month';
                     }
                 }
             });
@@ -1213,10 +1221,10 @@ go.app = function() {
                     new Choice('dec', $('December'))
                 ],
                 next: function(choice) {
-                    if (go.utils.is_valid_month_baby_born(self.im, false, choice.value)) {
-                        return 'state_retry_this_year_baby_birth_month';
-                    } else {
+                    if (go.utils.is_valid_month_baby_born(go.utils.get_today(self.im.config), false, choice.value)) {
                         return 'state_baby_birth_day';
+                    } else {
+                        return 'state_retry_this_year_baby_birth_month';
                     }
                 }
             });
@@ -1244,10 +1252,10 @@ go.app = function() {
                     new Choice('dec', $('December'))
                 ],
                 next: function(choice) {
-                    if (go.utils.is_valid_month_baby_born(self.im, true, choice.value)) {
-                        return 'state_retry_last_year_baby_birth_month';
-                    } else {
+                    if (go.utils.is_valid_month_baby_born(go.utils.get_today(self.im.config), true, choice.value)) {
                         return 'state_baby_birth_day';
+                    } else {
+                        return 'state_retry_last_year_baby_birth_month';
                     }
                 }
             });
@@ -1276,10 +1284,10 @@ go.app = function() {
                     new Choice('dec', $('December'))
                 ],
                 next: function(choice) {
-                    if (go.utils.is_valid_month_baby_born(self.im, true, choice.value)) {
-                        return 'state_retry_last_year_baby_birth_month';
-                    } else {
+                    if (go.utils.is_valid_month_baby_born(go.utils.get_today(self.im.config), true, choice.value)) {
                         return 'state_baby_birth_day';
+                    } else {
+                        return 'state_retry_last_year_baby_birth_month';
                     }
                 }
             });

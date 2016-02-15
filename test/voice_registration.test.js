@@ -734,8 +734,8 @@ describe("Mama Nigeria App", function() {
 
         // pregnant
         describe("When you enter a last period month", function() {
-            describe("if the month choice is invalid", function() {
-                it("should navigate to state_retry_last_year_period_month", function() {
+            describe("if the month choice is not in valid range for this year", function() {
+                it("should navigate to state_retry_this_year_period_month", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -745,11 +745,11 @@ describe("Mama Nigeria App", function() {
                             , '08080020002'  // state_father_msisdn
                             , '08080020003'  // state_mother_msisdn
                             , '1'            // state_pregnancy_status - pregnant
-                            , '2'            // state_last_period_year - last year
-                            , '3'            // state_last_year_period_month - mar
+                            , '1'            // state_last_period_year - this year
+                            , '9'            // state_last_year_period_month - sep
                         )
                         .check.interaction({
-                            state: 'state_retry_last_year_period_month',
+                            state: 'state_retry_this_year_period_month',
                             reply: [
                                 'Invalid input. Period month?',
                                 '1. January',
@@ -769,12 +769,55 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_last_year_period_month_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_this_year_period_month_1.mp3',
                                     wait_for: '#'
                                 }
                             }
                         })
                         .run();
+                });
+                describe("if the month choice is not in valid range for last year", function() {
+                    it("should navigate to state_retry_last_year_period_month", function() {
+                        return tester
+                            .setup.user.addr('07030010001')
+                            .inputs(
+                                {session_event: 'new'}
+                                , '12345'        // state_personnel_auth
+                                , '1'            // state_msg_receiver - mother&father
+                                , '08080020002'  // state_father_msisdn
+                                , '08080020003'  // state_mother_msisdn
+                                , '1'            // state_pregnancy_status - pregnant
+                                , '2'            // state_last_period_year - last year
+                                , '3'            // state_last_year_period_month - mar
+                            )
+                            .check.interaction({
+                                state: 'state_retry_last_year_period_month',
+                                reply: [
+                                    'Invalid input. Period month?',
+                                    '1. January',
+                                    '2. February',
+                                    '3. March',
+                                    '4. April',
+                                    '5. May',
+                                    '6. June',
+                                    '7. July',
+                                    '8. August',
+                                    '9. September',
+                                    '10. October',
+                                    '11. November',
+                                    '12. December'
+                                ].join('\n')
+                            })
+                            .check.reply.properties({
+                                helper_metadata: {
+                                    voice: {
+                                        speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_last_year_period_month_1.mp3',
+                                        wait_for: '#'
+                                    }
+                                }
+                            })
+                            .run();
+                    });
                 });
             });
 
@@ -811,7 +854,7 @@ describe("Mama Nigeria App", function() {
 
         // baby
         describe("When you enter a baby_birth_month", function() {
-            describe("if the month choice is invalid", function() {
+            describe("if the month choice is not in valid range for this year", function() {
                 it("should navigate to state_retry_this_year_baby_birth_month", function() {
                     return tester
                         .setup.user.addr('07030010001')
@@ -847,6 +890,50 @@ describe("Mama Nigeria App", function() {
                             helper_metadata: {
                                 voice: {
                                     speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_this_year_baby_birth_month_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
+            });
+
+            describe("if the month choice is not in valid range for last year", function() {
+                it("should navigate to state_retry_last_year_baby_birth_month", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'           // state_personnel_auth
+                            , '1'               // state_msg_receiver - mother&father
+                            , '08080020002'     // state_father_msisdn
+                            , '08080020003'     // state_mother_msisdn
+                            , '2'               // state_pregnancy_status - baby
+                            , '2'               // state_baby_birth_year - last year
+                            , '3'               // state_last_year_baby_birth_month - mar
+                        )
+                        .check.interaction({
+                            state: 'state_retry_last_year_baby_birth_month',
+                            reply: [
+                                'Invalid input. Baby month?',
+                                '1. January',
+                                '2. February',
+                                '3. March',
+                                '4. April',
+                                '5. May',
+                                '6. June',
+                                '7. July',
+                                '8. August',
+                                '9. September',
+                                '10. October',
+                                '11. November',
+                                '12. December'
+                            ].join('\n')
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_last_year_baby_birth_month_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -1265,38 +1352,6 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-        });
-
-        describe("Testing month validation functions", function() {
-            /*describe("is_valid_month_last_period function:", function() {
-                it('should return true/false if valid', function() {
-                    // test data
-                    var testDataArray = [
-
-                    ];
-
-                    // function call
-
-
-                    // expected results
-                    assert.equal(...
-
-                });
-            });
-            describe("is_valid_month_baby_born function:", function() {
-                it('should return true/false if valid', function() {
-                    // test data
-                    var testDataArray = [
-
-                    ];
-
-                    // function call
-
-
-                    // expected results
-                    assert.equal(...
-                });
-            });*/
         });
     });
 });
