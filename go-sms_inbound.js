@@ -718,7 +718,6 @@ go.utils = {
         return choices;
     },
 
-
     // function used to validate months for states 5A/5B
     is_valid_month_last_period: function(today, periodLastYear, choiceValue) {
         if (periodLastYear) { today.subtract('year', 1); }     // substract year if last period happened the previous year
