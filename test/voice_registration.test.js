@@ -851,12 +851,12 @@ describe("Mama Nigeria App", function() {
                         .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
-                            , '12345'        // state_personnel_auth
-                            , '1'            // state_msg_receiver - mother&father
-                            , '08080020002'  // state_father_msisdn
-                            , '08080020003'  // state_mother_msisdn
-                            , '1'            // state_pregnancy_status - pregnant
-                            , '2'            // state_last_period_year - last year
+                            , '12345'       // state_personnel_auth
+                            , '1'           // state_msg_receiver - mother&father
+                            , '08080020002' // state_father_msisdn
+                            , '08080020003' // state_mother_msisdn
+                            , '1'           // state_pregnancy_status - pregnant
+                            , '2'           // state_last_period_year - last year
                             , '12'          // state_last_year_period_month - dec
                         )
                         .check.interaction({
@@ -870,6 +870,46 @@ describe("Mama Nigeria App", function() {
                                     wait_for: '#'
                                 }
                             }
+                        })
+                        .run();
+                });
+                it("should navigate to state_retry_last_period_day", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'       // state_personnel_auth
+                            , '1'           // state_msg_receiver - mother&father
+                            , '08080020002' // state_father_msisdn
+                            , '08080020003' // state_mother_msisdn
+                            , '1'           // state_pregnancy_status - pregnant
+                            , '2'           // state_last_period_year - last year
+                            , '2'           // state_last_year_period_month - feb
+                            , '30'          // state_last_period_day
+                        )
+                        .check.interaction({
+                            state: 'state_invalid_date',
+                            reply: 'Retry period day'
+                        })
+                        .run();
+                });
+                it("should navigate to state_pregnancy_status (via state_retry_last_period_day)", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'       // state_personnel_auth
+                            , '1'           // state_msg_receiver - mother&father
+                            , '08080020002' // state_father_msisdn
+                            , '08080020003' // state_mother_msisdn
+                            , '1'           // state_pregnancy_status - pregnant
+                            , '2'           // state_last_period_year - last year
+                            , '2'           // state_last_year_period_month - feb
+                            , '30'          // state_last_period_day
+                        )
+                        .check.interaction({
+                            state: 'state_invalid_date',
+                            reply: 'Retry period day'
                         })
                         .run();
                 });

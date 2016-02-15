@@ -1163,7 +1163,7 @@ go.app = function() {
                         return 'state_retry_last_period_day';
                     } else {
                         self.im.user.set_answer('last_period_date', period_date);
-                        return 'state_msg_language';
+                        return 'state_validate_date';
                     }
                 }
             });
@@ -1195,7 +1195,39 @@ go.app = function() {
                         return 'state_retry_last_period_day';
                     } else {
                         self.im.user.set_answer('last_period_date', period_date);
-                        return 'state_msg_language';
+                        return 'state_validate_date';
+                    }
+                }
+            });
+        });
+
+        // to validate overall date
+        self.add('state_validate_date', function(name) {
+            console.log("---> last_period_date: "+self.im.user.answers.last_period_date);
+            var dateToValidate = self.im.user.answers.last_period_date;
+
+            if (go.utils.is_valid_date(dateToValidate, 'DD-MM-YYYY')) {
+                return self.states.create('state_msg_language');
+            } else {
+                return self.states.create('state_invalid_date', {date: dateToValidate});
+            }
+        });
+
+        self.add('state_invalid_date', function(name, opts) {
+            return new ChoiceState(name, {
+                question:
+                    $('({{ date }}) is not a real date. Please try again.'
+                    ).context({date: opts.date}),
+
+                choices: [
+                    new Choice('continue', $('Continue'))
+                ],
+                next: function() {
+                    if (self.im.user.answers.state_last_period_day) {  // flow via st-05, 5A/B & st-06
+                        return self.states.create('state_last_period_year');
+                    }
+                    else if (self.im.user.answers.state_baby_birth_day) { // flow via st-12, 12A/B & st-13
+                        return self.states.create('state_baby_birth_year');
                     }
                 }
             });
