@@ -58,7 +58,7 @@ go.app = function() {
             "state_voice_times":
                 "Thank you. At what time would they like to receive these calls?",
             "state_end_voice":
-                "Thank you. The person will now start receiving calls on {{first_day}} and {{second_day}} between {{start_time}} - {{end_time}}.",
+                "Thank you. The person will now start receiving calls on {{days}} between {{times}}.",
             "state_end_sms":
                 "Thank you. The person will now start receiving messages three times a week."
         };
@@ -319,35 +319,17 @@ go.app = function() {
 
         // EndState st-11
         self.add('state_end_voice', function(name) {
-            var first_voice_day;
-            var second_voice_day;
-            var voice_start_time;
-            var voice_end_time;
-
-            if (self.im.user.answers.state_voice_days == 'mon_wed') {
-                first_voice_day = 'Monday';
-                second_voice_day = 'Wednesday';
-            } else if (self.im.user.answers.state_voice_days == 'tue_thu') {
-                first_voice_day = 'Tuesday';
-                second_voice_day = 'Thursday';
-            }
-
-            switch (self.im.user.answers.state_voice_times) {
-                case '9_11':
-                    voice_start_time = '9am';
-                    voice_end_time = '11am';
-                    break;
-                case '2_5':
-                    voice_start_time = '2pm';
-                    voice_end_time = '5pm';
-                    break;
-            }
-
+            var voice_schedule = {
+                "mon_wed": "Monday and Wednesday",
+                "tue_thu": "Tuesday and Thursday",
+                "9_11": "9am - 11am",
+                "2_5": "2pm - 5pm"
+            };
             return new EndState(name, {
-                text: $(questions[name]).context({first_day: first_voice_day,
-                                                 second_day: second_voice_day,
-                                                 start_time: voice_start_time,
-                                                 end_time: voice_end_time}),
+                text: $(questions[name]).context({
+                    days: voice_schedule[self.im.user.answers.state_voice_days],
+                    times: voice_schedule[self.im.user.answers.state_voice_times]
+                }),
                 next: 'state_start'
             });
         });
