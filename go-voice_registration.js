@@ -673,6 +673,34 @@ go.utils = {
             && no_redirects.indexOf(im.user.state.name) === -1;
     },
 
+// REGISTRATION HANDLING
+
+    compile_registration_info: function(im) {
+        var registration_info = {
+            stage: im.user.answers.state_pregnancy_status,
+            data: {
+                msg_receiver: im.user.answers.state_msg_receiver,
+                mother_id: im.user.answers.mother_id,
+                receiver_id: im.user.answers.receiver_id,
+                operator_id: im.user.answers.operator_id,
+                language: im.user.answers.state_msg_language,
+                msg_type: im.user.answers.state_msg_type,
+            }
+        };
+        if (im.user.answers.state_pregnancy_status === 'prebirth') {
+            registration_info.data.last_period_date = im.user.answers.valid_date;
+        } else if (im.user.answers.state_pregnancy_status === 'postbirth') {
+            registration_info.data.baby_dob = im.user.answers.valid_date;
+        }
+        return registration_info;
+    },
+
+    save_registration: function(im) {
+        registration_info = go.utils.compile_registration_info(im);
+        console.log(registration_info);
+        return Q();
+    },
+
 // PROJECT SPECIFIC
 
     check_msisdn_hcp: function(msisdn) {

@@ -17,7 +17,7 @@ go.app = function() {
             // Send a dial back reminder via sms the first time someone times out
             self.im.on('session:close', function(e) {
                 return go.utils.eval_dialback_reminder(
-                    e, self.im, self.im.user.answers.user_id, $,
+                    e, self.im, self.im.user.answers.operator_id, $,
                     "Please dial back in to {{channel}} to complete the Hello MAMA registration"
                     );
             });
@@ -117,7 +117,7 @@ go.app = function() {
             return go.utils
                 .get_or_create_contact(self.im.user.addr, self.im)
                 .then(function(user) {
-                    self.im.user.set_answer('user_id', user.id);
+                    self.im.user.set_answer('operator_id', user.id);
                     if (user.details.personnel_code) {
                         return self.states.create('state_msg_receiver');
                     } else {
@@ -224,11 +224,11 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 choices: [
-                    new Choice('pregnant', $("The mother is pregnant")),
-                    new Choice('baby', $("The mother has a baby under 1 year old"))
+                    new Choice('prebirth', $("The mother is pregnant")),
+                    new Choice('postbirth', $("The mother has a baby under 1 year old"))
                 ],
                 next: function(choice) {
-                    return choice.value === 'pregnant'
+                    return choice.value === 'prebirth'
                         ? 'state_last_period_month'
                         : 'state_baby_birth_month_year';
                 }
@@ -286,9 +286,15 @@ go.app = function() {
                     new Choice('sms', $('Text SMSs'))
                 ],
                 next: function(choice) {
-                    return choice.value === 'voice'
-                        ? 'state_voice_days'
-                        : 'state_end_sms';
+                    if (choice.value === 'voice') {
+                        return 'state_voice_days';
+                    } else {
+                        return go.utils
+                            .save_registration(self.im)
+                            .then(function() {
+                                return 'state_end_sms';
+                            });
+                    }
                 }
             });
         });
@@ -381,6 +387,7 @@ go.app = function() {
             var dateToValidate = monthAndYear+day;
 
             if (go.utils.is_valid_date(dateToValidate, 'YYYYMMDD')) {
+                self.im.user.set_answer('valid_date', dateToValidate);
                 return self.states.create('state_msg_language');
             } else {
                 return self.states.create('state_invalid_date', {date: dateToValidate});
