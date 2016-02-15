@@ -325,9 +325,9 @@ describe("Mama Nigeria App", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
-                            {session_event: 'new'},
-                            '12345'  // state_personnel_auth
-                            , '4'    // state_msg_receiver - family member
+                            {session_event: 'new'}
+                            , '12345'  // state_personnel_auth
+                            , '4'      // state_msg_receiver - family member
                         )
                         .check.interaction({
                             state: 'state_receiver_msisdn',
@@ -335,7 +335,22 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                it("to state_pregnancy_status", function() {
+                it("to state_retry_receiver_msisdn", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'       // state_personnel_auth
+                            , '4'           // state_msg_receiver - family member
+                            , '08567898'    // state_receiver_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_retry_receiver_msisdn',
+                            reply: 'Sorry, invalid input. Please enter number'
+                        })
+                        .run();
+                });
+                it("to state_pregnancy_status (via st-03)", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -343,6 +358,26 @@ describe("Mama Nigeria App", function() {
                             , '12345'        // state_personnel_auth
                             , '4'            // state_msg_receiver - family member
                             , '08080020002'  // state_receiver_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_pregnancy_status',
+                            reply: [
+                                'Pregnant or baby',
+                                '1. Pregnant',
+                                '2. Baby'
+                            ].join('\n')
+                        })
+                        .run();
+                });
+                it("to state_pregnancy_status (via st-16)", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'        // state_personnel_auth
+                            , '4'            // state_msg_receiver - family member
+                            , 'a45521'       // state_receiver_msisdn
+                            , '08080020002'  // state_retry_receiver_msisdn
                         )
                         .check.interaction({
                             state: 'state_pregnancy_status',

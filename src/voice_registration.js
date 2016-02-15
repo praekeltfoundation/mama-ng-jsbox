@@ -134,6 +134,23 @@ go.app = function() {
             });
         });
 
+        // FreeText st-16
+        self.add('state_retry_receiver_msisdn', function(name) {
+            var speech_option = 1;
+            return new FreeText(name, {
+                question: $('Sorry, invalid input. Please enter number'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: function(content) {
+                    if (go.utils.is_valid_msisdn(content) === false) {
+                        return 'state_retry_receiver_msisdn';
+                    } else {
+                        return 'state_pregnancy_status';
+                    }
+                }
+            });
+        });
+
         // FreeText st-3A
         self.add('state_father_msisdn', function(name) {
             var speech_option = '1';
