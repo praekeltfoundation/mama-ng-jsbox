@@ -320,9 +320,9 @@ go.utils = {
         return today;
     },
 
-    get_january: function() {
+    get_january: function(config) {
         // returns current year january 1st moment date
-        return new moment("0101", 'YYYYMMDD');
+        return go.utils.get_today(config).startOf('year');
     },
 
     is_valid_date: function(date, format) {
@@ -720,8 +720,71 @@ go.utils = {
     // function used to validate months for states 5A/5B
     is_valid_month_last_period: function(today, periodLastYear, choiceValue) {
 
-        // substract year if last period happened the previous year
+        var choiceDate = today.clone();
+        choiceDate.month(parseInt(choiceValue, 9), 'MM');
         if (periodLastYear) {
+            choiceDate.subtract('year', 1);
+        }
+
+        console.log("TODAY: "+today.format("YYYY-MM"));
+        console.log("LAST YEAR? "+periodLastYear);
+
+
+        // setup moment object to represent either the start of the current year or
+        //  the start of a ten month window into the previous year
+        var startDate;
+        var endDate;
+        if (!periodLastYear) {
+            startDate = today.clone();
+            startDate.startOf('year');
+        } else {
+            startDate = today.clone();
+            startDate.subtract('month', 9);
+            endDate = startDate.clone();
+            endDate.endOf('year');
+        }
+        console.log("TODAY 2nd: "+today.format("YYYY-MM"));
+
+        // get difference in months between start of the year and choice date
+        console.log("--->"+choiceDate.from(startDate, true));
+        var monthDiff = parseInt((choiceDate.from(startDate, true).substring(0,2)), 10);
+        // if there is a diff of one month 'monthDiff' will be set to NaN
+        //  because the string value of choiceDate.from(startDate, true) would be 'a month'
+        if (isNaN(monthDiff)) {
+            if (choiceDate.from(startDate, true).split(" ")[1][0] == 'm') {
+                monthDiff = 1;
+            } else {
+                monthDiff = 12;
+            }
+        }
+
+        console.log("START DATE: "+startDate.format("YYYY-MM"));
+        if (periodLastYear) { console.log("END DATE: "+endDate.format("YYYY-MM")); }
+        console.log("CHOICE DATE: "+choiceDate.format("YYYY-MM"));
+        console.log("monthDiff: "+monthDiff);
+
+
+        if (!periodLastYear) {
+            if ((choiceDate.isSame(startDate) || choiceDate.isAfter(startDate)) &&
+                (choiceDate.isSame(today) || choiceDate.isBefore(today)) && monthDiff < 11) {
+            // if we used the newer version of moment
+            //    isSameOrAfter, isSameOrBefore & isBetween function could've been used
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            if ((choiceDate.isSame(startDate) || choiceDate.isAfter(startDate)) &&
+                    (choiceDate.isSame(endDate) || choiceDate.isBefore(endDate))) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+
+        // substract year if last period happened the previous year
+        /*if (periodLastYear) {
             today.subtract('year', 1);
         }
 
@@ -750,7 +813,7 @@ go.utils = {
             } else {
                 return (choiceMonth <= currentMonth && choiceMonth > validStartMonth);
             }
-        }
+        }*/
     },
 
     // function used to validate months for states 12A/12B
@@ -758,7 +821,6 @@ go.utils = {
         var currentMonth = parseInt(today.format("MM"));
 
         var choiceMonth = parseInt(choiceValue, 10);
-        // var choiceMonth = parseInt(today.month(choiceValue).format("MM"));
 
         if (bornLastYear) {    // if baby was born in previous year
             return (choiceMonth >= currentMonth);

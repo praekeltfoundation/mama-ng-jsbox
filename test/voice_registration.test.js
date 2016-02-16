@@ -568,7 +568,7 @@ describe("Mama Nigeria App", function() {
                                 , '08080020003'     // state_mother_msisdn
                                 , '1'               // state_pregnancy_status - pregnant
                                 , '1'               // state_last_period_year
-                                , '12'              // state_retry_this_year_period_month
+                                , '12'              // state_this_year_period_month
                             )
                             .check.interaction({
                                 state: 'state_retry_this_year_period_month',
@@ -854,7 +854,7 @@ describe("Mama Nigeria App", function() {
         });
 
         // baby
-        describe.only("When you enter a baby_birth_month", function() {
+        describe("When you enter a baby_birth_month", function() {
             describe("if the month choice is not in valid range for this year", function() {
                 it("should navigate to state_retry_this_year_baby_birth_month", function() {
                     return tester
