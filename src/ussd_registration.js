@@ -230,15 +230,22 @@ go.app = function() {
                         self.im.user.set_answer('receiver_id', mother.id);
                         return self.states.create('state_pregnancy_status');
                     });
+            } else if (self.im.user.answers.state_msg_receiver === 'trusted_friend' ||
+                       self.im.user.answers.state_msg_receiver === 'family_member') {
+                return go.utils
+                    .get_or_create_contact(self.im.user.answers.state_msisdn, self.im)
+                    .then(function(friend_fam) {
+                        self.im.user.set_answer('receiver_id', friend_fam.id);
+                        return go.utils
+                            .create_contact(self.im, null, friend_fam.id)
+                            .then(function(mother) {
+                                self.im.user.set_answer('mother_id', mother.id);
+                                return self.states.create('state_pregnancy_status');
+                            });
+                    });
             } else {
                 return self.states.create('state_pregnancy_status');
             }
-            // } else if (self.im.user.answers.state_msg_receiver === 'trusted_friend' ||
-            //            self.im.user.answers.state_msg_receiver === 'family_member') {
-            //     return go.utils
-            //         // get or create friend / family's contact
-            //         .get_or_create_contact(self.im.user.answers.state_msg_receiver, self.im)
-            // }
 
         });
 

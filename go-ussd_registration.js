@@ -237,19 +237,26 @@ go.utils = {
     },
 
     // Create a new contact with the minimum required details
-    create_contact: function(msisdn, im) {
-        var payload = {
-            "details": {
-                "default_addr_type": "msisdn",
-                "addresses": go.utils.get_addresses(msisdn)
-            }
-        };
+    create_contact: function(im, msisdn, communicate_through_id) {
+        var payload;
+        if (msisdn) {
+            payload = {
+                "details": {
+                    "default_addr_type": "msisdn",
+                    "addresses": go.utils.get_addresses(msisdn)
+                }
+            };
+        } else {
+            payload = {
+                "communicate_through": communicate_through_id
+            };
+        }
         return go.utils
             .service_api_call("identities", "post", null, payload, 'identities/', im)
             .then(function(json_post_response) {
                 var contact_created = json_post_response.data;
-                // Return the contact's id
-                return contact_created.id;
+                // Return the contact
+                return contact_created;
             });
     },
 
@@ -266,7 +273,7 @@ go.utils = {
                 } else {
                     // If contact doesn't exist, create it
                     return go.utils
-                        .create_contact(msisdn, im)
+                        .create_contact(im, msisdn, null)
                         .then(function(contact) {
                             return contact;
                         });
@@ -982,15 +989,22 @@ go.app = function() {
                         self.im.user.set_answer('receiver_id', mother.id);
                         return self.states.create('state_pregnancy_status');
                     });
+            } else if (self.im.user.answers.state_msg_receiver === 'trusted_friend' ||
+                       self.im.user.answers.state_msg_receiver === 'family_member') {
+                return go.utils
+                    .get_or_create_contact(self.im.user.answers.state_msisdn, self.im)
+                    .then(function(friend_fam) {
+                        self.im.user.set_answer('receiver_id', friend_fam.id);
+                        return go.utils
+                            .create_contact(self.im, null, friend_fam.id)
+                            .then(function(mother) {
+                                self.im.user.set_answer('mother_id', mother.id);
+                                return self.states.create('state_pregnancy_status');
+                            });
+                    });
             } else {
                 return self.states.create('state_pregnancy_status');
             }
-            // } else if (self.im.user.answers.state_msg_receiver === 'trusted_friend' ||
-            //            self.im.user.answers.state_msg_receiver === 'family_member') {
-            //     return go.utils
-            //         // get or create friend / family's contact
-            //         .get_or_create_contact(self.im.user.answers.state_msg_receiver, self.im)
-            // }
 
         });
 
