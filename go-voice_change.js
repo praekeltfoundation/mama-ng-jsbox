@@ -778,7 +778,7 @@ go.app = function() {
                                                     if (has_active_subscriptions === true) {
                                                         return self.states.create("state_main_menu");
                                                     } else {
-                                                        return self.states.create("state_c14_end_not_active");
+                                                        return self.states.create("state_end_not_active");
                                                     }
                                                 });
                                         } else {
@@ -863,7 +863,7 @@ go.app = function() {
                 choices: [
                     new Choice('confirm', $('confirm'))
                 ],
-                next: 'state_c08_enter'
+                next: 'state_baby_enter'
             });
         });
 
@@ -918,7 +918,7 @@ go.app = function() {
                     new Choice('9_11', $('9_11')),
                     new Choice('2_5', $('2_5'))
                 ],
-                next: 'state_c09_enter'
+                next: 'state_msg_enter'
             });
         });
 
@@ -942,15 +942,15 @@ go.app = function() {
             });
         });
 
-        self.add('state_c08_enter', function(name) {
+        self.add('state_baby_enter', function(name) {
             return go.utils
                 .switch_to_baby(self.im)
                 .then(function() {
-                    return self.states.create('state_c08_end_baby');
+                    return self.states.create('state_end_baby');
                 });
         });
 
-        self.add('state_c08_end_baby', function(name) {
+        self.add('state_end_baby', function(name) {
             var speech_option = '1';
             return new EndState(name, {
                 text: $('Thank you - baby'),
@@ -960,15 +960,15 @@ go.app = function() {
             });
         });
 
-        self.add('state_c09_enter', function(name) {
+        self.add('state_msg_enter', function(name) {
             return go.utils
                 .change_msg_times(self.im)
                 .then(function() {
-                    return self.states.create('state_c09_end_msg_times');
+                    return self.states.create('state_end_msg_times');
                 });
         });
 
-        self.add('state_c09_end_msg_times', function(name) {
+        self.add('state_end_msg_times', function(name) {
             var days = self.im.user.answers.state_voice_days;
             var time = self.im.user.answers.state_voice_times;
             var speech_option = go.utils.get_speech_option_days_time(days, time);
@@ -1017,7 +1017,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_c14_end_not_active', function(name) {
+        self.add('state_end_not_active', function(name) {
             var speech_option = '1';
             return new EndState(name, {
                 text: $('No active subscriptions'),
