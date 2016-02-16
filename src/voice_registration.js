@@ -36,14 +36,15 @@ go.app = function() {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
             return go.utils
-                .check_health_worker_msisdn(self.im.user.addr, self.im)
-                .then(function(recognised) {
-                    if (recognised) {
+                .get_or_create_contact(self.im.user.addr, self.im)
+                .then(function(user) {
+                    self.im.user.set_answer('user_id', user.id);
+                    if (user.details.personnel_code) {
                         return self.states.create('state_msg_receiver');
                     } else {
                         return self.states.create('state_personnel_auth');
                     }
-            });
+                });
         });
 
 

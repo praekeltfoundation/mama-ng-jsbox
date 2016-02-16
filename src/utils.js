@@ -210,7 +210,7 @@ go.utils = {
             "details__addresses__msisdn": msisdn
         };
         return go.utils
-            .service_api_call('identities', 'get', params, null, 'search/', im)
+            .service_api_call('identities', 'get', params, null, 'identities/search/', im)
             .then(function(json_get_response) {
                 var contacts_found = json_get_response.data.results;
                 // Return the first contact's id
@@ -221,7 +221,7 @@ go.utils = {
     },
 
     get_contact_by_id: function(contact_id, im) {
-        var endpoint = contact_id + '/';
+        var endpoint = 'identities/' + contact_id + '/';
         return go.utils
             .service_api_call('identities', 'get', {}, null, endpoint, im)
             .then(function(json_get_response) {
@@ -238,7 +238,7 @@ go.utils = {
             }
         };
         return go.utils
-            .service_api_call("identities", "post", null, payload, '', im)
+            .service_api_call("identities", "post", null, payload, 'identities', im)
             .then(function(json_post_response) {
                 var contact_created = json_post_response.data;
                 // Return the contact's id
@@ -260,8 +260,8 @@ go.utils = {
                     // If contact doesn't exist, create it
                     return go.utils
                         .create_contact(msisdn, im)
-                        .then(function(contact_id) {
-                            return contact_id;
+                        .then(function(contact) {
+                            return contact;
                         });
                 }
             });
@@ -269,9 +269,9 @@ go.utils = {
 
     update_contact: function(im, contact) {
         // For patching any field on the contact
-        var endpoint = contact.id + '/';
+        var endpoint = 'identities/' + contact.id + '/';
         return go.utils
-            .service_api_call("identities", 'patch', {}, contact, endpoint, im)
+            .service_api_call('identities', 'patch', {}, contact, endpoint, im)
             .then(function(response) {
                 return response.data.id;
             });
@@ -430,7 +430,7 @@ go.utils = {
     subscribe_contact: function(im, subscription) {
         var payload = subscription;
         return go.utils
-            .service_api_call("subscriptions", "post", null, payload, '', im)
+            .service_api_call("subscriptions", "post", null, payload, "subscriptions/", im)
             .then(function(response) {
                 return response.data.id;
             });
@@ -444,7 +444,7 @@ go.utils = {
             active: "True"
         };
         return go.utils
-            .service_api_call("subscriptions", "get", params, null, "", im)
+            .service_api_call("subscriptions", "get", params, null, "subscriptions/", im)
             .then(function(json_get_response) {
                 return json_get_response.data.results;
             });
@@ -479,7 +479,7 @@ go.utils = {
                 var patch_calls = [];
                 for (i=0; i<subscriptions.length; i++) {
                     var updated_subscription = subscriptions[i];
-                    var endpoint = updated_subscription.id + '/';
+                    var endpoint = "subscriptions/" + updated_subscription.id + '/';
                     updated_subscription.active = false;
                     // store the patch calls to be made
                     patch_calls.push(function() {
@@ -522,7 +522,7 @@ go.utils = {
     },
 
     update_subscription: function(im, subscription) {
-        var endpoint = subscription.id + '/';
+        var endpoint = "subscriptions/" + subscription.id + '/';
         return go.utils
             .service_api_call("subscriptions", 'patch', {}, subscription, endpoint, im)
             .then(function(response) {
@@ -617,23 +617,45 @@ go.utils = {
 
 // SMS HANDLING
 
-    vumi_send_text: function(im, to_addr, sms_message) {
-        var api = new JsonApi(im, {
-            headers: {
-                'Content-Type': ['application/json; charset=utf-8'],
-            },
-            auth: {
-                account_key: im.config.vumi_http.account_key,
-                conversation_token: im.config.vumi_http.conversation_token
-            }
-        });
+    eval_dialback_reminder: function(e, im, user_id, $, sms_content) {
+        var close_state = e.im.state.name;
+        var non_dialback_sms_states = [
+            'state_start',
+            'state_auth_code',
+            'state_end_voice',
+            'state_end_sms'
+        ];
+        if (non_dialback_sms_states.indexOf(close_state) === -1
+          && e.user_terminated) {
+            return go.utils
+                .get_contact_by_id(user_id, im)
+                .then(function(user) {
+                    if (!user.details.dialback_sent) {
+                        user.details.dialback_sent = true;
+                        return Q.all([
+                            go.utils.send_text(im, user_id, sms_content),
+                            go.utils.update_contact(im, user)
+                        ]);
+                    }
+                });
+        } else {
+            return Q();
+        }
+    },
 
-        return api.put(im.config.vumi_http.url, {
-            data: {
-                "to_addr": go.utils.normalize_msisdn(to_addr, '234'),  // nigeria
-                "content": sms_message
-            }
-        });
+    send_text: function(im, user_id, sms_content) {
+        var payload = {
+            "contact": user_id,
+            "content": sms_content.replace("{{channel}}", im.config.channel)
+                // $ does not work well with fixtures here since it's an object
+        };
+        return go.utils
+            .service_api_call("outbound", "post", null, payload, 'outbound/', im)
+            .then(function(json_post_response) {
+                var outbound_response = json_post_response.data;
+                // Return the outbound id
+                return outbound_response.id;
+            });
     },
 
 // TIMEOUT HANDLING
@@ -659,20 +681,12 @@ go.utils = {
             });
     },
 
-    check_health_worker_msisdn: function(msisdn, im) {
-        return go.utils
-            .get_or_create_contact(msisdn, im)
-            .then(function(contact) {
-                return contact.details.personnel_code ? true : false;
-            });
-    },
-
     validate_personnel_code: function(im, content) {
         var params = {
             "details__personnel_code": content
         };
         return go.utils
-            .service_api_call('identities', 'get', params, null, 'search/', im)
+            .service_api_call('identities', 'get', params, null, 'identities/search/', im)
             .then(function(json_get_response) {
                 var contacts_found = json_get_response.data.results;
                 // Return the number of contact's found

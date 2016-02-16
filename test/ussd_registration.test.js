@@ -25,21 +25,20 @@ describe("Mama Nigeria App", function() {
                     services: {
                         identities: {
                             api_token: 'test_token_identities',
-                            url: "http://localhost:8000/api/v1/identities/"
+                            url: "http://localhost:8001/api/v1/"
                         },
                         subscriptions: {
                             api_token: 'test_token_subscriptions',
-                            url: "http://localhost:8000/api/v1/subscriptions/"
+                            url: "http://localhost:8002/api/v1/"
                         },
+                        outbound: {
+                            api_token: 'test_token_outbound',
+                            url: "http://localhost:8003/api/v1/"
+                        }
                     },
                     endpoints: {
                         "sms": {"delivery_class": "sms"}
                     },
-                    vumi_http: {
-                        url: "https://localhost/api/v1/go/http_api_nostream/conversation_key/messages.json",
-                        account_key: "acc_key",
-                        conversation_token: "conv_token"
-                    }
                 })
                 .setup(function(api) {
                     fixtures().forEach(api.http.fixtures.add);
@@ -97,6 +96,38 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_auth_code'
                     })
+                    .check(function(api) {
+                        var fixt1 = api.http.fixtures.fixtures[1];
+                        assert.equal(fixt1.uses, 2);
+                    })
+                    .run();
+            });
+            it("should send a dialback sms on first timeout", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , {session_event: 'close'}
+                    )
+                    .check(function(api) {
+                        var fixt1 = api.http.fixtures.fixtures[30];
+                        assert.equal(fixt1.uses, 1);
+                    })
+                    .run();
+            });
+            it("should not send a dialback sms on second timeout", function() {
+                return tester
+                    .setup.user.addr('08080040004')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , {session_event: 'close'}
+                    )
+                    .check(function(api) {
+                        var fixt1 = api.http.fixtures.fixtures[32];
+                        assert.equal(fixt1.uses, 1);
+                    })
                     .run();
             });
         });
@@ -113,7 +144,8 @@ describe("Mama Nigeria App", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                     )
-                    .check.user.answers({})
+                    .check.user.answers({
+                        "user_id": "cb245673-aa41-4302-ac47-00000000002"})
                     .run();
             });
         });
