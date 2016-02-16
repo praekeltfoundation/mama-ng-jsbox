@@ -919,15 +919,10 @@ go.app = function() {
                     new Choice('trusted_friend', $("A trusted friend"))
                 ],
                 next: function(choice) {
-                    switch (choice.value) {
-                        case 'mother_father':
-                            return 'state_msisdn_father';
-                        case 'father_only':
-                            // to register to both "Mother" & "Father" messages
-                            return 'state_msisdn';
-                        default:
-                            // to register only to "Mother" messages
-                            return 'state_msisdn';
+                    if (choice.value === 'mother_father') {
+                        return 'state_msisdn_father';
+                    } else {
+                        return 'state_msisdn';
                     }
                 }
             });
@@ -974,7 +969,15 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: 'state_save_identities'
+                next: function() {
+                    if (self.im.user.answers.state_msisdn_father ===
+                        self.im.user.answers.state_msisdn_mother) {
+                        self.im.user.set_answer('state_msg_receiver', 'father_only');
+                        self.im.user.set_answer('state_msisdn',
+                                                self.im.user.answers.state_msisdn_mother);
+                    }
+                    return 'state_save_identities';
+                }
             });
         });
 
@@ -990,7 +993,8 @@ go.app = function() {
                         return self.states.create('state_pregnancy_status');
                     });
             } else if (self.im.user.answers.state_msg_receiver === 'trusted_friend' ||
-                       self.im.user.answers.state_msg_receiver === 'family_member') {
+                       self.im.user.answers.state_msg_receiver === 'family_member' ||
+                       self.im.user.answers.state_msg_receiver === 'father_only') {
                 return go.utils
                     .get_or_create_contact(self.im.user.answers.state_msisdn, self.im)
                     .then(function(friend_fam) {

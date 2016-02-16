@@ -639,7 +639,7 @@ describe("Mama Nigeria App", function() {
                         {session_event: 'new'}  // dial in
                         , '12345'   // state_auth_code - personnel code
                         , '3' // state_msg_receiver - father only
-                        , '08033048990'  // state_msisdn
+                        , '09093333333'  // state_msisdn
                         , '2'  // state_msg_pregnant - baby
                         , '4'  // state_baby_birth_month_year - May 15
                         , '12' // state_baby_birth_day - 12
@@ -648,6 +648,28 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_end_sms',
+                    })
+                    .run();
+            });
+            it("complete flow 4 - receiver: mother & father; mother pregnant, voice", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '1' // state_msg_receiver - trusted friend
+                        , '09093333333'  // state_msisdn_father
+                        , '09093333333'  // state_msiddn_mother
+                        , '1'  // state_msg_pregnant - mother
+                        , '3'  // state_last_period_month - May 15
+                        , '12' // state_last_period_day - 12
+                        , '1'  // state_msg_language - english
+                        , '1'   // state_msg_type - voice calls
+                        , '2'   // state_voice_days - tuesdays and thursdays
+                        , '2'   // state_voice_times - between 2-5pm
+                    )
+                    .check.interaction({
+                        state: 'state_end_voice',
                     })
                     .run();
             });
