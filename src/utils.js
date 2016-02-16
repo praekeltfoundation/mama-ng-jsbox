@@ -747,5 +747,49 @@ go.utils = {
         return choices;
     },
 
+    save_identities: function(im, receiver, receiver_msisdn, father_msisdn, mother_msisdn) {
+        if (receiver === 'mother_only') {
+            return go.utils
+                // get or create mother's identity
+                .get_or_create_contact(receiver_msisdn, im)
+                .then(function(mother) {
+                    im.user.set_answer('mother_id', mother.id);
+                    im.user.set_answer('receiver_id', mother.id);
+                    return;
+                });
+        } else if (receiver === 'trusted_friend' ||
+                   receiver === 'family_member' ||
+                   receiver === 'father_only') {
+            return go.utils
+                // get or create receiver's identity
+                .get_or_create_contact(receiver_msisdn, im)
+                .then(function(receiver) {
+                    im.user.set_answer('receiver_id', receiver.id);
+                    return go.utils
+                        // get or create mother's identity
+                        .create_contact(im, null, receiver.id)
+                        .then(function(mother) {
+                            im.user.set_answer('mother_id', mother.id);
+                            return;
+                        });
+                });
+        } else if (receiver === 'mother_father') {
+            return Q
+                .all([
+                    // create father's identity
+                    go.utils.get_or_create_contact(father_msisdn, im),
+                    // create mother's identity
+                    go.utils.get_or_create_contact(mother_msisdn, im),
+                ])
+                .spread(function(father, mother) {
+                    im.user.set_answer('father_id', father.id);
+                    im.user.set_answer('mother_id', mother.id);
+                    return;
+                });
+        }
+    },
+
+
+
     "commas": "commas"
 };
