@@ -746,7 +746,7 @@ describe("Mama Nigeria App", function() {
                             , '08080020003'  // state_mother_msisdn
                             , '1'            // state_pregnancy_status - pregnant
                             , '1'            // state_last_period_year - this year
-                            , '9'            // state_last_year_period_month - sep
+                            , '9'            // state_this_year_period_month - sep
                         )
                         .check.interaction({
                             state: 'state_retry_this_year_period_month',
@@ -837,7 +837,7 @@ describe("Mama Nigeria App", function() {
                         )
                         .check.interaction({
                             state: 'state_last_period_day',
-                            reply: 'Last period day dec [2016]'
+                            reply: 'Last period day 12 [2016]'
                         })
                         .check.reply.properties({
                             helper_metadata: {
@@ -853,7 +853,7 @@ describe("Mama Nigeria App", function() {
         });
 
         // baby
-        describe("When you enter a baby_birth_month", function() {
+        describe.only("When you enter a baby_birth_month", function() {
             describe("if the month choice is not in valid range for this year", function() {
                 it("should navigate to state_retry_this_year_baby_birth_month", function() {
                     return tester
@@ -866,7 +866,7 @@ describe("Mama Nigeria App", function() {
                             , '08080020003'     // state_mother_msisdn
                             , '2'               // state_pregnancy_status - baby
                             , '1'               // state_baby_birth_year - this year
-                            , '8'               // state_last_year_baby_birth_month - aug
+                            , '8'               // state_this_year_baby_birth_month - aug
                         )
                         .check.interaction({
                             state: 'state_retry_this_year_baby_birth_month',
@@ -957,7 +957,7 @@ describe("Mama Nigeria App", function() {
                         )
                         .check.interaction({
                             state: 'state_baby_birth_day',
-                            reply: 'Birth day in sep [2016]'
+                            reply: 'Birth day in 09 [2016]'
                         })
                         .check.reply.properties({
                             helper_metadata: {
