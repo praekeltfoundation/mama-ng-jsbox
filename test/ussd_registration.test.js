@@ -27,8 +27,12 @@ describe("Mama Nigeria App", function() {
                             api_token: 'test_token_identities',
                             url: "http://localhost:8001/api/v1/"
                         },
-                        subscriptions: {
-                            api_token: 'test_token_subscriptions',
+                        // subscriptions: {
+                        //     api_token: 'test_token_subscriptions',
+                        //     url: "http://localhost:8002/api/v1/"
+                        // },
+                        registrations: {
+                            api_token: 'test_token_registrations',
                             url: "http://localhost:8002/api/v1/"
                         },
                         outbound: {
@@ -632,7 +636,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            it("complete flow 3 - receiver: father only; mother baby, sms", function() {
+            it.only("complete flow 3 - receiver: father only; mother baby, sms", function() {
                 return tester
                     .setup.user.addr('08080020002')
                     .inputs(

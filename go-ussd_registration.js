@@ -684,30 +684,82 @@ go.utils = {
 
 // REGISTRATION HANDLING
 
-    compile_registration_info: function(im) {
-        var registration_info = {
+    compile_mother_reg_info: function(im) {
+        var reg_info = {
             stage: im.user.answers.state_pregnancy_status,
             data: {
                 msg_receiver: im.user.answers.state_msg_receiver,
                 mother_id: im.user.answers.mother_id,
-                receiver_id: im.user.answers.receiver_id,
                 operator_id: im.user.answers.operator_id,
                 language: im.user.answers.state_msg_language,
                 msg_type: im.user.answers.state_msg_type,
             }
         };
-        if (im.user.answers.state_pregnancy_status === 'prebirth') {
-            registration_info.data.last_period_date = im.user.answers.valid_date;
-        } else if (im.user.answers.state_pregnancy_status === 'postbirth') {
-            registration_info.data.baby_dob = im.user.answers.valid_date;
+
+        // add data for receiver_id
+        if (im.user.answers.state_msg_receiver === 'mother_father') {
+            reg_info.data.receiver_id = im.user.answers.mother_id;
+        } else {
+            reg_info.data.receiver_id = im.user.answers.receiver_id;
         }
-        return registration_info;
+
+        // add data for last_period_date or baby_dob
+        if (im.user.answers.state_pregnancy_status === 'prebirth') {
+            reg_info.data.last_period_date = im.user.answers.valid_date;
+        } else if (im.user.answers.state_pregnancy_status === 'postbirth') {
+            reg_info.data.baby_dob = im.user.answers.valid_date;
+        }
+        return reg_info;
     },
 
-    save_registration: function(im) {
-        registration_info = go.utils.compile_registration_info(im);
-        return Q();
+    compile_father_reg_info: function(im) {
+        var reg_info = {
+            stage: im.user.answers.state_pregnancy_status,
+            data: {
+                msg_receiver: im.user.answers.state_msg_receiver,
+                mother_id: im.user.answers.mother_id,
+                operator_id: im.user.answers.operator_id,
+                language: im.user.answers.state_msg_language,
+                msg_type: im.user.answers.state_msg_type,
+            }
+        };
+
+        // add data for receiver_id
+        if (im.user.answers.state_msg_receiver === 'mother_father') {
+            reg_info.data.receiver_id = im.user.answers.mother_id;
+        } else {
+            reg_info.data.receiver_id = im.user.answers.receiver_id;
+        }
+
+        // add data for last_period_date or baby_dob
+        if (im.user.answers.state_pregnancy_status === 'prebirth') {
+            reg_info.data.last_period_date = im.user.answers.valid_date;
+        } else if (im.user.answers.state_pregnancy_status === 'postbirth') {
+            reg_info.data.baby_dob = im.user.answers.valid_date;
+        }
+        return reg_info;
     },
+
+    save_registration: function(im, receiver) {
+        // compile mother registration
+        var mother_reg = go.utils.compile_mother_reg_info(im);
+
+        if (['trusted_friend', 'family_member', 'mother_only'].indexOf(receiver) !== -1) {
+            // father not involved in registration
+            // send mother registration
+            return go.utils
+                .service_api_call("registrations", "post", null, mother_reg, "registrations/", im);
+        } else {
+            // father involved in registration
+            var father_reg = go.utils.compile_father_reg_info(im);
+            // send mother and father registrations
+            return Q.all([
+                go.utils.service_api_call("registrations", "post", null, mother_reg, "registrations/", im),
+                go.utils.service_api_call("registrations", "post", null, father_reg, "registrations/", im),
+            ]);
+        }
+    },
+
 
 // PROJECT SPECIFIC
 
@@ -764,9 +816,7 @@ go.utils = {
                     im.user.set_answer('receiver_id', mother.id);
                     return;
                 });
-        } else if (receiver === 'trusted_friend' ||
-                   receiver === 'family_member' ||
-                   receiver === 'father_only') {
+        } else if (['trusted_friend', 'family_member', 'father_only'].indexOf(receiver) !== -1) {
             return go.utils
                 // get or create receiver's identity
                 .get_or_create_contact(receiver_msisdn, im)
@@ -1111,7 +1161,10 @@ go.app = function() {
                         return 'state_voice_days';
                     } else {
                         return go.utils
-                            .save_registration(self.im)
+                            .save_registration(
+                                self.im,
+                                self.im.user.answers.state_msg_receiver
+                            )
                             .then(function() {
                                 return 'state_end_sms';
                             });

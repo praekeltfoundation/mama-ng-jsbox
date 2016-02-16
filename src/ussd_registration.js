@@ -308,7 +308,10 @@ go.app = function() {
                         return 'state_voice_days';
                     } else {
                         return go.utils
-                            .save_registration(self.im)
+                            .save_registration(
+                                self.im,
+                                self.im.user.answers.state_msg_receiver
+                            )
                             .then(function() {
                                 return 'state_end_sms';
                             });
