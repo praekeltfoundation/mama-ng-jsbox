@@ -759,6 +759,7 @@ go.utils = {
 
 go.app = function() {
     var vumigo = require('vumigo_v02');
+    var Q = require('q');
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
@@ -996,20 +997,32 @@ go.app = function() {
                        self.im.user.answers.state_msg_receiver === 'family_member' ||
                        self.im.user.answers.state_msg_receiver === 'father_only') {
                 return go.utils
+                    // get or create receiver's identity
                     .get_or_create_contact(self.im.user.answers.state_msisdn, self.im)
-                    .then(function(friend_fam) {
-                        self.im.user.set_answer('receiver_id', friend_fam.id);
+                    .then(function(receiver) {
+                        self.im.user.set_answer('receiver_id', receiver.id);
                         return go.utils
-                            .create_contact(self.im, null, friend_fam.id)
+                            // get or create mother's identity
+                            .create_contact(self.im, null, receiver.id)
                             .then(function(mother) {
                                 self.im.user.set_answer('mother_id', mother.id);
                                 return self.states.create('state_pregnancy_status');
                             });
                     });
-            } else {
-                return self.states.create('state_pregnancy_status');
+            } else if (self.im.user.answers.state_msg_receiver === 'mother_father') {
+                return Q
+                    .all([
+                        // create father's identity
+                        go.utils.get_or_create_contact(self.im.user.answers.state_msisdn_father, self.im),
+                        // create mother's identity
+                        go.utils.get_or_create_contact(self.im.user.answers.state_msisdn_mother, self.im),
+                    ])
+                    .spread(function(father, mother) {
+                        self.im.user.set_answer('father_id', father.id);
+                        self.im.user.set_answer('mother_id', mother.id);
+                        return self.states.create('state_pregnancy_status');
+                    });
             }
-
         });
 
         // ChoiceState st-04

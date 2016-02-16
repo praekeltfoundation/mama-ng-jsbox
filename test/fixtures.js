@@ -1778,5 +1778,129 @@ module.exports = function() {
             }
         },
 
+        // 41: get contact 09094444444 by msisdn - no results
+        {
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'details__addresses__msisdn': '+2349094444444'
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/identities/search/',
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 0,
+                    "next": null,
+                    "previous": null,
+                    "results": []
+                }
+            }
+        },
+
+        // 42: get contact 09095555555 by msisdn - no results
+        {
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'details__addresses__msisdn': '+2349095555555'
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/identities/search/',
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 0,
+                    "next": null,
+                    "previous": null,
+                    "results": []
+                }
+            }
+        },
+
+        // 43: create contact 09094444444
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': "http://localhost:8001/api/v1/identities/",
+                'data':  {
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {"+2349094444444": {}}
+                        }
+                    }
+                }
+            },
+            'response': {
+                "code": 201,
+                "data": {
+                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-9094444444/",
+                    "id": "cb245673-aa41-4302-ac47-9094444444",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2349094444444": {}
+                            }
+                        }
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
+
+        // 44: create contact 09095555555
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': "http://localhost:8001/api/v1/identities/",
+                'data':  {
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {"+2349095555555": {}}
+                        }
+                    }
+                }
+            },
+            'response': {
+                "code": 201,
+                "data": {
+                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-9095555555/",
+                    "id": "cb245673-aa41-4302-ac47-9095555555",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2349095555555": {}
+                            }
+                        }
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
+
     ];
 };

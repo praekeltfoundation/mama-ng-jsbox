@@ -617,8 +617,8 @@ describe("Mama Nigeria App", function() {
                         {session_event: 'new'}  // dial in
                         , '12345'   // state_auth_code - personnel code
                         , '1' // state_msg_receiver - trusted friend
-                        , '08033048990'  // state_msisdn_father
-                        , '08033048991'  // state_msiddn_mother
+                        , '09095555555'  // state_msisdn_father
+                        , '09094444444'  // state_msiddn_mother
                         , '1'  // state_msg_pregnant - mother
                         , '3'  // state_last_period_month - May 15
                         , '12' // state_last_period_day - 12
