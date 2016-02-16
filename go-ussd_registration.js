@@ -245,7 +245,7 @@ go.utils = {
             }
         };
         return go.utils
-            .service_api_call("identities", "post", null, payload, 'identities', im)
+            .service_api_call("identities", "post", null, payload, 'identities/', im)
             .then(function(json_post_response) {
                 var contact_created = json_post_response.data;
                 // Return the contact's id
@@ -379,7 +379,9 @@ go.utils = {
 // OTHER
 
     get_addresses: function(msisdn) {
-        return "msisdn:" + msisdn;
+        var addresses = {"msisdn": {}};
+        addresses.msisdn[msisdn] = {};
+        return addresses;
     },
 
 // SUBSCRIPTION HANDLING
@@ -697,7 +699,6 @@ go.utils = {
 
     save_registration: function(im) {
         registration_info = go.utils.compile_registration_info(im);
-        console.log(registration_info);
         return Q();
     },
 
@@ -936,7 +937,7 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: 'state_pregnancy_status'
+                next: 'state_save_identities'
             });
         });
 
@@ -966,8 +967,31 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: 'state_pregnancy_status'
+                next: 'state_save_identities'
             });
+        });
+
+        // Get or create identities and save their IDs
+        self.add('state_save_identities', function(name) {
+            if (self.im.user.answers.state_msg_receiver === 'mother_only') {
+                return go.utils
+                    // get or create mother's identity
+                    .get_or_create_contact(self.im.user.answers.state_msisdn, self.im)
+                    .then(function(mother) {
+                        self.im.user.set_answer('mother_id', mother.id);
+                        self.im.user.set_answer('receiver_id', mother.id);
+                        return self.states.create('state_pregnancy_status');
+                    });
+            } else {
+                return self.states.create('state_pregnancy_status');
+            }
+            // } else if (self.im.user.answers.state_msg_receiver === 'trusted_friend' ||
+            //            self.im.user.answers.state_msg_receiver === 'family_member') {
+            //     return go.utils
+            //         // get or create friend / family's contact
+            //         .get_or_create_contact(self.im.user.answers.state_msg_receiver, self.im)
+            // }
+
         });
 
         // ChoiceState st-04

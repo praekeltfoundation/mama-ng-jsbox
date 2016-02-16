@@ -245,7 +245,7 @@ go.utils = {
             }
         };
         return go.utils
-            .service_api_call("identities", "post", null, payload, 'identities', im)
+            .service_api_call("identities", "post", null, payload, 'identities/', im)
             .then(function(json_post_response) {
                 var contact_created = json_post_response.data;
                 // Return the contact's id
@@ -379,7 +379,9 @@ go.utils = {
 // OTHER
 
     get_addresses: function(msisdn) {
-        return "msisdn:" + msisdn;
+        var addresses = {"msisdn": {}};
+        addresses.msisdn[msisdn] = {};
+        return addresses;
     },
 
 // SUBSCRIPTION HANDLING
@@ -697,7 +699,6 @@ go.utils = {
 
     save_registration: function(im) {
         registration_info = go.utils.compile_registration_info(im);
-        console.log(registration_info);
         return Q();
     },
 
