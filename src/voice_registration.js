@@ -255,7 +255,6 @@ go.app = function() {
                     choices: go.utils.make_month_choices(
                         $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
                 next: function(choice) {
-                    console.log("inside 5B - choice: "+choice.value);
                     if (go.utils.is_valid_month_last_period(go.utils.get_today(self.im.config), true, choice.value))
                     {
                         return 'state_last_period_day';

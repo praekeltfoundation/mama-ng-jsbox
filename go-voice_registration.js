@@ -733,10 +733,6 @@ go.utils = {
             choiceDate.subtract('year', 1);
         }
 
-        console.log("TODAY: "+today.format("YYYY-MM"));
-        console.log("LAST YEAR? "+periodLastYear);
-
-
         // setup moment object to represent either the start of the current year or
         //  the start of a ten month window into the previous year
         var startDate;
@@ -750,10 +746,8 @@ go.utils = {
             endDate = startDate.clone();
             endDate.endOf('year');
         }
-        console.log("TODAY 2nd: "+today.format("YYYY-MM"));
 
         // get difference in months between start of the year and choice date
-        console.log("--->"+choiceDate.from(startDate, true));
         var monthDiff = parseInt((choiceDate.from(startDate, true).substring(0,2)), 10);
         // if there is a diff of one month 'monthDiff' will be set to NaN
         //  because the string value of choiceDate.from(startDate, true) would be 'a month'
@@ -764,12 +758,6 @@ go.utils = {
                 monthDiff = 12;
             }
         }
-
-        console.log("START DATE: "+startDate.format("YYYY-MM"));
-        if (periodLastYear) { console.log("END DATE: "+endDate.format("YYYY-MM")); }
-        console.log("CHOICE DATE: "+choiceDate.format("YYYY-MM"));
-        console.log("monthDiff: "+monthDiff);
-
 
         if (!periodLastYear) {
             if ((choiceDate.isSame(startDate) || choiceDate.isAfter(startDate)) &&
@@ -825,7 +813,29 @@ go.utils = {
 
     // function used to validate months for states 12A/12B
     is_valid_month_baby_born: function(today, bornLastYear, choiceValue) {
-        var currentMonth = parseInt(today.format("MM"));
+
+        var choiceDate = today.clone();
+        choiceDate.month(parseInt(choiceValue, 9), 'MM');
+
+        if (bornLastYear) {
+            choiceDate.subtract('year', 1);
+            var evalDate = today.clone();
+            evalDate.subtract('year',1);
+
+            if ((choiceDate.isSame(evalDate) || choiceDate.isAfter(evalDate))) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            if ((choiceDate.isSame(today) || choiceDate.isBefore(today))) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        /*var currentMonth = parseInt(today.format("MM"));
 
         var choiceMonth = parseInt(choiceValue, 10);
 
@@ -833,7 +843,7 @@ go.utils = {
             return (choiceMonth >= currentMonth);
         } else {
             return (choiceMonth <= currentMonth);
-        }
+        }*/
     },
 
 
