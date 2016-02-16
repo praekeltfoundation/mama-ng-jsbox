@@ -320,8 +320,9 @@ go.utils = {
         return today;
     },
 
-    get_january: function(year) {
-        return new moment(year+"0101");
+    get_january: function() {
+        // returns current year january 1st moment date
+        return new moment("0101", 'YYYYMMDD');
     },
 
     is_valid_date: function(date, format) {
@@ -694,8 +695,8 @@ go.utils = {
 
         var monthIterator = startDate;
         for (var i=0; i<limit; i++) {
-            choices.push(new Choice(monthIterator.format("YYYYMM"),
-                                    $(monthIterator.format("MMMM YY"))));
+            choices.push(new Choice(monthIterator.format(valueFormat),
+                                    $(monthIterator.format(labelFormat))));
             monthIterator.add(increment, 'months');
         }
 
