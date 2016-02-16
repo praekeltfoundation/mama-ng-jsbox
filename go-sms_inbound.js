@@ -327,6 +327,11 @@ go.utils = {
         return today;
     },
 
+    get_january: function() {
+        // returns current year january 1st moment date
+        return new moment("0101", 'YYYYMMDD');
+    },
+
     is_valid_date: function(date, format) {
         // implements strict validation with 'true' below
         return moment(date, format, true).isValid();
@@ -706,12 +711,13 @@ go.utils = {
         return go.utils.check_valid_alpha(input);
     },
 
-    make_month_choices: function($, startDate, limit, increment) {
+    make_month_choices: function($, startDate, limit, increment, valueFormat, labelFormat) {
         var choices = [];
 
         var monthIterator = startDate;
         for (var i=0; i<limit; i++) {
-            choices.push(new Choice(monthIterator.format("YYYYMM"), $(monthIterator.format("MMMM YY"))));
+            choices.push(new Choice(monthIterator.format(valueFormat),
+                                    $(monthIterator.format(labelFormat))));
             monthIterator.add(increment, 'months');
         }
 
@@ -720,22 +726,32 @@ go.utils = {
 
     // function used to validate months for states 5A/5B
     is_valid_month_last_period: function(today, periodLastYear, choiceValue) {
-        if (periodLastYear) { today.subtract('year', 1); }     // substract year if last period happened the previous year
+
+        // substract year if last period happened the previous year
+        if (periodLastYear) {
+            today.subtract('year', 1);
+        }
+
         var currentMonth = parseInt(today.format("MM"));
 
         var validStartMonth = 0;
         if (!periodLastYear) {
             // this year
-            validStartMonth = currentMonth <= 10 ? 1 : currentMonth-9;    // logic to determine valid month range (10 month window)
+                // logic to determine valid month range (10 month window)
+            validStartMonth = currentMonth <= 10 ? 1 : currentMonth-9;
         } else {
             // last year
-            validStartMonth = currentMonth <= 10 ? ((currentMonth+13) % 10) : -1;  // logic to determine valid month range (10 month window)
-            validStartMonth = validStartMonth === 0 ? 10 : validStartMonth+10;   // making necessary adjustment in logic for month of Oct
+                // logic to determine valid month range (10 month window)
+            validStartMonth = currentMonth <= 10 ? ((currentMonth+13) % 10) : -1;
+                // making necessary adjustment in logic for month of Oct
+            validStartMonth = validStartMonth === 0 ? 10 : validStartMonth+10;
         }
 
-        var choiceMonth = parseInt(today.month(choiceValue).format("MM"));
+        var choiceMonth = parseInt(choiceValue, 10);
 
-        if (validStartMonth !== -1) {   // -1 will be the result if Nov/Dec is current month in year (last period can't be more than 10 months ago)
+        if (validStartMonth !== -1) {
+        // -1 will be the result if Nov/Dec is current month in year (last period can't
+        // be more than 10 months ago)
             if (periodLastYear) {
                 return (choiceMonth > currentMonth && choiceMonth >= validStartMonth);
             } else {
@@ -747,7 +763,9 @@ go.utils = {
     // function used to validate months for states 12A/12B
     is_valid_month_baby_born: function(today, bornLastYear, choiceValue) {
         var currentMonth = parseInt(today.format("MM"));
-        var choiceMonth = parseInt(today.month(choiceValue).format("MM"));
+
+        var choiceMonth = parseInt(choiceValue, 10);
+        // var choiceMonth = parseInt(today.month(choiceValue).format("MM"));
 
         if (bornLastYear) {    // if baby was born in previous year
             return (choiceMonth >= currentMonth);
