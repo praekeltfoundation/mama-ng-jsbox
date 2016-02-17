@@ -482,16 +482,15 @@ go.app = function() {
             if (go.utils.is_valid_date(dateToValidate, 'DD-MM-YYYY')) {
                 return self.states.create('state_msg_language');
             } else {
-                return self.states.create('state_invalid_date', {date: dateToValidate});
+                return self.states.create('state_invalid_date');
             }
         });
 
-        self.add('state_invalid_date', function(name, opts) {
+        self.add('state_invalid_date', function(name) {
             var speech_option = 1;
             return new ChoiceState(name, {
                 question:
-                    $('{{ date }} is not a real date. Please try again.'
-                    ).context({date: opts.date}),
+                    $('The date you entered is not a real date. Please try again.'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [

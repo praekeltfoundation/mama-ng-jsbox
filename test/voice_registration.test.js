@@ -1042,7 +1042,7 @@ describe("Mama Nigeria App", function() {
                         .check.interaction({
                             state: 'state_invalid_date',
                             reply: [
-                                '33-10-2016 is not a real date. Please try again.',
+                                'The date you entered is not a real date. Please try again.',
                                 '1. Continue'
                             ].join('\n')
                         })
@@ -1176,7 +1176,7 @@ describe("Mama Nigeria App", function() {
                         .check.interaction({
                             state: 'state_invalid_date',
                             reply: [
-                                '32-09-2016 is not a real date. Please try again.',
+                                'The date you entered is not a real date. Please try again.',
                                 '1. Continue'
                             ].join('\n')
                         })
