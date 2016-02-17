@@ -1723,7 +1723,7 @@ describe("Mama Nigeria App", function() {
                 assert.equal(resultsForLastYearPeriod[3], false);     // apr
                 assert.equal(resultsForLastYearPeriod[4], false);     // may
                 assert.equal(resultsForLastYearPeriod[5], false);     // jun
-                assert.equal(resultsForLastYearPeriod[6], true);      // jul
+                assert.equal(resultsForLastYearPeriod[6], false);      // jul
                 assert.equal(resultsForLastYearPeriod[7], true);      // aug
                 assert.equal(resultsForLastYearPeriod[8], true);      // sep
                 assert.equal(resultsForLastYearPeriod[9], true);      // oct
@@ -1748,7 +1748,7 @@ describe("Mama Nigeria App", function() {
                 assert.equal(resultsForLastYearBaby[0], false);     // jan
                 assert.equal(resultsForLastYearBaby[1], false);     // feb
                 assert.equal(resultsForLastYearBaby[2], false);     // mar
-                assert.equal(resultsForLastYearBaby[3], true);      // apr
+                assert.equal(resultsForLastYearBaby[3], false);      // apr
                 assert.equal(resultsForLastYearBaby[4], true);      // may
                 assert.equal(resultsForLastYearBaby[5], true);      // jun
                 assert.equal(resultsForLastYearBaby[6], true);      // jul
@@ -1798,7 +1798,7 @@ describe("Mama Nigeria App", function() {
                 // expected results
                 assert.equal(resultsForThisYearPeriod.length, 12);
                 assert.equal(resultsForThisYearPeriod[0], false);    // jan
-                assert.equal(resultsForThisYearPeriod[1], true);     // feb
+                assert.equal(resultsForThisYearPeriod[1], false);     // feb
                 assert.equal(resultsForThisYearPeriod[2], true);     // mar
                 assert.equal(resultsForThisYearPeriod[3], true);     // apr
                 assert.equal(resultsForThisYearPeriod[4], true);     // may
@@ -1849,7 +1849,7 @@ describe("Mama Nigeria App", function() {
                 assert.equal(resultsForLastYearBaby[7], false);     // aug
                 assert.equal(resultsForLastYearBaby[8], false);     // sep
                 assert.equal(resultsForLastYearBaby[9], false);     // oct
-                assert.equal(resultsForLastYearBaby[10], true);     // nov
+                assert.equal(resultsForLastYearBaby[10], false);     // nov
                 assert.equal(resultsForLastYearBaby[11], true);     // dec
 
             });
