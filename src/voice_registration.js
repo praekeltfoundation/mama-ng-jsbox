@@ -2,7 +2,6 @@
 
 go.app = function() {
     var vumigo = require('vumigo_v02');
-    var moment = require('moment');
     var App = vumigo.App;
     var ChoiceState = vumigo.states.ChoiceState;
     var Choice = vumigo.states.Choice;
@@ -134,6 +133,23 @@ go.app = function() {
             });
         });
 
+        // FreeText st-16
+        self.add('state_retry_receiver_msisdn', function(name) {
+            var speech_option = 1;
+            return new FreeText(name, {
+                question: $('Sorry, invalid input. Please enter number'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: function(content) {
+                    if (go.utils.is_valid_msisdn(content) === false) {
+                        return 'state_retry_receiver_msisdn';
+                    } else {
+                        return 'state_pregnancy_status';
+                    }
+                }
+            });
+        });
+
         // FreeText st-3A
         self.add('state_father_msisdn', function(name) {
             var speech_option = '1';
@@ -151,11 +167,45 @@ go.app = function() {
             });
         });
 
+        // FreeText (retry state of st-3A)
+        self.add('state_retry_father_msisdn', function(name) {
+            var speech_option = '1';
+            return new FreeText(name, {
+                question: $('Sorry, invalid input. Please enter number (Father)'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: function(content) {
+                    if (go.utils.is_valid_msisdn(content) === false) {
+                        return 'state_retry_father_msisdn';
+                    } else {
+                        return 'state_mother_msisdn';
+                    }
+                }
+            });
+        });
+
         // FreeText st-3B
         self.add('state_mother_msisdn', function(name) {
             var speech_option = '1';
             return new FreeText(name, {
                 question: $('Please enter number (Mother)'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: function(content) {
+                    if (go.utils.is_valid_msisdn(content) === false) {
+                        return 'state_retry_mother_msisdn';
+                    } else {
+                        return 'state_pregnancy_status';
+                    }
+                }
+            });
+        });
+
+        // FreeText (retry state of st-3B)
+        self.add('state_retry_mother_msisdn', function(name) {
+            var speech_option = '1';
+            return new FreeText(name, {
+                question: $('Sorry, invalid input. Please enter number (Mother)'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(content) {
@@ -313,7 +363,7 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     var period_date = content+"-"+month+"-"+year;
-                    if (!go.utils.is_valid_date(period_date, "DD-MM-YYYY")) {
+                    if (!(content > 0 && content <= 31)) {
                         return 'state_retry_last_period_day';
                     } else {
                         self.im.user.set_answer('last_period_date', period_date);
@@ -345,11 +395,41 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     var period_date = content+"-"+month+"-"+year;
-                    if (!go.utils.is_valid_date(period_date, 'DD-MM-YYYY')) {
-                        return 'state_retry_last_period_day';
-                    } else {
-                        self.im.user.set_answer('last_period_date', period_date);
-                        return 'state_msg_language';
+                    self.im.user.set_answer('last_period_date', period_date);
+
+                    return 'state_validate_date';
+                }
+            });
+        });
+
+        // to validate overall date
+        self.add('state_validate_date', function(name) {
+            var dateToValidate = self.im.user.answers.last_period_date ||
+                                 self.im.user.answers.baby_birth_date;
+
+            if (go.utils.is_valid_date(dateToValidate, 'DD-MM-YYYY')) {
+                return self.states.create('state_msg_language');
+            } else {
+                return self.states.create('state_invalid_date');
+            }
+        });
+
+        self.add('state_invalid_date', function(name) {
+            var speech_option = 1;
+            return new ChoiceState(name, {
+                question:
+                    $('The date you entered is not a real date. Please try again.'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                choices: [
+                    new Choice('continue', $('Continue'))
+                ],
+                next: function() {
+                    if (self.im.user.answers.state_last_period_day) {  // flow via st-05, 5A/B & st-06
+                        return self.states.create('state_last_period_year');
+                    }
+                    else if (self.im.user.answers.state_baby_birth_day) { // flow via st-12, 12A/B & st-13
+                        return self.states.create('state_baby_birth_year');
                     }
                 }
             });
@@ -476,10 +556,10 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     var birth_date = content+'-'+month+'-'+year;
-                    if (!(new moment(birth_date, "DD-MM-YYYY").isValid())) {
+                    if (!(content > 0 && content <= 31)) {
                         return 'state_retry_baby_birth_day';
                     } else {
-                        self.im.user.set_answer('birth_date', birth_date);
+                        self.im.user.set_answer('baby_birth_date', birth_date);
                         return 'state_msg_language';
                     }
                 }
@@ -507,13 +587,10 @@ go.app = function() {
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(content) {
-                    var birth_date = content+'-'+month+'-'+year; // go.utils.get_baby_dob(self.im, content);;
-                    if (!(new moment(birth_date, "DD-MM-YYYY").isValid())) {
-                        return 'state_retry_baby_birth_day';
-                    } else {
-                        //self.im.user.set_answer('birth_date', birth_date);
-                        return 'state_msg_language';
-                    }
+                    var birth_date = content+'-'+month+'-'+year;
+                    self.im.user.set_answer('baby_birth_date', birth_date);
+
+                    return 'state_validate_date';
                 }
             });
         });
