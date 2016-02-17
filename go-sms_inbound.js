@@ -264,9 +264,9 @@ go.utils = {
         return go.utils
             .service_api_call("identities", "post", null, payload, 'identities/', im)
             .then(function(json_post_response) {
-                var identity_created = json_post_response.data;
+                var contact_created = json_post_response.data;
                 // Return the contact
-                return identity_created;
+                return contact_created;
             });
     },
 
@@ -716,7 +716,7 @@ go.utils = {
         return reg_info;
     },
 
-    save_registration: function(im, receiver) {
+    save_registration: function(im) {
         // compile mother registration
         var reg_info = go.utils.compile_reg_info(im);
         return go.utils

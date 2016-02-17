@@ -264,9 +264,9 @@ go.utils = {
         return go.utils
             .service_api_call("identities", "post", null, payload, 'identities/', im)
             .then(function(json_post_response) {
-                var identity_created = json_post_response.data;
+                var contact_created = json_post_response.data;
                 // Return the contact
-                return identity_created;
+                return contact_created;
             });
     },
 
@@ -716,7 +716,7 @@ go.utils = {
         return reg_info;
     },
 
-    save_registration: function(im, receiver) {
+    save_registration: function(im) {
         // compile mother registration
         var reg_info = go.utils.compile_reg_info(im);
         return go.utils
@@ -1127,10 +1127,7 @@ go.app = function() {
                         return 'state_voice_days';
                     } else {
                         return go.utils
-                            .save_registration(
-                                self.im,
-                                self.im.user.answers.state_msg_receiver
-                            )
+                            .save_registration(self.im)
                             .then(function() {
                                 return 'state_end_sms';
                             });
@@ -1161,10 +1158,7 @@ go.app = function() {
                 ],
                 next: function() {
                     return go.utils
-                        .save_registration(
-                            self.im,
-                            self.im.user.answers.state_msg_receiver
-                        )
+                        .save_registration(self.im)
                         .then(function() {
                             return 'state_end_voice';
                         });

@@ -709,7 +709,7 @@ go.utils = {
         return reg_info;
     },
 
-    save_registration: function(im, receiver) {
+    save_registration: function(im) {
         // compile mother registration
         var reg_info = go.utils.compile_reg_info(im);
         return go.utils

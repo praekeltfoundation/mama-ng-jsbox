@@ -309,10 +309,7 @@ go.app = function() {
                         return 'state_voice_days';
                     } else {
                         return go.utils
-                            .save_registration(
-                                self.im,
-                                self.im.user.answers.state_msg_receiver
-                            )
+                            .save_registration(self.im)
                             .then(function() {
                                 return 'state_end_sms';
                             });
@@ -343,10 +340,7 @@ go.app = function() {
                 ],
                 next: function() {
                     return go.utils
-                        .save_registration(
-                            self.im,
-                            self.im.user.answers.state_msg_receiver
-                        )
+                        .save_registration(self.im)
                         .then(function() {
                             return 'state_end_voice';
                         });
