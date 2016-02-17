@@ -229,7 +229,7 @@ go.utils = {
             });
     },
 
-    // Gets the identity with the provided id from the Identity Store
+    // Gets the identity from the Identity Store
     // Returns the identity object
     get_identity_by_id: function(identity_id, im) {
         var endpoint = 'identities/' + identity_id + '/';
