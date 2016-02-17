@@ -728,7 +728,7 @@ go.utils = {
     is_valid_month_last_period: function(today, periodLastYear, choiceValue) {
 
         var choiceDate = today.clone();
-        choiceDate.month(parseInt(choiceValue, 9), 'MM');
+        choiceDate.month(parseInt(choiceValue, 10)-1, 'MM');
         if (periodLastYear) {
             choiceDate.subtract('year', 1);
         }
@@ -760,9 +760,10 @@ go.utils = {
         }
 
         if (!periodLastYear) {
+            // choiceMonth <= currentMonth && choiceMonth > validStartMonth
             if ((choiceDate.isSame(startDate) || choiceDate.isAfter(startDate)) &&
                 (choiceDate.isSame(today) || choiceDate.isBefore(today)) && monthDiff < 11) {
-            // if we used the newer version of moment
+            // if we would use the newer version of moment
             //    isSameOrAfter, isSameOrBefore & isBetween function could've been used
                 return true;
             } else {
@@ -815,19 +816,24 @@ go.utils = {
     is_valid_month_baby_born: function(today, bornLastYear, choiceValue) {
 
         var choiceDate = today.clone();
-        choiceDate.month(parseInt(choiceValue, 9), 'MM');
+        // moment.month accepts numbers 0-11 therefore -1 needs to be applied to choiceValue
+        // as choiceValue is 1-12 depending on month chosen
+        choiceDate.month(parseInt(choiceValue, 10)-1, 'MM');
 
         if (bornLastYear) {
             choiceDate.subtract('year', 1);
-            var evalDate = today.clone();
-            evalDate.subtract('year',1);
+            var lastYearDate = today.clone();
+            // get the date of today last year
+            lastYearDate.subtract('year', 1);
 
-            if ((choiceDate.isSame(evalDate) || choiceDate.isAfter(evalDate))) {
+            // choiceMonth >= currentMonth
+            if ((choiceDate.isSame(lastYearDate) || choiceDate.isAfter(lastYearDate))) {
                 return true;
             } else {
                 return false;
             }
         } else {
+            // choiceMonth <= currentMonth
             if ((choiceDate.isSame(today) || choiceDate.isBefore(today))) {
                 return true;
             } else {
