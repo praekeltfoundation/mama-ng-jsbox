@@ -720,7 +720,7 @@ go.utils = {
     // function used to validate months for states 5A/5B & 12A/12B
     is_valid_month: function(today, choiceYear, choiceMonth, monthsValid) {
         var choiceDate = new moment(choiceYear+choiceMonth, "YYYYMM");
-
+        
         var startDate = today.clone();
         startDate = startDate.subtract('month', monthsValid);
         startDate.date(1);  // set day of month to 1st

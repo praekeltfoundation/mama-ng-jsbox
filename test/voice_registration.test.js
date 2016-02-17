@@ -1,4 +1,6 @@
 var vumigo = require('vumigo_v02');
+var moment = require('moment');
+var assert = require('assert');
 var fixtures = require('./fixtures');
 var AppTester = vumigo.AppTester;
 
@@ -1352,6 +1354,197 @@ describe("Mama Nigeria App", function() {
                         state_voice_times: "2_5"
                     })
                     .run();
+            });
+        });
+
+        describe("Testing month validation function (is_valid_month)", function() {
+            it("should return true/false if valid", function() {
+                // test data
+                var today = moment("2017-05-01");
+
+                var choiceMonths = [
+                // a year's range of month choices to represent user choice
+                    'jan',
+                    'feb',
+                    'mar',
+                    'apr',
+                    'may',
+                    'jun',
+                    'jul',
+                    'aug',
+                    'sep',
+                    'oct',
+                    'nov',
+                    'dec'
+                ];
+
+                // function call
+                var resultsForThisYearPeriod = [];
+                var resultsForLastYearPeriod = [];
+                var resultsForThisYearBaby = [];
+                var resultsForLastYearBaby = [];
+                
+                var todayLastYear = today.clone();
+                todayLastYear.subtract('year', 1);
+
+                for (var i=0; i<choiceMonths.length; i++) {
+                    resultsForThisYearPeriod.push(go.utils.is_valid_month(today, today.year(), (i+1).toString(), 10));
+                    resultsForLastYearPeriod.push(go.utils.is_valid_month(today, todayLastYear.year(), (i+1).toString(), 10));
+                    resultsForThisYearBaby.push(go.utils.is_valid_month(today, today.year(), (i+1).toString(), 13));
+                    resultsForLastYearBaby.push(go.utils.is_valid_month(today, todayLastYear.year(), (i+1).toString(), 13));
+                }
+
+                // expected results
+                assert.equal(resultsForThisYearPeriod.length, 12);
+                assert.equal(resultsForThisYearPeriod[0], true);      // jan
+                assert.equal(resultsForThisYearPeriod[1], true);      // feb
+                assert.equal(resultsForThisYearPeriod[2], true);      // mar
+                assert.equal(resultsForThisYearPeriod[3], true);      // apr
+                assert.equal(resultsForThisYearPeriod[4], true);      // may
+                assert.equal(resultsForThisYearPeriod[5], false);     // jun
+                assert.equal(resultsForThisYearPeriod[6], false);     // jul
+                assert.equal(resultsForThisYearPeriod[7], false);     // aug
+                assert.equal(resultsForThisYearPeriod[8], false);     // sep
+                assert.equal(resultsForThisYearPeriod[9], false);     // oct
+                assert.equal(resultsForThisYearPeriod[10], false);    // nov
+                assert.equal(resultsForThisYearPeriod[11], false);    // dec
+
+                assert.equal(resultsForLastYearPeriod.length, 12);
+                assert.equal(resultsForLastYearPeriod[0], false);     // jan
+                assert.equal(resultsForLastYearPeriod[1], false);     // feb
+                assert.equal(resultsForLastYearPeriod[2], false);     // mar
+                assert.equal(resultsForLastYearPeriod[3], false);     // apr
+                assert.equal(resultsForLastYearPeriod[4], false);     // may
+                assert.equal(resultsForLastYearPeriod[5], false);     // jun
+                assert.equal(resultsForLastYearPeriod[6], true);      // jul
+                assert.equal(resultsForLastYearPeriod[7], true);      // aug
+                assert.equal(resultsForLastYearPeriod[8], true);      // sep
+                assert.equal(resultsForLastYearPeriod[9], true);      // oct
+                assert.equal(resultsForLastYearPeriod[10], true);     // nov
+                assert.equal(resultsForLastYearPeriod[11], true);     // dec
+
+                assert.equal(resultsForThisYearBaby.length, 12);
+                assert.equal(resultsForThisYearBaby[0], true);      // jan
+                assert.equal(resultsForThisYearBaby[1], true);      // feb
+                assert.equal(resultsForThisYearBaby[2], true);      // mar
+                assert.equal(resultsForThisYearBaby[3], true);      // apr
+                assert.equal(resultsForThisYearBaby[4], true);      // may
+                assert.equal(resultsForThisYearBaby[5], false);     // jun
+                assert.equal(resultsForThisYearBaby[6], false);     // jul
+                assert.equal(resultsForThisYearBaby[7], false);     // aug
+                assert.equal(resultsForThisYearBaby[8], false);     // sep
+                assert.equal(resultsForThisYearBaby[9], false);     // oct
+                assert.equal(resultsForThisYearBaby[10], false);    // nov
+                assert.equal(resultsForThisYearBaby[11], false);    // dec
+
+                assert.equal(resultsForLastYearBaby.length, 12);
+                assert.equal(resultsForLastYearBaby[0], false);     // jan
+                assert.equal(resultsForLastYearBaby[1], false);     // feb
+                assert.equal(resultsForLastYearBaby[2], false);     // mar
+                assert.equal(resultsForLastYearBaby[3], true);      // apr
+                assert.equal(resultsForLastYearBaby[4], true);      // may
+                assert.equal(resultsForLastYearBaby[5], true);      // jun
+                assert.equal(resultsForLastYearBaby[6], true);      // jul
+                assert.equal(resultsForLastYearBaby[7], true);      // aug
+                assert.equal(resultsForLastYearBaby[8], true);      // sep
+                assert.equal(resultsForLastYearBaby[9], true);      // oct
+                assert.equal(resultsForLastYearBaby[10], true);     // nov
+                assert.equal(resultsForLastYearBaby[11], true);     // dec
+
+            });
+            it("should return true/false if valid - for month of december as boundary case", function() {
+                // test data
+                var today = moment("2017-12-01");
+
+                var choiceMonths = [
+                // a year's range of month choices to represent user choice
+                    'jan',
+                    'feb',
+                    'mar',
+                    'apr',
+                    'may',
+                    'jun',
+                    'jul',
+                    'aug',
+                    'sep',
+                    'oct',
+                    'nov',
+                    'dec'
+                ];
+
+                // function call
+                var resultsForThisYearPeriod = [];
+                var resultsForLastYearPeriod = [];
+                var resultsForThisYearBaby = [];
+                var resultsForLastYearBaby = [];
+
+                var todayLastYear = today.clone();
+                todayLastYear.subtract('year', 1);
+
+                for (var i=0; i<choiceMonths.length; i++) {
+                    resultsForThisYearPeriod.push(go.utils.is_valid_month(today, today.year(), (i+1).toString(), 10));
+                    resultsForLastYearPeriod.push(go.utils.is_valid_month(today, todayLastYear.year(), (i+1).toString(), 10));
+                    resultsForThisYearBaby.push(go.utils.is_valid_month(today, today.year(), (i+1).toString(), 13));
+                    resultsForLastYearBaby.push(go.utils.is_valid_month(today, todayLastYear.year(), (i+1).toString(), 13));
+                }
+
+                // expected results
+                assert.equal(resultsForThisYearPeriod.length, 12);
+                assert.equal(resultsForThisYearPeriod[0], false);    // jan
+                assert.equal(resultsForThisYearPeriod[1], true);     // feb
+                assert.equal(resultsForThisYearPeriod[2], true);     // mar
+                assert.equal(resultsForThisYearPeriod[3], true);     // apr
+                assert.equal(resultsForThisYearPeriod[4], true);     // may
+                assert.equal(resultsForThisYearPeriod[5], true);     // jun
+                assert.equal(resultsForThisYearPeriod[6], true);     // jul
+                assert.equal(resultsForThisYearPeriod[7], true);     // aug
+                assert.equal(resultsForThisYearPeriod[8], true);     // sep
+                assert.equal(resultsForThisYearPeriod[9], true);     // oct
+                assert.equal(resultsForThisYearPeriod[10], true);    // nov
+                assert.equal(resultsForThisYearPeriod[11], true);    // dec
+
+                assert.equal(resultsForLastYearPeriod.length, 12);
+                assert.equal(resultsForLastYearPeriod[0], false);     // jan
+                assert.equal(resultsForLastYearPeriod[1], false);     // feb
+                assert.equal(resultsForLastYearPeriod[2], false);     // mar
+                assert.equal(resultsForLastYearPeriod[3], false);     // apr
+                assert.equal(resultsForLastYearPeriod[4], false);     // may
+                assert.equal(resultsForLastYearPeriod[5], false);     // jun
+                assert.equal(resultsForLastYearPeriod[6], false);     // jul
+                assert.equal(resultsForLastYearPeriod[7], false);     // aug
+                assert.equal(resultsForLastYearPeriod[8], false);     // sep
+                assert.equal(resultsForLastYearPeriod[9], false);     // oct
+                assert.equal(resultsForLastYearPeriod[10], false);    // nov
+                assert.equal(resultsForLastYearPeriod[11], false);    // dec
+
+                assert.equal(resultsForThisYearBaby.length, 12);
+                assert.equal(resultsForThisYearBaby[0], true);     // jan
+                assert.equal(resultsForThisYearBaby[1], true);     // feb
+                assert.equal(resultsForThisYearBaby[2], true);     // mar
+                assert.equal(resultsForThisYearBaby[3], true);     // apr
+                assert.equal(resultsForThisYearBaby[4], true);     // may
+                assert.equal(resultsForThisYearBaby[5], true);     // jun
+                assert.equal(resultsForThisYearBaby[6], true);     // jul
+                assert.equal(resultsForThisYearBaby[7], true);     // aug
+                assert.equal(resultsForThisYearBaby[8], true);     // sep
+                assert.equal(resultsForThisYearBaby[9], true);     // oct
+                assert.equal(resultsForThisYearBaby[10], true);    // nov
+                assert.equal(resultsForThisYearBaby[11], true);    // dec
+
+                assert.equal(resultsForLastYearBaby.length, 12);
+                assert.equal(resultsForLastYearBaby[0], false);     // jan
+                assert.equal(resultsForLastYearBaby[1], false);     // feb
+                assert.equal(resultsForLastYearBaby[2], false);     // mar
+                assert.equal(resultsForLastYearBaby[3], false);     // apr
+                assert.equal(resultsForLastYearBaby[4], false);     // may
+                assert.equal(resultsForLastYearBaby[5], false);     // jun
+                assert.equal(resultsForLastYearBaby[6], false);     // jul
+                assert.equal(resultsForLastYearBaby[7], false);     // aug
+                assert.equal(resultsForLastYearBaby[8], false);     // sep
+                assert.equal(resultsForLastYearBaby[9], false);     // oct
+                assert.equal(resultsForLastYearBaby[10], true);     // nov
+                assert.equal(resultsForLastYearBaby[11], true);     // dec
+
             });
         });
     });
