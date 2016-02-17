@@ -115,7 +115,7 @@ go.app = function() {
         self.add('state_start', function(name) {
             self.im.user.answers = {};  // reset answers
             return go.utils
-                .get_or_create_contact(self.im.user.addr, self.im)
+                .get_or_create_identity(self.im.user.addr, self.im, null)
                 .then(function(user) {
                     self.im.user.set_answer('operator_id', user.id);
                     if (user.details.personnel_code) {
@@ -230,7 +230,8 @@ go.app = function() {
                     self.im.user.answers.state_msg_receiver,
                     self.im.user.answers.state_msisdn,
                     self.im.user.answers.state_msisdn_father,
-                    self.im.user.answers.state_msisdn_mother
+                    self.im.user.answers.state_msisdn_mother,
+                    self.im.user.answers.operator_id
                 )
                 .then(function() {
                     return self.states.create('state_pregnancy_status');

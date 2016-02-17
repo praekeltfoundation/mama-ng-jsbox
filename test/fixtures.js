@@ -1580,7 +1580,8 @@ module.exports = function() {
                         "addresses": {
                             "msisdn": {"+2349091111111": {}}
                         }
-                    }
+                    },
+                    "operator": "cb245673-aa41-4302-ac47-00000000002"
                 }
             },
             'response': {
@@ -1597,6 +1598,7 @@ module.exports = function() {
                             }
                         }
                     },
+                    "operator": "cb245673-aa41-4302-ac47-00000000002",
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
@@ -1642,7 +1644,8 @@ module.exports = function() {
                         "addresses": {
                             "msisdn": {"+2349092222222": {}}
                         }
-                    }
+                    },
+                    "operator": "cb245673-aa41-4302-ac47-00000000002"
                 }
             },
             'response': {
@@ -1659,13 +1662,14 @@ module.exports = function() {
                             }
                         }
                     },
+                    "operator": "cb245673-aa41-4302-ac47-00000000002",
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
             }
         },
 
-        // 37: create contact communicate through 09092222222
+        // 38: create contact communicate through 09092222222
         {
             'request': {
                 'method': 'POST',
@@ -1675,8 +1679,9 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8001/api/v1/identities/",
                 'data':  {
-                    "communicate_through": "cb245673-aa41-4302-ac47-9092222222"
-                }
+                    "communicate_through": "cb245673-aa41-4302-ac47-9092222222",
+                    "operator": "cb245673-aa41-4302-ac47-00000000002"
+                },
             },
             'response': {
                 "code": 201,
@@ -1685,13 +1690,14 @@ module.exports = function() {
                     "id": "cb245673-aa41-4302-ac47-1234567890",
                     "version": 1,
                     "communicate_through": "cb245673-aa41-4302-ac47-9092222222",
+                    "operator": "cb245673-aa41-4302-ac47-00000000002",
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
             }
         },
 
-        // 38: get contact 09093333333 by msisdn - no results
+        // 39: get contact 09093333333 by msisdn - no results
         {
             'request': {
                 'method': 'GET',
@@ -1715,7 +1721,7 @@ module.exports = function() {
             }
         },
 
-        // 39: create contact 09093333333
+        // 40: create contact 09093333333
         {
             'request': {
                 'method': 'POST',
@@ -1730,7 +1736,8 @@ module.exports = function() {
                         "addresses": {
                             "msisdn": {"+2349093333333": {}}
                         }
-                    }
+                    },
+                    "operator": "cb245673-aa41-4302-ac47-00000000002"
                 }
             },
             'response': {
@@ -1747,13 +1754,14 @@ module.exports = function() {
                             }
                         }
                     },
+                    "operator": "cb245673-aa41-4302-ac47-00000000002",
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
             }
         },
 
-        // 40: create contact communicate through 09093333333
+        // 41: create contact communicate through 09093333333
         {
             'request': {
                 'method': 'POST',
@@ -1763,7 +1771,8 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8001/api/v1/identities/",
                 'data':  {
-                    "communicate_through": "cb245673-aa41-4302-ac47-9093333333"
+                    "communicate_through": "cb245673-aa41-4302-ac47-9093333333",
+                    "operator": "cb245673-aa41-4302-ac47-00000000002"
                 }
             },
             'response': {
@@ -1773,13 +1782,14 @@ module.exports = function() {
                     "id": "cb245673-aa41-4302-ac47-1234567890",
                     "version": 1,
                     "communicate_through": "cb245673-aa41-4302-ac47-9093333333",
+                    "operator": "cb245673-aa41-4302-ac47-00000000002",
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
             }
         },
 
-        // 41: get contact 09094444444 by msisdn - no results
+        // 42: get contact 09094444444 by msisdn - no results
         {
             'request': {
                 'method': 'GET',
@@ -1803,7 +1813,7 @@ module.exports = function() {
             }
         },
 
-        // 42: get contact 09095555555 by msisdn - no results
+        // 43: get contact 09095555555 by msisdn - no results
         {
             'request': {
                 'method': 'GET',
@@ -1827,7 +1837,7 @@ module.exports = function() {
             }
         },
 
-        // 43: create contact 09094444444
+        // 44: create contact 09094444444
         {
             'request': {
                 'method': 'POST',
@@ -1842,7 +1852,8 @@ module.exports = function() {
                         "addresses": {
                             "msisdn": {"+2349094444444": {}}
                         }
-                    }
+                    },
+                    "operator": "cb245673-aa41-4302-ac47-00000000002"
                 }
             },
             'response': {
@@ -1859,13 +1870,14 @@ module.exports = function() {
                             }
                         }
                     },
+                    "operator": "cb245673-aa41-4302-ac47-00000000002",
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
             }
         },
 
-        // 44: create contact 09095555555
+        // 45: create contact 09095555555
         {
             'request': {
                 'method': 'POST',
@@ -1880,7 +1892,8 @@ module.exports = function() {
                         "addresses": {
                             "msisdn": {"+2349095555555": {}}
                         }
-                    }
+                    },
+                    "operator": "cb245673-aa41-4302-ac47-00000000002"
                 }
             },
             'response': {
@@ -1897,13 +1910,14 @@ module.exports = function() {
                             }
                         }
                     },
+                    "operator": "cb245673-aa41-4302-ac47-00000000002",
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
             }
         },
 
-        // 45: create registration 09092222222 - trusted_friend / family_member - sms
+        // 46: create registration 09092222222 - trusted_friend / family_member - sms
         {
             'request': {
                 'method': 'POST',
@@ -1949,7 +1963,7 @@ module.exports = function() {
             }
         },
 
-        // 46: create registration 09093333333 - father_only - sms
+        // 47: create registration 09093333333 - father_only - sms
         {
             'request': {
                 'method': 'POST',
@@ -1995,7 +2009,7 @@ module.exports = function() {
             }
         },
 
-        // 47: create registration 09092222222 - trusted_friend / family_member - voice
+        // 48: create registration 09092222222 - trusted_friend / family_member - voice
         {
             'request': {
                 'method': 'POST',
@@ -2041,7 +2055,7 @@ module.exports = function() {
             }
         },
 
-        // 48: create registration 09094444444 & 09095555555 - mother_father - voice
+        // 49: create registration 09094444444 & 09095555555 - mother_father - voice
         {
             'request': {
                 'method': 'POST',
@@ -2087,7 +2101,7 @@ module.exports = function() {
             }
         },
 
-        // 49: create registration 09093333333 - father_only - voice
+        // 50: create registration 09093333333 - father_only - voice
         {
             'request': {
                 'method': 'POST',

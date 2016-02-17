@@ -293,6 +293,12 @@ describe("Mama Nigeria App", function() {
                             "9. More"
                         ].join('\n')
                     })
+                    .check(function(api) {
+                        var fixt37 = api.http.fixtures.fixtures[37];
+                        assert.equal(fixt37.uses, 1);
+                        var fixt38 = api.http.fixtures.fixtures[38];
+                        assert.equal(fixt38.uses, 1);
+                    })
                     .run();
             });
             it("to state_last_period_month - after selecting 'More'", function() {

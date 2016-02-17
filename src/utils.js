@@ -115,7 +115,7 @@ go.utils = {
     // Determine whether contact is registered
     is_registered: function(contact_id, im) {
         return go.utils
-            .get_contact_by_id(contact_id, im)
+            .get_identity_by_id(contact_id, im)
             .then(function(contact) {
                 var true_options = ['true', 'True', true];
                 return true_options.indexOf(contact.details.has_registered) !== -1;
@@ -203,25 +203,29 @@ go.utils = {
         }
     },
 
-// CONTACT HANDLING
+// IDENTITY HANDLING
 
-    get_contact_by_msisdn: function(msisdn, im) {
+    // Searches the Identity Store for all identities with the given msisdn.
+    // Returns the first identity object found
+    get_identity_by_msisdn: function(msisdn, im) {
         var params = {
             "details__addresses__msisdn": msisdn
         };
         return go.utils
             .service_api_call('identities', 'get', params, null, 'identities/search/', im)
             .then(function(json_get_response) {
-                var contacts_found = json_get_response.data.results;
-                // Return the first contact's id
-                return (contacts_found.length > 0)
-                    ? contacts_found[0]
+                var identities_found = json_get_response.data.results;
+                // Return the first identity in the list of identities
+                return (identities_found.length > 0)
+                    ? identities_found[0]
                     : null;
             });
     },
 
-    get_contact_by_id: function(contact_id, im) {
-        var endpoint = 'identities/' + contact_id + '/';
+    // Gets the identity with the provided id from the Identity Store
+    // Returns the identity object
+    get_identity_by_id: function(identity_id, im) {
+        var endpoint = 'identities/' + identity_id + '/';
         return go.utils
             .service_api_call('identities', 'get', {}, null, endpoint, im)
             .then(function(json_get_response) {
@@ -230,8 +234,9 @@ go.utils = {
     },
 
     // Create a new contact with the minimum required details
-    create_contact: function(im, msisdn, communicate_through_id) {
+    create_identity: function(im, msisdn, communicate_through_id, operator_id) {
         var payload;
+
         if (msisdn) {
             payload = {
                 "details": {
@@ -241,9 +246,15 @@ go.utils = {
             };
         } else {
             payload = {
-                "communicate_through": communicate_through_id
+                "communicate_through": communicate_through_id,
             };
         }
+
+        // add operator_id if available
+        if (operator_id) {
+            payload.operator = operator_id;
+        }
+
         return go.utils
             .service_api_call("identities", "post", null, payload, 'identities/', im)
             .then(function(json_post_response) {
@@ -254,11 +265,11 @@ go.utils = {
     },
 
     // Gets a contact if it exists, otherwise creates a new one
-    get_or_create_contact: function(msisdn, im) {
+    get_or_create_identity: function(msisdn, im, operator_id) {
         msisdn = go.utils.normalize_msisdn(msisdn, '234');  // nigeria
         return go.utils
             // Get contact id using msisdn
-            .get_contact_by_msisdn(msisdn, im)
+            .get_identity_by_msisdn(msisdn, im)
             .then(function(contact) {
                 if (contact !== null) {
                     // If contact exists, return the id
@@ -266,7 +277,7 @@ go.utils = {
                 } else {
                     // If contact doesn't exist, create it
                     return go.utils
-                        .create_contact(im, msisdn, null)
+                        .create_identity(im, msisdn, null, operator_id)
                         .then(function(contact) {
                             return contact;
                         });
@@ -274,7 +285,7 @@ go.utils = {
             });
     },
 
-    update_contact: function(im, contact) {
+    update_identity: function(im, contact) {
         // For patching any field on the contact
         var endpoint = 'identities/' + contact.id + '/';
         return go.utils
@@ -504,7 +515,7 @@ go.utils = {
         return Q
             .all([
                 // get contact so details can be updated
-                go.utils.get_contact_by_id(mama_id, im),
+                go.utils.get_identity_by_id(mama_id, im),
                 // set existing subscriptions inactive
                 go.utils.subscriptions_unsubscribe_all(mama_id, im)
             ])
@@ -518,7 +529,7 @@ go.utils = {
 
                 return Q.all([
                     // update mama contact
-                    go.utils.update_contact(im, mama_contact),
+                    go.utils.update_identity(im, mama_contact),
                     // subscribe to baby messages
                     go.utils.subscribe_contact(im, baby_subscription)
                 ]);
@@ -534,31 +545,31 @@ go.utils = {
             });
     },
 
-    save_contact_info_and_subscribe: function(im) {
-        var mama_id = im.user.answers.mama_id;
+    // save_contact_info_and_subscribe: function(im) {
+    //     var mama_id = im.user.answers.mama_id;
 
-        return Q
-            .all([
-                // get mama contact
-                go.utils.get_contact_by_id(mama_id, im),
-                // deactivate existing subscriptions
-                go.utils.subscriptions_unsubscribe_all(mama_id, im)
-            ])
-            .spread(function(mama_contact, unsubscribe_result) {
-                mama_contact = go.utils.update_mama_details(
-                    im, mama_contact);
-                var subscription = go.utils
-                    .setup_subscription(im, mama_contact);
+    //     return Q
+    //         .all([
+    //             // get mama contact
+    //             go.utils.get_identity_by_id(mama_id, im),
+    //             // deactivate existing subscriptions
+    //             go.utils.subscriptions_unsubscribe_all(mama_id, im)
+    //         ])
+    //         .spread(function(mama_contact, unsubscribe_result) {
+    //             mama_contact = go.utils.update_mama_details(
+    //                 im, mama_contact);
+    //             var subscription = go.utils
+    //                 .setup_subscription(im, mama_contact);
 
-                return Q
-                    .all([
-                        // Update mama's contact
-                        go.utils.update_contact(im, mama_contact),
-                        // Create a subscription for mama
-                        go.utils.subscribe_contact(im, subscription)
-                    ]);
-            });
-    },
+    //             return Q
+    //                 .all([
+    //                     // Update mama's contact
+    //                     go.utils.update_identity(im, mama_contact),
+    //                     // Create a subscription for mama
+    //                     go.utils.subscribe_contact(im, subscription)
+    //                 ]);
+    //         });
+    // },
 
 // CHANGE HANDLING
 
@@ -567,7 +578,7 @@ go.utils = {
         return Q
             .all([
                 // get contact so details can be updated
-                go.utils.get_contact_by_id(mama_id, im),
+                go.utils.get_identity_by_id(mama_id, im),
                 // get existing subscriptions so schedule can be updated
                 go.utils.get_active_subscription_by_contact_id(mama_id, im)
             ])
@@ -581,7 +592,7 @@ go.utils = {
 
                 return Q.all([
                     // update mama contact
-                    go.utils.update_contact(im, mama_contact),
+                    go.utils.update_identity(im, mama_contact),
                     // update subscription
                     go.utils.update_subscription(im, subscription)
                 ]);
@@ -604,7 +615,7 @@ go.utils = {
         return Q
             .all([
                 // get contact so details can be updated
-                go.utils.get_contact_by_id(mama_id, im),
+                go.utils.get_identity_by_id(mama_id, im),
                 // set existing subscriptions inactive
                 go.utils.subscriptions_unsubscribe_all(mama_id, im)
             ])
@@ -615,7 +626,7 @@ go.utils = {
 
                 // update mama contact
                 return go.utils
-                    .update_contact(im, mama_contact);
+                    .update_identity(im, mama_contact);
             });
     },
 
@@ -632,13 +643,13 @@ go.utils = {
         if (non_dialback_sms_states.indexOf(close_state) === -1
           && e.user_terminated) {
             return go.utils
-                .get_contact_by_id(user_id, im)
+                .get_identity_by_id(user_id, im)
                 .then(function(user) {
                     if (!user.details.dialback_sent) {
                         user.details.dialback_sent = true;
                         return Q.all([
                             go.utils.send_text(im, user_id, sms_content),
-                            go.utils.update_contact(im, user)
+                            go.utils.update_identity(im, user)
                         ]);
                     }
                 });
@@ -754,11 +765,11 @@ go.utils = {
         return choices;
     },
 
-    save_identities: function(im, receiver, receiver_msisdn, father_msisdn, mother_msisdn) {
+    save_identities: function(im, receiver, receiver_msisdn, father_msisdn, mother_msisdn, operator_id) {
         if (receiver === 'mother_only') {
             return go.utils
                 // get or create mother's identity
-                .get_or_create_contact(receiver_msisdn, im)
+                .get_or_create_identity(receiver_msisdn, im, operator_id)
                 .then(function(mother) {
                     im.user.set_answer('mother_id', mother.id);
                     im.user.set_answer('receiver_id', mother.id);
@@ -767,12 +778,12 @@ go.utils = {
         } else if (['trusted_friend', 'family_member', 'father_only'].indexOf(receiver) !== -1) {
             return go.utils
                 // get or create receiver's identity
-                .get_or_create_contact(receiver_msisdn, im)
+                .get_or_create_identity(receiver_msisdn, im, operator_id)
                 .then(function(receiver) {
                     im.user.set_answer('receiver_id', receiver.id);
                     return go.utils
                         // create mother's identity - cannot get as no identifying information
-                        .create_contact(im, null, receiver.id)
+                        .create_identity(im, null, receiver.id, operator_id)
                         .then(function(mother) {
                             im.user.set_answer('mother_id', mother.id);
                             return;
@@ -782,9 +793,9 @@ go.utils = {
             return Q
                 .all([
                     // create father's identity
-                    go.utils.get_or_create_contact(father_msisdn, im),
+                    go.utils.get_or_create_identity(father_msisdn, im, operator_id),
                     // create mother's identity
-                    go.utils.get_or_create_contact(mother_msisdn, im),
+                    go.utils.get_or_create_identity(mother_msisdn, im, operator_id),
                 ])
                 .spread(function(father, mother) {
                     im.user.set_answer('receiver_id', father.id);

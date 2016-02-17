@@ -54,7 +54,7 @@ go.app = function() {
                     } else {
                         return go.utils
                             // get or create mama contact
-                            .get_or_create_contact(content, self.im)
+                            .get_or_create_identity(content, self.im, null)
                             .then(function(contact) {
                                 self.im.user.set_answer('mama_id', contact.id);
                                 return go.utils
@@ -92,7 +92,7 @@ go.app = function() {
                     } else {
                         return go.utils
                             // get or create mama contact
-                            .get_or_create_contact(content, self.im)
+                            .get_or_create_identity(content, self.im, null)
                             .then(function(contact) {
                                 self.im.user.set_answer('mama_id', contact.id);
                                 return go.utils
