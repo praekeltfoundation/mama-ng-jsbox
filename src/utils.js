@@ -771,7 +771,7 @@ go.utils = {
                 .then(function(receiver) {
                     im.user.set_answer('receiver_id', receiver.id);
                     return go.utils
-                        // get or create mother's identity
+                        // create mother's identity - cannot get as no identifying information
                         .create_contact(im, null, receiver.id)
                         .then(function(mother) {
                             im.user.set_answer('mother_id', mother.id);
