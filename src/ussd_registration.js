@@ -340,7 +340,16 @@ go.app = function() {
                     new Choice('9_11', $('Between 9-11am')),
                     new Choice('2_5', $('Between 2-5pm'))
                 ],
-                next: 'state_end_voice'
+                next: function() {
+                    return go.utils
+                        .save_registration(
+                            self.im,
+                            self.im.user.answers.state_msg_receiver
+                        )
+                        .then(function() {
+                            return 'state_end_voice';
+                        });
+                }
             });
         });
 

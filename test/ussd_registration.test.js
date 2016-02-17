@@ -636,7 +636,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            it.only("complete flow 3 - receiver: father only; mother baby, sms", function() {
+            it("complete flow 3 - receiver: father only; mother baby, sms", function() {
                 return tester
                     .setup.user.addr('08080020002')
                     .inputs(
