@@ -724,95 +724,20 @@ go.utils = {
         return choices;
     },
 
-    // function used to validate months for states 5A/5B
-    is_valid_month_last_period: function(today, periodLastYear, choiceValue) {
+    // function used to validate months for states 5A/5B & 12A/12B
+    is_valid_month: function(today, choiceYear, choiceMonth, monthsValid) {
+        var choiceDate = new moment(choiceYear+choiceMonth, "YYYYMM");
 
-        var choiceDate = today.clone();
-        choiceDate.month(parseInt(choiceValue, 10)-1, 'MM');
-        if (periodLastYear) {
-            choiceDate.subtract('year', 1);
-        }
+        var startDate = today.clone();
+        startDate = startDate.subtract('month', monthsValid);
+        startDate.date(1);  // set day of month to 1st
 
-        // setup moment object to represent either the start of the current year or
-        //  the start of a ten month window into the previous year
-        var startDate;
-        var endDate;
-        if (!periodLastYear) {
-            startDate = today.clone();
-            startDate.startOf('year');
+        // choice >= startDate && <= today/endDate
+        if ((choiceDate.isSame(startDate) || choiceDate.isAfter(startDate)) &&
+            (choiceDate.isSame(today) || choiceDate.isBefore(today))) {
+            return true;
         } else {
-            startDate = today.clone();
-            startDate.subtract('month', 10);
-            endDate = startDate.clone();
-            endDate.endOf('year');
-        }
-
-        console.log("last year? "+periodLastYear);
-        console.log("start date: "+startDate.format("YYYYMM"));
-        if (periodLastYear) console.log("end date: "+endDate.format("YYYYMM"));
-
-        // get difference in months between start of the year and choice date
-        var monthDiff = parseInt((choiceDate.from(startDate, true).substring(0,2)), 10);
-        // if there is a diff of one month 'monthDiff' will be set to NaN
-        //  because the string value of choiceDate.from(startDate, true) would be 'a month'
-        // if there is a diff of one year 'monthDiff will be set to NaN'
-        //  because the string value of choiceDate.from(startDate, true) would be 'a year'
-        if (isNaN(monthDiff)) {
-            if (choiceDate.from(startDate, true).split(" ")[1][0] == 'm') {
-                monthDiff = 1;
-            } else {
-                monthDiff = 12;
-            }
-        }
-
-        if (!periodLastYear) {
-            // choice >= startOfYear && choice <= today
-            if ((choiceDate.isSame(startDate) || choiceDate.isAfter(startDate)) &&
-                (choiceDate.isSame(today) || choiceDate.isBefore(today)) && monthDiff < 11) {
-            // if we would use the newer version of moment
-            //    isSameOrAfter, isSameOrBefore & isBetween function could've been used
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            // choice >= (today-9) && choice <= endOfYear
-            if ((choiceDate.isSame(startDate) || choiceDate.isAfter(startDate)) &&
-                    (choiceDate.isSame(endDate) || choiceDate.isBefore(endDate))) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    },
-
-    // function used to validate months for states 12A/12B
-    is_valid_month_baby_born: function(today, bornLastYear, choiceValue) {
-
-        var choiceDate = today.clone();
-        // moment.month accepts numbers 0-11 therefore -1 needs to be applied to choiceValue
-        // as choiceValue is 1-12 depending on month chosen
-        choiceDate.month(parseInt(choiceValue, 10)-1, 'MM');
-
-        if (bornLastYear) {
-            choiceDate.subtract('year', 1);
-            var lastYearDate = today.clone();
-            // get the date of today last year
-            lastYearDate.subtract('year', 1);
-
-            // choice >= today last year
-            if ((choiceDate.isSame(lastYearDate) || choiceDate.isAfter(lastYearDate))) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            // choice <= today
-            if ((choiceDate.isSame(today) || choiceDate.isBefore(today))) {
-                return true;
-            } else {
-                return false;
-            }
+            return false;
         }
     },
 

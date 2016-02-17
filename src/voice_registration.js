@@ -213,7 +213,8 @@ go.app = function() {
                     choices: go.utils.make_month_choices(
                         $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
                 next: function(choice) {
-                    if (go.utils.is_valid_month_last_period(go.utils.get_today(self.im.config), false, choice.value))
+                    var today = go.utils.get_today(self.im.config);
+                    if (go.utils.is_valid_month(today, today.year(), choice.value, 10))
                     {
                         return 'state_last_period_day';
                     }
@@ -228,13 +229,14 @@ go.app = function() {
         self.add('state_retry_this_year_period_month', function(name) {
             var speech_option = 1;
             return new ChoiceState(name, {
-                question: $("Invalid input. Period month?"),
+                question: $("Retry. Period month this year?"),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                     choices: go.utils.make_month_choices(
                         $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
                 next: function(choice) {
-                    if (go.utils.is_valid_month_last_period(go.utils.get_today(self.im.config), false, choice.value))
+                    var today = go.utils.get_today(self.im.config);
+                    if (go.utils.is_valid_month(today, today.year(), choice.value, 10))
                     {
                         return 'state_last_period_day';
                     }
@@ -255,7 +257,8 @@ go.app = function() {
                     choices: go.utils.make_month_choices(
                         $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
                 next: function(choice) {
-                    if (go.utils.is_valid_month_last_period(go.utils.get_today(self.im.config), true, choice.value))
+                    var today = go.utils.get_today(self.im.config);
+                    if (go.utils.is_valid_month(today, today.year()-1, choice.value, 10))
                     {
                         return 'state_last_period_day';
                     }
@@ -270,13 +273,14 @@ go.app = function() {
         self.add('state_retry_last_year_period_month', function(name) {
             var speech_option = 1;
             return new ChoiceState(name, {
-                question: $("Invalid input. Period month?"),
+                question: $("Retry. Period month last year?"),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                     choices: go.utils.make_month_choices(
                         $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
                 next: function(choice) {
-                    if (go.utils.is_valid_month_last_period(go.utils.get_today(self.im.config), true, choice.value))
+                    var today = go.utils.get_today(self.im.config);
+                    if (go.utils.is_valid_month(today, today.year()-1, choice.value, 10))
                     {
                         return 'state_last_period_day';
                     }
@@ -379,7 +383,8 @@ go.app = function() {
                 choices: go.utils.make_month_choices(
                     $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
                 next: function(choice) {
-                    if (go.utils.is_valid_month_baby_born(go.utils.get_today(self.im.config), false, choice.value)) {
+                    var today = go.utils.get_today(self.im.config);
+                    if (go.utils.is_valid_month(today, today.year(), choice.value, 13)) {
                         return 'state_baby_birth_day';
                     } else {
                         return 'state_retry_this_year_baby_birth_month';
@@ -392,13 +397,14 @@ go.app = function() {
         self.add('state_retry_this_year_baby_birth_month', function(name) {
             var speech_option = '1';
             return new ChoiceState(name, {
-                question: $('Invalid input. Baby month?'),
+                question: $('Retry. Baby month this year?'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                     choices: go.utils.make_month_choices(
                         $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
                 next: function(choice) {
-                    if (go.utils.is_valid_month_baby_born(go.utils.get_today(self.im.config), false, choice.value)) {
+                    var today = go.utils.get_today(self.im.config);
+                    if (go.utils.is_valid_month(today, today.year(), choice.value, 13)) {
                         return 'state_baby_birth_day';
                     } else {
                         return 'state_retry_this_year_baby_birth_month';
@@ -417,7 +423,8 @@ go.app = function() {
                     choices: go.utils.make_month_choices(
                         $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
                 next: function(choice) {
-                    if (go.utils.is_valid_month_baby_born(go.utils.get_today(self.im.config), true, choice.value)) {
+                    var today = go.utils.get_today(self.im.config);
+                    if (go.utils.is_valid_month(today, today.year()-1, choice.value, 13)) {
                         return 'state_baby_birth_day';
                     } else {
                         return 'state_retry_last_year_baby_birth_month';
@@ -431,13 +438,14 @@ go.app = function() {
             var speech_option = 1;
 
             return new ChoiceState(name, {
-                question: $('Invalid input. Baby month?'),
+                question: $('Retry. Baby month last year?'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                     choices: go.utils.make_month_choices(
                         $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
                 next: function(choice) {
-                    if (go.utils.is_valid_month_baby_born(go.utils.get_today(self.im.config), true, choice.value)) {
+                    var today = go.utils.get_today(self.im.config);
+                    if (go.utils.is_valid_month(today, today.year()-1, choice.value, 13)) {
                         return 'state_baby_birth_day';
                     } else {
                         return 'state_retry_last_year_baby_birth_month';
