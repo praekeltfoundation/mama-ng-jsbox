@@ -1125,7 +1125,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_baby_birth_day_9.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_baby_birth_day_33.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -1152,7 +1152,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_baby_birth_day_9.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_baby_birth_day_33.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -1284,7 +1284,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_baby_birth_day_11.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_baby_birth_day_35.mp3',
                                     wait_for: '#'
                                 }
                             }

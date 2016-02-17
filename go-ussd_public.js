@@ -34,13 +34,19 @@ go.utils = {
             && no_restart_states.indexOf(im.user.state.name) === -1;
     },
 
-    get_speech_option_birth_day: function(im, month) {
-        var speech_option_start = 0;
-        if (im.user.answers.state_pregnancy_status === 'baby') {
+    get_speech_option_pregnancy_status_day: function(im, month) {
+        var speech_option_start;
+
+        if (im.user.answers.state_pregnancy_status === 'pre_birth') {
+            im.user.answers.state_last_period_year === 'last_year'
+                ? speech_option_start = 0
+                : speech_option_start = 12;
+        } else if (im.user.answers.state_pregnancy_status === 'post_birth') {
             im.user.answers.state_baby_birth_year === 'last_year'
-                ? speech_option_start = 12
-                : speech_option_start = 24;
+                ? speech_option_start = 24
+                : speech_option_start = 36;
         }
+
         var speech_option_num = speech_option_start + parseInt(month, 10);
         return speech_option_num.toString();
     },

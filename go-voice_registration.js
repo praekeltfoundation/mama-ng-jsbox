@@ -34,13 +34,19 @@ go.utils = {
             && no_restart_states.indexOf(im.user.state.name) === -1;
     },
 
-    get_speech_option_birth_day: function(im, month) {
-        var speech_option_start = 0;
-        if (im.user.answers.state_pregnancy_status === 'baby') {
+    get_speech_option_pregnancy_status_day: function(im, month) {
+        var speech_option_start;
+
+        if (im.user.answers.state_pregnancy_status === 'pre_birth') {
+            im.user.answers.state_last_period_year === 'last_year'
+                ? speech_option_start = 0
+                : speech_option_start = 12;
+        } else if (im.user.answers.state_pregnancy_status === 'post_birth') {
             im.user.answers.state_baby_birth_year === 'last_year'
-                ? speech_option_start = 12
-                : speech_option_start = 24;
+                ? speech_option_start = 24
+                : speech_option_start = 36;
         }
+
         var speech_option_num = speech_option_start + parseInt(month, 10);
         return speech_option_num.toString();
     },
@@ -944,16 +950,20 @@ go.app = function() {
         // ChoiceState st-04
         self.add('state_pregnancy_status', function(name) {
             var speech_option = '1';
+            var routing = {
+                    'pre_birth': 'state_last_period_year',
+                    'post_birth': 'state_baby_birth_year'
+            };
             return new ChoiceState(name, {
                 question: $('Pregnant or baby'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('state_last_period_year', $('Pregnant')),
-                    new Choice('state_baby_birth_year', $('Baby'))
+                    new Choice('pre_birth', $('Pregnant')),
+                    new Choice('post_birth', $('Baby'))
                 ],
                 next: function(choice) {
-                    return choice.value;
+                    return routing[choice.value];
                 }
             });
         });
@@ -962,16 +972,20 @@ go.app = function() {
         // ChoiceState st-05
         self.add('state_last_period_year', function(name) {
             var speech_option = '1';
+            var routing = {
+                    'this_year': 'state_this_year_period_month',
+                    'last_year': 'state_last_year_period_month'
+            };
             return new ChoiceState(name, {
                 question: $('Last period?'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('state_this_year_period_month', $('This year')),
-                    new Choice('state_last_year_period_month', $('Last year'))
+                    new Choice('this_year', $('This year')),
+                    new Choice('last_year', $('Last year'))
                 ],
                 next: function(choice) {
-                    return choice.value;
+                    return routing[choice.value];
                 }
             });
         });
@@ -1148,7 +1162,7 @@ go.app = function() {
                 year = dateRef.subtract('year', 1).format("YYYY");
             }
             var monthNum = dateRef.month(month).format("MM");
-            var speech_option = go.utils.get_speech_option_birth_day(
+            var speech_option = go.utils.get_speech_option_pregnancy_status_day(
                 self.im, monthNum);
 
             return new FreeText(name, {
@@ -1180,7 +1194,7 @@ go.app = function() {
                 year = dateRef.subtract('year', 1).format("YYYY");
             }
             var monthNum = dateRef.month(month).format("MM");
-            var speech_option = go.utils.get_speech_option_birth_day(
+            var speech_option = go.utils.get_speech_option_pregnancy_status_day(
                 self.im, monthNum);
 
             return new FreeText(name, {
@@ -1234,16 +1248,20 @@ go.app = function() {
         // ChoiceState st-12
         self.add('state_baby_birth_year', function(name) {
             var speech_option = '1';
+            var routing = {
+                    'this_year': 'state_this_year_baby_birth_month',
+                    'last_year': 'state_last_year_baby_birth_month'
+            };
             return new ChoiceState(name, {
                 question: $('Baby born?'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('state_this_year_baby_birth_month', $('this year')),
-                    new Choice('state_last_year_baby_birth_month', $('last year'))
+                    new Choice('this_year', $('this year')),
+                    new Choice('last_year', $('last year'))
                 ],
                 next: function(choice) {
-                    return choice.value;
+                    return routing[choice.value];
                 }
             });
         });
@@ -1402,7 +1420,7 @@ go.app = function() {
                 year = dateRef.subtract('year', 1).format("YYYY");
             }
             var monthNum = dateRef.month(month).format("MM");
-            var speech_option = go.utils.get_speech_option_birth_day(
+            var speech_option = go.utils.get_speech_option_pregnancy_status_day(
                 self.im, monthNum);
 
             return new FreeText(name, {
@@ -1434,7 +1452,7 @@ go.app = function() {
                 year = dateRef.subtract('year', 1).format("YYYY");
             }
             var monthNum = dateRef.month(month).format("MM");
-            var speech_option = go.utils.get_speech_option_birth_day(
+            var speech_option = go.utils.get_speech_option_pregnancy_status_day(
                 self.im, monthNum);
 
             return new FreeText(name, {
