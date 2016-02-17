@@ -692,9 +692,9 @@ go.utils = {
 
         // add data for last_period_date or baby_dob
         if (im.user.answers.state_pregnancy_status === 'prebirth') {
-            reg_info.data.last_period_date = im.user.answers.valid_date;
+            reg_info.data.last_period_date = im.user.answers.working_date;
         } else if (im.user.answers.state_pregnancy_status === 'postbirth') {
-            reg_info.data.baby_dob = im.user.answers.valid_date;
+            reg_info.data.baby_dob = im.user.answers.working_date;
         }
         return reg_info;
     },

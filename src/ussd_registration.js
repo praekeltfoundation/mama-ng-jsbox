@@ -417,7 +417,7 @@ go.app = function() {
             var dateToValidate = monthAndYear+day;
 
             if (go.utils.is_valid_date(dateToValidate, 'YYYYMMDD')) {
-                self.im.user.set_answer('valid_date', dateToValidate);
+                self.im.user.set_answer('working_date', dateToValidate);
                 return self.states.create('state_msg_language');
             } else {
                 return self.states.create('state_invalid_date', {date: dateToValidate});
