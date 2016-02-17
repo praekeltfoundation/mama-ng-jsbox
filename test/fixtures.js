@@ -1935,7 +1935,8 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000002",
                         "language": "hausa",
                         "msg_type": "sms",
-                        "last_period_date": "20150212"
+                        "last_period_date": "20150212",
+                        "personnel_code": "12345"
                     }
                 }
             },
@@ -1951,7 +1952,8 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000002",
                         "language": "hausa",
                         "msg_type": "sms",
-                        "last_period_date": "20150212"
+                        "last_period_date": "20150212",
+                        "personnel_code": "12345"
                     },
                     "validated": false,
                     "source": "source",
@@ -1981,7 +1983,8 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000002",
                         "language": "igbo",
                         "msg_type": "sms",
-                        "baby_dob": "20150112"
+                        "baby_dob": "20150112",
+                        "personnel_code": "12345"
                     }
                 }
             },
@@ -1997,7 +2000,8 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000002",
                         "language": "igbo",
                         "msg_type": "sms",
-                        "baby_dob": "20150112"
+                        "baby_dob": "20150112",
+                        "personnel_code": "12345"
                     },
                     "validated": false,
                     "source": "source",
@@ -2027,7 +2031,8 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000002",
                         "language": "english",
                         "msg_type": "voice",
-                        "last_period_date": "20150212"
+                        "last_period_date": "20150212",
+                        "personnel_code": "12345"
                     }
                 }
             },
@@ -2043,7 +2048,8 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000002",
                         "language": "english",
                         "msg_type": "voice",
-                        "last_period_date": "20150212"
+                        "last_period_date": "20150212",
+                        "personnel_code": "12345"
                     },
                     "validated": false,
                     "source": "source",
@@ -2073,7 +2079,8 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000002",
                         "language": "english",
                         "msg_type": "voice",
-                        "last_period_date": "20150212"
+                        "last_period_date": "20150212",
+                        "personnel_code": "12345"
                     }
                 }
             },
@@ -2089,7 +2096,8 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000002",
                         "language": "english",
                         "msg_type": "voice",
-                        "last_period_date": "20150212"
+                        "last_period_date": "20150212",
+                        "personnel_code": "12345"
                     },
                     "validated": false,
                     "source": "source",
@@ -2119,7 +2127,8 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000002",
                         "language": "english",
                         "msg_type": "voice",
-                        "last_period_date": "20150212"
+                        "last_period_date": "20150212",
+                        "personnel_code": "12345"
                     }
                 }
             },
@@ -2135,7 +2144,8 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000002",
                         "language": "english",
                         "msg_type": "voice",
-                        "last_period_date": "20150212"
+                        "last_period_date": "20150212",
+                        "personnel_code": "12345"
                     },
                     "validated": false,
                     "source": "source",

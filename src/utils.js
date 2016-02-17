@@ -697,8 +697,11 @@ go.utils = {
                 operator_id: im.user.answers.operator_id,
                 language: im.user.answers.state_msg_language,
                 msg_type: im.user.answers.state_msg_type,
+                personnel_code: im.user.answers.personnel_code
             }
         };
+
+        // console.log(reg_info.data.personnel_code);
 
         // add data for last_period_date or baby_dob
         if (im.user.answers.state_pregnancy_status === 'prebirth') {
@@ -710,7 +713,7 @@ go.utils = {
     },
 
     save_registration: function(im) {
-        // compile mother registration
+        // compile registration
         var reg_info = go.utils.compile_reg_info(im);
         return go.utils
             .service_api_call("registrations", "post", null, reg_info, "registrations/", im)

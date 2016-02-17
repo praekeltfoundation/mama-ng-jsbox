@@ -119,6 +119,7 @@ go.app = function() {
                 .then(function(user) {
                     self.im.user.set_answer('operator_id', user.id);
                     if (user.details.personnel_code) {
+                        self.im.user.set_answer('personnel_code', user.details.personnel_code);
                         return self.states.create('state_msg_receiver');
                     } else {
                         return self.states.create('state_auth_code');
@@ -134,10 +135,12 @@ go.app = function() {
             return new FreeText(name, {
                 question: $(questions[name]),
                 check: function(content) {
+                    var personnel_code = content;
                     return go.utils
-                        .validate_personnel_code(self.im, content)
+                        .validate_personnel_code(self.im, personnel_code)
                         .then(function(valid_personnel_code) {
                             if (valid_personnel_code) {
+                                self.im.user.set_answer('personnel_code', personnel_code);
                                 return null;  // vumi expects null or undefined if check passes
                             } else {
                                 return $(get_error_text(name));
