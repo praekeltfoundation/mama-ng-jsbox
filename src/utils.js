@@ -233,21 +233,20 @@ go.utils = {
             });
     },
 
-    // Create a new contact with the minimum required details
+    // Create a new identity
     create_identity: function(im, msisdn, communicate_through_id, operator_id) {
-        var payload;
+        var payload = {};
 
+        // compile base payload
         if (msisdn) {
-            payload = {
-                "details": {
-                    "default_addr_type": "msisdn",
-                    "addresses": go.utils.get_addresses(msisdn)
-                }
+            payload.details = {
+                "default_addr_type": "msisdn",
+                "addresses": go.utils.get_addresses(msisdn)
             };
-        } else {
-            payload = {
-                "communicate_through": communicate_through_id,
-            };
+        }
+
+        if (communicate_through_id) {
+            payload.communicate_through = communicate_through_id;
         }
 
         // add operator_id if available
@@ -738,7 +737,7 @@ go.utils = {
             .service_api_call('identities', 'get', params, null, 'identities/search/', im)
             .then(function(json_get_response) {
                 var contacts_found = json_get_response.data.results;
-                // Return the number of contact's found
+                // Return true if a contact is found with this personnel code
                 return contacts_found.length > 0;
             });
     },
