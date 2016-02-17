@@ -841,7 +841,7 @@ go.app = function() {
 
         // FreeText st-03
         self.add('state_receiver_msisdn', function(name) {
-            var speech_option = 1;
+            var speech_option = '1';
             return new FreeText(name, {
                 question: $('Please enter number'),
                 helper_metadata: go.utils.make_voice_helper_data(
@@ -858,7 +858,7 @@ go.app = function() {
 
         // FreeText st-16
         self.add('state_retry_receiver_msisdn', function(name) {
-            var speech_option = 1;
+            var speech_option = '1';
             return new FreeText(name, {
                 question: $('Sorry, invalid input. Please enter number'),
                 helper_metadata: go.utils.make_voice_helper_data(
@@ -978,7 +978,7 @@ go.app = function() {
 
         // ChoiceState st-5A
         self.add('state_this_year_period_month', function(name) {
-            var speech_option = 1;
+            var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Period month this year?'),
                 helper_metadata: go.utils.make_voice_helper_data(
@@ -1016,7 +1016,7 @@ go.app = function() {
 
         // retry state 5A
         self.add('state_retry_this_year_period_month', function(name) {
-            var speech_option = 1;
+            var speech_option = '1';
             return new ChoiceState(name, {
                 question: $("Retry. Period month?"),
                 helper_metadata: go.utils.make_voice_helper_data(
@@ -1054,7 +1054,7 @@ go.app = function() {
 
         // ChoiceState st-5B
         self.add('state_last_year_period_month', function(name) {
-            var speech_option = 1;
+            var speech_option = '1';
             return new ChoiceState(name, {
                 question: $("Period month last year?"),
                 helper_metadata: go.utils.make_voice_helper_data(
@@ -1096,7 +1096,7 @@ go.app = function() {
 
         // retry state 5B
         self.add('state_retry_last_year_period_month', function(name) {
-            var speech_option = 1;
+            var speech_option = '1';
             return new ChoiceState(name, {
                 question: $("Retry. Period month last year?"),
                 helper_metadata: go.utils.make_voice_helper_data(
@@ -1210,7 +1210,7 @@ go.app = function() {
         });
 
         self.add('state_invalid_date', function(name) {
-            var speech_option = 1;
+            var speech_option = '1';
             return new ChoiceState(name, {
                 question:
                     $('The date you entered is not a real date. Please try again.'),
@@ -1322,7 +1322,7 @@ go.app = function() {
 
         // ChoiceState st-12B
         self.add('state_last_year_baby_birth_month', function(name) {
-            var speech_option = 1;
+            var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Baby month last year?'),
                 helper_metadata: go.utils.make_voice_helper_data(
@@ -1356,7 +1356,7 @@ go.app = function() {
 
         // retry state 12B
         self.add('state_retry_last_year_baby_birth_month', function(name) {
-            var speech_option = 1;
+            var speech_option = '1';
 
             return new ChoiceState(name, {
                 question: $('Retry. Baby month last year?'),
