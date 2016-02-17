@@ -735,7 +735,7 @@ go.utils = {
             startDate.startOf('year');
         } else {
             startDate = today.clone();
-            startDate.subtract('month', 9);
+            startDate.subtract('month', 10);
             endDate = startDate.clone();
             endDate.endOf('year');
         }
@@ -744,6 +744,8 @@ go.utils = {
         var monthDiff = parseInt((choiceDate.from(startDate, true).substring(0,2)), 10);
         // if there is a diff of one month 'monthDiff' will be set to NaN
         //  because the string value of choiceDate.from(startDate, true) would be 'a month'
+        // if there is a diff of one year 'monthDiff will be set to NaN'
+        //  because the string value of choiceDate.from(startDate, true) would be 'a year'
         if (isNaN(monthDiff)) {
             if (choiceDate.from(startDate, true).split(" ")[1][0] == 'm') {
                 monthDiff = 1;
@@ -753,7 +755,7 @@ go.utils = {
         }
 
         if (!periodLastYear) {
-            // choiceMonth <= currentMonth && choiceMonth > validStartMonth
+            // choice >= startOfYear && choice <= today
             if ((choiceDate.isSame(startDate) || choiceDate.isAfter(startDate)) &&
                 (choiceDate.isSame(today) || choiceDate.isBefore(today)) && monthDiff < 11) {
             // if we would use the newer version of moment
@@ -763,6 +765,7 @@ go.utils = {
                 return false;
             }
         } else {
+            // choice >= (today-9) && choice <= endOfYear
             if ((choiceDate.isSame(startDate) || choiceDate.isAfter(startDate)) &&
                     (choiceDate.isSame(endDate) || choiceDate.isBefore(endDate))) {
                 return true;
@@ -770,39 +773,6 @@ go.utils = {
                 return false;
             }
         }
-
-
-        // substract year if last period happened the previous year
-        /*if (periodLastYear) {
-            today.subtract('year', 1);
-        }
-
-        var currentMonth = parseInt(today.format("MM"));
-
-        var validStartMonth = 0;
-        if (!periodLastYear) {
-            // this year
-                // logic to determine valid month range (10 month window)
-            validStartMonth = currentMonth <= 10 ? 1 : currentMonth-9;
-        } else {
-            // last year
-                // logic to determine valid month range (10 month window)
-            validStartMonth = currentMonth <= 10 ? ((currentMonth+13) % 10) : -1;
-                // making necessary adjustment in logic for month of Oct
-            validStartMonth = validStartMonth === 0 ? 10 : validStartMonth+10;
-        }
-
-        var choiceMonth = parseInt(choiceValue, 10);
-
-        if (validStartMonth !== -1) {
-        // -1 will be the result if Nov/Dec is current month in year (last period can't
-        // be more than 10 months ago)
-            if (periodLastYear) {
-                return (choiceMonth > currentMonth && choiceMonth >= validStartMonth);
-            } else {
-                return (choiceMonth <= currentMonth && choiceMonth > validStartMonth);
-            }
-        }*/
     },
 
     // function used to validate months for states 12A/12B
@@ -819,30 +789,20 @@ go.utils = {
             // get the date of today last year
             lastYearDate.subtract('year', 1);
 
-            // choiceMonth >= currentMonth
+            // choice >= today last year
             if ((choiceDate.isSame(lastYearDate) || choiceDate.isAfter(lastYearDate))) {
                 return true;
             } else {
                 return false;
             }
         } else {
-            // choiceMonth <= currentMonth
+            // choice <= today
             if ((choiceDate.isSame(today) || choiceDate.isBefore(today))) {
                 return true;
             } else {
                 return false;
             }
         }
-
-        /*var currentMonth = parseInt(today.format("MM"));
-
-        var choiceMonth = parseInt(choiceValue, 10);
-
-        if (bornLastYear) {    // if baby was born in previous year
-            return (choiceMonth >= currentMonth);
-        } else {
-            return (choiceMonth <= currentMonth);
-        }*/
     },
 
 
