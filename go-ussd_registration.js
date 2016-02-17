@@ -704,11 +704,9 @@ go.utils = {
                 operator_id: im.user.answers.operator_id,
                 language: im.user.answers.state_msg_language,
                 msg_type: im.user.answers.state_msg_type,
-                personnel_code: im.user.answers.personnel_code
+                user_id: im.user.answers.user_id
             }
         };
-
-        // console.log(reg_info.data.personnel_code);
 
         // add data for last_period_date or baby_dob
         if (im.user.answers.state_pregnancy_status === 'prebirth') {
@@ -739,16 +737,16 @@ go.utils = {
             });
     },
 
-    validate_personnel_code: function(im, content) {
+    find_nurse_with_personnel_code: function(im, personnel_code) {
         var params = {
-            "details__personnel_code": content
+            "details__personnel_code": personnel_code
         };
         return go.utils
             .service_api_call('identities', 'get', params, null, 'identities/search/', im)
             .then(function(json_get_response) {
-                var contacts_found = json_get_response.data.results;
-                // Return true if a contact is found with this personnel code
-                return contacts_found.length > 0;
+                var nurses_found = json_get_response.data.results;
+                // Return the first nurse if found
+                return nurses_found[0];
             });
     },
 
@@ -838,7 +836,7 @@ go.app = function() {
             // Send a dial back reminder via sms the first time someone times out
             self.im.on('session:close', function(e) {
                 return go.utils.eval_dialback_reminder(
-                    e, self.im, self.im.user.answers.operator_id, $,
+                    e, self.im, self.im.user.answers.user_id, $,
                     "Please dial back in to {{channel}} to complete the Hello MAMA registration"
                     );
             });
@@ -938,9 +936,9 @@ go.app = function() {
             return go.utils
                 .get_or_create_identity(self.im.user.addr, self.im, null)
                 .then(function(user) {
-                    self.im.user.set_answer('operator_id', user.id);
+                    self.im.user.set_answer('user_id', user.id);
                     if (user.details.personnel_code) {
-                        self.im.user.set_answer('personnel_code', user.details.personnel_code);
+                        self.im.user.set_answer('operator_id', user.id);
                         return self.states.create('state_msg_receiver');
                     } else {
                         return self.states.create('state_auth_code');
@@ -958,10 +956,10 @@ go.app = function() {
                 check: function(content) {
                     var personnel_code = content;
                     return go.utils
-                        .validate_personnel_code(self.im, personnel_code)
-                        .then(function(valid_personnel_code) {
-                            if (valid_personnel_code) {
-                                self.im.user.set_answer('personnel_code', personnel_code);
+                        .find_nurse_with_personnel_code(self.im, personnel_code)
+                        .then(function(nurse) {
+                            if (nurse) {
+                                self.im.user.set_answer('operator_id', nurse.id);
                                 return null;  // vumi expects null or undefined if check passes
                             } else {
                                 return $(get_error_text(name));

@@ -286,7 +286,7 @@ module.exports = function() {
                         "version": 1,
                         "details": {
                             "default_addr_type": "msisdn",
-                            "personnel_code": "12345",
+                            "user_id": "cb245673-aa41-4302-ac47-00000000002",
                             "addresses": {
                                 "msisdn": {
                                     "+2348080070007": {}
@@ -1581,7 +1581,7 @@ module.exports = function() {
                             "msisdn": {"+2349091111111": {}}
                         }
                     },
-                    "operator": "cb245673-aa41-4302-ac47-00000000002"
+                    "operator": "cb245673-aa41-4302-ac47-00000000007"
                 }
             },
             'response': {
@@ -1598,7 +1598,7 @@ module.exports = function() {
                             }
                         }
                     },
-                    "operator": "cb245673-aa41-4302-ac47-00000000002",
+                    "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
@@ -1645,7 +1645,7 @@ module.exports = function() {
                             "msisdn": {"+2349092222222": {}}
                         }
                     },
-                    "operator": "cb245673-aa41-4302-ac47-00000000002"
+                    "operator": "cb245673-aa41-4302-ac47-00000000007"
                 }
             },
             'response': {
@@ -1662,7 +1662,7 @@ module.exports = function() {
                             }
                         }
                     },
-                    "operator": "cb245673-aa41-4302-ac47-00000000002",
+                    "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
@@ -1680,7 +1680,7 @@ module.exports = function() {
                 'url': "http://localhost:8001/api/v1/identities/",
                 'data':  {
                     "communicate_through": "cb245673-aa41-4302-ac47-9092222222",
-                    "operator": "cb245673-aa41-4302-ac47-00000000002"
+                    "operator": "cb245673-aa41-4302-ac47-00000000007"
                 },
             },
             'response': {
@@ -1690,7 +1690,7 @@ module.exports = function() {
                     "id": "cb245673-aa41-4302-ac47-1234567890",
                     "version": 1,
                     "communicate_through": "cb245673-aa41-4302-ac47-9092222222",
-                    "operator": "cb245673-aa41-4302-ac47-00000000002",
+                    "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
@@ -1737,7 +1737,7 @@ module.exports = function() {
                             "msisdn": {"+2349093333333": {}}
                         }
                     },
-                    "operator": "cb245673-aa41-4302-ac47-00000000002"
+                    "operator": "cb245673-aa41-4302-ac47-00000000007"
                 }
             },
             'response': {
@@ -1754,7 +1754,7 @@ module.exports = function() {
                             }
                         }
                     },
-                    "operator": "cb245673-aa41-4302-ac47-00000000002",
+                    "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
@@ -1772,7 +1772,7 @@ module.exports = function() {
                 'url': "http://localhost:8001/api/v1/identities/",
                 'data':  {
                     "communicate_through": "cb245673-aa41-4302-ac47-9093333333",
-                    "operator": "cb245673-aa41-4302-ac47-00000000002"
+                    "operator": "cb245673-aa41-4302-ac47-00000000007"
                 }
             },
             'response': {
@@ -1782,7 +1782,7 @@ module.exports = function() {
                     "id": "cb245673-aa41-4302-ac47-1234567890",
                     "version": 1,
                     "communicate_through": "cb245673-aa41-4302-ac47-9093333333",
-                    "operator": "cb245673-aa41-4302-ac47-00000000002",
+                    "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
@@ -1853,7 +1853,7 @@ module.exports = function() {
                             "msisdn": {"+2349094444444": {}}
                         }
                     },
-                    "operator": "cb245673-aa41-4302-ac47-00000000002"
+                    "operator": "cb245673-aa41-4302-ac47-00000000007"
                 }
             },
             'response': {
@@ -1870,7 +1870,7 @@ module.exports = function() {
                             }
                         }
                     },
-                    "operator": "cb245673-aa41-4302-ac47-00000000002",
+                    "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
@@ -1893,7 +1893,7 @@ module.exports = function() {
                             "msisdn": {"+2349095555555": {}}
                         }
                     },
-                    "operator": "cb245673-aa41-4302-ac47-00000000002"
+                    "operator": "cb245673-aa41-4302-ac47-00000000007"
                 }
             },
             'response': {
@@ -1910,7 +1910,7 @@ module.exports = function() {
                             }
                         }
                     },
-                    "operator": "cb245673-aa41-4302-ac47-00000000002",
+                    "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
@@ -1932,11 +1932,11 @@ module.exports = function() {
                         "msg_receiver": "trusted_friend",
                         "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                         "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
-                        "operator_id": "cb245673-aa41-4302-ac47-00000000002",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "hausa",
                         "msg_type": "sms",
                         "last_period_date": "20150212",
-                        "personnel_code": "12345"
+                        "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     }
                 }
             },
@@ -1949,11 +1949,11 @@ module.exports = function() {
                         "msg_receiver": "trusted_friend",
                         "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                         "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
-                        "operator_id": "cb245673-aa41-4302-ac47-00000000002",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "hausa",
                         "msg_type": "sms",
                         "last_period_date": "20150212",
-                        "personnel_code": "12345"
+                        "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     },
                     "validated": false,
                     "source": "source",
@@ -1980,11 +1980,11 @@ module.exports = function() {
                         "msg_receiver": "father_only",
                         "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                         "receiver_id": "cb245673-aa41-4302-ac47-9093333333",
-                        "operator_id": "cb245673-aa41-4302-ac47-00000000002",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "igbo",
                         "msg_type": "sms",
                         "baby_dob": "20150112",
-                        "personnel_code": "12345"
+                        "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     }
                 }
             },
@@ -1997,11 +1997,11 @@ module.exports = function() {
                         "msg_receiver": "father_only",
                         "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                         "receiver_id": "cb245673-aa41-4302-ac47-9093333333",
-                        "operator_id": "cb245673-aa41-4302-ac47-00000000002",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "igbo",
                         "msg_type": "sms",
                         "baby_dob": "20150112",
-                        "personnel_code": "12345"
+                        "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     },
                     "validated": false,
                     "source": "source",
@@ -2028,11 +2028,11 @@ module.exports = function() {
                         "msg_receiver": "trusted_friend",
                         "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                         "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
-                        "operator_id": "cb245673-aa41-4302-ac47-00000000002",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "english",
                         "msg_type": "voice",
                         "last_period_date": "20150212",
-                        "personnel_code": "12345"
+                        "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     }
                 }
             },
@@ -2045,11 +2045,11 @@ module.exports = function() {
                         "msg_receiver": "trusted_friend",
                         "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                         "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
-                        "operator_id": "cb245673-aa41-4302-ac47-00000000002",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "english",
                         "msg_type": "voice",
                         "last_period_date": "20150212",
-                        "personnel_code": "12345"
+                        "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     },
                     "validated": false,
                     "source": "source",
@@ -2076,11 +2076,11 @@ module.exports = function() {
                         "msg_receiver": "mother_father",
                         "mother_id": "cb245673-aa41-4302-ac47-9094444444",
                         "receiver_id": "cb245673-aa41-4302-ac47-9095555555",
-                        "operator_id": "cb245673-aa41-4302-ac47-00000000002",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "english",
                         "msg_type": "voice",
                         "last_period_date": "20150212",
-                        "personnel_code": "12345"
+                        "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     }
                 }
             },
@@ -2093,11 +2093,11 @@ module.exports = function() {
                         "msg_receiver": "mother_father",
                         "mother_id": "cb245673-aa41-4302-ac47-9094444444",
                         "receiver_id": "cb245673-aa41-4302-ac47-9095555555",
-                        "operator_id": "cb245673-aa41-4302-ac47-00000000002",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "english",
                         "msg_type": "voice",
                         "last_period_date": "20150212",
-                        "personnel_code": "12345"
+                        "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     },
                     "validated": false,
                     "source": "source",
@@ -2124,11 +2124,11 @@ module.exports = function() {
                         "msg_receiver": "father_only",
                         "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                         "receiver_id": "cb245673-aa41-4302-ac47-9093333333",
-                        "operator_id": "cb245673-aa41-4302-ac47-00000000002",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "english",
                         "msg_type": "voice",
                         "last_period_date": "20150212",
-                        "personnel_code": "12345"
+                        "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     }
                 }
             },
@@ -2141,11 +2141,11 @@ module.exports = function() {
                         "msg_receiver": "father_only",
                         "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                         "receiver_id": "cb245673-aa41-4302-ac47-9093333333",
-                        "operator_id": "cb245673-aa41-4302-ac47-00000000002",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "english",
                         "msg_type": "voice",
                         "last_period_date": "20150212",
-                        "personnel_code": "12345"
+                        "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     },
                     "validated": false,
                     "source": "source",
@@ -2153,6 +2153,37 @@ module.exports = function() {
                     "updated_at": "2015-07-10T06:13:29.693298Z",
                     "created_by": "user",
                     "updated_by": "user"
+                }
+            }
+        },
+
+        // 51: get contact 08080070007 by id cb245673-aa41-4302-ac47-00000000007
+        {
+            'request': {
+                'method': 'GET',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000007/',
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000007/",
+                    "id": "cb245673-aa41-4302-ac47-00000000007",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "user_id": "cb245673-aa41-4302-ac47-00000000002",
+                        "addresses": {
+                            "msisdn": {
+                                "+2348080070007": {}
+                            }
+                        }
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
             }
         },

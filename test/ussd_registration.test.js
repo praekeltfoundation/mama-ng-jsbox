@@ -149,7 +149,7 @@ describe("Mama Nigeria App", function() {
                         {session_event: 'new'}  // dial in
                     )
                     .check.user.answers({
-                        "operator_id": "cb245673-aa41-4302-ac47-00000000002"})
+                        "user_id": "cb245673-aa41-4302-ac47-00000000002"})
                     .run();
             });
         });

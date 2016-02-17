@@ -58,9 +58,9 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     return go.utils
-                        .validate_personnel_code(self.im, content)
-                        .then(function(valid_personnel_code) {
-                            if (valid_personnel_code) {
+                        .find_nurse_with_personnel_code(self.im, content)
+                        .then(function(nurse) {
+                            if (nurse) {
                                 return 'state_msg_receiver';
                             } else {
                                 return 'state_retry_personnel_auth';
@@ -79,9 +79,9 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     return go.utils
-                        .validate_personnel_code(self.im, content)
-                        .then(function(valid_personnel_code) {
-                            if (valid_personnel_code) {
+                        .find_nurse_with_personnel_code(self.im, content)
+                        .then(function(nurse) {
+                            if (nurse) {
                                 return 'state_msg_receiver';
                             } else {
                                 return 'state_retry_personnel_auth';

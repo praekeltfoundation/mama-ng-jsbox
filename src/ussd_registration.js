@@ -17,7 +17,7 @@ go.app = function() {
             // Send a dial back reminder via sms the first time someone times out
             self.im.on('session:close', function(e) {
                 return go.utils.eval_dialback_reminder(
-                    e, self.im, self.im.user.answers.operator_id, $,
+                    e, self.im, self.im.user.answers.user_id, $,
                     "Please dial back in to {{channel}} to complete the Hello MAMA registration"
                     );
             });
@@ -117,9 +117,9 @@ go.app = function() {
             return go.utils
                 .get_or_create_identity(self.im.user.addr, self.im, null)
                 .then(function(user) {
-                    self.im.user.set_answer('operator_id', user.id);
+                    self.im.user.set_answer('user_id', user.id);
                     if (user.details.personnel_code) {
-                        self.im.user.set_answer('personnel_code', user.details.personnel_code);
+                        self.im.user.set_answer('operator_id', user.id);
                         return self.states.create('state_msg_receiver');
                     } else {
                         return self.states.create('state_auth_code');
@@ -137,10 +137,10 @@ go.app = function() {
                 check: function(content) {
                     var personnel_code = content;
                     return go.utils
-                        .validate_personnel_code(self.im, personnel_code)
-                        .then(function(valid_personnel_code) {
-                            if (valid_personnel_code) {
-                                self.im.user.set_answer('personnel_code', personnel_code);
+                        .find_nurse_with_personnel_code(self.im, personnel_code)
+                        .then(function(nurse) {
+                            if (nurse) {
+                                self.im.user.set_answer('operator_id', nurse.id);
                                 return null;  // vumi expects null or undefined if check passes
                             } else {
                                 return $(get_error_text(name));

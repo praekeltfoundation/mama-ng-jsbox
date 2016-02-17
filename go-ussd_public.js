@@ -704,11 +704,9 @@ go.utils = {
                 operator_id: im.user.answers.operator_id,
                 language: im.user.answers.state_msg_language,
                 msg_type: im.user.answers.state_msg_type,
-                personnel_code: im.user.answers.personnel_code
+                user_id: im.user.answers.user_id
             }
         };
-
-        // console.log(reg_info.data.personnel_code);
 
         // add data for last_period_date or baby_dob
         if (im.user.answers.state_pregnancy_status === 'prebirth') {
@@ -739,16 +737,16 @@ go.utils = {
             });
     },
 
-    validate_personnel_code: function(im, content) {
+    find_nurse_with_personnel_code: function(im, personnel_code) {
         var params = {
-            "details__personnel_code": content
+            "details__personnel_code": personnel_code
         };
         return go.utils
             .service_api_call('identities', 'get', params, null, 'identities/search/', im)
             .then(function(json_get_response) {
-                var contacts_found = json_get_response.data.results;
-                // Return true if a contact is found with this personnel code
-                return contacts_found.length > 0;
+                var nurses_found = json_get_response.data.results;
+                // Return the first nurse if found
+                return nurses_found[0];
             });
     },
 
