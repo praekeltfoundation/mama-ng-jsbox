@@ -320,6 +320,11 @@ go.utils = {
         return today;
     },
 
+    get_january: function(config) {
+        // returns current year january 1st moment date
+        return go.utils.get_today(config).startOf('year');
+    },
+
     is_valid_date: function(date, format) {
         // implements strict validation with 'true' below
         return moment(date, format, true).isValid();
@@ -699,17 +704,37 @@ go.utils = {
         return go.utils.check_valid_alpha(input);
     },
 
-    make_month_choices: function($, startDate, limit, increment) {
+    make_month_choices: function($, startDate, limit, increment, valueFormat, labelFormat) {
         var choices = [];
 
         var monthIterator = startDate;
         for (var i=0; i<limit; i++) {
-            choices.push(new Choice(monthIterator.format("YYYYMM"), $(monthIterator.format("MMMM YY"))));
+            choices.push(new Choice(monthIterator.format(valueFormat),
+                                    $(monthIterator.format(labelFormat))));
             monthIterator.add(increment, 'months');
         }
 
         return choices;
     },
+
+    // function used to validate months for states 5A/5B & 12A/12B
+    is_valid_month: function(today, choiceYear, choiceMonth, monthsValid) {
+        var choiceDate = new moment(choiceYear+choiceMonth, "YYYYMM");
+
+        var startDate = today.clone();
+        // note: 1 is subtracted as current month is already included
+        startDate = startDate.subtract('month', monthsValid - 1);
+        startDate.date(1);  // set day of month to 1st
+
+        // choice >= startDate && <= today/endDate
+        if ((choiceDate.isSame(startDate) || choiceDate.isAfter(startDate)) &&
+            (choiceDate.isSame(today) || choiceDate.isBefore(today))) {
+            return true;
+        } else {
+            return false;
+        }
+    },
+
 
     "commas": "commas"
 };
