@@ -737,16 +737,16 @@ go.utils = {
             });
     },
 
-    find_nurse_with_personnel_code: function(im, personnel_code) {
+    find_healthworker_with_personnel_code: function(im, personnel_code) {
         var params = {
             "details__personnel_code": personnel_code
         };
         return go.utils
             .service_api_call('identities', 'get', params, null, 'identities/search/', im)
             .then(function(json_get_response) {
-                var nurses_found = json_get_response.data.results;
-                // Return the first nurse if found
-                return nurses_found[0];
+                var healthworkers_found = json_get_response.data.results;
+                // Return the first healthworker if found
+                return healthworkers_found[0];
             });
     },
 
@@ -956,10 +956,10 @@ go.app = function() {
                 check: function(content) {
                     var personnel_code = content;
                     return go.utils
-                        .find_nurse_with_personnel_code(self.im, personnel_code)
-                        .then(function(nurse) {
-                            if (nurse) {
-                                self.im.user.set_answer('operator_id', nurse.id);
+                        .find_healthworker_with_personnel_code(self.im, personnel_code)
+                        .then(function(healthworker) {
+                            if (healthworker) {
+                                self.im.user.set_answer('operator_id', healthworker.id);
                                 return null;  // vumi expects null or undefined if check passes
                             } else {
                                 return $(get_error_text(name));

@@ -137,10 +137,10 @@ go.app = function() {
                 check: function(content) {
                     var personnel_code = content;
                     return go.utils
-                        .find_nurse_with_personnel_code(self.im, personnel_code)
-                        .then(function(nurse) {
-                            if (nurse) {
-                                self.im.user.set_answer('operator_id', nurse.id);
+                        .find_healthworker_with_personnel_code(self.im, personnel_code)
+                        .then(function(healthworker) {
+                            if (healthworker) {
+                                self.im.user.set_answer('operator_id', healthworker.id);
                                 return null;  // vumi expects null or undefined if check passes
                             } else {
                                 return $(get_error_text(name));

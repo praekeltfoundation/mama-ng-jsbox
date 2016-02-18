@@ -1,5 +1,5 @@
 // Contact roles
-// 08080070007: registered nurse - personnel code 12345
+// 08080070007: registered healthworker - personnel code 12345
 // 07030010001: unregistered mother but with existing contact (voice)
 // 08080020002: unregistered mother but with existing contact (ussd)
 // 08080030003: unrecognised contact - contact gets created
