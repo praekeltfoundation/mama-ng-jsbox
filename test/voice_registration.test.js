@@ -16,6 +16,7 @@ describe("Mama Nigeria App", function() {
                 .setup.config.app({
                     testing_today: '2017-07-22',
                     name: 'voice-registration-test',
+                    country_code: '234',  // nigeria
                     services: {
                         identities: {
                             api_token: 'test_token_identities',

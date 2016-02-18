@@ -269,7 +269,7 @@ go.utils = {
 
     // Gets a contact if it exists, otherwise creates a new one
     get_or_create_identity: function(msisdn, im, operator_id) {
-        msisdn = go.utils.normalize_msisdn(msisdn, '234');  // nigeria
+        msisdn = go.utils.normalize_msisdn(msisdn, im.config.country_code);
         return go.utils
             // Get contact id using msisdn
             .get_identity_by_msisdn(msisdn, im)

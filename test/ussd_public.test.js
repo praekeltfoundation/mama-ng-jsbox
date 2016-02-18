@@ -15,6 +15,7 @@ describe("Hello Mama app", function() {
                 .setup.char_limit(182)
                 .setup.config.app({
                     name: 'ussd-public-test',
+                    country_code: '234',  // nigeria
                     channel: '*120*8864*0000#',
                     testing_today: '2015-04-03 06:07:08.999',
                     //metric_store: 'mama_ng_test',  // _env at the end
