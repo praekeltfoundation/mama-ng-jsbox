@@ -115,7 +115,7 @@ go.utils = {
     // Determine whether contact is registered
     is_registered: function(contact_id, im) {
         return go.utils
-            .get_identity_by_id(contact_id, im)
+            .get_identity(contact_id, im)
             .then(function(contact) {
                 var true_options = ['true', 'True', true];
                 return true_options.indexOf(contact.details.has_registered) !== -1;
@@ -224,7 +224,7 @@ go.utils = {
 
     // Gets the identity from the Identity Store
     // Returns the identity object
-    get_identity_by_id: function(identity_id, im) {
+    get_identity: function(identity_id, im) {
         var endpoint = 'identities/' + identity_id + '/';
         return go.utils
             .service_api_call('identities', 'get', {}, null, endpoint, im)
@@ -514,7 +514,7 @@ go.utils = {
         return Q
             .all([
                 // get contact so details can be updated
-                go.utils.get_identity_by_id(mama_id, im),
+                go.utils.get_identity(mama_id, im),
                 // set existing subscriptions inactive
                 go.utils.subscriptions_unsubscribe_all(mama_id, im)
             ])
@@ -550,7 +550,7 @@ go.utils = {
     //     return Q
     //         .all([
     //             // get mama contact
-    //             go.utils.get_identity_by_id(mama_id, im),
+    //             go.utils.get_identity(mama_id, im),
     //             // deactivate existing subscriptions
     //             go.utils.subscriptions_unsubscribe_all(mama_id, im)
     //         ])
@@ -577,7 +577,7 @@ go.utils = {
         return Q
             .all([
                 // get contact so details can be updated
-                go.utils.get_identity_by_id(mama_id, im),
+                go.utils.get_identity(mama_id, im),
                 // get existing subscriptions so schedule can be updated
                 go.utils.get_active_subscription_by_contact_id(mama_id, im)
             ])
@@ -614,7 +614,7 @@ go.utils = {
         return Q
             .all([
                 // get contact so details can be updated
-                go.utils.get_identity_by_id(mama_id, im),
+                go.utils.get_identity(mama_id, im),
                 // set existing subscriptions inactive
                 go.utils.subscriptions_unsubscribe_all(mama_id, im)
             ])
@@ -642,7 +642,7 @@ go.utils = {
         if (non_dialback_sms_states.indexOf(close_state) === -1
           && e.user_terminated) {
             return go.utils
-                .get_identity_by_id(user_id, im)
+                .get_identity(user_id, im)
                 .then(function(user) {
                     if (!user.details.dialback_sent) {
                         user.details.dialback_sent = true;
