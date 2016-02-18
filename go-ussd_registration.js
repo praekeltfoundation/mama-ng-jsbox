@@ -212,12 +212,17 @@ go.utils = {
 
 // IDENTITY HANDLING
 
-    // Searches the Identity Store for all identities with the given msisdn.
-    // Returns the first identity object found
-    get_identity_by_msisdn: function(msisdn, im) {
-        var params = {
-            "details__addresses__msisdn": msisdn
-        };
+    get_identity_by_address: function(address, im) {
+        // Searches the Identity Store for all identities with the provided address.
+        // Returns the first identity object found
+        // Address should be an object {address_type: address}, eg.
+        // {'msisdn': '0821234444'}, {'email': 'me@example.com'}
+        var address_key = Object.keys(address)[0];  // extract address_type
+        var address_val = address[address_key];
+        var params = {};
+        var search_string = 'details__addresses__' + address_key;
+        params[search_string] = address_val;
+
         return go.utils
             .service_api_call('identities', 'get', params, null, 'identities/search/', im)
             .then(function(json_get_response) {
@@ -279,7 +284,7 @@ go.utils = {
         msisdn = go.utils.normalize_msisdn(msisdn, im.config.country_code);
         return go.utils
             // Get contact id using msisdn
-            .get_identity_by_msisdn(msisdn, im)
+            .get_identity_by_address({'msisdn': msisdn}, im)
             .then(function(contact) {
                 if (contact !== null) {
                     // If contact exists, return the id
