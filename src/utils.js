@@ -237,11 +237,15 @@ go.utils = {
     create_identity: function(im, msisdn, communicate_through_id, operator_id) {
         var payload = {};
 
+        // setup msisdn address field
+        var addresses = {"msisdn": {}};
+        addresses.msisdn[msisdn] = {};
+
         // compile base payload
         if (msisdn) {
             payload.details = {
                 "default_addr_type": "msisdn",
-                "addresses": go.utils.get_addresses(msisdn)
+                "addresses": addresses
             };
         }
 
@@ -386,13 +390,6 @@ go.utils = {
         }
     },
 
-// OTHER
-
-    get_addresses: function(msisdn) {
-        var addresses = {"msisdn": {}};
-        addresses.msisdn[msisdn] = {};
-        return addresses;
-    },
 
 // SUBSCRIPTION HANDLING
 
