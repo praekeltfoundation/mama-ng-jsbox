@@ -561,32 +561,6 @@ go.utils = {
             });
     },
 
-    // save_contact_info_and_subscribe: function(im) {
-    //     var mama_id = im.user.answers.mama_id;
-
-    //     return Q
-    //         .all([
-    //             // get mama contact
-    //             go.utils.get_identity(mama_id, im),
-    //             // deactivate existing subscriptions
-    //             go.utils.subscriptions_unsubscribe_all(mama_id, im)
-    //         ])
-    //         .spread(function(mama_contact, unsubscribe_result) {
-    //             mama_contact = go.utils.update_mama_details(
-    //                 im, mama_contact);
-    //             var subscription = go.utils
-    //                 .setup_subscription(im, mama_contact);
-
-    //             return Q
-    //                 .all([
-    //                     // Update mama's contact
-    //                     go.utils.update_identity(im, mama_contact),
-    //                     // Create a subscription for mama
-    //                     go.utils.subscribe_contact(im, subscription)
-    //                 ]);
-    //         });
-    // },
-
 // CHANGE HANDLING
 
     change_msg_times: function(im) {
