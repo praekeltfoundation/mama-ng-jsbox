@@ -757,9 +757,14 @@ go.utils = {
         return choices;
     },
 
-    save_identities: function(im, receiver, receiver_msisdn, father_msisdn,
+    save_identities: function(im, msg_receiver, receiver_msisdn, father_msisdn,
                               mother_msisdn, operator_id) {
-        if (receiver === 'mother_only') {
+        // Creates identities for the msisdns entered in various states
+        // and sets the identitity id's to user.answers for later use
+        // msg_receiver: (str) person who will receive messages eg. 'mother_only'
+        // *_msisdn: (str) msisdns of role players
+        // operator_id: (str - uuid) id of healthworker making the registration
+        if (msg_receiver === 'mother_only') {
             return go.utils
                 // get or create mother's identity
                 .get_or_create_identity({'msisdn': receiver_msisdn}, im, operator_id)
@@ -768,21 +773,21 @@ go.utils = {
                     im.user.set_answer('receiver_id', mother.id);
                     return;
                 });
-        } else if (['trusted_friend', 'family_member', 'father_only'].indexOf(receiver) !== -1) {
+        } else if (['trusted_friend', 'family_member', 'father_only'].indexOf(msg_receiver) !== -1) {
             return go.utils
-                // get or create receiver's identity
+                // get or create msg_receiver's identity
                 .get_or_create_identity({'msisdn': receiver_msisdn}, im, operator_id)
-                .then(function(receiver) {
-                    im.user.set_answer('receiver_id', receiver.id);
+                .then(function(msg_receiver) {
+                    im.user.set_answer('receiver_id', msg_receiver.id);
                     return go.utils
                         // create mother's identity - cannot get as no identifying information
-                        .create_identity(im, null, receiver.id, operator_id)
+                        .create_identity(im, null, msg_receiver.id, operator_id)
                         .then(function(mother) {
                             im.user.set_answer('mother_id', mother.id);
                             return;
                         });
                 });
-        } else if (receiver === 'mother_father') {
+        } else if (msg_receiver === 'mother_father') {
             return Q
                 .all([
                     // create father's identity
