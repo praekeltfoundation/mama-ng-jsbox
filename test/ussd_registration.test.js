@@ -875,7 +875,8 @@ describe("Mama Nigeria App", function() {
                     var increment = 1; // should determine subsequent direction of array elements
 
                     // function call
-                    var expectedChoiceArray = go.utils.make_month_choices($, testDate, limit, increment);
+                    var expectedChoiceArray = go.utils
+                        .make_month_choices($, testDate, limit, increment, "YYYYMM", "MMMM YY");
 
                     // expected results
                     assert.equal(expectedChoiceArray.length, limit);
@@ -893,7 +894,8 @@ describe("Mama Nigeria App", function() {
                     var increment = -1; // should determine subsequent direction of array elements
 
                     // function call
-                    var expectedChoiceArray = go.utils.make_month_choices($, testDate, limit, increment);
+                    var expectedChoiceArray = go.utils
+                        .make_month_choices($, testDate, limit, increment, "YYYYMM", "MMMM YY");
 
                     // expected results
                     assert.equal(expectedChoiceArray.length, limit);
@@ -912,7 +914,8 @@ describe("Mama Nigeria App", function() {
                     var increment = 1; // should determine subsequent direction of array elements
 
                     // function call
-                    var expectedChoiceArray = go.utils.make_month_choices($, testDate, limit, increment);
+                    var expectedChoiceArray = go.utils
+                        .make_month_choices($, testDate, limit, increment, "YYYYMM", "MMMM YY");
 
                     // expected results
                     assert.equal(expectedChoiceArray.length, limit);
@@ -928,7 +931,8 @@ describe("Mama Nigeria App", function() {
                     var increment = -1; // should determine subsequent direction of array elements
 
                     // function call
-                    var expectedChoiceArray = go.utils.make_month_choices($, testDate, limit, increment);
+                    var expectedChoiceArray = go.utils
+                        .make_month_choices($, testDate, limit, increment, "YYYYMM", "MMMM YY");
 
                     // expected results
                     assert.equal(expectedChoiceArray.length, limit);
@@ -943,7 +947,8 @@ describe("Mama Nigeria App", function() {
                     var increment = 3; // should determine subsequent direction of array elements
 
                     // function call
-                    var expectedChoiceArray = go.utils.make_month_choices($, testDate, limit, increment);
+                    var expectedChoiceArray = go.utils
+                        .make_month_choices($, testDate, limit, increment, "YYYYMM", "MMMM YY");
 
                     // expected results
                     assert.equal(expectedChoiceArray.length, limit);

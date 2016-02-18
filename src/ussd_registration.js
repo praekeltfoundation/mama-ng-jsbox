@@ -266,7 +266,8 @@ go.app = function() {
                 //options_per_page: null,
                 more: $('More'),
                 back: $('Back'),
-                choices: go.utils.make_month_choices($, today, 9, -1),
+                choices: go.utils.make_month_choices($, today, 9, -1,
+                                                     "YYYYMM", "MMMM YY"),
                 next: 'state_last_period_day'
             });
         });
@@ -377,7 +378,8 @@ go.app = function() {
                 options_per_page: null,
                 more: $('More'),
                 back: $('Back'),
-                choices: go.utils.make_month_choices($, today, 12, -1),
+                choices: go.utils.make_month_choices($, today, 12, -1,
+                                                     "YYYYMM", "MMMM YY"),
                 next: 'state_baby_birth_day'
             });
         });
