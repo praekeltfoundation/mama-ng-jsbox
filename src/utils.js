@@ -210,10 +210,10 @@ go.utils = {
         // Returns the first identity object found
         // Address should be an object {address_type: address}, eg.
         // {'msisdn': '0821234444'}, {'email': 'me@example.com'}
-        var address_key = Object.keys(address)[0];  // extract address_type
-        var address_val = address[address_key];
+        var address_type = Object.keys(address)[0];
+        var address_val = address[address_type];
         var params = {};
-        var search_string = 'details__addresses__' + address_key;
+        var search_string = 'details__addresses__' + address_type;
         params[search_string] = address_val;
 
         return go.utils
@@ -239,15 +239,15 @@ go.utils = {
     },
 
     // Create a new identity
-    create_identity: function(im, msisdn, communicate_through_id, operator_id) {
+    create_identity: function(im, address, communicate_through_id, operator_id) {
         var payload = {};
 
-        // setup msisdn address field
-        var addresses = {"msisdn": {}};
-        addresses.msisdn[msisdn] = {};
-
         // compile base payload
-        if (msisdn) {
+        if (address) {
+            var address_type = Object.keys(address);
+            var addresses = {};
+            addresses[address_type] = {};
+            addresses[address_type][address[address_type]] = {};
             payload.details = {
                 "default_addr_type": "msisdn",
                 "addresses": addresses
@@ -273,11 +273,14 @@ go.utils = {
     },
 
     // Gets a contact if it exists, otherwise creates a new one
-    get_or_create_identity: function(msisdn, im, operator_id) {
-        msisdn = go.utils.normalize_msisdn(msisdn, im.config.country_code);
+    get_or_create_identity: function(address, im, operator_id) {
+        if (address.msisdn) {
+            address.msisdn = go.utils
+                .normalize_msisdn(address.msisdn, im.config.country_code);
+        }
         return go.utils
             // Get contact id using msisdn
-            .get_identity_by_address({'msisdn': msisdn}, im)
+            .get_identity_by_address(address, im)
             .then(function(contact) {
                 if (contact !== null) {
                     // If contact exists, return the id
@@ -285,7 +288,7 @@ go.utils = {
                 } else {
                     // If contact doesn't exist, create it
                     return go.utils
-                        .create_identity(im, msisdn, null, operator_id)
+                        .create_identity(im, address, null, operator_id)
                         .then(function(contact) {
                             return contact;
                         });
@@ -771,7 +774,7 @@ go.utils = {
         if (receiver === 'mother_only') {
             return go.utils
                 // get or create mother's identity
-                .get_or_create_identity(receiver_msisdn, im, operator_id)
+                .get_or_create_identity({'msisdn': receiver_msisdn}, im, operator_id)
                 .then(function(mother) {
                     im.user.set_answer('mother_id', mother.id);
                     im.user.set_answer('receiver_id', mother.id);
@@ -780,7 +783,7 @@ go.utils = {
         } else if (['trusted_friend', 'family_member', 'father_only'].indexOf(receiver) !== -1) {
             return go.utils
                 // get or create receiver's identity
-                .get_or_create_identity(receiver_msisdn, im, operator_id)
+                .get_or_create_identity({'msisdn': receiver_msisdn}, im, operator_id)
                 .then(function(receiver) {
                     im.user.set_answer('receiver_id', receiver.id);
                     return go.utils
@@ -795,9 +798,9 @@ go.utils = {
             return Q
                 .all([
                     // create father's identity
-                    go.utils.get_or_create_identity(father_msisdn, im, operator_id),
+                    go.utils.get_or_create_identity({'msisdn': father_msisdn}, im, operator_id),
                     // create mother's identity
-                    go.utils.get_or_create_identity(mother_msisdn, im, operator_id),
+                    go.utils.get_or_create_identity({'msisdn': mother_msisdn}, im, operator_id),
                 ])
                 .spread(function(father, mother) {
                     im.user.set_answer('receiver_id', father.id);

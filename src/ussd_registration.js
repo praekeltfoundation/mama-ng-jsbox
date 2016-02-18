@@ -115,7 +115,7 @@ go.app = function() {
         self.add('state_start', function(name) {
             self.im.user.answers = {};  // reset answers
             return go.utils
-                .get_or_create_identity(self.im.user.addr, self.im, null)
+                .get_or_create_identity({'msisdn': self.im.user.addr}, self.im, null)
                 .then(function(user) {
                     self.im.user.set_answer('user_id', user.id);
                     if (user.details.personnel_code) {
