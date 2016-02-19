@@ -361,7 +361,7 @@ describe("Mama Nigeria App", function() {
                     .check.reply.properties({
                         helper_metadata: {
                             voice: {
-                                speech_url: 'http://localhost:8001/api/v1/eng_NG/state_c09_end_msg_times_3.mp3',
+                                speech_url: 'http://localhost:8001/api/v1/eng_NG/state_c09_end_msg_times_2.mp3',
                                 wait_for: '#'
                             }
                         }

@@ -222,8 +222,8 @@ go.app = function() {
         self.add('state_pregnancy_status', function(name) {
             var speech_option = '1';
             var routing = {
-                    'pre_birth': 'state_last_period_year',
-                    'post_birth': 'state_baby_birth_year'
+                'pre_birth': 'state_last_period_year',
+                'post_birth': 'state_baby_birth_year'
             };
             return new ChoiceState(name, {
                 question: $('Pregnant or baby'),
@@ -244,8 +244,8 @@ go.app = function() {
         self.add('state_last_period_year', function(name) {
             var speech_option = '1';
             var routing = {
-                    'this_year': 'state_this_year_period_month',
-                    'last_year': 'state_last_year_period_month'
+                'this_year': 'state_this_year_period_month',
+                'last_year': 'state_last_year_period_month'
             };
             return new ChoiceState(name, {
                 question: $('Last period?'),
@@ -520,8 +520,8 @@ go.app = function() {
         self.add('state_baby_birth_year', function(name) {
             var speech_option = '1';
             var routing = {
-                    'this_year': 'state_this_year_baby_birth_month',
-                    'last_year': 'state_last_year_baby_birth_month'
+                'this_year': 'state_this_year_baby_birth_month',
+                'last_year': 'state_last_year_baby_birth_month'
             };
             return new ChoiceState(name, {
                 question: $('Baby born?'),
@@ -760,8 +760,8 @@ go.app = function() {
         self.add('state_msg_type', function(name) {
             var speech_option = '1';
             var routing = {
-                    'sms': 'state_end_sms',
-                    'voice': 'state_voice_days'
+                'sms': 'state_end_sms',
+                'voice': 'state_voice_days'
             };
             return new ChoiceState(name, {
                 question: $('Channel?'),

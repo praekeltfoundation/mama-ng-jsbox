@@ -36,8 +36,8 @@ go.utils = {
                 : speech_option_start = 12;
         } else if (im.user.answers.state_pregnancy_status === 'post_birth') {
             im.user.answers.state_baby_birth_year === 'last_year'
-                ? speech_option_start = 24
-                : speech_option_start = 36;
+                ? speech_option_start = 0
+                : speech_option_start = 12;
         }
 
         var speech_option_num = speech_option_start + parseInt(month, 10);
@@ -56,19 +56,15 @@ go.utils = {
         var speech_option;
 
         day_map_9_11 = {
-            'mon_wed': '2',
-            'tue_thu': '3'
+            'mon_wed': '1',
+            'tue_thu': '2'
         };
         day_map_2_5 = {
-            'mon_wed': '4',
-            'tue_thu': '5'
+            'mon_wed': '3',
+            'tue_thu': '4'
         };
-        if (time === undefined) {
-            speech_option = '1';
-        } else {
-            time === '9_11' ? speech_option = day_map_9_11[days]
-                            : speech_option = day_map_2_5[days];
-        }
+        time === '9_11' ? speech_option = day_map_9_11[days]
+                        : speech_option = day_map_2_5[days];
         return speech_option;
     },
 
