@@ -1595,7 +1595,7 @@ describe("Mama Nigeria App", function() {
         });
 
         describe("When you choose a time state_voice_times", function() {
-            it.skip("should navigate to state_voice_end", function() {
+            it.skip("should navigate to state_end_voice", function() {
                 return tester
                     .setup.user.addr('07030010001')
                     .inputs(
@@ -1605,7 +1605,7 @@ describe("Mama Nigeria App", function() {
                         , '08080020002' // state_receiver_msisdn
                         , '2'           // state_pregnancy_status - baby
                         , '2'           // state_baby_birth_year - last year
-                        , '2'           // state_last_year_baby_birth_month - feb
+                        , '9'           // state_last_year_baby_birth_month - sep
                         , '13'          // state_baby_birth_day
                         , '3'           // state_msg-language - igbo
                         , '1'           // state_msg_type - voice
@@ -1613,13 +1613,13 @@ describe("Mama Nigeria App", function() {
                         , '2'           // state_voice_times - 2_5
                     )
                     .check.interaction({
-                        state: 'state_voice_end',
+                        state: 'state_end_voice',
                         reply: 'Thank you! Time: 2_5. Days: mon_wed.'
                     })
                     .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_voice_end_4.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/ibo_NG/state_end_voice_3.mp3',
                                     wait_for: '#'
                                 }
                             }
