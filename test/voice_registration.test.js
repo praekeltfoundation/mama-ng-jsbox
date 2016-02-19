@@ -18,6 +18,7 @@ describe("Mama Nigeria App", function() {
                 .setup.config.app({
                     testing_today: '2017-07-22',
                     name: 'voice-registration-test',
+                    country_code: '234',  // nigeria
                     services: {
                         identities: {
                             api_token: 'test_token_identities',
@@ -77,7 +78,7 @@ describe("Mama Nigeria App", function() {
         // TEST REGISTRATION FLOW
 
         describe("When you start the app", function() {
-            describe("if the user is a registered nurse (has personnel code)", function() {
+            describe("if the user is a registered healthworker (has personnel code)", function() {
                 it("should navigate to state_msg_receiver", function() {
                     return tester
                         .setup.user.addr('08080070007')
@@ -106,7 +107,7 @@ describe("Mama Nigeria App", function() {
                         .run();
                 });
             });
-            describe("if the user is not a registered nurse", function() {
+            describe("if the user is not a registered healthworker", function() {
                 it("should navigate to state_personnel_auth", function() {
                     return tester
                         .setup.user.addr('07030010001')

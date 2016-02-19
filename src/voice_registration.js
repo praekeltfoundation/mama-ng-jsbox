@@ -35,7 +35,7 @@ go.app = function() {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
             return go.utils
-                .get_or_create_contact(self.im.user.addr, self.im)
+                .get_or_create_identity({'msisdn': self.im.user.addr}, self.im, null)
                 .then(function(user) {
                     self.im.user.set_answer('user_id', user.id);
                     if (user.details.personnel_code) {
@@ -58,9 +58,9 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     return go.utils
-                        .validate_personnel_code(self.im, content)
-                        .then(function(valid_personnel_code) {
-                            if (valid_personnel_code) {
+                        .find_healthworker_with_personnel_code(self.im, content)
+                        .then(function(healthworker) {
+                            if (healthworker) {
                                 return 'state_msg_receiver';
                             } else {
                                 return 'state_retry_personnel_auth';
@@ -79,9 +79,9 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     return go.utils
-                        .validate_personnel_code(self.im, content)
-                        .then(function(valid_personnel_code) {
-                            if (valid_personnel_code) {
+                        .find_healthworker_with_personnel_code(self.im, content)
+                        .then(function(healthworker) {
+                            if (healthworker) {
                                 return 'state_msg_receiver';
                             } else {
                                 return 'state_retry_personnel_auth';
