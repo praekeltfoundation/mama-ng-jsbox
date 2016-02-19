@@ -58,7 +58,7 @@ go.app = function() {
             "state_voice_times":
                 "Thank you. At what time would they like to receive these calls?",
             "state_end_voice":
-                "Thank you. The person will now start receiving calls on {{first_day}} and {{second_day}} between {{start_time}} - {{end_time}}.",
+                "Thank you. The person will now start receiving calls on {{days}} between {{times}}.",
             "state_end_sms":
                 "Thank you. The person will now start receiving messages three times a week."
         };
@@ -115,10 +115,11 @@ go.app = function() {
         self.add('state_start', function(name) {
             self.im.user.answers = {};  // reset answers
             return go.utils
-                .get_or_create_contact(self.im.user.addr, self.im)
+                .get_or_create_identity({'msisdn': self.im.user.addr}, self.im, null)
                 .then(function(user) {
                     self.im.user.set_answer('user_id', user.id);
                     if (user.details.personnel_code) {
+                        self.im.user.set_answer('operator_id', user.id);
                         return self.states.create('state_msg_receiver');
                     } else {
                         return self.states.create('state_auth_code');
@@ -134,10 +135,12 @@ go.app = function() {
             return new FreeText(name, {
                 question: $(questions[name]),
                 check: function(content) {
+                    var personnel_code = content;
                     return go.utils
-                        .validate_personnel_code(self.im, content)
-                        .then(function(valid_personnel_code) {
-                            if (valid_personnel_code) {
+                        .find_healthworker_with_personnel_code(self.im, personnel_code)
+                        .then(function(healthworker) {
+                            if (healthworker) {
+                                self.im.user.set_answer('operator_id', healthworker.id);
                                 return null;  // vumi expects null or undefined if check passes
                             } else {
                                 return $(get_error_text(name));
@@ -160,15 +163,10 @@ go.app = function() {
                     new Choice('trusted_friend', $("A trusted friend"))
                 ],
                 next: function(choice) {
-                    switch (choice.value) {
-                        case 'mother_father':
-                            return 'state_msisdn_father';
-                        case 'father_only':
-                            // to register to both "Mother" & "Father" messages
-                            return 'state_msisdn';
-                        default:
-                            // to register only to "Mother" messages
-                            return 'state_msisdn';
+                    if (choice.value === 'mother_father') {
+                        return 'state_msisdn_father';
+                    } else {
+                        return 'state_msisdn';
                     }
                 }
             });
@@ -185,7 +183,7 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: 'state_pregnancy_status'
+                next: 'state_save_identities'
             });
         });
 
@@ -215,8 +213,32 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: 'state_pregnancy_status'
+                next: function() {
+                    if (self.im.user.answers.state_msisdn_father ===
+                        self.im.user.answers.state_msisdn_mother) {
+                        self.im.user.set_answer('state_msg_receiver', 'father_only');
+                        self.im.user.set_answer('state_msisdn',
+                                                self.im.user.answers.state_msisdn_mother);
+                    }
+                    return 'state_save_identities';
+                }
             });
+        });
+
+        // Get or create identities and save their IDs
+        self.add('state_save_identities', function(name) {
+            return go.utils
+                .save_identities(
+                    self.im,
+                    self.im.user.answers.state_msg_receiver,
+                    self.im.user.answers.state_msisdn,
+                    self.im.user.answers.state_msisdn_father,
+                    self.im.user.answers.state_msisdn_mother,
+                    self.im.user.answers.operator_id
+                )
+                .then(function() {
+                    return self.states.create('state_pregnancy_status');
+                });
         });
 
         // ChoiceState st-04
@@ -224,11 +246,11 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 choices: [
-                    new Choice('pregnant', $("The mother is pregnant")),
-                    new Choice('baby', $("The mother has a baby under 1 year old"))
+                    new Choice('prebirth', $("The mother is pregnant")),
+                    new Choice('postbirth', $("The mother has a baby under 1 year old"))
                 ],
                 next: function(choice) {
-                    return choice.value === 'pregnant'
+                    return choice.value === 'prebirth'
                         ? 'state_last_period_month'
                         : 'state_baby_birth_month_year';
                 }
@@ -244,7 +266,8 @@ go.app = function() {
                 //options_per_page: null,
                 more: $('More'),
                 back: $('Back'),
-                choices: go.utils.make_month_choices($, today, 9, -1),
+                choices: go.utils.make_month_choices($, today, 9, -1,
+                                                     "YYYYMM", "MMMM YY"),
                 next: 'state_last_period_day'
             });
         });
@@ -286,9 +309,15 @@ go.app = function() {
                     new Choice('sms', $('Text SMSs'))
                 ],
                 next: function(choice) {
-                    return choice.value === 'voice'
-                        ? 'state_voice_days'
-                        : 'state_end_sms';
+                    if (choice.value === 'voice') {
+                        return 'state_voice_days';
+                    } else {
+                        return go.utils
+                            .save_registration(self.im)
+                            .then(function() {
+                                return 'state_end_sms';
+                            });
+                    }
                 }
             });
         });
@@ -313,41 +342,29 @@ go.app = function() {
                     new Choice('9_11', $('Between 9-11am')),
                     new Choice('2_5', $('Between 2-5pm'))
                 ],
-                next: 'state_end_voice'
+                next: function() {
+                    return go.utils
+                        .save_registration(self.im)
+                        .then(function() {
+                            return 'state_end_voice';
+                        });
+                }
             });
         });
 
         // EndState st-11
         self.add('state_end_voice', function(name) {
-            var first_voice_day;
-            var second_voice_day;
-            var voice_start_time;
-            var voice_end_time;
-
-            if (self.im.user.answers.state_voice_days == 'mon_wed') {
-                first_voice_day = 'Monday';
-                second_voice_day = 'Wednesday';
-            } else if (self.im.user.answers.state_voice_days == 'tue_thu') {
-                first_voice_day = 'Tuesday';
-                second_voice_day = 'Thursday';
-            }
-
-            switch (self.im.user.answers.state_voice_times) {
-                case '9_11':
-                    voice_start_time = '9am';
-                    voice_end_time = '11am';
-                    break;
-                case '2_5':
-                    voice_start_time = '2pm';
-                    voice_end_time = '5pm';
-                    break;
-            }
-
+            var voice_schedule = {
+                "mon_wed": "Monday and Wednesday",
+                "tue_thu": "Tuesday and Thursday",
+                "9_11": "9am - 11am",
+                "2_5": "2pm - 5pm"
+            };
             return new EndState(name, {
-                text: $(questions[name]).context({first_day: first_voice_day,
-                                                 second_day: second_voice_day,
-                                                 start_time: voice_start_time,
-                                                 end_time: voice_end_time}),
+                text: $(questions[name]).context({
+                    days: voice_schedule[self.im.user.answers.state_voice_days],
+                    times: voice_schedule[self.im.user.answers.state_voice_times]
+                }),
                 next: 'state_start'
             });
         });
@@ -361,7 +378,8 @@ go.app = function() {
                 options_per_page: null,
                 more: $('More'),
                 back: $('Back'),
-                choices: go.utils.make_month_choices($, today, 12, -1),
+                choices: go.utils.make_month_choices($, today, 12, -1,
+                                                     "YYYYMM", "MMMM YY"),
                 next: 'state_baby_birth_day'
             });
         });
@@ -399,6 +417,7 @@ go.app = function() {
             var dateToValidate = monthAndYear+day;
 
             if (go.utils.is_valid_date(dateToValidate, 'YYYYMMDD')) {
+                self.im.user.set_answer('working_date', dateToValidate);
                 return self.states.create('state_msg_language');
             } else {
                 return self.states.create('state_invalid_date', {date: dateToValidate});

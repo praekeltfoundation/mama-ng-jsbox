@@ -124,7 +124,7 @@ go.utils = {
     // Determine whether contact is registered
     is_registered: function(contact_id, im) {
         return go.utils
-            .get_contact_by_id(contact_id, im)
+            .get_identity(contact_id, im)
             .then(function(contact) {
                 var true_options = ['true', 'True', true];
                 return true_options.indexOf(contact.details.has_registered) !== -1;
@@ -212,25 +212,34 @@ go.utils = {
         }
     },
 
-// CONTACT HANDLING
+// IDENTITY HANDLING
 
-    get_contact_by_msisdn: function(msisdn, im) {
-        var params = {
-            "details__addresses__msisdn": msisdn
-        };
+    get_identity_by_address: function(address, im) {
+        // Searches the Identity Store for all identities with the provided address.
+        // Returns the first identity object found
+        // Address should be an object {address_type: address}, eg.
+        // {'msisdn': '0821234444'}, {'email': 'me@example.com'}
+        var address_type = Object.keys(address)[0];
+        var address_val = address[address_type];
+        var params = {};
+        var search_string = 'details__addresses__' + address_type;
+        params[search_string] = address_val;
+
         return go.utils
             .service_api_call('identities', 'get', params, null, 'identities/search/', im)
             .then(function(json_get_response) {
-                var contacts_found = json_get_response.data.results;
-                // Return the first contact's id
-                return (contacts_found.length > 0)
-                    ? contacts_found[0]
+                var identities_found = json_get_response.data.results;
+                // Return the first identity in the list of identities
+                return (identities_found.length > 0)
+                    ? identities_found[0]
                     : null;
             });
     },
 
-    get_contact_by_id: function(contact_id, im) {
-        var endpoint = 'identities/' + contact_id + '/';
+    // Gets the identity from the Identity Store
+    // Returns the identity object
+    get_identity: function(identity_id, im) {
+        var endpoint = 'identities/' + identity_id + '/';
         return go.utils
             .service_api_call('identities', 'get', {}, null, endpoint, im)
             .then(function(json_get_response) {
@@ -238,29 +247,49 @@ go.utils = {
             });
     },
 
-    // Create a new contact with the minimum required details
-    create_contact: function(msisdn, im) {
-        var payload = {
-            "details": {
+    // Create a new identity
+    create_identity: function(im, address, communicate_through_id, operator_id) {
+        var payload = {};
+
+        // compile base payload
+        if (address) {
+            var address_type = Object.keys(address);
+            var addresses = {};
+            addresses[address_type] = {};
+            addresses[address_type][address[address_type]] = {};
+            payload.details = {
                 "default_addr_type": "msisdn",
-                "addresses": go.utils.get_addresses(msisdn)
-            }
-        };
+                "addresses": addresses
+            };
+        }
+
+        if (communicate_through_id) {
+            payload.communicate_through = communicate_through_id;
+        }
+
+        // add operator_id if available
+        if (operator_id) {
+            payload.operator = operator_id;
+        }
+
         return go.utils
-            .service_api_call("identities", "post", null, payload, 'identities', im)
+            .service_api_call("identities", "post", null, payload, 'identities/', im)
             .then(function(json_post_response) {
                 var contact_created = json_post_response.data;
-                // Return the contact's id
-                return contact_created.id;
+                // Return the contact
+                return contact_created;
             });
     },
 
     // Gets a contact if it exists, otherwise creates a new one
-    get_or_create_contact: function(msisdn, im) {
-        msisdn = go.utils.normalize_msisdn(msisdn, '234');  // nigeria
+    get_or_create_identity: function(address, im, operator_id) {
+        if (address.msisdn) {
+            address.msisdn = go.utils
+                .normalize_msisdn(address.msisdn, im.config.country_code);
+        }
         return go.utils
             // Get contact id using msisdn
-            .get_contact_by_msisdn(msisdn, im)
+            .get_identity_by_address(address, im)
             .then(function(contact) {
                 if (contact !== null) {
                     // If contact exists, return the id
@@ -268,7 +297,7 @@ go.utils = {
                 } else {
                     // If contact doesn't exist, create it
                     return go.utils
-                        .create_contact(msisdn, im)
+                        .create_identity(im, address, null, operator_id)
                         .then(function(contact) {
                             return contact;
                         });
@@ -276,7 +305,7 @@ go.utils = {
             });
     },
 
-    update_contact: function(im, contact) {
+    update_identity: function(im, contact) {
         // For patching any field on the contact
         var endpoint = 'identities/' + contact.id + '/';
         return go.utils
@@ -329,6 +358,11 @@ go.utils = {
         return today;
     },
 
+    get_january: function(config) {
+        // returns current year january 1st moment date
+        return go.utils.get_today(config).startOf('year');
+    },
+
     is_valid_date: function(date, format) {
         // implements strict validation with 'true' below
         return moment(date, format, true).isValid();
@@ -378,11 +412,6 @@ go.utils = {
         }
     },
 
-// OTHER
-
-    get_addresses: function(msisdn) {
-        return "msisdn:" + msisdn;
-    },
 
 // SUBSCRIPTION HANDLING
 
@@ -504,7 +533,7 @@ go.utils = {
         return Q
             .all([
                 // get contact so details can be updated
-                go.utils.get_contact_by_id(mama_id, im),
+                go.utils.get_identity(mama_id, im),
                 // set existing subscriptions inactive
                 go.utils.subscriptions_unsubscribe_all(mama_id, im)
             ])
@@ -518,7 +547,7 @@ go.utils = {
 
                 return Q.all([
                     // update mama contact
-                    go.utils.update_contact(im, mama_contact),
+                    go.utils.update_identity(im, mama_contact),
                     // subscribe to baby messages
                     go.utils.subscribe_contact(im, baby_subscription)
                 ]);
@@ -534,32 +563,6 @@ go.utils = {
             });
     },
 
-    save_contact_info_and_subscribe: function(im) {
-        var mama_id = im.user.answers.mama_id;
-
-        return Q
-            .all([
-                // get mama contact
-                go.utils.get_contact_by_id(mama_id, im),
-                // deactivate existing subscriptions
-                go.utils.subscriptions_unsubscribe_all(mama_id, im)
-            ])
-            .spread(function(mama_contact, unsubscribe_result) {
-                mama_contact = go.utils.update_mama_details(
-                    im, mama_contact);
-                var subscription = go.utils
-                    .setup_subscription(im, mama_contact);
-
-                return Q
-                    .all([
-                        // Update mama's contact
-                        go.utils.update_contact(im, mama_contact),
-                        // Create a subscription for mama
-                        go.utils.subscribe_contact(im, subscription)
-                    ]);
-            });
-    },
-
 // CHANGE HANDLING
 
     change_msg_times: function(im) {
@@ -567,7 +570,7 @@ go.utils = {
         return Q
             .all([
                 // get contact so details can be updated
-                go.utils.get_contact_by_id(mama_id, im),
+                go.utils.get_identity(mama_id, im),
                 // get existing subscriptions so schedule can be updated
                 go.utils.get_active_subscription_by_contact_id(mama_id, im)
             ])
@@ -581,7 +584,7 @@ go.utils = {
 
                 return Q.all([
                     // update mama contact
-                    go.utils.update_contact(im, mama_contact),
+                    go.utils.update_identity(im, mama_contact),
                     // update subscription
                     go.utils.update_subscription(im, subscription)
                 ]);
@@ -604,7 +607,7 @@ go.utils = {
         return Q
             .all([
                 // get contact so details can be updated
-                go.utils.get_contact_by_id(mama_id, im),
+                go.utils.get_identity(mama_id, im),
                 // set existing subscriptions inactive
                 go.utils.subscriptions_unsubscribe_all(mama_id, im)
             ])
@@ -615,7 +618,7 @@ go.utils = {
 
                 // update mama contact
                 return go.utils
-                    .update_contact(im, mama_contact);
+                    .update_identity(im, mama_contact);
             });
     },
 
@@ -632,13 +635,13 @@ go.utils = {
         if (non_dialback_sms_states.indexOf(close_state) === -1
           && e.user_terminated) {
             return go.utils
-                .get_contact_by_id(user_id, im)
+                .get_identity(user_id, im)
                 .then(function(user) {
                     if (!user.details.dialback_sent) {
                         user.details.dialback_sent = true;
                         return Q.all([
                             go.utils.send_text(im, user_id, sms_content),
-                            go.utils.update_contact(im, user)
+                            go.utils.update_identity(im, user)
                         ]);
                     }
                 });
@@ -675,6 +678,41 @@ go.utils = {
             && no_redirects.indexOf(im.user.state.name) === -1;
     },
 
+// REGISTRATION HANDLING
+
+    compile_reg_info: function(im) {
+        var reg_info = {
+            stage: im.user.answers.state_pregnancy_status,
+            data: {
+                msg_receiver: im.user.answers.state_msg_receiver,
+                mother_id: im.user.answers.mother_id,
+                receiver_id: im.user.answers.receiver_id,
+                operator_id: im.user.answers.operator_id,
+                language: im.user.answers.state_msg_language,
+                msg_type: im.user.answers.state_msg_type,
+                user_id: im.user.answers.user_id
+            }
+        };
+
+        // add data for last_period_date or baby_dob
+        if (im.user.answers.state_pregnancy_status === 'prebirth') {
+            reg_info.data.last_period_date = im.user.answers.working_date;
+        } else if (im.user.answers.state_pregnancy_status === 'postbirth') {
+            reg_info.data.baby_dob = im.user.answers.working_date;
+        }
+        return reg_info;
+    },
+
+    save_registration: function(im) {
+        // compile registration
+        var reg_info = go.utils.compile_reg_info(im);
+        return go.utils
+            .service_api_call("registrations", "post", null, reg_info, "registrations/", im)
+            .then(function(result) {
+                return result.id;
+            });
+    },
+
 // PROJECT SPECIFIC
 
     check_msisdn_hcp: function(msisdn) {
@@ -685,16 +723,16 @@ go.utils = {
             });
     },
 
-    validate_personnel_code: function(im, content) {
+    find_healthworker_with_personnel_code: function(im, personnel_code) {
         var params = {
-            "details__personnel_code": content
+            "details__personnel_code": personnel_code
         };
         return go.utils
             .service_api_call('identities', 'get', params, null, 'identities/search/', im)
             .then(function(json_get_response) {
-                var contacts_found = json_get_response.data.results;
-                // Return the number of contact's found
-                return contacts_found.length > 0;
+                var healthworkers_found = json_get_response.data.results;
+                // Return the first healthworker if found
+                return healthworkers_found[0];
             });
     },
 
@@ -708,16 +746,81 @@ go.utils = {
         return go.utils.check_valid_alpha(input);
     },
 
-    make_month_choices: function($, startDate, limit, increment) {
+    make_month_choices: function($, startDate, limit, increment, valueFormat, labelFormat) {
         var choices = [];
 
         var monthIterator = startDate;
         for (var i=0; i<limit; i++) {
-            choices.push(new Choice(monthIterator.format("YYYYMM"), $(monthIterator.format("MMMM YY"))));
+            choices.push(new Choice(monthIterator.format(valueFormat),
+                                    $(monthIterator.format(labelFormat))));
             monthIterator.add(increment, 'months');
         }
 
         return choices;
+    },
+
+    save_identities: function(im, msg_receiver, receiver_msisdn, father_msisdn,
+                              mother_msisdn, operator_id) {
+        // Creates identities for the msisdns entered in various states
+        // and sets the identitity id's to user.answers for later use
+        // msg_receiver: (str) person who will receive messages eg. 'mother_only'
+        // *_msisdn: (str) msisdns of role players
+        // operator_id: (str - uuid) id of healthworker making the registration
+        if (msg_receiver === 'mother_only') {
+            return go.utils
+                // get or create mother's identity
+                .get_or_create_identity({'msisdn': receiver_msisdn}, im, operator_id)
+                .then(function(mother) {
+                    im.user.set_answer('mother_id', mother.id);
+                    im.user.set_answer('receiver_id', mother.id);
+                    return;
+                });
+        } else if (['trusted_friend', 'family_member', 'father_only'].indexOf(msg_receiver) !== -1) {
+            return go.utils
+                // get or create msg_receiver's identity
+                .get_or_create_identity({'msisdn': receiver_msisdn}, im, operator_id)
+                .then(function(msg_receiver) {
+                    im.user.set_answer('receiver_id', msg_receiver.id);
+                    return go.utils
+                        // create mother's identity - cannot get as no identifying information
+                        .create_identity(im, null, msg_receiver.id, operator_id)
+                        .then(function(mother) {
+                            im.user.set_answer('mother_id', mother.id);
+                            return;
+                        });
+                });
+        } else if (msg_receiver === 'mother_father') {
+            return Q
+                .all([
+                    // create father's identity
+                    go.utils.get_or_create_identity({'msisdn': father_msisdn}, im, operator_id),
+                    // create mother's identity
+                    go.utils.get_or_create_identity({'msisdn': mother_msisdn}, im, operator_id),
+                ])
+                .spread(function(father, mother) {
+                    im.user.set_answer('receiver_id', father.id);
+                    im.user.set_answer('mother_id', mother.id);
+                    return;
+                });
+        }
+    },
+
+    // function used to validate months for states 5A/5B & 12A/12B
+    is_valid_month: function(today, choiceYear, choiceMonth, monthsValid) {
+        var choiceDate = new moment(choiceYear+choiceMonth, "YYYYMM");
+
+        var startDate = today.clone();
+        // note: 1 is subtracted as current month is already included
+        startDate = startDate.subtract('month', monthsValid - 1);
+        startDate.date(1);  // set day of month to 1st
+
+        // choice >= startDate && <= today/endDate
+        if ((choiceDate.isSame(startDate) || choiceDate.isAfter(startDate)) &&
+            (choiceDate.isSame(today) || choiceDate.isBefore(today))) {
+            return true;
+        } else {
+            return false;
+        }
     },
 
     "commas": "commas"
@@ -783,7 +886,7 @@ go.app = function() {
             "state_voice_times":
                 "Thank you. At what time would they like to receive these calls?",
             "state_end_voice":
-                "Thank you. The person will now start receiving calls on {{first_day}} and {{second_day}} between {{start_time}} - {{end_time}}.",
+                "Thank you. The person will now start receiving calls on {{days}} between {{times}}.",
             "state_end_sms":
                 "Thank you. The person will now start receiving messages three times a week."
         };
@@ -840,10 +943,11 @@ go.app = function() {
         self.add('state_start', function(name) {
             self.im.user.answers = {};  // reset answers
             return go.utils
-                .get_or_create_contact(self.im.user.addr, self.im)
+                .get_or_create_identity({'msisdn': self.im.user.addr}, self.im, null)
                 .then(function(user) {
                     self.im.user.set_answer('user_id', user.id);
                     if (user.details.personnel_code) {
+                        self.im.user.set_answer('operator_id', user.id);
                         return self.states.create('state_msg_receiver');
                     } else {
                         return self.states.create('state_auth_code');
@@ -859,10 +963,12 @@ go.app = function() {
             return new FreeText(name, {
                 question: $(questions[name]),
                 check: function(content) {
+                    var personnel_code = content;
                     return go.utils
-                        .validate_personnel_code(self.im, content)
-                        .then(function(valid_personnel_code) {
-                            if (valid_personnel_code) {
+                        .find_healthworker_with_personnel_code(self.im, personnel_code)
+                        .then(function(healthworker) {
+                            if (healthworker) {
+                                self.im.user.set_answer('operator_id', healthworker.id);
                                 return null;  // vumi expects null or undefined if check passes
                             } else {
                                 return $(get_error_text(name));
@@ -885,15 +991,10 @@ go.app = function() {
                     new Choice('trusted_friend', $("A trusted friend"))
                 ],
                 next: function(choice) {
-                    switch (choice.value) {
-                        case 'mother_father':
-                            return 'state_msisdn_father';
-                        case 'father_only':
-                            // to register to both "Mother" & "Father" messages
-                            return 'state_msisdn';
-                        default:
-                            // to register only to "Mother" messages
-                            return 'state_msisdn';
+                    if (choice.value === 'mother_father') {
+                        return 'state_msisdn_father';
+                    } else {
+                        return 'state_msisdn';
                     }
                 }
             });
@@ -910,7 +1011,7 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: 'state_pregnancy_status'
+                next: 'state_save_identities'
             });
         });
 
@@ -940,8 +1041,32 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: 'state_pregnancy_status'
+                next: function() {
+                    if (self.im.user.answers.state_msisdn_father ===
+                        self.im.user.answers.state_msisdn_mother) {
+                        self.im.user.set_answer('state_msg_receiver', 'father_only');
+                        self.im.user.set_answer('state_msisdn',
+                                                self.im.user.answers.state_msisdn_mother);
+                    }
+                    return 'state_save_identities';
+                }
             });
+        });
+
+        // Get or create identities and save their IDs
+        self.add('state_save_identities', function(name) {
+            return go.utils
+                .save_identities(
+                    self.im,
+                    self.im.user.answers.state_msg_receiver,
+                    self.im.user.answers.state_msisdn,
+                    self.im.user.answers.state_msisdn_father,
+                    self.im.user.answers.state_msisdn_mother,
+                    self.im.user.answers.operator_id
+                )
+                .then(function() {
+                    return self.states.create('state_pregnancy_status');
+                });
         });
 
         // ChoiceState st-04
@@ -949,11 +1074,11 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 choices: [
-                    new Choice('pregnant', $("The mother is pregnant")),
-                    new Choice('baby', $("The mother has a baby under 1 year old"))
+                    new Choice('prebirth', $("The mother is pregnant")),
+                    new Choice('postbirth', $("The mother has a baby under 1 year old"))
                 ],
                 next: function(choice) {
-                    return choice.value === 'pregnant'
+                    return choice.value === 'prebirth'
                         ? 'state_last_period_month'
                         : 'state_baby_birth_month_year';
                 }
@@ -969,7 +1094,8 @@ go.app = function() {
                 //options_per_page: null,
                 more: $('More'),
                 back: $('Back'),
-                choices: go.utils.make_month_choices($, today, 9, -1),
+                choices: go.utils.make_month_choices($, today, 9, -1,
+                                                     "YYYYMM", "MMMM YY"),
                 next: 'state_last_period_day'
             });
         });
@@ -1011,9 +1137,15 @@ go.app = function() {
                     new Choice('sms', $('Text SMSs'))
                 ],
                 next: function(choice) {
-                    return choice.value === 'voice'
-                        ? 'state_voice_days'
-                        : 'state_end_sms';
+                    if (choice.value === 'voice') {
+                        return 'state_voice_days';
+                    } else {
+                        return go.utils
+                            .save_registration(self.im)
+                            .then(function() {
+                                return 'state_end_sms';
+                            });
+                    }
                 }
             });
         });
@@ -1038,41 +1170,29 @@ go.app = function() {
                     new Choice('9_11', $('Between 9-11am')),
                     new Choice('2_5', $('Between 2-5pm'))
                 ],
-                next: 'state_end_voice'
+                next: function() {
+                    return go.utils
+                        .save_registration(self.im)
+                        .then(function() {
+                            return 'state_end_voice';
+                        });
+                }
             });
         });
 
         // EndState st-11
         self.add('state_end_voice', function(name) {
-            var first_voice_day;
-            var second_voice_day;
-            var voice_start_time;
-            var voice_end_time;
-
-            if (self.im.user.answers.state_voice_days == 'mon_wed') {
-                first_voice_day = 'Monday';
-                second_voice_day = 'Wednesday';
-            } else if (self.im.user.answers.state_voice_days == 'tue_thu') {
-                first_voice_day = 'Tuesday';
-                second_voice_day = 'Thursday';
-            }
-
-            switch (self.im.user.answers.state_voice_times) {
-                case '9_11':
-                    voice_start_time = '9am';
-                    voice_end_time = '11am';
-                    break;
-                case '2_5':
-                    voice_start_time = '2pm';
-                    voice_end_time = '5pm';
-                    break;
-            }
-
+            var voice_schedule = {
+                "mon_wed": "Monday and Wednesday",
+                "tue_thu": "Tuesday and Thursday",
+                "9_11": "9am - 11am",
+                "2_5": "2pm - 5pm"
+            };
             return new EndState(name, {
-                text: $(questions[name]).context({first_day: first_voice_day,
-                                                 second_day: second_voice_day,
-                                                 start_time: voice_start_time,
-                                                 end_time: voice_end_time}),
+                text: $(questions[name]).context({
+                    days: voice_schedule[self.im.user.answers.state_voice_days],
+                    times: voice_schedule[self.im.user.answers.state_voice_times]
+                }),
                 next: 'state_start'
             });
         });
@@ -1086,7 +1206,8 @@ go.app = function() {
                 options_per_page: null,
                 more: $('More'),
                 back: $('Back'),
-                choices: go.utils.make_month_choices($, today, 12, -1),
+                choices: go.utils.make_month_choices($, today, 12, -1,
+                                                     "YYYYMM", "MMMM YY"),
                 next: 'state_baby_birth_day'
             });
         });
@@ -1124,6 +1245,7 @@ go.app = function() {
             var dateToValidate = monthAndYear+day;
 
             if (go.utils.is_valid_date(dateToValidate, 'YYYYMMDD')) {
+                self.im.user.set_answer('working_date', dateToValidate);
                 return self.states.create('state_msg_language');
             } else {
                 return self.states.create('state_invalid_date', {date: dateToValidate});
