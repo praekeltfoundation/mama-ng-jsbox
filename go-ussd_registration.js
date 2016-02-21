@@ -80,15 +80,20 @@ go.utils = {
     },
 
     // Construct url string
-    make_speech_url: function(im, name, lang, num) {
-        return im.config.services.voice_content.url + lang + '/' + name + '_' + num + '.mp3';
+    make_speech_url: function(im, name, lang, num, retry) {
+        var url_start = im.config.services.voice_content.url + lang + '/' + name + '_' + num;
+        if (retry) {
+            url_start += '_retry';
+        }
+        var extension = '.mp3';
+        return url_start + extension;
     },
 
     // Construct helper_data object
-    make_voice_helper_data: function(im, name, lang, num) {
+    make_voice_helper_data: function(im, name, lang, num, retry) {
         return {
             voice: {
-                speech_url: go.utils.make_speech_url(im, name, lang, num),
+                speech_url: go.utils.make_speech_url(im, name, lang, num, retry),
                 wait_for: '#'
             }
         };

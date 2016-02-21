@@ -157,17 +157,17 @@ describe("Mama Nigeria App", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
-                            {session_event: 'new'},
-                            'aaaaa'  // state_personnel_auth
+                            {session_event: 'new'}
+                            , 'aaaaa'  // state_personnel_auth
                         )
                         .check.interaction({
-                            state: 'state_retry_personnel_auth',
+                            state: 'state_personnel_auth',
                             reply: 'Sorry, that is not a valid number. Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_retry_personnel_auth_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1_retry.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -183,16 +183,16 @@ describe("Mama Nigeria App", function() {
                         .inputs(
                             {session_event: 'new'}
                             ,'aaaaa'  // state_personnel_auth
-                            ,'aaaaa'  // state_retry_personnel_auth
+                            ,'aaaaa'  // state_personnel_auth
                         )
                         .check.interaction({
-                            state: 'state_retry_personnel_auth',
+                            state: 'state_personnel_auth',
                             reply: 'Sorry, that is not a valid number. Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_retry_personnel_auth_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1_retry.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -208,7 +208,7 @@ describe("Mama Nigeria App", function() {
                         .inputs(
                             {session_event: 'new'}
                             ,'aaaaa'  // state_personnel_auth
-                            ,'*'      // state_retry_personnel_auth
+                            ,'*'      // state_personnel_auth
                         )
                         .check.interaction({
                             state: 'state_personnel_auth',
@@ -233,7 +233,7 @@ describe("Mama Nigeria App", function() {
                         .inputs(
                             {session_event: 'new'}
                             ,'aaaaa'  // state_personnel_auth
-                            ,'12345'  // state_retry_personnel_auth
+                            ,'12345'  // state_personnel_auth
                         )
                         .check.interaction({
                             state: 'state_msg_receiver',
@@ -275,7 +275,7 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                it("to state_retry_msisdn_father", function() {
+                it("to state_msisdn_father", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -285,7 +285,7 @@ describe("Mama Nigeria App", function() {
                             , '12345'   // state_msisdn_father
                         )
                         .check.interaction({
-                            state: 'state_retry_msisdn_father',
+                            state: 'state_msisdn_father',
                             reply: 'Sorry, invalid input. Please enter number (Father)'
                         })
                         .run();
@@ -305,7 +305,7 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                it("to state_retry_msisdn_mother", function() {
+                it("to state_msisdn_mother", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -316,7 +316,7 @@ describe("Mama Nigeria App", function() {
                             , '08020002'     // state_msisdn_mother
                         )
                         .check.interaction({
-                            state: 'state_retry_msisdn_mother',
+                            state: 'state_msisdn_mother',
                             reply: 'Sorry, invalid input. Please enter number (Mother)'
                         })
                         .run();
@@ -357,7 +357,7 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                it("to state_retry_msisdn", function() {
+                it("to state_msisdn", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -367,7 +367,7 @@ describe("Mama Nigeria App", function() {
                             , '08567898'  // state_msisdn
                         )
                         .check.interaction({
-                            state: 'state_retry_msisdn',
+                            state: 'state_msisdn',
                             reply: 'Sorry, invalid input. Please enter number'
                         })
                         .run();
@@ -399,7 +399,7 @@ describe("Mama Nigeria App", function() {
                             , '12345'        // state_personnel_auth
                             , '4'            // state_msg_receiver - family member
                             , 'a45521'       // state_msisdn
-                            , '09092222222'  // state_retry_msisdn
+                            , '09092222222'  // state_msisdn
                         )
                         .check.interaction({
                             state: 'state_pregnancy_status',
@@ -614,7 +614,7 @@ describe("Mama Nigeria App", function() {
                         .run();
                     });
 
-                    it("should navigate to state_retry_last_period_month", function() {
+                    it("should navigate back to state_last_period_month", function() {
                         return tester
                             .setup.user.addr('07030010001')
                             .inputs(
@@ -628,7 +628,7 @@ describe("Mama Nigeria App", function() {
                                 , '12'              // state_last_period_month
                             )
                             .check.interaction({
-                                state: 'state_retry_last_period_month',
+                                state: 'state_last_period_month',
                                 reply: [
                                     'Retry. Period month this/last year?',
                                     '1. January',
@@ -648,7 +648,7 @@ describe("Mama Nigeria App", function() {
                             .check.reply.properties({
                                 helper_metadata: {
                                     voice: {
-                                        speech_url: 'http://localhost:8004/api/v1/eng_NG/state_retry_last_period_month_1.mp3',
+                                        speech_url: 'http://localhost:8004/api/v1/eng_NG/state_last_period_month_1_retry.mp3',
                                         wait_for: '#'
                                     }
                                 }
@@ -698,7 +698,7 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                it("should navigate to state_retry_last_period_month", function() {
+                it("should navigate back to state_last_period_month", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -712,7 +712,7 @@ describe("Mama Nigeria App", function() {
                             , '1'               // state_last_period_month - jan
                         )
                         .check.interaction({
-                            state: 'state_retry_last_period_month',
+                            state: 'state_last_period_month',
                             reply: [
                                 'Retry. Period month this/last year?',
                                 '1. January',
@@ -732,7 +732,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_retry_last_period_month_2.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_last_period_month_2_retry.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -914,9 +914,9 @@ describe("Mama Nigeria App", function() {
         });
 
         // pregnant
-        describe("When you enter a last period month", function() {
+        describe.only("When you enter a last period month", function() {
             describe("if the month choice is not in valid range for this year", function() {
-                it("should navigate to state_retry_last_period_month", function() {
+                it("should navigate back to state_last_period_month", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -930,7 +930,7 @@ describe("Mama Nigeria App", function() {
                             , '9'            // state_last_period_month - sep
                         )
                         .check.interaction({
-                            state: 'state_retry_last_period_month',
+                            state: 'state_last_period_month',
                             reply: [
                                 'Retry. Period month this/last year?',
                                 '1. January',
@@ -950,7 +950,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_retry_last_period_month_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_last_period_month_1_retry.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -959,7 +959,7 @@ describe("Mama Nigeria App", function() {
                 });
             });
             describe("if the month choice is not in valid range for last year", function() {
-                it("should navigate to state_retry_last_period_month", function() {
+                it("should navigate back to state_last_period_month", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -973,7 +973,7 @@ describe("Mama Nigeria App", function() {
                             , '3'            // state_last_period_month - mar
                         )
                         .check.interaction({
-                            state: 'state_retry_last_period_month',
+                            state: 'state_last_period_month',
                             reply: [
                                 'Retry. Period month this/last year?',
                                 '1. January',
@@ -993,7 +993,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_retry_last_period_month_2.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_last_period_month_2_retry.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -1030,7 +1030,7 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                it("should navigate to state_retry_last_period_day", function() {
+                it("should navigate back to state_last_period_day", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -1045,20 +1045,20 @@ describe("Mama Nigeria App", function() {
                             , '32'          // state_last_period_day
                         )
                         .check.interaction({
-                            state: 'state_retry_last_period_day',
-                            reply: 'Retry period day'
+                            state: 'state_last_period_day',
+                            reply: 'Retry last period day 10 2016'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_retry_last_period_day_10.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_last_period_day_10_retry.mp3',
                                     wait_for: '#'
                                 }
                             }
                         })
                         .run();
                 });
-                it("should navigate to state_invalid_date (via state_retry_last_period_day)", function() {
+                it("should navigate to state_invalid_date", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -1069,9 +1069,9 @@ describe("Mama Nigeria App", function() {
                             , '09094444444' // state_msisdn_mother
                             , '1'           // state_pregnancy_status - pregnant
                             , '2'           // state_last_period_year - last year
-                            , '10'           // state_last_period_month - oct
+                            , '11'           // state_last_period_month - nov
                             , '32'          // state_last_period_day
-                            , '33'          // state_retry_last_period_day
+                            , '31'          // state_last_period_day
                         )
                         .check.interaction({
                             state: 'state_invalid_date',

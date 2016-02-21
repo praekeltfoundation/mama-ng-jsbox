@@ -47,16 +47,25 @@ go.app = function() {
                 });
         });
 
+        // A loopback state that is required since you can't pass opts back
+        // into the same state
+        self.add('state_retry', function(name, opts) {
+            return self.states.create(opts.retry_state, {'retry': true});
+        });
+
 
     // REGISTRATION
 
         // FreeText st-01
-        self.add('state_personnel_auth', function(name) {
+        self.add('state_personnel_auth', function(name, creator_opts) {
+            var question_text = 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345';
+            var retry_text = 'Sorry, that is not a valid number. Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345';
+            var use_text = creator_opts.retry === true ? retry_text : question_text;
             var speech_option = '1';
             return new FreeText(name, {
-                question: $('Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'),
+                question: $(use_text),
                 helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
                     return go.utils
                         .find_healthworker_with_personnel_code(self.im, content)
@@ -65,31 +74,10 @@ go.app = function() {
                                 self.im.user.set_answer('operator_id', healthworker.id);
                                 return 'state_msg_receiver';
                             } else {
-                                return 'state_retry_personnel_auth';
-                            }
-                        });
-                }
-            });
-        });
-
-        // FreeText st-17
-        self.add('state_retry_personnel_auth', function(name) {
-            var speech_option = '1';
-            return new FreeText(name, {
-                question: $('Sorry, that is not a valid number. Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                next: function(content) {
-                    var auth_code = content;
-                    return go.utils
-                        .find_healthworker_with_personnel_code(self.im, content)
-                        .then(function(healthworker) {
-                            if (healthworker) {
-                                self.im.user.set_answer('operator_id', healthworker.id);
-                                self.im.user.set_answer('state_personnel_auth', auth_code);
-                                return 'state_msg_receiver';
-                            } else {
-                                return 'state_retry_personnel_auth';
+                                return {
+                                    'name': 'state_retry',
+                                    'creator_opts': {'retry_state': name}
+                                };
                             }
                         });
                 }
@@ -97,12 +85,12 @@ go.app = function() {
         });
 
         // ChoiceState st-02
-        self.add('state_msg_receiver', function(name) {
+        self.add('state_msg_receiver', function(name, creator_opts) {
             var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Choose message receiver'),
                 helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
                     new Choice('mother_father', $('Mother & Father')),
                     new Choice('mother_only', $('Only Mother')),
@@ -122,34 +110,22 @@ go.app = function() {
         });
 
         // FreeText st-03
-        self.add('state_msisdn', function(name) {
+        self.add('state_msisdn', function(name, creator_opts) {
+            var question_text = 'Please enter number';
+            var retry_text = 'Sorry, invalid input. Please enter number';
+            var use_text = creator_opts.retry === true ? retry_text : question_text;
             var speech_option = '1';
             return new FreeText(name, {
-                question: $('Please enter number'),
+                question: $(use_text),
                 helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
                     if (go.utils.is_valid_msisdn(content) === false) {
-                        return 'state_retry_msisdn';
+                        return {
+                            'name': 'state_retry',
+                            'creator_opts': {'retry_state': name}
+                        };
                     } else {
-                        return 'state_save_identities';
-                    }
-                }
-            });
-        });
-
-        // FreeText st-16
-        self.add('state_retry_msisdn', function(name) {
-            var speech_option = '1';
-            return new FreeText(name, {
-                question: $('Sorry, invalid input. Please enter number'),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                next: function(content) {
-                    if (go.utils.is_valid_msisdn(content) === false) {
-                        return 'state_retry_msisdn';
-                    } else {
-                        self.im.user.set_answer('state_msisdn', content);
                         return 'state_save_identities';
                     }
                 }
@@ -157,34 +133,22 @@ go.app = function() {
         });
 
         // FreeText st-3A
-        self.add('state_msisdn_father', function(name) {
+        self.add('state_msisdn_father', function(name, creator_opts) {
+            var question_text = 'Please enter number (Father)';
+            var retry_text = 'Sorry, invalid input. Please enter number (Father)';
+            var use_text = creator_opts.retry === true ? retry_text : question_text;
             var speech_option = '1';
             return new FreeText(name, {
-                question: $('Please enter number (Father)'),
+                question: $(use_text),
                 helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
                     if (go.utils.is_valid_msisdn(content) === false) {
-                        return 'state_retry_msisdn_father';
+                        return {
+                            'name': 'state_retry',
+                            'creator_opts': {'retry_state': name}
+                        };
                     } else {
-                        return 'state_msisdn_mother';
-                    }
-                }
-            });
-        });
-
-        // FreeText (retry state of st-3A)
-        self.add('state_retry_msisdn_father', function(name) {
-            var speech_option = '1';
-            return new FreeText(name, {
-                question: $('Sorry, invalid input. Please enter number (Father)'),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                next: function(content) {
-                    if (go.utils.is_valid_msisdn(content) === false) {
-                        return 'state_retry_msisdn_father';
-                    } else {
-                        self.im.user.set_answer('state_msisdn_father', content);
                         return 'state_msisdn_mother';
                     }
                 }
@@ -192,40 +156,22 @@ go.app = function() {
         });
 
         // FreeText st-3B
-        self.add('state_msisdn_mother', function(name) {
+        self.add('state_msisdn_mother', function(name, creator_opts) {
+            var question_text = 'Please enter number (Mother)';
+            var retry_text = 'Sorry, invalid input. Please enter number (Mother)';
+            var use_text = creator_opts.retry === true ? retry_text : question_text;
             var speech_option = '1';
             return new FreeText(name, {
-                question: $('Please enter number (Mother)'),
+                question: $(use_text),
                 helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
                     if (go.utils.is_valid_msisdn(content) === false) {
-                        return 'state_retry_msisdn_mother';
+                        return {
+                            'name': 'state_retry',
+                            'creator_opts': {'retry_state': name}
+                        };
                     } else {
-                        if (self.im.user.answers.state_msisdn_father ===
-                            self.im.user.answers.state_msisdn_mother) {
-                            self.im.user.set_answer('state_msg_receiver', 'father_only');
-                            self.im.user.set_answer('state_msisdn',
-                                                    self.im.user.answers.state_msisdn_mother);
-                        }
-                        return 'state_save_identities';
-                    }
-                }
-            });
-        });
-
-        // FreeText (retry state of st-3B)
-        self.add('state_retry_msisdn_mother', function(name) {
-            var speech_option = '1';
-            return new FreeText(name, {
-                question: $('Sorry, invalid input. Please enter number (Mother)'),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                next: function(content) {
-                    if (go.utils.is_valid_msisdn(content) === false) {
-                        return 'state_retry_msisdn_mother';
-                    } else {
-                        self.im.user.set_answer('state_msisdn_mother', content);
                         if (self.im.user.answers.state_msisdn_father ===
                             self.im.user.answers.state_msisdn_mother) {
                             self.im.user.set_answer('state_msg_receiver', 'father_only');
@@ -239,7 +185,7 @@ go.app = function() {
         });
 
         // Get or create identities and save their IDs
-        self.add('state_save_identities', function(name) {
+        self.add('state_save_identities', function(name, creator_opts) {
             return go.utils
                 .save_identities(
                     self.im,
@@ -255,7 +201,7 @@ go.app = function() {
         });
 
         // ChoiceState st-04
-        self.add('state_pregnancy_status', function(name) {
+        self.add('state_pregnancy_status', function(name, creator_opts) {
             var speech_option = '1';
             var routing = {
                 'prebirth': 'state_last_period_year',
@@ -264,7 +210,7 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $('Pregnant or baby'),
                 helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
                     new Choice('prebirth', $('Pregnant')),
                     new Choice('postbirth', $('Baby'))
@@ -277,12 +223,12 @@ go.app = function() {
 
     // pregnant
         // ChoiceState st-05
-        self.add('state_last_period_year', function(name) {
+        self.add('state_last_period_year', function(name, creator_opts) {
             var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Last period?'),
                 helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
                     new Choice('this_year', $('This year')),
                     new Choice('last_year', $('Last year'))
@@ -297,13 +243,16 @@ go.app = function() {
         });
 
         // ChoiceState st-5
-        self.add('state_last_period_month', function(name) {
+        self.add('state_last_period_month', function(name, creator_opts) {
+            var question_text = 'Period month this/last year?';
+            var retry_text = 'Retry. Period month this/last year?';
+            var use_text = creator_opts.retry === true ? retry_text : question_text;
             var speech_option = go.utils.get_speech_option_year(
                 self.im.user.answers.state_last_period_year);
             return new ChoiceState(name, {
-                question: $('Period month this/last year?'),
+                question: $(use_text),
                 helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, lang, speech_option, creator_opts.retry),
                 choices: go.utils.make_month_choices(
                     $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
                 next: function(choice) {
@@ -313,90 +262,51 @@ go.app = function() {
                         self.im.user.set_answer('working_month', choice.value);
                         return 'state_last_period_day';
                     } else {
-                        return 'state_retry_last_period_month';
-                    }
-                }
-            });
-        });
-
-        // Retry ChoiceState st-5
-        self.add('state_retry_last_period_month', function(name) {
-            var speech_option = go.utils.get_speech_option_year(
-                self.im.user.answers.state_last_period_year);
-            return new ChoiceState(name, {
-                question: $('Retry. Period month this/last year?'),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                choices: go.utils.make_month_choices(
-                    $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
-                next: function(choice) {
-                    var today = go.utils.get_today(self.im.config);
-                    if (go.utils.is_valid_month(today, self.im.user.answers.working_year,
-                                                choice.value, 10)) {
-                        self.im.user.set_answer('state_last_period_month', choice.value);
-                        self.im.user.set_answer('working_month', choice.value);
-                        return 'state_last_period_day';
-                    } else {
-                        return 'state_retry_last_period_month';
+                        return {
+                            'name': 'state_retry',
+                            'creator_opts': {'retry_state': name}
+                        };
                     }
                 }
             });
         });
 
         // FreeText st-06
-        self.add('state_last_period_day', function(name) {
+        self.add('state_last_period_day', function(name, creator_opts) {
+            var question_text = 'Last period day {{ month }} [{{ year }}]';
+            var retry_text = 'Retry last period day {{ month }} {{ year }}';
+            var use_text = creator_opts.retry === true ? retry_text : question_text;
             var month = self.im.user.answers.working_month;
             var year = self.im.user.answers.working_year;
             var speech_option = go.utils.get_speech_option_pregnancy_status_day(
                 self.im, month);
 
             return new FreeText(name, {
-                question: $('Last period day {{ month }} [{{ year }}]'
-                            ).context({ month: month, year: year }),
+                question: $(use_text).context({ month: month, year: year }),
                 helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
                     if (!(content > 0 && content <= 31)) {
-                        return 'state_retry_last_period_day';
+                        return {
+                            'name': 'state_retry',
+                            'creator_opts': {'retry_state': name}
+                        };
                     } else {
-                        self.im.user.set_answer('working_date',
-                            year + month + content);
-                        // TODO: state_validate_date
-                        return 'state_msg_language';
+                        self.im.user.set_answer('working_date', year + month + content);
+                        return 'state_validate_date';
                     }
-                }
-            });
-        });
-
-        // FreeText st-19 (retry state 06)
-        self.add('state_retry_last_period_day', function(name) {
-            var month = self.im.user.answers.working_month;
-            var year = self.im.user.answers.working_year;
-            var speech_option = go.utils.get_speech_option_pregnancy_status_day(
-                self.im, month);
-            return new FreeText(name, {
-                question: $('Retry period day'
-                            ).context({ month: month, year: year }),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                next: function(content) {
-                    self.im.user.set_answer('working_date',
-                        year + month + content);
-                    // TODO: copy from state_last_period_day
-                    // TODO: set self.im.user.set_answer('state_last_period_day', choice.value);
-                    return 'state_validate_date';
                 }
             });
         });
 
     // baby
         // ChoiceState st-12
-        self.add('state_baby_birth_year', function(name) {
+        self.add('state_baby_birth_year', function(name, creator_opts) {
             var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Baby born?'),
                 helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
                     new Choice('this_year', $('this year')),
                     new Choice('last_year', $('last year'))
@@ -411,13 +321,13 @@ go.app = function() {
         });
 
         // ChoiceState st-12
-        self.add('state_baby_birth_month', function(name) {
+        self.add('state_baby_birth_month', function(name, creator_opts) {
             var speech_option = go.utils.get_speech_option_year(
                 self.im.user.answers.state_baby_birth_year);
             return new ChoiceState(name, {
                 question: $('Birth month this/last year?'),
                 helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, lang, speech_option, creator_opts.retry),
                 choices: go.utils.make_month_choices(
                     $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
                 next: function(choice) {
@@ -434,13 +344,13 @@ go.app = function() {
         });
 
         // Retry ChoiceState st-12
-        self.add('state_retry_baby_birth_month', function(name) {
+        self.add('state_retry_baby_birth_month', function(name, creator_opts) {
             var speech_option = go.utils.get_speech_option_year(
                 self.im.user.answers.state_baby_birth_year);
             return new ChoiceState(name, {
                 question: $('Retry. Birth month this/last year?'),
                 helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, lang, speech_option, creator_opts.retry),
                 choices: go.utils.make_month_choices(
                     $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
                 next: function(choice) {
@@ -458,7 +368,7 @@ go.app = function() {
         });
 
         // FreeText st-13
-        self.add('state_baby_birth_day', function(name) {
+        self.add('state_baby_birth_day', function(name, creator_opts) {
             var month = self.im.user.answers.working_month;
             var year = self.im.user.answers.working_year;
             var speech_option = go.utils.get_speech_option_pregnancy_status_day(
@@ -468,7 +378,7 @@ go.app = function() {
                 question: $('Birth day in {{ month }} [{{ year}}]'
             ).context({ month: month, year: year }),
                 helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
                     if (!(content > 0 && content <= 31)) {
                         return 'state_retry_baby_birth_day';
@@ -483,7 +393,7 @@ go.app = function() {
         });
 
         // FreeText st-18 (retry state st-13)
-        self.add('state_retry_baby_birth_day', function(name) {
+        self.add('state_retry_baby_birth_day', function(name, creator_opts) {
             var month = self.im.user.answers.working_month;
             var year = self.im.user.answers.working_year;
             var speech_option = go.utils.get_speech_option_pregnancy_status_day(
@@ -493,7 +403,7 @@ go.app = function() {
                 question: $('Retry birth day'
             ).context({ month: month, year: year }),
                 helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
                     // TODO: copy
                     // TODO: set self.im.user.set_answer('state_baby_birth_day', choice.value);
@@ -507,7 +417,7 @@ go.app = function() {
 
     // continue
         // Validate overall date
-        self.add('state_validate_date', function(name) {
+        self.add('state_validate_date', function(name, creator_opts) {
             var dateToValidate = self.im.user.answers.working_date;
             if (go.utils.is_valid_date(dateToValidate, 'YYYY-MM-DD')) {
                 return self.states.create('state_msg_language');
@@ -516,13 +426,13 @@ go.app = function() {
             }
         });
 
-        self.add('state_invalid_date', function(name) {
+        self.add('state_invalid_date', function(name, creator_opts) {
             var speech_option = '1';
             return new ChoiceState(name, {
                 question:
                     $('The date you entered is not a real date. Please try again.'),
                 helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
                     new Choice('continue', $('Continue'))
                 ],
@@ -537,12 +447,12 @@ go.app = function() {
         });
 
         // ChoiceState st-07
-        self.add('state_msg_language', function(name) {
+        self.add('state_msg_language', function(name, creator_opts) {
             var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Language?'),
                 helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
                     new Choice('english', $('english')),
                     new Choice('hausa', $('hausa')),
@@ -553,12 +463,12 @@ go.app = function() {
         });
 
         // ChoiceState st-08
-        self.add('state_msg_type', function(name) {
+        self.add('state_msg_type', function(name, creator_opts) {
             var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Channel?'),
                 helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
                     new Choice('voice', $('voice')),
                     new Choice('sms', $('sms'))
@@ -578,24 +488,24 @@ go.app = function() {
         });
 
         // EndState st-14
-        self.add('state_end_sms', function(name) {
+        self.add('state_end_sms', function(name, creator_opts) {
             var speech_option = '1';
             var text = $('Thank you! three times a week.');
             return new EndState(name, {
                 text: text,
                 helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, lang, speech_option, creator_opts.retry),
                 next: 'state_start'
             });
         });
 
         // ChoiceState st-09
-        self.add('state_voice_days', function(name) {
+        self.add('state_voice_days', function(name, creator_opts) {
             var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Message days?'),
                 helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
                     new Choice('mon_wed', $('mon_wed')),
                     new Choice('tue_thu', $('tue_thu'))
@@ -605,13 +515,13 @@ go.app = function() {
         });
 
         // ChoiceState st-10
-        self.add('state_voice_times', function(name) {
+        self.add('state_voice_times', function(name, creator_opts) {
             var days = self.im.user.answers.state_voice_days;
             var speech_option = go.utils.get_speech_option_days(days);
             return new ChoiceState(name, {
                 question: $('Message time?'),
                 helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
                     new Choice('9_11', $('9_11')),
                     new Choice('2_5', $('2_5'))
@@ -627,7 +537,7 @@ go.app = function() {
         });
 
         // EndState st-11
-        self.add('state_end_voice', function(name) {
+        self.add('state_end_voice', function(name, creator_opts) {
             var time = self.im.user.answers.state_voice_times;
             var days = self.im.user.answers.state_voice_days;
             var speech_option = go.utils.get_speech_option_days_time(days, time);
@@ -636,7 +546,7 @@ go.app = function() {
             return new EndState(name, {
                 text: text,
                 helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, lang, speech_option, creator_opts.retry),
                 next: 'state_start'
             });
         });
