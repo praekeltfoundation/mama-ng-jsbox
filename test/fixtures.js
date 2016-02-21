@@ -302,6 +302,7 @@ module.exports = function() {
 
         // 7: get contact by personnel code - no results
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -461,6 +462,7 @@ module.exports = function() {
 
         // 12: get contact cb245673-aa41-4302-ac47-00000000005
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {},
@@ -838,6 +840,7 @@ module.exports = function() {
 
         // 20: get active subscriptions for 0005
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {

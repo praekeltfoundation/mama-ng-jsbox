@@ -18,7 +18,6 @@ describe("Hello Mama app", function() {
                     country_code: '234',  // nigeria
                     channel: '*120*8864*0000#',
                     testing_today: '2015-04-03 06:07:08.999',
-                    //metric_store: 'mama_ng_test',  // _env at the end
                     services: {
                         identities: {
                             api_token: 'test_token_identities',
@@ -28,14 +27,6 @@ describe("Hello Mama app", function() {
                             api_token: 'test_token_subscriptions',
                             url: "http://localhost:8002/api/v1/"
                         },
-                    },
-                    endpoints: {
-                        "sms": {"delivery_class": "sms"}
-                    },
-                    vumi_http: {
-                        url: "https://localhost/api/v1/go/http_api_nostream/conversation_key/messages.json",
-                        account_key: "acc_key",
-                        conversation_token: "conv_token"
                     }
                 })
                 .setup(function(api) {
