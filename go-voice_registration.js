@@ -1116,7 +1116,7 @@ go.app = function() {
 
         // FreeText st-06
         self.add('state_last_period_day', function(name, creator_opts) {
-            var question_text = 'Last period day {{ month }} [{{ year }}]';
+            var question_text = 'Last period day {{ month }} {{ year }}';
             var retry_text = 'Retry last period day {{ month }} {{ year }}';
             var use_text = creator_opts.retry === true ? retry_text : question_text;
             var month = self.im.user.answers.working_month;
@@ -1142,27 +1142,6 @@ go.app = function() {
             });
         });
 
-        // // FreeText st-19 (retry state 06)
-        // self.add('state_retry_last_period_day', function(name, creator_opts) {
-        //     var month = self.im.user.answers.working_month;
-        //     var year = self.im.user.answers.working_year;
-        //     var speech_option = go.utils.get_speech_option_pregnancy_status_day(
-        //         self.im, month);
-        //     return new FreeText(name, {
-        //         question: $('Retry last period day {{ month }} {{ year }}'
-        //                     ).context({ month: month, year: year }),
-        //         helper_metadata: go.utils.make_voice_helper_data(
-        //             self.im, name, lang, speech_option, creator_opts.retry),
-        //         next: function(content) {
-        //             self.im.user.set_answer('working_date',
-        //                 year + month + content);
-        //             // TODO: copy from state_last_period_day
-        //             // TODO: set self.im.user.set_answer('state_last_period_day', choice.value);
-        //             return 'state_validate_date';
-        //         }
-        //     });
-        // });
-
     // baby
         // ChoiceState st-12
         self.add('state_baby_birth_year', function(name, creator_opts) {
@@ -1186,10 +1165,13 @@ go.app = function() {
 
         // ChoiceState st-12
         self.add('state_baby_birth_month', function(name, creator_opts) {
+            var question_text = 'Birth month this/last year?';
+            var retry_text = 'Retry. Birth month this/last year?';
+            var use_text = creator_opts.retry === true ? retry_text : question_text;
             var speech_option = go.utils.get_speech_option_year(
                 self.im.user.answers.state_baby_birth_year);
             return new ChoiceState(name, {
-                question: $('Birth month this/last year?'),
+                question: $(use_text),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 choices: go.utils.make_month_choices(
@@ -1201,31 +1183,10 @@ go.app = function() {
                         self.im.user.set_answer('working_month', choice.value);
                         return 'state_baby_birth_day';
                     } else {
-                        return 'state_retry_baby_birth_month';
-                    }
-                }
-            });
-        });
-
-        // Retry ChoiceState st-12
-        self.add('state_retry_baby_birth_month', function(name, creator_opts) {
-            var speech_option = go.utils.get_speech_option_year(
-                self.im.user.answers.state_baby_birth_year);
-            return new ChoiceState(name, {
-                question: $('Retry. Birth month this/last year?'),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option, creator_opts.retry),
-                choices: go.utils.make_month_choices(
-                    $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
-                next: function(choice) {
-                    var today = go.utils.get_today(self.im.config);
-                    if (go.utils.is_valid_month(today, self.im.user.answers.working_year,
-                                                choice.value, 13)) {
-                        self.im.user.set_answer('state_baby_birth_month', choice.value);
-                        self.im.user.set_answer('working_month', choice.value);
-                        return 'state_baby_birth_day';
-                    } else {
-                        return 'state_retry_baby_birth_month';
+                        return {
+                            'name': 'state_retry',
+                            'creator_opts': {'retry_state': name}
+                        };
                     }
                 }
             });
@@ -1233,48 +1194,29 @@ go.app = function() {
 
         // FreeText st-13
         self.add('state_baby_birth_day', function(name, creator_opts) {
+            var question_text = 'Birth day in {{ month }} {{ year }}';
+            var retry_text = 'Retry birth day {{ month }} {{ year }}';
+            var use_text = creator_opts.retry === true ? retry_text : question_text;
             var month = self.im.user.answers.working_month;
             var year = self.im.user.answers.working_year;
             var speech_option = go.utils.get_speech_option_pregnancy_status_day(
                 self.im, month);
 
             return new FreeText(name, {
-                question: $('Birth day in {{ month }} [{{ year}}]'
-            ).context({ month: month, year: year }),
+                question: $(use_text).context({ month: month, year: year }),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
                     if (!(content > 0 && content <= 31)) {
-                        return 'state_retry_baby_birth_day';
+                        return {
+                            'name': 'state_retry',
+                            'creator_opts': {'retry_state': name}
+                        };
                     } else {
                         self.im.user.set_answer('working_date',
                             year + month + content);
-                        // TODO: state_validate_date
-                        return 'state_msg_language';
+                        return 'state_validate_date';
                     }
-                }
-            });
-        });
-
-        // FreeText st-18 (retry state st-13)
-        self.add('state_retry_baby_birth_day', function(name, creator_opts) {
-            var month = self.im.user.answers.working_month;
-            var year = self.im.user.answers.working_year;
-            var speech_option = go.utils.get_speech_option_pregnancy_status_day(
-                self.im, month);
-
-            return new FreeText(name, {
-                question: $('Retry birth day'
-            ).context({ month: month, year: year }),
-                helper_metadata: go.utils.make_voice_helper_data(
-                    self.im, name, lang, speech_option, creator_opts.retry),
-                next: function(content) {
-                    // TODO: copy
-                    // TODO: set self.im.user.set_answer('state_baby_birth_day', choice.value);
-                    self.im.user.set_answer('working_date',
-                        year + month + content);
-
-                    return 'state_validate_date';
                 }
             });
         });
@@ -1283,7 +1225,7 @@ go.app = function() {
         // Validate overall date
         self.add('state_validate_date', function(name, creator_opts) {
             var dateToValidate = self.im.user.answers.working_date;
-            if (go.utils.is_valid_date(dateToValidate, 'YYYY-MM-DD')) {
+            if (go.utils.is_valid_date(dateToValidate, 'YYYYMMDD')) {
                 return self.states.create('state_msg_language');
             } else {
                 return self.states.create('state_invalid_date');

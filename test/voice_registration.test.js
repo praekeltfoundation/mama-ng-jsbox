@@ -785,7 +785,7 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                it("should navigate to state_retry_baby_birth_month", function() {
+                it("should navigate back to state_baby_birth_month", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -799,7 +799,7 @@ describe("Mama Nigeria App", function() {
                             , '11'           // state_baby_birth_month - nov
                         )
                         .check.interaction({
-                            state: 'state_retry_baby_birth_month',
+                            state: 'state_baby_birth_month',
                             reply: [
                                 'Retry. Birth month this/last year?',
                                 '1. January',
@@ -819,7 +819,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_retry_baby_birth_month_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_birth_month_1_retry.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -869,7 +869,7 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                it("should navigate to state_retry_baby_birth_month", function() {
+                it("should navigate back to state_baby_birth_month", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -883,7 +883,7 @@ describe("Mama Nigeria App", function() {
                             , '1'            // state_baby_birth_month
                         )
                         .check.interaction({
-                            state: 'state_retry_baby_birth_month',
+                            state: 'state_baby_birth_month',
                             reply: [
                                 'Retry. Birth month this/last year?',
                                 '1. January',
@@ -903,7 +903,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_retry_baby_birth_month_2.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_birth_month_2_retry.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -914,7 +914,7 @@ describe("Mama Nigeria App", function() {
         });
 
         // pregnant
-        describe.only("When you enter a last period month", function() {
+        describe("When you enter a last period month", function() {
             describe("if the month choice is not in valid range for this year", function() {
                 it("should navigate back to state_last_period_month", function() {
                     return tester
@@ -1018,7 +1018,7 @@ describe("Mama Nigeria App", function() {
                         )
                         .check.interaction({
                             state: 'state_last_period_day',
-                            reply: 'Last period day 12 [2016]'
+                            reply: 'Last period day 12 2016'
                         })
                         .check.reply.properties({
                             helper_metadata: {
@@ -1096,7 +1096,7 @@ describe("Mama Nigeria App", function() {
         // baby
         describe("When you enter a baby_birth_month", function() {
             describe("if the month choice is not in valid range for this year", function() {
-                it("should navigate to state_retry_baby_birth_month", function() {
+                it("should navigate back to state_baby_birth_month", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -1110,7 +1110,7 @@ describe("Mama Nigeria App", function() {
                             , '8'               // state_baby_birth_month - aug
                         )
                         .check.interaction({
-                            state: 'state_retry_baby_birth_month',
+                            state: 'state_baby_birth_month',
                             reply: [
                                 'Retry. Birth month this/last year?',
                                 '1. January',
@@ -1130,7 +1130,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_retry_baby_birth_month_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_birth_month_1_retry.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -1140,7 +1140,7 @@ describe("Mama Nigeria App", function() {
             });
 
             describe("if the month choice is not in valid range for last year", function() {
-                it("should navigate to state_retry_baby_birth_month", function() {
+                it("should navigate back to state_baby_birth_month", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -1154,7 +1154,7 @@ describe("Mama Nigeria App", function() {
                             , '3'               // state_baby_birth_month - mar
                         )
                         .check.interaction({
-                            state: 'state_retry_baby_birth_month',
+                            state: 'state_baby_birth_month',
                             reply: [
                                 'Retry. Birth month this/last year?',
                                 '1. January',
@@ -1174,7 +1174,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_retry_baby_birth_month_2.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_birth_month_2_retry.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -1198,7 +1198,7 @@ describe("Mama Nigeria App", function() {
                         )
                         .check.interaction({
                             state: 'state_baby_birth_day',
-                            reply: 'Birth day in 09 [2016]'
+                            reply: 'Birth day in 09 2016'
                         })
                         .check.reply.properties({
                             helper_metadata: {
@@ -1210,7 +1210,7 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                it("should navigate to state_retry_baby_birth_day", function() {
+                it("should navigate back to state_baby_birth_day", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -1224,13 +1224,13 @@ describe("Mama Nigeria App", function() {
                             , '35'          // state_baby_birth_day
                         )
                         .check.interaction({
-                            state: 'state_retry_baby_birth_day',
-                            reply: 'Retry birth day'
+                            state: 'state_baby_birth_day',
+                            reply: 'Retry birth day 09 2016'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_retry_baby_birth_day_9.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_birth_day_9_retry.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -1249,7 +1249,7 @@ describe("Mama Nigeria App", function() {
                             , '2'           // state_baby_birth_year - last year
                             , '9'           // state_baby_birth_month - sep
                             , '35'          // state_baby_birth_day
-                            , '32'          // state_retry_baby_birth_day
+                            , '31'          // state_baby_birth_day
                         )
                         .check.interaction({
                             state: 'state_invalid_date',
@@ -1274,7 +1274,7 @@ describe("Mama Nigeria App", function() {
         // pregnant
         describe("when you enter a last period day", function() {
             describe("if it is an invalid day", function() {
-                it("should navigate to state_retry_last_period_day", function() {
+                it("should navigate to state_last_period_day", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -1288,13 +1288,13 @@ describe("Mama Nigeria App", function() {
                             , '32'          // state_last_period_day
                         )
                         .check.interaction({
-                            state: 'state_retry_last_period_day',
-                            reply: 'Retry period day'
+                            state: 'state_last_period_day',
+                            reply: 'Retry last period day 10 2016'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_retry_last_period_day_10.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_last_period_day_10_retry.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -1342,7 +1342,7 @@ describe("Mama Nigeria App", function() {
 
         describe("when you enter a baby birth day", function() {
             describe("if it is an invalid day", function() {
-                it("should navigate to state_retry_baby_birth_day", function() {
+                it("should navigate back to state_baby_birth_day", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -1356,13 +1356,13 @@ describe("Mama Nigeria App", function() {
                             , '32'          // state_baby_birth_day
                         )
                         .check.interaction({
-                            state: 'state_retry_baby_birth_day',
-                            reply: 'Retry birth day'
+                            state: 'state_baby_birth_day',
+                            reply: 'Retry birth day 11 2016'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_retry_baby_birth_day_11.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_birth_day_11_retry.mp3',
                                     wait_for: '#'
                                 }
                             }
