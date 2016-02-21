@@ -37,11 +37,11 @@ go.utils = {
     get_speech_option_pregnancy_status_day: function(im, month) {
         var speech_option_start;
 
-        if (im.user.answers.state_pregnancy_status === 'pre_birth') {
+        if (im.user.answers.state_pregnancy_status === 'prebirth') {
             im.user.answers.state_last_period_year === 'last_year'
                 ? speech_option_start = 0
                 : speech_option_start = 12;
-        } else if (im.user.answers.state_pregnancy_status === 'post_birth') {
+        } else if (im.user.answers.state_pregnancy_status === 'postbirth') {
             im.user.answers.state_baby_birth_year === 'last_year'
                 ? speech_option_start = 0
                 : speech_option_start = 12;
