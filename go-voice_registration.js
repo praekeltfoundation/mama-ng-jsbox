@@ -1198,7 +1198,7 @@ go.app = function() {
                         return 'state_retry_last_period_day';
                     } else {
                         self.im.user.set_answer('working_date',
-                            year + '-' + month + '-' + content);
+                            year + month + content);
                         // TODO: state_validate_date
                         return 'state_msg_language';
                     }
@@ -1219,7 +1219,7 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     self.im.user.set_answer('working_date',
-                        year + '-' + month + '-' + content);
+                        year + month + content);
                     // TODO: copy from state_last_period_day
                     // TODO: set self.im.user.set_answer('state_last_period_day', choice.value);
                     return 'state_validate_date';
@@ -1312,7 +1312,7 @@ go.app = function() {
                         return 'state_retry_baby_birth_day';
                     } else {
                         self.im.user.set_answer('working_date',
-                            year + '-' + month + '-' + content);
+                            year + month + content);
                         // TODO: state_validate_date
                         return 'state_msg_language';
                     }
@@ -1336,7 +1336,7 @@ go.app = function() {
                     // TODO: copy
                     // TODO: set self.im.user.set_answer('state_baby_birth_day', choice.value);
                     self.im.user.set_answer('working_date',
-                        year + '-' + month + '-' + content);
+                        year + month + content);
 
                     return 'state_validate_date';
                 }
@@ -1393,10 +1393,6 @@ go.app = function() {
         // ChoiceState st-08
         self.add('state_msg_type', function(name) {
             var speech_option = '1';
-            var routing = {
-                'sms': 'state_end_sms',
-                'voice': 'state_voice_days'
-            };
             return new ChoiceState(name, {
                 question: $('Channel?'),
                 helper_metadata: go.utils.make_voice_helper_data(
@@ -1406,7 +1402,15 @@ go.app = function() {
                     new Choice('sms', $('sms'))
                 ],
                 next: function(choice) {
-                    return routing[choice.value];
+                    if (choice.value === 'voice') {
+                        return 'state_voice_days';
+                    } else {
+                        return go.utils
+                            .save_registration(self.im)
+                            .then(function() {
+                                return 'state_end_sms';
+                            });
+                    }
                 }
             });
         });
@@ -1450,23 +1454,15 @@ go.app = function() {
                     new Choice('9_11', $('9_11')),
                     new Choice('2_5', $('2_5'))
                 ],
-                next: 'state_end_voice'
+                next: function() {
+                    return go.utils
+                        .save_registration(self.im)
+                        .then(function() {
+                            return 'state_end_voice';
+                        });
+                }
             });
         });
-
-        // interstitial
-        // self.add('state_voice_save', function(name) {
-        //     return go.utils
-        //         .save_contact_info_and_subscribe(self.im)
-        //         .then(function() {
-        //             return go.utils
-        //                 .vumi_send_text(self.im, self.im.user.answers.mama_num,
-        //                     self.im.config.reg_complete_sms)
-        //                 .then(function() {
-        //                     return self.states.create('state_end_voice');
-        //                 });
-        //         });
-        // });
 
         // EndState st-11
         self.add('state_end_voice', function(name) {
