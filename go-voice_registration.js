@@ -877,6 +877,7 @@ go.app = function() {
                 .then(function(user) {
                     self.im.user.set_answer('user_id', user.id);
                     if (user.details.personnel_code) {
+                        self.im.user.set_answer('operator_id', user.id);
                         return self.states.create('state_msg_receiver');
                     } else {
                         return self.states.create('state_personnel_auth');
@@ -899,6 +900,7 @@ go.app = function() {
                         .find_healthworker_with_personnel_code(self.im, content)
                         .then(function(healthworker) {
                             if (healthworker) {
+                                self.im.user.set_answer('operator_id', healthworker.id);
                                 return 'state_msg_receiver';
                             } else {
                                 return 'state_retry_personnel_auth';
@@ -916,10 +918,13 @@ go.app = function() {
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(content) {
+                    var auth_code = content;
                     return go.utils
                         .find_healthworker_with_personnel_code(self.im, content)
                         .then(function(healthworker) {
                             if (healthworker) {
+                                self.im.user.set_answer('operator_id', healthworker.id);
+                                self.im.user.set_answer('state_personnel_auth', auth_code);
                                 return 'state_msg_receiver';
                             } else {
                                 return 'state_retry_personnel_auth';
@@ -945,17 +950,17 @@ go.app = function() {
 
                 ],
                 next: function(choice) {
-                    if (choice.value == 'mother_father') {
-                        return 'state_father_msisdn';
+                    if (choice.value === 'mother_father') {
+                        return 'state_msisdn_father';
                     } else {
-                        return 'state_receiver_msisdn';
+                        return 'state_msisdn';
                     }
                 }
             });
         });
 
         // FreeText st-03
-        self.add('state_receiver_msisdn', function(name) {
+        self.add('state_msisdn', function(name) {
             var speech_option = '1';
             return new FreeText(name, {
                 question: $('Please enter number'),
@@ -963,16 +968,16 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     if (go.utils.is_valid_msisdn(content) === false) {
-                        return 'state_retry_receiver_msisdn';
+                        return 'state_retry_msisdn';
                     } else {
-                        return 'state_pregnancy_status';
+                        return 'state_save_identities';
                     }
                 }
             });
         });
 
         // FreeText st-16
-        self.add('state_retry_receiver_msisdn', function(name) {
+        self.add('state_retry_msisdn', function(name) {
             var speech_option = '1';
             return new FreeText(name, {
                 question: $('Sorry, invalid input. Please enter number'),
@@ -980,16 +985,17 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     if (go.utils.is_valid_msisdn(content) === false) {
-                        return 'state_retry_receiver_msisdn';
+                        return 'state_retry_msisdn';
                     } else {
-                        return 'state_pregnancy_status';
+                        self.im.user.set_answer('state_msisdn', content);
+                        return 'state_save_identities';
                     }
                 }
             });
         });
 
         // FreeText st-3A
-        self.add('state_father_msisdn', function(name) {
+        self.add('state_msisdn_father', function(name) {
             var speech_option = '1';
             return new FreeText(name, {
                 question: $('Please enter number (Father)'),
@@ -997,16 +1003,16 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     if (go.utils.is_valid_msisdn(content) === false) {
-                        return 'state_retry_father_msisdn';
+                        return 'state_retry_msisdn_father';
                     } else {
-                        return 'state_mother_msisdn';
+                        return 'state_msisdn_mother';
                     }
                 }
             });
         });
 
         // FreeText (retry state of st-3A)
-        self.add('state_retry_father_msisdn', function(name) {
+        self.add('state_retry_msisdn_father', function(name) {
             var speech_option = '1';
             return new FreeText(name, {
                 question: $('Sorry, invalid input. Please enter number (Father)'),
@@ -1014,16 +1020,17 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     if (go.utils.is_valid_msisdn(content) === false) {
-                        return 'state_retry_father_msisdn';
+                        return 'state_retry_msisdn_father';
                     } else {
-                        return 'state_mother_msisdn';
+                        self.im.user.set_answer('state_msisdn_father', content);
+                        return 'state_msisdn_mother';
                     }
                 }
             });
         });
 
         // FreeText st-3B
-        self.add('state_mother_msisdn', function(name) {
+        self.add('state_msisdn_mother', function(name) {
             var speech_option = '1';
             return new FreeText(name, {
                 question: $('Please enter number (Mother)'),
@@ -1031,16 +1038,22 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     if (go.utils.is_valid_msisdn(content) === false) {
-                        return 'state_retry_mother_msisdn';
+                        return 'state_retry_msisdn_mother';
                     } else {
-                        return 'state_pregnancy_status';
+                        if (self.im.user.answers.state_msisdn_father ===
+                            self.im.user.answers.state_msisdn_mother) {
+                            self.im.user.set_answer('state_msg_receiver', 'father_only');
+                            self.im.user.set_answer('state_msisdn',
+                                                    self.im.user.answers.state_msisdn_mother);
+                        }
+                        return 'state_save_identities';
                     }
                 }
             });
         });
 
         // FreeText (retry state of st-3B)
-        self.add('state_retry_mother_msisdn', function(name) {
+        self.add('state_retry_msisdn_mother', function(name) {
             var speech_option = '1';
             return new FreeText(name, {
                 question: $('Sorry, invalid input. Please enter number (Mother)'),
@@ -1048,12 +1061,35 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     if (go.utils.is_valid_msisdn(content) === false) {
-                        return 'state_retry_mother_msisdn';
+                        return 'state_retry_msisdn_mother';
                     } else {
-                        return 'state_pregnancy_status';
+                        self.im.user.set_answer('state_msisdn_mother', content);
+                        if (self.im.user.answers.state_msisdn_father ===
+                            self.im.user.answers.state_msisdn_mother) {
+                            self.im.user.set_answer('state_msg_receiver', 'father_only');
+                            self.im.user.set_answer('state_msisdn',
+                                                    self.im.user.answers.state_msisdn_mother);
+                        }
+                        return 'state_save_identities';
                     }
                 }
             });
+        });
+
+        // Get or create identities and save their IDs
+        self.add('state_save_identities', function(name) {
+            return go.utils
+                .save_identities(
+                    self.im,
+                    self.im.user.answers.state_msg_receiver,
+                    self.im.user.answers.state_msisdn,
+                    self.im.user.answers.state_msisdn_father,
+                    self.im.user.answers.state_msisdn_mother,
+                    self.im.user.answers.operator_id
+                )
+                .then(function() {
+                    return self.states.create('state_pregnancy_status');
+                });
         });
 
         // ChoiceState st-04
@@ -1135,6 +1171,7 @@ go.app = function() {
                     var today = go.utils.get_today(self.im.config);
                     if (go.utils.is_valid_month(today, self.im.user.answers.working_year,
                                                 choice.value, 10)) {
+                        self.im.user.set_answer('state_last_period_month', choice.value);
                         self.im.user.set_answer('working_month', choice.value);
                         return 'state_last_period_day';
                     } else {
@@ -1184,6 +1221,7 @@ go.app = function() {
                     self.im.user.set_answer('working_date',
                         year + '-' + month + '-' + content);
                     // TODO: copy from state_last_period_day
+                    // TODO: set self.im.user.set_answer('state_last_period_day', choice.value);
                     return 'state_validate_date';
                 }
             });
@@ -1247,6 +1285,7 @@ go.app = function() {
                     var today = go.utils.get_today(self.im.config);
                     if (go.utils.is_valid_month(today, self.im.user.answers.working_year,
                                                 choice.value, 13)) {
+                        self.im.user.set_answer('state_baby_birth_month', choice.value);
                         self.im.user.set_answer('working_month', choice.value);
                         return 'state_baby_birth_day';
                     } else {
@@ -1295,6 +1334,7 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     // TODO: copy
+                    // TODO: set self.im.user.set_answer('state_baby_birth_day', choice.value);
                     self.im.user.set_answer('working_date',
                         year + '-' + month + '-' + content);
 
