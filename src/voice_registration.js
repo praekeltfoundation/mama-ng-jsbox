@@ -255,13 +255,13 @@ go.app = function() {
                     var year_value = go.utils.get_year_value(
                         go.utils.get_today(self.im.config), choice.value);
                     self.im.user.set_answer('working_year', year_value);
-                    return 'state_period_month';
+                    return 'state_last_period_month';
                 }
             });
         });
 
         // ChoiceState st-5
-        self.add('state_period_month', function(name) {
+        self.add('state_last_period_month', function(name) {
             var speech_option = go.utils.get_speech_option_year(
                 self.im.user.answers.state_last_period_year);
             return new ChoiceState(name, {
@@ -277,14 +277,14 @@ go.app = function() {
                         self.im.user.set_answer('working_month', choice.value);
                         return 'state_last_period_day';
                     } else {
-                        return 'state_retry_period_month';
+                        return 'state_retry_last_period_month';
                     }
                 }
             });
         });
 
         // Retry ChoiceState st-5
-        self.add('state_retry_period_month', function(name) {
+        self.add('state_retry_last_period_month', function(name) {
             var speech_option = go.utils.get_speech_option_year(
                 self.im.user.answers.state_last_period_year);
             return new ChoiceState(name, {
@@ -300,7 +300,7 @@ go.app = function() {
                         self.im.user.set_answer('working_month', choice.value);
                         return 'state_last_period_day';
                     } else {
-                        return 'state_retry_period_month';
+                        return 'state_retry_last_period_month';
                     }
                 }
             });
@@ -367,13 +367,13 @@ go.app = function() {
                     var year_value = go.utils.get_year_value(
                         go.utils.get_today(self.im.config), choice.value);
                     self.im.user.set_answer('working_year', year_value);
-                    return 'state_birth_month';
+                    return 'state_baby_birth_month';
                 }
             });
         });
 
         // ChoiceState st-12
-        self.add('state_birth_month', function(name) {
+        self.add('state_baby_birth_month', function(name) {
             var speech_option = go.utils.get_speech_option_year(
                 self.im.user.answers.state_baby_birth_year);
             return new ChoiceState(name, {
@@ -389,14 +389,14 @@ go.app = function() {
                         self.im.user.set_answer('working_month', choice.value);
                         return 'state_baby_birth_day';
                     } else {
-                        return 'state_retry_birth_month';
+                        return 'state_retry_baby_birth_month';
                     }
                 }
             });
         });
 
         // Retry ChoiceState st-12
-        self.add('state_retry_birth_month', function(name) {
+        self.add('state_retry_baby_birth_month', function(name) {
             var speech_option = go.utils.get_speech_option_year(
                 self.im.user.answers.state_baby_birth_year);
             return new ChoiceState(name, {
@@ -412,7 +412,7 @@ go.app = function() {
                         self.im.user.set_answer('working_month', choice.value);
                         return 'state_baby_birth_day';
                     } else {
-                        return 'state_retry_birth_month';
+                        return 'state_retry_baby_birth_month';
                     }
                 }
             });
