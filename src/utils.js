@@ -52,6 +52,10 @@ go.utils = {
         return day_map[days];
     },
 
+    get_speech_option_year: function(year) {
+        return year === 'this_year' ? '1' : '2';
+    },
+
     get_speech_option_days_time: function(days, time) {
         var speech_option;
 

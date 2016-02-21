@@ -584,7 +584,7 @@ describe("Mama Nigeria App", function() {
         // pregnant
         describe("when you enter a last period year", function() {
             describe("if 'this year' is chosen", function() {
-                it("should navigate to state_this_year_period_month", function() {
+                it("should navigate to state_period_month", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -597,9 +597,9 @@ describe("Mama Nigeria App", function() {
                             , '1'            // state_last_period_year
                         )
                         .check.interaction({
-                            state: 'state_this_year_period_month',
+                            state: 'state_period_month',
                             reply: [
-                                'Period month this year?',
+                                'Period month this/last year?',
                                 '1. January',
                                 '2. February',
                                 '3. March',
@@ -617,7 +617,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_this_year_period_month_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_period_month_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -625,7 +625,7 @@ describe("Mama Nigeria App", function() {
                         .run();
                     });
 
-                    it("should navigate to state_retry_this_year_period_month", function() {
+                    it("should navigate to state_retry_period_month", function() {
                         return tester
                             .setup.user.addr('07030010001')
                             .inputs(
@@ -636,12 +636,12 @@ describe("Mama Nigeria App", function() {
                                 , '09094444444'     // state_mother_msisdn
                                 , '1'               // state_pregnancy_status - pregnant
                                 , '1'               // state_last_period_year
-                                , '12'              // state_this_year_period_month
+                                , '12'              // state_period_month
                             )
                             .check.interaction({
-                                state: 'state_retry_this_year_period_month',
+                                state: 'state_retry_period_month',
                                 reply: [
-                                    'Retry. Period month this year?',
+                                    'Retry. Period month this/last year?',
                                     '1. January',
                                     '2. February',
                                     '3. March',
@@ -659,7 +659,7 @@ describe("Mama Nigeria App", function() {
                             .check.reply.properties({
                                 helper_metadata: {
                                     voice: {
-                                        speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_this_year_period_month_1.mp3',
+                                        speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_period_month_1.mp3',
                                         wait_for: '#'
                                     }
                                 }
@@ -669,7 +669,7 @@ describe("Mama Nigeria App", function() {
             });
 
             describe("if 'last year' is chosen", function() {
-                it("should navigate to state_last_year_period_month", function() {
+                it("should navigate to state_period_month", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -682,9 +682,9 @@ describe("Mama Nigeria App", function() {
                             , '2'            // state_last_period_year - last year
                         )
                         .check.interaction({
-                            state: 'state_last_year_period_month',
+                            state: 'state_period_month',
                             reply: [
-                                'Period month last year?',
+                                'Period month this/last year?',
                                 '1. January',
                                 '2. February',
                                 '3. March',
@@ -702,14 +702,14 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_last_year_period_month_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_period_month_2.mp3',
                                     wait_for: '#'
                                 }
                             }
                         })
                         .run();
                 });
-                it("should navigate to state_retry_last_year_period_month", function() {
+                it("should navigate to state_retry_period_month", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -720,12 +720,12 @@ describe("Mama Nigeria App", function() {
                             , '09094444444'     // state_mother_msisdn
                             , '1'               // state_pregnancy_status - pregnant
                             , '2'               // state_last_period_year - last year
-                            , '1'               // state_last_year_period_month - jan
+                            , '1'               // state_period_month - jan
                         )
                         .check.interaction({
-                            state: 'state_retry_last_year_period_month',
+                            state: 'state_retry_period_month',
                             reply: [
-                                'Retry. Period month last year?',
+                                'Retry. Period month this/last year?',
                                 '1. January',
                                 '2. February',
                                 '3. March',
@@ -743,7 +743,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_last_year_period_month_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_period_month_2.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -756,7 +756,7 @@ describe("Mama Nigeria App", function() {
         // baby
         describe("When you enter a baby_birth year", function() {
             describe("if 'this year' chosen", function() {
-                it("should navigate to state_this_year_baby_birth_month", function() {
+                it("should navigate to state_birth_month", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -769,9 +769,9 @@ describe("Mama Nigeria App", function() {
                             , '1'            // state_baby_birth_year - this year
                         )
                         .check.interaction({
-                            state: 'state_this_year_baby_birth_month',
+                            state: 'state_birth_month',
                             reply: [
-                                'Baby month this year?',
+                                'Birth month this/last year?',
                                 '1. January',
                                 '2. February',
                                 '3. March',
@@ -789,14 +789,14 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_this_year_baby_birth_month_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_birth_month_1.mp3',
                                     wait_for: '#'
                                 }
                             }
                         })
                         .run();
                 });
-                it("should navigate to state_retry_this_year_baby_birth_month", function() {
+                it("should navigate to state_retry_birth_month", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -807,12 +807,12 @@ describe("Mama Nigeria App", function() {
                             , '09094444444'  // state_mother_msisdn
                             , '2'            // state_pregnancy_status - baby
                             , '1'            // state_baby_birth_year - this year
-                            , '11'           // state_this_year_baby_birth_month - nov
+                            , '11'           // state_birth_month - nov
                         )
                         .check.interaction({
-                            state: 'state_retry_this_year_baby_birth_month',
+                            state: 'state_retry_birth_month',
                             reply: [
-                                'Retry. Baby month this year?',
+                                'Retry. Birth month this/last year?',
                                 '1. January',
                                 '2. February',
                                 '3. March',
@@ -830,7 +830,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_this_year_baby_birth_month_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_birth_month_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -840,7 +840,7 @@ describe("Mama Nigeria App", function() {
             });
 
             describe("if 'last year' chosen", function() {
-                it("should navigate to state_last_year_baby_birth_month", function() {
+                it("should navigate to state_birth_month", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -853,9 +853,9 @@ describe("Mama Nigeria App", function() {
                             , '2'            // state_baby_birth_year
                         )
                         .check.interaction({
-                            state: 'state_last_year_baby_birth_month',
+                            state: 'state_birth_month',
                             reply: [
-                                'Baby month last year?',
+                                'Birth month this/last year?',
                                 '1. January',
                                 '2. February',
                                 '3. March',
@@ -873,14 +873,14 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_last_year_baby_birth_month_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_birth_month_2.mp3',
                                     wait_for: '#'
                                 }
                             }
                         })
                         .run();
                 });
-                it("should navigate to state_retry_last_year_baby_birth_month", function() {
+                it("should navigate to state_retry_birth_month", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -891,12 +891,12 @@ describe("Mama Nigeria App", function() {
                             , '09094444444'  // state_mother_msisdn
                             , '2'            // state_pregnancy_status
                             , '2'            // state_baby_birth_year
-                            , '1'            // state_last_year_baby_birth_month
+                            , '1'            // state_birth_month
                         )
                         .check.interaction({
-                            state: 'state_retry_last_year_baby_birth_month',
+                            state: 'state_retry_birth_month',
                             reply: [
-                                'Retry. Baby month last year?',
+                                'Retry. Birth month this/last year?',
                                 '1. January',
                                 '2. February',
                                 '3. March',
@@ -914,7 +914,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_last_year_baby_birth_month_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_birth_month_2.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -927,7 +927,7 @@ describe("Mama Nigeria App", function() {
         // pregnant
         describe("When you enter a last period month", function() {
             describe("if the month choice is not in valid range for this year", function() {
-                it("should navigate to state_retry_this_year_period_month", function() {
+                it("should navigate to state_retry_period_month", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -938,12 +938,12 @@ describe("Mama Nigeria App", function() {
                             , '09094444444'  // state_mother_msisdn
                             , '1'            // state_pregnancy_status - pregnant
                             , '1'            // state_last_period_year - this year
-                            , '9'            // state_this_year_period_month - sep
+                            , '9'            // state_period_month - sep
                         )
                         .check.interaction({
-                            state: 'state_retry_this_year_period_month',
+                            state: 'state_retry_period_month',
                             reply: [
-                                'Retry. Period month this year?',
+                                'Retry. Period month this/last year?',
                                 '1. January',
                                 '2. February',
                                 '3. March',
@@ -961,7 +961,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_this_year_period_month_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_period_month_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -970,7 +970,7 @@ describe("Mama Nigeria App", function() {
                 });
             });
             describe("if the month choice is not in valid range for last year", function() {
-                it("should navigate to state_retry_last_year_period_month", function() {
+                it("should navigate to state_retry_period_month", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -981,12 +981,12 @@ describe("Mama Nigeria App", function() {
                             , '09094444444'  // state_mother_msisdn
                             , '1'            // state_pregnancy_status - pregnant
                             , '2'            // state_last_period_year - last year
-                            , '3'            // state_last_year_period_month - mar
+                            , '3'            // state_period_month - mar
                         )
                         .check.interaction({
-                            state: 'state_retry_last_year_period_month',
+                            state: 'state_retry_period_month',
                             reply: [
-                                'Retry. Period month last year?',
+                                'Retry. Period month this/last year?',
                                 '1. January',
                                 '2. February',
                                 '3. March',
@@ -1004,7 +1004,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_last_year_period_month_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_period_month_2.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -1025,7 +1025,7 @@ describe("Mama Nigeria App", function() {
                             , '09094444444' // state_mother_msisdn
                             , '1'           // state_pregnancy_status - pregnant
                             , '2'           // state_last_period_year - last year
-                            , '12'          // state_last_year_period_month - dec
+                            , '12'          // state_period_month - dec
                         )
                         .check.interaction({
                             state: 'state_last_period_day',
@@ -1052,7 +1052,7 @@ describe("Mama Nigeria App", function() {
                             , '09094444444' // state_mother_msisdn
                             , '1'           // state_pregnancy_status - pregnant
                             , '2'           // state_last_period_year - last year
-                            , '10'           // state_last_year_period_month - oct
+                            , '10'           // state_period_month - oct
                             , '32'          // state_last_period_day
                         )
                         .check.interaction({
@@ -1080,7 +1080,7 @@ describe("Mama Nigeria App", function() {
                             , '09094444444' // state_mother_msisdn
                             , '1'           // state_pregnancy_status - pregnant
                             , '2'           // state_last_period_year - last year
-                            , '10'           // state_last_year_period_month - oct
+                            , '10'           // state_period_month - oct
                             , '32'          // state_last_period_day
                             , '33'          // state_retry_last_period_day
                         )
@@ -1107,7 +1107,7 @@ describe("Mama Nigeria App", function() {
         // baby
         describe("When you enter a baby_birth_month", function() {
             describe("if the month choice is not in valid range for this year", function() {
-                it("should navigate to state_retry_this_year_baby_birth_month", function() {
+                it("should navigate to state_retry_birth_month", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -1118,12 +1118,12 @@ describe("Mama Nigeria App", function() {
                             , '09094444444'     // state_mother_msisdn
                             , '2'               // state_pregnancy_status - baby
                             , '1'               // state_baby_birth_year - this year
-                            , '8'               // state_this_year_baby_birth_month - aug
+                            , '8'               // state_birth_month - aug
                         )
                         .check.interaction({
-                            state: 'state_retry_this_year_baby_birth_month',
+                            state: 'state_retry_birth_month',
                             reply: [
-                                'Retry. Baby month this year?',
+                                'Retry. Birth month this/last year?',
                                 '1. January',
                                 '2. February',
                                 '3. March',
@@ -1141,7 +1141,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_this_year_baby_birth_month_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_birth_month_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -1151,7 +1151,7 @@ describe("Mama Nigeria App", function() {
             });
 
             describe("if the month choice is not in valid range for last year", function() {
-                it("should navigate to state_retry_last_year_baby_birth_month", function() {
+                it("should navigate to state_retry_birth_month", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -1162,12 +1162,12 @@ describe("Mama Nigeria App", function() {
                             , '09094444444'     // state_mother_msisdn
                             , '2'               // state_pregnancy_status - baby
                             , '2'               // state_baby_birth_year - last year
-                            , '3'               // state_last_year_baby_birth_month - mar
+                            , '3'               // state_birth_month - mar
                         )
                         .check.interaction({
-                            state: 'state_retry_last_year_baby_birth_month',
+                            state: 'state_retry_birth_month',
                             reply: [
-                                'Retry. Baby month last year?',
+                                'Retry. Birth month this/last year?',
                                 '1. January',
                                 '2. February',
                                 '3. March',
@@ -1185,7 +1185,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_last_year_baby_birth_month_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_retry_birth_month_2.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -1205,7 +1205,7 @@ describe("Mama Nigeria App", function() {
                             , '08080020002' // state_receiver_msisdn
                             , '2'           // state_pregnancy_status - baby
                             , '2'           // state_baby_birth_year - last year
-                            , '9'           // state_last_year_baby_birth_month - sep
+                            , '9'           // state_birth_month - sep
                         )
                         .check.interaction({
                             state: 'state_baby_birth_day',
@@ -1231,7 +1231,7 @@ describe("Mama Nigeria App", function() {
                             , '08080020002' // state_receiver_msisdn
                             , '2'           // state_pregnancy_status - baby
                             , '2'           // state_baby_birth_year - last year
-                            , '9'           // state_last_year_baby_birth_month - sep
+                            , '9'           // state_birth_month - sep
                             , '35'          // state_baby_birth_day
                         )
                         .check.interaction({
@@ -1258,7 +1258,7 @@ describe("Mama Nigeria App", function() {
                             , '08080020002' // state_receiver_msisdn
                             , '2'           // state_pregnancy_status - baby
                             , '2'           // state_baby_birth_year - last year
-                            , '9'           // state_last_year_baby_birth_month - sep
+                            , '9'           // state_birth_month - sep
                             , '35'          // state_baby_birth_day
                             , '32'          // state_retry_baby_birth_day
                         )
@@ -1295,7 +1295,7 @@ describe("Mama Nigeria App", function() {
                             , '08080020002' // state_receiver_msisdn
                             , '1'           // state_pregnancy_status - pregnant
                             , '2'           // state_last_period_year - last year
-                            , '10'          // state_last_year_period_month - oct
+                            , '10'          // state_period_month - oct
                             , '32'          // state_last_period_day
                         )
                         .check.interaction({
@@ -1325,7 +1325,7 @@ describe("Mama Nigeria App", function() {
                             , '08080020002' // state_receiver_msisdn
                             , '1'           // state_pregnancy_status - pregnant
                             , '2'           // state_last_period_year - last year
-                            , '10'          // state_last_year_period_month - oct
+                            , '10'          // state_period_month - oct
                             , '22'          // state_last_period_day
                         )
                         .check.interaction({
@@ -1363,7 +1363,7 @@ describe("Mama Nigeria App", function() {
                             , '08080020002' // state_receiver_msisdn
                             , '2'           // state_pregnancy_status - baby
                             , '2'           // state_baby_birth_year - last year
-                            , '11'          // state_last_year_baby_birth_month - nov
+                            , '11'          // state_birth_month - nov
                             , '32'          // state_baby_birth_day
                         )
                         .check.interaction({
@@ -1393,7 +1393,7 @@ describe("Mama Nigeria App", function() {
                             , '08080020002' // state_receiver_msisdn
                             , '2'           // state_pregnancy_status - baby
                             , '2'           // state_baby_birth_year - last year
-                            , '11'          // state_last_year_baby_birth_month - nov
+                            , '11'          // state_birth_month - nov
                             , '12'          // state_baby_birth_day
                         )
                         .check.interaction({
@@ -1429,7 +1429,7 @@ describe("Mama Nigeria App", function() {
                             , '2'           // state_pregnancy_status - baby
                             , '2'           // state_pregnancy_status - babyk
                             , '2'           // state_baby_birth_year - last year
-                            , '11'          // state_last_year_baby_birth_month - nov
+                            , '11'          // state_birth_month - nov
                             , '*'           // state_baby_birth_day
                         )
                         .check.interaction({
@@ -1461,7 +1461,7 @@ describe("Mama Nigeria App", function() {
                         , '08080020002' // state_receiver_msisdn
                         , '2'           // state_pregnancy_status - baby
                         , '2'           // state_baby_birth_year - last year
-                        , '11'          // state_last_year_baby_birth_month - nov
+                        , '11'          // state_birth_month - nov
                         , '13'          // state_baby_birth_day
                         , '3'           // state_msg-language - igbo
                     )
@@ -1497,7 +1497,7 @@ describe("Mama Nigeria App", function() {
                             , '08080020002' // state_receiver_msisdn
                             , '2'           // state_pregnancy_status - baby
                             , '2'           // state_baby_birth_year - last year
-                            , '7'           // state_last_year_baby_birth_month - july
+                            , '7'           // state_birth_month - july
                             , '13'          // state_baby_birth_day
                             , '3'           // state_msg_language - igbo
                             , '2'           // state_msg_type - sms
@@ -1530,7 +1530,7 @@ describe("Mama Nigeria App", function() {
                             , '08080020002' // state_receiver_msisdn
                             , '2'           // state_pregnancy_status - baby
                             , '2'           // state_baby_birth_year - last year
-                            , '11'          // state_last_year_baby_birth_month - nov
+                            , '11'          // state_birth_month - nov
                             , '13'          // state_baby_birth_day
                             , '3'           // state_msg-language - igbo
                             , '1'           // state_msg_type - voice
@@ -1567,7 +1567,7 @@ describe("Mama Nigeria App", function() {
                         , '08080020002' // state_receiver_msisdn
                         , '2'           // state_pregnancy_status - baby
                         , '2'           // state_baby_birth_year - last year
-                        , '11'          // state_last_year_baby_birth_month - nov
+                        , '11'          // state_birth_month - nov
                         , '13'          // state_baby_birth_day
                         , '3'           // state_msg-language - igbo
                         , '1'           // state_msg_type - voice
@@ -1604,7 +1604,7 @@ describe("Mama Nigeria App", function() {
                         , '08080020002' // state_receiver_msisdn
                         , '2'           // state_pregnancy_status - baby
                         , '2'           // state_baby_birth_year - last year
-                        , '9'           // state_last_year_baby_birth_month - sep
+                        , '9'           // state_birth_month - sep
                         , '13'          // state_baby_birth_day
                         , '3'           // state_msg-language - igbo
                         , '1'           // state_msg_type - voice
@@ -1653,7 +1653,7 @@ describe("Mama Nigeria App", function() {
                         state_receiver_msisdn: "08080020002",
                         state_pregnancy_status: "baby",
                         state_last_period_year: "this_year",
-                        state_last_year_period_month: "5",
+                        state_period_month: "5",
                         state_last_period_day: "18",
                         state_msg_language: "english",
                         state_msg_type: "voice",
