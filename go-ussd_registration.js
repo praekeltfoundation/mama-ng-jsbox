@@ -823,6 +823,12 @@ go.utils = {
         }
     },
 
+    get_year_value: function(today, year_choice) {
+        return year_choice === 'this_year'
+            ? today.year()
+            : today.year() - 1;
+    },
+
     "commas": "commas"
 };
 
