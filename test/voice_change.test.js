@@ -17,9 +17,16 @@ describe("Mama Nigeria App", function() {
                 .setup.config.app({
                     testing_today: '2015-07-22',
                     name: 'voice-change-test',
-                    control: {
-                        url: "http://localhost:8000/api/v1/",
-                        api_key: "control_test_key"
+                    country_code: '234',  // nigeria
+                    services: {
+                        identities: {
+                            api_token: 'test_token_identities',
+                            url: "http://localhost:8001/api/v1/"
+                        },
+                        subscriptions: {
+                            api_token: 'test_token_subscriptions',
+                            url: "http://localhost:8002/api/v1/"
+                        },
                     },
                     voice_content: {
                         url: "http://localhost:8001/api/v1/",
@@ -355,7 +362,7 @@ describe("Mama Nigeria App", function() {
                     .check.reply.properties({
                         helper_metadata: {
                             voice: {
-                                speech_url: 'http://localhost:8001/api/v1/eng_NG/state_end_msg_times_3.mp3',
+                                speech_url: 'http://localhost:8001/api/v1/eng_NG/state_end_msg_times_2.mp3',
                                 wait_for: '#'
                             }
                         }

@@ -140,7 +140,7 @@ go.app = function() {
         // Interstitial start state - evaluating whether user is registered
         /*self.add('state_check_msisdn', function(name) {
             return go.utils
-                .get_or_create_contact(self.im.user.addr, self.im)
+                .get_or_create_identity(self.im.user.addr, self.im, null)
                 .then(function(user_id) {
                     return go.utils
                         .is_registered(user_id, self.im)

@@ -2,7 +2,6 @@
 
 go.app = function() {
     var vumigo = require('vumigo_v02');
-    var moment = require('moment');
     var App = vumigo.App;
     var ChoiceState = vumigo.states.ChoiceState;
     var Choice = vumigo.states.Choice;
@@ -35,7 +34,16 @@ go.app = function() {
         self.states.add('state_start', function(name) {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
-            return self.states.create("state_personnel_auth");
+            return go.utils
+                .get_or_create_identity({'msisdn': self.im.user.addr}, self.im, null)
+                .then(function(user) {
+                    self.im.user.set_answer('user_id', user.id);
+                    if (user.details.personnel_code) {
+                        return self.states.create('state_msg_receiver');
+                    } else {
+                        return self.states.create('state_personnel_auth');
+                    }
+                });
         });
 
 
@@ -49,11 +57,15 @@ go.app = function() {
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(content) {
-                    if (content != '12345') {      // temporarily hard-coded
-                        return 'state_retry_personnel_auth';
-                    } else {
-                        return 'state_msg_receiver';
-                    }
+                    return go.utils
+                        .find_healthworker_with_personnel_code(self.im, content)
+                        .then(function(healthworker) {
+                            if (healthworker) {
+                                return 'state_msg_receiver';
+                            } else {
+                                return 'state_retry_personnel_auth';
+                            }
+                        });
                 }
             });
         });
@@ -66,11 +78,15 @@ go.app = function() {
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(content) {
-                    if (content == '12345') {
-                        return 'state_msg_receiver';
-                    } else {
-                        return 'state_retry_personnel_auth';
-                    }
+                    return go.utils
+                        .find_healthworker_with_personnel_code(self.im, content)
+                        .then(function(healthworker) {
+                            if (healthworker) {
+                                return 'state_msg_receiver';
+                            } else {
+                                return 'state_retry_personnel_auth';
+                            }
+                        });
                 }
             });
         });
@@ -93,8 +109,7 @@ go.app = function() {
                 next: function(choice) {
                     if (choice.value == 'mother_father') {
                         return 'state_father_msisdn';
-                    }
-                    else {
+                    } else {
                         return 'state_receiver_msisdn';
                     }
                 }
@@ -103,14 +118,31 @@ go.app = function() {
 
         // FreeText st-03
         self.add('state_receiver_msisdn', function(name) {
-            var speech_option = 1;
+            var speech_option = '1';
             return new FreeText(name, {
                 question: $('Please enter number'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     if (go.utils.is_valid_msisdn(content) === false) {
-                        return 'state_retry_receiver_msisdn';  // error message, allow retry
+                        return 'state_retry_receiver_msisdn';
+                    } else {
+                        return 'state_pregnancy_status';
+                    }
+                }
+            });
+        });
+
+        // FreeText st-16
+        self.add('state_retry_receiver_msisdn', function(name) {
+            var speech_option = '1';
+            return new FreeText(name, {
+                question: $('Sorry, invalid input. Please enter number'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: function(content) {
+                    if (go.utils.is_valid_msisdn(content) === false) {
+                        return 'state_retry_receiver_msisdn';
                     } else {
                         return 'state_pregnancy_status';
                     }
@@ -127,7 +159,24 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     if (go.utils.is_valid_msisdn(content) === false) {
-                        return 'state_retry_father_msisdn';  // error message, allow retry
+                        return 'state_retry_father_msisdn';
+                    } else {
+                        return 'state_mother_msisdn';
+                    }
+                }
+            });
+        });
+
+        // FreeText (retry state of st-3A)
+        self.add('state_retry_father_msisdn', function(name) {
+            var speech_option = '1';
+            return new FreeText(name, {
+                question: $('Sorry, invalid input. Please enter number (Father)'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: function(content) {
+                    if (go.utils.is_valid_msisdn(content) === false) {
+                        return 'state_retry_father_msisdn';
                     } else {
                         return 'state_mother_msisdn';
                     }
@@ -144,7 +193,24 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     if (go.utils.is_valid_msisdn(content) === false) {
-                        return 'state_retry_mother_msisdn'; // error message, allow retry
+                        return 'state_retry_mother_msisdn';
+                    } else {
+                        return 'state_pregnancy_status';
+                    }
+                }
+            });
+        });
+
+        // FreeText (retry state of st-3B)
+        self.add('state_retry_mother_msisdn', function(name) {
+            var speech_option = '1';
+            return new FreeText(name, {
+                question: $('Sorry, invalid input. Please enter number (Mother)'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: function(content) {
+                    if (go.utils.is_valid_msisdn(content) === false) {
+                        return 'state_retry_mother_msisdn';
                     } else {
                         return 'state_pregnancy_status';
                     }
@@ -155,66 +221,58 @@ go.app = function() {
         // ChoiceState st-04
         self.add('state_pregnancy_status', function(name) {
             var speech_option = '1';
+            var routing = {
+                'pre_birth': 'state_last_period_year',
+                'post_birth': 'state_baby_birth_year'
+            };
             return new ChoiceState(name, {
                 question: $('Pregnant or baby'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('state_last_period_year', $('Pregnant')),
-                    new Choice('state_baby_birth_year', $('Baby'))
+                    new Choice('pre_birth', $('Pregnant')),
+                    new Choice('post_birth', $('Baby'))
                 ],
                 next: function(choice) {
-                    return choice.value;
+                    return routing[choice.value];
                 }
             });
         });
 
+    // pregnant
         // ChoiceState st-05
         self.add('state_last_period_year', function(name) {
             var speech_option = '1';
+            var routing = {
+                'this_year': 'state_this_year_period_month',
+                'last_year': 'state_last_year_period_month'
+            };
             return new ChoiceState(name, {
                 question: $('Last period?'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('state_this_year_period_month', $('This year')),
-                    new Choice('state_last_year_period_month', $('Last year'))
+                    new Choice('this_year', $('This year')),
+                    new Choice('last_year', $('Last year'))
                 ],
                 next: function(choice) {
-                    return choice.value;
+                    return routing[choice.value];
                 }
             });
         });
 
         // ChoiceState st-5A
         self.add('state_this_year_period_month', function(name) {
-            var speech_option = 1;
-
+            var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Period month this year?'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
-                choices: [
-                    new Choice('jan', $('January')),
-                    new Choice('feb', $('February')),
-                    new Choice('mar', $('March')),
-                    new Choice('apr', $('April')),
-                    new Choice('may', $('May')),
-                    new Choice('jun', $('June')),
-                    new Choice('jul', $('July')),
-                    new Choice('aug', $('August')),
-                    new Choice('sep', $('September')),
-                    new Choice('oct', $('October')),
-                    new Choice('nov', $('November')),
-                    new Choice('dec', $('December'))
-                ],
+                    choices: go.utils.make_month_choices(
+                        $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
                 next: function(choice) {
                     var today = go.utils.get_today(self.im.config);
-                    var currentMonth = parseInt(today.format("MM"));
-                    var validStartMonth = currentMonth <= 10 ? 0 : currentMonth-10;
-                    var choiceMonth = parseInt(today.month(choice.value).format("MM"));
-
-                    if (choiceMonth <= currentMonth && choiceMonth > validStartMonth)
+                    if (go.utils.is_valid_month(today, today.year(), choice.value, 10))
                     {
                         return 'state_last_period_day';
                     }
@@ -225,35 +283,18 @@ go.app = function() {
             });
         });
 
-        // retry state
+        // retry state 5A
         self.add('state_retry_this_year_period_month', function(name) {
-            var speech_option = 1;
-
+            var speech_option = '1';
             return new ChoiceState(name, {
-                question: $("Invalid input. Period month?"),
+                question: $("Retry. Period month this year?"),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
-                choices: [
-                    new Choice('jan', $('January')),
-                    new Choice('feb', $('February')),
-                    new Choice('mar', $('March')),
-                    new Choice('apr', $('April')),
-                    new Choice('may', $('May')),
-                    new Choice('jun', $('June')),
-                    new Choice('jul', $('July')),
-                    new Choice('aug', $('August')),
-                    new Choice('sep', $('September')),
-                    new Choice('oct', $('October')),
-                    new Choice('nov', $('November')),
-                    new Choice('dec', $('December'))
-                ],
+                    choices: go.utils.make_month_choices(
+                        $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
                 next: function(choice) {
                     var today = go.utils.get_today(self.im.config);
-                    var currentMonth = parseInt(today.format("MM"));
-                    var validStartMonth = currentMonth <= 10 ? 0 : currentMonth-10;
-                    var choiceMonth = parseInt(today.month(choice.value).format("MM"));
-
-                    if (choiceMonth <= currentMonth && choiceMonth > validStartMonth)
+                    if (go.utils.is_valid_month(today, today.year(), choice.value, 10))
                     {
                         return 'state_last_period_day';
                     }
@@ -266,85 +307,43 @@ go.app = function() {
 
         // ChoiceState st-5B
         self.add('state_last_year_period_month', function(name) {
-            var speech_option = 1;
-
+            var speech_option = '1';
             return new ChoiceState(name, {
                 question: $("Period month last year?"),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
-                choices: [
-                    new Choice('jan', $('January')),
-                    new Choice('feb', $('February')),
-                    new Choice('mar', $('March')),
-                    new Choice('apr', $('April')),
-                    new Choice('may', $('May')),
-                    new Choice('jun', $('June')),
-                    new Choice('jul', $('July')),
-                    new Choice('aug', $('August')),
-                    new Choice('sep', $('September')),
-                    new Choice('oct', $('October')),
-                    new Choice('nov', $('November')),
-                    new Choice('dec', $('December'))
-                ],
+                    choices: go.utils.make_month_choices(
+                        $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
                 next: function(choice) {
                     var today = go.utils.get_today(self.im.config);
-                    today.subtract('year', 1);
-                    var currentMonth = parseInt(today.format("MM"));
-                    var validStartMonth = currentMonth <= 10 ? ((currentMonth+13) % 10) : -1;
-                    validStartMonth = validStartMonth === 0 ? 10 : validStartMonth+10;
-                    var choiceMonth = parseInt(today.month(choice.value).format("MM"));
-
-                    if (validStartMonth !== -1){
-                        if (choiceMonth > currentMonth && choiceMonth >= validStartMonth)
-                        {
-                            return 'state_last_period_day';
-                        }
-                        else {
-                            return 'state_retry_last_year_period_month';
-                        }
+                    if (go.utils.is_valid_month(today, today.year()-1, choice.value, 10))
+                    {
+                        return 'state_last_period_day';
+                    }
+                    else {
+                        return 'state_retry_last_year_period_month';
                     }
                 }
             });
         });
 
-        // retry state
+        // retry state 5B
         self.add('state_retry_last_year_period_month', function(name) {
-            var speech_option = 1;
-
+            var speech_option = '1';
             return new ChoiceState(name, {
-                question: $("Invalid input. Period month?"),
+                question: $("Retry. Period month last year?"),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
-                choices: [
-                    new Choice('jan', $('January')),
-                    new Choice('feb', $('February')),
-                    new Choice('mar', $('March')),
-                    new Choice('apr', $('April')),
-                    new Choice('may', $('May')),
-                    new Choice('jun', $('June')),
-                    new Choice('jul', $('July')),
-                    new Choice('aug', $('August')),
-                    new Choice('sep', $('September')),
-                    new Choice('oct', $('October')),
-                    new Choice('nov', $('November')),
-                    new Choice('dec', $('December'))
-                ],
+                    choices: go.utils.make_month_choices(
+                        $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
                 next: function(choice) {
                     var today = go.utils.get_today(self.im.config);
-                    today.subtract('year', 1);
-                    var currentMonth = parseInt(today.format("MM"));
-                    var validStartMonth = currentMonth <= 10 ? ((currentMonth+13) % 10) : -1;
-                    validStartMonth = validStartMonth === 0 ? 10 : validStartMonth+10;
-                    var choiceMonth = parseInt(today.month(choice.value).format("MM"));
-
-                    if (validStartMonth !== -1){
-                        if (choiceMonth > currentMonth && choiceMonth >= validStartMonth)
-                        {
-                            return 'state_last_period_day';
-                        }
-                        else {
-                            return 'state_retry_last_year_period_month';
-                        }
+                    if (go.utils.is_valid_month(today, today.year()-1, choice.value, 10))
+                    {
+                        return 'state_last_period_day';
+                    }
+                    else {
+                        return 'state_retry_last_year_period_month';
                     }
                 }
             });
@@ -358,13 +357,11 @@ go.app = function() {
             var year;
             if (self.im.user.answers.state_this_year_period_month) {
                 year = dateRef.format("YYYY");
-            }
-            else {
+            } else {
                 year = dateRef.subtract('year', 1).format("YYYY");
             }
-            var monthNum = dateRef.month(month).format("MM");
-            var speech_option = go.utils.get_speech_option_birth_day(
-                self.im, monthNum);
+            var speech_option = go.utils.get_speech_option_pregnancy_status_day(
+                self.im, month);
 
             return new FreeText(name, {
                 question: $('Last period day {{ month }} [{{ year}}]'
@@ -372,8 +369,8 @@ go.app = function() {
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(content) {
-                    var period_date = content+"-"+monthNum+"-"+year;
-                    if (!go.utils.is_valid_date(period_date, "DD-MM-YYYY")) {
+                    var period_date = content+"-"+month+"-"+year;
+                    if (!(content > 0 && content <= 31)) {
                         return 'state_retry_last_period_day';
                     } else {
                         self.im.user.set_answer('last_period_date', period_date);
@@ -383,7 +380,7 @@ go.app = function() {
             });
         });
 
-        // FreeText st-19
+        // FreeText st-19 (retry state 06)
         self.add('state_retry_last_period_day', function(name) {
             var dateRef = go.utils.get_today(self.im.config);
             var month = self.im.user.answers.state_this_year_period_month ||
@@ -391,44 +388,76 @@ go.app = function() {
             var year;
             if (self.im.user.answers.state_this_year_period_month) {
                 year = dateRef.format("YYYY");
-            }
-            else {
+            } else {
                 year = dateRef.subtract('year', 1).format("YYYY");
             }
-            var monthNum = dateRef.month(month).format("MM");
-            var speech_option = go.utils.get_speech_option_birth_day(
-                self.im, monthNum);
-
+            var speech_option = go.utils.get_speech_option_pregnancy_status_day(
+                self.im, month);
             return new FreeText(name, {
                 question: $('Retry period day'
             ).context({ month: month, year: year }),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(content) {
-                    var period_date = content+"-"+monthNum+"-"+year;
-                    if (!go.utils.is_valid_date(period_date, 'DD-MM-YYYY')) {
-                        return 'state_retry_last_period_day';
-                    } else {
-                        self.im.user.set_answer('last_period_date', period_date);
-                        return 'state_msg_language';
+                    var period_date = content+"-"+month+"-"+year;
+                    self.im.user.set_answer('last_period_date', period_date);
+
+                    return 'state_validate_date';
+                }
+            });
+        });
+
+        // to validate overall date
+        self.add('state_validate_date', function(name) {
+            var dateToValidate = self.im.user.answers.last_period_date ||
+                                 self.im.user.answers.baby_birth_date;
+
+            if (go.utils.is_valid_date(dateToValidate, 'DD-MM-YYYY')) {
+                return self.states.create('state_msg_language');
+            } else {
+                return self.states.create('state_invalid_date');
+            }
+        });
+
+        self.add('state_invalid_date', function(name) {
+            var speech_option = '1';
+            return new ChoiceState(name, {
+                question:
+                    $('The date you entered is not a real date. Please try again.'),
+                helper_metadata: go.utils.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                choices: [
+                    new Choice('continue', $('Continue'))
+                ],
+                next: function() {
+                    if (self.im.user.answers.state_last_period_day) {  // flow via st-05, 5A/B & st-06
+                        return self.states.create('state_last_period_year');
+                    }
+                    else if (self.im.user.answers.state_baby_birth_day) { // flow via st-12, 12A/B & st-13
+                        return self.states.create('state_baby_birth_year');
                     }
                 }
             });
         });
 
+    // baby
         // ChoiceState st-12
         self.add('state_baby_birth_year', function(name) {
             var speech_option = '1';
+            var routing = {
+                'this_year': 'state_this_year_baby_birth_month',
+                'last_year': 'state_last_year_baby_birth_month'
+            };
             return new ChoiceState(name, {
                 question: $('Baby born?'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('state_this_year_baby_birth_month', $('this year')),
-                    new Choice('state_last_year_baby_birth_month', $('last year'))
+                    new Choice('this_year', $('this year')),
+                    new Choice('last_year', $('last year'))
                 ],
                 next: function(choice) {
-                    return choice.value;
+                    return routing[choice.value];
                 }
             });
         });
@@ -436,71 +465,38 @@ go.app = function() {
         // ChoiceState st-12A
         self.add('state_this_year_baby_birth_month', function(name) {
             var speech_option = '1';
-
             return new ChoiceState(name, {
                 question: $('Baby month this year?'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
-                choices:
-                [
-                    new Choice('jan', $('January')),
-                    new Choice('feb', $('February')),
-                    new Choice('mar', $('March')),
-                    new Choice('apr', $('April')),
-                    new Choice('may', $('May')),
-                    new Choice('jun', $('June')),
-                    new Choice('jul', $('July')),
-                    new Choice('aug', $('August')),
-                    new Choice('sep', $('September')),
-                    new Choice('oct', $('October')),
-                    new Choice('nov', $('November')),
-                    new Choice('dec', $('December'))
-                ],
+                choices: go.utils.make_month_choices(
+                    $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
                 next: function(choice) {
                     var today = go.utils.get_today(self.im.config);
-                    var currentMonth = parseInt(today.format("MM"));
-                    var choiceMonth = parseInt(today.month(choice.value).format("MM"));
-
-                    if (choiceMonth > currentMonth) {
-                        return 'state_retry_this_year_baby_birth_month';
-                    } else {
+                    if (go.utils.is_valid_month(today, today.year(), choice.value, 13)) {
                         return 'state_baby_birth_day';
+                    } else {
+                        return 'state_retry_this_year_baby_birth_month';
                     }
                 }
             });
         });
 
+        // retry state 12A
         self.add('state_retry_this_year_baby_birth_month', function(name) {
             var speech_option = '1';
-
             return new ChoiceState(name, {
-                question: $('Invalid input. Baby month?'),
+                question: $('Retry. Baby month this year?'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
-                choices:
-                [
-                    new Choice('jan', $('January')),
-                    new Choice('feb', $('February')),
-                    new Choice('mar', $('March')),
-                    new Choice('apr', $('April')),
-                    new Choice('may', $('May')),
-                    new Choice('jun', $('June')),
-                    new Choice('jul', $('July')),
-                    new Choice('aug', $('August')),
-                    new Choice('sep', $('September')),
-                    new Choice('oct', $('October')),
-                    new Choice('nov', $('November')),
-                    new Choice('dec', $('December'))
-                ],
+                    choices: go.utils.make_month_choices(
+                        $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
                 next: function(choice) {
                     var today = go.utils.get_today(self.im.config);
-                    var currentMonth = parseInt(today.format("MM"));
-                    var choiceMonth = parseInt(today.month(choice.value).format("MM"));
-
-                    if (choiceMonth > currentMonth) {
-                        return 'state_retry_this_year_baby_birth_month';
-                    } else {
+                    if (go.utils.is_valid_month(today, today.year(), choice.value, 13)) {
                         return 'state_baby_birth_day';
+                    } else {
+                        return 'state_retry_this_year_baby_birth_month';
                     }
                 }
             });
@@ -508,69 +504,40 @@ go.app = function() {
 
         // ChoiceState st-12B
         self.add('state_last_year_baby_birth_month', function(name) {
-            var speech_option = 1;
-
+            var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Baby month last year?'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
-                choices: [
-                    new Choice('jan', $('January')),
-                    new Choice('feb', $('February')),
-                    new Choice('mar', $('March')),
-                    new Choice('apr', $('April')),
-                    new Choice('may', $('May')),
-                    new Choice('jun', $('June')),
-                    new Choice('jul', $('July')),
-                    new Choice('aug', $('August')),
-                    new Choice('sep', $('September')),
-                    new Choice('oct', $('October')),
-                    new Choice('nov', $('November')),
-                    new Choice('dec', $('December'))
-                ],
+                    choices: go.utils.make_month_choices(
+                        $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
                 next: function(choice) {
                     var today = go.utils.get_today(self.im.config);
-                    var currentMonth = parseInt(today.format("MM"));
-                    var choiceMonth =  parseInt(today.month(choice.value).format("MM"));
-                    if (choiceMonth < currentMonth) {
-                        return 'state_retry_last_year_baby_birth_month';
-                    } else {
+                    if (go.utils.is_valid_month(today, today.year()-1, choice.value, 13)) {
                         return 'state_baby_birth_day';
+                    } else {
+                        return 'state_retry_last_year_baby_birth_month';
                     }
                 }
             });
         });
 
+        // retry state 12B
         self.add('state_retry_last_year_baby_birth_month', function(name) {
-            var speech_option = 1;
+            var speech_option = '1';
 
             return new ChoiceState(name, {
-                question: $('Invalid input. Baby month?'),
+                question: $('Retry. Baby month last year?'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
-                choices: [
-                    new Choice('jan', $('January')),
-                    new Choice('feb', $('February')),
-                    new Choice('mar', $('March')),
-                    new Choice('apr', $('April')),
-                    new Choice('may', $('May')),
-                    new Choice('jun', $('June')),
-                    new Choice('jul', $('July')),
-                    new Choice('aug', $('August')),
-                    new Choice('sep', $('September')),
-                    new Choice('oct', $('October')),
-                    new Choice('nov', $('November')),
-                    new Choice('dec', $('December'))
-                ],
+                    choices: go.utils.make_month_choices(
+                        $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
                 next: function(choice) {
                     var today = go.utils.get_today(self.im.config);
-                    var currentMonth = parseInt(today.format("MM"));
-                    var choiceMonth = parseInt(today.month(choice.value).format("MM"));
-
-                    if (choiceMonth < currentMonth) {
-                        return 'state_retry_last_year_baby_birth_month';
-                    } else {
+                    if (go.utils.is_valid_month(today, today.year()-1, choice.value, 13)) {
                         return 'state_baby_birth_day';
+                    } else {
+                        return 'state_retry_last_year_baby_birth_month';
                     }
                 }
             });
@@ -584,13 +551,11 @@ go.app = function() {
             var year;
             if (self.im.user.answers.state_this_year_baby_birth_month) {
                 year = dateRef.format("YYYY");
-            }
-            else {
+            } else {
                 year = dateRef.subtract('year', 1).format("YYYY");
             }
-            var monthNum = dateRef.month(month).format("MM");
-            var speech_option = go.utils.get_speech_option_birth_day(
-                self.im, monthNum);
+            var speech_option = go.utils.get_speech_option_pregnancy_status_day(
+                self.im, month);
 
             return new FreeText(name, {
                 question: $('Birth day in {{ month }} [{{ year}}]'
@@ -598,18 +563,18 @@ go.app = function() {
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(content) {
-                    var birth_date = content+'-'+monthNum+'-'+year;//go.utils.get_baby_dob(self.im, content);;
-                    if (!(new moment(birth_date, "DD-MM-YYYY").isValid())) {
+                    var birth_date = content+'-'+month+'-'+year;
+                    if (!(content > 0 && content <= 31)) {
                         return 'state_retry_baby_birth_day';
                     } else {
-                        self.im.user.set_answer('birth_date', birth_date);
+                        self.im.user.set_answer('baby_birth_date', birth_date);
                         return 'state_msg_language';
                     }
                 }
             });
         });
 
-        // FreeText st-18
+        // FreeText st-18 (retry state st-13)
         self.add('state_retry_baby_birth_day', function(name) {
             var dateRef = go.utils.get_today(self.im.config);
             var month = self.im.user.answers.state_this_year_baby_birth_month ||
@@ -617,13 +582,11 @@ go.app = function() {
             var year;
             if (self.im.user.answers.state_12A_baby_birth_month) {
                 year = dateRef.format("YYYY");
-            }
-            else {
+            } else {
                 year = dateRef.subtract('year', 1).format("YYYY");
             }
-            var monthNum = dateRef.month(month).format("MM");
-            var speech_option = go.utils.get_speech_option_birth_day(
-                self.im, monthNum);
+            var speech_option = go.utils.get_speech_option_pregnancy_status_day(
+                self.im, month);
 
             return new FreeText(name, {
                 question: $('Retry birth day'
@@ -631,13 +594,10 @@ go.app = function() {
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(content) {
-                    var birth_date = content+'-'+monthNum+'-'+year;//go.utils.get_baby_dob(self.im, content);;
-                    if (!(new moment(birth_date, "DD-MM-YYYY").isValid())) {
-                        return 'state_retry_baby_birth_day';
-                    } else {
-                        //self.im.user.set_answer('birth_date', birth_date);
-                        return 'state_msg_language';
-                    }
+                    var birth_date = content+'-'+month+'-'+year;
+                    self.im.user.set_answer('baby_birth_date', birth_date);
+
+                    return 'state_validate_date';
                 }
             });
         });
@@ -662,10 +622,9 @@ go.app = function() {
         self.add('state_msg_type', function(name) {
             var speech_option = '1';
             var routing = {
-                    'sms': 'state_end_sms',
-                    'voice': 'state_voice_days'
+                'sms': 'state_end_sms',
+                'voice': 'state_voice_days'
             };
-
             return new ChoiceState(name, {
                 question: $('Channel?'),
                 helper_metadata: go.utils.make_voice_helper_data(
