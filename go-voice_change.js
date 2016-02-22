@@ -942,17 +942,21 @@ go.app = function() {
         self.add('state_main_menu', function(name) {
             var speech_option = '1';
             var routing = {
-                'baby': 'state_baby_confirm',
-                'msg_time': 'state_voice_days',
+                'msg_baby': 'state_baby_confirm',
+                'msg_pref': 'state_voice_days',
+                'msg_msisdn': 'state_new_msisdn',
+                'msg_language': 'state_msg_language',
                 'optout': 'state_optout_reason'
             };
             return new ChoiceState(name, {
-                question: $('Baby / Message time / Optout?'),
+                question: $('Choose:'),
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('baby', $('baby')),
-                    new Choice('msg_time', $('msg_time')),
+                    new Choice('msg_baby', $('baby')),
+                    new Choice('msg_pref', $('preferences')),
+                    new Choice('msg_misisdn', $('number')),
+                    new Choice('msg_language', $('language')),
                     new Choice('optout', $('optout'))
                 ],
                 next: function(choice) {
