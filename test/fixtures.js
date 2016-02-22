@@ -302,6 +302,7 @@ module.exports = function() {
 
         // 7: get contact by personnel code - no results
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -461,6 +462,7 @@ module.exports = function() {
 
         // 12: get contact cb245673-aa41-4302-ac47-00000000005
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {},
@@ -838,6 +840,7 @@ module.exports = function() {
 
         // 20: get active subscriptions for 0005
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -2184,6 +2187,102 @@ module.exports = function() {
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
+
+        // 52: create registration 09092222222 - trusted_friend / family_member - sms (voice)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': "http://localhost:8002/api/v1/registrations/",
+                'data':  {
+                    "stage": "postbirth",
+                    "data": {
+                        "msg_receiver": "trusted_friend",
+                        "mother_id": "cb245673-aa41-4302-ac47-1234567890",
+                        "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
+                        "language": "igbo",
+                        "msg_type": "sms",
+                        "baby_dob": "20160713",
+                        "user_id": "cb245673-aa41-4302-ac47-00000000001"
+                    }
+                }
+            },
+            'response': {
+                "code": 201,
+                "data": {
+                    "id": "reg_for_09092222222_uuid",
+                    "stage": "postbirth",
+                    "data": {
+                        "msg_receiver": "trusted_friend",
+                        "mother_id": "cb245673-aa41-4302-ac47-1234567890",
+                        "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
+                        "language": "igbo",
+                        "msg_type": "sms",
+                        "baby_dob": "20160713",
+                        "user_id": "cb245673-aa41-4302-ac47-00000000001"
+                    },
+                    "validated": false,
+                    "source": "source",
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z",
+                    "created_by": "user",
+                    "updated_by": "user"
+                }
+            }
+        },
+
+        // 53: create registration 09092222222 - trusted_friend / family_member - sms (voice)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': "http://localhost:8002/api/v1/registrations/",
+                'data':  {
+                    "stage": "postbirth",
+                    "data": {
+                        "msg_receiver": "trusted_friend",
+                        "mother_id": "cb245673-aa41-4302-ac47-1234567890",
+                        "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
+                        "language": "igbo",
+                        "msg_type": "voice",
+                        "baby_dob": "20160913",
+                        "user_id": "cb245673-aa41-4302-ac47-00000000001"
+                    }
+                }
+            },
+            'response': {
+                "code": 201,
+                "data": {
+                    "id": "reg_for_09092222222_uuid",
+                    "stage": "postbirth",
+                    "data": {
+                        "msg_receiver": "trusted_friend",
+                        "mother_id": "cb245673-aa41-4302-ac47-1234567890",
+                        "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
+                        "language": "igbo",
+                        "msg_type": "voice",
+                        "baby_dob": "20160913",
+                        "user_id": "cb245673-aa41-4302-ac47-00000000001"
+                    },
+                    "validated": false,
+                    "source": "source",
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z",
+                    "created_by": "user",
+                    "updated_by": "user"
                 }
             }
         },

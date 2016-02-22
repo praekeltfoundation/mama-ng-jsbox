@@ -30,11 +30,11 @@ go.utils = {
     get_speech_option_pregnancy_status_day: function(im, month) {
         var speech_option_start;
 
-        if (im.user.answers.state_pregnancy_status === 'pre_birth') {
+        if (im.user.answers.state_pregnancy_status === 'prebirth') {
             im.user.answers.state_last_period_year === 'last_year'
                 ? speech_option_start = 0
                 : speech_option_start = 12;
-        } else if (im.user.answers.state_pregnancy_status === 'post_birth') {
+        } else if (im.user.answers.state_pregnancy_status === 'postbirth') {
             im.user.answers.state_baby_birth_year === 'last_year'
                 ? speech_option_start = 0
                 : speech_option_start = 12;
@@ -50,6 +50,10 @@ go.utils = {
             'tue_thu': '2'
         };
         return day_map[days];
+    },
+
+    get_speech_option_year: function(year) {
+        return year === 'this_year' ? '1' : '2';
     },
 
     get_speech_option_days_time: function(days, time) {
@@ -69,15 +73,20 @@ go.utils = {
     },
 
     // Construct url string
-    make_speech_url: function(im, name, lang, num) {
-        return im.config.voice_content.url + lang + '/' + name + '_' + num + '.mp3';
+    make_speech_url: function(im, name, lang, num, retry) {
+        var url_start = im.config.services.voice_content.url + lang + '/' + name + '_' + num;
+        if (retry) {
+            url_start += '_retry';
+        }
+        var extension = '.mp3';
+        return url_start + extension;
     },
 
     // Construct helper_data object
-    make_voice_helper_data: function(im, name, lang, num) {
+    make_voice_helper_data: function(im, name, lang, num, retry) {
         return {
             voice: {
-                speech_url: go.utils.make_speech_url(im, name, lang, num),
+                speech_url: go.utils.make_speech_url(im, name, lang, num, retry),
                 wait_for: '#'
             }
         };
@@ -814,6 +823,12 @@ go.utils = {
         } else {
             return false;
         }
+    },
+
+    get_year_value: function(today, year_choice) {
+        return year_choice === 'this_year'
+            ? today.year()
+            : today.year() - 1;
     },
 
     "commas": "commas"
