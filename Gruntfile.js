@@ -64,14 +64,14 @@ module.exports = function (grunt) {
                 voice_registration: [
                     'test/setup.js',
                     'src/utils.js',
-                    //'src/utils_project.js,'
+                    'src/utils_project.js',
                     '<%= paths.src.app.voice_registration %>',
                     'test/voice_registration.test.js'
                 ],
                 voice_change: [
                     'test/setup.js',
                     'src/utils.js',
-                    //'src/utils_project.js,'
+                    'src/utils_project.js',
                     '<%= paths.src.app.voice_change %>',
                     'test/voice_change.test.js'
                 ],
@@ -85,14 +85,14 @@ module.exports = function (grunt) {
                 sms_inbound: [
                     'test/setup.js',
                     'src/utils.js',
-                    //'src/utils_project.js,'
+                    'src/utils_project.js',
                     '<%= paths.src.app.sms_inbound %>',
                     'test/sms_inbound.test.js'
                 ],
                 ussd_public: [
                     'test/setup.js',
                     'src/utils.js',
-                    //'src/utils_project.js,'
+                    'src/utils_project.js',
                     '<%= paths.src.app.ussd_public %>',
                     'test/ussd_public.test.js'
                 ]
