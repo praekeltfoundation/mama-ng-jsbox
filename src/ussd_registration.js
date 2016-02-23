@@ -78,7 +78,7 @@ go.app = function() {
         // override normal state adding
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                if (!interrupt || !go.utils.timed_out(self.im))
+                if (!interrupt || !go.utils_HelloMama.timed_out(self.im))
                     return creator(name, opts);
 
                 interrupt = false;
@@ -114,7 +114,7 @@ go.app = function() {
 
         self.add('state_start', function(name) {
             self.im.user.answers = {};  // reset answers
-            return go.utils
+            return go.utils_HelloMama
                 .get_or_create_identity({'msisdn': self.im.user.addr}, self.im, null)
                 .then(function(user) {
                     self.im.user.set_answer('user_id', user.id);
