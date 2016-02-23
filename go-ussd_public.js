@@ -469,7 +469,7 @@ go.utils = {
         return schedule_id;
     },
 
-    subscribe_contact: function(im, subscription) {
+    subscribe_identity: function(im, subscription) {
         var payload = subscription;
         return go.utils
             .service_api_call("subscriptions", "post", null, payload, "subscriptions/", im)
@@ -478,7 +478,7 @@ go.utils = {
             });
     },
 
-    get_active_subscriptions_by_contact_id: function(contact_id, im) {
+    get_active_subscriptions_by_identity_id: function(contact_id, im) {
         // returns all active subscriptions - for unlikely case where there
         // is more than one active subscription
         var params = {
@@ -492,10 +492,10 @@ go.utils = {
             });
     },
 
-    get_active_subscription_by_contact_id: function(contact_id, im) {
+    get_active_subscription_by_identity_id: function(contact_id, im) {
         // returns first active subscription found
         return go.utils
-            .get_active_subscriptions_by_contact_id(contact_id, im)
+            .get_active_subscriptions_by_identity_id(contact_id, im)
             .then(function(subscriptions) {
                 return subscriptions[0];
             });
@@ -503,7 +503,7 @@ go.utils = {
 
     has_active_subscriptions: function(contact_id, im) {
         return go.utils
-            .get_active_subscriptions_by_contact_id(contact_id, im)
+            .get_active_subscriptions_by_identity_id(contact_id, im)
             .then(function(subscriptions) {
                 return subscriptions.length > 0;
             });
@@ -514,7 +514,7 @@ go.utils = {
         // unlike other functions takes into account that there may be
         // more than one active subscription returned (unlikely)
         return go.utils
-            .get_active_subscriptions_by_contact_id(contact_id, im)
+            .get_active_subscriptions_by_identity_id(contact_id, im)
             .then(function(active_subscriptions) {
                 var subscriptions = active_subscriptions;
                 var clean = true;  // clean tracks if api call is unnecessary
@@ -558,7 +558,7 @@ go.utils = {
                     // update mama contact
                     go.utils.update_identity(im, mama_contact),
                     // subscribe to baby messages
-                    go.utils.subscribe_contact(im, baby_subscription)
+                    go.utils.subscribe_identity(im, baby_subscription)
                 ]);
             });
     },
@@ -581,7 +581,7 @@ go.utils = {
                 // get contact so details can be updated
                 go.utils.get_identity(mama_id, im),
                 // get existing subscriptions so schedule can be updated
-                go.utils.get_active_subscription_by_contact_id(mama_id, im)
+                go.utils.get_active_subscription_by_identity_id(mama_id, im)
             ])
             .spread(function(mama_contact, subscription) {
                 // set new mama contact details
