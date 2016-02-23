@@ -284,9 +284,9 @@ go.utils = {
         return go.utils
             .service_api_call("identities", "post", null, payload, 'identities/', im)
             .then(function(json_post_response) {
-                var contact_created = json_post_response.data;
-                // Return the contact
-                return contact_created;
+                var identity_created = json_post_response.data;
+                // Return the identity
+                return identity_created;
             });
     },
 
@@ -299,23 +299,23 @@ go.utils = {
         return go.utils
             // Get identity id using msisdn
             .get_identity_by_address(address, im)
-            .then(function(contact) {
-                if (contact !== null) {
+            .then(function(identity) {
+                if (identity !== null) {
                     // If identity exists, return the id
-                    return contact;
+                    return identity;
                 } else {
                     // If identity doesn't exist, create it
                     return go.utils
                         .create_identity(im, address, null, operator_id)
-                        .then(function(contact) {
-                            return contact;
+                        .then(function(identity) {
+                            return identity;
                         });
                 }
             });
     },
 
     update_identity: function(im, identity) {
-        // For patching any field on the contact
+        // For patching any field on the identity
         var endpoint = 'identities/' + identity.id + '/';
         return go.utils
             .service_api_call('identities', 'patch', {}, identity, endpoint, im)
@@ -482,7 +482,7 @@ go.utils = {
         // returns all active subscriptions - for unlikely case where there
         // is more than one active subscription
         var params = {
-            contact: identity_id,
+            identity: identity_id,
             active: "True"
         };
         return go.utils
@@ -896,16 +896,16 @@ go.app = function() {
                         return 'state_c13_retry_number';
                     } else {
                         return go.utils
-                            // get or create mama contact
+                            // get or create mama identity
                             .get_or_create_identity({'msisdn': content}, self.im, null)
-                            .then(function(contact) {
-                                self.im.user.set_answer('mama_id', contact.id);
+                            .then(function(identity) {
+                                self.im.user.set_answer('mama_id', identity.id);
                                 return go.utils
-                                    .is_registered(contact.id, self.im)
+                                    .is_registered(identity.id, self.im)
                                     .then(function(is_registered) {
                                         if (is_registered === true) {
                                             return go.utils
-                                                .has_active_subscriptions(contact.id, self.im)
+                                                .has_active_subscriptions(identity.id, self.im)
                                                 .then(function(has_active_subscriptions) {
                                                     if (has_active_subscriptions === true) {
                                                         return self.states.create("state_c01_main_menu");
@@ -934,12 +934,12 @@ go.app = function() {
                         return 'state_c13_retry_number';
                     } else {
                         return go.utils
-                            // get or create mama contact
+                            // get or create mama identity
                             .get_or_create_identity({'msisdn': content}, self.im, null)
-                            .then(function(contact) {
-                                self.im.user.set_answer('mama_id', contact.id);
+                            .then(function(identity) {
+                                self.im.user.set_answer('mama_id', identity.id);
                                 return go.utils
-                                    .is_registered(contact.id, self.im)
+                                    .is_registered(identity.id, self.im)
                                     .then(function(is_registered) {
                                         if (is_registered === true) {
                                             return self.states.create("state_c01_main_menu");

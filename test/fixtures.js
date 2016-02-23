@@ -1,8 +1,8 @@
-// Contact roles
+// Identity roles
 // 08080070007: registered healthworker - personnel code 12345
-// 07030010001: unregistered mother but with existing contact (voice)
-// 08080020002: unregistered mother but with existing contact (ussd)
-// 08080030003: unrecognised contact - contact gets created
+// 07030010001: unregistered mother but with existing identity (voice)
+// 08080020002: unregistered mother but with existing identity (ussd)
+// 08080030003: unrecognised identity - identity gets created
 // 08080040004: clone of 0002 but with dialback_sent = true
 // 07070050005: registered mother
 // 07070060006: registered mother
@@ -16,7 +16,7 @@
 
 module.exports = function() {
     return [
-        // 0: get contact 08080070007 by msisdn (to validate personnel_code)
+        // 0: get identity 08080070007 by msisdn (to validate personnel_code)
         {
             'request': {
                 'method': 'GET',
@@ -55,7 +55,7 @@ module.exports = function() {
             }
         },
 
-        // 1: get contact 08080020002 by msisdn
+        // 1: get identity 08080020002 by msisdn
         {
             'repeatable': true,  // necessary for timeout restart testing
             'request': {
@@ -94,7 +94,7 @@ module.exports = function() {
             }
         },
 
-        // 2: get contact 07030010001 by msisdn
+        // 2: get identity 07030010001 by msisdn
         {
             'repeatable': true,  // necessary for timeout restart testing
             'request': {
@@ -133,7 +133,7 @@ module.exports = function() {
             }
         },
 
-        // 3: get contact 07070050005 by msisdn
+        // 3: get identity 07070050005 by msisdn
         {
             'request': {
                 'method': 'GET',
@@ -185,7 +185,7 @@ module.exports = function() {
             }
         },
 
-        // 4: get contact 07070060006 by msisdn
+        // 4: get identity 07070060006 by msisdn
         {
             'request': {
                 'method': 'GET',
@@ -237,7 +237,7 @@ module.exports = function() {
             }
         },
 
-        // 5: get contact 08080030003 by msisdn - no results
+        // 5: get identity 08080030003 by msisdn - no results
         {
             'request': {
                 'method': 'GET',
@@ -261,7 +261,7 @@ module.exports = function() {
             }
         },
 
-        // 6: get contact 08080070007 by personnel code
+        // 6: get identity 08080070007 by personnel code
         {
             'request': {
                 'method': 'GET',
@@ -300,7 +300,7 @@ module.exports = function() {
             }
         },
 
-        // 7: get contact by personnel code - no results
+        // 7: get identity by personnel code - no results
         {
             'repeatable': true,
             'request': {
@@ -325,7 +325,7 @@ module.exports = function() {
             }
         },
 
-        // 8: create contact 08080030003
+        // 8: create identity 08080030003
         {
             'request': {
                 'method': 'POST',
@@ -365,7 +365,7 @@ module.exports = function() {
             }
         },
 
-        // 9: get contact cb245673-aa41-4302-ac47-00000000003
+        // 9: get identity cb245673-aa41-4302-ac47-00000000003
         {
             'repeatable': true,
             'request': {
@@ -397,7 +397,7 @@ module.exports = function() {
             }
         },
 
-        // 10: get contact cb245673-aa41-4302-ac47-00000000001
+        // 10: get identity cb245673-aa41-4302-ac47-00000000001
         {
             'repeatable': true,
             'request': {
@@ -429,7 +429,7 @@ module.exports = function() {
             }
         },
 
-        // 11: get contact cb245673-aa41-4302-ac47-00000000002
+        // 11: get identity cb245673-aa41-4302-ac47-00000000002
         {
             'request': {
                 'method': 'GET',
@@ -460,7 +460,7 @@ module.exports = function() {
             }
         },
 
-        // 12: get contact cb245673-aa41-4302-ac47-00000000005
+        // 12: get identity cb245673-aa41-4302-ac47-00000000005
         {
             'repeatable': true,
             'request': {
@@ -504,7 +504,7 @@ module.exports = function() {
             }
         },
 
-        // 13: get contact cb245673-aa41-4302-ac47-00000000006
+        // 13: get identity cb245673-aa41-4302-ac47-00000000006
         {
             'request': {
                 'method': 'GET',
@@ -547,7 +547,7 @@ module.exports = function() {
             }
         },
 
-        // 14: patch contact cb245673-aa41-4302-ac47-00000000002 - voice reg mama
+        // 14: patch identity cb245673-aa41-4302-ac47-00000000002 - voice reg mama
         {
             'request': {
                 'method': 'PATCH',
@@ -623,7 +623,7 @@ module.exports = function() {
                 'url': 'http://localhost:8002/api/v1/subscriptions/',
                 'params': {
                     'active': 'True',
-                    'contact': 'cb245673-aa41-4302-ac47-00000000002'
+                    'identity': 'cb245673-aa41-4302-ac47-00000000002'
                 }
             },
             'response': {
@@ -680,7 +680,7 @@ module.exports = function() {
             }
         },
 
-        // 17: patch contact cb245673-aa41-4302-ac47-00000000001 - voice / sms reg chew
+        // 17: patch identity cb245673-aa41-4302-ac47-00000000001 - voice / sms reg chew
         {
             'request': {
                 'method': 'PATCH',
@@ -725,7 +725,7 @@ module.exports = function() {
             }
         },
 
-        // 18: patch contact cb245673-aa41-4302-ac47-00000000002 - sms reg mama
+        // 18: patch identity cb245673-aa41-4302-ac47-00000000002 - sms reg mama
         {
             'request': {
                 'method': 'PATCH',
@@ -844,7 +844,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'contact': 'cb245673-aa41-4302-ac47-00000000005',
+                    'identity': 'cb245673-aa41-4302-ac47-00000000005',
                     'active': 'True'
                 },
                 'headers': {
@@ -888,7 +888,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'contact': 'cb245673-aa41-4302-ac47-00000000006',
+                    'identity': 'cb245673-aa41-4302-ac47-00000000006',
                     'active': 'True'
                 },
                 'headers': {
@@ -959,7 +959,7 @@ module.exports = function() {
             }
         },
 
-        // 23: patch contact 07070050005 details (baby switch)
+        // 23: patch identity 07070050005 details (baby switch)
         {
             'request': {
                 'method': 'PATCH',
@@ -1072,7 +1072,7 @@ module.exports = function() {
             }
         },
 
-        // 25: patch contact 07070050005 details (time change)
+        // 25: patch identity 07070050005 details (time change)
         {
             'request': {
                 'method': 'PATCH',
@@ -1192,7 +1192,7 @@ module.exports = function() {
             }
         },
 
-        // 27: patch contact 07070050005 details (optout 1)
+        // 27: patch identity 07070050005 details (optout 1)
         {
             'request': {
                 'method': 'PATCH',
@@ -1263,7 +1263,7 @@ module.exports = function() {
             }
         },
 
-        // 28: patch contact 07070050005 details (optout 2)
+        // 28: patch identity 07070050005 details (optout 2)
         {
             'request': {
                 'method': 'PATCH',
@@ -1334,7 +1334,7 @@ module.exports = function() {
             }
         },
 
-        // 29: patch contact 07070050005 details (optout 3)
+        // 29: patch identity 07070050005 details (optout 3)
         {
             'request': {
                 'method': 'PATCH',
@@ -1426,7 +1426,7 @@ module.exports = function() {
             }
         },
 
-        // 31: get contact 08080040004 by msisdn
+        // 31: get identity 08080040004 by msisdn
         {
             'request': {
                 'method': 'GET',
@@ -1465,7 +1465,7 @@ module.exports = function() {
             }
         },
 
-        // 32: get contact cb245673-aa41-4302-ac47-00000000004
+        // 32: get identity cb245673-aa41-4302-ac47-00000000004
         {
             'request': {
                 'method': 'GET',
@@ -1497,7 +1497,7 @@ module.exports = function() {
             }
         },
 
-        // 33: patch contact 08080020002 details (time change)
+        // 33: patch identity 08080020002 details (time change)
         {
             'request': {
                 'method': 'PATCH',
@@ -1544,7 +1544,7 @@ module.exports = function() {
             }
         },
 
-        // 34: get contact 09091111111 by msisdn - no results
+        // 34: get identity 09091111111 by msisdn - no results
         {
             'request': {
                 'method': 'GET',
@@ -1568,7 +1568,7 @@ module.exports = function() {
             }
         },
 
-        // 35: create contact 09091111111
+        // 35: create identity 09091111111
         {
             'request': {
                 'method': 'POST',
@@ -1608,7 +1608,7 @@ module.exports = function() {
             }
         },
 
-        // 36: get contact 09092222222 by msisdn - no results
+        // 36: get identity 09092222222 by msisdn - no results
         {
             'request': {
                 'method': 'GET',
@@ -1632,7 +1632,7 @@ module.exports = function() {
             }
         },
 
-        // 37: create contact 09092222222
+        // 37: create identity 09092222222
         {
             'request': {
                 'method': 'POST',
@@ -1672,7 +1672,7 @@ module.exports = function() {
             }
         },
 
-        // 38: create contact communicate through 09092222222
+        // 38: create identity communicate through 09092222222
         {
             'request': {
                 'method': 'POST',
@@ -1700,7 +1700,7 @@ module.exports = function() {
             }
         },
 
-        // 39: get contact 09093333333 by msisdn - no results
+        // 39: get identity 09093333333 by msisdn - no results
         {
             'request': {
                 'method': 'GET',
@@ -1724,7 +1724,7 @@ module.exports = function() {
             }
         },
 
-        // 40: create contact 09093333333
+        // 40: create identity 09093333333
         {
             'request': {
                 'method': 'POST',
@@ -1764,7 +1764,7 @@ module.exports = function() {
             }
         },
 
-        // 41: create contact communicate through 09093333333
+        // 41: create identity communicate through 09093333333
         {
             'request': {
                 'method': 'POST',
@@ -1792,7 +1792,7 @@ module.exports = function() {
             }
         },
 
-        // 42: get contact 09094444444 by msisdn - no results
+        // 42: get identity 09094444444 by msisdn - no results
         {
             'request': {
                 'method': 'GET',
@@ -1816,7 +1816,7 @@ module.exports = function() {
             }
         },
 
-        // 43: get contact 09095555555 by msisdn - no results
+        // 43: get identity 09095555555 by msisdn - no results
         {
             'request': {
                 'method': 'GET',
@@ -1840,7 +1840,7 @@ module.exports = function() {
             }
         },
 
-        // 44: create contact 09094444444
+        // 44: create identity 09094444444
         {
             'request': {
                 'method': 'POST',
@@ -1880,7 +1880,7 @@ module.exports = function() {
             }
         },
 
-        // 45: create contact 09095555555
+        // 45: create identity 09095555555
         {
             'request': {
                 'method': 'POST',
@@ -2160,7 +2160,7 @@ module.exports = function() {
             }
         },
 
-        // 51: get contact 08080070007 by id cb245673-aa41-4302-ac47-00000000007
+        // 51: get identity 08080070007 by id cb245673-aa41-4302-ac47-00000000007
         {
             'request': {
                 'method': 'GET',
