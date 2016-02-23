@@ -130,13 +130,13 @@ go.utils = {
             }
     },
 
-    // Determine whether contact is registered
-    is_registered: function(contact_id, im) {
+    // Determine whether identity is registered
+    is_registered: function(identity_id, im) {
         return go.utils
-            .get_identity(contact_id, im)
-            .then(function(contact) {
+            .get_identity(identity_id, im)
+            .then(function(identity) {
                 var true_options = ['true', 'True', true];
-                return true_options.indexOf(contact.details.has_registered) !== -1;
+                return true_options.indexOf(identity.details.has_registered) !== -1;
             });
     },
 
@@ -290,21 +290,21 @@ go.utils = {
             });
     },
 
-    // Gets a contact if it exists, otherwise creates a new one
+    // Gets a identity if it exists, otherwise creates a new one
     get_or_create_identity: function(address, im, operator_id) {
         if (address.msisdn) {
             address.msisdn = go.utils
                 .normalize_msisdn(address.msisdn, im.config.country_code);
         }
         return go.utils
-            // Get contact id using msisdn
+            // Get identity id using msisdn
             .get_identity_by_address(address, im)
             .then(function(contact) {
                 if (contact !== null) {
-                    // If contact exists, return the id
+                    // If identity exists, return the id
                     return contact;
                 } else {
-                    // If contact doesn't exist, create it
+                    // If identity doesn't exist, create it
                     return go.utils
                         .create_identity(im, address, null, operator_id)
                         .then(function(contact) {
@@ -314,11 +314,11 @@ go.utils = {
             });
     },
 
-    update_identity: function(im, contact) {
+    update_identity: function(im, identity) {
         // For patching any field on the contact
-        var endpoint = 'identities/' + contact.id + '/';
+        var endpoint = 'identities/' + identity.id + '/';
         return go.utils
-            .service_api_call('identities', 'patch', {}, contact, endpoint, im)
+            .service_api_call('identities', 'patch', {}, identity, endpoint, im)
             .then(function(response) {
                 return response.data.id;
             });
@@ -478,11 +478,11 @@ go.utils = {
             });
     },
 
-    get_active_subscriptions_by_identity_id: function(contact_id, im) {
+    get_active_subscriptions_by_identity_id: function(identity_id, im) {
         // returns all active subscriptions - for unlikely case where there
         // is more than one active subscription
         var params = {
-            contact: contact_id,
+            contact: identity_id,
             active: "True"
         };
         return go.utils
@@ -492,29 +492,29 @@ go.utils = {
             });
     },
 
-    get_active_subscription_by_identity_id: function(contact_id, im) {
+    get_active_subscription_by_identity_id: function(identity_id, im) {
         // returns first active subscription found
         return go.utils
-            .get_active_subscriptions_by_identity_id(contact_id, im)
+            .get_active_subscriptions_by_identity_id(identity_id, im)
             .then(function(subscriptions) {
                 return subscriptions[0];
             });
     },
 
-    has_active_subscriptions: function(contact_id, im) {
+    has_active_subscriptions: function(identity_id, im) {
         return go.utils
-            .get_active_subscriptions_by_identity_id(contact_id, im)
+            .get_active_subscriptions_by_identity_id(identity_id, im)
             .then(function(subscriptions) {
                 return subscriptions.length > 0;
             });
     },
 
-    subscriptions_unsubscribe_all: function(contact_id, im) {
+    subscriptions_unsubscribe_all: function(identity_id, im) {
         // make all subscriptions inactive
         // unlike other functions takes into account that there may be
         // more than one active subscription returned (unlikely)
         return go.utils
-            .get_active_subscriptions_by_identity_id(contact_id, im)
+            .get_active_subscriptions_by_identity_id(identity_id, im)
             .then(function(active_subscriptions) {
                 var subscriptions = active_subscriptions;
                 var clean = true;  // clean tracks if api call is unnecessary
@@ -541,7 +541,7 @@ go.utils = {
         var mama_id = im.user.answers.mama_id;
         return Q
             .all([
-                // get contact so details can be updated
+                // get identity so details can be updated
                 go.utils.get_identity(mama_id, im),
                 // set existing subscriptions inactive
                 go.utils.subscriptions_unsubscribe_all(mama_id, im)
@@ -578,7 +578,7 @@ go.utils = {
         var mama_id = im.user.answers.mama_id;
         return Q
             .all([
-                // get contact so details can be updated
+                // get identity so details can be updated
                 go.utils.get_identity(mama_id, im),
                 // get existing subscriptions so schedule can be updated
                 go.utils.get_active_subscription_by_identity_id(mama_id, im)
@@ -605,7 +605,7 @@ go.utils = {
     optout_loss_opt_in: function(im) {
         return go.utils
             .optout(im)
-            .then(function(contact_id) {
+            .then(function(identity_id) {
                 // TODO #17 Subscribe to loss messages
                 return Q();
             });
@@ -615,7 +615,7 @@ go.utils = {
         var mama_id = im.user.answers.mama_id;
         return Q
             .all([
-                // get contact so details can be updated
+                // get identity so details can be updated
                 go.utils.get_identity(mama_id, im),
                 // set existing subscriptions inactive
                 go.utils.subscriptions_unsubscribe_all(mama_id, im)
