@@ -154,7 +154,7 @@ module.exports = function (grunt) {
             test_ussd_public: {
                 src: ['<%= paths.test.ussd_public %>']
             },
-            test_voice_change: {
+            test_voice_public: {
                 src: ['<%= paths.test.voice_public %>']
             },
             test_sms_inbound: {
