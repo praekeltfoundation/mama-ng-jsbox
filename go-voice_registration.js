@@ -15,70 +15,6 @@ var Choice = vumigo.states.Choice;
 // Shared utils lib
 go.utils = {
 
-// VOICE UTILS
-
-    should_restart: function(im) {
-        var no_restart_states = [
-            'state_r01_number',
-            'state_r02_retry_number',
-            'state_c01_main_menu',
-            'state_c02_not_registered',
-            'state_c07_loss_opt_in',
-            'state_c08_end_baby',
-            'state_c09_end_msg_times',
-            'state_c10_end_loss_opt_in',
-            'state_c11_end_optout'
-        ];
-
-        return im.msg.content === '*'
-            && no_restart_states.indexOf(im.user.state.name) === -1;
-    },
-
-    get_speech_option_pregnancy_status_day: function(im, month) {
-        var speech_option_start;
-
-        if (im.user.answers.state_pregnancy_status === 'prebirth') {
-            im.user.answers.state_last_period_year === 'last_year'
-                ? speech_option_start = 0
-                : speech_option_start = 12;
-        } else if (im.user.answers.state_pregnancy_status === 'postbirth') {
-            im.user.answers.state_baby_birth_year === 'last_year'
-                ? speech_option_start = 0
-                : speech_option_start = 12;
-        }
-
-        var speech_option_num = speech_option_start + parseInt(month, 10);
-        return speech_option_num.toString();
-    },
-
-    get_speech_option_days: function(days) {
-        day_map = {
-            'mon_wed': '1',
-            'tue_thu': '2'
-        };
-        return day_map[days];
-    },
-
-    get_speech_option_year: function(year) {
-        return year === 'this_year' ? '1' : '2';
-    },
-
-    get_speech_option_days_time: function(days, time) {
-        var speech_option;
-
-        day_map_9_11 = {
-            'mon_wed': '1',
-            'tue_thu': '2'
-        };
-        day_map_2_5 = {
-            'mon_wed': '3',
-            'tue_thu': '4'
-        };
-        time === '9_11' ? speech_option = day_map_9_11[days]
-                        : speech_option = day_map_2_5[days];
-        return speech_option;
-    },
-
     // Construct url string
     make_speech_url: function(im, name, lang, num, retry) {
         var url_start = im.config.services.voice_content.url + lang + '/' + name + '_' + num;
@@ -600,80 +536,6 @@ go.utils = {
             });
     },
 
-// OPTOUT HANDLING
-
-    optout_loss_opt_in: function(im) {
-        return go.utils
-            .optout(im)
-            .then(function(contact_id) {
-                // TODO #17 Subscribe to loss messages
-                return Q();
-            });
-    },
-
-    optout: function(im) {
-        var mama_id = im.user.answers.mama_id;
-        return Q
-            .all([
-                // get contact so details can be updated
-                go.utils.get_identity(mama_id, im),
-                // set existing subscriptions inactive
-                go.utils.subscriptions_unsubscribe_all(mama_id, im)
-            ])
-            .spread(function(mama_contact, unsubscribe_result) {
-                // set new mama contact details
-                mama_contact.details.opted_out = true;
-                mama_contact.details.optout_reason = im.user.answers.state_c05_optout_reason;
-
-                // update mama contact
-                return go.utils
-                    .update_identity(im, mama_contact);
-            });
-    },
-
-// SMS HANDLING
-
-    eval_dialback_reminder: function(e, im, user_id, $, sms_content) {
-        var close_state = e.im.state.name;
-        var non_dialback_sms_states = [
-            'state_start',
-            'state_auth_code',
-            'state_end_voice',
-            'state_end_sms'
-        ];
-        if (non_dialback_sms_states.indexOf(close_state) === -1
-          && e.user_terminated) {
-            return go.utils
-                .get_identity(user_id, im)
-                .then(function(user) {
-                    if (!user.details.dialback_sent) {
-                        user.details.dialback_sent = true;
-                        return Q.all([
-                            go.utils.send_text(im, user_id, sms_content),
-                            go.utils.update_identity(im, user)
-                        ]);
-                    }
-                });
-        } else {
-            return Q();
-        }
-    },
-
-    send_text: function(im, user_id, sms_content) {
-        var payload = {
-            "contact": user_id,
-            "content": sms_content.replace("{{channel}}", im.config.channel)
-                // $ does not work well with fixtures here since it's an object
-        };
-        return go.utils
-            .service_api_call("outbound", "post", null, payload, 'outbound/', im)
-            .then(function(json_post_response) {
-                var outbound_response = json_post_response.data;
-                // Return the outbound id
-                return outbound_response.id;
-            });
-    },
-
 // TIMEOUT HANDLING
 
     timed_out: function(im) {
@@ -685,64 +547,6 @@ go.utils = {
         return im.msg.session_event === 'new'
             && im.user.state.name
             && no_redirects.indexOf(im.user.state.name) === -1;
-    },
-
-// REGISTRATION HANDLING
-
-    compile_reg_info: function(im) {
-        var reg_info = {
-            stage: im.user.answers.state_pregnancy_status,
-            data: {
-                msg_receiver: im.user.answers.state_msg_receiver,
-                mother_id: im.user.answers.mother_id,
-                receiver_id: im.user.answers.receiver_id,
-                operator_id: im.user.answers.operator_id,
-                language: im.user.answers.state_msg_language,
-                msg_type: im.user.answers.state_msg_type,
-                user_id: im.user.answers.user_id
-            }
-        };
-
-        // add data for last_period_date or baby_dob
-        if (im.user.answers.state_pregnancy_status === 'prebirth') {
-            reg_info.data.last_period_date = im.user.answers.working_date;
-        } else if (im.user.answers.state_pregnancy_status === 'postbirth') {
-            reg_info.data.baby_dob = im.user.answers.working_date;
-        }
-        return reg_info;
-    },
-
-    save_registration: function(im) {
-        // compile registration
-        var reg_info = go.utils.compile_reg_info(im);
-        return go.utils
-            .service_api_call("registrations", "post", null, reg_info, "registrations/", im)
-            .then(function(result) {
-                return result.id;
-            });
-    },
-
-// PROJECT SPECIFIC
-
-    check_msisdn_hcp: function(msisdn) {
-        return Q()
-            .then(function(q_response) {
-                return msisdn === '082222' || msisdn === '082333'
-                    || msisdn === '082444' || msisdn === '082555' || msisdn === '0803304899';
-            });
-    },
-
-    find_healthworker_with_personnel_code: function(im, personnel_code) {
-        var params = {
-            "details__personnel_code": personnel_code
-        };
-        return go.utils
-            .service_api_call('identities', 'get', params, null, 'identities/search/', im)
-            .then(function(json_get_response) {
-                var healthworkers_found = json_get_response.data.results;
-                // Return the first healthworker if found
-                return healthworkers_found[0];
-            });
     },
 
     check_valid_alpha: function(input) {
@@ -768,76 +572,6 @@ go.utils = {
         return choices;
     },
 
-    save_identities: function(im, msg_receiver, receiver_msisdn, father_msisdn,
-                              mother_msisdn, operator_id) {
-        // Creates identities for the msisdns entered in various states
-        // and sets the identitity id's to user.answers for later use
-        // msg_receiver: (str) person who will receive messages eg. 'mother_only'
-        // *_msisdn: (str) msisdns of role players
-        // operator_id: (str - uuid) id of healthworker making the registration
-        if (msg_receiver === 'mother_only') {
-            return go.utils
-                // get or create mother's identity
-                .get_or_create_identity({'msisdn': receiver_msisdn}, im, operator_id)
-                .then(function(mother) {
-                    im.user.set_answer('mother_id', mother.id);
-                    im.user.set_answer('receiver_id', mother.id);
-                    return;
-                });
-        } else if (['trusted_friend', 'family_member', 'father_only'].indexOf(msg_receiver) !== -1) {
-            return go.utils
-                // get or create msg_receiver's identity
-                .get_or_create_identity({'msisdn': receiver_msisdn}, im, operator_id)
-                .then(function(msg_receiver) {
-                    im.user.set_answer('receiver_id', msg_receiver.id);
-                    return go.utils
-                        // create mother's identity - cannot get as no identifying information
-                        .create_identity(im, null, msg_receiver.id, operator_id)
-                        .then(function(mother) {
-                            im.user.set_answer('mother_id', mother.id);
-                            return;
-                        });
-                });
-        } else if (msg_receiver === 'mother_father') {
-            return Q
-                .all([
-                    // create father's identity
-                    go.utils.get_or_create_identity({'msisdn': father_msisdn}, im, operator_id),
-                    // create mother's identity
-                    go.utils.get_or_create_identity({'msisdn': mother_msisdn}, im, operator_id),
-                ])
-                .spread(function(father, mother) {
-                    im.user.set_answer('receiver_id', father.id);
-                    im.user.set_answer('mother_id', mother.id);
-                    return;
-                });
-        }
-    },
-
-    // function used to validate months for states 5A/5B & 12A/12B
-    is_valid_month: function(today, choiceYear, choiceMonth, monthsValid) {
-        var choiceDate = new moment(choiceYear+choiceMonth, "YYYYMM");
-
-        var startDate = today.clone();
-        // note: 1 is subtracted as current month is already included
-        startDate = startDate.subtract('month', monthsValid - 1);
-        startDate.date(1);  // set day of month to 1st
-
-        // choice >= startDate && <= today/endDate
-        if ((choiceDate.isSame(startDate) || choiceDate.isAfter(startDate)) &&
-            (choiceDate.isSame(today) || choiceDate.isBefore(today))) {
-            return true;
-        } else {
-            return false;
-        }
-    },
-
-    get_year_value: function(today, year_choice) {
-        return year_choice === 'this_year'
-            ? today.year()
-            : today.year() - 1;
-    },
-
     "commas": "commas"
 };
 
@@ -860,7 +594,7 @@ go.app = function() {
 
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                if (!interrupt || !go.utils.should_restart(self.im))
+                if (!interrupt || !go.utils_HelloMama.should_restart(self.im))
                     return creator(name, opts);
 
                 interrupt = false;
@@ -910,7 +644,7 @@ go.app = function() {
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
-                    return go.utils
+                    return go.utils_HelloMama
                         .find_healthworker_with_personnel_code(self.im, content)
                         .then(function(healthworker) {
                             if (healthworker) {
@@ -1029,7 +763,7 @@ go.app = function() {
 
         // Get or create identities and save their IDs
         self.add('state_save_identities', function(name, creator_opts) {
-            return go.utils
+            return go.utils_HelloMama
                 .save_identities(
                     self.im,
                     self.im.user.answers.state_msg_receiver,
@@ -1077,7 +811,7 @@ go.app = function() {
                     new Choice('last_year', $('Last year'))
                 ],
                 next: function(choice) {
-                    var year_value = go.utils.get_year_value(
+                    var year_value = go.utils_HelloMama.get_year_value(
                         go.utils.get_today(self.im.config), choice.value);
                     self.im.user.set_answer('working_year', year_value);
                     return 'state_last_period_month';
@@ -1090,7 +824,7 @@ go.app = function() {
             var question_text = 'Period month this/last year?';
             var retry_text = 'Retry. Period month this/last year?';
             var use_text = creator_opts.retry === true ? retry_text : question_text;
-            var speech_option = go.utils.get_speech_option_year(
+            var speech_option = go.utils_HelloMama.get_speech_option_year(
                 self.im.user.answers.state_last_period_year);
             return new ChoiceState(name, {
                 question: $(use_text),
@@ -1100,7 +834,7 @@ go.app = function() {
                     $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
                 next: function(choice) {
                     var today = go.utils.get_today(self.im.config);
-                    if (go.utils.is_valid_month(today, self.im.user.answers.working_year,
+                    if (go.utils_HelloMama.is_valid_month(today, self.im.user.answers.working_year,
                                                 choice.value, 10)) {
                         self.im.user.set_answer('working_month', choice.value);
                         return 'state_last_period_day';
@@ -1121,7 +855,7 @@ go.app = function() {
             var use_text = creator_opts.retry === true ? retry_text : question_text;
             var month = self.im.user.answers.working_month;
             var year = self.im.user.answers.working_year;
-            var speech_option = go.utils.get_speech_option_pregnancy_status_day(
+            var speech_option = go.utils_HelloMama.get_speech_option_pregnancy_status_day(
                 self.im, month);
 
             return new FreeText(name, {
@@ -1155,7 +889,7 @@ go.app = function() {
                     new Choice('last_year', $('last year'))
                 ],
                 next: function(choice) {
-                    var year_value = go.utils.get_year_value(
+                    var year_value = go.utils_HelloMama.get_year_value(
                         go.utils.get_today(self.im.config), choice.value);
                     self.im.user.set_answer('working_year', year_value);
                     return 'state_baby_birth_month';
@@ -1168,7 +902,7 @@ go.app = function() {
             var question_text = 'Birth month this/last year?';
             var retry_text = 'Retry. Birth month this/last year?';
             var use_text = creator_opts.retry === true ? retry_text : question_text;
-            var speech_option = go.utils.get_speech_option_year(
+            var speech_option = go.utils_HelloMama.get_speech_option_year(
                 self.im.user.answers.state_baby_birth_year);
             return new ChoiceState(name, {
                 question: $(use_text),
@@ -1178,7 +912,7 @@ go.app = function() {
                     $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
                 next: function(choice) {
                     var today = go.utils.get_today(self.im.config);
-                    if (go.utils.is_valid_month(today, self.im.user.answers.working_year,
+                    if (go.utils_HelloMama.is_valid_month(today, self.im.user.answers.working_year,
                                                 choice.value, 13)) {
                         self.im.user.set_answer('working_month', choice.value);
                         return 'state_baby_birth_day';
@@ -1199,7 +933,7 @@ go.app = function() {
             var use_text = creator_opts.retry === true ? retry_text : question_text;
             var month = self.im.user.answers.working_month;
             var year = self.im.user.answers.working_year;
-            var speech_option = go.utils.get_speech_option_pregnancy_status_day(
+            var speech_option = go.utils_HelloMama.get_speech_option_pregnancy_status_day(
                 self.im, month);
 
             return new FreeText(name, {
@@ -1283,7 +1017,7 @@ go.app = function() {
                     if (choice.value === 'voice') {
                         return 'state_voice_days';
                     } else {
-                        return go.utils
+                        return go.utils_HelloMama
                             .save_registration(self.im)
                             .then(function() {
                                 return 'state_end_sms';
@@ -1323,7 +1057,7 @@ go.app = function() {
         // ChoiceState st-10
         self.add('state_voice_times', function(name, creator_opts) {
             var days = self.im.user.answers.state_voice_days;
-            var speech_option = go.utils.get_speech_option_days(days);
+            var speech_option = go.utils_HelloMama.get_speech_option_days(days);
             return new ChoiceState(name, {
                 question: $('Message time?'),
                 helper_metadata: go.utils.make_voice_helper_data(
@@ -1333,7 +1067,7 @@ go.app = function() {
                     new Choice('2_5', $('2_5'))
                 ],
                 next: function() {
-                    return go.utils
+                    return go.utils_HelloMama
                         .save_registration(self.im)
                         .then(function() {
                             return 'state_end_voice';
@@ -1346,7 +1080,7 @@ go.app = function() {
         self.add('state_end_voice', function(name, creator_opts) {
             var time = self.im.user.answers.state_voice_times;
             var days = self.im.user.answers.state_voice_days;
-            var speech_option = go.utils.get_speech_option_days_time(days, time);
+            var speech_option = go.utils_HelloMama.get_speech_option_days_time(days, time);
             var text = $('Thank you! Time: {{ time }}. Days: {{ days }}.'
                          ).context({ time: time, days: days });
             return new EndState(name, {

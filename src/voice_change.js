@@ -17,7 +17,7 @@ go.app = function() {
 
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                if (!interrupt || !go.utils.should_restart(self.im))
+                if (!interrupt || !go.utils_HelloMama.should_restart(self.im))
                     return creator(name, opts);
 
                 interrupt = false;
@@ -198,7 +198,7 @@ go.app = function() {
 
         self.add('state_c06_voice_times', function(name) {
             var days = self.im.user.answers.state_c04_voice_days;
-            var speech_option = go.utils.get_speech_option_days(days);
+            var speech_option = go.utils_HelloMama.get_speech_option_days(days);
             return new ChoiceState(name, {
                 question: $('Message times?'),
                 helper_metadata: go.utils.make_voice_helper_data(
@@ -260,7 +260,7 @@ go.app = function() {
         self.add('state_c09_end_msg_times', function(name) {
             var days = self.im.user.answers.state_c04_voice_days;
             var time = self.im.user.answers.state_c06_voice_times;
-            var speech_option = go.utils.get_speech_option_days_time(days, time);
+            var speech_option = go.utils_HelloMama.get_speech_option_days_time(days, time);
             return new EndState(name, {
                 text: $('Thank you! Time: {{ time }}. Days: {{ days }}.'
                     ).context({ time: time, days: days }),
@@ -271,7 +271,7 @@ go.app = function() {
         });
 
         self.add('state_c10_enter', function(name) {
-            return go.utils
+            return go.utils_HelloMama
                 .optout_loss_opt_in(self.im)
                 .then(function() {
                     return self.states.create('state_c10_end_loss_opt_in');
@@ -289,7 +289,7 @@ go.app = function() {
         });
 
         self.add('state_c11_enter', function(name) {
-            return go.utils
+            return go.utils_HelloMama
                 .optout(self.im)
                 .then(function() {
                     return self.states.create('state_c11_end_optout');

@@ -155,7 +155,7 @@ go.app = function() {
         });*/
 
         self.add('state_check_msisdn', function(name) {
-            return go.utils
+            return go.utils_HelloMama
                 .check_msisdn_hcp(self.im.user.addr)
                 .then(function(recognised) {
                     if (recognised) {

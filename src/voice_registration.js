@@ -17,7 +17,7 @@ go.app = function() {
 
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                if (!interrupt || !go.utils.should_restart(self.im))
+                if (!interrupt || !go.utils_HelloMama.should_restart(self.im))
                     return creator(name, opts);
 
                 interrupt = false;
@@ -67,7 +67,7 @@ go.app = function() {
                 helper_metadata: go.utils.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
-                    return go.utils
+                    return go.utils_HelloMama
                         .find_healthworker_with_personnel_code(self.im, content)
                         .then(function(healthworker) {
                             if (healthworker) {
@@ -186,7 +186,7 @@ go.app = function() {
 
         // Get or create identities and save their IDs
         self.add('state_save_identities', function(name, creator_opts) {
-            return go.utils
+            return go.utils_HelloMama
                 .save_identities(
                     self.im,
                     self.im.user.answers.state_msg_receiver,
@@ -234,7 +234,7 @@ go.app = function() {
                     new Choice('last_year', $('Last year'))
                 ],
                 next: function(choice) {
-                    var year_value = go.utils.get_year_value(
+                    var year_value = go.utils_HelloMama.get_year_value(
                         go.utils.get_today(self.im.config), choice.value);
                     self.im.user.set_answer('working_year', year_value);
                     return 'state_last_period_month';
@@ -247,7 +247,7 @@ go.app = function() {
             var question_text = 'Period month this/last year?';
             var retry_text = 'Retry. Period month this/last year?';
             var use_text = creator_opts.retry === true ? retry_text : question_text;
-            var speech_option = go.utils.get_speech_option_year(
+            var speech_option = go.utils_HelloMama.get_speech_option_year(
                 self.im.user.answers.state_last_period_year);
             return new ChoiceState(name, {
                 question: $(use_text),
@@ -257,7 +257,7 @@ go.app = function() {
                     $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
                 next: function(choice) {
                     var today = go.utils.get_today(self.im.config);
-                    if (go.utils.is_valid_month(today, self.im.user.answers.working_year,
+                    if (go.utils_HelloMama.is_valid_month(today, self.im.user.answers.working_year,
                                                 choice.value, 10)) {
                         self.im.user.set_answer('working_month', choice.value);
                         return 'state_last_period_day';
@@ -278,7 +278,7 @@ go.app = function() {
             var use_text = creator_opts.retry === true ? retry_text : question_text;
             var month = self.im.user.answers.working_month;
             var year = self.im.user.answers.working_year;
-            var speech_option = go.utils.get_speech_option_pregnancy_status_day(
+            var speech_option = go.utils_HelloMama.get_speech_option_pregnancy_status_day(
                 self.im, month);
 
             return new FreeText(name, {
@@ -312,7 +312,7 @@ go.app = function() {
                     new Choice('last_year', $('last year'))
                 ],
                 next: function(choice) {
-                    var year_value = go.utils.get_year_value(
+                    var year_value = go.utils_HelloMama.get_year_value(
                         go.utils.get_today(self.im.config), choice.value);
                     self.im.user.set_answer('working_year', year_value);
                     return 'state_baby_birth_month';
@@ -325,7 +325,7 @@ go.app = function() {
             var question_text = 'Birth month this/last year?';
             var retry_text = 'Retry. Birth month this/last year?';
             var use_text = creator_opts.retry === true ? retry_text : question_text;
-            var speech_option = go.utils.get_speech_option_year(
+            var speech_option = go.utils_HelloMama.get_speech_option_year(
                 self.im.user.answers.state_baby_birth_year);
             return new ChoiceState(name, {
                 question: $(use_text),
@@ -335,7 +335,7 @@ go.app = function() {
                     $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
                 next: function(choice) {
                     var today = go.utils.get_today(self.im.config);
-                    if (go.utils.is_valid_month(today, self.im.user.answers.working_year,
+                    if (go.utils_HelloMama.is_valid_month(today, self.im.user.answers.working_year,
                                                 choice.value, 13)) {
                         self.im.user.set_answer('working_month', choice.value);
                         return 'state_baby_birth_day';
@@ -356,7 +356,7 @@ go.app = function() {
             var use_text = creator_opts.retry === true ? retry_text : question_text;
             var month = self.im.user.answers.working_month;
             var year = self.im.user.answers.working_year;
-            var speech_option = go.utils.get_speech_option_pregnancy_status_day(
+            var speech_option = go.utils_HelloMama.get_speech_option_pregnancy_status_day(
                 self.im, month);
 
             return new FreeText(name, {
@@ -440,7 +440,7 @@ go.app = function() {
                     if (choice.value === 'voice') {
                         return 'state_voice_days';
                     } else {
-                        return go.utils
+                        return go.utils_HelloMama
                             .save_registration(self.im)
                             .then(function() {
                                 return 'state_end_sms';
@@ -480,7 +480,7 @@ go.app = function() {
         // ChoiceState st-10
         self.add('state_voice_times', function(name, creator_opts) {
             var days = self.im.user.answers.state_voice_days;
-            var speech_option = go.utils.get_speech_option_days(days);
+            var speech_option = go.utils_HelloMama.get_speech_option_days(days);
             return new ChoiceState(name, {
                 question: $('Message time?'),
                 helper_metadata: go.utils.make_voice_helper_data(
@@ -490,7 +490,7 @@ go.app = function() {
                     new Choice('2_5', $('2_5'))
                 ],
                 next: function() {
-                    return go.utils
+                    return go.utils_HelloMama
                         .save_registration(self.im)
                         .then(function() {
                             return 'state_end_voice';
@@ -503,7 +503,7 @@ go.app = function() {
         self.add('state_end_voice', function(name, creator_opts) {
             var time = self.im.user.answers.state_voice_times;
             var days = self.im.user.answers.state_voice_days;
-            var speech_option = go.utils.get_speech_option_days_time(days, time);
+            var speech_option = go.utils_HelloMama.get_speech_option_days_time(days, time);
             var text = $('Thank you! Time: {{ time }}. Days: {{ days }}.'
                          ).context({ time: time, days: days });
             return new EndState(name, {

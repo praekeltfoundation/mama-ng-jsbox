@@ -15,70 +15,6 @@ var Choice = vumigo.states.Choice;
 // Shared utils lib
 go.utils = {
 
-// VOICE UTILS
-
-    should_restart: function(im) {
-        var no_restart_states = [
-            'state_r01_number',
-            'state_r02_retry_number',
-            'state_c01_main_menu',
-            'state_c02_not_registered',
-            'state_c07_loss_opt_in',
-            'state_c08_end_baby',
-            'state_c09_end_msg_times',
-            'state_c10_end_loss_opt_in',
-            'state_c11_end_optout'
-        ];
-
-        return im.msg.content === '*'
-            && no_restart_states.indexOf(im.user.state.name) === -1;
-    },
-
-    get_speech_option_pregnancy_status_day: function(im, month) {
-        var speech_option_start;
-
-        if (im.user.answers.state_pregnancy_status === 'prebirth') {
-            im.user.answers.state_last_period_year === 'last_year'
-                ? speech_option_start = 0
-                : speech_option_start = 12;
-        } else if (im.user.answers.state_pregnancy_status === 'postbirth') {
-            im.user.answers.state_baby_birth_year === 'last_year'
-                ? speech_option_start = 0
-                : speech_option_start = 12;
-        }
-
-        var speech_option_num = speech_option_start + parseInt(month, 10);
-        return speech_option_num.toString();
-    },
-
-    get_speech_option_days: function(days) {
-        day_map = {
-            'mon_wed': '1',
-            'tue_thu': '2'
-        };
-        return day_map[days];
-    },
-
-    get_speech_option_year: function(year) {
-        return year === 'this_year' ? '1' : '2';
-    },
-
-    get_speech_option_days_time: function(days, time) {
-        var speech_option;
-
-        day_map_9_11 = {
-            'mon_wed': '1',
-            'tue_thu': '2'
-        };
-        day_map_2_5 = {
-            'mon_wed': '3',
-            'tue_thu': '4'
-        };
-        time === '9_11' ? speech_option = day_map_9_11[days]
-                        : speech_option = day_map_2_5[days];
-        return speech_option;
-    },
-
     // Construct url string
     make_speech_url: function(im, name, lang, num, retry) {
         var url_start = im.config.services.voice_content.url + lang + '/' + name + '_' + num;
@@ -600,80 +536,6 @@ go.utils = {
             });
     },
 
-// OPTOUT HANDLING
-
-    optout_loss_opt_in: function(im) {
-        return go.utils
-            .optout(im)
-            .then(function(contact_id) {
-                // TODO #17 Subscribe to loss messages
-                return Q();
-            });
-    },
-
-    optout: function(im) {
-        var mama_id = im.user.answers.mama_id;
-        return Q
-            .all([
-                // get contact so details can be updated
-                go.utils.get_identity(mama_id, im),
-                // set existing subscriptions inactive
-                go.utils.subscriptions_unsubscribe_all(mama_id, im)
-            ])
-            .spread(function(mama_contact, unsubscribe_result) {
-                // set new mama contact details
-                mama_contact.details.opted_out = true;
-                mama_contact.details.optout_reason = im.user.answers.state_c05_optout_reason;
-
-                // update mama contact
-                return go.utils
-                    .update_identity(im, mama_contact);
-            });
-    },
-
-// SMS HANDLING
-
-    eval_dialback_reminder: function(e, im, user_id, $, sms_content) {
-        var close_state = e.im.state.name;
-        var non_dialback_sms_states = [
-            'state_start',
-            'state_auth_code',
-            'state_end_voice',
-            'state_end_sms'
-        ];
-        if (non_dialback_sms_states.indexOf(close_state) === -1
-          && e.user_terminated) {
-            return go.utils
-                .get_identity(user_id, im)
-                .then(function(user) {
-                    if (!user.details.dialback_sent) {
-                        user.details.dialback_sent = true;
-                        return Q.all([
-                            go.utils.send_text(im, user_id, sms_content),
-                            go.utils.update_identity(im, user)
-                        ]);
-                    }
-                });
-        } else {
-            return Q();
-        }
-    },
-
-    send_text: function(im, user_id, sms_content) {
-        var payload = {
-            "contact": user_id,
-            "content": sms_content.replace("{{channel}}", im.config.channel)
-                // $ does not work well with fixtures here since it's an object
-        };
-        return go.utils
-            .service_api_call("outbound", "post", null, payload, 'outbound/', im)
-            .then(function(json_post_response) {
-                var outbound_response = json_post_response.data;
-                // Return the outbound id
-                return outbound_response.id;
-            });
-    },
-
 // TIMEOUT HANDLING
 
     timed_out: function(im) {
@@ -685,64 +547,6 @@ go.utils = {
         return im.msg.session_event === 'new'
             && im.user.state.name
             && no_redirects.indexOf(im.user.state.name) === -1;
-    },
-
-// REGISTRATION HANDLING
-
-    compile_reg_info: function(im) {
-        var reg_info = {
-            stage: im.user.answers.state_pregnancy_status,
-            data: {
-                msg_receiver: im.user.answers.state_msg_receiver,
-                mother_id: im.user.answers.mother_id,
-                receiver_id: im.user.answers.receiver_id,
-                operator_id: im.user.answers.operator_id,
-                language: im.user.answers.state_msg_language,
-                msg_type: im.user.answers.state_msg_type,
-                user_id: im.user.answers.user_id
-            }
-        };
-
-        // add data for last_period_date or baby_dob
-        if (im.user.answers.state_pregnancy_status === 'prebirth') {
-            reg_info.data.last_period_date = im.user.answers.working_date;
-        } else if (im.user.answers.state_pregnancy_status === 'postbirth') {
-            reg_info.data.baby_dob = im.user.answers.working_date;
-        }
-        return reg_info;
-    },
-
-    save_registration: function(im) {
-        // compile registration
-        var reg_info = go.utils.compile_reg_info(im);
-        return go.utils
-            .service_api_call("registrations", "post", null, reg_info, "registrations/", im)
-            .then(function(result) {
-                return result.id;
-            });
-    },
-
-// PROJECT SPECIFIC
-
-    check_msisdn_hcp: function(msisdn) {
-        return Q()
-            .then(function(q_response) {
-                return msisdn === '082222' || msisdn === '082333'
-                    || msisdn === '082444' || msisdn === '082555' || msisdn === '0803304899';
-            });
-    },
-
-    find_healthworker_with_personnel_code: function(im, personnel_code) {
-        var params = {
-            "details__personnel_code": personnel_code
-        };
-        return go.utils
-            .service_api_call('identities', 'get', params, null, 'identities/search/', im)
-            .then(function(json_get_response) {
-                var healthworkers_found = json_get_response.data.results;
-                // Return the first healthworker if found
-                return healthworkers_found[0];
-            });
     },
 
     check_valid_alpha: function(input) {
@@ -768,7 +572,45 @@ go.utils = {
         return choices;
     },
 
-    save_identities: function(im, msg_receiver, receiver_msisdn, father_msisdn,
+    "commas": "commas"
+};
+
+/*jshint -W083 */
+var Q = require('q');
+//var vumigo = require('vumigo_v02');
+var moment = require('moment');
+//var JsonApi = vumigo.http.api.JsonApi;
+//var Choice = vumigo.states.Choice;
+
+// PROJECT SPECIFIC utils lib
+
+go.utils_HelloMama = Object.create(go.utils);
+
+go.utils_HelloMama.
+    check_msisdn_hcp = function(msisdn) {
+        return Q()
+            .then(function(q_response) {
+                return msisdn === '082222' || msisdn === '082333'
+                    || msisdn === '082444' || msisdn === '082555' || msisdn === '0803304899';
+            });
+    };
+
+go.utils_HelloMama.
+    find_healthworker_with_personnel_code = function(im, personnel_code) {
+        var params = {
+            "details__personnel_code": personnel_code
+        };
+        return go.utils
+            .service_api_call('identities', 'get', params, null, 'identities/search/', im)
+            .then(function(json_get_response) {
+                var healthworkers_found = json_get_response.data.results;
+                // Return the first healthworker if found
+                return healthworkers_found[0];
+            });
+    };
+
+go.utils_HelloMama.
+    save_identities = function(im, msg_receiver, receiver_msisdn, father_msisdn,
                               mother_msisdn, operator_id) {
         // Creates identities for the msisdns entered in various states
         // and sets the identitity id's to user.answers for later use
@@ -812,10 +654,12 @@ go.utils = {
                     return;
                 });
         }
-    },
+    };
+
 
     // function used to validate months for states 5A/5B & 12A/12B
-    is_valid_month: function(today, choiceYear, choiceMonth, monthsValid) {
+go.utils_HelloMama.
+    is_valid_month = function(today, choiceYear, choiceMonth, monthsValid) {
         var choiceDate = new moment(choiceYear+choiceMonth, "YYYYMM");
 
         var startDate = today.clone();
@@ -830,16 +674,198 @@ go.utils = {
         } else {
             return false;
         }
-    },
+    };
 
-    get_year_value: function(today, year_choice) {
+go.utils_HelloMama.
+    get_year_value = function(today, year_choice) {
         return year_choice === 'this_year'
             ? today.year()
             : today.year() - 1;
+    };
+
+// VOICE UTILS
+
+go.utils_HelloMama.
+    should_restart = function(im) {
+        var no_restart_states = [
+            'state_r01_number',
+            'state_r02_retry_number',
+            'state_c01_main_menu',
+            'state_c02_not_registered',
+            'state_c07_loss_opt_in',
+            'state_c08_end_baby',
+            'state_c09_end_msg_times',
+            'state_c10_end_loss_opt_in',
+            'state_c11_end_optout'
+        ];
+
+        return im.msg.content === '*'
+            && no_restart_states.indexOf(im.user.state.name) === -1;
+    };
+
+go.utils_HelloMama.
+    get_speech_option_pregnancy_status_day = function(im, month) {
+        var speech_option_start;
+
+        if (im.user.answers.state_pregnancy_status === 'prebirth') {
+            im.user.answers.state_last_period_year === 'last_year'
+                ? speech_option_start = 0
+                : speech_option_start = 12;
+        } else if (im.user.answers.state_pregnancy_status === 'postbirth') {
+            im.user.answers.state_baby_birth_year === 'last_year'
+                ? speech_option_start = 0
+                : speech_option_start = 12;
+        }
+
+        var speech_option_num = speech_option_start + parseInt(month, 10);
+        return speech_option_num.toString();
+    };
+
+go.utils_HelloMama.
+    get_speech_option_days = function(days) {
+        day_map = {
+            'mon_wed': '1',
+            'tue_thu': '2'
+        };
+        return day_map[days];
     },
 
-    "commas": "commas"
-};
+go.utils_HelloMama.
+    get_speech_option_year = function(year) {
+        return year === 'this_year' ? '1' : '2';
+    };
+
+go.utils_HelloMama.
+    get_speech_option_days_time = function(days, time) {
+        var speech_option;
+
+        day_map_9_11 = {
+            'mon_wed': '1',
+            'tue_thu': '2'
+        };
+        day_map_2_5 = {
+            'mon_wed': '3',
+            'tue_thu': '4'
+        };
+        time === '9_11' ? speech_option = day_map_9_11[days]
+                        : speech_option = day_map_2_5[days];
+        return speech_option;
+    };
+
+// REGISTRATION HANDLING
+
+    go.utils_HelloMama.
+        compile_reg_info = function(im) {
+            var reg_info = {
+                stage: im.user.answers.state_pregnancy_status,
+                data: {
+                    msg_receiver: im.user.answers.state_msg_receiver,
+                    mother_id: im.user.answers.mother_id,
+                    receiver_id: im.user.answers.receiver_id,
+                    operator_id: im.user.answers.operator_id,
+                    language: im.user.answers.state_msg_language,
+                    msg_type: im.user.answers.state_msg_type,
+                    user_id: im.user.answers.user_id
+                }
+            };
+
+            // add data for last_period_date or baby_dob
+            if (im.user.answers.state_pregnancy_status === 'prebirth') {
+                reg_info.data.last_period_date = im.user.answers.working_date;
+            } else if (im.user.answers.state_pregnancy_status === 'postbirth') {
+                reg_info.data.baby_dob = im.user.answers.working_date;
+            }
+            return reg_info;
+        };
+
+    go.utils_HelloMama.
+        save_registration = function(im) {
+            // compile registration
+            var reg_info = go.utils_HelloMama.compile_reg_info(im);
+            return go.utils
+                .service_api_call("registrations", "post", null, reg_info, "registrations/", im)
+                .then(function(result) {
+                    return result.id;
+                });
+        };
+
+    // OPTOUT HANDLING
+
+    go.utils_HelloMama.
+        optout_loss_opt_in = function(im) {
+            return go.utils_HelloMama
+                .optout(im)
+                .then(function(contact_id) {
+                    // TODO #17 Subscribe to loss messages
+                    return Q();
+                });
+        };
+
+    go.utils_HelloMama.
+        optout = function(im) {
+            var mama_id = im.user.answers.mama_id;
+            return Q
+            .all([
+                // get contact so details can be updated
+                go.utils.get_identity(mama_id, im),
+                // set existing subscriptions inactive
+                go.utils.subscriptions_unsubscribe_all(mama_id, im)
+            ])
+            .spread(function(mama_contact, unsubscribe_result) {
+                // set new mama contact details
+                mama_contact.details.opted_out = true;
+                mama_contact.details.optout_reason = im.user.answers.state_c05_optout_reason;
+
+                // update mama contact
+                return go.utils
+                .update_identity(im, mama_contact);
+            });
+        };
+
+// SMS HANDLING
+
+    go.utils_HelloMama.
+        eval_dialback_reminder = function(e, im, user_id, $, sms_content) {
+            var close_state = e.im.state.name;
+            var non_dialback_sms_states = [
+                'state_start',
+                'state_auth_code',
+                'state_end_voice',
+                'state_end_sms'
+            ];
+            if (non_dialback_sms_states.indexOf(close_state) === -1
+            && e.user_terminated) {
+                return go.utils
+                .get_identity(user_id, im)
+                .then(function(user) {
+                    if (!user.details.dialback_sent) {
+                        user.details.dialback_sent = true;
+                        return Q.all([
+                            go.utils_HelloMama.send_text(im, user_id, sms_content),
+                            go.utils.update_identity(im, user)
+                        ]);
+                    }
+                });
+            } else {
+                return Q();
+            }
+        };
+
+    go.utils_HelloMama.
+        send_text = function(im, user_id, sms_content) {
+            var payload = {
+                "contact": user_id,
+                "content": sms_content.replace("{{channel}}", im.config.channel)
+                // $ does not work well with fixtures here since it's an object
+            };
+            return go.utils
+            .service_api_call("outbound", "post", null, payload, 'outbound/', im)
+            .then(function(json_post_response) {
+                var outbound_response = json_post_response.data;
+                // Return the outbound id
+                return outbound_response.id;
+            });
+        };
 
 go.app = function() {
     var vumigo = require('vumigo_v02');
@@ -859,7 +885,7 @@ go.app = function() {
         self.init = function() {
             // Send a dial back reminder via sms the first time someone times out
             self.im.on('session:close', function(e) {
-                return go.utils.eval_dialback_reminder(
+                return go.utils_HelloMama.eval_dialback_reminder(
                     e, self.im, self.im.user.answers.user_id, $,
                     "Please dial back in to {{channel}} to complete the Hello MAMA registration"
                     );
@@ -979,7 +1005,7 @@ go.app = function() {
                 question: $(questions[name]),
                 check: function(content) {
                     var personnel_code = content;
-                    return go.utils
+                    return go.utils_HelloMama
                         .find_healthworker_with_personnel_code(self.im, personnel_code)
                         .then(function(healthworker) {
                             if (healthworker) {
@@ -1070,7 +1096,7 @@ go.app = function() {
 
         // Get or create identities and save their IDs
         self.add('state_save_identities', function(name) {
-            return go.utils
+            return go.utils_HelloMama
                 .save_identities(
                     self.im,
                     self.im.user.answers.state_msg_receiver,
@@ -1155,7 +1181,7 @@ go.app = function() {
                     if (choice.value === 'voice') {
                         return 'state_voice_days';
                     } else {
-                        return go.utils
+                        return go.utils_HelloMama
                             .save_registration(self.im)
                             .then(function() {
                                 return 'state_end_sms';
@@ -1186,7 +1212,7 @@ go.app = function() {
                     new Choice('2_5', $('Between 2-5pm'))
                 ],
                 next: function() {
-                    return go.utils
+                    return go.utils_HelloMama
                         .save_registration(self.im)
                         .then(function() {
                             return 'state_end_voice';
