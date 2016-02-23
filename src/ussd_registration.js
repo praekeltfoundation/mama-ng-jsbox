@@ -16,7 +16,7 @@ go.app = function() {
         self.init = function() {
             // Send a dial back reminder via sms the first time someone times out
             self.im.on('session:close', function(e) {
-                return go.utils_HelloMama.eval_dialback_reminder(
+                return go.utils_project.eval_dialback_reminder(
                     e, self.im, self.im.user.answers.user_id, $,
                     "Please dial back in to {{channel}} to complete the Hello MAMA registration"
                     );
@@ -78,7 +78,7 @@ go.app = function() {
         // override normal state adding
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                if (!interrupt || !go.utils_HelloMama.timed_out(self.im))
+                if (!interrupt || !go.utils_project.timed_out(self.im))
                     return creator(name, opts);
 
                 interrupt = false;
@@ -114,7 +114,7 @@ go.app = function() {
 
         self.add('state_start', function(name) {
             self.im.user.answers = {};  // reset answers
-            return go.utils_HelloMama
+            return go.utils_project
                 .get_or_create_identity({'msisdn': self.im.user.addr}, self.im, null)
                 .then(function(user) {
                     self.im.user.set_answer('user_id', user.id);
@@ -136,7 +136,7 @@ go.app = function() {
                 question: $(questions[name]),
                 check: function(content) {
                     var personnel_code = content;
-                    return go.utils_HelloMama
+                    return go.utils_project
                         .find_healthworker_with_personnel_code(self.im, personnel_code)
                         .then(function(healthworker) {
                             if (healthworker) {
@@ -227,7 +227,7 @@ go.app = function() {
 
         // Get or create identities and save their IDs
         self.add('state_save_identities', function(name) {
-            return go.utils_HelloMama
+            return go.utils_project
                 .save_identities(
                     self.im,
                     self.im.user.answers.state_msg_receiver,
@@ -312,7 +312,7 @@ go.app = function() {
                     if (choice.value === 'voice') {
                         return 'state_voice_days';
                     } else {
-                        return go.utils_HelloMama
+                        return go.utils_project
                             .save_registration(self.im)
                             .then(function() {
                                 return 'state_end_sms';
@@ -343,7 +343,7 @@ go.app = function() {
                     new Choice('2_5', $('Between 2-5pm'))
                 ],
                 next: function() {
-                    return go.utils_HelloMama
+                    return go.utils_project
                         .save_registration(self.im)
                         .then(function() {
                             return 'state_end_voice';

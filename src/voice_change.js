@@ -17,7 +17,7 @@ go.app = function() {
 
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                if (!interrupt || !go.utils_HelloMama.should_restart(self.im))
+                if (!interrupt || !go.utils_project.should_restart(self.im))
                     return creator(name, opts);
 
                 interrupt = false;
@@ -46,22 +46,22 @@ go.app = function() {
             var speech_option = '1';
             return new FreeText(name, {
                 question: $('Welcome, Number'),
-                helper_metadata: go.utils_HelloMama.make_voice_helper_data(
+                helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     if (go.utils.is_valid_msisdn(content) === false) {
                         return 'state_c13_retry_number';
                     } else {
-                        return go.utils_HelloMama
+                        return go.utils_project
                             // get or create mama contact
                             .get_or_create_identity({'msisdn': content}, self.im, null)
                             .then(function(contact) {
                                 self.im.user.set_answer('mama_id', contact.id);
-                                return go.utils_HelloMama
+                                return go.utils_project
                                     .is_registered(contact.id, self.im)
                                     .then(function(is_registered) {
                                         if (is_registered === true) {
-                                            return go.utils_HelloMama
+                                            return go.utils_project
                                                 .has_active_subscriptions(contact.id, self.im)
                                                 .then(function(has_active_subscriptions) {
                                                     if (has_active_subscriptions === true) {
@@ -84,18 +84,18 @@ go.app = function() {
             var speech_option = '1';
             return new FreeText(name, {
                 question: $('Retry number'),
-                helper_metadata: go.utils_HelloMama.make_voice_helper_data(
+                helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     if (go.utils.is_valid_msisdn(content) === false) {
                         return 'state_c13_retry_number';
                     } else {
-                        return go.utils_HelloMama
+                        return go.utils_project
                             // get or create mama contact
                             .get_or_create_identity({'msisdn': content}, self.im, null)
                             .then(function(contact) {
                                 self.im.user.set_answer('mama_id', contact.id);
-                                return go.utils_HelloMama
+                                return go.utils_project
                                     .is_registered(contact.id, self.im)
                                     .then(function(is_registered) {
                                         if (is_registered === true) {
@@ -120,7 +120,7 @@ go.app = function() {
             };
             return new ChoiceState(name, {
                 question: $('Baby / Message time / Optout?'),
-                helper_metadata: go.utils_HelloMama.make_voice_helper_data(
+                helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
                     new Choice('baby', $('baby')),
@@ -137,7 +137,7 @@ go.app = function() {
             var speech_option = '1';
             return new EndState(name, {
                 text: $('Unrecognised number'),
-                helper_metadata: go.utils_HelloMama.make_voice_helper_data(
+                helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: 'state_start'
             });
@@ -147,7 +147,7 @@ go.app = function() {
             var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Confirm baby?'),
-                helper_metadata: go.utils_HelloMama.make_voice_helper_data(
+                helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
                     new Choice('confirm', $('confirm'))
@@ -160,7 +160,7 @@ go.app = function() {
             var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Message days?'),
-                helper_metadata: go.utils_HelloMama.make_voice_helper_data(
+                helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
                     new Choice('mon_wed', $('mon_wed')),
@@ -181,7 +181,7 @@ go.app = function() {
             };
             return new ChoiceState(name, {
                 question: $('Optout reason?'),
-                helper_metadata: go.utils_HelloMama.make_voice_helper_data(
+                helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
                     new Choice('miscarriage', $('miscarriage')),
@@ -198,10 +198,10 @@ go.app = function() {
 
         self.add('state_c06_voice_times', function(name) {
             var days = self.im.user.answers.state_c04_voice_days;
-            var speech_option = go.utils_HelloMama.get_speech_option_days(days);
+            var speech_option = go.utils_project.get_speech_option_days(days);
             return new ChoiceState(name, {
                 question: $('Message times?'),
-                helper_metadata: go.utils_HelloMama.make_voice_helper_data(
+                helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
                     new Choice('9_11', $('9_11')),
@@ -219,7 +219,7 @@ go.app = function() {
             };
             return new ChoiceState(name, {
                 question: $('Receive loss messages?'),
-                helper_metadata: go.utils_HelloMama.make_voice_helper_data(
+                helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
                     new Choice('opt_in_confirm', $('opt_in_confirm')),
@@ -232,7 +232,7 @@ go.app = function() {
         });
 
         self.add('state_c08_enter', function(name) {
-            return go.utils_HelloMama
+            return go.utils_project
                 .switch_to_baby(self.im)
                 .then(function() {
                     return self.states.create('state_c08_end_baby');
@@ -243,14 +243,14 @@ go.app = function() {
             var speech_option = '1';
             return new EndState(name, {
                 text: $('Thank you - baby'),
-                helper_metadata: go.utils_HelloMama.make_voice_helper_data(
+                helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: 'state_start'
             });
         });
 
         self.add('state_c09_enter', function(name) {
-            return go.utils_HelloMama
+            return go.utils_project
                 .change_msg_times(self.im)
                 .then(function() {
                     return self.states.create('state_c09_end_msg_times');
@@ -260,18 +260,18 @@ go.app = function() {
         self.add('state_c09_end_msg_times', function(name) {
             var days = self.im.user.answers.state_c04_voice_days;
             var time = self.im.user.answers.state_c06_voice_times;
-            var speech_option = go.utils_HelloMama.get_speech_option_days_time(days, time);
+            var speech_option = go.utils_project.get_speech_option_days_time(days, time);
             return new EndState(name, {
                 text: $('Thank you! Time: {{ time }}. Days: {{ days }}.'
                     ).context({ time: time, days: days }),
-                helper_metadata: go.utils_HelloMama.make_voice_helper_data(
+                helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: 'state_start'
             });
         });
 
         self.add('state_c10_enter', function(name) {
-            return go.utils_HelloMama
+            return go.utils_project
                 .optout_loss_opt_in(self.im)
                 .then(function() {
                     return self.states.create('state_c10_end_loss_opt_in');
@@ -282,14 +282,14 @@ go.app = function() {
             var speech_option = '1';
             return new EndState(name, {
                 text: $('Thank you - loss opt in'),
-                helper_metadata: go.utils_HelloMama.make_voice_helper_data(
+                helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: 'state_start'
             });
         });
 
         self.add('state_c11_enter', function(name) {
-            return go.utils_HelloMama
+            return go.utils_project
                 .optout(self.im)
                 .then(function() {
                     return self.states.create('state_c11_end_optout');
@@ -300,7 +300,7 @@ go.app = function() {
             var speech_option = '1';
             return new EndState(name, {
                 text: $('Thank you - optout'),
-                helper_metadata: go.utils_HelloMama.make_voice_helper_data(
+                helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: 'state_start'
             });
@@ -310,7 +310,7 @@ go.app = function() {
             var speech_option = '1';
             return new EndState(name, {
                 text: $('No active subscriptions'),
-                helper_metadata: go.utils_HelloMama.make_voice_helper_data(
+                helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: 'state_start'
             });
