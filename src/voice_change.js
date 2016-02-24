@@ -53,16 +53,16 @@ go.app = function() {
                         return 'state_c13_retry_number';
                     } else {
                         return go.utils
-                            // get or create mama contact
+                            // get or create mama identity
                             .get_or_create_identity({'msisdn': content}, self.im, null)
-                            .then(function(contact) {
-                                self.im.user.set_answer('mama_id', contact.id);
-                                return go.utils_project
-                                    .is_registered(contact.id, self.im)
+                            .then(function(identity) {
+                                self.im.user.set_answer('mama_id', identity.id);
+                                return go.utils
+                                    .is_registered(identity.id, self.im)
                                     .then(function(is_registered) {
                                         if (is_registered === true) {
                                             return go.utils_project
-                                                .has_active_subscriptions(contact.id, self.im)
+                                                .has_active_subscriptions(identity.id, self.im)
                                                 .then(function(has_active_subscriptions) {
                                                     if (has_active_subscriptions === true) {
                                                         return self.states.create("state_c01_main_menu");
@@ -91,12 +91,12 @@ go.app = function() {
                         return 'state_c13_retry_number';
                     } else {
                         return go.utils
-                            // get or create mama contact
+                            // get or create mama identity
                             .get_or_create_identity({'msisdn': content}, self.im, null)
-                            .then(function(contact) {
-                                self.im.user.set_answer('mama_id', contact.id);
-                                return go.utils_project
-                                    .is_registered(contact.id, self.im)
+                            .then(function(identity) {
+                                self.im.user.set_answer('mama_id', identity.id);
+                                return go.utils
+                                    .is_registered(identity.id, self.im)
                                     .then(function(is_registered) {
                                         if (is_registered === true) {
                                             return self.states.create("state_c01_main_menu");

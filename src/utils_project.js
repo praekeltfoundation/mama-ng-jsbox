@@ -286,26 +286,26 @@ go.utils_project = {
         return reg_info;
     },
 
-    update_mama_details: function(im, mama_contact, chew_phone_used) {
+    update_mama_details: function(im, mama_identity, chew_phone_used) {
         if (im.user.answers.state_r04_mom_state === 'baby') {
-            mama_contact.details.baby_dob = im.user.answers.birth_date;
-            mama_contact.details.mama_edd = 'registration_after_baby_born';
+            mama_identity.details.baby_dob = im.user.answers.birth_date;
+            mama_identity.details.mama_edd = 'registration_after_baby_born';
         } else {
-            mama_contact.details.baby_dob = 'mama_is_pregnant';
-            mama_contact.details.mama_edd = im.user.answers.birth_date;
+            mama_identity.details.baby_dob = 'mama_is_pregnant';
+            mama_identity.details.mama_edd = im.user.answers.birth_date;
         }
-        mama_contact.details.opted_out = false;
-        mama_contact.details.has_registered = true;
-        mama_contact.details.registered_at = go.utils.get_today(im.config
+        mama_identity.details.opted_out = false;
+        mama_identity.details.has_registered = true;
+        mama_identity.details.registered_at = go.utils.get_today(im.config
         ).format('YYYY-MM-DD HH:mm:ss');
-        mama_contact.details.msg_receiver = im.user.answers.state_r03_receiver;
-        mama_contact.details.state_at_registration = im.user.answers.state_r04_mom_state;
-        mama_contact.details.state_current = im.user.answers.state_r04_mom_state;
-        mama_contact.details.lang = go.utils_project.get_lang(im);
-        mama_contact.details.msg_type = im.user.answers.state_r10_message_type;
-        mama_contact.details.voice_days = im.user.answers.state_r11_voice_days || 'sms';
-        mama_contact.details.voice_times = im.user.answers.state_r12_voice_times || 'sms';
-        return mama_contact;
+        mama_identity.details.msg_receiver = im.user.answers.state_r03_receiver;
+        mama_identity.details.state_at_registration = im.user.answers.state_r04_mom_state;
+        mama_identity.details.state_current = im.user.answers.state_r04_mom_state;
+        mama_identity.details.lang = go.utils_project.get_lang(im);
+        mama_identity.details.msg_type = im.user.answers.state_r10_message_type;
+        mama_identity.details.voice_days = im.user.answers.state_r11_voice_days || 'sms';
+        mama_identity.details.voice_times = im.user.answers.state_r12_voice_times || 'sms';
+        return mama_identity;
     },
 
     get_lang: function(im) {
@@ -323,7 +323,7 @@ go.utils_project = {
     optout_loss_opt_in: function(im) {
         return go.utils_project
         .optout(im)
-        .then(function(contact_id) {
+        .then(function(identity_id) {
             // TODO #17 Subscribe to loss messages
             return Q();
         });
@@ -333,18 +333,18 @@ go.utils_project = {
         var mama_id = im.user.answers.mama_id;
         return Q
         .all([
-            // get contact so details can be updated
+            // get identity so details can be updated
             go.utils.get_identity(mama_id, im),
             // set existing subscriptions inactive
             go.utils_project.subscriptions_unsubscribe_all(mama_id, im)
         ])
-        .spread(function(mama_contact, unsubscribe_result) {
-            // set new mama contact details
-            mama_contact.details.opted_out = true;
-            mama_contact.details.optout_reason = im.user.answers.state_c05_optout_reason;
+        .spread(function(mama_identity, unsubscribe_result) {
+            // set new mama identity details
+            mama_identity.details.opted_out = true;
+            mama_identity.details.optout_reason = im.user.answers.state_c05_optout_reason;
 
-            // update mama contact
-            return go.utils.update_identity(im, mama_contact);
+            // update mama identity
+            return go.utils.update_identity(im, mama_identity);
         });
     },
 
@@ -355,22 +355,22 @@ go.utils_project = {
         var mama_id = im.user.answers.mama_id;
         return Q
         .all([
-            // get contact so details can be updated
+            // get identity so details can be updated
             go.utils.get_identity(mama_id, im),
             // get existing subscriptions so schedule can be updated
-            go.utils_project.get_active_subscription_by_contact_id(mama_id, im)
+            go.utils_project.get_active_subscription_by_identity_id(mama_id, im)
         ])
-        .spread(function(mama_contact, subscription) {
-            // set new mama contact details
-            mama_contact.details.voice_days = im.user.answers.state_c04_voice_days;
-            mama_contact.details.voice_times = im.user.answers.state_c06_voice_times;
+        .spread(function(mama_identity, subscription) {
+            // set new mama identity details
+            mama_identity.details.voice_days = im.user.answers.state_c04_voice_days;
+            mama_identity.details.voice_times = im.user.answers.state_c06_voice_times;
 
             // set new subscription schedule
-            subscription.schedule = go.utils_project.get_schedule(mama_contact);
+            subscription.schedule = go.utils_project.get_schedule(mama_identity);
 
             return Q.all([
-                // update mama contact
-                go.utils.update_identity(im, mama_contact),
+                // update mama identity
+                go.utils.update_identity(im, mama_identity),
                 // update subscription
                 go.utils_project.update_subscription(im, subscription)
             ]);
@@ -408,7 +408,7 @@ go.utils_project = {
 
     send_text: function(im, user_id, sms_content) {
         var payload = {
-            "contact": user_id,
+            "identity": user_id,
             "content": sms_content.replace("{{channel}}", im.config.channel)
             // $ does not work well with fixtures here since it's an object
         };
@@ -424,46 +424,46 @@ go.utils_project = {
 
 // SUBSCRIPTION HELPERS
 
-    is_registered: function(contact_id, im) {
-        // Determine whether contact is registered
+    is_registered: function(identity_id, im) {
+        // Determine whether identity is registered
         return go.utils
-            .get_identity(contact_id, im)
-            .then(function(contact) {
+            .get_identity(identity_id, im)
+            .then(function(identity) {
                 var true_options = ['true', 'True', true];
-                return true_options.indexOf(contact.details.has_registered) !== -1;
+                return true_options.indexOf(identity.details.has_registered) !== -1;
             });
     },
 
-    setup_subscription: function(im, mama_contact) {
+    setup_subscription: function(im, mama_identity) {
         subscription = {
-            contact: "/api/v1/identities/" + mama_contact.id + "/",
+            identity: "/api/v1/identities/" + mama_identity.id + "/",
             version: 1,
-            messageset_id: go.utils_project.get_messageset_id(mama_contact),
-            next_sequence_number: go.utils_project.get_next_sequence_number(mama_contact),
-            lang: mama_contact.details.lang,
+            messageset_id: go.utils_project.get_messageset_id(mama_identity),
+            next_sequence_number: go.utils_project.get_next_sequence_number(mama_identity),
+            lang: mama_identity.details.lang,
             active: true,
             completed: false,
-            schedule: go.utils_project.get_schedule(mama_contact),
+            schedule: go.utils_project.get_schedule(mama_identity),
             process_status: 0,
             metadata: {
-                msg_type: mama_contact.details.msg_type
+                msg_type: mama_identity.details.msg_type
             }
         };
         return subscription;
     },
 
-    get_messageset_id: function(mama_contact) {
-        return (mama_contact.details.state_current === 'pregnant') ? 1 : 2;
+    get_messageset_id: function(mama_identity) {
+        return (mama_identity.details.state_current === 'pregnant') ? 1 : 2;
     },
 
-    get_next_sequence_number: function(mama_contact) {
+    get_next_sequence_number: function(mama_identity) {
         return 1;
     },
 
-    get_schedule: function(mama_contact) {
+    get_schedule: function(mama_identity) {
         var schedule_id;
-        var days = mama_contact.details.voice_days;
-        var times = mama_contact.details.voice_times;
+        var days = mama_identity.details.voice_days;
+        var times = mama_identity.details.voice_times;
 
         if (days === 'mon_wed' && times === '9_11') {
             schedule_id = 1;
@@ -479,7 +479,7 @@ go.utils_project = {
         return schedule_id;
     },
 
-    subscribe_contact: function(im, subscription) {
+    subscribe_identity: function(im, subscription) {
         var payload = subscription;
         return go.utils
         .service_api_call("subscriptions", "post", null, payload, "subscriptions/", im)
@@ -488,11 +488,11 @@ go.utils_project = {
         });
     },
 
-    get_active_subscriptions_by_contact_id: function(contact_id, im) {
+    get_active_subscriptions_by_identity_id: function(identity_id, im) {
         // returns all active subscriptions - for unlikely case where there
         // is more than one active subscription
         var params = {
-            contact: contact_id,
+            identity: identity_id,
             active: "True"
         };
         return go.utils
@@ -502,29 +502,29 @@ go.utils_project = {
         });
     },
 
-    get_active_subscription_by_contact_id: function(contact_id, im) {
+    get_active_subscription_by_identity_id: function(identity_id, im) {
         // returns first active subscription found
         return go.utils_project
-        .get_active_subscriptions_by_contact_id(contact_id, im)
+        .get_active_subscriptions_by_identity_id(identity_id, im)
         .then(function(subscriptions) {
             return subscriptions[0];
         });
     },
 
-    has_active_subscriptions: function(contact_id, im) {
+    has_active_subscriptions: function(identity_id, im) {
         return go.utils_project
-        .get_active_subscriptions_by_contact_id(contact_id, im)
+        .get_active_subscriptions_by_identity_id(identity_id, im)
         .then(function(subscriptions) {
             return subscriptions.length > 0;
         });
     },
 
-    subscriptions_unsubscribe_all: function(contact_id, im) {
+    subscriptions_unsubscribe_all: function(identity_id, im) {
         // make all subscriptions inactive
         // unlike other functions takes into account that there may be
         // more than one active subscription returned (unlikely)
         return go.utils_project
-        .get_active_subscriptions_by_contact_id(contact_id, im)
+        .get_active_subscriptions_by_identity_id(identity_id, im)
         .then(function(active_subscriptions) {
             var subscriptions = active_subscriptions;
             var clean = true;  // clean tracks if api call is unnecessary
@@ -551,24 +551,24 @@ go.utils_project = {
         var mama_id = im.user.answers.mama_id;
         return Q
         .all([
-            // get contact so details can be updated
+            // get identity so details can be updated
             go.utils.get_identity(mama_id, im),
             // set existing subscriptions inactive
             go.utils_project.subscriptions_unsubscribe_all(mama_id, im)
         ])
-        .spread(function(mama_contact, unsubscribe_result) {
-            // set new mama contact details
-            mama_contact.details.baby_dob = go.utils.get_today(im.config).format('YYYY-MM-DD');
-            mama_contact.details.state_current = "baby";
+        .spread(function(mama_identity, unsubscribe_result) {
+            // set new mama identity details
+            mama_identity.details.baby_dob = go.utils.get_today(im.config).format('YYYY-MM-DD');
+            mama_identity.details.state_current = "baby";
 
             // set up baby message subscription
-            baby_subscription = go.utils_project.setup_subscription(im, mama_contact);
+            baby_subscription = go.utils_project.setup_subscription(im, mama_identity);
 
             return Q.all([
-                // update mama contact
-                go.utils.update_identity(im, mama_contact),
+                // update mama identity
+                go.utils.update_identity(im, mama_identity),
                 // subscribe to baby messages
-                go.utils_project.subscribe_contact(im, baby_subscription)
+                go.utils_project.subscribe_identity(im, baby_subscription)
             ]);
         });
     },

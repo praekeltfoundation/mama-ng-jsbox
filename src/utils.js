@@ -38,6 +38,17 @@ go.utils = {
             }
     },
 
+    // Determine whether identity is registered
+    is_registered: function(identity_id, im) {
+        return go.utils
+            .get_identity(identity_id, im)
+            .then(function(identity) {
+                var true_options = ['true', 'True', true];
+                return true_options.indexOf(identity.details.has_registered) !== -1;
+            });
+    },
+
+// MSISDN & NUMBER HANDLING
 
 // MSISDN HELPERS
 
@@ -91,7 +102,6 @@ go.utils = {
             return input_numeric.toString();
         }
     },
-
 
 // DATE HELPERS
 
@@ -168,7 +178,6 @@ go.utils = {
         });
     },
 
-
 // IDENTITY HANDLING
 
     get_identity_by_address: function(address, im) {
@@ -184,14 +193,14 @@ go.utils = {
         params[search_string] = address_val;
 
         return go.utils
-        .service_api_call('identities', 'get', params, null, 'identities/search/', im)
-        .then(function(json_get_response) {
-            var identities_found = json_get_response.data.results;
-            // Return the first identity in the list of identities
-            return (identities_found.length > 0)
-            ? identities_found[0]
-            : null;
-        });
+            .service_api_call('identities', 'get', params, null, 'identities/search/', im)
+            .then(function(json_get_response) {
+                var identities_found = json_get_response.data.results;
+                // Return the first identity in the list of identities
+                return (identities_found.length > 0)
+                    ? identities_found[0]
+                    : null;
+            });
     },
 
     get_identity: function(identity_id, im) {
@@ -199,6 +208,7 @@ go.utils = {
         // Returns the identity object
 
         var endpoint = 'identities/' + identity_id + '/';
+
         return go.utils
         .service_api_call('identities', 'get', {}, null, endpoint, im)
         .then(function(json_get_response) {
@@ -234,43 +244,43 @@ go.utils = {
         return go.utils
         .service_api_call("identities", "post", null, payload, 'identities/', im)
         .then(function(json_post_response) {
-            var contact_created = json_post_response.data;
-            // Return the contact
-            return contact_created;
+            var identity_created = json_post_response.data;
+            // Return the identity
+            return identity_created;
         });
     },
 
     get_or_create_identity: function(address, im, operator_id) {
-        // Gets a contact if it exists, otherwise creates a new one
+        // Gets a identity if it exists, otherwise creates a new one
 
         if (address.msisdn) {
             address.msisdn = go.utils
             .normalize_msisdn(address.msisdn, im.config.country_code);
         }
         return go.utils
-            // Get contact id using address
+            // Get identity id using address
             .get_identity_by_address(address, im)
-            .then(function(contact) {
-                if (contact !== null) {
-                    // If contact exists, return the id
-                    return contact;
+            .then(function(identity) {
+                if (identity !== null) {
+                    // If identity exists, return the id
+                    return identity;
                 } else {
-                    // If contact doesn't exist, create it
+                    // If identity doesn't exist, create it
                     return go.utils
                     .create_identity(im, address, null, operator_id)
-                    .then(function(contact) {
-                        return contact;
+                    .then(function(identity) {
+                        return identity;
                     });
                 }
         });
     },
 
-    update_identity: function(im, contact) {
-        // For patching any field on the contact
+    update_identity: function(im, identity) {
+        // For patching any field on the identity
 
-        var endpoint = 'identities/' + contact.id + '/';
+        var endpoint = 'identities/' + identity.id + '/';
         return go.utils
-        .service_api_call('identities', 'patch', {}, contact, endpoint, im)
+        .service_api_call('identities', 'patch', {}, identity, endpoint, im)
         .then(function(response) {
             return response.data.id;
         });
