@@ -38,8 +38,8 @@ describe("Mama Nigeria App", function() {
                         api.http.fixtures.add(d);
                     });
                 })
-                // +08080030003 is an unregistered contact
-                // +07070050005 is a registered contact
+                // +08080030003 is an unregistered identity
+                // +07070050005 is a registered identity
                 ;
         });
 
