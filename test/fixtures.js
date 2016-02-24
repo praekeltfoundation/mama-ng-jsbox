@@ -647,7 +647,7 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8002/api/v1/subscriptions/",
                 'data':  {
-                    "contact": "/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/",
+                    "identity": "/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/",
                     "version": 1,
                     "messageset_id": 2,
                     "next_sequence_number": 1,
@@ -664,7 +664,7 @@ module.exports = function() {
             'response': {
                 "code": 201,
                 "data": {
-                    "contact": "/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/",
+                    "identity": "/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/",
                     "version": 1,
                     "messageset_id": 2,
                     "next_sequence_number": 1,
@@ -804,7 +804,7 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8002/api/v1/subscriptions/",
                 'data':  {
-                    "contact": "/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/",
+                    "identity": "/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/",
                     "version": 1,
                     "messageset_id": 1,
                     "next_sequence_number": 1,
@@ -822,7 +822,7 @@ module.exports = function() {
                 "code": 201,
                 "data": {
                     "id": "1234-00002",
-                    "contact": "/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/",
+                    "identity": "/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/",
                     "version": 1,
                     "messageset_id": 1,
                     "next_sequence_number": 1,
@@ -864,7 +864,7 @@ module.exports = function() {
                             "url": "http://localhost:8002/api/v1/subscriptions/1234-00005/",
                             "id": "1234-00005",
                             "version": 1,
-                            "contact": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000005/",
+                            "identity": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000005/",
                             "messageset_id": 1,
                             "next_sequence_number": 7,
                             "lang": "eng_NG",
@@ -921,7 +921,7 @@ module.exports = function() {
                     "url": "http://localhost:8002/api/v1/subscriptions/1234-00005/",
                     "id": "1234-00005",
                     "version": 1,
-                    "contact": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000005/",
+                    "identity": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000005/",
                     "messageset_id": 1,
                     "next_sequence_number": 7,
                     "lang": "eng_NG",
@@ -942,7 +942,7 @@ module.exports = function() {
                     "url": "http://localhost:8002/api/v1/subscriptions/1234-00005/",
                     "id": "1234-00005",
                     "version": 1,
-                    "contact": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000005/",
+                    "identity": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000005/",
                     "messageset_id": 1,
                     "next_sequence_number": 7,
                     "lang": "eng_NG",
@@ -1038,7 +1038,7 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8002/api/v1/subscriptions/",
                 'data':  {
-                    "contact": "/api/v1/identities/cb245673-aa41-4302-ac47-00000000005/",
+                    "identity": "/api/v1/identities/cb245673-aa41-4302-ac47-00000000005/",
                     "version": 1,
                     "messageset_id": 2,
                     "next_sequence_number": 1,
@@ -1056,7 +1056,7 @@ module.exports = function() {
                 "code": 201,
                 "data": {
                     "id": "1234-00002",
-                    "contact": "/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/",
+                    "identity": "/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/",
                     "version": 1,
                     "messageset_id": 1,
                     "next_sequence_number": 1,
@@ -1154,7 +1154,7 @@ module.exports = function() {
                     "url":"http://localhost:8002/api/v1/subscriptions/1234-00005/",
                     "id":"1234-00005",
                     "version":1,
-                    "contact":"http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000005/",
+                    "identity":"http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000005/",
                     "messageset_id":1,
                     "next_sequence_number":7,
                     "lang":"eng_NG",
@@ -1175,7 +1175,7 @@ module.exports = function() {
                     "url":"http://localhost:8002/api/v1/subscriptions/1234-00005/",
                     "id":"1234-00005",
                     "version":1,
-                    "contact":"http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000005/",
+                    "identity":"http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000005/",
                     "messageset_id":1,
                     "next_sequence_number":7,
                     "lang":"eng_NG",
@@ -1415,7 +1415,7 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8003/api/v1/outbound/",
                 'data':  {
-                    "contact": "cb245673-aa41-4302-ac47-00000000002",
+                    "identity": "cb245673-aa41-4302-ac47-00000000002",
                     "content": "Please dial back in to *120*8864*0000# to complete the Hello MAMA registration"
                 }
             },
