@@ -114,7 +114,7 @@ go.app = function() {
 
         self.add('state_start', function(name) {
             self.im.user.answers = {};  // reset answers
-            return go.utils_project
+            return go.utils
                 .get_or_create_identity({'msisdn': self.im.user.addr}, self.im, null)
                 .then(function(user) {
                     self.im.user.set_answer('user_id', user.id);
@@ -312,7 +312,7 @@ go.app = function() {
                     if (choice.value === 'voice') {
                         return 'state_voice_days';
                     } else {
-                        return go.utils_project
+                        return go.utils
                             .save_registration(self.im)
                             .then(function() {
                                 return 'state_end_sms';
@@ -343,7 +343,7 @@ go.app = function() {
                     new Choice('2_5', $('Between 2-5pm'))
                 ],
                 next: function() {
-                    return go.utils_project
+                    return go.utils
                         .save_registration(self.im)
                         .then(function() {
                             return 'state_end_voice';

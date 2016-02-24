@@ -52,7 +52,7 @@ go.app = function() {
                     if (go.utils.is_valid_msisdn(content) === false) {
                         return 'state_c13_retry_number';
                     } else {
-                        return go.utils_project
+                        return go.utils
                             // get or create mama contact
                             .get_or_create_identity({'msisdn': content}, self.im, null)
                             .then(function(contact) {
@@ -90,7 +90,7 @@ go.app = function() {
                     if (go.utils.is_valid_msisdn(content) === false) {
                         return 'state_c13_retry_number';
                     } else {
-                        return go.utils_project
+                        return go.utils
                             // get or create mama contact
                             .get_or_create_identity({'msisdn': content}, self.im, null)
                             .then(function(contact) {

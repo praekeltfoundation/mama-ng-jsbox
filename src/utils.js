@@ -4,10 +4,10 @@ var moment = require('moment');
 var JsonApi = vumigo.http.api.JsonApi;
 var Choice = vumigo.states.Choice;
 
-// SHARED utils lib
+// GENERIC UTILS
 go.utils = {
 
-// SERVICE API CALL
+// SERVICE API CALL HELPERS
 
     service_api_call: function (service, method, params, payload, endpoint, im) {
         var http = new JsonApi(im, {
@@ -38,17 +38,11 @@ go.utils = {
             }
     },
 
-// MSISDN & NUMBER HANDLING
 
-    // An attempt to solve the insanity of JavaScript numbers
-    check_valid_number: function(content) {
-        var numbers_only = new RegExp('^\\d+$');
-        return content !== ''
-            && numbers_only.test(content)
-            && !Number.isNaN(Number(content));
-    },
+// MSISDN HELPERS
 
     // Check that it's a number and starts with 0 and approximate length
+    // TODO: refactor to take length, explicitly deal with '+'
     is_valid_msisdn: function(content) {
         return go.utils.check_valid_number(content)
             && content[0] === '0'
@@ -78,6 +72,17 @@ go.utils = {
         return raw;
     },
 
+
+// NUMBER HELPERS
+
+    // An attempt to solve the insanity of JavaScript numbers
+    check_valid_number: function(content) {
+        var numbers_only = new RegExp('^\\d+$');
+        return content !== ''
+            && numbers_only.test(content)
+            && !Number.isNaN(Number(content));
+    },
+
     double_digit_number: function(input) {
         input_numeric = parseInt(input, 10);
         if (parseInt(input, 10) < 10) {
@@ -87,16 +92,15 @@ go.utils = {
         }
     },
 
-// DATE HANDLING
+
+// DATE HELPERS
 
     get_today: function(config) {
-        var today;
         if (config.testing_today) {
-            today = new moment(config.testing_today, 'YYYY-MM-DD');
+            return new moment(config.testing_today, 'YYYY-MM-DD');
         } else {
-            today = new moment();
+            return new moment();
         }
-        return today;
     },
 
     get_january: function(config) {
@@ -121,7 +125,11 @@ go.utils = {
             && parseInt(input, 10) <= 31;
     },
 
+
+// TEXT HELPERS
+
     check_valid_alpha: function(input) {
+        // check that all chars are in standard alphabet
         var alpha_only = new RegExp('^[A-Za-z]+$');
         return input !== '' && alpha_only.test(input);
     },
@@ -130,6 +138,9 @@ go.utils = {
         // check that all chars are alphabetical
         return go.utils.check_valid_alpha(input);
     },
+
+
+// CHOICE HELPERS
 
     make_month_choices: function($, startDate, limit, increment, valueFormat, labelFormat) {
         var choices = [];
@@ -144,5 +155,127 @@ go.utils = {
         return choices;
     },
 
-    "commas": "commas"
+
+// REGISTRATION HELPERS
+
+    save_registration: function(im) {
+        // compile registration
+        var reg_info = go.utils_project.compile_reg_info(im);
+        return go.utils
+        .service_api_call("registrations", "post", null, reg_info, "registrations/", im)
+        .then(function(result) {
+            return result.id;
+        });
+    },
+
+
+// IDENTITY HANDLING
+
+    get_identity_by_address: function(address, im) {
+        // Searches the Identity Store for all identities with the provided address.
+        // Returns the first identity object found
+        // Address should be an object {address_type: address}, eg.
+        // {'msisdn': '0821234444'}, {'email': 'me@example.com'}
+
+        var address_type = Object.keys(address)[0];
+        var address_val = address[address_type];
+        var params = {};
+        var search_string = 'details__addresses__' + address_type;
+        params[search_string] = address_val;
+
+        return go.utils
+        .service_api_call('identities', 'get', params, null, 'identities/search/', im)
+        .then(function(json_get_response) {
+            var identities_found = json_get_response.data.results;
+            // Return the first identity in the list of identities
+            return (identities_found.length > 0)
+            ? identities_found[0]
+            : null;
+        });
+    },
+
+    get_identity: function(identity_id, im) {
+        // Gets the identity from the Identity Store
+        // Returns the identity object
+
+        var endpoint = 'identities/' + identity_id + '/';
+        return go.utils
+        .service_api_call('identities', 'get', {}, null, endpoint, im)
+        .then(function(json_get_response) {
+            return json_get_response.data;
+        });
+    },
+
+    create_identity: function(im, address, communicate_through_id, operator_id) {
+        // Create a new identity
+
+        var payload = {};
+        // compile base payload
+        if (address) {
+            var address_type = Object.keys(address);
+            var addresses = {};
+            addresses[address_type] = {};
+            addresses[address_type][address[address_type]] = {};
+            payload.details = {
+                "default_addr_type": "msisdn",
+                "addresses": addresses
+            };
+        }
+
+        if (communicate_through_id) {
+            payload.communicate_through = communicate_through_id;
+        }
+
+        // add operator_id if available
+        if (operator_id) {
+            payload.operator = operator_id;
+        }
+
+        return go.utils
+        .service_api_call("identities", "post", null, payload, 'identities/', im)
+        .then(function(json_post_response) {
+            var contact_created = json_post_response.data;
+            // Return the contact
+            return contact_created;
+        });
+    },
+
+    get_or_create_identity: function(address, im, operator_id) {
+        // Gets a contact if it exists, otherwise creates a new one
+
+        if (address.msisdn) {
+            address.msisdn = go.utils
+            .normalize_msisdn(address.msisdn, im.config.country_code);
+        }
+        return go.utils
+            // Get contact id using address
+            .get_identity_by_address(address, im)
+            .then(function(contact) {
+                if (contact !== null) {
+                    // If contact exists, return the id
+                    return contact;
+                } else {
+                    // If contact doesn't exist, create it
+                    return go.utils
+                    .create_identity(im, address, null, operator_id)
+                    .then(function(contact) {
+                        return contact;
+                    });
+                }
+        });
+    },
+
+    update_identity: function(im, contact) {
+        // For patching any field on the contact
+
+        var endpoint = 'identities/' + contact.id + '/';
+        return go.utils
+        .service_api_call('identities', 'patch', {}, contact, endpoint, im)
+        .then(function(response) {
+            return response.data.id;
+        });
+    },
+
+
+"commas": "commas"
 };
