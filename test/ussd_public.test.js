@@ -32,9 +32,6 @@ describe("Hello Mama app", function() {
                 .setup(function(api) {
                     fixtures().forEach(api.http.fixtures.add);
                 })
-                /*.setup(function(api) {
-                    api.metrics.stores = {'mama_ng_test': {}};  // hello mama
-                })*/
                 .setup(function(api) {
                     // new user 082101  (*** assume father role ***)
                     api.contacts.add({
