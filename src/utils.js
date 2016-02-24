@@ -277,20 +277,18 @@ go.utils = {
         return go.utils
             .service_api_call("identities", "post", null, payload, 'identities/', im)
             .then(function(json_post_response) {
-                var identity_created = json_post_response.data;
-                // Return the identity
-                return identity_created;
+                return json_post_response.data;
             });
     },
 
-    // Gets a identity if it exists, otherwise creates a new one
+    // Gets an identity if it exists, otherwise creates a new one
     get_or_create_identity: function(address, im, operator_id) {
         if (address.msisdn) {
             address.msisdn = go.utils
                 .normalize_msisdn(address.msisdn, im.config.country_code);
         }
         return go.utils
-            // Get identity id using msisdn
+            // Get identity id using address
             .get_identity_by_address(address, im)
             .then(function(identity) {
                 if (identity !== null) {
