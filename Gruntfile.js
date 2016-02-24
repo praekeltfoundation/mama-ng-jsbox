@@ -9,7 +9,7 @@ module.exports = function (grunt) {
             src: {
                 app: {
                     voice_registration: 'src/voice_registration.js',
-                    voice_change: 'src/voice_change.js',
+                    voice_public: 'src/voice_public.js',
                     ussd_public: 'src/ussd_public.js',
                     ussd_registration: 'src/ussd_registration.js',
                     sms_inbound: 'src/sms_inbound.js'
@@ -20,10 +20,10 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.voice_registration %>',
                     'src/init.js'
                 ],
-                voice_change: [
+                voice_public: [
                     'src/index.js',
                     'src/utils.js',
-                    '<%= paths.src.app.voice_change %>',
+                    '<%= paths.src.app.voice_public %>',
                     'src/init.js'
                 ],
                 ussd_registration: [
@@ -50,7 +50,7 @@ module.exports = function (grunt) {
             },
             dest: {
                 voice_registration: 'go-voice_registration.js',
-                voice_change: 'go-voice_change.js',
+                voice_public: 'go-voice_public.js',
                 sms_inbound: 'go-sms_inbound.js',
                 ussd_public: 'go-ussd_public.js',
                 ussd_registration: 'go-ussd_registration.js'
@@ -62,11 +62,11 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.voice_registration %>',
                     'test/voice_registration.test.js'
                 ],
-                voice_change: [
+                voice_public: [
                     'test/setup.js',
                     'src/utils.js',
-                    '<%= paths.src.app.voice_change %>',
-                    'test/voice_change.test.js'
+                    '<%= paths.src.app.voice_public %>',
+                    'test/voice_public.test.js'
                 ],
                 ussd_registration: [
                     'test/setup.js',
@@ -122,9 +122,9 @@ module.exports = function (grunt) {
                 src: ['<%= paths.src.voice_registration %>'],
                 dest: '<%= paths.dest.voice_registration %>'
             },
-            voice_change: {
-                src: ['<%= paths.src.voice_change %>'],
-                dest: '<%= paths.dest.voice_change %>'
+            voice_public: {
+                src: ['<%= paths.src.voice_public %>'],
+                dest: '<%= paths.dest.voice_public %>'
             },
             ussd_registration: {
                 src: ['<%= paths.src.ussd_registration %>'],
@@ -151,14 +151,14 @@ module.exports = function (grunt) {
             test_voice_registration: {
                 src: ['<%= paths.test.voice_registration %>']
             },
-            test_voice_change: {
-                src: ['<%= paths.test.voice_change %>']
+            test_ussd_public: {
+                src: ['<%= paths.test.ussd_public %>']
+            },
+            test_voice_public: {
+                src: ['<%= paths.test.voice_public %>']
             },
             test_sms_inbound: {
                  src: ['<%= paths.test.sms_inbound %>']
-            },
-            test_ussd_public: {
-                src: ['<%= paths.test.ussd_public %>']
             }
         }
     });
