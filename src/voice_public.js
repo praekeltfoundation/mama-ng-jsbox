@@ -1,5 +1,3 @@
-// This app handles state changes
-
 go.app = function() {
     var vumigo = require('vumigo_v02');
     var App = vumigo.App;
@@ -57,7 +55,7 @@ go.app = function() {
                             .get_or_create_identity({'msisdn': content}, self.im, null)
                             .then(function(identity) {
                                 self.im.user.set_answer('mama_id', identity.id);
-                                return go.utils
+                                return go.utils_project
                                     .is_registered(identity.id, self.im)
                                     .then(function(is_registered) {
                                         if (is_registered === true) {
@@ -95,7 +93,7 @@ go.app = function() {
                             .get_or_create_identity({'msisdn': content}, self.im, null)
                             .then(function(identity) {
                                 self.im.user.set_answer('mama_id', identity.id);
-                                return go.utils
+                                return go.utils_project
                                     .is_registered(identity.id, self.im)
                                     .then(function(is_registered) {
                                         if (is_registered === true) {

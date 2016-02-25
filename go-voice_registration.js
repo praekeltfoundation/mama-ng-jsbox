@@ -45,17 +45,6 @@ go.utils = {
             }
     },
 
-    // Determine whether identity is registered
-    is_registered: function(identity_id, im) {
-        return go.utils
-            .get_identity(identity_id, im)
-            .then(function(identity) {
-                var true_options = ['true', 'True', true];
-                return true_options.indexOf(identity.details.has_registered) !== -1;
-            });
-    },
-
-// MSISDN & NUMBER HANDLING
 
 // MSISDN HELPERS
 
@@ -109,6 +98,7 @@ go.utils = {
             return input_numeric.toString();
         }
     },
+
 
 // DATE HELPERS
 
@@ -185,6 +175,7 @@ go.utils = {
         });
     },
 
+
 // IDENTITY HANDLING
 
     get_identity_by_address: function(address, im) {
@@ -205,8 +196,8 @@ go.utils = {
                 var identities_found = json_get_response.data.results;
                 // Return the first identity in the list of identities
                 return (identities_found.length > 0)
-                    ? identities_found[0]
-                    : null;
+                ? identities_found[0]
+                : null;
             });
     },
 
@@ -215,7 +206,6 @@ go.utils = {
         // Returns the identity object
 
         var endpoint = 'identities/' + identity_id + '/';
-
         return go.utils
         .service_api_call('identities', 'get', {}, null, endpoint, im)
         .then(function(json_get_response) {
@@ -251,9 +241,7 @@ go.utils = {
         return go.utils
         .service_api_call("identities", "post", null, payload, 'identities/', im)
         .then(function(json_post_response) {
-            var identity_created = json_post_response.data;
-            // Return the identity
-            return identity_created;
+            return json_post_response.data;
         });
     },
 
