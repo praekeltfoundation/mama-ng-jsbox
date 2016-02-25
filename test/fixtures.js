@@ -2668,9 +2668,11 @@ module.exports = function() {
                                 "+2349092222222": {}
                             }
                         },
-                    "receiver_role":"trusted_friend",
-                    "preferred_msg_type":"voice",
-                    "preferred_language":"english"
+                        "receiver_role":"trusted_friend",
+                        "preferred_msg_type":"voice",
+                        "preferred_language":"english",
+                        "preferred_msg_days":"tue_thu",
+                        "preferred_msg_times":"2_5"
                     },
                     "operator":"cb245673-aa41-4302-ac47-00000000007",
                     "created_at":"2015-07-10T06:13:29.693272Z",
@@ -2690,9 +2692,11 @@ module.exports = function() {
                                 "+2349092222222": {}
                             }
                         },
-                    "receiver_role":"trusted_friend",
-                    "preferred_msg_type":"voice",
-                    "preferred_language":"english"
+                        "receiver_role":"trusted_friend",
+                        "preferred_msg_type":"voice",
+                        "preferred_language":"english",
+                        "preferred_msg_days":"tue_thu",
+                        "preferred_msg_times":"2_5"
                     },
                     "operator":"cb245673-aa41-4302-ac47-00000000007",
                     "created_at":"2015-07-10T06:13:29.693272Z",
@@ -2789,7 +2793,9 @@ module.exports = function() {
                         },
                         "receiver_role":"mother",
                         "preferred_msg_type":"voice",
-                        "preferred_language":"english"
+                        "preferred_language":"english",
+                        "preferred_msg_days":"tue_thu",
+                        "preferred_msg_times":"2_5"
                     },
                     "operator":"cb245673-aa41-4302-ac47-00000000007",
                     "created_at":"2015-07-10T06:13:29.693272Z",
@@ -2811,7 +2817,9 @@ module.exports = function() {
                         },
                         "receiver_role":"mother",
                         "preferred_msg_type":"voice",
-                        "preferred_language":"english"
+                        "preferred_language":"english",
+                        "preferred_msg_days":"tue_thu",
+                        "preferred_msg_times":"2_5"
                     },
                     "operator":"cb245673-aa41-4302-ac47-00000000007",
                     "created_at":"2015-07-10T06:13:29.693272Z",
@@ -2842,7 +2850,9 @@ module.exports = function() {
                         },
                         "receiver_role": "father",
                         "preferred_msg_type": "voice",
-                        "preferred_language": "english"
+                        "preferred_language": "english",
+                        "preferred_msg_days": "tue_thu",
+                        "preferred_msg_times": "2_5"
                     },
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "created_at": "2015-07-10T06:13:29.693272Z",
@@ -2864,7 +2874,9 @@ module.exports = function() {
                         },
                         "receiver_role": "father",
                         "preferred_msg_type": "voice",
-                        "preferred_language": "english"
+                        "preferred_language": "english",
+                        "preferred_msg_days": "tue_thu",
+                        "preferred_msg_times": "2_5"
                     },
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "created_at": "2015-07-10T06:13:29.693272Z",
@@ -2895,7 +2907,9 @@ module.exports = function() {
                         },
                         "receiver_role": "father_only",
                         "preferred_msg_type": "voice",
-                        "preferred_language": "english"
+                        "preferred_language": "english",
+                        "preferred_msg_days":"tue_thu",
+                        "preferred_msg_times":"2_5"
                     },
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "created_at": "2015-07-10T06:13:29.693272Z",
@@ -2917,7 +2931,9 @@ module.exports = function() {
                         },
                         "receiver_role": "father",
                         "preferred_msg_type": "voice",
-                        "preferred_language": "english"
+                        "preferred_language": "english",
+                        "preferred_msg_days":"tue_thu",
+                        "preferred_msg_times":"2_5"
                     },
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "created_at": "2015-07-10T06:13:29.693272Z",

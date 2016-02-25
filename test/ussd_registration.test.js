@@ -565,6 +565,17 @@ describe("Mama Nigeria App", function() {
                         state: 'state_end_voice',
                         reply: "Thank you. The person will now start receiving calls on Tuesday and Thursday between 2pm - 5pm."
                     })
+                    .check(function(api) {
+                        var expected_used = [1,6,36,37,38,48,54,59,62,63];
+                        var fixts = api.http.fixtures.fixtures;
+                        var i = 0;
+                        var fixts_used = [];
+                        fixts.forEach(function(f) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                            i++;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
+                    })
                     .check.reply.ends_session()
                     .run();
             });
@@ -656,6 +667,17 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_end_voice',
                     })
+                    .check(function(api) {
+                        var expected_used = [1,6,42,43,44,45,49,64,65,66,67];
+                        var fixts = api.http.fixtures.fixtures;
+                        var i = 0;
+                        var fixts_used = [];
+                        fixts.forEach(function(f) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                            i++;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
+                    })
                     .run();
             });
             it("complete flow 3 - receiver: father only; mother baby, sms", function() {
@@ -707,6 +729,17 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_end_voice',
+                    })
+                    .check(function(api) {
+                        var expected_used = [1,6,39,40,41,50,54,56,62,68];
+                        var fixts = api.http.fixtures.fixtures;
+                        var i = 0;
+                        var fixts_used = [];
+                        fixts.forEach(function(f) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                            i++;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
                     })
                     .run();
             });
