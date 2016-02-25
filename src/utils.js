@@ -167,7 +167,7 @@ go.utils = {
     },
 
 
-// IDENTITY HANDLING
+// IDENTITY HELPERS
 
     get_identity_by_address: function(address, im) {
         // Searches the Identity Store for all identities with the provided address.
@@ -228,12 +228,11 @@ go.utils = {
         if (operator_id) {
             payload.operator = operator_id;
         }
-
         return go.utils
-        .service_api_call("identities", "post", null, payload, 'identities/', im)
-        .then(function(json_post_response) {
-            return json_post_response.data;
-        });
+            .service_api_call("identities", "post", null, payload, 'identities/', im)
+            .then(function(json_post_response) {
+                return json_post_response.data;
+            });
     },
 
     get_or_create_identity: function(address, im, operator_id) {
@@ -262,14 +261,15 @@ go.utils = {
     },
 
     update_identity: function(im, identity) {
-        // For patching any field on the identity
+      // Update an identity by passing in the full updated identity object
+      // Returns the id (which should be the same as the identity's id)
 
         var endpoint = 'identities/' + identity.id + '/';
         return go.utils
-        .service_api_call('identities', 'patch', {}, identity, endpoint, im)
-        .then(function(response) {
-            return response.data.id;
-        });
+            .service_api_call('identities', 'patch', {}, identity, endpoint, im)
+            .then(function(response) {
+                return response.data.id;
+            });
     },
 
 

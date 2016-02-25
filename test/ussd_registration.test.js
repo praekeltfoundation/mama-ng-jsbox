@@ -587,6 +587,17 @@ describe("Mama Nigeria App", function() {
                         state: 'state_end_sms',
                         reply: "Thank you. The person will now start receiving messages three times a week."
                     })
+                    .check(function(api) {
+                        var expected_used = [1,6,36,37,38,46,54,59,60,61];
+                        var fixts = api.http.fixtures.fixtures;
+                        var i = 0;
+                        var fixts_used = [];
+                        fixts.forEach(function(f) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                            i++;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
+                    })
                     .check.reply.ends_session()
                     .run();
             });
@@ -652,6 +663,17 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_end_sms',
+                    })
+                    .check(function(api) {
+                        var expected_used = [1,6,39,40,41,47,54,56,57,58];
+                        var fixts = api.http.fixtures.fixtures;
+                        var i = 0;
+                        var fixts_used = [];
+                        fixts.forEach(function(f) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                            i++;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
                     })
                     .run();
             });

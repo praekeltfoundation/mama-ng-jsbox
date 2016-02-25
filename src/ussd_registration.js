@@ -316,7 +316,11 @@ go.app = function() {
                         return go.utils
                             .create_registration(self.im, reg_info)
                             .then(function() {
-                                return 'state_end_sms';
+                                return go.utils_project
+                                    .update_identities(self.im)
+                                    .then(function() {
+                                        return 'state_end_sms';
+                                    });
                             });
                     }
                 }

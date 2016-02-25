@@ -65,11 +65,11 @@ go.utils_project = {
 
     save_identities: function(im, msg_receiver, receiver_msisdn, father_msisdn,
                               mother_msisdn, operator_id) {
-    // Creates identities for the msisdns entered in various states
-    // and sets the identitity id's to user.answers for later use
-    // msg_receiver: (str) person who will receive messages eg. 'mother_only'
-    // *_msisdn: (str) msisdns of role players
-    // operator_id: (str - uuid) id of healthworker making the registration
+      // Creates identities for the msisdns entered in various states
+      // and sets the identitity id's to user.answers for later use
+      // msg_receiver: (str) person who will receive messages eg. 'mother_only'
+      // *_msisdn: (str) msisdns of role players
+      // operator_id: (str - uuid) id of healthworker making the registration
 
         if (msg_receiver === 'mother_only') {
             return go.utils
@@ -106,6 +106,61 @@ go.utils_project = {
                     im.user.set_answer('receiver_id', father.id);
                     im.user.set_answer('mother_id', mother.id);
                     return;
+                });
+        }
+    },
+
+    update_identities: function(im) {
+      // Saves useful data collected during registration to the relevant identities
+        var msg_receiver = im.user.answers.state_msg_receiver;
+        if (msg_receiver === 'mother_only') {
+            return go.utils
+                .get_identity(im.user.answers.mother_id, im)
+                .then(function(mother_identity) {
+                    mother_identity.details.receiver_role = 'mother';
+                    mother_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
+                    mother_identity.details.preferred_language = im.user.answers.state_msg_language;
+
+                    return go.utils.update_identity(im, mother_identity);
+                });
+        } else if (['trusted_friend', 'family_member', 'father_only'].indexOf(msg_receiver) !== -1) {
+            return Q
+                .all([
+                    go.utils.get_identity(im.user.answers.mother_id, im),
+                    go.utils.get_identity(im.user.answers.receiver_id, im)
+                ])
+                .spread(function(mother_identity, reciver_identity) {
+                    mother_identity.details.receiver_role = 'mother';
+                    mother_identity.details.preferred_language = im.user.answers.state_msg_language;
+
+                    reciver_identity.details.receiver_role = msg_receiver;
+                    reciver_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
+                    reciver_identity.details.preferred_language = im.user.answers.state_msg_language;
+
+                    return Q.all([
+                        go.utils.update_identity(im, mother_identity),
+                        go.utils.update_identity(im, reciver_identity)
+                    ]);
+                });
+        } else if (msg_receiver === 'mother_father') {
+            return Q
+                .all([
+                    go.utils.get_identity(im.user.answers.mother_id, im),
+                    go.utils.get_identity(im.user.answers.receiver_id, im)
+                ])
+                .spread(function(mother_identity, reciver_identity) {
+                    mother_identity.details.receiver_role = 'mother';
+                    mother_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
+                    mother_identity.details.preferred_language = im.user.answers.state_msg_language;
+
+                    reciver_identity.details.receiver_role = 'father';
+                    reciver_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
+                    reciver_identity.details.preferred_language = im.user.answers.state_msg_language;
+
+                    return Q.all([
+                        go.utils.update_identity(im, mother_identity),
+                        go.utils.update_identity(im, reciver_identity)
+                    ]);
                 });
         }
     },
