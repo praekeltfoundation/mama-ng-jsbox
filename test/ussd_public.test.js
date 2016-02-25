@@ -1,5 +1,6 @@
 var vumigo = require('vumigo_v02');
 var fixtures = require('./fixtures');
+var assert = require('assert');
 var AppTester = vumigo.AppTester;
 
 describe("Hello Mama app", function() {
@@ -95,7 +96,7 @@ describe("Hello Mama app", function() {
             describe("Initial states enroute to st-A (state_main_menu)", function() {
                 it("to state_language", function() {  //st-D
                     return tester
-                        .setup.user.addr('082111')
+                        .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
                         )
@@ -108,11 +109,22 @@ describe("Hello Mama app", function() {
                                 "3. Igbo"
                             ].join('\n')
                         })
+                        .check(function(api) {
+                            var expected_used = [71, 72];
+                            var fixts = api.http.fixtures.fixtures;
+                            var i = 0;
+                            var fixts_used = [];
+                            fixts.forEach(function(f) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                                i++;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
                         .run();
                 });
-                it("to state_registered_msisdn", function() { //st-C
+                it("to state_registered_msisdn via state_language", function() { //st-C
                     return tester
-                        .setup.user.addr('082111')
+                        .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  //dial in
                             , '2'   // state_language - Hausa
@@ -121,12 +133,22 @@ describe("Hello Mama app", function() {
                             state: 'state_registered_msisdn',
                             reply: "Please enter the number which is registered to receive messages. For example, 0803304899"
                         })
+                        .check(function(api) {
+                            var expected_used = [71, 72];
+                            var fixts = api.http.fixtures.fixtures;
+                            var i = 0;
+                            var fixts_used = [];
+                            fixts.forEach(function(f) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                                i++;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
                         .run();
                 });
-                // assuming flow via registered user...
-                it("to state_msisdn_permission", function() {  //st-B
+                it.only("to state_msisdn_permission", function() {  //st-B
                     return tester
-                        .setup.user.addr('082222')
+                        .setup.user.addr('05059992222')
                         .inputs(
                             {session_event: 'new'}  // dial in
                         )
@@ -138,6 +160,17 @@ describe("Hello Mama app", function() {
                                 "2. No",
                                 "3. Change the number I'd like to manage"
                             ].join('\n')
+                        })
+                        .check(function(api) {
+                            var expected_used = [73];
+                            var fixts = api.http.fixtures.fixtures;
+                            var i = 0;
+                            var fixts_used = [];
+                            fixts.forEach(function(f) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                                i++;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });

@@ -1057,7 +1057,7 @@ go.app = function() {
         // override normal state adding
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                if (!interrupt || !go.utils_project.timed_out(self.im) /*|| !go.utils.should_restart(self.im)*/)
+                if (!interrupt || !go.utils_project.timed_out(self.im))
                     return creator(name, opts);
                 interrupt = false;
                 opts = opts || {};
@@ -1077,33 +1077,45 @@ go.app = function() {
             return self.states.create("state_check_msisdn");
         });
 
-        // Interstitial start state - evaluating whether user is registered
-        /*self.add('state_check_msisdn', function(name) {
-            return go.utils
-                .get_or_create_identity(self.im.user.addr, self.im, null)
-                .then(function(user_id) {
-                    return go.utils
-                        .is_registered(user_id, self.im)
-                        .then(function(recognised) {
-                            if (recognised) {
-                                return self.states.create('state_msisdn_permission');
-                            } else {
-                                return self.states.create('state_language');
-                            }
-                        });
-                });
-        });*/
+        // // Interstitial start state - evaluating whether user is registered
+        // self.add('state_check_msisdn', function(name) {
+        //     return go.utils
+        //         .get_or_create_identity(self.im.user.addr, self.im, null)
+        //         .then(function(user_id) {
+        //             return go.utils
+        //                 .is_registered(user_id, self.im)
+        //                 .then(function(recognised) {
+        //                     if (recognised) {
+        //                         return self.states.create('state_msisdn_permission');
+        //                     } else {
+        //                         return self.states.create('state_language');
+        //                     }
+        //                 });
+        //         });
+        // });
 
         self.add('state_check_msisdn', function(name) {
-            return go.utils_project
-                .check_msisdn_hcp(self.im.user.addr)
-                .then(function(recognised) {
-                    if (recognised) {
+            return go.utils
+                .get_or_create_identity({'msisdn': self.im.user.addr}, self.im, null)
+                .then(function(user) {
+                    if (user.details.receiver_role) {
+                        self.im.user.set_answer('role_player', user.details.receiver_role);
                         return self.states.create('state_msisdn_permission');
                     } else {
+                        self.im.user.set_answer('role_player', 'guest');
                         return self.states.create('state_language');
                     }
                 });
+
+            // return go.utils_project
+            //     .check_msisdn_hcp(self.im.user.addr)
+            //     .then(function(recognised) {
+            //         if (recognised) {
+            //             return self.states.create('state_msisdn_permission');
+            //         } else {
+            //             return self.states.create('state_language');
+            //         }
+            //     });
         });
 
 
