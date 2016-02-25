@@ -1605,13 +1605,24 @@ describe("Mama Nigeria App", function() {
                         reply: 'Thank you! Time: 2_5. Days: mon_wed.'
                     })
                     .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_voice_3.mp3',
-                                    wait_for: '#'
-                                }
+                        helper_metadata: {
+                            voice: {
+                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_voice_3.mp3',
+                                wait_for: '#'
                             }
-                        })
+                        }
+                    })
+                    .check(function(api) {
+                        var expected_used = [2,6,36,37,38,53,54,57,59,70];
+                        var fixts = api.http.fixtures.fixtures;
+                        var i = 0;
+                        var fixts_used = [];
+                        fixts.forEach(function(f) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                            i++;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
+                    })
                     .check.reply.ends_session()
                     .run();
             });

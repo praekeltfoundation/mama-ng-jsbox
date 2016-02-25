@@ -3001,7 +3001,9 @@ module.exports = function() {
                         },
                         "receiver_role": "trusted_friend",
                         "preferred_msg_type": "voice",
-                        "preferred_language": "igbo"
+                        "preferred_language": "igbo",
+                        "preferred_msg_days": "mon_wed",
+                        "preferred_msg_times": "2_5"
                     },
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "created_at": "2015-07-10T06:13:29.693272Z",
@@ -3023,7 +3025,9 @@ module.exports = function() {
                         },
                         "receiver_role": "trusted_friend",
                         "preferred_msg_type": "voice",
-                        "preferred_language": "igbo"
+                        "preferred_language": "igbo",
+                        "preferred_msg_days": "mon_wed",
+                        "preferred_msg_times": "2_5"
                     },
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "created_at": "2015-07-10T06:13:29.693272Z",
