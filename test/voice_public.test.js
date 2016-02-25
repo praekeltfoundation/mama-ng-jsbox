@@ -5,7 +5,7 @@ var AppTester = vumigo.AppTester;
 
 
 describe("Mama Nigeria App", function() {
-    describe("Voice Change", function() {
+    describe("Voice Public", function() {
         var app;
         var tester;
 
@@ -16,7 +16,7 @@ describe("Mama Nigeria App", function() {
             tester
                 .setup.config.app({
                     testing_today: '2015-07-22',
-                    name: 'voice-change-test',
+                    name: 'voice-public-test',
                     country_code: '234',  // nigeria
                     services: {
                         identities: {

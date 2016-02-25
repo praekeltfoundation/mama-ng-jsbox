@@ -1684,10 +1684,10 @@ describe("Mama Nigeria App", function() {
                 todayLastYear.subtract('year', 1);
 
                 for (var i=0; i<choiceMonths.length; i++) {
-                    resultsForThisYearPeriod.push(go.utils.is_valid_month(today, today.year(), (i+1).toString(), 10));
-                    resultsForLastYearPeriod.push(go.utils.is_valid_month(today, todayLastYear.year(), (i+1).toString(), 10));
-                    resultsForThisYearBaby.push(go.utils.is_valid_month(today, today.year(), (i+1).toString(), 13));
-                    resultsForLastYearBaby.push(go.utils.is_valid_month(today, todayLastYear.year(), (i+1).toString(), 13));
+                    resultsForThisYearPeriod.push(go.utils_project.is_valid_month(today, today.year(), (i+1).toString(), 10));
+                    resultsForLastYearPeriod.push(go.utils_project.is_valid_month(today, todayLastYear.year(), (i+1).toString(), 10));
+                    resultsForThisYearBaby.push(go.utils_project.is_valid_month(today, today.year(), (i+1).toString(), 13));
+                    resultsForLastYearBaby.push(go.utils_project.is_valid_month(today, todayLastYear.year(), (i+1).toString(), 13));
                 }
 
                 // expected results
@@ -1778,10 +1778,10 @@ describe("Mama Nigeria App", function() {
                 todayLastYear.subtract('year', 1);
 
                 for (var i=0; i<choiceMonths.length; i++) {
-                    resultsForThisYearPeriod.push(go.utils.is_valid_month(today, today.year(), (i+1).toString(), 10));
-                    resultsForLastYearPeriod.push(go.utils.is_valid_month(today, todayLastYear.year(), (i+1).toString(), 10));
-                    resultsForThisYearBaby.push(go.utils.is_valid_month(today, today.year(), (i+1).toString(), 13));
-                    resultsForLastYearBaby.push(go.utils.is_valid_month(today, todayLastYear.year(), (i+1).toString(), 13));
+                    resultsForThisYearPeriod.push(go.utils_project.is_valid_month(today, today.year(), (i+1).toString(), 10));
+                    resultsForLastYearPeriod.push(go.utils_project.is_valid_month(today, todayLastYear.year(), (i+1).toString(), 10));
+                    resultsForThisYearBaby.push(go.utils_project.is_valid_month(today, today.year(), (i+1).toString(), 13));
+                    resultsForLastYearBaby.push(go.utils_project.is_valid_month(today, todayLastYear.year(), (i+1).toString(), 13));
                 }
 
                 // expected results

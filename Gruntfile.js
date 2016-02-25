@@ -17,30 +17,35 @@ module.exports = function (grunt) {
                 voice_registration: [
                     'src/index.js',
                     'src/utils.js',
+                    'src/utils_project.js',
                     '<%= paths.src.app.voice_registration %>',
                     'src/init.js'
                 ],
                 voice_public: [
                     'src/index.js',
                     'src/utils.js',
+                    'src/utils_project.js',
                     '<%= paths.src.app.voice_public %>',
                     'src/init.js'
                 ],
                 ussd_registration: [
                     'src/index.js',
                     'src/utils.js',
+                    'src/utils_project.js',
                     '<%= paths.src.app.ussd_registration %>',
                     'src/init.js'
                 ],
                 sms_inbound: [
                     'src/index.js',
                     'src/utils.js',
+                    'src/utils_project.js',
                     '<%= paths.src.app.sms_inbound %>',
                     'src/init.js'
                 ],
                 ussd_public: [
                     'src/index.js',
                     'src/utils.js',
+                    'src/utils_project.js',
                     '<%= paths.src.app.ussd_public %>',
                     'src/init.js'
                 ],
@@ -59,30 +64,35 @@ module.exports = function (grunt) {
                 voice_registration: [
                     'test/setup.js',
                     'src/utils.js',
+                    'src/utils_project.js',
                     '<%= paths.src.app.voice_registration %>',
                     'test/voice_registration.test.js'
                 ],
                 voice_public: [
                     'test/setup.js',
                     'src/utils.js',
+                    'src/utils_project.js',
                     '<%= paths.src.app.voice_public %>',
                     'test/voice_public.test.js'
                 ],
                 ussd_registration: [
                     'test/setup.js',
                     'src/utils.js',
+                    'src/utils_project.js',
                     '<%= paths.src.app.ussd_registration %>',
                     'test/ussd_registration.test.js'
                 ],
                 sms_inbound: [
                     'test/setup.js',
                     'src/utils.js',
+                    'src/utils_project.js',
                     '<%= paths.src.app.sms_inbound %>',
                     'test/sms_inbound.test.js'
                 ],
                 ussd_public: [
                     'test/setup.js',
                     'src/utils.js',
+                    'src/utils_project.js',
                     '<%= paths.src.app.ussd_public %>',
                     'test/ussd_public.test.js'
                 ]

@@ -525,7 +525,7 @@ describe("Hello Mama app", function() {
                         .run();
                 });
                 it("to state_optout_receiver", function() {
-                    var role = go.utils.check_role(tester.im.user.addr);
+                    var role = go.utils_project.check_role(tester.im.user.addr);
                     if (role === 'father_role') {
                         return tester
                             .setup.user.addr('082222')
