@@ -1615,42 +1615,6 @@ describe("Mama Nigeria App", function() {
                     .check.reply.ends_session()
                     .run();
             });
-
-            it.skip("should have the correct answers set", function() {
-                return tester
-                    .setup.user.addr('07030010001')
-                    .inputs(
-                        {session_event: 'new'}
-                        ,'12345'        // state_personnel_auth
-                        , '2'           // state_msg_receiver - mother
-                        , '09092222222' // state_msisdn
-                        , '2'           // state_pregnancy_status - baby
-                        , '2'           // state_baby_birth_year - this year
-                        , '5'           // state_12A_baby_month - may
-                        , '18'          // state_baby_birth_day - 18
-                        , '1'           // state_msg_language - english
-                        , '1'           // state_msg_type - voice
-                        , '1'           // state_voice_days - mon_wed
-                        , '2'           // state_voice_times - 2_5
-                    )
-                    .check.user.answers({
-                        /*mama_id: "cb245673-aa41-4302-ac47-00000000002",
-                        mama_num: "08080020002",
-                        birth_date: '2015-12-21',*/
-                        state_personnel_auth: "12345",
-                        state_msg_receiver: "mother",
-                        state_msisdn: "08080020002",
-                        state_pregnancy_status: "baby",
-                        state_last_period_year: "this_year",
-                        state_last_period_month: "5",
-                        state_last_period_day: "18",
-                        state_msg_language: "english",
-                        state_msg_type: "voice",
-                        state_voice_days: "mon_wed",
-                        state_voice_times: "2_5"
-                    })
-                    .run();
-            });
         });
 
         describe("Testing month validation function (is_valid_month)", function() {
