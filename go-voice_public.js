@@ -165,14 +165,12 @@ go.utils = {
 
 // REGISTRATION HELPERS
 
-    save_registration: function(im) {
-        // compile registration
-        var reg_info = go.utils_project.compile_reg_info(im);
+    create_registration: function(im, reg_info) {
         return go.utils
-        .service_api_call("registrations", "post", null, reg_info, "registrations/", im)
-        .then(function(result) {
-            return result.id;
-        });
+            .service_api_call("registrations", "post", null, reg_info, "registrations/", im)
+            .then(function(result) {
+                return result.id;
+            });
     },
 
 
