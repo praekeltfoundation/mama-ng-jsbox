@@ -90,7 +90,7 @@ go.app = function() {
         // override normal state adding
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                if (!interrupt || !go.utils.timed_out(self.im) /*|| !go.utils.should_restart(self.im)*/)
+                if (!interrupt || !go.utils_project.timed_out(self.im) /*|| !go.utils.should_restart(self.im)*/)
                     return creator(name, opts);
                 interrupt = false;
                 opts = opts || {};
@@ -128,7 +128,7 @@ go.app = function() {
         });*/
 
         self.add('state_check_msisdn', function(name) {
-            return go.utils
+            return go.utils_project
                 .check_msisdn_hcp(self.im.user.addr)
                 .then(function(recognised) {
                     if (recognised) {
@@ -240,7 +240,7 @@ go.app = function() {
 
         // Interstitials
         self.add('state_check_baby_subscription', function(name) {
-            return go.utils
+            return go.utils_project
                 .check_baby_subscription(self.im.user.addr)
                 .then(function(isSubscribed) {
                     if (isSubscribed) {
@@ -252,7 +252,7 @@ go.app = function() {
         });
 
         self.add('state_check_msg_type', function(name) {
-            return go.utils
+            return go.utils_project
                 .check_msg_type(self.im.user.addr)
                 .then(function(msgType) {
                     if (msgType == 'sms') {
@@ -266,7 +266,7 @@ go.app = function() {
         });
 
         self.add('state_check_receiver_role', function(name) {
-            return go.utils
+            return go.utils_project
                 .check_role(self.im.user.addr)
                 .then(function(role) {
                     if (role == 'father_role') {
@@ -464,7 +464,7 @@ go.app = function() {
 
         // ChoiceState st-16
         self.add('state_optout_receiver', function(name) {
-            var role = go.utils.check_role(self.im.user.addr);
+            var role = go.utils_project.check_role(self.im.user.addr);
             if (role === 'father_role') {
                 return new ChoiceState(name, {
                     question: $(questions[name]),

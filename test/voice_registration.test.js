@@ -1605,50 +1605,25 @@ describe("Mama Nigeria App", function() {
                         reply: 'Thank you! Time: 2_5. Days: mon_wed.'
                     })
                     .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_voice_3.mp3',
-                                    wait_for: '#'
-                                }
+                        helper_metadata: {
+                            voice: {
+                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_voice_3.mp3',
+                                wait_for: '#'
                             }
-                        })
-                    .check.reply.ends_session()
-                    .run();
-            });
-
-            it.skip("should have the correct answers set", function() {
-                return tester
-                    .setup.user.addr('07030010001')
-                    .inputs(
-                        {session_event: 'new'}
-                        ,'12345'        // state_personnel_auth
-                        , '2'           // state_msg_receiver - mother
-                        , '09092222222' // state_msisdn
-                        , '2'           // state_pregnancy_status - baby
-                        , '2'           // state_baby_birth_year - this year
-                        , '5'           // state_12A_baby_month - may
-                        , '18'          // state_baby_birth_day - 18
-                        , '1'           // state_msg_language - english
-                        , '1'           // state_msg_type - voice
-                        , '1'           // state_voice_days - mon_wed
-                        , '2'           // state_voice_times - 2_5
-                    )
-                    .check.user.answers({
-                        /*mama_id: "cb245673-aa41-4302-ac47-00000000002",
-                        mama_num: "08080020002",
-                        birth_date: '2015-12-21',*/
-                        state_personnel_auth: "12345",
-                        state_msg_receiver: "mother",
-                        state_msisdn: "08080020002",
-                        state_pregnancy_status: "baby",
-                        state_last_period_year: "this_year",
-                        state_last_period_month: "5",
-                        state_last_period_day: "18",
-                        state_msg_language: "english",
-                        state_msg_type: "voice",
-                        state_voice_days: "mon_wed",
-                        state_voice_times: "2_5"
+                        }
                     })
+                    .check(function(api) {
+                        var expected_used = [2,6,36,37,38,53,54,57,59,70];
+                        var fixts = api.http.fixtures.fixtures;
+                        var i = 0;
+                        var fixts_used = [];
+                        fixts.forEach(function(f) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                            i++;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
+                    })
+                    .check.reply.ends_session()
                     .run();
             });
         });
@@ -1684,10 +1659,10 @@ describe("Mama Nigeria App", function() {
                 todayLastYear.subtract('year', 1);
 
                 for (var i=0; i<choiceMonths.length; i++) {
-                    resultsForThisYearPeriod.push(go.utils.is_valid_month(today, today.year(), (i+1).toString(), 10));
-                    resultsForLastYearPeriod.push(go.utils.is_valid_month(today, todayLastYear.year(), (i+1).toString(), 10));
-                    resultsForThisYearBaby.push(go.utils.is_valid_month(today, today.year(), (i+1).toString(), 13));
-                    resultsForLastYearBaby.push(go.utils.is_valid_month(today, todayLastYear.year(), (i+1).toString(), 13));
+                    resultsForThisYearPeriod.push(go.utils_project.is_valid_month(today, today.year(), (i+1).toString(), 10));
+                    resultsForLastYearPeriod.push(go.utils_project.is_valid_month(today, todayLastYear.year(), (i+1).toString(), 10));
+                    resultsForThisYearBaby.push(go.utils_project.is_valid_month(today, today.year(), (i+1).toString(), 13));
+                    resultsForLastYearBaby.push(go.utils_project.is_valid_month(today, todayLastYear.year(), (i+1).toString(), 13));
                 }
 
                 // expected results
@@ -1778,10 +1753,10 @@ describe("Mama Nigeria App", function() {
                 todayLastYear.subtract('year', 1);
 
                 for (var i=0; i<choiceMonths.length; i++) {
-                    resultsForThisYearPeriod.push(go.utils.is_valid_month(today, today.year(), (i+1).toString(), 10));
-                    resultsForLastYearPeriod.push(go.utils.is_valid_month(today, todayLastYear.year(), (i+1).toString(), 10));
-                    resultsForThisYearBaby.push(go.utils.is_valid_month(today, today.year(), (i+1).toString(), 13));
-                    resultsForLastYearBaby.push(go.utils.is_valid_month(today, todayLastYear.year(), (i+1).toString(), 13));
+                    resultsForThisYearPeriod.push(go.utils_project.is_valid_month(today, today.year(), (i+1).toString(), 10));
+                    resultsForLastYearPeriod.push(go.utils_project.is_valid_month(today, todayLastYear.year(), (i+1).toString(), 10));
+                    resultsForThisYearBaby.push(go.utils_project.is_valid_month(today, today.year(), (i+1).toString(), 13));
+                    resultsForLastYearBaby.push(go.utils_project.is_valid_month(today, todayLastYear.year(), (i+1).toString(), 13));
                 }
 
                 // expected results
