@@ -623,6 +623,17 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_end_voice',
                     })
+                    .check(function(api) {
+                        var expected_used = [1,6,36,37,38,48,54,59,62,63];
+                        var fixts = api.http.fixtures.fixtures;
+                        var i = 0;
+                        var fixts_used = [];
+                        fixts.forEach(function(f) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                            i++;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
+                    })
                     .run();
             });
             it("complete flow 2 - receiver: mother & father; mother pregnant, voice", function() {

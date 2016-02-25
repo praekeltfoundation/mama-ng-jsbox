@@ -312,15 +312,10 @@ go.app = function() {
                     if (choice.value === 'voice') {
                         return 'state_voice_days';
                     } else {
-                        var reg_info = go.utils_project.compile_reg_info(self.im);
-                        return go.utils
-                            .create_registration(self.im, reg_info)
+                        return go.utils_project
+                            .finish_registration(self.im)
                             .then(function() {
-                                return go.utils_project
-                                    .update_identities(self.im)
-                                    .then(function() {
-                                        return 'state_end_sms';
-                                    });
+                                return 'state_end_sms';
                             });
                     }
                 }
@@ -348,9 +343,8 @@ go.app = function() {
                     new Choice('2_5', $('Between 2-5pm'))
                 ],
                 next: function() {
-                    var reg_info = go.utils_project.compile_reg_info(self.im);
-                    return go.utils
-                        .create_registration(self.im, reg_info)
+                    return go.utils_project
+                        .finish_registration(self.im)
                         .then(function() {
                             return 'state_end_voice';
                         });

@@ -626,6 +626,14 @@ go.utils_project = {
         return reg_info;
     },
 
+    finish_registration: function(im) {
+        var reg_info = go.utils_project.compile_reg_info(im);
+        return Q.all([
+            go.utils.create_registration(im, reg_info),
+            go.utils_project.update_identities(im)
+        ]);
+    },
+
     update_mama_details: function(im, mama_identity, chew_phone_used) {
         if (im.user.answers.state_r04_mom_state === 'baby') {
             mama_identity.details.baby_dob = im.user.answers.birth_date;
