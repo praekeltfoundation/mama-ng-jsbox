@@ -175,7 +175,7 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059992222')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '3'
+                            , '3'  // state_msisdn_permission
                         )
                         .check.interaction({
                             state: 'state_registered_msisdn',
@@ -192,17 +192,75 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
-                it.only("to state_msisdn_not_recognised", function() {  //st-F
+                it("to state_msisdn_not_recognised", function() {  //st-F
                     return tester
-                        .setup.user.addr('05059992222')
+                        .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '3'   // state_language - igbo
-                            , '0803304111'  // state_registered_msisdn
+                            , '2'   // state_language - hausa
+                            , '05059994444'  // state_registered_msisdn
                         )
                         .check.interaction({
                             state: 'state_msisdn_not_recognised',
                             reply: "We do not recognise this number. Please dial from the registered number or sign up with your local Community Health Extension worker."
+                        })
+                        .check(function(api) {
+                            var expected_used = [0, 1, 3];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
+                        .run();
+                });
+                it("to state_main_menu_household (via state C)", function() {
+                    return tester
+                        .setup.user.addr('05059991111')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '2'   // state_language - hausa
+                            , '05059993333'  // state_registered_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_main_menu_household',
+                            reply: [
+                                "Select:",
+                                "1. Start Baby messages",
+                                "2. Change my number",
+                                "3. Change language",
+                                "4. Stop receiving messages"
+                            ].join('\n')
+                        })
+                        .check(function(api) {
+                            var expected_used = [0, 1, 4];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
+                        .run();
+                });
+                it("to state_main_menu (via state B)", function() {
+                    return tester
+                        .setup.user.addr('05059992222')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'   // state_msisdn_permission - yes
+                        )
+                        .check.interaction({
+                            state: 'state_main_menu',
+                            reply: [
+                                "Select:",
+                                "1. Start Baby messages",
+                                "2. Change message preferences",
+                                "3. Change my number",
+                                "4. Change language",
+                                "5. Stop receiving messages"
+                            ].join('\n')
                         })
                         .check(function(api) {
                             var expected_used = [2];
@@ -215,96 +273,12 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
-                // assuming flow via unregistered user...
-                it("to state_main_menu (via state C)", function() {
-                    return tester
-                        .setup.user.addr('082111')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '2'   // state_language - hausa
-                            , '0803304899'  // state_registered_msisdn
-                        )
-                        .check.interaction({
-                            state: 'state_main_menu',
-                            reply: [
-                                "Select:",
-                                "1. Start Baby messages",
-                                "2. Change message preferences",
-                                "3. Change my number",
-                                "4. Change language",
-                                "5. Stop receiving messages"
-                            ].join('\n')
-                        })
-                        .run();
-                });
-                // assuming flow via unregistered user... ** father role
-                it("to state_main_menu_father (via state C)", function() {
-                    return tester
-                        .setup.user.addr('082101')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '2'   // state_language - hausa
-                            , '0803304899'  // state_registered_msisdn
-                        )
-                        .check.interaction({
-                            state: 'state_main_menu_father',
-                            reply: [
-                                "Select:",
-                                "1. Start Baby messages",
-                                "2. Change my number",
-                                "3. Change language",
-                                "4. Stop receiving messages"
-                            ].join('\n')
-                        })
-                        .run();
-                });
-                // registered user with permission to manage number
-                it("to state_main_menu (via state B)", function() {
-                    return tester
-                        .setup.user.addr('082222')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'   // state_msisdn_permission - yes
-                        )
-                        .check.interaction({
-                            state: 'state_main_menu',
-                            reply: [
-                                "Select:",
-                                "1. Start Baby messages",
-                                "2. Change message preferences",
-                                "3. Change my number",
-                                "4. Change language",
-                                "5. Stop receiving messages"
-                            ].join('\n')
-                        })
-                        .run();
-                });
-                // registered user with permission to manage number.  *** father role
-                it("to state_main_menu_father (via state B)", function() {
-                    return tester
-                        .setup.user.addr('082555')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'   // state_msisdn_permission - yes
-                        )
-                        .check.interaction({
-                            state: 'state_main_menu_father',
-                            reply: [
-                                "Select:",
-                                "1. Start Baby messages",
-                                "2. Change my number",
-                                "3. Change language",
-                                "4. Stop receiving messages"
-                            ].join('\n')
-                        })
-                        .run();
-                });
                 it("to state_msisdn_no_permission", function() {  // via st-B
                     return tester
-                        .setup.user.addr('082222')
+                        .setup.user.addr('05059992222')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'   // state_msisdn_permission - yes
+                            , '2'   // state_msisdn_permission - no
                         )
                         .check.interaction({
                             state: 'state_msisdn_no_permission',
@@ -314,7 +288,7 @@ describe("Hello Mama app", function() {
                 });
             });
 
-            describe("Change states flows - baby messages", function() {
+            describe.skip("Change states flows - baby messages", function() {
                 it("to state_already_registered_baby", function() {
                     return tester
                         .setup.user.addr('082333')
@@ -349,7 +323,7 @@ describe("Hello Mama app", function() {
                 });
             });
 
-            describe("Change states flows - message format and time", function() {
+            describe.skip("Change states flows - message format and time", function() {
                 it("to state_change_menu_sms", function() {
                     return tester
                         .setup.user.addr('082444')
@@ -425,7 +399,8 @@ describe("Hello Mama app", function() {
                         .run();
                 });
             });
-            describe("Change states flows - change number", function() {
+
+            describe.skip("Change states flows - change number", function() {
                 it("to state_new_msisdn", function() {
                     return tester
                         .setup.user.addr('082222')
@@ -457,7 +432,7 @@ describe("Hello Mama app", function() {
                 });
             });
 
-            describe("Change states flows - change language", function() {
+            describe.skip("Change states flows - change language", function() {
                 it("to state_msg_language", function() {
                     return tester
                         .setup.user.addr('082222')
@@ -494,7 +469,7 @@ describe("Hello Mama app", function() {
                 });
             });
 
-            describe("Change states flows - opt-out", function() {
+            describe.skip("Change states flows - opt-out", function() {
                 it("to state_optout_reason", function() {
                     return tester
                         .setup.user.addr('082222')
@@ -627,7 +602,7 @@ describe("Hello Mama app", function() {
                 });
             });
 
-            describe("Change state navigation flows looping back to main menu", function() {
+            describe.skip("Change state navigation flows looping back to main menu", function() {
                 it(" - baby messages, back to main menu", function() {
                     return tester
                         .setup.user.addr('082333')
@@ -672,7 +647,7 @@ describe("Hello Mama app", function() {
                 });
             });
 
-            describe("Complete flows", function() {
+            describe.skip("Complete flows", function() {
                 it(" - via baby messages to exit", function() {
                     return tester
                         .setup.user.addr('082333')

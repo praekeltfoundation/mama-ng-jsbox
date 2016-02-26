@@ -30,7 +30,7 @@ go.app = function() {
                 "Please enter the number which is registered to receive messages. For example, 0803304899",
             "state_main_menu":  // st-A
                 "Select:",
-            "state_main_menu_father": // st-A1
+            "state_main_menu_household": // st-A1
                 "Select:",
             "state_msisdn_not_recognised":  // st-F
                 "We do not recognise this number. Please dial from the registered number or sign up with your local Community Health Extension worker.",
@@ -107,30 +107,10 @@ go.app = function() {
         self.states.add('state_start', function() {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
-            return self.states.create("state_check_msisdn");
-        });
-
-        // // Interstitial start state - evaluating whether user is registered
-        // self.add('state_check_msisdn', function(name) {
-        //     return go.utils
-        //         .get_or_create_identity(self.im.user.addr, self.im, null)
-        //         .then(function(user_id) {
-        //             return go.utils
-        //                 .is_registered(user_id, self.im)
-        //                 .then(function(recognised) {
-        //                     if (recognised) {
-        //                         return self.states.create('state_msisdn_permission');
-        //                     } else {
-        //                         return self.states.create('state_language');
-        //                     }
-        //                 });
-        //         });
-        // });
-
-        self.add('state_check_msisdn', function(name) {
             return go.utils
                 .get_or_create_identity({'msisdn': self.im.user.addr}, self.im, null)
                 .then(function(user) {
+                    self.im.user.set_answer('user_id', user.id);
                     if (user.details.receiver_role) {
                         self.im.user.set_answer('role_player', user.details.receiver_role);
                         return self.states.create('state_msisdn_permission');
@@ -139,16 +119,6 @@ go.app = function() {
                         return self.states.create('state_language');
                     }
                 });
-
-            // return go.utils_project
-            //     .check_msisdn_hcp(self.im.user.addr)
-            //     .then(function(recognised) {
-            //         if (recognised) {
-            //             return self.states.create('state_msisdn_permission');
-            //         } else {
-            //             return self.states.create('state_language');
-            //         }
-            //     });
         });
 
 
@@ -162,26 +132,22 @@ go.app = function() {
                     new Choice('state_check_receiver_role', $("Yes")),
                     new Choice('state_msisdn_no_permission', $("No")),
                     new Choice('state_registered_msisdn', $("Change the number I'd like to manage"))
-                  ],
-                  error: $(get_error_text(name)),
-                  next: function(choice) {
-                          return choice.value;
-                  }
-              });
+                ],
+                error: $(get_error_text(name)),
+                next: function(choice) {
+                    if (choice.value === 'state_check_receiver_role') {
+                        self.im.user.set_answer('contact_id', self.im.user.answers.user_id);
+                    }
+                    return choice.value;
+                }
+            });
         });
 
         // unnamed on flow diagram
         self.add('state_msisdn_no_permission', function(name) {
             return new EndState(name, {
                 text: $(questions[name]),
-                //next: 'state_start'
-            });
-        });
-
-        // EndState st-F
-        self.add('state_msisdn_not_recognised', function(name) {
-            return new EndState(name, {
-                text: $(questions[name])
+                next: 'state_start'
             });
         });
 
@@ -193,10 +159,10 @@ go.app = function() {
                     new Choice('english', $("English")),
                     new Choice('hausa', $("Hausa")),
                     new Choice('igbo', $("Igbo"))
-                  ],
-                  error: $(get_error_text(name)),
-                  next: 'state_registered_msisdn'
-              });
+                ],
+                error: $(get_error_text(name)),
+                next: 'state_registered_msisdn'
+            });
         });
 
         // FreeText st-C
@@ -210,7 +176,34 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: 'state_check_receiver_role'  // needs to be able to make it to st-F
+                next: 'state_check_registered'
+            });
+        });
+
+        // Interstitial - determine contact registration
+        self.states.add('state_check_registered', function() {
+            var msisdn = go.utils.normalize_msisdn(
+                self.im.user.answers.state_registered_msisdn,
+                self.im.config.country_code
+            );
+            return go.utils
+                .get_identity_by_address({'msisdn': msisdn}, self.im)
+                .then(function(contact) {
+                    if (contact.details.receiver_role) {
+                        self.im.user.set_answer('role_player', contact.details.receiver_role);
+                        self.im.user.set_answer('contact_id', contact.id);
+                        return self.states.create('state_main_menu_household');
+                    } else {
+                        return self.states.create('state_msisdn_not_recognised');
+                    }
+                });
+        });
+
+        // EndState st-F
+        self.add('state_msisdn_not_recognised', function(name) {
+            return new EndState(name, {
+                text: $(questions[name]),
+                next: 'state_start'
             });
         });
 
@@ -232,7 +225,7 @@ go.app = function() {
             });
         });
         // ChoiceState st-A1
-        self.add('state_main_menu_father', function(name) {
+        self.add('state_main_menu_household', function(name) {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 choices: [
@@ -282,7 +275,7 @@ go.app = function() {
                 .check_role(self.im.user.addr)
                 .then(function(role) {
                     if (role == 'father_role') {
-                        return self.states.create('state_main_menu_father');
+                        return self.states.create('state_main_menu_household');
                     } else if (role == 'mother_role') {
                         return self.states.create('state_main_menu');
                     } else {

@@ -236,11 +236,11 @@ go.utils = {
     },
 
     get_or_create_identity: function(address, im, operator_id) {
-        // Gets a identity if it exists, otherwise creates a new one
+      // Gets a identity if it exists, otherwise creates a new one
 
         if (address.msisdn) {
             address.msisdn = go.utils
-            .normalize_msisdn(address.msisdn, im.config.country_code);
+                .normalize_msisdn(address.msisdn, im.config.country_code);
         }
         return go.utils
             // Get identity id using address
