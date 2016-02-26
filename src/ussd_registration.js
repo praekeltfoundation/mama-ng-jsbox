@@ -35,7 +35,7 @@ go.app = function() {
                 "Please select who will receive the messages on their phone:",
             "state_msisdn":
                 "Please enter the mobile number of the person who will receive the weekly messages. For example, 08033048990",
-            "state_msisdn_father":
+            "state_msisdn_household":
                 "Please enter the mobile number of the FATHER. For example, 08033048990",
             "state_msisdn_mother":
                 "Please enter the mobile number of the MOTHER. For example, 08033048990",
@@ -152,19 +152,43 @@ go.app = function() {
         });
 
         // ChoiceState st-02
+        // self.add('state_msg_receiver', function(name) {
+        //     return new ChoiceState(name, {
+        //         question: $(questions[name]),
+        //         choices: [
+        //             new Choice('mother_father', $("The Mother & Father")),
+        //             new Choice('mother_only', $("The Mother only")),
+        //             new Choice('father_only', $("The Father only")),
+        //             new Choice('family_member', $("A family member")),
+        //             new Choice('trusted_friend', $("A trusted friend"))
+        //         ],
+        //         next: function(choice) {
+        //             if (choice.value === 'mother_father') {
+        //                 return 'state_msisdn_household';
+        //             } else {
+        //                 return 'state_msisdn';
+        //             }
+        //         }
+        //     });
+        // });
+
+        // ChoiceState st-02
         self.add('state_msg_receiver', function(name) {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 choices: [
-                    new Choice('mother_father', $("The Mother & Father")),
-                    new Choice('mother_only', $("The Mother only")),
-                    new Choice('father_only', $("The Father only")),
-                    new Choice('family_member', $("A family member")),
-                    new Choice('trusted_friend', $("A trusted friend"))
+                    new Choice('mother_father', $("Mother & Father")),
+                    new Choice('mother_only', $("Mother")),
+                    new Choice('father_only', $("Father")),
+                    new Choice('mother_family', $("Mother & family member")),
+                    new Choice('mother_friend', $("Mother & friend")),
+                    new Choice('friend_only', $("Friend")),
+                    new Choice('family_only', $("Family member"))
                 ],
                 next: function(choice) {
-                    if (choice.value === 'mother_father') {
-                        return 'state_msisdn_father';
+                    var seperate = ["mother_father", "mother_family", "mother_friend"];
+                    if (seperate.indexOf(choice.value) !== -1) {
+                        return 'state_msisdn_mother';
                     } else {
                         return 'state_msisdn';
                     }
@@ -188,21 +212,6 @@ go.app = function() {
         });
 
         // FreeText st-3A
-        self.add('state_msisdn_father', function(name) {
-            return new FreeText(name, {
-                question: $(questions[name]),
-                check: function(content) {
-                    if (go.utils.is_valid_msisdn(content)) {
-                        return null;  // vumi expects null or undefined if check passes
-                    } else {
-                        return $(get_error_text(name));
-                    }
-                },
-                next: 'state_msisdn_mother'
-            });
-        });
-
-        // FreeText st-3A
         self.add('state_msisdn_mother', function(name) {
             return new FreeText(name, {
                 question: $(questions[name]),
@@ -213,10 +222,31 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
+                next: 'state_msisdn_household'
+            });
+        });
+
+        // FreeText st-3A
+        self.add('state_msisdn_household', function(name) {
+            return new FreeText(name, {
+                question: $(questions[name]),
+                check: function(content) {
+                    if (go.utils.is_valid_msisdn(content)) {
+                        return null;  // vumi expects null or undefined if check passes
+                    } else {
+                        return $(get_error_text(name));
+                    }
+                },
                 next: function() {
-                    if (self.im.user.answers.state_msisdn_father ===
+                    var receiver_mapping = {
+                        'mother_father': 'father_only',
+                        'mother_friend': 'friend_only',
+                        'mother_family': 'family_only'
+                    };
+                    if (self.im.user.answers.state_msisdn_household ===
                         self.im.user.answers.state_msisdn_mother) {
-                        self.im.user.set_answer('state_msg_receiver', 'father_only');
+                        self.im.user.set_answer('state_msg_receiver',
+                            receiver_mapping[self.im.user.answers.state_msg_receiver]);
                         self.im.user.set_answer('state_msisdn',
                                                 self.im.user.answers.state_msisdn_mother);
                     }
@@ -225,6 +255,29 @@ go.app = function() {
             });
         });
 
+        // FreeText st-3A
+        // self.add('state_msisdn_mother', function(name) {
+        //     return new FreeText(name, {
+        //         question: $(questions[name]),
+        //         check: function(content) {
+        //             if (go.utils.is_valid_msisdn(content)) {
+        //                 return null;  // vumi expects null or undefined if check passes
+        //             } else {
+        //                 return $(get_error_text(name));
+        //             }
+        //         },
+                // next: function() {
+                //     if (self.im.user.answers.state_msisdn_household ===
+                //         self.im.user.answers.state_msisdn_mother) {
+                //         self.im.user.set_answer('state_msg_receiver', 'father_only');
+                //         self.im.user.set_answer('state_msisdn',
+                //                                 self.im.user.answers.state_msisdn_mother);
+                //     }
+                //     return 'state_save_identities';
+                // }
+        //     });
+        // });
+
         // Get or create identities and save their IDs
         self.add('state_save_identities', function(name) {
             return go.utils_project
@@ -232,7 +285,7 @@ go.app = function() {
                     self.im,
                     self.im.user.answers.state_msg_receiver,
                     self.im.user.answers.state_msisdn,
-                    self.im.user.answers.state_msisdn_father,
+                    self.im.user.answers.state_msisdn_household,
                     self.im.user.answers.state_msisdn_mother,
                     self.im.user.answers.operator_id
                 )

@@ -348,7 +348,7 @@ go.utils_project = {
             });
     },
 
-    save_identities: function(im, msg_receiver, receiver_msisdn, father_msisdn,
+    save_identities: function(im, msg_receiver, receiver_msisdn, household_msisdn,
                               mother_msisdn, operator_id) {
       // Creates identities for the msisdns entered in various states
       // and sets the identitity id's to user.answers for later use
@@ -365,7 +365,7 @@ go.utils_project = {
                     im.user.set_answer('receiver_id', mother.id);
                     return;
                 });
-        } else if (['trusted_friend', 'family_member', 'father_only'].indexOf(msg_receiver) !== -1) {
+        } else if (['friend_only', 'family_only', 'father_only'].indexOf(msg_receiver) !== -1) {
             return go.utils
                 // get or create msg_receiver's identity
                 .get_or_create_identity({'msisdn': receiver_msisdn}, im, operator_id)
@@ -379,11 +379,11 @@ go.utils_project = {
                             return;
                         });
                 });
-        } else if (msg_receiver === 'mother_father') {
+        } else if (['mother_friend', 'mother_family', 'mother_father'].indexOf(msg_receiver) !== -1) {
             return Q
                 .all([
                     // create father's identity
-                    go.utils.get_or_create_identity({'msisdn': father_msisdn}, im, operator_id),
+                    go.utils.get_or_create_identity({'msisdn': household_msisdn}, im, operator_id),
                     // create mother's identity
                     go.utils.get_or_create_identity({'msisdn': mother_msisdn}, im, operator_id),
                 ])
@@ -403,6 +403,7 @@ go.utils_project = {
                 .get_identity(im.user.answers.mother_id, im)
                 .then(function(mother_identity) {
                     mother_identity.details.receiver_role = 'mother';
+                    mother_identity.details.linked_to = null;
                     mother_identity.details.preferred_language = im.user.answers.state_msg_language;
                     mother_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
 
@@ -413,55 +414,55 @@ go.utils_project = {
 
                     return go.utils.update_identity(im, mother_identity);
                 });
-        } else if (['trusted_friend', 'family_member', 'father_only'].indexOf(msg_receiver) !== -1) {
+        } else if (['friend_only', 'family_only', 'father_only'].indexOf(msg_receiver) !== -1) {
             return Q
                 .all([
                     go.utils.get_identity(im.user.answers.mother_id, im),
                     go.utils.get_identity(im.user.answers.receiver_id, im)
                 ])
-                .spread(function(mother_identity, reciver_identity) {
+                .spread(function(mother_identity, receiver_identity) {
                     mother_identity.details.receiver_role = 'mother';
                     mother_identity.details.preferred_language = im.user.answers.state_msg_language;
 
-                    reciver_identity.details.receiver_role = msg_receiver;
-                    reciver_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
-                    reciver_identity.details.preferred_language = im.user.answers.state_msg_language;
+                    receiver_identity.details.receiver_role = msg_receiver;
+                    receiver_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
+                    receiver_identity.details.preferred_language = im.user.answers.state_msg_language;
 
                     if (im.user.answers.state_msg_type === 'voice') {
-                        reciver_identity.details.preferred_msg_days = im.user.answers.state_voice_days;
-                        reciver_identity.details.preferred_msg_times = im.user.answers.state_voice_times;
+                        receiver_identity.details.preferred_msg_days = im.user.answers.state_voice_days;
+                        receiver_identity.details.preferred_msg_times = im.user.answers.state_voice_times;
                     }
 
                     return Q.all([
                         go.utils.update_identity(im, mother_identity),
-                        go.utils.update_identity(im, reciver_identity)
+                        go.utils.update_identity(im, receiver_identity)
                     ]);
                 });
-        } else if (msg_receiver === 'mother_father') {
+        } else if (['mother_friend', 'mother_family', 'mother_father'].indexOf(msg_receiver) !== -1) {
             return Q
                 .all([
                     go.utils.get_identity(im.user.answers.mother_id, im),
                     go.utils.get_identity(im.user.answers.receiver_id, im)
                 ])
-                .spread(function(mother_identity, reciver_identity) {
+                .spread(function(mother_identity, receiver_identity) {
                     mother_identity.details.receiver_role = 'mother';
                     mother_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
                     mother_identity.details.preferred_language = im.user.answers.state_msg_language;
 
-                    reciver_identity.details.receiver_role = 'father';
-                    reciver_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
-                    reciver_identity.details.preferred_language = im.user.answers.state_msg_language;
+                    receiver_identity.details.receiver_role = msg_receiver;
+                    receiver_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
+                    receiver_identity.details.preferred_language = im.user.answers.state_msg_language;
 
                     if (im.user.answers.state_msg_type === 'voice') {
                         mother_identity.details.preferred_msg_days = im.user.answers.state_voice_days;
                         mother_identity.details.preferred_msg_times = im.user.answers.state_voice_times;
-                        reciver_identity.details.preferred_msg_days = im.user.answers.state_voice_days;
-                        reciver_identity.details.preferred_msg_times = im.user.answers.state_voice_times;
+                        receiver_identity.details.preferred_msg_days = im.user.answers.state_voice_days;
+                        receiver_identity.details.preferred_msg_times = im.user.answers.state_voice_times;
                     }
 
                     return Q.all([
                         go.utils.update_identity(im, mother_identity),
-                        go.utils.update_identity(im, reciver_identity)
+                        go.utils.update_identity(im, receiver_identity)
                     ]);
                 });
         }
@@ -1002,7 +1003,7 @@ go.app = function() {
                 "Please select who will receive the messages on their phone:",
             "state_msisdn":
                 "Please enter the mobile number of the person who will receive the weekly messages. For example, 08033048990",
-            "state_msisdn_father":
+            "state_msisdn_household":
                 "Please enter the mobile number of the FATHER. For example, 08033048990",
             "state_msisdn_mother":
                 "Please enter the mobile number of the MOTHER. For example, 08033048990",
@@ -1119,19 +1120,43 @@ go.app = function() {
         });
 
         // ChoiceState st-02
+        // self.add('state_msg_receiver', function(name) {
+        //     return new ChoiceState(name, {
+        //         question: $(questions[name]),
+        //         choices: [
+        //             new Choice('mother_father', $("The Mother & Father")),
+        //             new Choice('mother_only', $("The Mother only")),
+        //             new Choice('father_only', $("The Father only")),
+        //             new Choice('family_member', $("A family member")),
+        //             new Choice('trusted_friend', $("A trusted friend"))
+        //         ],
+        //         next: function(choice) {
+        //             if (choice.value === 'mother_father') {
+        //                 return 'state_msisdn_household';
+        //             } else {
+        //                 return 'state_msisdn';
+        //             }
+        //         }
+        //     });
+        // });
+
+        // ChoiceState st-02
         self.add('state_msg_receiver', function(name) {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 choices: [
-                    new Choice('mother_father', $("The Mother & Father")),
-                    new Choice('mother_only', $("The Mother only")),
-                    new Choice('father_only', $("The Father only")),
-                    new Choice('family_member', $("A family member")),
-                    new Choice('trusted_friend', $("A trusted friend"))
+                    new Choice('mother_father', $("Mother & Father")),
+                    new Choice('mother_only', $("Mother")),
+                    new Choice('father_only', $("Father")),
+                    new Choice('mother_family', $("Mother & family member")),
+                    new Choice('mother_friend', $("Mother & friend")),
+                    new Choice('friend_only', $("Friend")),
+                    new Choice('family_only', $("Family member"))
                 ],
                 next: function(choice) {
-                    if (choice.value === 'mother_father') {
-                        return 'state_msisdn_father';
+                    var seperate = ["mother_father", "mother_family", "mother_friend"];
+                    if (seperate.indexOf(choice.value) !== -1) {
+                        return 'state_msisdn_mother';
                     } else {
                         return 'state_msisdn';
                     }
@@ -1155,21 +1180,6 @@ go.app = function() {
         });
 
         // FreeText st-3A
-        self.add('state_msisdn_father', function(name) {
-            return new FreeText(name, {
-                question: $(questions[name]),
-                check: function(content) {
-                    if (go.utils.is_valid_msisdn(content)) {
-                        return null;  // vumi expects null or undefined if check passes
-                    } else {
-                        return $(get_error_text(name));
-                    }
-                },
-                next: 'state_msisdn_mother'
-            });
-        });
-
-        // FreeText st-3A
         self.add('state_msisdn_mother', function(name) {
             return new FreeText(name, {
                 question: $(questions[name]),
@@ -1180,10 +1190,31 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
+                next: 'state_msisdn_household'
+            });
+        });
+
+        // FreeText st-3A
+        self.add('state_msisdn_household', function(name) {
+            return new FreeText(name, {
+                question: $(questions[name]),
+                check: function(content) {
+                    if (go.utils.is_valid_msisdn(content)) {
+                        return null;  // vumi expects null or undefined if check passes
+                    } else {
+                        return $(get_error_text(name));
+                    }
+                },
                 next: function() {
-                    if (self.im.user.answers.state_msisdn_father ===
+                    var receiver_mapping = {
+                        'mother_father': 'father_only',
+                        'mother_friend': 'friend_only',
+                        'mother_family': 'family_only'
+                    };
+                    if (self.im.user.answers.state_msisdn_household ===
                         self.im.user.answers.state_msisdn_mother) {
-                        self.im.user.set_answer('state_msg_receiver', 'father_only');
+                        self.im.user.set_answer('state_msg_receiver',
+                            receiver_mapping[self.im.user.answers.state_msg_receiver]);
                         self.im.user.set_answer('state_msisdn',
                                                 self.im.user.answers.state_msisdn_mother);
                     }
@@ -1192,6 +1223,29 @@ go.app = function() {
             });
         });
 
+        // FreeText st-3A
+        // self.add('state_msisdn_mother', function(name) {
+        //     return new FreeText(name, {
+        //         question: $(questions[name]),
+        //         check: function(content) {
+        //             if (go.utils.is_valid_msisdn(content)) {
+        //                 return null;  // vumi expects null or undefined if check passes
+        //             } else {
+        //                 return $(get_error_text(name));
+        //             }
+        //         },
+                // next: function() {
+                //     if (self.im.user.answers.state_msisdn_household ===
+                //         self.im.user.answers.state_msisdn_mother) {
+                //         self.im.user.set_answer('state_msg_receiver', 'father_only');
+                //         self.im.user.set_answer('state_msisdn',
+                //                                 self.im.user.answers.state_msisdn_mother);
+                //     }
+                //     return 'state_save_identities';
+                // }
+        //     });
+        // });
+
         // Get or create identities and save their IDs
         self.add('state_save_identities', function(name) {
             return go.utils_project
@@ -1199,7 +1253,7 @@ go.app = function() {
                     self.im,
                     self.im.user.answers.state_msg_receiver,
                     self.im.user.answers.state_msisdn,
-                    self.im.user.answers.state_msisdn_father,
+                    self.im.user.answers.state_msisdn_household,
                     self.im.user.answers.state_msisdn_mother,
                     self.im.user.answers.operator_id
                 )
