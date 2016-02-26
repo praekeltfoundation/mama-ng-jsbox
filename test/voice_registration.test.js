@@ -1615,11 +1615,9 @@ describe("Mama Nigeria App", function() {
                     .check(function(api) {
                         var expected_used = [2,6,36,37,38,53,54,57,59,70];
                         var fixts = api.http.fixtures.fixtures;
-                        var i = 0;
                         var fixts_used = [];
-                        fixts.forEach(function(f) {
+                        fixts.forEach(function(f, i) {
                             f.uses > 0 ? fixts_used.push(i) : null;
-                            i++;
                         });
                         assert.deepEqual(fixts_used, expected_used);
                     })
