@@ -112,11 +112,11 @@ describe("Hello Mama app", function() {
                         .check(function(api) {
                             var expected_used = [0, 1];
                             var fixts = api.http.fixtures.fixtures;
-                            var i = 0;
+                            // var i = 0;
                             var fixts_used = [];
-                            fixts.forEach(function(f) {
+                            fixts.forEach(function(f, i) {
                                 f.uses > 0 ? fixts_used.push(i) : null;
-                                i++;
+                                // i++;
                             });
                             assert.deepEqual(fixts_used, expected_used);
                         })
@@ -136,17 +136,15 @@ describe("Hello Mama app", function() {
                         .check(function(api) {
                             var expected_used = [0, 1];
                             var fixts = api.http.fixtures.fixtures;
-                            var i = 0;
                             var fixts_used = [];
-                            fixts.forEach(function(f) {
+                            fixts.forEach(function(f, i) {
                                 f.uses > 0 ? fixts_used.push(i) : null;
-                                i++;
                             });
                             assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
-                it.only("to state_msisdn_permission", function() {  //st-B
+                it("to state_msisdn_permission", function() {  //st-B
                     return tester
                         .setup.user.addr('05059992222')
                         .inputs(
@@ -164,19 +162,17 @@ describe("Hello Mama app", function() {
                         .check(function(api) {
                             var expected_used = [2];
                             var fixts = api.http.fixtures.fixtures;
-                            var i = 0;
                             var fixts_used = [];
-                            fixts.forEach(function(f) {
+                            fixts.forEach(function(f, i) {
                                 f.uses > 0 ? fixts_used.push(i) : null;
-                                i++;
                             });
                             assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
-                it("to state_registered_msisdn", function() {  //st-C
+                it("to state_registered_msisdn via state_msisdn_permission", function() {  //st-C
                     return tester
-                        .setup.user.addr('082222')
+                        .setup.user.addr('05059992222')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '3'
@@ -185,12 +181,20 @@ describe("Hello Mama app", function() {
                             state: 'state_registered_msisdn',
                             reply: "Please enter the number which is registered to receive messages. For example, 0803304899"
                         })
+                        .check(function(api) {
+                            var expected_used = [2];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
                         .run();
                 });
-                // assuming flow via unregistered user...  (*** intentionally skipping for now)
-                it.skip("to state_msisdn_not_recognised", function() {  //st-F
+                it.only("to state_msisdn_not_recognised", function() {  //st-F
                     return tester
-                        .setup.user.addr('082111')
+                        .setup.user.addr('05059992222')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '3'   // state_language - igbo
@@ -199,6 +203,15 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_msisdn_not_recognised',
                             reply: "We do not recognise this number. Please dial from the registered number or sign up with your local Community Health Extension worker."
+                        })
+                        .check(function(api) {
+                            var expected_used = [2];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
