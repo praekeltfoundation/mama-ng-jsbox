@@ -1,5 +1,5 @@
 var vumigo = require('vumigo_v02');
-var fixtures = require('./fixtures');
+var fixtures = require('./fixtures_public');
 var assert = require('assert');
 var AppTester = vumigo.AppTester;
 
@@ -110,7 +110,7 @@ describe("Hello Mama app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            var expected_used = [71, 72];
+                            var expected_used = [0, 1];
                             var fixts = api.http.fixtures.fixtures;
                             var i = 0;
                             var fixts_used = [];
@@ -134,7 +134,7 @@ describe("Hello Mama app", function() {
                             reply: "Please enter the number which is registered to receive messages. For example, 0803304899"
                         })
                         .check(function(api) {
-                            var expected_used = [71, 72];
+                            var expected_used = [0, 1];
                             var fixts = api.http.fixtures.fixtures;
                             var i = 0;
                             var fixts_used = [];
@@ -162,7 +162,7 @@ describe("Hello Mama app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            var expected_used = [73];
+                            var expected_used = [2];
                             var fixts = api.http.fixtures.fixtures;
                             var i = 0;
                             var fixts_used = [];

@@ -1,7 +1,7 @@
 var vumigo = require('vumigo_v02');
 var moment = require('moment');
 var assert = require('assert');
-var fixtures = require('./fixtures');
+var fixtures = require('./fixtures_registration');
 var AppTester = vumigo.AppTester;
 
 
