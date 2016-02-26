@@ -165,18 +165,16 @@ go.utils = {
 
 // REGISTRATION HELPERS
 
-    save_registration: function(im) {
-        // compile registration
-        var reg_info = go.utils_project.compile_reg_info(im);
+    create_registration: function(im, reg_info) {
         return go.utils
-        .service_api_call("registrations", "post", null, reg_info, "registrations/", im)
-        .then(function(result) {
-            return result.id;
-        });
+            .service_api_call("registrations", "post", null, reg_info, "registrations/", im)
+            .then(function(result) {
+                return result.id;
+            });
     },
 
 
-// IDENTITY HANDLING
+// IDENTITY HELPERS
 
     get_identity_by_address: function(address, im) {
         // Searches the Identity Store for all identities with the provided address.
@@ -237,12 +235,11 @@ go.utils = {
         if (operator_id) {
             payload.operator = operator_id;
         }
-
         return go.utils
-        .service_api_call("identities", "post", null, payload, 'identities/', im)
-        .then(function(json_post_response) {
-            return json_post_response.data;
-        });
+            .service_api_call("identities", "post", null, payload, 'identities/', im)
+            .then(function(json_post_response) {
+                return json_post_response.data;
+            });
     },
 
     get_or_create_identity: function(address, im, operator_id) {
@@ -271,14 +268,15 @@ go.utils = {
     },
 
     update_identity: function(im, identity) {
-        // For patching any field on the identity
+      // Update an identity by passing in the full updated identity object
+      // Returns the id (which should be the same as the identity's id)
 
         var endpoint = 'identities/' + identity.id + '/';
         return go.utils
-        .service_api_call('identities', 'patch', {}, identity, endpoint, im)
-        .then(function(response) {
-            return response.data.id;
-        });
+            .service_api_call('identities', 'patch', {}, identity, endpoint, im)
+            .then(function(response) {
+                return response.data.id;
+            });
     },
 
 
@@ -352,11 +350,11 @@ go.utils_project = {
 
     save_identities: function(im, msg_receiver, receiver_msisdn, father_msisdn,
                               mother_msisdn, operator_id) {
-    // Creates identities for the msisdns entered in various states
-    // and sets the identitity id's to user.answers for later use
-    // msg_receiver: (str) person who will receive messages eg. 'mother_only'
-    // *_msisdn: (str) msisdns of role players
-    // operator_id: (str - uuid) id of healthworker making the registration
+      // Creates identities for the msisdns entered in various states
+      // and sets the identitity id's to user.answers for later use
+      // msg_receiver: (str) person who will receive messages eg. 'mother_only'
+      // *_msisdn: (str) msisdns of role players
+      // operator_id: (str - uuid) id of healthworker making the registration
 
         if (msg_receiver === 'mother_only') {
             return go.utils
@@ -393,6 +391,61 @@ go.utils_project = {
                     im.user.set_answer('receiver_id', father.id);
                     im.user.set_answer('mother_id', mother.id);
                     return;
+                });
+        }
+    },
+
+    update_identities: function(im) {
+      // Saves useful data collected during registration to the relevant identities
+        var msg_receiver = im.user.answers.state_msg_receiver;
+        if (msg_receiver === 'mother_only') {
+            return go.utils
+                .get_identity(im.user.answers.mother_id, im)
+                .then(function(mother_identity) {
+                    mother_identity.details.receiver_role = 'mother';
+                    mother_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
+                    mother_identity.details.preferred_language = im.user.answers.state_msg_language;
+
+                    return go.utils.update_identity(im, mother_identity);
+                });
+        } else if (['trusted_friend', 'family_member', 'father_only'].indexOf(msg_receiver) !== -1) {
+            return Q
+                .all([
+                    go.utils.get_identity(im.user.answers.mother_id, im),
+                    go.utils.get_identity(im.user.answers.receiver_id, im)
+                ])
+                .spread(function(mother_identity, reciver_identity) {
+                    mother_identity.details.receiver_role = 'mother';
+                    mother_identity.details.preferred_language = im.user.answers.state_msg_language;
+
+                    reciver_identity.details.receiver_role = msg_receiver;
+                    reciver_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
+                    reciver_identity.details.preferred_language = im.user.answers.state_msg_language;
+
+                    return Q.all([
+                        go.utils.update_identity(im, mother_identity),
+                        go.utils.update_identity(im, reciver_identity)
+                    ]);
+                });
+        } else if (msg_receiver === 'mother_father') {
+            return Q
+                .all([
+                    go.utils.get_identity(im.user.answers.mother_id, im),
+                    go.utils.get_identity(im.user.answers.receiver_id, im)
+                ])
+                .spread(function(mother_identity, reciver_identity) {
+                    mother_identity.details.receiver_role = 'mother';
+                    mother_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
+                    mother_identity.details.preferred_language = im.user.answers.state_msg_language;
+
+                    reciver_identity.details.receiver_role = 'father';
+                    reciver_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
+                    reciver_identity.details.preferred_language = im.user.answers.state_msg_language;
+
+                    return Q.all([
+                        go.utils.update_identity(im, mother_identity),
+                        go.utils.update_identity(im, reciver_identity)
+                    ]);
                 });
         }
     },
@@ -571,6 +624,14 @@ go.utils_project = {
             reg_info.data.baby_dob = im.user.answers.working_date;
         }
         return reg_info;
+    },
+
+    finish_registration: function(im) {
+        var reg_info = go.utils_project.compile_reg_info(im);
+        return Q.all([
+            go.utils.create_registration(im, reg_info),
+            go.utils_project.update_identities(im)
+        ]);
     },
 
     update_mama_details: function(im, mama_identity, chew_phone_used) {
