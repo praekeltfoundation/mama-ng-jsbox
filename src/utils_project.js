@@ -137,9 +137,11 @@ go.utils_project = {
                 ])
                 .spread(function(mother_identity, receiver_identity) {
                     mother_identity.details.receiver_role = 'mother';
+                    mother_identity.details.linked_to = im.user.answers.receiver_id;
                     mother_identity.details.preferred_language = im.user.answers.state_msg_language;
 
-                    receiver_identity.details.receiver_role = msg_receiver;
+                    receiver_identity.details.receiver_role = msg_receiver.replace('_only', '');
+                    receiver_identity.details.linked_to = im.user.answers.mother_id;
                     receiver_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
                     receiver_identity.details.preferred_language = im.user.answers.state_msg_language;
 

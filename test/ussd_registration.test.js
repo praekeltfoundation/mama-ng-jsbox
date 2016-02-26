@@ -579,7 +579,7 @@ describe("Mama Nigeria App", function() {
                     .check.reply.ends_session()
                     .run();
             });
-            //user wants text sms's
+            // user wants text sms's
             it("to state_end_sms", function() {
                 return tester
                     .setup.user.addr('08080020002')
@@ -723,7 +723,7 @@ describe("Mama Nigeria App", function() {
                         state: 'state_end_voice',
                     })
                     .check(function(api) {
-                        var expected_used = [1,6,39,40,41,50,54,56,62,68];
+                        var expected_used = [1,6,39,40,41,50,54,56,68,76];
                         var fixts = api.http.fixtures.fixtures;
                         var fixts_used = [];
                         fixts.forEach(function(f, i) {
