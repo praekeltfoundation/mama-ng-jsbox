@@ -403,8 +403,13 @@ go.utils_project = {
                 .get_identity(im.user.answers.mother_id, im)
                 .then(function(mother_identity) {
                     mother_identity.details.receiver_role = 'mother';
-                    mother_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
                     mother_identity.details.preferred_language = im.user.answers.state_msg_language;
+                    mother_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
+
+                    if (im.user.answers.state_msg_type === 'voice') {
+                        mother_identity.details.preferred_msg_days = im.user.answers.state_voice_days;
+                        mother_identity.details.preferred_msg_times = im.user.answers.state_voice_times;
+                    }
 
                     return go.utils.update_identity(im, mother_identity);
                 });
@@ -421,6 +426,11 @@ go.utils_project = {
                     reciver_identity.details.receiver_role = msg_receiver;
                     reciver_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
                     reciver_identity.details.preferred_language = im.user.answers.state_msg_language;
+
+                    if (im.user.answers.state_msg_type === 'voice') {
+                        reciver_identity.details.preferred_msg_days = im.user.answers.state_voice_days;
+                        reciver_identity.details.preferred_msg_times = im.user.answers.state_voice_times;
+                    }
 
                     return Q.all([
                         go.utils.update_identity(im, mother_identity),
@@ -441,6 +451,13 @@ go.utils_project = {
                     reciver_identity.details.receiver_role = 'father';
                     reciver_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
                     reciver_identity.details.preferred_language = im.user.answers.state_msg_language;
+
+                    if (im.user.answers.state_msg_type === 'voice') {
+                        mother_identity.details.preferred_msg_days = im.user.answers.state_voice_days;
+                        mother_identity.details.preferred_msg_times = im.user.answers.state_voice_times;
+                        reciver_identity.details.preferred_msg_days = im.user.answers.state_voice_days;
+                        reciver_identity.details.preferred_msg_times = im.user.answers.state_voice_times;
+                    }
 
                     return Q.all([
                         go.utils.update_identity(im, mother_identity),
@@ -1390,9 +1407,8 @@ go.app = function() {
                     if (choice.value === 'voice') {
                         return 'state_voice_days';
                     } else {
-                        var reg_info = go.utils_project.compile_reg_info(self.im);
-                        return go.utils
-                            .create_registration(self.im, reg_info)
+                        return go.utils_project
+                            .finish_registration(self.im)
                             .then(function() {
                                 return 'state_end_sms';
                             });
@@ -1441,9 +1457,8 @@ go.app = function() {
                     new Choice('2_5', $('2_5'))
                 ],
                 next: function() {
-                    var reg_info = go.utils_project.compile_reg_info(self.im);
-                    return go.utils
-                        .create_registration(self.im, reg_info)
+                    return go.utils_project
+                        .finish_registration(self.im)
                         .then(function() {
                             return 'state_end_voice';
                         });

@@ -440,9 +440,8 @@ go.app = function() {
                     if (choice.value === 'voice') {
                         return 'state_voice_days';
                     } else {
-                        var reg_info = go.utils_project.compile_reg_info(self.im);
-                        return go.utils
-                            .create_registration(self.im, reg_info)
+                        return go.utils_project
+                            .finish_registration(self.im)
                             .then(function() {
                                 return 'state_end_sms';
                             });
@@ -491,9 +490,8 @@ go.app = function() {
                     new Choice('2_5', $('2_5'))
                 ],
                 next: function() {
-                    var reg_info = go.utils_project.compile_reg_info(self.im);
-                    return go.utils
-                        .create_registration(self.im, reg_info)
+                    return go.utils_project
+                        .finish_registration(self.im)
                         .then(function() {
                             return 'state_end_voice';
                         });
