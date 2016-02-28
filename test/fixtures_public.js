@@ -6,6 +6,13 @@
 // 05059995555: registered user - mother that receives messages via 05059993333
 // 05059996666: registered user - mother that receives own messages, linked to 05059997777
 // 05059997777: registered user - family member that receives household messages for 05059996666
+// 05059998888: number being changed to
+
+// There are 4 cases to consider when a change is attempted:
+// case 1: mother_only registration - mother dialing in
+// case 2: friend_only registration - friend dialing in (no way to identify mother)
+// case 3: mother_family registration - mother dialing in
+// case 4: mother_family registration - family member dialing in
 
 module.exports = function() {
     return [
