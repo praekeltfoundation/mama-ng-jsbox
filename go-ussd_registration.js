@@ -1181,14 +1181,18 @@ go.app = function() {
         self.add('state_msisdn_household', function(name) {
             return new FreeText(name, {
                 question: $(questions[name]).context({
-                    roleplayer: self.im.user.answers.state_msg_receiver.replace('mother_', '')
+                    roleplayer: self.im.user.answers.state_msg_receiver
+                        .replace('mother_family', 'family member')
+                        .replace('mother_', '')
                 }),
                 check: function(content) {
                     if (go.utils.is_valid_msisdn(content)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return $(get_error_text(name)).context({
-                            roleplayer: self.im.user.answers.state_msg_receiver.replace('mother_', '')
+                            roleplayer: self.im.user.answers.state_msg_receiver
+                                .replace('mother_family', 'family member')
+                                .replace('mother_', '')
                         });
                     }
                 },
