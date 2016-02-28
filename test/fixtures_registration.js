@@ -2804,6 +2804,7 @@ module.exports = function() {
                             }
                         },
                         "receiver_role":"mother",
+                        "linked_to":"cb245673-aa41-4302-ac47-9095555555",
                         "preferred_msg_type":"voice",
                         "preferred_language":"english",
                         "preferred_msg_days":"tue_thu",
@@ -2828,6 +2829,7 @@ module.exports = function() {
                             }
                         },
                         "receiver_role":"mother",
+                        "linked_to":"cb245673-aa41-4302-ac47-9095555555",
                         "preferred_msg_type":"voice",
                         "preferred_language":"english",
                         "preferred_msg_days":"tue_thu",
@@ -2860,7 +2862,8 @@ module.exports = function() {
                                 "+2349095555555": {}
                             }
                         },
-                        "receiver_role": "mother_father",
+                        "receiver_role": "father",
+                        "linked_to":"cb245673-aa41-4302-ac47-9094444444",
                         "preferred_msg_type": "voice",
                         "preferred_language": "english",
                         "preferred_msg_days": "tue_thu",
@@ -2884,7 +2887,8 @@ module.exports = function() {
                                 "+2349095555555": {}
                             }
                         },
-                        "receiver_role": "mother_father",
+                        "receiver_role": "father",
+                        "linked_to":"cb245673-aa41-4302-ac47-9094444444",
                         "preferred_msg_type": "voice",
                         "preferred_language": "english",
                         "preferred_msg_days": "tue_thu",
