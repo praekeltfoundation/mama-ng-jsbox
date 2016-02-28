@@ -454,7 +454,7 @@ describe("Hello Mama app", function() {
                             })
                             .run();
                     });
-                    it("to state_msg_receiver_confirm", function() {
+                    it("to state_end_number_change", function() {
                         return tester
                             .setup.user.addr('05059992222')
                             .inputs(
@@ -464,7 +464,7 @@ describe("Hello Mama app", function() {
                                 , '05059998888' // state_new_msisdn
                             )
                             .check.interaction({
-                                state: 'state_msg_receiver_confirm',
+                                state: 'state_end_number_change',
                                 reply: "Thank you. The number which receives messages has been updated."
                             })
                             .check(function(api) {

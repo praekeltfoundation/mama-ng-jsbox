@@ -54,7 +54,7 @@ go.app = function() {
                 "Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899",
             "state_msg_receiver":
                 "Who will receive these messages?",
-            "state_msg_receiver_confirm":
+            "state_end_number_change":
                 "Thank you. The number which receives messages has been updated.",
             "state_msg_language":
                 "What language would this person like to receive these messages in?",
@@ -409,12 +409,12 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: 'state_msg_receiver_confirm'
+                next: 'state_end_number_change'
             });
         });
 
         // EndState st-10
-        self.add('state_msg_receiver_confirm', function(name) {
+        self.add('state_end_number_change', function(name) {
             return new EndState(name, {
                 text: $(questions[name])
             });
