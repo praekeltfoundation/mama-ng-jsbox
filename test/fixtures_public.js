@@ -1,8 +1,11 @@
 // Identity roles
 // 05059991111: heretofore unseen number
 // 05059992222: registered user - mother only registration, sms, pregnant, igbo
-// 05059993333: registered user - trusted friend registration, voice, baby, english
+// 05059993333: registered user - friend_only, voice, baby, english, receives for 05059995555
 // 05059994444: existing contact that does not have a receiver_role
+// 05059995555: registered user - mother that receives messages via 05059993333
+// 05059996666: registered user - mother that receives own messages, linked to 05059997777
+// 05059997777: registered user - family that receives household messages for 05059996666
 
 module.exports = function() {
     return [
@@ -103,6 +106,7 @@ module.exports = function() {
                                 }
                             },
                             "receiver_role": "mother",
+                            "linked_to": null,
                             "preferred_msg_type": "sms",
                             "preferred_language": "igbo"
                         },
@@ -181,8 +185,11 @@ module.exports = function() {
                                     "+23405059993333": {}
                                 }
                             },
-                            "receiver_role": "trusted_friend",
+                            "receiver_role": "friend",
+                            "linked_to": "3f7c8851-5204-43f7-af7f-005059995555",
                             "preferred_msg_type": "voice",
+                            "preferred_msg_days": "mon_wed",
+                            "preferred_msg_times": "9_11",
                             "preferred_language": "hausa"
                         },
                         "created_at": "2015-07-10T06:13:29.693272Z",
