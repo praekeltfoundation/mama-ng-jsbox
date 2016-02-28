@@ -215,7 +215,7 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
-                it("to state_main_menu_household (via state C)", function() {
+                it("to state_main_menu (receives for mother)", function() {
                     return tester
                         .setup.user.addr('05059991111')
                         .inputs(
@@ -224,17 +224,18 @@ describe("Hello Mama app", function() {
                             , '05059993333'  // state_registered_msisdn
                         )
                         .check.interaction({
-                            state: 'state_main_menu_household',
+                            state: 'state_main_menu',
                             reply: [
                                 "Select:",
                                 "1. Start Baby messages",
-                                "2. Change my number",
-                                "3. Change language",
-                                "4. Stop receiving messages"
+                                "2. Change message preferences",
+                                "3. Change my number",
+                                "4. Change language",
+                                "5. Stop receiving messages"
                             ].join('\n')
                         })
                         .check(function(api) {
-                            var expected_used = [0, 1, 4];
+                            var expected_used = [0, 1, 4, 5];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -244,7 +245,7 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
-                it("to state_main_menu (via state B)", function() {
+                it("to state_main_menu (mother)", function() {
                     return tester
                         .setup.user.addr('05059992222')
                         .inputs(
@@ -264,6 +265,34 @@ describe("Hello Mama app", function() {
                         })
                         .check(function(api) {
                             var expected_used = [2];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
+                        .run();
+                });
+                it("to state_main_menu_household", function() {
+                    return tester
+                        .setup.user.addr('05059997777')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'   // state_msisdn_permission - yes
+                        )
+                        .check.interaction({
+                            state: 'state_main_menu_household',
+                            reply: [
+                                "Select:",
+                                "1. Start Baby messages",
+                                "2. Change my number",
+                                "3. Change language",
+                                "4. Stop receiving messages"
+                            ].join('\n')
+                        })
+                        .check(function(api) {
+                            var expected_used = [6, 7];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {

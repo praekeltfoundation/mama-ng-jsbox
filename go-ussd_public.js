@@ -1159,7 +1159,7 @@ go.app = function() {
                     if (contact.details.receiver_role) {
                         self.im.user.set_answer('role_player', contact.details.receiver_role);
                         self.im.user.set_answer('contact_id', contact.id);
-                        return self.states.create('state_main_menu_household');
+                        return self.states.create('state_check_receiver_role');
                     } else {
                         return self.states.create('state_msisdn_not_recognised');
                     }
@@ -1227,7 +1227,7 @@ go.app = function() {
             return go.utils_project
                 .check_msg_type(self.im.user.addr)
                 .then(function(msgType) {
-                    if (msgType == 'sms') {
+                    if (msgType === 'sms') {
                         return self.states.create('state_change_menu_sms');
                     } else if (msgType === 'voice') {
                         return self.states.create('state_change_menu_voice');
@@ -1238,17 +1238,39 @@ go.app = function() {
         });
 
         self.add('state_check_receiver_role', function(name) {
-            return go.utils_project
-                .check_role(self.im.user.addr)
-                .then(function(role) {
-                    if (role == 'father_role') {
-                        return self.states.create('state_main_menu_household');
-                    } else if (role == 'mother_role') {
-                        return self.states.create('state_main_menu');
-                    } else {
-                        return self.state.create('state_main_menu');
-                    }
-                });
+            var role = self.im.user.answers.role_player;
+            var contact_id = self.im.user.answers.contact_id;
+            if (role === 'mother') {
+                self.im.user.set_answer('mother_id', contact_id);
+                self.im.user.set_answer('receiver_id', 'none');
+                return self.states.create('state_main_menu');
+            } else {
+                // lookup contact so we can get the link to the mother
+                return go.utils
+                    .get_identity(contact_id, self.im)
+                    .then(function(contact) {
+                        self.im.user.set_answer('receiver_id', contact.id);
+                        self.im.user.set_answer('mother_id', contact.details.linked_to);
+                        if (contact.details.household_msgs_only) {
+                            self.im.user.set_answer('receiver_household_only', true);
+                            return self.states.create('state_main_menu_household');
+                        } else {
+                            return self.states.create('state_main_menu');
+                        }
+                    });
+            }
+
+            // return go.utils_project
+            //     .check_role(self.im.user.addr)
+            //     .then(function(role) {
+            //         if (role === 'father_role') {
+            //             return self.states.create('state_main_menu_household');
+            //         } else if (role === 'mother_role') {
+            //             return self.states.create('state_main_menu');
+            //         } else {
+            //             return self.state.create('state_main_menu');
+            //         }
+            //     });
         });
 
         // ChoiceState st-01
