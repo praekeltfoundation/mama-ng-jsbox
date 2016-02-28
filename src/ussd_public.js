@@ -260,7 +260,7 @@ go.app = function() {
             return go.utils_project
                 .check_msg_type(self.im.user.addr)
                 .then(function(msgType) {
-                    if (msgType == 'sms') {
+                    if (msgType === 'sms') {
                         return self.states.create('state_change_menu_sms');
                     } else if (msgType === 'voice') {
                         return self.states.create('state_change_menu_voice');
@@ -274,9 +274,9 @@ go.app = function() {
             return go.utils_project
                 .check_role(self.im.user.addr)
                 .then(function(role) {
-                    if (role == 'father_role') {
+                    if (role === 'father_role') {
                         return self.states.create('state_main_menu_household');
-                    } else if (role == 'mother_role') {
+                    } else if (role === 'mother_role') {
                         return self.states.create('state_main_menu');
                     } else {
                         return self.state.create('state_main_menu');
