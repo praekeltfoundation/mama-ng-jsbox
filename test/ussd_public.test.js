@@ -429,35 +429,55 @@ describe("Hello Mama app", function() {
                 });
             });
 
-            describe.skip("Change states flows - change number", function() {
-                it("to state_new_msisdn", function() {
-                    return tester
-                        .setup.user.addr('082222')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_msisdn_permission - yes
-                            , '3'  // state_main_menu - change number
-                        )
-                        .check.interaction({
-                            state: 'state_new_msisdn',
-                            reply: "Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899"
-                        })
-                        .run();
-                });
-                it("to state_msg_receiver_confirm", function() {
-                    return tester
-                        .setup.user.addr('082222')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_msisdn_permission - yes
-                            , '3'  // state_main_menu - change number
-                            , '08033048990' // state_new_msisdn
-                        )
-                        .check.interaction({
-                            state: 'state_msg_receiver_confirm',
-                            reply: "Thank you. The number which receives messages has been updated."
-                        })
-                        .run();
+            describe("Change states flows - change number", function() {
+                describe.only('case 1', function() {
+                    it("to state_new_msisdn", function() {
+                        return tester
+                            .setup.user.addr('05059992222')
+                            .inputs(
+                                {session_event: 'new'}  // dial in
+                                , '1'  // state_msisdn_permission - yes
+                                , '3'  // state_main_menu - change number
+                            )
+                            .check.interaction({
+                                state: 'state_new_msisdn',
+                                reply: "Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899"
+                            })
+                            .check(function(api) {
+                                var expected_used = [2];
+                                var fixts = api.http.fixtures.fixtures;
+                                var fixts_used = [];
+                                fixts.forEach(function(f, i) {
+                                    f.uses > 0 ? fixts_used.push(i) : null;
+                                });
+                                assert.deepEqual(fixts_used, expected_used);
+                            })
+                            .run();
+                    });
+                    it("to state_msg_receiver_confirm", function() {
+                        return tester
+                            .setup.user.addr('05059992222')
+                            .inputs(
+                                {session_event: 'new'}  // dial in
+                                , '1'  // state_msisdn_permission - yes
+                                , '3'  // state_main_menu - change number
+                                , '05059998888' // state_new_msisdn
+                            )
+                            .check.interaction({
+                                state: 'state_msg_receiver_confirm',
+                                reply: "Thank you. The number which receives messages has been updated."
+                            })
+                            .check(function(api) {
+                                var expected_used = [2];
+                                var fixts = api.http.fixtures.fixtures;
+                                var fixts_used = [];
+                                fixts.forEach(function(f, i) {
+                                    f.uses > 0 ? fixts_used.push(i) : null;
+                                });
+                                assert.deepEqual(fixts_used, expected_used);
+                            })
+                            .run();
+                    });
                 });
             });
 
