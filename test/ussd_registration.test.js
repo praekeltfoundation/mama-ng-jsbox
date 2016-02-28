@@ -225,7 +225,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_msisdn_mother',
-                        reply: "Please enter the mobile number of the MOTHER. For example, 08033048990"
+                        reply: "Please enter the mother's mobile number. She must consent to receiving messages."
                     })
                     .run();
             });
@@ -240,7 +240,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_msisdn_household',
-                        reply: "Please enter the mobile number of the FATHER. For example, 08033048990"
+                        reply: "Please enter the father's number. They will receive a weekly SMS and must consent to receiving messages."
                     })
                     .run();
             });
@@ -807,7 +807,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_msisdn_mother',
-                        reply: "Sorry, that is not a valid number. Please enter the mobile number of the MOTHER. For example, 08033048990"
+                        reply: "Sorry, that is not a valid number. Please enter the mother's mobile number. She must consent to receiving messages."
                     })
                     .run();
             });
@@ -823,7 +823,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_msisdn_household',
-                        reply: "Sorry, that is not a valid number. Please enter the mobile number of the FATHER. For example, 08033048990"
+                        reply: "Sorry, that is not a valid number. Please enter the father's number. They will receive a weekly SMS and must consent to receiving messages."
                     })
                     .run();
             });

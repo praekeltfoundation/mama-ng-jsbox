@@ -160,9 +160,9 @@ go.app = function() {
         // FreeText st-3A
         self.add('state_msisdn_household', function(name, creator_opts) {
             var question_text = 'Please enter number (household)';
-            var retry_text = 'Sorry, invalid input. Please enter number (household)';
+            var retry_text = 'Sorry, invalid input. Please enter number (household)';  // TODO #63 context
             var use_text = creator_opts.retry === true ? retry_text : question_text;
-            var speech_option = '1';
+            var speech_option = '1';  // TODO #63: 3 speech options required
             return new FreeText(name, {
                 question: $(use_text),
                 helper_metadata: go.utils_project.make_voice_helper_data(
@@ -191,35 +191,6 @@ go.app = function() {
                 }
             });
         });
-
-        // FreeText st-3B
-        // self.add('state_msisdn_mother', function(name, creator_opts) {
-        //     var question_text = 'Please enter number (Mother)';
-        //     var retry_text = 'Sorry, invalid input. Please enter number (Mother)';
-        //     var use_text = creator_opts.retry === true ? retry_text : question_text;
-        //     var speech_option = '1';
-        //     return new FreeText(name, {
-        //         question: $(use_text),
-        //         helper_metadata: go.utils_project.make_voice_helper_data(
-        //             self.im, name, lang, speech_option, creator_opts.retry),
-        //         next: function(content) {
-        //             if (go.utils.is_valid_msisdn(content) === false) {
-        //                 return {
-        //                     'name': 'state_retry',
-        //                     'creator_opts': {'retry_state': name}
-        //                 };
-        //             } else {
-        //                 if (self.im.user.answers.state_msisdn_father ===
-        //                     self.im.user.answers.state_msisdn_mother) {
-        //                     self.im.user.set_answer('state_msg_receiver', 'father_only');
-        //                     self.im.user.set_answer('state_msisdn',
-        //                                             self.im.user.answers.state_msisdn_mother);
-        //                 }
-        //                 return 'state_save_identities';
-        //             }
-        //         }
-        //     });
-        // });
 
         // Get or create identities and save their IDs
         self.add('state_save_identities', function(name, creator_opts) {
