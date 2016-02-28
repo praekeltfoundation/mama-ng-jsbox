@@ -1124,27 +1124,6 @@ go.app = function() {
         });
 
         // ChoiceState st-02
-        // self.add('state_msg_receiver', function(name) {
-        //     return new ChoiceState(name, {
-        //         question: $(questions[name]),
-        //         choices: [
-        //             new Choice('mother_father', $("The Mother & Father")),
-        //             new Choice('mother_only', $("The Mother only")),
-        //             new Choice('father_only', $("The Father only")),
-        //             new Choice('family_member', $("A family member")),
-        //             new Choice('trusted_friend', $("A trusted friend"))
-        //         ],
-        //         next: function(choice) {
-        //             if (choice.value === 'mother_father') {
-        //                 return 'state_msisdn_household';
-        //             } else {
-        //                 return 'state_msisdn';
-        //             }
-        //         }
-        //     });
-        // });
-
-        // ChoiceState st-02
         self.add('state_msg_receiver', function(name) {
             return new ChoiceState(name, {
                 question: $(questions[name]),
@@ -1226,29 +1205,6 @@ go.app = function() {
                 }
             });
         });
-
-        // FreeText st-3A
-        // self.add('state_msisdn_mother', function(name) {
-        //     return new FreeText(name, {
-        //         question: $(questions[name]),
-        //         check: function(content) {
-        //             if (go.utils.is_valid_msisdn(content)) {
-        //                 return null;  // vumi expects null or undefined if check passes
-        //             } else {
-        //                 return $(get_error_text(name));
-        //             }
-        //         },
-                // next: function() {
-                //     if (self.im.user.answers.state_msisdn_household ===
-                //         self.im.user.answers.state_msisdn_mother) {
-                //         self.im.user.set_answer('state_msg_receiver', 'father_only');
-                //         self.im.user.set_answer('state_msisdn',
-                //                                 self.im.user.answers.state_msisdn_mother);
-                //     }
-                //     return 'state_save_identities';
-                // }
-        //     });
-        // });
 
         // Get or create identities and save their IDs
         self.add('state_save_identities', function(name) {

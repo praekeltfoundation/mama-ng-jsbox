@@ -2981,6 +2981,7 @@ module.exports = function() {
                             }
                         },
                         "receiver_role": "friend",
+                        "linked_to": "cb245673-aa41-4302-ac47-1234567890",
                         "preferred_msg_type": "sms",
                         "preferred_language": "igbo"
                     },
@@ -3003,6 +3004,7 @@ module.exports = function() {
                             }
                         },
                         "receiver_role": "friend",
+                        "linked_to": "cb245673-aa41-4302-ac47-1234567890",
                         "preferred_msg_type": "sms",
                         "preferred_language": "igbo"
                     },
@@ -3034,6 +3036,7 @@ module.exports = function() {
                             }
                         },
                         "receiver_role": "friend",
+                        "linked_to": "cb245673-aa41-4302-ac47-1234567890",
                         "preferred_msg_type": "voice",
                         "preferred_language": "igbo",
                         "preferred_msg_days": "mon_wed",
@@ -3058,6 +3061,7 @@ module.exports = function() {
                             }
                         },
                         "receiver_role": "friend",
+                        "linked_to": "cb245673-aa41-4302-ac47-1234567890",
                         "preferred_msg_type": "voice",
                         "preferred_language": "igbo",
                         "preferred_msg_days": "mon_wed",
@@ -3312,6 +3316,49 @@ module.exports = function() {
                     },
                 "created_at":"2015-07-10T06:13:29.693272Z",
                 "updated_at":"2015-07-10T06:13:29.693298Z"}
+            }
+        },
+
+        // 77: patch identity cb245673-aa41-4302-ac47-1234567890
+        {
+            'request': {
+                'method': 'PATCH',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-1234567890/",
+                'data':  {
+                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-1234567890/",
+                    "id": "cb245673-aa41-4302-ac47-1234567890",
+                    "version": 1,
+                    "communicate_through": "cb245673-aa41-4302-ac47-9093333333",
+                    "operator": "cb245673-aa41-4302-ac47-00000000007",
+                    "details": {
+                        "receiver_role": "mother",
+                        "linked_to": "cb245673-aa41-4302-ac47-9092222222",
+                        "preferred_language": "igbo"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-1234567890/",
+                    "id": "cb245673-aa41-4302-ac47-1234567890",
+                    "version": 1,
+                    "communicate_through": "cb245673-aa41-4302-ac47-9093333333",
+                    "operator": "cb245673-aa41-4302-ac47-00000000007",
+                    "details": {
+                        "receiver_role": "mother",
+                        "linked_to": "cb245673-aa41-4302-ac47-9092222222",
+                        "preferred_language": "igbo"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
             }
         },
 

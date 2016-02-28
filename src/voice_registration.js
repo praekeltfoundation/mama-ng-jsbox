@@ -92,16 +92,18 @@ go.app = function() {
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
-                    new Choice('mother_father', $('Mother & Father')),
-                    new Choice('mother_only', $('Only Mother')),
-                    new Choice('father_only', $('Only Father')),
-                    new Choice('family_member', $('Family member')),
-                    new Choice('trusted_friend', $('Trusted friend'))
-
+                    new Choice('mother_father', $("Mother & Father")),
+                    new Choice('mother_only', $("Mother")),
+                    new Choice('father_only', $("Father")),
+                    new Choice('mother_family', $("Mother & family member")),
+                    new Choice('mother_friend', $("Mother & friend")),
+                    new Choice('friend_only', $("Friend")),
+                    new Choice('family_only', $("Family member"))
                 ],
                 next: function(choice) {
-                    if (choice.value === 'mother_father') {
-                        return 'state_msisdn_father';
+                    var seperate = ["mother_father", "mother_family", "mother_friend"];
+                    if (seperate.indexOf(choice.value) !== -1) {
+                        return 'state_msisdn_mother';
                     } else {
                         return 'state_msisdn';
                     }
@@ -132,29 +134,6 @@ go.app = function() {
             });
         });
 
-        // FreeText st-3A
-        self.add('state_msisdn_father', function(name, creator_opts) {
-            var question_text = 'Please enter number (Father)';
-            var retry_text = 'Sorry, invalid input. Please enter number (Father)';
-            var use_text = creator_opts.retry === true ? retry_text : question_text;
-            var speech_option = '1';
-            return new FreeText(name, {
-                question: $(use_text),
-                helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option, creator_opts.retry),
-                next: function(content) {
-                    if (go.utils.is_valid_msisdn(content) === false) {
-                        return {
-                            'name': 'state_retry',
-                            'creator_opts': {'retry_state': name}
-                        };
-                    } else {
-                        return 'state_msisdn_mother';
-                    }
-                }
-            });
-        });
-
         // FreeText st-3B
         self.add('state_msisdn_mother', function(name, creator_opts) {
             var question_text = 'Please enter number (Mother)';
@@ -172,9 +151,38 @@ go.app = function() {
                             'creator_opts': {'retry_state': name}
                         };
                     } else {
-                        if (self.im.user.answers.state_msisdn_father ===
+                        return 'state_msisdn_household';
+                    }
+                }
+            });
+        });
+
+        // FreeText st-3A
+        self.add('state_msisdn_household', function(name, creator_opts) {
+            var question_text = 'Please enter number (household)';
+            var retry_text = 'Sorry, invalid input. Please enter number (household)';
+            var use_text = creator_opts.retry === true ? retry_text : question_text;
+            var speech_option = '1';
+            return new FreeText(name, {
+                question: $(use_text),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option, creator_opts.retry),
+                next: function(content) {
+                    if (go.utils.is_valid_msisdn(content) === false) {
+                        return {
+                            'name': 'state_retry',
+                            'creator_opts': {'retry_state': name}
+                        };
+                    } else {
+                        var receiver_mapping = {
+                            'mother_father': 'father_only',
+                            'mother_friend': 'friend_only',
+                            'mother_family': 'family_only'
+                        };
+                        if (self.im.user.answers.state_msisdn_household ===
                             self.im.user.answers.state_msisdn_mother) {
-                            self.im.user.set_answer('state_msg_receiver', 'father_only');
+                            self.im.user.set_answer('state_msg_receiver',
+                                receiver_mapping[self.im.user.answers.state_msg_receiver]);
                             self.im.user.set_answer('state_msisdn',
                                                     self.im.user.answers.state_msisdn_mother);
                         }
@@ -184,6 +192,35 @@ go.app = function() {
             });
         });
 
+        // FreeText st-3B
+        // self.add('state_msisdn_mother', function(name, creator_opts) {
+        //     var question_text = 'Please enter number (Mother)';
+        //     var retry_text = 'Sorry, invalid input. Please enter number (Mother)';
+        //     var use_text = creator_opts.retry === true ? retry_text : question_text;
+        //     var speech_option = '1';
+        //     return new FreeText(name, {
+        //         question: $(use_text),
+        //         helper_metadata: go.utils_project.make_voice_helper_data(
+        //             self.im, name, lang, speech_option, creator_opts.retry),
+        //         next: function(content) {
+        //             if (go.utils.is_valid_msisdn(content) === false) {
+        //                 return {
+        //                     'name': 'state_retry',
+        //                     'creator_opts': {'retry_state': name}
+        //                 };
+        //             } else {
+        //                 if (self.im.user.answers.state_msisdn_father ===
+        //                     self.im.user.answers.state_msisdn_mother) {
+        //                     self.im.user.set_answer('state_msg_receiver', 'father_only');
+        //                     self.im.user.set_answer('state_msisdn',
+        //                                             self.im.user.answers.state_msisdn_mother);
+        //                 }
+        //                 return 'state_save_identities';
+        //             }
+        //         }
+        //     });
+        // });
+
         // Get or create identities and save their IDs
         self.add('state_save_identities', function(name, creator_opts) {
             return go.utils_project
@@ -191,7 +228,7 @@ go.app = function() {
                     self.im,
                     self.im.user.answers.state_msg_receiver,
                     self.im.user.answers.state_msisdn,
-                    self.im.user.answers.state_msisdn_father,
+                    self.im.user.answers.state_msisdn_household,
                     self.im.user.answers.state_msisdn_mother,
                     self.im.user.answers.operator_id
                 )
