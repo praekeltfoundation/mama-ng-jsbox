@@ -1274,7 +1274,8 @@ go.app = function() {
         // EndState st-02
         self.add('state_new_registeration_baby', function(name) {
             return new EndState(name, {
-                text: $(questions[name])
+                text: $(questions[name]),
+                next: 'state_start'
             });
         });
 
@@ -1341,7 +1342,8 @@ go.app = function() {
         // EndState st-06
         self.add('state_voice_confirm', function(name) {
             return new EndState(name, {
-                text: $(questions[name])
+                text: $(questions[name]),
+                next: 'state_start'
             });
         });
 
@@ -1364,7 +1366,8 @@ go.app = function() {
         // EndState st-08
         self.add('state_sms_confirm', function(name) {
             return new EndState(name, {
-                text: $(questions[name])
+                text: $(questions[name]),
+                next: 'state_start'
             });
         });
 
@@ -1389,7 +1392,8 @@ go.app = function() {
         // EndState st-10
         self.add('state_end_number_change', function(name) {
             return new EndState(name, {
-                text: $(questions[name])
+                text: $(questions[name]),
+                next: 'state_start'
             });
         });
 
@@ -1413,7 +1417,8 @@ go.app = function() {
         // EndState st-12
         self.add('state_msg_language_confirm', function(name) {
             return new EndState(name, {
-                text: $(questions[name])
+                text: $(questions[name]),
+                next: 'state_start'
             });
         });
 
@@ -1461,7 +1466,8 @@ go.app = function() {
         // EndState st-15
         self.add('state_loss_subscription_confirm', function(name) {
             return new EndState(name, {
-                text: $(questions[name])
+                text: $(questions[name]),
+                next: 'state_start'
             });
         });
 
@@ -1509,7 +1515,8 @@ go.app = function() {
         // EndState st-17
         self.add('state_end_optout', function(name) {
             return new EndState(name, {
-                text: $(questions[name])
+                text: $(questions[name]),
+                next: 'state_start'
             });
         });
 
@@ -1519,7 +1526,8 @@ go.app = function() {
         // EndState st-18
         self.add('state_end_exit', function(name) {
             return new EndState(name, {
-                text: $(questions[name])
+                text: $(questions[name]),
+                next: 'state_start'
             });
         });
 
