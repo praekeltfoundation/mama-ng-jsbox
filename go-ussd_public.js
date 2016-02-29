@@ -1025,6 +1025,8 @@ go.app = function() {
                 "Thank you. You will now receive text messages.",
             "state_new_msisdn":
                 "Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899",
+            "state_number_in_use":
+                "Sorry, this number is already registered. They must opt-out before they can register again.",
             "state_msg_receiver":
                 "Who will receive these messages?",
             "state_end_number_change":
@@ -1385,8 +1387,53 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: 'state_end_number_change'
+                next: function(content) {
+                    var msisdn = go.utils.normalize_msisdn(
+                        content, self.im.config.country_code);
+                    return go.utils
+                        .get_identity_by_address({'msisdn': msisdn}, self.im)
+                        .then(function(identity) {
+                            if (identity && identity.details && identity.details.receiver_role) {
+                                return 'state_number_in_use';
+                            } else {
+                                return {
+                                    'name': 'state_update_number',
+                                    'creator_opts': {'new_msisdn': msisdn}
+                                };
+                            }
+                        });
+                }
             });
+        });
+
+        // ChoiceState
+        self.add('state_number_in_use', function(name) {
+            return new ChoiceState(name, {
+                question: $(questions[name]),
+                error: $(get_error_text(name)),
+                choices: [
+                    new Choice('state_new_msisdn', $("Try a different number")),
+                    new Choice('state_end_exit', $("Exit"))
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+        // Interstitial
+        self.add('state_update_number', function(name, creator_opts) {
+            return go.utils
+                .get_identity(self.im.user.answers.contact_id, self.im)
+                .then(function(contact) {
+                    contact.details.addresses.msisdn = {};
+                    contact.details.addresses.msisdn[creator_opts.new_msisdn] = {};
+                    return go.utils
+                        .update_identity(self.im, contact)
+                        .then(function() {
+                            return self.states.create('state_end_number_change');
+                        });
+                });
         });
 
         // EndState st-10
