@@ -510,6 +510,22 @@ go.utils_project = {
 
 // SUBSCRIPTION HELPERS
 
+    get_subscription_msg_type: function(im, mother_id) {
+      // Look up what type of messages the mother is receiving
+
+        // get subscription
+        return go.utils
+            .read_subscription(im, mother_id)
+            .then(function(subscription) {
+                // get messageset
+                return go.utils
+                    .read_messageset(im, subscription.messageset_id)
+                    .then(function(messageset) {
+                        return messageset.content_type;  // 'sms' / 'voice'
+                    });
+            });
+    },
+
     is_registered: function(identity_id, im) {
         // Determine whether identity is registered
         return go.utils

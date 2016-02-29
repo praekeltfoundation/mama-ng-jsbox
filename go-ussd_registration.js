@@ -280,6 +280,21 @@ go.utils = {
     },
 
 
+// SUBSCRIPTION HELPERS
+
+    read_subscription: function(im, identity_id) {
+      // Gets the subscription from the Stage-based Store
+      // Returns the subscription object
+
+        var endpoint = 'identities/' + identity_id + '/';
+        return go.utils
+        .service_api_call('identities', 'get', {}, null, endpoint, im)
+        .then(function(json_get_response) {
+            return json_get_response.data;
+        });
+    },
+
+
 "commas": "commas"
 };
 
@@ -794,6 +809,22 @@ go.utils_project = {
 
 
 // SUBSCRIPTION HELPERS
+
+    get_subscription_msg_type: function(im, mother_id) {
+      // Look up what type of messages the mother is receiving
+
+        // get subscription
+        return go.utils
+            .read_subscription(im, mother_id)
+            .then(function(subscription) {
+                // get messageset
+                return go.utils
+                    .read_messageset(im, subscription.messageset_id)
+                    .then(function(messageset) {
+                        return messageset.content_type;  // 'sms' / 'voice'
+                    });
+            });
+    },
 
     is_registered: function(identity_id, im) {
         // Determine whether identity is registered

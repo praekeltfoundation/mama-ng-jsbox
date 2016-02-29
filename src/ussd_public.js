@@ -313,7 +313,7 @@ go.app = function() {
 
         self.add('state_check_msg_type', function(name) {
             return go.utils_project
-                .check_msg_type(self.im.user.addr)
+                .get_subscription_msg_type(self.im, self.im.user.answers.mother_id)
                 .then(function(msgType) {
                     if (msgType === 'sms') {
                         return self.states.create('state_change_menu_sms');

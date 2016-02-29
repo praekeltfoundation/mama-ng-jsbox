@@ -352,10 +352,10 @@ describe("Hello Mama app", function() {
                 });
             });
 
-            describe.skip("Change states flows - message format and time", function() {
-                it("to state_change_menu_sms", function() {
+            describe("Change states flows - message format and time", function() {
+                it.only("case 1 > to state_change_menu_sms", function() {
                     return tester
-                        .setup.user.addr('082444')
+                        .setup.user.addr('05059992222')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_msisdn_permission - yes
@@ -368,6 +368,15 @@ describe("Hello Mama app", function() {
                                 "1. Change from text to voice messages",
                                 "2. Back to main menu"
                             ].join('\n')
+                        })
+                        .check(function(api) {
+                            var expected_used = [2];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });

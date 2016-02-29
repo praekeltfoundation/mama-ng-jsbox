@@ -273,5 +273,20 @@ go.utils = {
     },
 
 
+// SUBSCRIPTION HELPERS
+
+    read_subscription: function(im, identity_id) {
+      // Gets the subscription from the Stage-based Store
+      // Returns the subscription object
+
+        var endpoint = 'identities/' + identity_id + '/';
+        return go.utils
+        .service_api_call('identities', 'get', {}, null, endpoint, im)
+        .then(function(json_get_response) {
+            return json_get_response.data;
+        });
+    },
+
+
 "commas": "commas"
 };
