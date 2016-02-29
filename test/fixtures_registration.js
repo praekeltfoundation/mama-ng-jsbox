@@ -2207,6 +2207,7 @@ module.exports = function() {
                         "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                         "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
+                        "gravida": "2",
                         "language": "igbo",
                         "msg_type": "sms",
                         "baby_dob": "20160713",
@@ -2224,6 +2225,7 @@ module.exports = function() {
                         "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                         "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
+                        "gravida": "2",
                         "language": "igbo",
                         "msg_type": "sms",
                         "baby_dob": "20160713",
@@ -2255,6 +2257,7 @@ module.exports = function() {
                         "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                         "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
+                        "gravida": "2",
                         "language": "igbo",
                         "msg_type": "voice",
                         "baby_dob": "20160913",
@@ -2272,6 +2275,7 @@ module.exports = function() {
                         "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                         "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
+                        "gravida": "2",
                         "language": "igbo",
                         "msg_type": "voice",
                         "baby_dob": "20160913",
@@ -3339,6 +3343,7 @@ module.exports = function() {
                     "details": {
                         "receiver_role": "mother",
                         "linked_to": "cb245673-aa41-4302-ac47-9092222222",
+                        "gravida": "2",
                         "preferred_language": "igbo"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
@@ -3356,6 +3361,7 @@ module.exports = function() {
                     "details": {
                         "receiver_role": "mother",
                         "linked_to": "cb245673-aa41-4302-ac47-9092222222",
+                        "gravida": "2",
                         "preferred_language": "igbo"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
