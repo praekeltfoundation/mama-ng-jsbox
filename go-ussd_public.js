@@ -1267,18 +1267,6 @@ go.app = function() {
                         }
                     });
             }
-
-            // return go.utils_project
-            //     .check_role(self.im.user.addr)
-            //     .then(function(role) {
-            //         if (role === 'father_role') {
-            //             return self.states.create('state_main_menu_household');
-            //         } else if (role === 'mother_role') {
-            //             return self.states.create('state_main_menu');
-            //         } else {
-            //             return self.state.create('state_main_menu');
-            //         }
-            //     });
         });
 
         // ChoiceState st-01
