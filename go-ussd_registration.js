@@ -1214,6 +1214,8 @@ go.app = function() {
             return new FreeText(name, {
                 question: $(questions[name]).context({
                     roleplayer: self.im.user.answers.state_msg_receiver
+                        // change the state_msg_receiver answer to display correctly
+                        // in the ussd text
                         .replace('mother_family', 'family member')
                         .replace('mother_', '')
                 }),
@@ -1223,6 +1225,8 @@ go.app = function() {
                     } else {
                         return $(get_error_text(name)).context({
                             roleplayer: self.im.user.answers.state_msg_receiver
+                                // change the state_msg_receiver answer to display correctly
+                                // in the ussd text
                                 .replace('mother_family', 'family member')
                                 .replace('mother_', '')
                         });

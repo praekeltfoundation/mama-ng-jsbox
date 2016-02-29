@@ -112,11 +112,9 @@ describe("Hello Mama app", function() {
                         .check(function(api) {
                             var expected_used = [0, 1];
                             var fixts = api.http.fixtures.fixtures;
-                            // var i = 0;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
                                 f.uses > 0 ? fixts_used.push(i) : null;
-                                // i++;
                             });
                             assert.deepEqual(fixts_used, expected_used);
                         })
