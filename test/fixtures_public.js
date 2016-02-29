@@ -291,6 +291,7 @@ module.exports = function() {
 
         // 7: get identity 3f7c8851-5204-43f7-af7f-005059997777
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {},
@@ -639,6 +640,65 @@ module.exports = function() {
             }
         },
 
+        // 15: patch identity 3f7c8851-5204-43f7-af7f-005059997777
+        {
+            'request': {
+                'method': 'PATCH',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059997777/',
+                'data': {
+                    "url": "http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059997777/",
+                    "id": "3f7c8851-5204-43f7-af7f-005059997777",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2345059998888": {}
+                            }
+                        },
+                        "receiver_role": "family",
+                        "linked_to": "3f7c8851-5204-43f7-af7f-005059996666",
+                        "household_msgs_only": true,
+                        "preferred_msg_type": "voice",
+                        "preferred_msg_days": "mon_wed",
+                        "preferred_msg_times": "9_11",
+                        "preferred_language": "hausa"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059997777/",
+                    "id": "3f7c8851-5204-43f7-af7f-005059997777",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2345059998888": {}
+                            }
+                        },
+                        "receiver_role": "family",
+                        "linked_to": "3f7c8851-5204-43f7-af7f-005059996666",
+                        "household_msgs_only": true,
+                        "preferred_msg_type": "voice",
+                        "preferred_msg_days": "mon_wed",
+                        "preferred_msg_times": "9_11",
+                        "preferred_language": "hausa"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
 
 
 
