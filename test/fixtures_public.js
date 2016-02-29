@@ -9,10 +9,10 @@
 // 05059998888: number being changed to
 
 // There are 4 cases to consider when a change is attempted:
-// case 1: mother_only registration - mother dialing in
-// case 2: friend_only registration - friend dialing in (no way to identify mother)
-// case 3: mother_family registration - mother dialing in
-// case 4: mother_family registration - family member dialing in
+// case 1: mother_only registration - mother dialing in (05059992222)
+// case 2: friend_only registration - friend dialing in (05059993333) (no way to identify mother)
+// case 3: mother_family registration - mother dialing in (05059996666)
+// case 4: mother_family registration - family member dialing in (05059997777)
 
 module.exports = function() {
     return [
@@ -208,6 +208,7 @@ module.exports = function() {
 
         // 5: get identity 3f7c8851-5204-43f7-af7f-005059993333
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {},
@@ -433,6 +434,65 @@ module.exports = function() {
                         "linked_to": null,
                         "preferred_msg_type": "sms",
                         "preferred_language": "igbo"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
+
+        // 11: patch identity 3f7c8851-5204-43f7-af7f-005059993333
+        {
+            'request': {
+                'method': 'PATCH',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059993333/',
+                'data': {
+                    "url": "http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059993333/",
+                    "id": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2345059998888": {}
+                            }
+                        },
+                        "receiver_role": "friend",
+                        "linked_to": "3f7c8851-5204-43f7-af7f-005059995555",
+                        "preferred_msg_type": "voice",
+                        "preferred_msg_days": "mon_wed",
+                        "preferred_msg_times": "9_11",
+                        "preferred_language": "hausa"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059993333/",
+                    "id": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2345059998888": {}
+                            }
+                        },
+                        "receiver_role": "friend",
+                        "linked_to": "3f7c8851-5204-43f7-af7f-005059995555",
+                        "preferred_msg_type": "voice",
+                        "preferred_msg_days": "mon_wed",
+                        "preferred_msg_times": "9_11",
+                        "preferred_language": "hausa"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"

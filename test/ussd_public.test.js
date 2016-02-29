@@ -429,7 +429,7 @@ describe("Hello Mama app", function() {
                 });
             });
 
-            describe.only("Change states flows - change number", function() {
+            describe("Change states flows - change number", function() {
                 it("case 1 > to state_new_msisdn", function() {
                     return tester
                         .setup.user.addr('05059992222')
@@ -546,6 +546,78 @@ describe("Hello Mama app", function() {
                         })
                         .check(function(api) {
                             var expected_used = [2, 8, 9, 10];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
+                        .run();
+                });
+                it("case 2 > to state_end_number_change", function() {
+                    return tester
+                        .setup.user.addr('05059993333')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'  // state_msisdn_permission - yes
+                            , '3'  // state_main_menu - change number
+                            , '05059998888' // state_new_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_end_number_change',
+                            reply: "Thank you. The number which receives messages has been updated."
+                        })
+                        .check(function(api) {
+                            var expected_used = [4, 5, 8, 11];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
+                        .run();
+                });
+                it.skip("case 3 > to state_end_number_change", function() {
+                    return tester
+                        .setup.user.addr('05059996666')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'  // state_msisdn_permission - yes
+                            , '3'  // state_main_menu - change number
+                            , '05059998888' // state_new_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_end_number_change',
+                            reply: "Thank you. The number which receives messages has been updated."
+                        })
+                        .check(function(api) {
+                            var expected_used = [4, 5, 8, 11];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
+                        .run();
+                });
+                it.skip("case 4 > to state_end_number_change", function() {
+                    return tester
+                        .setup.user.addr('05059997777')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'  // state_msisdn_permission - yes
+                            , '3'  // state_main_menu - change number
+                            , '05059998888' // state_new_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_end_number_change',
+                            reply: "Thank you. The number which receives messages has been updated."
+                        })
+                        .check(function(api) {
+                            var expected_used = [4, 5, 8, 11];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
