@@ -1107,7 +1107,7 @@ go.app = function() {
             });
         });
 
-        // FreeText st-3B
+        // FreeText st-3A
         self.add('state_msisdn_mother', function(name, creator_opts) {
             var question_text = 'Please enter number (Mother)';
             var retry_text = 'Sorry, invalid input. Please enter number (Mother)';
@@ -1130,16 +1130,27 @@ go.app = function() {
             });
         });
 
-        // FreeText st-3A
+        // FreeText st-3B
         self.add('state_msisdn_household', function(name, creator_opts) {
-            var question_text = 'Please enter number (household)';
-            var retry_text = 'Sorry, invalid input. Please enter number (household)';  // TODO #63 context
+            var rolePlayer = self.im.user.answers.state_msg_receiver;
+            rolePlayer = rolePlayer.substring(7, rolePlayer.length);  // discarding 'mother_' part of string
+            if (rolePlayer == "family") {
+                rolePlayer = rolePlayer+" member";
+                console.log("*** "+rolePlayer);
+            }
+            var question_text = "Please enter the {{role_player}}'s number";
+            var retry_text = "Sorry, invalid input. Please enter the {{role_player}}'s number";
             var use_text = creator_opts.retry === true ? retry_text : question_text;
-            var speech_option = '1';  // TODO #63: 3 speech options required
+            var speech_option = {
+                                    mother_father: 1,
+                                    mother_family: 2,
+                                    mother_friend: 3
+                                };
+
             return new FreeText(name, {
-                question: $(use_text),
+                question: $(use_text).context({role_player: rolePlayer}),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option, creator_opts.retry),
+                    self.im, name, lang, speech_option[rolePlayer], creator_opts.retry),
                 next: function(content) {
                     if (go.utils.is_valid_msisdn(content) === false) {
                         return {
