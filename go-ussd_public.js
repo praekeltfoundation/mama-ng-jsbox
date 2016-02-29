@@ -1258,7 +1258,7 @@ go.app = function() {
                 });
         });
 
-        // ChoiceState st-01
+                // ChoiceState st-01
         self.add('state_already_registered_baby', function(name) {
             return new ChoiceState(name, {
                 question: $(questions[name]),
