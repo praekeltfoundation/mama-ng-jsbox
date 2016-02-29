@@ -579,7 +579,7 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
-                it.skip("case 3 > to state_end_number_change", function() {
+                it("case 3 > to state_end_number_change", function() {
                     return tester
                         .setup.user.addr('05059996666')
                         .inputs(
@@ -593,7 +593,7 @@ describe("Hello Mama app", function() {
                             reply: "Thank you. The number which receives messages has been updated."
                         })
                         .check(function(api) {
-                            var expected_used = [4, 5, 8, 11];
+                            var expected_used = [8, 12, 13, 14];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
