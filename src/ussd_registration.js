@@ -35,10 +35,10 @@ go.app = function() {
                 "Please select who will receive the messages on their phone:",
             "state_msisdn":
                 "Please enter the mobile number of the person who will receive the weekly messages. For example, 08033048990",
-            "state_msisdn_father":
-                "Please enter the mobile number of the FATHER. For example, 08033048990",
             "state_msisdn_mother":
-                "Please enter the mobile number of the MOTHER. For example, 08033048990",
+                "Please enter the mother's mobile number. She must consent to receiving messages.",
+            "state_msisdn_household":
+                "Please enter the {{roleplayer}}'s number. They will receive a weekly SMS and must consent to receiving messages.",
             "state_pregnancy_status":
                 "Please select one of the following:",
             "state_last_period_month":
@@ -65,7 +65,7 @@ go.app = function() {
 
         var errors = {
             "state_auth_code":
-                "Sorry, that is not a valid number. Please enter your unique personnel code. For example, 12345"
+                "Sorry, that is not a valid number. Please enter your unique personnel code. For example, 12345",
         };
 
         get_error_text = function(name) {
@@ -156,15 +156,18 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 choices: [
-                    new Choice('mother_father', $("The Mother & Father")),
-                    new Choice('mother_only', $("The Mother only")),
-                    new Choice('father_only', $("The Father only")),
-                    new Choice('family_member', $("A family member")),
-                    new Choice('trusted_friend', $("A trusted friend"))
+                    new Choice('mother_father', $("Mother & Father")),
+                    new Choice('mother_only', $("Mother")),
+                    new Choice('father_only', $("Father")),
+                    new Choice('mother_family', $("Mother & family member")),
+                    new Choice('mother_friend', $("Mother & friend")),
+                    new Choice('friend_only', $("Friend")),
+                    new Choice('family_only', $("Family member"))
                 ],
                 next: function(choice) {
-                    if (choice.value === 'mother_father') {
-                        return 'state_msisdn_father';
+                    var seperate = ["mother_father", "mother_family", "mother_friend"];
+                    if (seperate.indexOf(choice.value) !== -1) {
+                        return 'state_msisdn_mother';
                     } else {
                         return 'state_msisdn';
                     }
@@ -188,21 +191,6 @@ go.app = function() {
         });
 
         // FreeText st-3A
-        self.add('state_msisdn_father', function(name) {
-            return new FreeText(name, {
-                question: $(questions[name]),
-                check: function(content) {
-                    if (go.utils.is_valid_msisdn(content)) {
-                        return null;  // vumi expects null or undefined if check passes
-                    } else {
-                        return $(get_error_text(name));
-                    }
-                },
-                next: 'state_msisdn_mother'
-            });
-        });
-
-        // FreeText st-3A
         self.add('state_msisdn_mother', function(name) {
             return new FreeText(name, {
                 question: $(questions[name]),
@@ -213,10 +201,43 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
+                next: 'state_msisdn_household'
+            });
+        });
+
+        // FreeText st-3A
+        self.add('state_msisdn_household', function(name) {
+            return new FreeText(name, {
+                question: $(questions[name]).context({
+                    roleplayer: self.im.user.answers.state_msg_receiver
+                        // change the state_msg_receiver answer to display correctly
+                        // in the ussd text
+                        .replace('mother_family', 'family member')
+                        .replace('mother_', '')
+                }),
+                check: function(content) {
+                    if (go.utils.is_valid_msisdn(content)) {
+                        return null;  // vumi expects null or undefined if check passes
+                    } else {
+                        return $(get_error_text(name)).context({
+                            roleplayer: self.im.user.answers.state_msg_receiver
+                                // change the state_msg_receiver answer to display correctly
+                                // in the ussd text
+                                .replace('mother_family', 'family member')
+                                .replace('mother_', '')
+                        });
+                    }
+                },
                 next: function() {
-                    if (self.im.user.answers.state_msisdn_father ===
+                    var receiver_mapping = {
+                        'mother_father': 'father_only',
+                        'mother_friend': 'friend_only',
+                        'mother_family': 'family_only'
+                    };
+                    if (self.im.user.answers.state_msisdn_household ===
                         self.im.user.answers.state_msisdn_mother) {
-                        self.im.user.set_answer('state_msg_receiver', 'father_only');
+                        self.im.user.set_answer('state_msg_receiver',
+                            receiver_mapping[self.im.user.answers.state_msg_receiver]);
                         self.im.user.set_answer('state_msisdn',
                                                 self.im.user.answers.state_msisdn_mother);
                     }
@@ -232,7 +253,7 @@ go.app = function() {
                     self.im,
                     self.im.user.answers.state_msg_receiver,
                     self.im.user.answers.state_msisdn,
-                    self.im.user.answers.state_msisdn_father,
+                    self.im.user.answers.state_msisdn_household,
                     self.im.user.answers.state_msisdn_mother,
                     self.im.user.answers.operator_id
                 )
