@@ -439,6 +439,8 @@ go.app = function() {
                     new Choice('english', $('english')),
                     new Choice('hausa', $('hausa')),
                     new Choice('igbo', $('igbo')),
+                    new Choice('pidgin', $('pidgin')),
+                    new Choice('yoruba', $('yoruba'))
                 ],
                 next: 'state_msg_type'
             });
