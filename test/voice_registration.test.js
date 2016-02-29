@@ -1312,6 +1312,33 @@ describe("Mama Nigeria App", function() {
             });
 
             describe("if it is a valid day", function() {
+                it("should navigate to state_gravida", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'       // state_personnel_auth
+                            , '6'           // state_msg_receiver - friend_only
+                            , '09092222222' // state_msisdn
+                            , '1'           // state_pregnancy_status - pregnant
+                            , '2'           // state_last_period_year - last year
+                            , '10'          // state_last_period_month - oct
+                            , '22'          // state_last_period_day
+                        )
+                        .check.interaction({
+                            state: 'state_gravida',
+                            reply: "Please enter the number of times the woman has been pregnant before. This includes any pregnancies she may not have carried to term."
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_gravida_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
                 it("should navigate to state_msg_language", function() {
                     return tester
                         .setup.user.addr('07030010001')
@@ -1324,6 +1351,7 @@ describe("Mama Nigeria App", function() {
                             , '2'           // state_last_period_year - last year
                             , '10'          // state_last_period_month - oct
                             , '22'          // state_last_period_day
+                            , '3'           // state_gravida
                         )
                         .check.interaction({
                             state: 'state_msg_language',
@@ -1391,6 +1419,7 @@ describe("Mama Nigeria App", function() {
                             , '2'           // state_baby_birth_year - last year
                             , '11'          // state_baby_birth_month - nov
                             , '12'          // state_baby_birth_day
+                            , '3'           // state_gravida
                         )
                         .check.interaction({
                             state: 'state_msg_language',
@@ -1457,6 +1486,7 @@ describe("Mama Nigeria App", function() {
                         , '2'           // state_baby_birth_year - last year
                         , '11'          // state_baby_birth_month - nov
                         , '13'          // state_baby_birth_day
+                        , '2'           // state_gravida
                         , '3'           // state_msg-language - igbo
                     )
                     .check.interaction({
@@ -1493,6 +1523,7 @@ describe("Mama Nigeria App", function() {
                             , '2'           // state_baby_birth_year - last year
                             , '7'           // state_baby_birth_month - july
                             , '13'          // state_baby_birth_day
+                            , '2'           // state_gravida
                             , '3'           // state_msg_language - igbo
                             , '2'           // state_msg_type - sms
                         )
@@ -1535,7 +1566,8 @@ describe("Mama Nigeria App", function() {
                             , '2'           // state_baby_birth_year - last year
                             , '11'          // state_baby_birth_month - nov
                             , '13'          // state_baby_birth_day
-                            , '3'           // state_msg-language - igbo
+                            , '2'           // state_gravida
+                            , '3'           // state_msg_language - igbo
                             , '1'           // state_msg_type - voice
                         )
                         .check.interaction({
@@ -1572,7 +1604,8 @@ describe("Mama Nigeria App", function() {
                         , '2'           // state_baby_birth_year - last year
                         , '11'          // state_baby_birth_month - nov
                         , '13'          // state_baby_birth_day
-                        , '3'           // state_msg-language - igbo
+                        , '2'           // state_gravida
+                        , '3'           // state_msg_language - igbo
                         , '1'           // state_msg_type - voice
                         , '1'           // state_voice_days - monday and wednesday
                     )
@@ -1609,7 +1642,8 @@ describe("Mama Nigeria App", function() {
                         , '2'           // state_baby_birth_year - last year
                         , '9'           // state_baby_birth_month - sep
                         , '13'          // state_baby_birth_day
-                        , '3'           // state_msg-language - igbo
+                        , '2'           // state_gravida
+                        , '3'           // state_msg_language - igbo
                         , '1'           // state_msg_type - voice
                         , '1'           // state_voice_days - mon_wed
                         , '2'           // state_voice_times - 2_5
