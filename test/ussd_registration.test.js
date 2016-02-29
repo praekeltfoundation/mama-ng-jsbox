@@ -382,7 +382,9 @@ describe("Mama Nigeria App", function() {
                             "Which language would this person like to receive these messages in?",
                             "1. English",
                             "2. Hausa",
-                            "3. Igbo"
+                            "3. Igbo",
+                            "4. Pidgin",
+                            "5. Yoruba"
                         ].join('\n')
                     })
                     .run();
@@ -533,7 +535,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_msg_pregnant - mother
                         , '3'  // state_last_period_month - May 15
                         , '12' // state_last_period_day - 12
-                        , '1'  // state_msg_language - english
+                        , '4'  // state_msg_language - pidgin
                         , '1'   // state_msg_type - voice calls
                         , '2'   // state_voice_days - tuesdays and thursdays
                     )
@@ -558,7 +560,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_msg_pregnant - mother
                         , '3'  // state_last_period_month - May 15
                         , '12' // state_last_period_day - 12
-                        , '1'  // state_msg_language - english
+                        , '1'  // state_msg_language - yoruba
                         , '1'   // state_msg_type - voice calls
                         , '2'   // state_voice_days - tuesdays and thursdays
                         , '2'   // state_voice_times - between 2-5pm

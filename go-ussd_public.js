@@ -1131,7 +1131,9 @@ go.app = function() {
                 choices: [
                     new Choice('english', $("English")),
                     new Choice('hausa', $("Hausa")),
-                    new Choice('igbo', $("Igbo"))
+                    new Choice('igbo', $("Igbo")),
+                    new Choice('pidgin', $('Pidgin')),
+                    new Choice('yoruba', $('Yoruba'))
                 ],
                 error: $(get_error_text(name)),
                 next: 'state_registered_msisdn'
@@ -1404,7 +1406,9 @@ go.app = function() {
                 choices: [
                     new Choice('english', $("English")),
                     new Choice('hausa', $("Hausa")),
-                    new Choice('igbo', $("Igbo"))
+                    new Choice('igbo', $("Igbo")),
+                    new Choice('pidgin', $('Pidgin')),
+                    new Choice('yoruba', $('Yoruba'))
                 ],
                 next: 'state_msg_language_confirm'
             });
