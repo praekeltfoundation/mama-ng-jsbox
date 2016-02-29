@@ -1,4 +1,4 @@
-// Identity roles
+// Identity roles - Registration
 // 08080070007: registered healthworker - personnel code 12345
 // 07030010001: unregistered mother but with existing identity (voice)
 // 08080020002: unregistered mother but with existing identity (ussd)
@@ -12,7 +12,6 @@
 // 09094444444: mother_father registration - mother
 // 09095555555: mother_father registration - father
 // cb245673-aa41-4302-ac47-1234567890 - id of mother with no msisdn
-
 
 module.exports = function() {
     return [

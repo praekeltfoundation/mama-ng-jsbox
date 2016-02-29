@@ -1,11 +1,11 @@
 var vumigo = require('vumigo_v02');
-var fixtures = require('./fixtures');
+var fixtures = require('./fixtures_public');
 // var assert = require('assert');
 var AppTester = vumigo.AppTester;
 
 
 describe("Mama Nigeria App", function() {
-    describe("Voice Public", function() {
+    describe.skip("Voice Public", function() {
         var app;
         var tester;
 
