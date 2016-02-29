@@ -161,8 +161,8 @@ go.app = function() {
         self.add('state_msisdn_household', function(name, creator_opts) {
             var rolePlayer = self.im.user.answers.state_msg_receiver;
             rolePlayer = rolePlayer.substring(7, rolePlayer.length);  // discarding 'mother_' part of string
-            if (rolePlayer == "family") {   
-                rolePlayer = rolePlayer+" member";
+            if (rolePlayer == "family") {
+                rolePlayer = rolePlayer+" member";  // append ' member' to rolePlayer string to make output clearer
             }
             var question_text = "Please enter the {{role_player}}'s number";
             var retry_text = "Sorry, invalid input. Please enter the {{role_player}}'s number";
