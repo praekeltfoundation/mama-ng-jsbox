@@ -5,7 +5,7 @@ var AppTester = vumigo.AppTester;
 
 
 describe("Mama Nigeria App", function() {
-    describe.skip("Voice Public", function() {
+    describe("Voice Public", function() {
         var app;
         var tester;
 
@@ -52,11 +52,11 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('+07070050005')
                     .inputs(
                         {session_event: 'new'}
-                        , '1'  // c01_main_menu - baby
-                        , '*'  // c03_baby_confirm - restart
+                        , '1'  // main_menu - baby
+                        , '*'  // baby_confirm - restart
                     )
                     .check.interaction({
-                        state: 'state_c12_number',
+                        state: 'state_msg_receiver_msisdn',
                         reply: "Welcome, Number"
                     })
                     .check.user.answers({})
@@ -67,20 +67,20 @@ describe("Mama Nigeria App", function() {
         // TEST START ROUTING
 
         describe("When you start the app", function() {
-            it("should navigate to state_c12_number", function() {
+            it("should navigate to state_msg_receiver_msisdn", function() {
                 return tester
                     .setup.user.addr('+08080030003')
                     .inputs(
                         {session_event: 'new'}
                     )
                     .check.interaction({
-                        state: 'state_c12_number',
+                        state: 'state_msg_receiver_msisdn',
                         reply: 'Welcome, Number'
                     })
                     .check.reply.properties({
                         helper_metadata: {
                             voice: {
-                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_c12_number_1.mp3',
+                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_msisdn_1.mp3',
                                 wait_for: '#'
                             }
                         }
@@ -92,23 +92,23 @@ describe("Mama Nigeria App", function() {
 
         // TEST CHANGE FLOW
 
-        describe("When you enter a number c12_number", function() {
+        describe("When you enter a number msg_receiver_msisdn", function() {
             describe("if you enter a crummy number", function() {
-                it("should navigate to c13_number_retry", function() {
+                it("should navigate to state_retry_msg_receiver_msisdn", function() {
                     return tester
                         .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
-                            , '5551234'  // c12_number
+                            , '5551234'  // msg_receiver_msisdn
                         )
                         .check.interaction({
-                            state: 'state_c13_retry_number',
+                            state: 'state_retry_msg_receiver_msisdn',
                             reply: "Retry number"
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_c13_retry_number_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_retry_msg_receiver_msisdn_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -118,26 +118,28 @@ describe("Mama Nigeria App", function() {
             });
 
             describe("if you enter a registered user number", function() {
-                it("should navigate to c01_main_menu", function() {
+                it("should navigate to main_menu", function() {
                     return tester
                         .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
-                            , '07070050005'  // c12_number
+                            , '05059992222'  // msg_receiver_msisdn
                         )
                         .check.interaction({
-                            state: 'state_c01_main_menu',
+                            state: 'state_main_menu',
                             reply: [
-                                'Baby / Message time / Optout?',
+                                'Choose:',
                                 '1. baby',
-                                '2. msg_time',
-                                '3. optout'
+                                '2. preferences',
+                                '3. number',
+                                '4. language',
+                                '5. optout'
                             ].join('\n')
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_c01_main_menu_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_main_menu_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -147,21 +149,21 @@ describe("Mama Nigeria App", function() {
             });
 
             describe("if you enter an unregistered number", function() {
-                it.skip("should navigate to c02_not_registered", function() {
+                it("should navigate to state_not_recognised_msg_receiver_msisdn", function() {
                     return tester
                         .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
-                            , '08080030003'  // c12_number
+                            , '05059991111'  // msg_receiver_msisdn
                         )
                         .check.interaction({
-                            state: 'state_c02_not_registered',
+                            state: 'state_not_recognised_msg_receiver_msisdn',
                             reply: 'Unrecognised number'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_c02_not_registered_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_not_recognised_msg_receiver_msisdn_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -170,22 +172,22 @@ describe("Mama Nigeria App", function() {
                 });
             });
 
-            describe("if you enter a registered number without an active subscription", function() {
-                it("should navigate to c14_end_not_active", function() {
+            describe.skip("if you enter a registered number without an active subscription", function() {
+                it("should navigate to state_end_not_active", function() {
                     return tester
                         .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
-                            , '07070060006'  // c12_number
+                            , '05059998888'  // msg_receiver_msisdn
                         )
                         .check.interaction({
-                            state: 'state_c14_end_not_active',
+                            state: 'state_end_not_active',
                             reply: 'No active subscriptions'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_c14_end_not_active_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_not_active_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -195,18 +197,18 @@ describe("Mama Nigeria App", function() {
             });
         });
 
-        describe("When you enter a choice c01_main_menu", function() {
-            describe("if you choose baby", function() {
-                it("should navigate to state_c03_baby_confirm", function() {
+        describe("When you enter a choice main_menu", function() {
+            describe.skip("if you choose baby", function() {
+                it("should navigate to state_baby_confirm", function() {
                     return tester
                         .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
-                            , '07070050005'  // c12_number
-                            , '1'  // c01_main_menu - baby
+                            , '05059998888'  // msg_receiver_msisdn
+                            , '1'  // main_menu - baby
                         )
                         .check.interaction({
-                            state: 'state_c03_baby_confirm',
+                            state: 'state_baby_confirm',
                             reply: [
                                 'Confirm baby?',
                                 '1. confirm'
@@ -215,7 +217,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_c03_baby_confirm_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_baby_confirm_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -224,17 +226,17 @@ describe("Mama Nigeria App", function() {
                 });
             });
 
-            describe("if you choose msg_time", function() {
-                it("should navigate to state_c04_voice_days", function() {
+            describe.skip("if you choose preferences", function() {
+                it("should navigate to state_voice_days", function() {
                     return tester
                         .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
-                            , '07070050005'  // c12_number
-                            , '2'  // c01_main_menu - msg_time
+                            , '05059998888'  // msg_receiver_msisdn
+                            , '2'  // main_menu - msg_pref
                         )
                         .check.interaction({
-                            state: 'state_c04_voice_days',
+                            state: 'state_voice_days',
                             reply: [
                                 'Message days?',
                                 '1. mon_wed',
@@ -244,7 +246,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_c04_voice_days_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_voice_days_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -253,17 +255,72 @@ describe("Mama Nigeria App", function() {
                 });
             });
 
-            describe("if you choose optout", function() {
-                it("should navigate to state_c05_optout_reason", function() {
+            describe("if you choose to change number", function() {
+                it("should navigate to state_new_msisdn", function() {
                     return tester
                         .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
-                            , '07070050005'  // c12_number
-                            , '3'  // c01_main_menu - optout
+                            , '05059992222' // state_msg_receiver_msisdn
+                            , '3'           // state_main_menu - number
                         )
                         .check.interaction({
-                            state: 'state_c05_optout_reason',
+                            state: 'state_new_msisdn',
+                            reply: 'Please enter new mobile number'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_new_msisdn_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
+            });
+
+            describe.skip("if you choose to change language", function() {
+                it("should navigate to state_msg_language", function() {
+                    return tester
+                        .setup.user.addr('+07070050005')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059998888' // state_msg_receiver_msisdn
+                            , '4'           // state_main_menu - language
+                        )
+                        .check.interaction({
+                            state: 'state_msg_language',
+                            reply: [
+                                'Language?',
+                                '1. English',
+                                '2. Hausa',
+                                '3. Igbo'
+                            ].join('\n')
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_new_msisdn_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
+            });
+
+            describe.skip("if you choose optout", function() {
+                it("should navigate to state_optout_reason", function() {
+                    return tester
+                        .setup.user.addr('+07070050005')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059998888'  // msg_receiver_msisdn
+                            , '5'  // state_main_menu - optout
+                        )
+                        .check.interaction({
+                            state: 'state_optout_reason',
                             reply: [
                                 'Optout reason?',
                                 '1. miscarriage',
@@ -276,7 +333,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_c05_optout_reason_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_optout_reason_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -286,24 +343,24 @@ describe("Mama Nigeria App", function() {
             });
         });
 
-        describe("When you enter confirm baby c03_baby_confirm", function() {
-            it("should navigate to state_c08_end_baby", function() {
+        describe.skip("When you enter confirm baby baby_confirm", function() {
+            it("should navigate to state_end_baby", function() {
                 return tester
                     .setup.user.addr('+07070050005')
                     .inputs(
                         {session_event: 'new'}
-                        , '07070050005'  // c12_number
-                        , '1'  // c01_main_menu - baby
-                        , '1'  // c03_baby_confirm - confirm
+                        , '05059998888'  // msg_receiver_msisdn
+                        , '1'  // main_menu - baby
+                        , '1'  // baby_confirm - confirm
                     )
                     .check.interaction({
-                        state: 'state_c08_end_baby',
+                        state: 'state_end_baby',
                         reply: 'Thank you - baby'
                     })
                     .check.reply.properties({
                         helper_metadata: {
                             voice: {
-                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_c08_end_baby_1.mp3',
+                                speech_url: 'http://localhost:8001/api/v1/eng_NG/state_end_baby_1.mp3',
                                 wait_for: '#'
                             }
                         }
@@ -313,18 +370,18 @@ describe("Mama Nigeria App", function() {
             });
         });
 
-        describe("When you choose a day c04_voice_days", function() {
-            it("should navigate to state_c06_voice_times", function() {
+        describe.skip("When you choose a day voice_days", function() {
+            it("should navigate to state_voice_times", function() {
                 return tester
                     .setup.user.addr('+07070050005')
                     .inputs(
                         {session_event: 'new'}
-                        , '07070050005'  // c12_number
-                        , '2'  // c01_main_menu - msg_time
-                        , '2'  // c04_voice_days - tue_thu
+                        , '05059998888'  // msg_receiver_msisdn
+                        , '2'  // main_menu - msg_pref
+                        , '2'  // voice_days - tue_thu
                     )
                     .check.interaction({
-                        state: 'state_c06_voice_times',
+                        state: 'state_voice_times',
                         reply: [
                             'Message times?',
                             '1. 9_11',
@@ -334,7 +391,7 @@ describe("Mama Nigeria App", function() {
                     .check.reply.properties({
                         helper_metadata: {
                             voice: {
-                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_c06_voice_times_2.mp3',
+                                speech_url: 'http://localhost:8001/api/v1/eng_NG/state_voice_times_2.mp3',
                                 wait_for: '#'
                             }
                         }
@@ -343,25 +400,25 @@ describe("Mama Nigeria App", function() {
             });
         });
 
-        describe("When you choose a time c06_voice_times", function() {
-            it("should navigate to state_c09_end_msg_times", function() {
+        describe.skip("When you choose a time voice_times", function() {
+            it("should navigate to state_end_msg_times", function() {
                 return tester
                     .setup.user.addr('+07070050005')
                     .inputs(
                         {session_event: 'new'}
-                        , '07070050005'  // c12_number
-                        , '2'  // c01_main_menu - msg_time
-                        , '2'  // c04_voice_days - tue_thu
-                        , '1'  // c06_voice_times - 9-11
+                        , '05059998888'  // msg_receiver_msisdn
+                        , '2'  // main_menu - msg_pref
+                        , '2'  // voice_days - tue_thu
+                        , '1'  // voice_times - 9-11
                     )
                     .check.interaction({
-                        state: 'state_c09_end_msg_times',
+                        state: 'state_end_msg_times',
                         reply: 'Thank you! Time: 9_11. Days: tue_thu.'
                     })
                     .check.reply.properties({
                         helper_metadata: {
                             voice: {
-                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_c09_end_msg_times_2.mp3',
+                                speech_url: 'http://localhost:8001/api/v1/eng_NG/state_end_msg_times_2.mp3',
                                 wait_for: '#'
                             }
                         }
@@ -371,19 +428,19 @@ describe("Mama Nigeria App", function() {
             });
         });
 
-        describe("When you choose optout reason c05_optout_reason", function() {
+        describe.skip("When you choose optout reason optout_reason", function() {
             describe("if you choose miscarriage", function() {
-                it("should navigate to state_c07_loss_opt_in", function() {
+                it("should navigate to state_loss_opt_in", function() {
                     return tester
                         .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
-                            , '07070050005'  // c12_number
-                            , '3'  // c01_main_menu - optout
-                            , '1'  // c05_optout_reason - miscarriage
+                            , '05059998888'  // msg_receiver_msisdn
+                            , '3'  // main_menu - optout
+                            , '1'  // optout_reason - miscarriage
                         )
                         .check.interaction({
-                            state: 'state_c07_loss_opt_in',
+                            state: 'state_loss_opt_in',
                             reply: [
                                 'Receive loss messages?',
                                 '1. opt_in_confirm',
@@ -393,7 +450,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_c07_loss_opt_in_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_loss_opt_in_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -403,17 +460,17 @@ describe("Mama Nigeria App", function() {
             });
 
             describe("if you choose stillborn", function() {
-                it("should navigate to state_c07_loss_opt_in", function() {
+                it("should navigate to state_loss_opt_in", function() {
                     return tester
                         .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
-                            , '07070050005'  // c12_number
-                            , '3'  // c01_main_menu - optout
-                            , '2'  // c05_optout_reason - stillborn
+                            , '05059998888'  // msg_receiver_msisdn
+                            , '3'  // main_menu - optout
+                            , '2'  // optout_reason - stillborn
                         )
                         .check.interaction({
-                            state: 'state_c07_loss_opt_in',
+                            state: 'state_loss_opt_in',
                             reply: [
                                 'Receive loss messages?',
                                 '1. opt_in_confirm',
@@ -423,7 +480,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_c07_loss_opt_in_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_loss_opt_in_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -433,17 +490,17 @@ describe("Mama Nigeria App", function() {
             });
 
             describe("if you choose baby_died", function() {
-                it("should navigate to state_c07_loss_opt_in", function() {
+                it("should navigate to state_loss_opt_in", function() {
                     return tester
                         .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
-                            , '07070050005'  // c12_number
-                            , '3'  // c01_main_menu - optout
-                            , '3'  // c05_optout_reason - baby_died
+                            , '05059998888'  // msg_receiver_msisdn
+                            , '3'  // main_menu - optout
+                            , '3'  // optout_reason - baby_died
                         )
                         .check.interaction({
-                            state: 'state_c07_loss_opt_in',
+                            state: 'state_loss_opt_in',
                             reply: [
                                 'Receive loss messages?',
                                 '1. opt_in_confirm',
@@ -453,7 +510,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_c07_loss_opt_in_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_loss_opt_in_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -463,23 +520,23 @@ describe("Mama Nigeria App", function() {
             });
 
             describe("if you choose not_useful", function() {
-                it("should navigate to state_c11_end_optout", function() {
+                it("should navigate to state_end_optout", function() {
                     return tester
                         .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
-                            , '07070050005'  // c12_number
-                            , '3'  // c01_main_menu - optout
-                            , '4'  // c05_optout_reason - not_useful
+                            , '05059998888'  // msg_receiver_msisdn
+                            , '3'  // main_menu - optout
+                            , '4'  // optout_reason - not_useful
                         )
                         .check.interaction({
-                            state: 'state_c11_end_optout',
+                            state: 'state_end_optout',
                             reply: 'Thank you - optout'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_c11_end_optout_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_end_optout_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -490,23 +547,23 @@ describe("Mama Nigeria App", function() {
             });
 
             describe("if you choose other", function() {
-                it("should navigate to state_c11_end_optout", function() {
+                it("should navigate to state_end_optout", function() {
                     return tester
                         .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
-                            , '07070050005'  // c12_number
-                            , '3'  // c01_main_menu - optout
-                            , '5'  // c05_optout_reason - other
+                            , '05059998888'  // msg_receiver_msisdn
+                            , '3'  // main_menu - optout
+                            , '5'  // optout_reason - other
                         )
                         .check.interaction({
-                            state: 'state_c11_end_optout',
+                            state: 'state_end_optout',
                             reply: 'Thank you - optout'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_c11_end_optout_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_end_optout_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -517,26 +574,26 @@ describe("Mama Nigeria App", function() {
             });
         });
 
-        describe("When you enter a choice c07_loss_opt_in", function() {
+        describe.skip("When you enter a choice loss_opt_in", function() {
             describe("if you choose loss messages", function() {
-                it("should navigate to state_c10_end_loss_opt_in", function() {
+                it("should navigate to state_end_loss_opt_in", function() {
                     return tester
                         .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
-                            , '07070050005'  // c12_number
-                            , '3'  // c01_main_menu - optout
-                            , '1'  // c05_optout_reason - miscarriage
-                            , '1'  // c07_loss_opt_in - confirm opt in
+                            , '05059998888'  // msg_receiver_msisdn
+                            , '3'  // main_menu - optout
+                            , '1'  // optout_reason - miscarriage
+                            , '1'  // loss_opt_in - confirm opt in
                         )
                         .check.interaction({
-                            state: 'state_c10_end_loss_opt_in',
+                            state: 'state_end_loss_opt_in',
                             reply: 'Thank you - loss opt in'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_c10_end_loss_opt_in_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_end_loss_opt_in_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -547,24 +604,24 @@ describe("Mama Nigeria App", function() {
             });
 
             describe("if you choose no loss messages", function() {
-                it("should navigate to state_c11_end_optout", function() {
+                it("should navigate to state_end_optout", function() {
                     return tester
                         .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
-                            , '07070050005'  // c12_number
-                            , '3'  // c01_main_menu - optout
-                            , '1'  // c05_optout_reason - miscarriage
-                            , '2'  // c07_loss_opt_in - deny opt in
+                            , '05059998888'  // msg_receiver_msisdn
+                            , '3'  // main_menu - optout
+                            , '1'  // optout_reason - miscarriage
+                            , '2'  // loss_opt_in - deny opt in
                         )
                         .check.interaction({
-                            state: 'state_c11_end_optout',
+                            state: 'state_end_optout',
                             reply: 'Thank you - optout'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_c11_end_optout_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_end_optout_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -580,18 +637,18 @@ describe("Mama Nigeria App", function() {
                         .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
-                            , '07070050005'  // c12_number
-                            , '3'  // c01_main_menu - optout
-                            , '1'  // c05_optout_reason - miscarriage
-                            , '*'  // c07_loss_opt_in - restart attempt
+                            , '05059998888'  // msg_receiver_msisdn
+                            , '3'  // main_menu - optout
+                            , '1'  // optout_reason - miscarriage
+                            , '*'  // loss_opt_in - restart attempt
                         )
                         .check.interaction({
-                            state: 'state_c07_loss_opt_in'
+                            state: 'state_loss_opt_in'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_c07_loss_opt_in_1.mp3',
+                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_loss_opt_in_1.mp3',
                                     wait_for: '#'
                                 }
                             }
