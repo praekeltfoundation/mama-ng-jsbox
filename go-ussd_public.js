@@ -1025,9 +1025,11 @@ go.app = function() {
                 "Thank you. You will now receive text messages.",
             "state_new_msisdn":
                 "Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899",
+            "state_number_in_use":
+                "Sorry, this number is already registered. They must opt-out before they can register again.",
             "state_msg_receiver":
                 "Who will receive these messages?",
-            "state_msg_receiver_confirm":
+            "state_end_number_change":
                 "Thank you. The number which receives messages has been updated.",
             "state_msg_language":
                 "What language would this person like to receive these messages in?",
@@ -1180,69 +1182,7 @@ go.app = function() {
             });
         });
 
-        // ChoiceState st-A
-        self.add('state_main_menu', function(name) {
-            return new ChoiceState(name, {
-                question: $(questions[name]),
-                choices: [
-                    new Choice('state_check_baby_subscription', $("Start Baby messages")),
-                    new Choice('state_check_msg_type', $("Change message preferences")),
-                    new Choice('state_new_msisdn', $("Change my number")),
-                    new Choice('state_msg_language', $("Change language")),
-                    new Choice('state_optout_reason', $("Stop receiving messages"))
-                ],
-                error: $(get_error_text(name)),
-                next: function(choice) {
-                    return choice.value;
-                }
-            });
-        });
-        // ChoiceState st-A1
-        self.add('state_main_menu_household', function(name) {
-            return new ChoiceState(name, {
-                question: $(questions[name]),
-                choices: [
-                    new Choice('state_check_baby_subscription', $("Start Baby messages")),
-                    new Choice('state_new_msisdn', $("Change my number")),
-                    new Choice('state_msg_language', $("Change language")),
-                    new Choice('state_optout_reason', $("Stop receiving messages"))
-                ],
-                error: $(get_error_text(name)),
-                next: function(choice) {
-                    return choice.value;
-                }
-            });
-        });
-
-        // CHANGE STATES
-
-        // Interstitials
-        self.add('state_check_baby_subscription', function(name) {
-            return go.utils_project
-                .check_baby_subscription(self.im.user.addr)
-                .then(function(isSubscribed) {
-                    if (isSubscribed) {
-                        return self.states.create('state_already_registered_baby');
-                    } else {
-                        return self.states.create('state_new_registeration_baby');
-                    }
-                });
-        });
-
-        self.add('state_check_msg_type', function(name) {
-            return go.utils_project
-                .check_msg_type(self.im.user.addr)
-                .then(function(msgType) {
-                    if (msgType === 'sms') {
-                        return self.states.create('state_change_menu_sms');
-                    } else if (msgType === 'voice') {
-                        return self.states.create('state_change_menu_voice');
-                    } else {
-                        return self.state.create('state_end_exit');
-                    }
-                });
-        });
-
+        // Interstitial - before main menu
         self.add('state_check_receiver_role', function(name) {
             var role = self.im.user.answers.role_player;
             var contact_id = self.im.user.answers.contact_id;
@@ -1267,6 +1207,57 @@ go.app = function() {
             }
         });
 
+        // ChoiceState st-A
+        self.add('state_main_menu', function(name) {
+            return new ChoiceState(name, {
+                question: $(questions[name]),
+                choices: [
+                    new Choice('state_check_baby_subscription', $("Start Baby messages")),
+                    new Choice('state_check_msg_type', $("Change message preferences")),
+                    new Choice('state_new_msisdn', $("Change my number")),
+                    new Choice('state_msg_language', $("Change language")),
+                    new Choice('state_optout_reason', $("Stop receiving messages"))
+                ],
+                error: $(get_error_text(name)),
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+        // ChoiceState st-A1
+        self.add('state_main_menu_household', function(name) {
+            return new ChoiceState(name, {
+                question: $(questions[name]),
+                choices: [
+                    new Choice('state_check_baby_subscription', $("Start Baby messages")),
+                    new Choice('state_new_msisdn', $("Change my number")),
+                    new Choice('state_msg_language', $("Change language")),
+                    new Choice('state_optout_reason', $("Stop receiving messages"))
+                ],
+                error: $(get_error_text(name)),
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+
+    // BABY CHANGE STATES
+
+        // Interstitials
+        self.add('state_check_baby_subscription', function(name) {
+            return go.utils_project
+                .check_baby_subscription(self.im.user.addr)
+                .then(function(isSubscribed) {
+                    if (isSubscribed) {
+                        return self.states.create('state_already_registered_baby');
+                    } else {
+                        return self.states.create('state_new_registeration_baby');
+                    }
+                });
+        });
+
         // ChoiceState st-01
         self.add('state_already_registered_baby', function(name) {
             return new ChoiceState(name, {
@@ -1285,8 +1276,26 @@ go.app = function() {
         // EndState st-02
         self.add('state_new_registeration_baby', function(name) {
             return new EndState(name, {
-                text: $(questions[name])
+                text: $(questions[name]),
+                next: 'state_start'
             });
+        });
+
+
+    // MSG CHANGE STATES
+
+        self.add('state_check_msg_type', function(name) {
+            return go.utils_project
+                .check_msg_type(self.im.user.addr)
+                .then(function(msgType) {
+                    if (msgType === 'sms') {
+                        return self.states.create('state_change_menu_sms');
+                    } else if (msgType === 'voice') {
+                        return self.states.create('state_change_menu_voice');
+                    } else {
+                        return self.state.create('state_end_exit');
+                    }
+                });
         });
 
         // ChoiceState st-03
@@ -1335,7 +1344,8 @@ go.app = function() {
         // EndState st-06
         self.add('state_voice_confirm', function(name) {
             return new EndState(name, {
-                text: $(questions[name])
+                text: $(questions[name]),
+                next: 'state_start'
             });
         });
 
@@ -1358,9 +1368,13 @@ go.app = function() {
         // EndState st-08
         self.add('state_sms_confirm', function(name) {
             return new EndState(name, {
-                text: $(questions[name])
+                text: $(questions[name]),
+                next: 'state_start'
             });
         });
+
+
+    // NUMBER CHANGE STATES
 
         // FreeText st-09
         self.add('state_new_msisdn', function(name) {
@@ -1373,16 +1387,67 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: 'state_msg_receiver_confirm'
+                next: function(content) {
+                    var msisdn = go.utils.normalize_msisdn(
+                        content, self.im.config.country_code);
+                    return go.utils
+                        .get_identity_by_address({'msisdn': msisdn}, self.im)
+                        .then(function(identity) {
+                            if (identity && identity.details && identity.details.receiver_role) {
+                                return 'state_number_in_use';
+                            } else {
+                                return {
+                                    'name': 'state_update_number',
+                                    'creator_opts': {'new_msisdn': msisdn}
+                                };
+                            }
+                        });
+                }
             });
         });
 
-        // EndState st-10
-        self.add('state_msg_receiver_confirm', function(name) {
-            return new EndState(name, {
-                text: $(questions[name])
+        // ChoiceState
+        self.add('state_number_in_use', function(name) {
+            return new ChoiceState(name, {
+                question: $(questions[name]),
+                error: $(get_error_text(name)),
+                choices: [
+                    new Choice('state_new_msisdn', $("Try a different number")),
+                    new Choice('state_end_exit', $("Exit"))
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
             });
         });
+
+        // Interstitial
+        self.add('state_update_number', function(name, creator_opts) {
+            return go.utils
+                .get_identity(self.im.user.answers.contact_id, self.im)
+                .then(function(contact) {
+                    // TODO #70: Handle multiple addresses, currently overwrites existing
+                    // on assumption we're dealing with one msisdn only
+                    contact.details.addresses.msisdn = {};
+                    contact.details.addresses.msisdn[creator_opts.new_msisdn] = {};
+                    return go.utils
+                        .update_identity(self.im, contact)
+                        .then(function() {
+                            return self.states.create('state_end_number_change');
+                        });
+                });
+        });
+
+        // EndState st-10
+        self.add('state_end_number_change', function(name) {
+            return new EndState(name, {
+                text: $(questions[name]),
+                next: 'state_start'
+            });
+        });
+
+
+    // LANGUAGE CHANGE STATES
 
         // ChoiceState st-11
         self.add('state_msg_language', function(name) {
@@ -1401,9 +1466,13 @@ go.app = function() {
         // EndState st-12
         self.add('state_msg_language_confirm', function(name) {
             return new EndState(name, {
-                text: $(questions[name])
+                text: $(questions[name]),
+                next: 'state_start'
             });
         });
+
+
+    // OPTOUT STATES
 
         // ChoiceState st-13
         self.add('state_optout_reason', function(name) {
@@ -1446,7 +1515,8 @@ go.app = function() {
         // EndState st-15
         self.add('state_loss_subscription_confirm', function(name) {
             return new EndState(name, {
-                text: $(questions[name])
+                text: $(questions[name]),
+                next: 'state_start'
             });
         });
 
@@ -1494,14 +1564,19 @@ go.app = function() {
         // EndState st-17
         self.add('state_end_optout', function(name) {
             return new EndState(name, {
-                text: $(questions[name])
+                text: $(questions[name]),
+                next: 'state_start'
             });
         });
+
+
+    // GENERAL END STATE
 
         // EndState st-18
         self.add('state_end_exit', function(name) {
             return new EndState(name, {
-                text: $(questions[name])
+                text: $(questions[name]),
+                next: 'state_start'
             });
         });
 
