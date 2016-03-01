@@ -296,7 +296,7 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                it("to state_msisdn_household (father a message receiver)", function() {
+                it("to state_msisdn_household (father message receiver)", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -311,7 +311,7 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                it("to state_msisdn_household (family member a message receiver)", function() {
+                it("to state_msisdn_household (family member message receiver)", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -326,7 +326,7 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                it("to state_msisdn_household (friend a message receiver)", function() {
+                it("to state_msisdn_household (friend message receiver)", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
