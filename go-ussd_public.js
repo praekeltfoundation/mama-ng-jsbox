@@ -1258,7 +1258,7 @@ go.app = function() {
                 });
         });
 
-                // ChoiceState st-01
+        // ChoiceState st-01
         self.add('state_already_registered_baby', function(name) {
             return new ChoiceState(name, {
                 question: $(questions[name]),
@@ -1426,9 +1426,8 @@ go.app = function() {
             return go.utils
                 .get_identity(self.im.user.answers.contact_id, self.im)
                 .then(function(contact) {
-                    // TODO: Handle multiple addresses, currently overwrites existing
+                    // TODO #70: Handle multiple addresses, currently overwrites existing
                     // on assumption we're dealing with one msisdn only
-                    // TODO: Keep history of old numbers?
                     contact.details.addresses.msisdn = {};
                     contact.details.addresses.msisdn[creator_opts.new_msisdn] = {};
                     return go.utils
