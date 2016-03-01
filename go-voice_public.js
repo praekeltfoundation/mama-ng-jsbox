@@ -1052,7 +1052,7 @@ go.app = function() {
                         return self.state.create('state_main_menu');
                     }
                });
-       });
+        });
 
        self.add('state_retry_msg_receiver_msisdn', function(name) {
            var speech_option = '1';
@@ -1085,7 +1085,7 @@ go.app = function() {
        self.add('state_main_menu', function(name) {
            var speech_option = '1';
            var routing = {
-               'msg_baby': 'state_baby_confirm',
+               'msg_baby': 'state_baby_check',
                'msg_pref': 'state_voice_days',
                'msg_msisdn': 'state_new_msisdn',
                'msg_language': 'state_msg_language',
@@ -1145,16 +1145,60 @@ go.app = function() {
             });
         });
 
-        self.add('state_baby_confirm', function(name) {
+        self.add('state_baby_check', function(name) {
+            return go.utils_project
+                .check_baby_subscription(self.im.user.addr)
+                .then(function(isSubscribed) {
+                    if (isSubscribed) {
+                        return self.states.create('state_baby_already_subscribed');
+                    } else {
+                        return self.states.create('state_baby_confirm_subscription');
+                    }
+               });
+        });
+
+        // FreeText st-01
+        self.add('state_baby_already_subscribed', function(name) {
+            var speech_option = 1;
+            return new FreeText(name, {
+                question: $('You are already subscribed. To go back to main menu, 0 then #'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: 'state_main_menu'   // TODO: add input logic to go back to main menu
+            });
+        });
+
+        // ChoiceState st-1A
+        self.add('state_baby_confirm_subscription', function(name) {
             var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Confirm baby?'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('confirm', $('confirm'))
+                    new Choice('confirm', $('To confirm press 1. To go back to main menu, 0 then #'))
                 ],
-                next: 'state_baby_enter'
+                next: 'state_baby_save'
+            });
+        });
+
+        // interstitial to save subscription to baby messages
+        self.add('state_baby_save', function(name) {
+            return go.utils_project
+                .switch_to_baby(self.im)
+                .then(function() {
+                    return self.states.create('state_end_baby');
+                });
+        });
+
+        // EndState st-02
+        self.add('state_end_baby', function(name) {
+            var speech_option = '1';
+            return new EndState(name, {
+                text: $('Thank you - baby'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: 'state_start'
             });
         });
 
@@ -1289,24 +1333,6 @@ go.app = function() {
                 next: function(choice) {
                     return routing[choice.value];
                 }
-            });
-        });
-
-        self.add('state_baby_enter', function(name) {
-            return go.utils_project
-                .switch_to_baby(self.im)
-                .then(function() {
-                    return self.states.create('state_end_baby');
-                });
-        });
-
-        self.add('state_end_baby', function(name) {
-            var speech_option = '1';
-            return new EndState(name, {
-                text: $('Thank you - baby'),
-                helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                next: 'state_start'
             });
         });
 

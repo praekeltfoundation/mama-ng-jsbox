@@ -198,26 +198,71 @@ describe("Mama Nigeria App", function() {
         });
 
         describe("When you enter a choice main_menu", function() {
-            describe.skip("if you choose baby", function() {
-                it("should navigate to state_baby_confirm", function() {
+            describe("if you choose baby", function() {
+                it("should navigate to state_baby_already_subscribed", function() {
+                    return tester
+                        .setup.user.addr('082333')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059992222'  // msg_receiver_msisdn
+                            , '1'  // main_menu - baby
+                        )
+                        .check.interaction({
+                            state: 'state_baby_already_subscribed',
+                            reply: 'You are already subscribed. To go back to main menu, 0 then #'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_already_subscribed_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
+                it("should navigate to state_baby_confirm_subscription", function() {
                     return tester
                         .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
-                            , '05059998888'  // msg_receiver_msisdn
+                            , '05059992222'  // msg_receiver_msisdn
                             , '1'  // main_menu - baby
                         )
                         .check.interaction({
-                            state: 'state_baby_confirm',
+                            state: 'state_baby_confirm_subscription',
                             reply: [
                                 'Confirm baby?',
-                                '1. confirm'
+                                '1. To confirm press 1. To go back to main menu, 0 then #'
                             ].join('\n')
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_baby_confirm_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_confirm_subscription_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
+                it.skip("should navigate to state_end_baby", function() {
+                    return tester
+                        .setup.user.addr('+07070050005')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059992222'  // msg_receiver_msisdn
+                            , '1'  // main_menu - baby
+                            , '1'  // state_baby_confirm_subscription
+                        )
+                        .check.interaction({
+                            state: 'state_end_baby',
+                            reply: 'Thank you - baby'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_baby_1.mp3',
                                     wait_for: '#'
                                 }
                             }
