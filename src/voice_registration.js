@@ -161,20 +161,16 @@ go.app = function() {
         self.add('state_msisdn_household', function(name, creator_opts) {
             var rolePlayer = self.im.user.answers.state_msg_receiver.replace('mother_', '');  // discarding 'mother_' part of string
             rolePlayer = rolePlayer.replace('family', 'family member');  // append ' member' to family rolePlayer string to make output clearer
-            
+
             var question_text = "Please enter the {{role_player}}'s number";
             var retry_text = "Sorry, invalid input. Please enter the {{role_player}}'s number";
             var use_text = creator_opts.retry === true ? retry_text : question_text;
-            var speech_option = {
-                                    mother_father: 1,
-                                    mother_family: 2,
-                                    mother_friend: 3
-                                };
+            var speech_option = go.utils_project.get_speech_option_household(rolePlayer);
 
             return new FreeText(name, {
                 question: $(use_text).context({role_player: rolePlayer}),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option[rolePlayer], creator_opts.retry),
+                    self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
                     if (go.utils.is_valid_msisdn(content) === false) {
                         return {
