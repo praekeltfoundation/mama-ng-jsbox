@@ -37,7 +37,6 @@ go.app = function() {
 
         });
 
-
     // CHANGE STATE
 
         self.add('state_msg_receiver_msisdn', function(name) {
@@ -47,36 +46,39 @@ go.app = function() {
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(content) {
-                    if (go.utils.is_valid_msisdn(content) === false) {
+                    if (!go.utils.is_valid_msisdn(content)) {
                         return 'state_retry_msg_receiver_msisdn';
                     } else {
                         return go.utils
-                            // get or create mama identity
                             .get_or_create_identity({'msisdn': content}, self.im, null)
-                            .then(function(identity) {
-                                self.im.user.set_answer('mama_id', identity.id);
-                                return go.utils_project
-                                    .is_registered(identity.id, self.im)
-                                    .then(function(is_registered) {
-                                        if (is_registered === true) {
-                                            return go.utils_project
-                                                .has_active_subscriptions(identity.id, self.im)
-                                                .then(function(has_active_subscriptions) {
-                                                    if (has_active_subscriptions === true) {
-                                                        return self.states.create("state_main_menu");
-                                                    } else {
-                                                        return self.states.create("state_end_not_active");
-                                                    }
-                                                });
-                                        } else {
-                                            return self.states.create("state_not_recognised_msg_receiver_msisdn");
-                                        }
-                                    });
+                            .then(function(user) {
+                                self.im.user.set_answer('user_id', user.id);
+                                if (user.details.receiver_role) {
+                                    self.im.user.set_answer('role_player', user.details.receiver_role);
+                                    return self.states.create('state_check_receiver_role');  // recognised
+                                } else {
+                                    self.im.user.set_answer('role_player', 'guest');
+                                    return self.states.create('state_not_recognised_msg_receiver_msisdn');  // not recognised
+                                }
                             });
                     }
                 }
             });
         });
+
+        self.add('state_check_receiver_role', function(name) {
+           return go.utils_project
+               .check_role(self.im.user.addr)
+               .then(function(role) {
+                   if (role == 'father_role') {
+                       return self.states.create('state_main_menu_household');
+                   } else if (role == 'mother_role') {
+                       return self.states.create('state_main_menu');
+                   } else {
+                       return self.state.create('state_main_menu');
+                   }
+               });
+       });
 
         self.add('state_retry_msg_receiver_msisdn', function(name) {
             var speech_option = '1';
@@ -278,11 +280,11 @@ go.app = function() {
             return go.utils_project
                 .optout_loss_opt_in(self.im)
                 .then(function() {
-                    return self.states.create('state_c10_end_loss_opt_in');
+                    return self.states.create('state_end_loss_opt_in');
                 });
         });
 
-        self.add('state_c10_end_loss_opt_in', function(name) {
+        self.add('state_end_loss_opt_in', function(name) {
             var speech_option = '1';
             return new EndState(name, {
                 text: $('Thank you - loss opt in'),
@@ -296,11 +298,11 @@ go.app = function() {
             return go.utils_project
                 .optout(self.im)
                 .then(function() {
-                    return self.states.create('state_c11_end_optout');
+                    return self.states.create('state_end_optout');
                 });
         });
 
-        self.add('state_c11_end_optout', function(name) {
+        self.add('state_end_optout', function(name) {
             var speech_option = '1';
             return new EndState(name, {
                 text: $('Thank you - optout'),

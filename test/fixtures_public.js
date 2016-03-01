@@ -6,6 +6,7 @@
 // 05059995555: registered user - mother that receives messages via 05059993333
 // 05059996666: registered user - mother that receives own messages, linked to 05059997777
 // 05059997777: registered user - family member that receives household messages for 05059996666
+// 05059998888:
 
 module.exports = function() {
     return [
@@ -318,9 +319,6 @@ module.exports = function() {
                 }
             }
         },
-
-
-
 
         // x: unused - get identity 3f7c8851-5204-43f7-af7f-005059995555
         {
