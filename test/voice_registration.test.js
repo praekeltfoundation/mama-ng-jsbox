@@ -1331,7 +1331,9 @@ describe("Mama Nigeria App", function() {
                                 'Language?',
                                 '1. english',
                                 '2. hausa',
-                                '3. igbo'
+                                '3. igbo',
+                                '4. pidgin',
+                                '5. yoruba'
                             ].join('\n')
                         })
                         .check.reply.properties({
@@ -1398,7 +1400,9 @@ describe("Mama Nigeria App", function() {
                                 'Language?',
                                 '1. english',
                                 '2. hausa',
-                                '3. igbo'
+                                '3. igbo',
+                                '4. pidgin',
+                                '5. yoruba'
                             ].join('\n')
                         })
                         .check.reply.properties({
@@ -1457,7 +1461,7 @@ describe("Mama Nigeria App", function() {
                         , '2'           // state_baby_birth_year - last year
                         , '11'          // state_baby_birth_month - nov
                         , '13'          // state_baby_birth_day
-                        , '3'           // state_msg-language - igbo
+                        , '5'           // state_msg-language - yoruba
                     )
                     .check.interaction({
                         state: 'state_msg_type',
@@ -1572,7 +1576,7 @@ describe("Mama Nigeria App", function() {
                         , '2'           // state_baby_birth_year - last year
                         , '11'          // state_baby_birth_month - nov
                         , '13'          // state_baby_birth_day
-                        , '3'           // state_msg-language - igbo
+                        , '4'           // state_msg-language - pidgin
                         , '1'           // state_msg_type - voice
                         , '1'           // state_voice_days - monday and wednesday
                     )
