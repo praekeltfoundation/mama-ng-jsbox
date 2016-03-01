@@ -1202,6 +1202,35 @@ go.app = function() {
             });
         });
 
+        // interstitial to check what type of messages the user is registered for
+        self.add('state_msg_type_check', function(name) {
+            return go.utils_project
+                .check_msg_type(self.im)
+                .then(function(messageType) {
+                    if (messageType == "sms") {
+                        return self.states.create('state_sms_menu');
+                    } else {   // is subscribed for voice messages
+                        return self.states.create('state_voice_menu');
+                    }
+                });
+        });
+
+        // ChoiceState st-03
+        self.add('state_sms_menu', function(name) {
+            var speech_option = '1';
+            return new ChoiceState(name, {
+                question: $('What would you like to do?'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                choices: [
+                    new Choice('change', $('Change from text to voice')),
+                    new Choice('back', $('Go back to main menu, press 0 then #')),
+                ],
+                next: 'state_voice_days'
+            });
+        });
+
+        // ChoiceState st-04
         self.add('state_voice_days', function(name) {
             var speech_option = '1';
             return new ChoiceState(name, {
@@ -1213,6 +1242,63 @@ go.app = function() {
                     new Choice('tue_thu', $('tue_thu'))
                 ],
                 next: 'state_voice_times'
+            });
+        });
+
+        // ChoiceState st-05
+        self.add('state_voice_times', function(name) {
+            var days = self.im.user.answers.state_voice_days;
+            var speech_option = go.utils_project.get_speech_option_days(days);
+
+            return new ChoiceState(name, {
+                question: $('Message times?'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                choices: [
+                    new Choice('9_11', $('9_11')),
+                    new Choice('2_5', $('2_5'))
+                ],
+                next: 'state_voice_save'
+            });
+        });
+
+        // interstitial to save subscription to baby messages
+        /*self.add('state_voice_save', function(name) {
+            return go.utils_project
+                .update_identity ...?
+                .then(function() {
+                    return self.states.create('state_end_voice');
+                });
+        });*/
+
+        // EndState st-06
+        self.add('state_end_msg_times', function(name) {
+            var days = self.im.user.answers.state_voice_days;
+            var time = self.im.user.answers.state_voice_times;
+            var speech_option = go.utils_project.get_speech_option_days_time(days, time);
+
+            return new EndState(name, {
+                text: $('Thank you! Time: {{ time }}. Days: {{ days }}.'
+                    ).context({ time: time, days: days }),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: 'state_start'
+            });
+        });
+
+        // ChoiceState st-07
+        self.add('state_voice_menu', function(name) {
+            var speech_option = '1';
+            return new ChoiceState(name, {
+                question: $('What would you like to do?'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                choices: [
+                    new Choice('change', $('Change times')),
+                    new Choice('change', $('Change from voice to text')),
+                    new Choice('back', $('Go back to main menu, press 0 then #'))
+                ],
+                next: 'state_baby_save'
             });
         });
 
@@ -1300,22 +1386,6 @@ go.app = function() {
             });
         });
 
-        self.add('state_voice_times', function(name) {
-            var days = self.im.user.answers.state_voice_days;
-            var speech_option = go.utils_project.get_speech_option_days(days);
-
-            return new ChoiceState(name, {
-                question: $('Message times?'),
-                helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                choices: [
-                    new Choice('9_11', $('9_11')),
-                    new Choice('2_5', $('2_5'))
-                ],
-                next: 'state_msg_enter'
-            });
-        });
-
         self.add('state_loss_opt_in', function(name) {
             var speech_option = '1';
             var routing = {
@@ -1333,28 +1403,6 @@ go.app = function() {
                 next: function(choice) {
                     return routing[choice.value];
                 }
-            });
-        });
-
-        self.add('state_msg_enter', function(name) {
-            return go.utils_project
-                .change_msg_times(self.im)
-                .then(function() {
-                    return self.states.create('state_end_msg_times');
-                });
-        });
-
-        self.add('state_end_msg_times', function(name) {
-            var days = self.im.user.answers.state_voice_days;
-            var time = self.im.user.answers.state_voice_times;
-            var speech_option = go.utils_project.get_speech_option_days_time(days, time);
-
-            return new EndState(name, {
-                text: $('Thank you! Time: {{ time }}. Days: {{ days }}.'
-                    ).context({ time: time, days: days }),
-                helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                next: 'state_start'
             });
         });
 

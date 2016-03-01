@@ -197,7 +197,7 @@ describe("Mama Nigeria App", function() {
             });
         });
 
-        describe("When you enter a choice main_menu", function() {
+        describe.skip("When you enter a choice main_menu", function() {
             describe("if you choose baby", function() {
                 it("should navigate to state_baby_already_subscribed", function() {
                     return tester
@@ -277,7 +277,7 @@ describe("Mama Nigeria App", function() {
                         .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
-                            , '05059998888'  // msg_receiver_msisdn
+                            , '05059992222'  // msg_receiver_msisdn
                             , '2'  // main_menu - msg_pref
                         )
                         .check.interaction({
@@ -291,7 +291,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_voice_days_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_voice_days_1.mp3',
                                     wait_for: '#'
                                 }
                             }
