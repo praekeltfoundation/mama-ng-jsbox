@@ -1,11 +1,11 @@
 var vumigo = require('vumigo_v02');
-var fixtures = require('./fixtures');
+var fixtures = require('./fixtures_public');
 // var assert = require('assert');
 var AppTester = vumigo.AppTester;
 
 
 describe("Mama Nigeria App", function() {
-    describe("Voice Change", function() {
+    describe.skip("Voice Public", function() {
         var app;
         var tester;
 
@@ -16,7 +16,7 @@ describe("Mama Nigeria App", function() {
             tester
                 .setup.config.app({
                     testing_today: '2015-07-22',
-                    name: 'voice-change-test',
+                    name: 'voice-public-test',
                     country_code: '234',  // nigeria
                     services: {
                         identities: {
@@ -27,20 +27,19 @@ describe("Mama Nigeria App", function() {
                             api_token: 'test_token_subscriptions',
                             url: "http://localhost:8002/api/v1/"
                         },
-                    },
-                    voice_content: {
-                        url: "http://localhost:8001/api/v1/",
-                        api_key: "voice_test_key"
+                        voice_content: {
+                            api_token: "test_token_voice_content",
+                            url: "http://localhost:8004/api/v1/"
+                        },
                     }
                 })
                 .setup(function(api) {
                     fixtures().forEach(function(d) {
-                        d.repeatable = true;
                         api.http.fixtures.add(d);
                     });
                 })
-                // +08080030003 is an unregistered contact
-                // +07070050005 is a registered contact
+                // +08080030003 is an unregistered identity
+                // +07070050005 is a registered identity
                 ;
         });
 
