@@ -404,6 +404,7 @@ go.utils_project = {
                 .then(function(mother_identity) {
                     mother_identity.details.receiver_role = 'mother';
                     mother_identity.details.linked_to = null;
+                    mother_identity.details.gravida = im.user.answers.state_gravida;
                     mother_identity.details.preferred_language = im.user.answers.state_msg_language;
                     mother_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
 
@@ -423,6 +424,7 @@ go.utils_project = {
                 .spread(function(mother_identity, receiver_identity) {
                     mother_identity.details.receiver_role = 'mother';
                     mother_identity.details.linked_to = im.user.answers.receiver_id;
+                    mother_identity.details.gravida = im.user.answers.state_gravida;
                     mother_identity.details.preferred_language = im.user.answers.state_msg_language;
 
                     receiver_identity.details.receiver_role = msg_receiver.replace('_only', '');
@@ -450,6 +452,7 @@ go.utils_project = {
                     mother_identity.details.receiver_role = 'mother';
                     mother_identity.details.linked_to = im.user.answers.receiver_id;
                     mother_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
+                    mother_identity.details.gravida = im.user.answers.state_gravida;
                     mother_identity.details.preferred_language = im.user.answers.state_msg_language;
 
                     receiver_identity.details.receiver_role = msg_receiver.replace('mother_', '');
@@ -634,6 +637,7 @@ go.utils_project = {
                 mother_id: im.user.answers.mother_id,
                 receiver_id: im.user.answers.receiver_id,
                 operator_id: im.user.answers.operator_id,
+                gravida: im.user.answers.gravida,
                 language: im.user.answers.state_msg_language,
                 msg_type: im.user.answers.state_msg_type,
                 user_id: im.user.answers.user_id
@@ -672,6 +676,7 @@ go.utils_project = {
         mama_identity.details.msg_receiver = im.user.answers.state_r03_receiver;
         mama_identity.details.state_at_registration = im.user.answers.state_r04_mom_state;
         mama_identity.details.state_current = im.user.answers.state_r04_mom_state;
+        mama_identity.details.gravida = im.user.answer.state_gravida;
         mama_identity.details.lang = go.utils_project.get_lang(im);
         mama_identity.details.msg_type = im.user.answers.state_r10_message_type;
         mama_identity.details.voice_days = im.user.answers.state_r11_voice_days || 'sms';
@@ -1022,6 +1027,8 @@ go.app = function() {
                 "Select the month & year the baby was born:",
             "state_baby_birth_day":
                 "What day of the month was the baby born? For example, 12.",
+            "state_gravida":
+                "Please enter the number of times the woman has been pregnant before. This includes any pregnancies she may not have carried to term.",
             "state_msg_language":
                 "Which language would this person like to receive these messages in?",
             "state_msg_type":
@@ -1281,6 +1288,21 @@ go.app = function() {
             });
         });
 
+        //
+        self.add('state_gravida', function(name) {
+            return new FreeText(name, {
+                question: $(questions[name]),
+                check: function(content) {
+                    if (go.utils.check_valid_number(content)) {
+                        return null;  // vumi expects null or undefined if check passes
+                    } else {
+                        return $(get_error_text(name));
+                    }
+                },
+                next: 'state_msg_language'
+            });
+        });
+
         // ChoiceState st-07
         self.add('state_msg_language', function(name) {
             return new ChoiceState(name, {
@@ -1412,7 +1434,7 @@ go.app = function() {
 
             if (go.utils.is_valid_date(dateToValidate, 'YYYYMMDD')) {
                 self.im.user.set_answer('working_date', dateToValidate);
-                return self.states.create('state_msg_language');
+                return self.states.create('state_gravida');
             } else {
                 return self.states.create('state_invalid_date', {date: dateToValidate});
             }
