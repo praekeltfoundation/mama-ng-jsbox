@@ -278,15 +278,38 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
+                it("should navigate to state_end_new_msisdn", function() {
+                    return tester
+                        .setup.user.addr('+07070050005')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059992222' // state_msg_receiver_msisdn
+                            , '3'           // state_main_menu - number
+                            , '05059992223'  // state_new_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_end_new_msisdn',
+                            reply: 'Thank you. Mobile number changed.'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_new_msisdn_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
             });
 
-            describe.skip("if you choose to change language", function() {
+            describe("if you choose to change language", function() {
                 it("should navigate to state_msg_language", function() {
                     return tester
                         .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
-                            , '05059998888' // state_msg_receiver_msisdn
+                            , '05059992222' // state_msg_receiver_msisdn
                             , '4'           // state_main_menu - language
                         )
                         .check.interaction({
@@ -295,13 +318,38 @@ describe("Mama Nigeria App", function() {
                                 'Language?',
                                 '1. English',
                                 '2. Hausa',
-                                '3. Igbo'
+                                '3. Igbo',
+                                '4. Pidgin',
+                                '5. Yoruba'
                             ].join('\n')
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_new_msisdn_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_language_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
+                it("should navigate to state_end_msg_language", function() {
+                    return tester
+                        .setup.user.addr('+07070050005')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059992222' // state_msg_receiver_msisdn
+                            , '4'           // state_main_menu - language
+                            , '3'   // state_msg_language - igbo
+                        )
+                        .check.interaction({
+                            state: 'state_end_msg_language',
+                            reply: 'Thank you. Language preference updated.'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_msg_language_1.mp3',
                                     wait_for: '#'
                                 }
                             }

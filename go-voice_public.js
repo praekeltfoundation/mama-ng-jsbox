@@ -1012,6 +1012,7 @@ go.app = function() {
 
     // CHANGE STATE
 
+        // FreeText st-B
         self.add('state_msg_receiver_msisdn', function(name) {
             var speech_option = '1';
             return new FreeText(name, {
@@ -1080,57 +1081,58 @@ go.app = function() {
            });
        });
 
+       // ChoiceState st-A
+       self.add('state_main_menu', function(name) {
+           var speech_option = '1';
+           var routing = {
+               'msg_baby': 'state_baby_confirm',
+               'msg_pref': 'state_voice_days',
+               'msg_msisdn': 'state_new_msisdn',
+               'msg_language': 'state_msg_language',
+               'optout': 'state_optout_reason'
+           };
+           return new ChoiceState(name, {
+               question: $('Choose:'),
+               helper_metadata: go.utils_project.make_voice_helper_data(
+                   self.im, name, lang, speech_option),
+               choices: [
+                   new Choice('msg_baby', $('baby')),
+                   new Choice('msg_pref', $('preferences')),
+                   new Choice('msg_msisdn', $('number')),
+                   new Choice('msg_language', $('language')),
+                   new Choice('optout', $('optout'))
+               ],
+               next: function(choice) {
+                   return routing[choice.value];
+               }
+           });
+       });
 
-        self.add('state_main_menu', function(name) {
-            var speech_option = '1';
-            var routing = {
-                'msg_baby': 'state_baby_confirm',
-                'msg_pref': 'state_voice_days',
-                'msg_msisdn': 'state_new_msisdn',
-                'msg_language': 'state_msg_language',
-                'optout': 'state_optout_reason'
-            };
-            return new ChoiceState(name, {
-                question: $('Choose:'),
-                helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                choices: [
-                    new Choice('msg_baby', $('baby')),
-                    new Choice('msg_pref', $('preferences')),
-                    new Choice('msg_msisdn', $('number')),
-                    new Choice('msg_language', $('language')),
-                    new Choice('optout', $('optout'))
-                ],
-                next: function(choice) {
-                    return routing[choice.value];
-                }
-            });
-        });
-
-        self.add('state_main_menu_household', function(name) {
-            var speech_option = '1';
-            var routing = {
-                'msg_baby': 'state_baby_confirm',
-                'msg_pref': 'state_voice_days',
-                'msg_msisdn': 'state_new_msisdn',
-                'msg_language': 'state_msg_language',
-                'optout': 'state_optout_reason'
-            };
-            return new ChoiceState(name, {
-                question: $('Choose:'),
-                helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                choices: [
-                    new Choice('msg_baby', $('baby')),
-                    new Choice('msg_misisdn', $('number')),
-                    new Choice('msg_language', $('language')),
-                    new Choice('optout', $('optout'))
-                ],
-                next: function(choice) {
-                    return routing[choice.value];
-                }
-            });
-        });
+       // ChoiceState st-A1
+       self.add('state_main_menu_household', function(name) {
+           var speech_option = '1';
+           var routing = {
+               'msg_baby': 'state_baby_confirm',
+               'msg_pref': 'state_voice_days',
+               'msg_msisdn': 'state_new_msisdn',
+               'msg_language': 'state_msg_language',
+               'optout': 'state_optout_reason'
+           };
+           return new ChoiceState(name, {
+               question: $('Choose:'),
+               helper_metadata: go.utils_project.make_voice_helper_data(
+                   self.im, name, lang, speech_option),
+               choices: [
+                   new Choice('msg_baby', $('baby')),
+                   new Choice('msg_misisdn', $('number')),
+                   new Choice('msg_language', $('language')),
+                   new Choice('optout', $('optout'))
+               ],
+               next: function(choice) {
+                   return routing[choice.value];
+               }
+           });
+       });
 
 
         self.add('state_not_recognised_msg_receiver_msisdn', function(name) {
@@ -1170,6 +1172,7 @@ go.app = function() {
             });
         });
 
+        // FreeText st-09
         self.add('state_new_msisdn', function(name) {
             var speech_option = 1;
             return new FreeText(name, {
@@ -1184,6 +1187,46 @@ go.app = function() {
                         return self.states.create('state_retry_msisdn');
                     }
                 }
+            });
+        });
+
+        // EndState st-10
+        self.add('state_end_new_msisdn', function(name) {
+            var speech_option = 1;
+            return new EndState(name, {
+                text: $('Thank you. Mobile number changed.'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: 'state_start'
+            });
+        });
+
+        // ChoiceState st-11
+        self.add('state_msg_language', function(name) {
+            var speech_option = '1';
+            return new ChoiceState(name, {
+                question: $('Language?'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                choices: [
+                    new Choice('english', $('English')),
+                    new Choice('hausa', $('Hausa')),
+                    new Choice('igbo', $('Igbo')),
+                    new Choice('pidgin', $('Pidgin')),
+                    new Choice('yoruba', $('Yoruba'))
+                ],
+                next: 'state_end_msg_language'
+            });
+        });
+
+        // EndState st-12
+        self.add('state_end_msg_language', function(name) {
+            var speech_option = 1;
+            return new EndState(name, {
+                text: $('Thank you. Language preference updated.'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: 'state_start'
             });
         });
 

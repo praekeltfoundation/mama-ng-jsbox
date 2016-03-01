@@ -217,6 +217,46 @@ go.app = function() {
             });
         });
 
+        // EndState st-10
+        self.add('state_end_new_msisdn', function(name) {
+            var speech_option = 1;
+            return new EndState(name, {
+                text: $('Thank you. Mobile number changed.'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: 'state_start'
+            });
+        });
+
+        // ChoiceState st-11
+        self.add('state_msg_language', function(name) {
+            var speech_option = '1';
+            return new ChoiceState(name, {
+                question: $('Language?'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                choices: [
+                    new Choice('english', $('English')),
+                    new Choice('hausa', $('Hausa')),
+                    new Choice('igbo', $('Igbo')),
+                    new Choice('pidgin', $('Pidgin')),
+                    new Choice('yoruba', $('Yoruba'))
+                ],
+                next: 'state_end_msg_language'
+            });
+        });
+
+        // EndState st-12
+        self.add('state_end_msg_language', function(name) {
+            var speech_option = 1;
+            return new EndState(name, {
+                text: $('Thank you. Language preference updated.'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: 'state_start'
+            });
+        });
+
         self.add('state_optout_reason', function(name) {
             var speech_option = '1';
             var routing = {
