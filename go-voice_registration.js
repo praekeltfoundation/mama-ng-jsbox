@@ -637,7 +637,7 @@ go.utils_project = {
                 mother_id: im.user.answers.mother_id,
                 receiver_id: im.user.answers.receiver_id,
                 operator_id: im.user.answers.operator_id,
-                gravida: im.user.answers.gravida,
+                gravida: im.user.answers.state_gravida,
                 language: im.user.answers.state_msg_language,
                 msg_type: im.user.answers.state_msg_type,
                 user_id: im.user.answers.user_id
@@ -676,7 +676,7 @@ go.utils_project = {
         mama_identity.details.msg_receiver = im.user.answers.state_r03_receiver;
         mama_identity.details.state_at_registration = im.user.answers.state_r04_mom_state;
         mama_identity.details.state_current = im.user.answers.state_r04_mom_state;
-        mama_identity.details.gravida = im.user.answer.state_gravida;
+        mama_identity.details.gravida = im.user.answers.state_gravida;
         mama_identity.details.lang = go.utils_project.get_lang(im);
         mama_identity.details.msg_type = im.user.answers.state_r10_message_type;
         mama_identity.details.voice_days = im.user.answers.state_r11_voice_days || 'sms';
@@ -1369,7 +1369,7 @@ go.app = function() {
         self.add('state_validate_date', function(name, creator_opts) {
             var dateToValidate = self.im.user.answers.working_date;
             if (go.utils.is_valid_date(dateToValidate, 'YYYYMMDD')) {
-                return self.states.create('state_msg_language');
+                return self.states.create('state_gravida');
             } else {
                 return self.states.create('state_invalid_date');
             }
@@ -1392,6 +1392,17 @@ go.app = function() {
                         return 'state_baby_birth_year';
                     }
                 }
+            });
+        });
+
+        // FreeText st-19
+        self.add('state_gravida', function(name, creator_opts) {
+            var speech_option = '1';
+            return new FreeText(name, {
+                question: $('Please enter the number of times the woman has been pregnant before. This includes any pregnancies she may not have carried to term.'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option, creator_opts.retry),
+                next: 'state_msg_language'
             });
         });
 
