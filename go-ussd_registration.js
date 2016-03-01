@@ -280,18 +280,55 @@ go.utils = {
     },
 
 
-// SUBSCRIPTION HELPERS
+// STAGE-BASE HELPERS
 
-    read_subscription: function(im, identity_id) {
-      // Gets the subscription from the Stage-based Store
+    read_subscription: function(im, subscription_id) {
+      // Gets the subscription from the Stage-base Store
       // Returns the subscription object
 
-        var endpoint = 'identities/' + identity_id + '/';
+        var endpoint = 'subscriptions/' + subscription_id + '/';
         return go.utils
-        .service_api_call('identities', 'get', {}, null, endpoint, im)
-        .then(function(json_get_response) {
-            return json_get_response.data;
-        });
+            .service_api_call('subscriptions', 'get', {}, null, endpoint, im)
+            .then(function(response) {
+                return response.data;
+            });
+    },
+
+    read_subscription_by_identity: function(im, identity_id) {
+      // Gets the subscription from the Stage-base Store via params
+      // Returns the subscription object
+
+        var params = {identity: identity_id};
+        var endpoint = 'subscriptions/';
+        return go.utils
+            .service_api_call('subscriptions', 'get', params, null, endpoint, im)
+            .then(function(response) {
+                return response.data;
+            });
+    },
+
+    update_subscription: function(im, subscription) {
+      // Update a subscription by passing in the full updated subscription object
+      // Returns the id (which should be the same as the subscription's id)
+
+        var endpoint = 'subscriptions/' + subscription.id + '/';
+        return go.utils
+            .service_api_call('subscriptions', 'patch', {}, subscription, endpoint, im)
+            .then(function(response) {
+                return response.data.id;
+            });
+    },
+
+    read_messageset: function(im, messageset_id) {
+      // Gets the messageset from the Stage-base Store
+      // Returns the messageset object
+
+        var endpoint = 'messagesets/' + messageset_id + '/';
+        return go.utils
+            .service_api_call('messagesets', 'get', {}, null, endpoint, im)
+            .then(function(response) {
+                return response.data;
+            });
     },
 
 
@@ -815,15 +852,29 @@ go.utils_project = {
 
         // get subscription
         return go.utils
-            .read_subscription(im, mother_id)
+            .read_subscription_by_identity(im, mother_id)
             .then(function(subscription) {
+                im.user.set_answer('mother_subscription', subscription);
                 // get messageset
                 return go.utils
                     .read_messageset(im, subscription.messageset_id)
                     .then(function(messageset) {
-                        return messageset.content_type;  // 'sms' / 'voice'
+                        return messageset.content_type;  // 'text' / 'audio'
                     });
             });
+    },
+
+    update_msg_format_time: function(im, prior_msg_format, new_msg_format) {
+      //
+        if (prior_msg_format === 'text' && new_msg_format === 'audio') {
+            // update subscription
+            console.log('text -> audio');
+            var mother_subscription = im.user.answers.mother_subscription;
+            mother_subscription.messageset_id = 1;
+            mother_subscription.schedule = 1;
+            mother_subscription.next_sequence_number = 1;
+            return go.utils.update_subscription(im, mother_subscription);
+        }
     },
 
     is_registered: function(identity_id, im) {

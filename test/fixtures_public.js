@@ -700,7 +700,113 @@ module.exports = function() {
             }
         },
 
+        // 16: get subscription via identity 3f7c8851-5204-43f7-af7f-005059992222
+        {
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'identity': '3f7c8851-5204-43f7-af7f-005059992222'
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/subscriptions/'
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    'url': 'http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-2222',
+                    'id': '51fcca25-2e85-4c44-subscription-2222',
+                    'version': 1,
+                    'identity': '3f7c8851-5204-43f7-af7f-005059992222',
+                    'messageset_id': 1,
+                    'next_sequence_number': 1,
+                    'lang': "ibo_NG",
+                    'active': true,
+                    'completed': false,
+                    'schedule': 1,
+                    'process_status': 0,
+                    'metadata': {},
+                    'created_at': "2015-07-10T06:13:29.693272Z",
+                    'updated_at': "2015-07-10T06:13:29.693272Z"
+                }
+            }
+        },
 
+        // 17: get messageset 1
+        {
+            'request': {
+                'method': 'GET',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8003/api/v1/messagesets/1/'
+            },
+            'response': {
+                'code': 200,
+                'data': {
+                    'id': 1,
+                    'short_name': 'messageset 1',
+                    'notes': null,
+                    'next_set': 2,
+                    'default_schedule': 1,
+                    'content_type': 'text',
+                    'created_at': "2015-07-10T06:13:29.693272Z",
+                    'updated_at': "2015-07-10T06:13:29.693272Z"
+                }
+            }
+        },
+
+        // 18: patch subscription
+        {
+            'request': {
+                'method': 'PATCH',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-2222/',
+                'data': {
+                    "url": "http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-2222",
+                    "id": "51fcca25-2e85-4c44-subscription-2222",
+                    "version": 1,
+                    "identity": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "messageset_id": 1,
+                    "next_sequence_number": 1,
+                    "lang": "ibo_NG",
+                    "active": true,
+                    "completed": false,
+                    "schedule": 1,
+                    "process_status": 0,
+                    "metadata": {},
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693272Z"
+                }
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-2222",
+                    "id": "51fcca25-2e85-4c44-subscription-2222",
+                    "version": 1,
+                    "identity": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "messageset_id": 1,
+                    "next_sequence_number": 1,
+                    "lang": "ibo_NG",
+                    "active": true,
+                    "completed": false,
+                    "schedule": 1,
+                    "process_status": 0,
+                    "metadata": {},
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693272Z"
+                }
+            }
+        },
 
         // x: unused - get identity 3f7c8851-5204-43f7-af7f-005059995555
         {

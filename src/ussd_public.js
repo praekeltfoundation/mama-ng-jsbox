@@ -44,7 +44,7 @@ go.app = function() {
                 "We will call twice a week. On what days would the person like to receive messages?",
             "state_voice_times":
                 "Thank you. At what time would they like to receive these calls?",
-            "state_voice_confirm":
+            "state_end_voice_confirm":
                 "Thank you. You will now start receiving voice calls between [time] on [days].",
             "state_change_menu_voice":
                 "Please select what you would like to do:",
@@ -314,10 +314,11 @@ go.app = function() {
         self.add('state_check_msg_type', function(name) {
             return go.utils_project
                 .get_subscription_msg_type(self.im, self.im.user.answers.mother_id)
-                .then(function(msgType) {
-                    if (msgType === 'sms') {
+                .then(function(msg_format) {
+                    self.im.user.set_answer('msg_format', msg_format);
+                    if (msg_format === 'text') {
                         return self.states.create('state_change_menu_sms');
-                    } else if (msgType === 'voice') {
+                    } else if (msg_format === 'audio') {
                         return self.states.create('state_change_menu_voice');
                     } else {
                         return self.state.create('state_end_exit');
@@ -337,7 +338,7 @@ go.app = function() {
                 next: function(choice) {
                     return choice.value === 'to_voice'
                         ? 'state_voice_days'
-                        : 'state_main_menu';
+                        : 'state_check_receiver_role';
                 }
             });
         });
@@ -364,12 +365,24 @@ go.app = function() {
                     new Choice('9_11', $("Between 9-11am")),
                     new Choice('2_5', $("Between 2-5pm"))
                 ],
-                next: 'state_voice_confirm'
+                next: function(choice) {
+                    return go.utils_project
+                        .update_msg_format_time(
+                            self.im,
+                            self.im.user.answers.msg_format,
+                            'audio',
+                            self.im.user.answers.state_voice_days,
+                            choice.value
+                        )
+                        .then(function() {
+                            return 'state_end_voice_confirm';
+                        });
+                }
             });
         });
 
         // EndState st-06
-        self.add('state_voice_confirm', function(name) {
+        self.add('state_end_voice_confirm', function(name) {
             return new EndState(name, {
                 text: $(questions[name]),
                 next: 'state_start'

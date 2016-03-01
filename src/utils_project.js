@@ -515,15 +515,29 @@ go.utils_project = {
 
         // get subscription
         return go.utils
-            .read_subscription(im, mother_id)
+            .read_subscription_by_identity(im, mother_id)
             .then(function(subscription) {
+                im.user.set_answer('mother_subscription', subscription);
                 // get messageset
                 return go.utils
                     .read_messageset(im, subscription.messageset_id)
                     .then(function(messageset) {
-                        return messageset.content_type;  // 'sms' / 'voice'
+                        return messageset.content_type;  // 'text' / 'audio'
                     });
             });
+    },
+
+    update_msg_format_time: function(im, prior_msg_format, new_msg_format) {
+      //
+        if (prior_msg_format === 'text' && new_msg_format === 'audio') {
+            // update subscription
+            console.log('text -> audio');
+            var mother_subscription = im.user.answers.mother_subscription;
+            mother_subscription.messageset_id = 1;
+            mother_subscription.schedule = 1;
+            mother_subscription.next_sequence_number = 1;
+            return go.utils.update_subscription(im, mother_subscription);
+        }
     },
 
     is_registered: function(identity_id, im) {
