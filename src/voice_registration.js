@@ -395,7 +395,7 @@ go.app = function() {
         self.add('state_validate_date', function(name, creator_opts) {
             var dateToValidate = self.im.user.answers.working_date;
             if (go.utils.is_valid_date(dateToValidate, 'YYYYMMDD')) {
-                return self.states.create('state_msg_language');
+                return self.states.create('state_gravida');
             } else {
                 return self.states.create('state_invalid_date');
             }
@@ -421,6 +421,17 @@ go.app = function() {
             });
         });
 
+        // FreeText st-19
+        self.add('state_gravida', function(name, creator_opts) {
+            var speech_option = '1';
+            return new FreeText(name, {
+                question: $('Please enter the number of times the woman has been pregnant before. This includes any pregnancies she may not have carried to term.'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option, creator_opts.retry),
+                next: 'state_msg_language'
+            });
+        });
+
         // ChoiceState st-07
         self.add('state_msg_language', function(name, creator_opts) {
             var speech_option = '1';
@@ -432,6 +443,8 @@ go.app = function() {
                     new Choice('english', $('english')),
                     new Choice('hausa', $('hausa')),
                     new Choice('igbo', $('igbo')),
+                    new Choice('pidgin', $('pidgin')),
+                    new Choice('yoruba', $('yoruba'))
                 ],
                 next: 'state_msg_type'
             });
