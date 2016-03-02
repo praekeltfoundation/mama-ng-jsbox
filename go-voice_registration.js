@@ -1285,7 +1285,7 @@ go.app = function() {
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
-                    if (!(content > 0 && content <= 31)) {
+                    if (!(go.utils.is_valid_day_of_month(content))) {
                         return {
                             'name': 'state_retry',
                             'creator_opts': {'retry_state': name}
@@ -1363,7 +1363,7 @@ go.app = function() {
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
-                    if (!(content > 0 && content <= 31)) {
+                    if (!(go.utils.is_valid_day_of_month(content))) {
                         return {
                             'name': 'state_retry',
                             'creator_opts': {'retry_state': name}
