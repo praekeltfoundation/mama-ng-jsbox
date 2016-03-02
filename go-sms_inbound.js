@@ -581,6 +581,15 @@ go.utils_project = {
 
 // SPEECH OPTION HELPERS
 
+    get_speech_option_household: function(member) {
+        member_map = {
+            'father': '1',
+            'family member': '2',
+            'friend': '3'
+        };
+        return member_map[member];
+    },
+
     get_speech_option_pregnancy_status_day: function(im, month) {
         var speech_option_start;
 
