@@ -451,8 +451,153 @@ describe("Hello Mama app", function() {
                     });
                 });
                 describe("Change Voice message days and times", function() {
-                    it("case x > to state_change_menu_voice", function() {
-
+                    it("case 2 > to state_change_menu_voice", function() {
+                        return tester
+                            .setup.user.addr('05059993333')
+                            .inputs(
+                                {session_event: 'new'}  // dial in
+                                , '1'  // state_msisdn_permission - yes
+                                , '2'  // state_main_menu - change message preferences - registered for voice
+                            )
+                            .check.interaction({
+                                state: 'state_change_menu_voice',
+                                reply: [
+                                    "Please select what you would like to do:",
+                                    "1. Change the day and time I receive messages",
+                                    "2. Change from voice to text messages",
+                                    "3. Back to main menu"
+                                ].join('\n')
+                            })
+                            .check(function(api) {
+                                var expected_used = [4, 5, 19, 20];
+                                var fixts = api.http.fixtures.fixtures;
+                                var fixts_used = [];
+                                fixts.forEach(function(f, i) {
+                                    f.uses > 0 ? fixts_used.push(i) : null;
+                                });
+                                assert.deepEqual(fixts_used, expected_used);
+                            })
+                            .run();
+                    });
+                    it("case 2 > to state_voice_days", function() {
+                        return tester
+                            .setup.user.addr('05059993333')
+                            .inputs(
+                                {session_event: 'new'}  // dial in
+                                , '1'  // state_msisdn_permission - yes
+                                , '2'  // state_main_menu - change message preferences - registered for voice
+                                , '1'  // state_change_menu_voice - change message day & time
+                            )
+                            .check.interaction({
+                                state: 'state_voice_days',
+                                reply: [
+                                    "We will call twice a week. On what days would the person like to receive messages?",
+                                    "1. Monday and Wednesday",
+                                    "2. Tuesday and Thursday"
+                                ].join('\n')
+                            })
+                            .run();
+                    });
+                    it("case 2 > to state_voice_times", function() {
+                        return tester
+                            .setup.user.addr('05059993333')
+                            .inputs(
+                                {session_event: 'new'}  // dial in
+                                , '1'  // state_msisdn_permission - yes
+                                , '2'  // state_main_menu - change message preferences - registered for voice
+                                , '1'  // state_change_menu_voice - change message day & time
+                                , '1'  // state_voice_days - monday and wednesday
+                            )
+                            .check.interaction({
+                                state: 'state_voice_times',
+                                reply: [
+                                    "Thank you. At what time would they like to receive these calls?",
+                                    "1. Between 9-11am",
+                                    "2. Between 2-5pm"
+                                ].join('\n')
+                            })
+                            .run();
+                    });
+                    it("case 2 > to state_end_voice_confirm", function() {
+                        return tester
+                            .setup.user.addr('05059993333')
+                            .inputs(
+                                {session_event: 'new'}  // dial in
+                                , '1'  // state_msisdn_permission - yes
+                                , '2'  // state_main_menu - change message preferences - registered for voice
+                                , '1'  // state_change_menu_voice - change message day & time
+                                , '1'  // state_voice_days - monday and wednesday
+                                , '2'  // state_voice_times - 2-5pm
+                            )
+                            .check.interaction({
+                                state: 'state_end_voice_confirm',
+                                reply: "Thank you. You will now start receiving voice calls between [time] on [days]."
+                            })
+                            .check(function(api) {
+                                var expected_used = [4, 5, 19, 20,  21];
+                                var fixts = api.http.fixtures.fixtures;
+                                var fixts_used = [];
+                                fixts.forEach(function(f, i) {
+                                    f.uses > 0 ? fixts_used.push(i) : null;
+                                });
+                                assert.deepEqual(fixts_used, expected_used);
+                            })
+                            .check.reply.ends_session()
+                            .run();
+                    });
+                });
+                describe("Change from Voice to SMS messages", function() {
+                    it("case 3 > to state_change_menu_voice", function() {
+                        return tester
+                            .setup.user.addr('05059996666')
+                            .inputs(
+                                {session_event: 'new'}  // dial in
+                                , '1'  // state_msisdn_permission - yes
+                                , '2'  // state_main_menu - change message preferences - registered for voice
+                            )
+                            .check.interaction({
+                                state: 'state_change_menu_voice',
+                                reply: [
+                                    "Please select what you would like to do:",
+                                    "1. Change the day and time I receive messages",
+                                    "2. Change from voice to text messages",
+                                    "3. Back to main menu"
+                                ].join('\n')
+                            })
+                            .check(function(api) {
+                                var expected_used = [12, 22, 23];
+                                var fixts = api.http.fixtures.fixtures;
+                                var fixts_used = [];
+                                fixts.forEach(function(f, i) {
+                                    f.uses > 0 ? fixts_used.push(i) : null;
+                                });
+                                assert.deepEqual(fixts_used, expected_used);
+                            })
+                            .run();
+                    });
+                    it("case 3 > to state_end_sms_confirm", function() {
+                        return tester
+                            .setup.user.addr('05059996666')
+                            .inputs(
+                                {session_event: 'new'}  // dial in
+                                , '1'  // state_msisdn_permission - yes
+                                , '2'  // state_main_menu - change message preferences - registered for voice
+                                , '2'  // state_change_menu_voice - change to text
+                            )
+                            .check.interaction({
+                                state: 'state_end_sms_confirm',
+                                reply: "Thank you. You will now receive text messages."
+                            })
+                            .check(function(api) {
+                                var expected_used = [12, 22, 23, 24];
+                                var fixts = api.http.fixtures.fixtures;
+                                var fixts_used = [];
+                                fixts.forEach(function(f, i) {
+                                    f.uses > 0 ? fixts_used.push(i) : null;
+                                });
+                                assert.deepEqual(fixts_used, expected_used);
+                            })
+                            .run();
                     });
                 });
             });

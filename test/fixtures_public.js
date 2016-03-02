@@ -700,7 +700,7 @@ module.exports = function() {
             }
         },
 
-        // 16: get subscription via identity 3f7c8851-5204-43f7-af7f-005059992222
+        // 16: get subscription for identity 3f7c8851-5204-43f7-af7f-005059992222
         {
             'request': {
                 'method': 'GET',
@@ -807,6 +807,224 @@ module.exports = function() {
                 }
             }
         },
+
+        // 19: get subscription for identity 3f7c8851-5204-43f7-af7f-005059995555
+        {
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'identity': '3f7c8851-5204-43f7-af7f-005059995555'
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/subscriptions/'
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    'url': 'http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-5555',
+                    'id': '51fcca25-2e85-4c44-subscription-5555',
+                    'version': 1,
+                    'identity': '3f7c8851-5204-43f7-af7f-005059995555',
+                    'messageset_id': 2,
+                    'next_sequence_number': 1,
+                    'lang': "eng_NG",
+                    'active': true,
+                    'completed': false,
+                    'schedule': 1,
+                    'process_status': 0,
+                    'metadata': {},
+                    'created_at': "2015-07-10T06:13:29.693272Z",
+                    'updated_at': "2015-07-10T06:13:29.693272Z"
+                }
+            }
+        },
+
+        // 20: get messageset 2
+        {
+            'request': {
+                'method': 'GET',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8003/api/v1/messagesets/2/'
+            },
+            'response': {
+                'code': 200,
+                'data': {
+                    'id': 1,
+                    'short_name': 'messageset 2',
+                    'notes': null,
+                    'next_set': 3,
+                    'default_schedule': 1,
+                    'content_type': 'audio',
+                    'created_at': "2015-07-10T06:13:29.693272Z",
+                    'updated_at': "2015-07-10T06:13:29.693272Z"
+                }
+            }
+        },
+
+        // 21: patch subscription
+        {
+            'request': {
+                'method': 'PATCH',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-5555/',
+                'data': {
+                    "url": "http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-5555",
+                    "id": "51fcca25-2e85-4c44-subscription-5555",
+                    "version": 1,
+                    "identity": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "messageset_id": 1,
+                    "next_sequence_number": 1,
+                    "lang": "eng_NG",
+                    "active": true,
+                    "completed": false,
+                    "schedule": 1,
+                    "process_status": 0,
+                    "metadata": {},
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693272Z"
+                }
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-5555",
+                    "id": "51fcca25-2e85-4c44-subscription-5555",
+                    "version": 1,
+                    "identity": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "messageset_id": 1,
+                    "next_sequence_number": 1,
+                    "lang": "eng_NG",
+                    "active": true,
+                    "completed": false,
+                    "schedule": 1,
+                    "process_status": 0,
+                    "metadata": {},
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693272Z"
+                }
+            }
+        },
+
+        // 22: get subscription for identity 3f7c8851-5204-43f7-af7f-005059996666
+        {
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'identity': '3f7c8851-5204-43f7-af7f-005059996666'
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/subscriptions/'
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    'url': 'http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-6666',
+                    'id': '51fcca25-2e85-4c44-subscription-6666',
+                    'version': 1,
+                    'identity': '3f7c8851-5204-43f7-af7f-005059996666',
+                    'messageset_id': 3,
+                    'next_sequence_number': 1,
+                    'lang': "pcm_NG",
+                    'active': true,
+                    'completed': false,
+                    'schedule': 1,
+                    'process_status': 0,
+                    'metadata': {},
+                    'created_at': "2015-07-10T06:13:29.693272Z",
+                    'updated_at': "2015-07-10T06:13:29.693272Z"
+                }
+            }
+        },
+
+        // 23: get messageset 3
+        {
+            'request': {
+                'method': 'GET',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8003/api/v1/messagesets/3/'
+            },
+            'response': {
+                'code': 200,
+                'data': {
+                    'id': 1,
+                    'short_name': 'messageset 3',
+                    'notes': null,
+                    'next_set': 4,
+                    'default_schedule': 1,
+                    'content_type': 'audio',
+                    'created_at': "2015-07-10T06:13:29.693272Z",
+                    'updated_at': "2015-07-10T06:13:29.693272Z"
+                }
+            }
+        },
+
+        // 24: patch subscription
+        {
+            'request': {
+                'method': 'PATCH',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-6666/',
+                'data': {
+                    "url": "http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-6666",
+                    "id": "51fcca25-2e85-4c44-subscription-6666",
+                    "version": 1,
+                    "identity": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "messageset_id": 1,
+                    "next_sequence_number": 1,
+                    "lang": "pcm_NG",
+                    "active": true,
+                    "completed": false,
+                    "schedule": 1,
+                    "process_status": 0,
+                    "metadata": {},
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693272Z"
+                }
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-6666",
+                    "id": "51fcca25-2e85-4c44-subscription-6666",
+                    "version": 1,
+                    "identity": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "messageset_id": 1,
+                    "next_sequence_number": 1,
+                    "lang": "pcm_NG",
+                    "active": true,
+                    "completed": false,
+                    "schedule": 1,
+                    "process_status": 0,
+                    "metadata": {},
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693272Z"
+                }
+            }
+        },
+
+
 
         // x: unused - get identity 3f7c8851-5204-43f7-af7f-005059995555
         {

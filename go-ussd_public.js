@@ -864,17 +864,42 @@ go.utils_project = {
             });
     },
 
-    update_msg_format_time: function(im, prior_msg_format, new_msg_format) {
+    update_msg_format_time: function(im, prior_msg_format, new_msg_format, voice_days, voice_times) {
       //
+
+        var mother_subscription = im.user.answers.mother_subscription;
+        // change from sms to voice
         if (prior_msg_format === 'text' && new_msg_format === 'audio') {
             // update subscription
             console.log('text -> audio');
-            var mother_subscription = im.user.answers.mother_subscription;
+            mother_subscription.messageset_id = 1;
+            mother_subscription.schedule = 1;
+            mother_subscription.next_sequence_number = 1;
+            return Q.all([
+                go.utils.update_subscription(im, mother_subscription),
+                // TODO: go.utils.update_identity(im, contact) for applicable contacts
+            ]);
+
+        // change voice day & time
+        } else if (prior_msg_format === 'audio' && new_msg_format === 'audio') {
+            console.log('audio -> audio');
+            // update subscription
+            mother_subscription.messageset_id = 1;
+            mother_subscription.schedule = 1;
+            mother_subscription.next_sequence_number = 1;
+            return go.utils.update_subscription(im, mother_subscription);
+
+        // change from voice to sms
+        } else if (prior_msg_format === 'audio' && new_msg_format === 'text') {
+            console.log('audio -> text');
+            // update subscription
             mother_subscription.messageset_id = 1;
             mother_subscription.schedule = 1;
             mother_subscription.next_sequence_number = 1;
             return go.utils.update_subscription(im, mother_subscription);
         }
+
+
     },
 
     is_registered: function(identity_id, im) {
@@ -1103,7 +1128,7 @@ go.app = function() {
                 "Thank you. You will now start receiving voice calls between [time] on [days].",
             "state_change_menu_voice":
                 "Please select what you would like to do:",
-            "state_sms_confirm":
+            "state_end_sms_confirm":
                 "Thank you. You will now receive text messages.",
             "state_new_msisdn":
                 "Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899",
@@ -1451,17 +1476,31 @@ go.app = function() {
                 error: $(get_error_text(name)),
                 choices: [
                     new Choice('state_voice_days', $("Change the day and time I receive messages")),
-                    new Choice('state_sms_confirm', $("Change from voice to text messages")),
+                    new Choice('state_end_sms_confirm', $("Change from voice to text messages")),
                     new Choice('state_check_receiver_role', $("Back to main menu"))
                 ],
                 next: function(choice) {
-                    return choice.value;
+                    if (choice.value !== 'state_end_sms_confirm') {
+                        return choice.value;
+                    } else {
+                        return go.utils_project
+                            .update_msg_format_time(
+                                self.im,
+                                self.im.user.answers.msg_format,
+                                'text',
+                                null,
+                                null
+                            )
+                            .then(function() {
+                                return 'state_end_sms_confirm';
+                            });
+                    }
                 }
             });
         });
 
         // EndState st-08
-        self.add('state_sms_confirm', function(name) {
+        self.add('state_end_sms_confirm', function(name) {
             return new EndState(name, {
                 text: $(questions[name]),
                 next: 'state_start'
