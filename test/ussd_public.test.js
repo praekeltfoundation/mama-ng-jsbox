@@ -106,7 +106,9 @@ describe("Hello Mama app", function() {
                                 "Welcome to Hello Mama. Please choose your language",
                                 "1. English",
                                 "2. Hausa",
-                                "3. Igbo"
+                                "3. Igbo",
+                                "4. Pidgin",
+                                "5. Yoruba"
                             ].join('\n')
                         })
                         .check(function(api) {
@@ -125,7 +127,7 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  //dial in
-                            , '2'   // state_language - Hausa
+                            , '5'   // state_language - yoruba
                         )
                         .check.interaction({
                             state: 'state_registered_msisdn',
@@ -218,7 +220,7 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '2'   // state_language - hausa
+                            , '4'   // state_language - pidgin
                             , '05059993333'  // state_registered_msisdn
                         )
                         .check.interaction({
