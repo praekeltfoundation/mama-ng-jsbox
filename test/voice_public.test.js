@@ -94,7 +94,7 @@ describe("Mama Nigeria App", function() {
 
         describe("When you enter a number msg_receiver_msisdn", function() {
             describe("if you enter a crummy number", function() {
-                it("should navigate to state_retry_msg_receiver_msisdn", function() {
+                it("should navigate to state_msisdn_not_recognised", function() {
                     return tester
                         .setup.user.addr('+07070050005')
                         .inputs(
@@ -102,13 +102,13 @@ describe("Mama Nigeria App", function() {
                             , '5551234'  // msg_receiver_msisdn
                         )
                         .check.interaction({
-                            state: 'state_retry_msg_receiver_msisdn',
-                            reply: "Retry number"
+                            state: 'state_msisdn_not_recognised',
+                            reply: "Number not recognised. Redial or register."
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_retry_msg_receiver_msisdn_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msisdn_not_recognised_1.mp3',
                                     wait_for: '#'
                                 }
                             }

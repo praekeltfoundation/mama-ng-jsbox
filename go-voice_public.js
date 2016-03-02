@@ -1021,7 +1021,7 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 next: function(content) {
                     if (!go.utils.is_valid_msisdn(content)) {
-                        return 'state_retry_msg_receiver_msisdn';
+                        return 'state_msisdn_not_recognised';
                     } else {
                         return go.utils
                             .get_or_create_identity({'msisdn': content}, self.im, null)
@@ -1064,71 +1064,55 @@ go.app = function() {
             }
         });
 
-       self.add('state_retry_msg_receiver_msisdn', function(name) {
-           var speech_option = '1';
-           return new FreeText(name, {
-               question: $('Retry number'),
-               helper_metadata: go.utils_project.make_voice_helper_data(
-                   self.im, name, lang, speech_option),
-               next: function(content) {
-                   if (!go.utils.is_valid_msisdn(content)) {
-                       return 'state_retry_msg_receiver_msisdn';
-                   } else {
-                       return go.utils
-                           .get_or_create_identity({'msisdn': content}, self.im, null)
-                           .then(function(user) {
-                               self.im.user.set_answer('user_id', user.id);
-                               if (user.details.receiver_role) {
-                                   self.im.user.set_answer('role_player', user.details.receiver_role);
-                                   return self.states.create('state_check_receiver_role');  // recognised
-                               } else {
-                                   self.im.user.set_answer('role_player', 'guest');
-                                   return self.states.create('state_not_recognised_msg_receiver_msisdn');  // not recognised
-                               }
-                           });
-                   }
-               }
-           });
-       });
+        // EndState st-B
+        self.add('state_msisdn_not_recognised', function(name) {
+            var speech_option = '1';
+            return new EndState(name, {
+                text: $('Number not recognised. Redial or register.'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: 'state_start'
+            });
+        });
 
        // ChoiceState st-A
-       self.add('state_main_menu', function(name) {
-           var speech_option = '1';
-           return new ChoiceState(name, {
-               question: $('Choose:'),
-               helper_metadata: go.utils_project.make_voice_helper_data(
-                   self.im, name, lang, speech_option),
-               choices: [
-                   new Choice('state_baby_check', $('baby')),
-                   new Choice('state_voice_days', $('preferences')),
-                   new Choice('state_new_msisdn', $('number')),
-                   new Choice('state_msg_language', $('language')),
-                   new Choice('state_optout_reason', $('optout'))
-               ],
-               next: function(choice) {
-                   return choice.value;
-               }
-           });
-       });
+        self.add('state_main_menu', function(name) {
+            var speech_option = '1';
+            return new ChoiceState(name, {
+                question: $('Choose:'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                choices: [
+                    new Choice('state_baby_check', $('baby')),
+                    new Choice('state_voice_days', $('preferences')),
+                    new Choice('state_new_msisdn', $('number')),
+                    new Choice('state_msg_language', $('language')),
+                    new Choice('state_optout_reason', $('optout'))
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
 
        // ChoiceState st-A1
-       self.add('state_main_menu_household', function(name) {
-           var speech_option = '1';
-           return new ChoiceState(name, {
-               question: $('Choose:'),
-               helper_metadata: go.utils_project.make_voice_helper_data(
-                   self.im, name, lang, speech_option),
-               choices: [
-                   new Choice('state_baby_check', $('baby')),
-                   new Choice('state_new_msisdn', $('number')),
-                   new Choice('state_msg_language', $('language')),
-                   new Choice('state_optout_reason', $('optout'))
-               ],
-               next: function(choice) {
-                   return choice.value;
-               }
-           });
-       });
+        self.add('state_main_menu_household', function(name) {
+            var speech_option = '1';
+            return new ChoiceState(name, {
+                question: $('Choose:'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                choices: [
+                    new Choice('state_baby_check', $('baby')),
+                    new Choice('state_new_msisdn', $('number')),
+                    new Choice('state_msg_language', $('language')),
+                    new Choice('state_optout_reason', $('optout'))
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
 
 
         self.add('state_not_recognised_msg_receiver_msisdn', function(name) {
