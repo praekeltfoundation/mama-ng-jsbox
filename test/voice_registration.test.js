@@ -296,7 +296,7 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                it("to state_msisdn_household", function() {
+                it("to state_msisdn_household (father message receiver)", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -307,7 +307,37 @@ describe("Mama Nigeria App", function() {
                         )
                         .check.interaction({
                             state: 'state_msisdn_household',
-                            reply: 'Please enter number (household)'
+                            reply: "Please enter the father's number"
+                        })
+                        .run();
+                });
+                it("to state_msisdn_household (family member message receiver)", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'        // state_personnel_auth
+                            , '4'            // state_msg_receiver - mother & family member
+                            , '09094444444'  // state_msisdn_mother
+                        )
+                        .check.interaction({
+                            state: 'state_msisdn_household',
+                            reply: "Please enter the family member's number"
+                        })
+                        .run();
+                });
+                it("to state_msisdn_household (friend message receiver)", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'        // state_personnel_auth
+                            , '5'            // state_msg_receiver - mother & friend
+                            , '09094444444'  // state_msisdn_mother
+                        )
+                        .check.interaction({
+                            state: 'state_msisdn_household',
+                            reply: "Please enter the friend's number"
                         })
                         .run();
                 });
@@ -323,7 +353,7 @@ describe("Mama Nigeria App", function() {
                         )
                         .check.interaction({
                             state: 'state_msisdn_household',
-                            reply: 'Sorry, invalid input. Please enter number (household)'
+                            reply: "Sorry, invalid input. Please enter the father's number"
                         })
                         .run();
                 });
