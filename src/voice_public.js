@@ -121,26 +121,19 @@ go.app = function() {
        // ChoiceState st-A
        self.add('state_main_menu', function(name) {
            var speech_option = '1';
-           var routing = {
-               'msg_baby': 'state_baby_check',
-               'msg_pref': 'state_voice_days',
-               'msg_msisdn': 'state_new_msisdn',
-               'msg_language': 'state_msg_language',
-               'optout': 'state_optout_reason'
-           };
            return new ChoiceState(name, {
                question: $('Choose:'),
                helper_metadata: go.utils_project.make_voice_helper_data(
                    self.im, name, lang, speech_option),
                choices: [
-                   new Choice('msg_baby', $('baby')),
-                   new Choice('msg_pref', $('preferences')),
-                   new Choice('msg_msisdn', $('number')),
-                   new Choice('msg_language', $('language')),
-                   new Choice('optout', $('optout'))
+                   new Choice('state_baby_check', $('baby')),
+                   new Choice('state_voice_days', $('preferences')),
+                   new Choice('state_new_msisdn', $('number')),
+                   new Choice('state_msg_language', $('language')),
+                   new Choice('state_optout_reason', $('optout'))
                ],
                next: function(choice) {
-                   return routing[choice.value];
+                   return choice.value;
                }
            });
        });
@@ -148,25 +141,18 @@ go.app = function() {
        // ChoiceState st-A1
        self.add('state_main_menu_household', function(name) {
            var speech_option = '1';
-           var routing = {
-               'msg_baby': 'state_baby_confirm',
-               'msg_pref': 'state_voice_days',
-               'msg_msisdn': 'state_new_msisdn',
-               'msg_language': 'state_msg_language',
-               'optout': 'state_optout_reason'
-           };
            return new ChoiceState(name, {
                question: $('Choose:'),
                helper_metadata: go.utils_project.make_voice_helper_data(
                    self.im, name, lang, speech_option),
                choices: [
-                   new Choice('msg_baby', $('baby')),
-                   new Choice('msg_misisdn', $('number')),
-                   new Choice('msg_language', $('language')),
-                   new Choice('optout', $('optout'))
+                   new Choice('state_baby_check', $('baby')),
+                   new Choice('state_new_msisdn', $('number')),
+                   new Choice('state_msg_language', $('language')),
+                   new Choice('state_optout_reason', $('optout'))
                ],
                next: function(choice) {
-                   return routing[choice.value];
+                   return choice.value;
                }
            });
        });
