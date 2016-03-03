@@ -324,6 +324,19 @@ go.utils = {
             });
     },
 
+    read_messageset_by_shortname: function(im, shortname) {
+      // Gets the messageset from the Stage-base Store via params
+      // Returns the messageset object
+
+        var params = {shortname: shortname};
+        var endpoint = 'messagesets/';
+        return go.utils
+            .service_api_call('messagesets', 'get', params, null, endpoint, im)
+            .then(function(response) {
+                return response.data;
+            });
+    },
+
 
 "commas": "commas"
 };

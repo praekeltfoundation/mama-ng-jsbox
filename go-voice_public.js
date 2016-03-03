@@ -331,6 +331,19 @@ go.utils = {
             });
     },
 
+    read_messageset_by_shortname: function(im, shortname) {
+      // Gets the messageset from the Stage-base Store via params
+      // Returns the messageset object
+
+        var params = {shortname: shortname};
+        var endpoint = 'messagesets/';
+        return go.utils
+            .service_api_call('messagesets', 'get', params, null, endpoint, im)
+            .then(function(response) {
+                return response.data;
+            });
+    },
+
 
 "commas": "commas"
 };
@@ -859,9 +872,22 @@ go.utils_project = {
                 return go.utils
                     .read_messageset(im, subscription.messageset_id)
                     .then(function(messageset) {
+                        im.user.set_answer('mother_messageset', messageset);
                         return messageset.content_type;  // 'text' / 'audio'
                     });
             });
+    },
+
+    change_to_audio_messageset: function(im) {
+        current_messageset_shortname = im.user.answers.mother_messageset.short_name;
+        new_messageset_shortname = current_messageset_shortname.replace('text', 'audio');
+        return new_messageset_shortname;
+    },
+
+    get_audio_schedule: function(im, voice_days, voice_times) {
+        console.log(im.user.answers.mother_subscription);
+        current_schedule = im.user.answers.mother_subscription.schedule;
+        console.log(current_schedule);
     },
 
     update_msg_format_time: function(im, prior_msg_format, new_msg_format, voice_days, voice_times) {
@@ -872,9 +898,9 @@ go.utils_project = {
         if (prior_msg_format === 'text' && new_msg_format === 'audio') {
             // update subscription
             console.log('text -> audio');
-            mother_subscription.messageset_id = 1;
-            mother_subscription.schedule = 1;
-            mother_subscription.next_sequence_number = 1;
+            mother_subscription.messageset_id = go.utils_project.change_to_audio_messageset(im);
+            mother_subscription.schedule = go.utils_project.get_audio_schedule(im, voice_days, voice_times);
+            mother_subscription.next_sequence_number = 1;  // TODO c
             return Q.all([
                 go.utils.update_subscription(im, mother_subscription),
                 // TODO: go.utils.update_identity(im, contact) for applicable contacts
@@ -928,10 +954,6 @@ go.utils_project = {
             }
         };
         return subscription;
-    },
-
-    get_messageset_id: function(mama_identity) {
-        return (mama_identity.details.state_current === 'pregnant') ? 1 : 2;
     },
 
     get_next_sequence_number: function(mama_identity) {

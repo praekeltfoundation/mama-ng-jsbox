@@ -749,9 +749,9 @@ module.exports = function() {
                 'code': 200,
                 'data': {
                     'id': 1,
-                    'short_name': 'messageset 1',
+                    'short_name': 'pregnant_mother_text_10_42',
                     'notes': null,
-                    'next_set': 2,
+                    'next_set': 4,
                     'default_schedule': 1,
                     'content_type': 'text',
                     'created_at': "2015-07-10T06:13:29.693272Z",
