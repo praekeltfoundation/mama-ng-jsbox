@@ -1032,65 +1032,6 @@ go.utils_project = {
         });
     },
 
-    get_active_subscriptions_by_identity_id: function(identity_id, im) {
-        // returns all active subscriptions - for unlikely case where there
-        // is more than one active subscription
-        var params = {
-            identity: identity_id,
-            active: "True"
-        };
-        return go.utils
-        .service_api_call("subscriptions", "get", params, null, "subscriptions/", im)
-        .then(function(json_get_response) {
-            return json_get_response.data.results;
-        });
-    },
-
-    get_active_subscription_by_identity_id: function(identity_id, im) {
-        // returns first active subscription found
-        return go.utils_project
-        .get_active_subscriptions_by_identity_id(identity_id, im)
-        .then(function(subscriptions) {
-            return subscriptions[0];
-        });
-    },
-
-    has_active_subscriptions: function(identity_id, im) {
-        return go.utils_project
-        .get_active_subscriptions_by_identity_id(identity_id, im)
-        .then(function(subscriptions) {
-            return subscriptions.length > 0;
-        });
-    },
-
-    subscriptions_unsubscribe_all: function(identity_id, im) {
-        // make all subscriptions inactive
-        // unlike other functions takes into account that there may be
-        // more than one active subscription returned (unlikely)
-        return go.utils_project
-        .get_active_subscriptions_by_identity_id(identity_id, im)
-        .then(function(active_subscriptions) {
-            var subscriptions = active_subscriptions;
-            var clean = true;  // clean tracks if api call is unnecessary
-            var patch_calls = [];
-            for (i=0; i<subscriptions.length; i++) {
-                var updated_subscription = subscriptions[i];
-                var endpoint = "subscriptions/" + updated_subscription.id + '/';
-                updated_subscription.active = false;
-                // store the patch calls to be made
-                patch_calls.push(function() {
-                    return go.utils.service_api_call("subscriptions", "patch", {}, updated_subscription, endpoint, im);
-                });
-                clean = false;
-            }
-            if (!clean) {
-                return Q.all(patch_calls.map(Q.try));
-            } else {
-                return Q();
-            }
-        });
-    },
-
     switch_to_baby: function(im) {
         var mama_id = im.user.answers.mama_id;
         return Q

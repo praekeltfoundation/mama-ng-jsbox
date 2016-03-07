@@ -59,7 +59,7 @@ go.app = function() {
                                     .is_registered(identity.id, self.im)
                                     .then(function(is_registered) {
                                         if (is_registered === true) {
-                                            return go.utils_project
+                                            return go.utils
                                                 .has_active_subscriptions(identity.id, self.im)
                                                 .then(function(has_active_subscriptions) {
                                                     if (has_active_subscriptions === true) {
