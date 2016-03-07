@@ -49,6 +49,8 @@ go.app = function() {
                 "Select the month & year the baby was born:",
             "state_baby_birth_day":
                 "What day of the month was the baby born? For example, 12.",
+            "state_gravida":
+                "Please enter the number of times the woman has been pregnant before. This includes any pregnancies she may not have carried to term.",
             "state_msg_language":
                 "Which language would this person like to receive these messages in?",
             "state_msg_type":
@@ -78,7 +80,7 @@ go.app = function() {
         // override normal state adding
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                if (!interrupt || !go.utils_project.timed_out(self.im))
+                if (!interrupt || !go.utils.timed_out(self.im))
                     return creator(name, opts);
 
                 interrupt = false;
@@ -308,6 +310,21 @@ go.app = function() {
             });
         });
 
+        //
+        self.add('state_gravida', function(name) {
+            return new FreeText(name, {
+                question: $(questions[name]),
+                check: function(content) {
+                    if (go.utils.check_valid_number(content)) {
+                        return null;  // vumi expects null or undefined if check passes
+                    } else {
+                        return $(get_error_text(name));
+                    }
+                },
+                next: 'state_msg_language'
+            });
+        });
+
         // ChoiceState st-07
         self.add('state_msg_language', function(name) {
             return new ChoiceState(name, {
@@ -315,7 +332,9 @@ go.app = function() {
                 choices: [
                     new Choice('english', $('English')),
                     new Choice('hausa', $('Hausa')),
-                    new Choice('igbo', $('Igbo'))
+                    new Choice('igbo', $('Igbo')),
+                    new Choice('pidgin', $('Pidgin')),
+                    new Choice('yoruba', $('Yoruba'))
                 ],
                 next: 'state_msg_type'
             });
@@ -439,7 +458,7 @@ go.app = function() {
 
             if (go.utils.is_valid_date(dateToValidate, 'YYYYMMDD')) {
                 self.im.user.set_answer('working_date', dateToValidate);
-                return self.states.create('state_msg_language');
+                return self.states.create('state_gravida');
             } else {
                 return self.states.create('state_invalid_date', {date: dateToValidate});
             }

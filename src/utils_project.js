@@ -119,6 +119,7 @@ go.utils_project = {
                 .then(function(mother_identity) {
                     mother_identity.details.receiver_role = 'mother';
                     mother_identity.details.linked_to = null;
+                    mother_identity.details.gravida = im.user.answers.state_gravida;
                     mother_identity.details.preferred_language = im.user.answers.state_msg_language;
                     mother_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
 
@@ -138,6 +139,7 @@ go.utils_project = {
                 .spread(function(mother_identity, receiver_identity) {
                     mother_identity.details.receiver_role = 'mother';
                     mother_identity.details.linked_to = im.user.answers.receiver_id;
+                    mother_identity.details.gravida = im.user.answers.state_gravida;
                     mother_identity.details.preferred_language = im.user.answers.state_msg_language;
 
                     receiver_identity.details.receiver_role = msg_receiver.replace('_only', '');
@@ -165,6 +167,7 @@ go.utils_project = {
                     mother_identity.details.receiver_role = 'mother';
                     mother_identity.details.linked_to = im.user.answers.receiver_id;
                     mother_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
+                    mother_identity.details.gravida = im.user.answers.state_gravida;
                     mother_identity.details.preferred_language = im.user.answers.state_msg_language;
 
                     receiver_identity.details.receiver_role = msg_receiver.replace('mother_', '');
@@ -293,6 +296,15 @@ go.utils_project = {
 
 // SPEECH OPTION HELPERS
 
+    get_speech_option_household: function(member) {
+        member_map = {
+            'father': '1',
+            'family member': '2',
+            'friend': '3'
+        };
+        return member_map[member];
+    },
+
     get_speech_option_pregnancy_status_day: function(im, month) {
         var speech_option_start;
 
@@ -349,6 +361,7 @@ go.utils_project = {
                 mother_id: im.user.answers.mother_id,
                 receiver_id: im.user.answers.receiver_id,
                 operator_id: im.user.answers.operator_id,
+                gravida: im.user.answers.state_gravida,
                 language: im.user.answers.state_msg_language,
                 msg_type: im.user.answers.state_msg_type,
                 user_id: im.user.answers.user_id
@@ -387,6 +400,7 @@ go.utils_project = {
         mama_identity.details.msg_receiver = im.user.answers.state_r03_receiver;
         mama_identity.details.state_at_registration = im.user.answers.state_r04_mom_state;
         mama_identity.details.state_current = im.user.answers.state_r04_mom_state;
+        mama_identity.details.gravida = im.user.answers.state_gravida;
         mama_identity.details.lang = go.utils_project.get_lang(im);
         mama_identity.details.msg_type = im.user.answers.state_r10_message_type;
         mama_identity.details.voice_days = im.user.answers.state_r11_voice_days || 'sms';
@@ -574,65 +588,6 @@ go.utils_project = {
         });
     },
 
-    get_active_subscriptions_by_identity_id: function(identity_id, im) {
-        // returns all active subscriptions - for unlikely case where there
-        // is more than one active subscription
-        var params = {
-            identity: identity_id,
-            active: "True"
-        };
-        return go.utils
-        .service_api_call("subscriptions", "get", params, null, "subscriptions/", im)
-        .then(function(json_get_response) {
-            return json_get_response.data.results;
-        });
-    },
-
-    get_active_subscription_by_identity_id: function(identity_id, im) {
-        // returns first active subscription found
-        return go.utils_project
-        .get_active_subscriptions_by_identity_id(identity_id, im)
-        .then(function(subscriptions) {
-            return subscriptions[0];
-        });
-    },
-
-    has_active_subscriptions: function(identity_id, im) {
-        return go.utils_project
-        .get_active_subscriptions_by_identity_id(identity_id, im)
-        .then(function(subscriptions) {
-            return subscriptions.length > 0;
-        });
-    },
-
-    subscriptions_unsubscribe_all: function(identity_id, im) {
-        // make all subscriptions inactive
-        // unlike other functions takes into account that there may be
-        // more than one active subscription returned (unlikely)
-        return go.utils_project
-        .get_active_subscriptions_by_identity_id(identity_id, im)
-        .then(function(active_subscriptions) {
-            var subscriptions = active_subscriptions;
-            var clean = true;  // clean tracks if api call is unnecessary
-            var patch_calls = [];
-            for (i=0; i<subscriptions.length; i++) {
-                var updated_subscription = subscriptions[i];
-                var endpoint = "subscriptions/" + updated_subscription.id + '/';
-                updated_subscription.active = false;
-                // store the patch calls to be made
-                patch_calls.push(function() {
-                    return go.utils.service_api_call("subscriptions", "patch", {}, updated_subscription, endpoint, im);
-                });
-                clean = false;
-            }
-            if (!clean) {
-                return Q.all(patch_calls.map(Q.try));
-            } else {
-                return Q();
-            }
-        });
-    },
-
     switch_to_baby: function(im) {
         var mama_id = im.user.answers.mama_id;
         return Q
@@ -669,19 +624,5 @@ go.utils_project = {
     },
 
 
-// TIMEOUT HELPERS
-
-    timed_out: function(im) {
-        var no_redirects = [
-            'state_start',
-            'state_end_voice',
-            'state_end_sms'
-        ];
-        return im.msg.session_event === 'new'
-        && im.user.state.name
-        && no_redirects.indexOf(im.user.state.name) === -1;
-    },
-
-
-"commas": "commas"
+    "commas": "commas"
 };

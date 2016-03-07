@@ -36,7 +36,12 @@ describe("Mama Nigeria App", function() {
                             api_token: 'test_token_outbound',
                             url: "http://localhost:8003/api/v1/"
                         }
-                    }
+                    },
+                    no_timeout_redirects: [
+                        'state_start',
+                        'state_end_voice',
+                        'state_end_sms'
+                    ]
                 })
                 .setup(function(api) {
                     fixtures().forEach(api.http.fixtures.add);
@@ -364,7 +369,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            it("to state_msg_language", function() {
+            it("to state_gravida", function() {
                 return tester
                     .setup.user.addr('08080020002')
                     .inputs(
@@ -377,12 +382,33 @@ describe("Mama Nigeria App", function() {
                       , '12'  // state_last_period_day
                     )
                     .check.interaction({
+                        state: 'state_gravida',
+                        reply: "Please enter the number of times the woman has been pregnant before. This includes any pregnancies she may not have carried to term."
+                    })
+                    .run();
+            });
+            it("to state_msg_language", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .inputs(
+                      {session_event: 'new'}  // dial in
+                      , '12345'   // state_auth_code - personnel code
+                      , '6' // state_msg_receiver - friend_only
+                      , '09092222222'  // state_msisdn
+                      , '1'  // state_msg_pregnant - mother
+                      , '3'  // state_last_period_month - May 15
+                      , '12'  // state_last_period_day
+                      , '2'  // state_gravida
+                    )
+                    .check.interaction({
                         state: 'state_msg_language',
                         reply: [
                             "Which language would this person like to receive these messages in?",
                             "1. English",
                             "2. Hausa",
-                            "3. Igbo"
+                            "3. Igbo",
+                            "4. Pidgin",
+                            "5. Yoruba"
                         ].join('\n')
                     })
                     .run();
@@ -457,7 +483,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            it("to state_msg_language", function() {
+            it("to state_gravida", function() {
                 return tester
                     .setup.user.addr('08080020002')
                     .inputs(
@@ -470,7 +496,8 @@ describe("Mama Nigeria App", function() {
                       , '12'  // state_baby_birth_day
                     )
                     .check.interaction({
-                        state: 'state_msg_language',
+                        state: 'state_gravida',
+                        reply: "Please enter the number of times the woman has been pregnant before. This includes any pregnancies she may not have carried to term."
                     })
                     .run();
             });
@@ -485,6 +512,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_msg_pregnant - mother
                         , '3'  // state_last_period_month - May 15
                         , '12' // state_last_period_day - 12
+                        , '3'  // state_gravida
                         , '1'  // state_msg_language - english
                     )
                     .check.interaction({
@@ -509,6 +537,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_msg_pregnant - mother
                         , '3'  // state_last_period_month - May 15
                         , '12' // state_last_period_day - 12
+                        , '3'  // state_gravida
                         , '1'  // state_msg_language - english
                         , '1'   // state_msg_type - voice calls
                     )
@@ -533,7 +562,8 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_msg_pregnant - mother
                         , '3'  // state_last_period_month - May 15
                         , '12' // state_last_period_day - 12
-                        , '1'  // state_msg_language - english
+                        , '3'  // state_gravida
+                        , '4'  // state_msg_language - pidgin
                         , '1'   // state_msg_type - voice calls
                         , '2'   // state_voice_days - tuesdays and thursdays
                     )
@@ -558,7 +588,8 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_msg_pregnant - mother
                         , '3'  // state_last_period_month - May 15
                         , '12' // state_last_period_day - 12
-                        , '1'  // state_msg_language - english
+                        , '3'  // state_gravida
+                        , '1'  // state_msg_language - yoruba
                         , '1'   // state_msg_type - voice calls
                         , '2'   // state_voice_days - tuesdays and thursdays
                         , '2'   // state_voice_times - between 2-5pm
@@ -591,6 +622,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_msg_pregnant - mother
                         , '3'  // state_last_period_month - May 15
                         , '12' // state_last_period_day - 12
+                        , '3' // state_gravida
                         , '2'  // state_msg_language - hausa
                         , '2'   // state_msg_type - text smss
                     )
@@ -624,6 +656,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_msg_pregnant - mother
                         , '3'  // state_last_period_month - May 15
                         , '12' // state_last_period_day - 12
+                        , '3'  // state_gravida
                         , '1'  // state_msg_language - english
                         , '1'   // state_msg_type - voice calls
                         , '2'   // state_voice_days - tuesdays and thursdays
@@ -655,6 +688,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_msg_pregnant - mother
                         , '3'  // state_last_period_month - May 15
                         , '12' // state_last_period_day - 12
+                        , '3'  // state_gravida
                         , '1'  // state_msg_language - english
                         , '1'   // state_msg_type - voice calls
                         , '2'   // state_voice_days - tuesdays and thursdays
@@ -685,6 +719,7 @@ describe("Mama Nigeria App", function() {
                         , '2'  // state_msg_pregnant - baby
                         , '4'  // state_baby_birth_month_year - May 15
                         , '12' // state_baby_birth_day - 12
+                        , '2'  // state_gravida
                         , '3'  // state_msg_language - igbo
                         , '2'   // state_msg_type - sms
                     )
@@ -714,6 +749,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_msg_pregnant - mother
                         , '3'  // state_last_period_month - May 15
                         , '12' // state_last_period_day - 12
+                        , '2'  // state_gravida
                         , '1'  // state_msg_language - english
                         , '1'   // state_msg_type - voice calls
                         , '2'   // state_voice_days - tuesdays and thursdays
@@ -744,6 +780,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_msg_pregnant - mother
                         , '3'  // state_last_period_month - May 15
                         , '12' // state_last_period_day - 12
+                        , '2'  // state_gravida
                         , '1'  // state_msg_language - english
                         , '1'   // state_msg_type - voice calls
                         , '2'   // state_voice_days - tuesdays and thursdays

@@ -8,11 +8,21 @@ go;
 /*jshint -W083 */
 var vumigo = require('vumigo_v02');
 var moment = require('moment');
+var Q = require('q');
 var JsonApi = vumigo.http.api.JsonApi;
 var Choice = vumigo.states.Choice;
 
 // GENERIC UTILS
 go.utils = {
+
+// TIMEOUT HELPERS
+
+    timed_out: function(im) {
+        return im.msg.session_event === 'new'
+            && im.user.state.name
+            && im.config.no_timeout_redirects.indexOf(im.user.state.name) === -1;
+    },
+
 
 // SERVICE API CALL HELPERS
 
@@ -120,9 +130,13 @@ go.utils = {
         return moment(date, format, true).isValid();
     },
 
-    is_valid_year: function(input) {
+    is_valid_year: function(input, min, max) {  // expecting string parameters
         // check that it is a number and has four digits
-        return input.length === 4 && go.utils.check_valid_number(input);
+        // AND that the number is within the range determined by the min/max parameters
+        return input.length === 4 && min.length === 4 && max.length === 4 &&
+                go.utils.check_valid_number(input) &&
+                parseInt(input, 10) >= parseInt(min, 10) &&
+                parseInt(input, 10) <= parseInt(max, 10);
     },
 
     is_valid_day_of_month: function(input) {
@@ -141,9 +155,22 @@ go.utils = {
         return input !== '' && alpha_only.test(input);
     },
 
-    is_valid_name: function(input) {
-        // check that all chars are alphabetical
-        return go.utils.check_valid_alpha(input);
+    is_valid_name: function(input, min, max) {
+        // check that the string does not include the characters listed in the
+        // regex, and min <= input string length <= max
+        var name_check = new RegExp(
+            '(^[^±!@£$%^&*_+§¡€#¢§¶•ªº«\\/<>?:;|=.,123456789]{min,max}$)'
+            .replace('min', min.toString())
+            .replace('max', max.toString())
+        );
+        return input !== '' && name_check.test(input);
+    },
+
+    get_clean_first_word: function(user_message) {
+        return user_message
+            .split(" ")[0]          // split off first word
+            .replace(/\W/g, '')     // remove non letters
+            .toUpperCase();         // capitalise
     },
 
 
@@ -200,8 +227,8 @@ go.utils = {
     },
 
     get_identity: function(identity_id, im) {
-        // Gets the identity from the Identity Store
-        // Returns the identity object
+      // Gets the identity from the Identity Store
+      // Returns the identity object
 
         var endpoint = 'identities/' + identity_id + '/';
         return go.utils
@@ -212,7 +239,8 @@ go.utils = {
     },
 
     create_identity: function(im, address, communicate_through_id, operator_id) {
-        // Create a new identity
+      // Create a new identity
+      // Returns the identity object
 
         var payload = {};
         // compile base payload
@@ -279,6 +307,137 @@ go.utils = {
             });
     },
 
+
+// SUBSCRIPTION HELPERS
+
+    get_active_subscriptions_by_identity_id: function(identity_id, im) {
+      // Returns all active subscriptions - for unlikely case where there
+      // is more than one active subscription
+
+        var params = {
+            contact: identity_id,
+            active: "True"
+        };
+        return go.utils
+            .service_api_call("subscriptions", "get", params, null, "subscriptions/", im)
+            .then(function(json_get_response) {
+                return json_get_response.data.results;
+            });
+    },
+
+    get_active_subscription_by_identity_id: function(identity_id, im) {
+      // Returns first active subscription found
+
+        return go.utils
+            .get_active_subscriptions_by_identity_id(identity_id, im)
+            .then(function(subscriptions) {
+                return subscriptions[0];
+            });
+    },
+
+    has_active_subscriptions: function(identity_id, im) {
+      // Returns whether an identity has an active subscription
+      // Returns true / false
+
+        return go.utils
+            .get_active_subscriptions_by_identity_id(identity_id, im)
+            .then(function(subscriptions) {
+                return subscriptions.length > 0;
+            });
+    },
+
+    subscription_unsubscribe_all: function(contact, im) {
+        var params = {
+            'details__addresses__msisdn': contact.msisdn
+        };
+        return go.utils
+        .service_api_call("identities", "get", params, null, 'subscription/', im)
+        .then(function(json_result) {
+            // make all subscriptions inactive
+            var subscriptions = json_result.data;
+            var clean = true;  // clean tracks if api call is unnecessary
+            var patch_calls = [];
+            for (i=0; i<subscriptions.length; i++) {
+                if (subscriptions[i].active === true) {
+                    var updated_subscription = subscriptions[i];
+                    var endpoint = 'subscription/' + updated_subscription.id + '/';
+                    updated_subscription.active = false;
+                    // store the patch calls to be made
+                    patch_calls.push(function() {
+                        return go.utils.service_api_call("identities", "patch",
+                            {}, updated_subscription, endpoint, im);
+                    });
+                    clean = false;
+                }
+            }
+            if (!clean) {
+                return Q
+                .all(patch_calls.map(Q.try))
+                .then(function(results) {
+                    var unsubscribe_successes = 0;
+                    var unsubscribe_failures = 0;
+                    for (var index in results) {
+                        (results[index].code >= 200 && results[index].code < 300)
+                            ? unsubscribe_successes += 1
+                            : unsubscribe_failures += 1;
+                    }
+
+                    if (unsubscribe_successes > 0 && unsubscribe_failures > 0) {
+                        return Q.all([
+                            im.metrics.fire.inc(["total", "subscription_unsubscribe_success", "last"].join('.'), {amount: unsubscribe_successes}),
+                            im.metrics.fire.sum(["total", "subscription_unsubscribe_success", "sum"].join('.'), unsubscribe_successes),
+                            im.metrics.fire.inc(["total", "subscription_unsubscribe_fail", "last"].join('.'), {amount: unsubscribe_failures}),
+                            im.metrics.fire.sum(["total", "subscription_unsubscribe_fail", "sum"].join('.'), unsubscribe_failures)
+                        ]);
+                    } else if (unsubscribe_successes > 0) {
+                        return Q.all([
+                            im.metrics.fire.inc(["total", "subscription_unsubscribe_success", "last"].join('.'), {amount: unsubscribe_successes}),
+                            im.metrics.fire.sum(["total", "subscription_unsubscribe_success", "sum"].join('.'), unsubscribe_successes)
+                        ]);
+                    } else if (unsubscribe_failures > 0) {
+                        return Q.all([
+                            im.metrics.fire.inc(["total", "subscription_unsubscribe_fail", "last"].join('.'), {amount: unsubscribe_failures}),
+                            im.metrics.fire.sum(["total", "subscription_unsubscribe_fail", "sum"].join('.'), unsubscribe_failures)
+                        ]);
+                    } else {
+                        return Q();
+                    }
+                });
+            } else {
+                return Q();
+            }
+        });
+    },
+
+
+// OPTOUT & OPTIN HELPERS
+
+    opt_out: function(im, contact) {
+        contact.extra.optout_last_attempt = go.utils.get_today(im.config)
+            .format('YYYY-MM-DD hh:mm:ss.SSS');
+
+        return Q.all([
+            im.contacts.save(contact),
+            go.utils.subscription_unsubscribe_all(contact, im),
+            im.api_request('optout.optout', {
+                address_type: "msisdn",
+                address_value: contact.msisdn,
+                message_id: im.msg.message_id
+            })
+        ]);
+    },
+
+    opt_in: function(im, contact) {
+        contact.extra.optin_last_attempt = go.utils.get_today(im.config)
+            .format('YYYY-MM-DD hh:mm:ss.SSS');
+        return Q.all([
+            im.contacts.save(contact),
+            im.api_request('optout.cancel_optout', {
+                address_type: "msisdn",
+                address_value: contact.msisdn
+            }),
+        ]);
+    },
 
 "commas": "commas"
 };
@@ -404,6 +563,7 @@ go.utils_project = {
                 .then(function(mother_identity) {
                     mother_identity.details.receiver_role = 'mother';
                     mother_identity.details.linked_to = null;
+                    mother_identity.details.gravida = im.user.answers.state_gravida;
                     mother_identity.details.preferred_language = im.user.answers.state_msg_language;
                     mother_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
 
@@ -423,6 +583,7 @@ go.utils_project = {
                 .spread(function(mother_identity, receiver_identity) {
                     mother_identity.details.receiver_role = 'mother';
                     mother_identity.details.linked_to = im.user.answers.receiver_id;
+                    mother_identity.details.gravida = im.user.answers.state_gravida;
                     mother_identity.details.preferred_language = im.user.answers.state_msg_language;
 
                     receiver_identity.details.receiver_role = msg_receiver.replace('_only', '');
@@ -450,6 +611,7 @@ go.utils_project = {
                     mother_identity.details.receiver_role = 'mother';
                     mother_identity.details.linked_to = im.user.answers.receiver_id;
                     mother_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
+                    mother_identity.details.gravida = im.user.answers.state_gravida;
                     mother_identity.details.preferred_language = im.user.answers.state_msg_language;
 
                     receiver_identity.details.receiver_role = msg_receiver.replace('mother_', '');
@@ -578,6 +740,15 @@ go.utils_project = {
 
 // SPEECH OPTION HELPERS
 
+    get_speech_option_household: function(member) {
+        member_map = {
+            'father': '1',
+            'family member': '2',
+            'friend': '3'
+        };
+        return member_map[member];
+    },
+
     get_speech_option_pregnancy_status_day: function(im, month) {
         var speech_option_start;
 
@@ -634,6 +805,7 @@ go.utils_project = {
                 mother_id: im.user.answers.mother_id,
                 receiver_id: im.user.answers.receiver_id,
                 operator_id: im.user.answers.operator_id,
+                gravida: im.user.answers.state_gravida,
                 language: im.user.answers.state_msg_language,
                 msg_type: im.user.answers.state_msg_type,
                 user_id: im.user.answers.user_id
@@ -672,6 +844,7 @@ go.utils_project = {
         mama_identity.details.msg_receiver = im.user.answers.state_r03_receiver;
         mama_identity.details.state_at_registration = im.user.answers.state_r04_mom_state;
         mama_identity.details.state_current = im.user.answers.state_r04_mom_state;
+        mama_identity.details.gravida = im.user.answers.state_gravida;
         mama_identity.details.lang = go.utils_project.get_lang(im);
         mama_identity.details.msg_type = im.user.answers.state_r10_message_type;
         mama_identity.details.voice_days = im.user.answers.state_r11_voice_days || 'sms';
@@ -859,65 +1032,6 @@ go.utils_project = {
         });
     },
 
-    get_active_subscriptions_by_identity_id: function(identity_id, im) {
-        // returns all active subscriptions - for unlikely case where there
-        // is more than one active subscription
-        var params = {
-            identity: identity_id,
-            active: "True"
-        };
-        return go.utils
-        .service_api_call("subscriptions", "get", params, null, "subscriptions/", im)
-        .then(function(json_get_response) {
-            return json_get_response.data.results;
-        });
-    },
-
-    get_active_subscription_by_identity_id: function(identity_id, im) {
-        // returns first active subscription found
-        return go.utils_project
-        .get_active_subscriptions_by_identity_id(identity_id, im)
-        .then(function(subscriptions) {
-            return subscriptions[0];
-        });
-    },
-
-    has_active_subscriptions: function(identity_id, im) {
-        return go.utils_project
-        .get_active_subscriptions_by_identity_id(identity_id, im)
-        .then(function(subscriptions) {
-            return subscriptions.length > 0;
-        });
-    },
-
-    subscriptions_unsubscribe_all: function(identity_id, im) {
-        // make all subscriptions inactive
-        // unlike other functions takes into account that there may be
-        // more than one active subscription returned (unlikely)
-        return go.utils_project
-        .get_active_subscriptions_by_identity_id(identity_id, im)
-        .then(function(active_subscriptions) {
-            var subscriptions = active_subscriptions;
-            var clean = true;  // clean tracks if api call is unnecessary
-            var patch_calls = [];
-            for (i=0; i<subscriptions.length; i++) {
-                var updated_subscription = subscriptions[i];
-                var endpoint = "subscriptions/" + updated_subscription.id + '/';
-                updated_subscription.active = false;
-                // store the patch calls to be made
-                patch_calls.push(function() {
-                    return go.utils.service_api_call("subscriptions", "patch", {}, updated_subscription, endpoint, im);
-                });
-                clean = false;
-            }
-            if (!clean) {
-                return Q.all(patch_calls.map(Q.try));
-            } else {
-                return Q();
-            }
-        });
-    },
-
     switch_to_baby: function(im) {
         var mama_id = im.user.answers.mama_id;
         return Q
@@ -954,21 +1068,7 @@ go.utils_project = {
     },
 
 
-// TIMEOUT HELPERS
-
-    timed_out: function(im) {
-        var no_redirects = [
-            'state_start',
-            'state_end_voice',
-            'state_end_sms'
-        ];
-        return im.msg.session_event === 'new'
-        && im.user.state.name
-        && no_redirects.indexOf(im.user.state.name) === -1;
-    },
-
-
-"commas": "commas"
+    "commas": "commas"
 };
 
 // This is a placeholder app
