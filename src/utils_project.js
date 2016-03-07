@@ -683,19 +683,5 @@ go.utils_project = {
     },
 
 
-// TIMEOUT HELPERS
-
-    timed_out: function(im) {
-        var no_redirects = [
-            'state_start',
-            'state_end_voice',
-            'state_end_sms'
-        ];
-        return im.msg.session_event === 'new'
-        && im.user.state.name
-        && no_redirects.indexOf(im.user.state.name) === -1;
-    },
-
-
-"commas": "commas"
+    "commas": "commas"
 };

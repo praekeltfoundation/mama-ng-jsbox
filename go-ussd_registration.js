@@ -1127,21 +1127,7 @@ go.utils_project = {
     },
 
 
-// TIMEOUT HELPERS
-
-    timed_out: function(im) {
-        var no_redirects = [
-            'state_start',
-            'state_end_voice',
-            'state_end_sms'
-        ];
-        return im.msg.session_event === 'new'
-        && im.user.state.name
-        && no_redirects.indexOf(im.user.state.name) === -1;
-    },
-
-
-"commas": "commas"
+    "commas": "commas"
 };
 
 go.app = function() {
@@ -1226,7 +1212,7 @@ go.app = function() {
         // override normal state adding
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                if (!interrupt || !go.utils_project.timed_out(self.im))
+                if (!interrupt || !go.utils.timed_out(self.im))
                     return creator(name, opts);
 
                 interrupt = false;
