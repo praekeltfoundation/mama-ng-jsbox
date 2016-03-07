@@ -249,6 +249,26 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
+            it("to state_msisdn_already_registered", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '2' // state_msg_receiver - mother_only
+                        , '09097777777'  // state_msisdn
+                    )
+                    .check.interaction({
+                        state: 'state_msisdn_already_registered',
+                        reply: [
+                            "Sorry, this number is already registered. They must opt-out before registering again.",
+                            "1. Try a different number",
+                            "2. Choose a different receiver",
+                            "3. Exit"
+                        ].join('\n')
+                    })
+                    .run();
+            });
             it("to state_pregnancy_status", function() {
                 return tester
                     .setup.user.addr('08080020002')
@@ -256,7 +276,7 @@ describe("Mama Nigeria App", function() {
                         {session_event: 'new'}  // dial in
                         , '12345'   // state_auth_code - personnel code
                         , '2' // state_msg_receiver - mother_only
-                        , '09091111111'  // state_msisdn
+                        , '09097777777'  // state_msisdn
                     )
                     .check.interaction({
                         state: 'state_pregnancy_status',

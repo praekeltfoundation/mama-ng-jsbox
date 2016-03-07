@@ -13,6 +13,7 @@
 // 09095555555: mother_father registration - father
 // 09096666666: mother being registered - mother_only registration
 // cb245673-aa41-4302-ac47-1234567890 - id of mother with no msisdn
+// 09097777777: mother ....
 
 module.exports = function() {
     return [
@@ -3384,6 +3385,48 @@ module.exports = function() {
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
+
+        // 78: get identity 09097777777 by msisdn
+        {
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'details__addresses__msisdn': '+2349097777777'
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/identities/search/',
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [{
+                        "url": "http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-009097777777/",
+                        "id": "3f7c8851-5204-43f7-af7f-009097777777",
+                        "version": 1,
+                        "details": {
+                            "default_addr_type": "msisdn",
+                            "addresses": {
+                                "msisdn": {
+                                    "+2349097777777": {}
+                                }
+                            },
+                            "receiver_role": "mother",
+                            "linked_to": null,
+                            "preferred_msg_type": "sms",
+                            "preferred_language": "igbo"
+                        },
+                        "created_at": "2015-07-10T06:13:29.693272Z",
+                        "updated_at": "2015-07-10T06:13:29.693298Z"
+                    }]
                 }
             }
         },

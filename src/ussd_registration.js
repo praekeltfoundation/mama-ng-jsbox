@@ -35,6 +35,8 @@ go.app = function() {
                 "Please select who will receive the messages on their phone:",
             "state_msisdn":
                 "Please enter the mobile number of the person who will receive the weekly messages. For example, 08033048990",
+            "state_msisdn_already_registered":
+                "Sorry, this number is already registered. They must opt-out before registering again.",
             "state_msisdn_mother":
                 "Please enter the mother's mobile number. She must consent to receiving messages.",
             "state_msisdn_household":
@@ -188,8 +190,62 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: 'state_save_identities'
+                next: function(content) {
+                    var msisdn = go.utils.normalize_msisdn(
+                        content, self.im.config.country_code);
+                    console.log("MSISDN: "+msisdn);
+                    return go.utils
+                        .get_identity_by_address({'msisdn': msisdn}, self.im)
+                        .then(function(identity) {
+                            console.log("ID: "+identity.details+" "+identity.details.receiver_role);
+                            if (identity && identity.details && identity.details.receiver_role) {
+                                console.log("REGISTERED");
+                                return 'state_msisdn_already_registered';
+                            } else {
+                                console.log("ELSE");
+                                return {
+                                    'name': 'state_update_number',
+                                    'creator_opts': {'new_msisdn': msisdn}
+                                };
+                            }
+                        });
+                }
             });
+        });
+
+        // ChoiceState st-22
+        self.add('state_msisdn_already_registered', function(name) {
+            return new ChoiceState(name, {
+                question: $(questions[name]),
+                choices: [
+                    new Choice('state_msisdn', $("Try a different number")),
+                    new Choice('state_msg_receiver', $("Choose a different receiver")),
+                    new Choice('exit', $("Exit"))
+                ],
+                next: function(choice) {
+                    if (choice.value != 'exit') {
+                        return choice.value;
+                    }
+
+                }
+            });
+        });
+
+        // Interstitial
+        self.add('state_update_number', function(name, creator_opts) {
+            return go.utils
+                .get_identity(self.im.user.answers.contact_id, self.im)
+                .then(function(contact) {
+                    // TODO #70: Handle multiple addresses, currently overwrites existing
+                    // on assumption we're dealing with one msisdn only
+                    contact.details.addresses.msisdn = {};
+                    contact.details.addresses.msisdn[creator_opts.new_msisdn] = {};
+                    return go.utils
+                        .update_identity(self.im, contact)
+                        .then(function() {
+                            return self.states.create('state_save_identities');
+                        });
+                });
         });
 
         // FreeText st-3A
@@ -207,7 +263,7 @@ go.app = function() {
             });
         });
 
-        // FreeText st-3A
+        // FreeText st-3B
         self.add('state_msisdn_household', function(name) {
             return new FreeText(name, {
                 question: $(questions[name]).context({

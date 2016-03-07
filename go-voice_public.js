@@ -215,6 +215,8 @@ go.utils = {
         var search_string = 'details__addresses__' + address_type;
         params[search_string] = address_val;
 
+        console.log("INSIDE: "+address_type+" "+address_val+" "+im);
+
         return go.utils
             .service_api_call('identities', 'get', params, null, 'identities/search/', im)
             .then(function(json_get_response) {
