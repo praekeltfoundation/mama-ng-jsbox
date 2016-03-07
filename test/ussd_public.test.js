@@ -28,7 +28,12 @@ describe("Hello Mama app", function() {
                             api_token: 'test_token_subscriptions',
                             url: "http://localhost:8002/api/v1/"
                         },
-                    }
+                    },
+                    no_timeout_redirects: [
+                        'state_start',
+                        'state_end_voice',
+                        'state_end_sms'
+                    ]
                 })
                 .setup(function(api) {
                     fixtures().forEach(api.http.fixtures.add);
