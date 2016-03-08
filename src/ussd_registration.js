@@ -228,23 +228,6 @@ go.app = function() {
             });
         });
 
-        // Interstitial
-        /*self.add('state_new_number', function(name, creator_opts) {
-            return go.utils
-                .get_or_create_identity({'msisdn': self.im.user.addr}, self.im, null)
-                .then(function(contact) {
-                    // TODO #70: Handle multiple addresses, currently overwrites existing
-                    // on assumption we're dealing with one msisdn only
-                    contact.details.addresses.msisdn = {};
-                    contact.details.addresses.msisdn[creator_opts.new_msisdn] = {};
-                    return go.utils
-                        .update_identity(self.im, contact)
-                        .then(function() {
-                            return self.states.create('state_save_identities');
-                        });
-                });
-        });*/
-
         // FreeText st-3A
         self.add('state_msisdn_mother', function(name) {
             return new FreeText(name, {
