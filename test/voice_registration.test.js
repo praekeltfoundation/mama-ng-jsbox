@@ -52,7 +52,7 @@ describe("Mama Nigeria App", function() {
                     .inputs(
                         {session_event: 'new'},
                         '12345',        // state_personnel_auth
-                        '*'
+                        '0'
                     )
                     .check.interaction({
                         state: 'state_personnel_auth',
@@ -212,7 +212,7 @@ describe("Mama Nigeria App", function() {
                         .inputs(
                             {session_event: 'new'}
                             ,'aaaaa'  // state_personnel_auth
-                            ,'*'      // state_personnel_auth
+                            ,'0'      // state_personnel_auth
                         )
                         .check.interaction({
                             state: 'state_personnel_auth',
@@ -489,7 +489,7 @@ describe("Mama Nigeria App", function() {
                         .inputs(
                             {session_event: 'new'},
                             '12345'  // state_personnel_auth
-                            , '*'    // state_msg_receiver - restart
+                            , '0'    // state_msg_receiver - restart
                         )
                         .check.interaction({
                             state: 'state_personnel_auth',
@@ -1489,7 +1489,7 @@ describe("Mama Nigeria App", function() {
                             , '2'           // state_pregnancy_status - babyk
                             , '2'           // state_baby_birth_year - last year
                             , '11'          // state_baby_birth_month - nov
-                            , '*'           // state_baby_birth_day
+                            , '0'           // state_baby_birth_day
                         )
                         .check.interaction({
                             state: 'state_personnel_auth'

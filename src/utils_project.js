@@ -255,8 +255,7 @@ go.utils_project = {
 
     should_restart: function(im) {
         var no_restart_states = [
-            'state_r01_number',
-            'state_r02_retry_number',
+            'state_gravida',
             'state_c01_main_menu',
             'state_c02_not_registered',
             'state_c07_loss_opt_in',
@@ -266,7 +265,7 @@ go.utils_project = {
             'state_c11_end_optout'
         ];
 
-        return im.msg.content === '*'
+        return im.msg.content === '0'
             && no_restart_states.indexOf(im.user.state.name) === -1;
     },
 
