@@ -1,6 +1,6 @@
 var vumigo = require('vumigo_v02');
 var fixtures = require('./fixtures_public');
-// var assert = require('assert');
+var assert = require('assert');
 var AppTester = vumigo.AppTester;
 
 
@@ -87,6 +87,15 @@ describe("Mama Nigeria App", function() {
                             }
                         }
                     })
+                    .check(function(api) {
+                        var expected_used = [0,1];
+                        var fixts = api.http.fixtures.fixtures;
+                        var fixts_used = [];
+                        fixts.forEach(function(f, i) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
+                    })
                     .run();
             });
         });
@@ -114,6 +123,15 @@ describe("Mama Nigeria App", function() {
                                     wait_for: '#'
                                 }
                             }
+                        })
+                        .check(function(api) {
+                            var expected_used = [2];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
@@ -146,6 +164,15 @@ describe("Mama Nigeria App", function() {
                                 }
                             }
                         })
+                        .check(function(api) {
+                            var expected_used = [0,1,2];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
                         .run();
                 });
             });
@@ -170,6 +197,15 @@ describe("Mama Nigeria App", function() {
                                 }
                             }
                         })
+                        .check(function(api) {
+                            var expected_used = [0,1];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
                         .run();
                 });
             });
@@ -177,7 +213,7 @@ describe("Mama Nigeria App", function() {
             describe.skip("if you enter a registered number without an active subscription", function() {
                 it("should navigate to state_end_not_active", function() {
                     return tester
-                        .setup.user.addr('+07070050005')
+                        .setup.user.addr('+2345059994444')
                         .inputs(
                             {session_event: 'new'}
                             , '05059998888'  // msg_receiver_msisdn
@@ -193,6 +229,15 @@ describe("Mama Nigeria App", function() {
                                     wait_for: '#'
                                 }
                             }
+                        })
+                        .check(function(api) {
+                            var expected_used = [3,8];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
