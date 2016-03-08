@@ -713,6 +713,10 @@ go.utils_project = {
             && no_restart_states.indexOf(im.user.state.name) === -1;
     },
 
+    should_repeat: function(im) {
+        return im.msg.content === '*';
+    },
+
 
 // VOICE HELPERS
 
@@ -1089,6 +1093,17 @@ go.app = function() {
 
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
+                if (go.utils_project.should_repeat(self.im)) {
+                    /*util = require("util");
+                    var obj_str = util.inspect(opts);
+                    console.log(obj_str);*/
+
+                    // Prevent previous content being passed to next state
+                    // thus preventing infinite repeat loop
+                    self.im.msg.content = null;
+                    return self.states.create(name, opts);
+                }
+
                 if (!interrupt || !go.utils_project.should_restart(self.im))
                     return creator(name, opts);
 
@@ -1097,6 +1112,7 @@ go.app = function() {
                 opts.name = name;
                 // Prevent previous content being passed to next state
                 self.im.msg.content = null;
+
                 return self.states.create('state_start', opts);
             });
         };

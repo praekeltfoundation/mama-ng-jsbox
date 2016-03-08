@@ -713,6 +713,10 @@ go.utils_project = {
             && no_restart_states.indexOf(im.user.state.name) === -1;
     },
 
+    should_repeat: function(im) {
+        return im.msg.content === '*';
+    },
+
 
 // VOICE HELPERS
 

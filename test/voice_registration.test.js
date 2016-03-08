@@ -119,7 +119,29 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
+                it("should repeat state_personnel_auth", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'},
+                            '*' // state_personnel_auth
+                        )
+                        .check.interaction({
+                            state: 'state_personnel_auth',
+                            reply: 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
             });
+
         });
 
         describe("Entering a personnel (chew) code", function() {
@@ -205,7 +227,7 @@ describe("Mama Nigeria App", function() {
                 });
             });
 
-            describe("if the user tries to restart with *", function() {
+            describe("if the user tries to restart with 0", function() {
                 it("should not restart", function() {
                     return tester
                         .setup.user.addr('07030010001')
@@ -427,6 +449,26 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
+                it("repeat state_pregnancy_status (via st-03)", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'        // state_personnel_auth
+                            , '7'            // state_msg_receiver - family member
+                            , '09092222222'  // state_msisdn_mother
+                            , '*'   // state_pregnancy_status
+                        )
+                        .check.interaction({
+                            state: 'state_pregnancy_status',
+                            reply: [
+                                'Pregnant or baby',
+                                '1. Pregnant',
+                                '2. Baby'
+                            ].join('\n')
+                        })
+                        .run();
+                });
                 it("to state_pregnancy_status (via retry state st-16)", function() {
                     return tester
                         .setup.user.addr('07030010001')
@@ -482,7 +524,7 @@ describe("Mama Nigeria App", function() {
                 });
             });
 
-            describe("if it is *", function() {
+            describe("if it is 0", function() {
                 it("should restart", function() {
                     return tester
                         .setup.user.addr('07030010001')
@@ -1476,7 +1518,7 @@ describe("Mama Nigeria App", function() {
                 });
             });
 
-            describe("if it is *", function() {
+            describe("if it is 0", function() {
                 it("should restart", function() {
                     return tester
                         .setup.user.addr('07030010001')
@@ -1498,6 +1540,37 @@ describe("Mama Nigeria App", function() {
                             helper_metadata: {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
+            });
+
+            describe("if it is *", function() {
+                it("should repeat", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'       // state_personnel_auth
+                            , '6'           // state_msg_receiver - friend_only
+                            , '09092222222' // state_msisdn
+                            , '2'           // state_pregnancy_status - baby
+                            , '2'           // state_pregnancy_status - babyk
+                            , '2'           // state_baby_birth_year - last year
+                            , '11'          // state_baby_birth_month - nov
+                            , '*'           // state_baby_birth_day
+                        )
+                        .check.interaction({
+                            state: 'state_baby_birth_day',
+                            reply: 'Birth day in 11 2016'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_birth_day_11.mp3',
                                     wait_for: '#'
                                 }
                             }
