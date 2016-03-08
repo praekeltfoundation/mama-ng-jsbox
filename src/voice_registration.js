@@ -18,10 +18,6 @@ go.app = function() {
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
                 if (go.utils_project.should_repeat(self.im)) {
-                    /*util = require("util");
-                    var obj_str = util.inspect(opts);
-                    console.log(obj_str);*/
-
                     // Prevent previous content being passed to next state
                     // thus preventing infinite repeat loop
                     self.im.msg.content = null;
