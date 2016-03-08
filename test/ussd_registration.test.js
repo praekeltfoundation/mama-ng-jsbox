@@ -268,8 +268,13 @@ describe("Mama Nigeria App", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        var fixt78 = api.http.fixtures.fixtures[78];
-                        assert.equal(fixt78.uses, 1);
+                        var expected_used = [1,6,78];
+                        var fixts = api.http.fixtures.fixtures;
+                        var fixts_used = [];
+                        fixts.forEach(function(f, i) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
                     })
                     .run();
             });
@@ -286,6 +291,15 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_end_msisdn',
                         reply: "Thank you for using the Hello Mama service."
+                    })
+                    .check(function(api) {
+                        var expected_used = [1,6,78];
+                        var fixts = api.http.fixtures.fixtures;
+                        var fixts_used = [];
+                        fixts.forEach(function(f, i) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
                     })
                     .run();
             });
@@ -337,7 +351,7 @@ describe("Mama Nigeria App", function() {
                         {session_event: 'new'}  // dial in
                         , '12345'   // state_auth_code - personnel code
                         , '2' // state_msg_receiver - mother_only
-                        , '09092222222'  // state_msisdn
+                        , '09091111111'  // state_msisdn
                     )
                     .check.interaction({
                         state: 'state_pregnancy_status',
