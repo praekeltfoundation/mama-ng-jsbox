@@ -13,7 +13,7 @@
 // 09095555555: mother_father registration - father
 // 09096666666: mother being registered - mother_only registration
 // cb245673-aa41-4302-ac47-1234567890 - id of mother with no msisdn
-// 09097777777: mother ....
+// 09097777777: identity with existing receiver_role (already registered)
 
 module.exports = function() {
     return [
@@ -1547,6 +1547,7 @@ module.exports = function() {
 
         // 34: get identity 09091111111 by msisdn - no results
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -1611,6 +1612,7 @@ module.exports = function() {
 
         // 36: get identity 09092222222 by msisdn - no results
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -1703,6 +1705,7 @@ module.exports = function() {
 
         // 39: get identity 09093333333 by msisdn - no results
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -3096,6 +3099,7 @@ module.exports = function() {
 
         // 71: get identity 09096666666 by msisdn - no results
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {

@@ -267,6 +267,10 @@ describe("Mama Nigeria App", function() {
                             "3. Exit"
                         ].join('\n')
                     })
+                    .check(function(api) {
+                        var fixt78 = api.http.fixtures.fixtures[78];
+                        assert.equal(fixt78.uses, 1);
+                    })
                     .run();
             });
             it("to state_pregnancy_status", function() {
@@ -276,7 +280,7 @@ describe("Mama Nigeria App", function() {
                         {session_event: 'new'}  // dial in
                         , '12345'   // state_auth_code - personnel code
                         , '2' // state_msg_receiver - mother_only
-                        , '09097777777'  // state_msisdn
+                        , '09092222222'  // state_msisdn
                     )
                     .check.interaction({
                         state: 'state_pregnancy_status',
@@ -413,8 +417,9 @@ describe("Mama Nigeria App", function() {
                     .inputs(
                       {session_event: 'new'}  // dial in
                       , '12345'   // state_auth_code - personnel code
-                      , '6' // state_msg_receiver - friend_only
-                      , '09092222222'  // state_msisdn
+                      , '1' // state_msg_receiver - mother and father
+                      , '09092222222'  // state_msisdn_mother
+                      , '09091111111'  // state_msisdn_household
                       , '1'  // state_msg_pregnant - mother
                       , '3'  // state_last_period_month - May 15
                       , '12'  // state_last_period_day

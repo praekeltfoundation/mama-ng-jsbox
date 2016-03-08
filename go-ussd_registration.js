@@ -215,8 +215,6 @@ go.utils = {
         var search_string = 'details__addresses__' + address_type;
         params[search_string] = address_val;
 
-        console.log("INSIDE: "+address_type+" "+address_val+" "+im);
-
         return go.utils
             .service_api_call('identities', 'get', params, null, 'identities/search/', im)
             .then(function(json_get_response) {
@@ -231,7 +229,6 @@ go.utils = {
     get_identity: function(identity_id, im) {
       // Gets the identity from the Identity Store
       // Returns the identity object
-
         var endpoint = 'identities/' + identity_id + '/';
         return go.utils
         .service_api_call('identities', 'get', {}, null, endpoint, im)
@@ -1268,20 +1265,13 @@ go.app = function() {
                 next: function(content) {
                     var msisdn = go.utils.normalize_msisdn(
                         content, self.im.config.country_code);
-                    console.log("MSISDN: "+msisdn);
                     return go.utils
                         .get_identity_by_address({'msisdn': msisdn}, self.im)
                         .then(function(identity) {
-                            console.log("ID: "+identity.details+" "+identity.details.receiver_role);
                             if (identity && identity.details && identity.details.receiver_role) {
-                                console.log("REGISTERED");
                                 return 'state_msisdn_already_registered';
                             } else {
-                                console.log("ELSE");
-                                return {
-                                    'name': 'state_update_number',
-                                    'creator_opts': {'new_msisdn': msisdn}
-                                };
+                                return 'state_save_identities';
                             }
                         });
                 }
@@ -1307,9 +1297,9 @@ go.app = function() {
         });
 
         // Interstitial
-        self.add('state_update_number', function(name, creator_opts) {
+        /*self.add('state_new_number', function(name, creator_opts) {
             return go.utils
-                .get_identity(self.im.user.answers.contact_id, self.im)
+                .get_or_create_identity({'msisdn': self.im.user.addr}, self.im, null)
                 .then(function(contact) {
                     // TODO #70: Handle multiple addresses, currently overwrites existing
                     // on assumption we're dealing with one msisdn only
@@ -1321,7 +1311,7 @@ go.app = function() {
                             return self.states.create('state_save_identities');
                         });
                 });
-        });
+        });*/
 
         // FreeText st-3A
         self.add('state_msisdn_mother', function(name) {
