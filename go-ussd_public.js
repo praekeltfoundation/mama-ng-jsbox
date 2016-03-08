@@ -1080,7 +1080,7 @@ go.app = function() {
     var FreeText = vumigo.states.FreeText;
 
 
-    var GoFC = App.extend(function(self) {
+    var GoApp = App.extend(function(self) {
         App.call(self, 'state_start');
         var $ = self.$;
         var interrupt = true;
@@ -1687,7 +1687,7 @@ go.app = function() {
     });
 
     return {
-        GoFC: GoFC
+        GoApp: GoApp
     };
 }();
 
