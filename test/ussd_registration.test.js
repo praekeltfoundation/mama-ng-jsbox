@@ -273,6 +273,63 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
+            it("to state_end_msisdn", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '2' // state_msg_receiver - mother_only
+                        , '09097777777'  // state_msisdn
+                        , '3' // state_end_msisdn - exit
+                    )
+                    .check.interaction({
+                        state: 'state_end_msisdn',
+                        reply: "Thank you for using the Hello Mama service."
+                    })
+                    .run();
+            });
+            it("to state_msisdn (from state_msisdn_already_registered)", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '2' // state_msg_receiver - mother_only
+                        , '09097777777'  // state_msisdn
+                        , '1' // state_end_msisdn - exit
+                    )
+                    .check.interaction({
+                        state: 'state_msisdn',
+                        reply: "Please enter the mobile number of the person who will receive the weekly messages. For example, 08033048990"
+                    })
+                    .run();
+            });
+            it("to state_msg_receiver (from state_msisdn_already_registered)", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '2' // state_msg_receiver - mother_only
+                        , '09097777777'  // state_msisdn
+                        , '2' // state_end_msisdn - exit
+                    )
+                    .check.interaction({
+                        state: 'state_msg_receiver',
+                        reply: [
+                            "Please select who will receive the messages on their phone:",
+                            "1. Mother & Father",
+                            "2. Mother",
+                            "3. Father",
+                            "4. Mother & family member",
+                            "5. Mother & friend",
+                            "6. Friend",
+                            "7. Family member"
+                        ].join('\n')
+                    })
+                    .run();
+            });
             it("to state_pregnancy_status", function() {
                 return tester
                     .setup.user.addr('08080020002')

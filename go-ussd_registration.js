@@ -1136,7 +1136,9 @@ go.app = function() {
             "state_end_voice":
                 "Thank you. The person will now start receiving calls on {{days}} between {{times}}.",
             "state_end_sms":
-                "Thank you. The person will now start receiving messages three times a week."
+                "Thank you. The person will now start receiving messages three times a week.",
+            "state_end_msisdn":
+                "Thank you for using the Hello Mama service."
         };
 
         var errors = {
@@ -1293,10 +1295,18 @@ go.app = function() {
                     if (choice.value != 'exit') {
                         return choice.value;
                     } else {
-                        return 'state_start';
+                        return 'state_end_msisdn';
                     }
 
                 }
+            });
+        });
+
+        // EndState of st-22
+        self.add('state_end_msisdn', function(name) {
+            return new EndState(name, {
+                text: $(questions[name]),
+                next: 'state_start'
             });
         });
 
