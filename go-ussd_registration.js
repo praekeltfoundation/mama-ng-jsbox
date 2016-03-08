@@ -1292,6 +1292,8 @@ go.app = function() {
                 next: function(choice) {
                     if (choice.value != 'exit') {
                         return choice.value;
+                    } else {
+                        return 'state_start';
                     }
 
                 }
