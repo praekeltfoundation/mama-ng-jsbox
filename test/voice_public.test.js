@@ -49,7 +49,7 @@ describe("Mama Nigeria App", function() {
         describe("When you use * to restart", function() {
             it("should reset the user answers", function() {
                 return tester
-                    .setup.user.addr('+07070050005')
+                    .setup.user.addr('+2345059991111')
                     .inputs(
                         {session_event: 'new'}
                         , '1'  // main_menu - baby
@@ -59,7 +59,9 @@ describe("Mama Nigeria App", function() {
                         state: 'state_msg_receiver_msisdn',
                         reply: "Welcome, Number"
                     })
-                    .check.user.answers({})
+                    .check.user.answers({
+                        "role_player": "guest",
+                        "user_id": "cb245673-aa41-4302-ac47-9091111111"})
                     .run();
             });
         });
@@ -69,7 +71,7 @@ describe("Mama Nigeria App", function() {
         describe("When you start the app", function() {
             it("should navigate to state_msg_receiver_msisdn", function() {
                 return tester
-                    .setup.user.addr('+08080030003')
+                    .setup.user.addr('+2345059991111')
                     .inputs(
                         {session_event: 'new'}
                     )
@@ -96,7 +98,7 @@ describe("Mama Nigeria App", function() {
             describe("if you enter a crummy number", function() {
                 it("should navigate to state_msisdn_not_recognised", function() {
                     return tester
-                        .setup.user.addr('+07070050005')
+                        .setup.user.addr('+2345059991111')
                         .inputs(
                             {session_event: 'new'}
                             , '5551234'  // msg_receiver_msisdn
@@ -120,7 +122,7 @@ describe("Mama Nigeria App", function() {
             describe("if you enter a registered user number", function() {
                 it("should navigate to main_menu", function() {
                     return tester
-                        .setup.user.addr('+07070050005')
+                        .setup.user.addr('+2345059991111')
                         .inputs(
                             {session_event: 'new'}
                             , '05059992222'  // msg_receiver_msisdn
@@ -151,7 +153,7 @@ describe("Mama Nigeria App", function() {
             describe("if you enter an unregistered number", function() {
                 it("should navigate to state_not_recognised_msg_receiver_msisdn", function() {
                     return tester
-                        .setup.user.addr('+07070050005')
+                        .setup.user.addr('+2345059991111')
                         .inputs(
                             {session_event: 'new'}
                             , '05059991111'  // msg_receiver_msisdn

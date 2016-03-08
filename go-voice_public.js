@@ -1106,8 +1106,18 @@ go.app = function() {
         self.states.add('state_start', function() {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
-            return self.states.create("state_msg_receiver_msisdn");
+            return go.utils
+                .get_or_create_identity({'msisdn': self.im.user.addr}, self.im, null)
+                .then(function(user) {
+                    self.im.user.set_answer('user_id', user.id);
+                    if (user.details.receiver_role) {
+                        self.im.user.set_answer('role_player', user.details.receiver_role);
+                    } else {
+                        self.im.user.set_answer('role_player', 'guest');
+                    }
 
+                    return self.states.create("state_msg_receiver_msisdn");
+                });
         });
 
     // CHANGE STATE
