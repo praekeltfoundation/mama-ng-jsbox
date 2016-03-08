@@ -98,19 +98,19 @@ describe("Mama Nigeria App", function() {
             describe("if you enter a crummy number", function() {
                 it("should navigate to state_msisdn_not_recognised", function() {
                     return tester
-                        .setup.user.addr('+2345059991111')
+                        .setup.user.addr('+2345059992222')
                         .inputs(
                             {session_event: 'new'}
                             , '5551234'  // msg_receiver_msisdn
                         )
                         .check.interaction({
-                            state: 'state_msisdn_not_recognised',
-                            reply: "Number not recognised. Redial or register."
+                            state: 'state_msg_receiver_msisdn',
+                            reply: "Invalid number"
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msisdn_not_recognised_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_msisdn_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -159,13 +159,13 @@ describe("Mama Nigeria App", function() {
                             , '05059991111'  // msg_receiver_msisdn
                         )
                         .check.interaction({
-                            state: 'state_not_recognised_msg_receiver_msisdn',
-                            reply: 'Unrecognised number'
+                            state: 'state_msisdn_not_recognised',
+                            reply: 'Number not recognised. Redial or register.'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_not_recognised_msg_receiver_msisdn_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msisdn_not_recognised_1.mp3',
                                     wait_for: '#'
                                 }
                             }

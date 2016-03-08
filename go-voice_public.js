@@ -1129,25 +1129,34 @@ go.app = function() {
                 question: $('Welcome, Number'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
-                next: function(content) {
-                    if (!go.utils.is_valid_msisdn(content)) {
-                        return 'state_msisdn_not_recognised';
+                check: function(content) {
+                    if (go.utils.is_valid_msisdn(content)) {
+                        return null;  // vumi expects null or undefined if check passes
                     } else {
-                        return go.utils
-                            .get_or_create_identity({'msisdn': content}, self.im, null)
-                            .then(function(user) {
-                                self.im.user.set_answer('user_id', user.id);
-                                if (user.details.receiver_role) {
-                                    self.im.user.set_answer('role_player', user.details.receiver_role);
-                                    return self.states.create('state_check_receiver_role');  // recognised
-                                } else {
-                                    self.im.user.set_answer('role_player', 'guest');
-                                    return self.states.create('state_not_recognised_msg_receiver_msisdn');  // not recognised
-                                }
-                            });
+                        return $('Invalid number');
                     }
-                }
+                },
+                next: 'state_check_registered'
             });
+        });
+
+        // Interstitial - determine contact registration
+        self.states.add('state_check_registered', function() {
+            var msisdn = go.utils.normalize_msisdn(
+                self.im.user.answers.state_msg_receiver_msisdn,
+                self.im.config.country_code
+            );
+            return go.utils
+                .get_identity_by_address({'msisdn': msisdn}, self.im)
+                .then(function(contact) {
+                    if (contact && contact.details.receiver_role) {
+                        self.im.user.set_answer('role_player', contact.details.receiver_role);
+                        self.im.user.set_answer('contact_id', contact.id);
+                        return self.states.create('state_check_receiver_role');
+                    } else {
+                        return self.states.create('state_msisdn_not_recognised');
+                    }
+                });
         });
 
         self.add('state_check_receiver_role', function(name) {
@@ -1221,17 +1230,6 @@ go.app = function() {
                 next: function(choice) {
                     return choice.value;
                 }
-            });
-        });
-
-
-        self.add('state_not_recognised_msg_receiver_msisdn', function(name) {
-            var speech_option = '1';
-            return new EndState(name, {
-                text: $('Unrecognised number'),
-                helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                next: 'state_start'
             });
         });
 
