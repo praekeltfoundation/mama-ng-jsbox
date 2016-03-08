@@ -1267,8 +1267,10 @@ go.app = function() {
                         content, self.im.config.country_code);
                     return go.utils
                         .get_identity_by_address({'msisdn': msisdn}, self.im)
-                        .then(function(identity) {
-                            if (identity && identity.details && identity.details.receiver_role) {
+                        .then(function(contact) {
+                            if (contact && contact.details && contact.details.receiver_role) {
+                                self.im.user.set_answer('role_player', contact.details.receiver_role);
+                                self.im.user.set_answer('contact_id', contact.id);
                                 return 'state_msisdn_already_registered';
                             } else {
                                 return 'state_save_identities';
