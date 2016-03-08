@@ -53,7 +53,7 @@ describe("Mama Nigeria App", function() {
                     .inputs(
                         {session_event: 'new'}
                         , '1'  // c01_main_menu - baby
-                        , '*'  // c03_baby_confirm - restart
+                        , '0'  // c03_baby_confirm - restart
                     )
                     .check.interaction({
                         state: 'state_c12_number',
@@ -583,7 +583,7 @@ describe("Mama Nigeria App", function() {
                             , '07070050005'  // c12_number
                             , '3'  // c01_main_menu - optout
                             , '1'  // c05_optout_reason - miscarriage
-                            , '*'  // c07_loss_opt_in - restart attempt
+                            , '0'  // c07_loss_opt_in - restart attempt
                         )
                         .check.interaction({
                             state: 'state_c07_loss_opt_in'
