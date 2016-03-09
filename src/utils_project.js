@@ -368,12 +368,19 @@ go.utils_project = {
             }
         };
 
+        // add data for voice time and day if applicable
+        if (im.user.answers.state_msg_type === 'voice') {
+            reg_info.data.voice_times = im.user.answers.state_voice_times;
+            reg_info.data.voice_days = im.user.answers.state_voice_days;
+        }
+
         // add data for last_period_date or baby_dob
         if (im.user.answers.state_pregnancy_status === 'prebirth') {
             reg_info.data.last_period_date = im.user.answers.working_date;
         } else if (im.user.answers.state_pregnancy_status === 'postbirth') {
             reg_info.data.baby_dob = im.user.answers.working_date;
         }
+
         return reg_info;
     },
 

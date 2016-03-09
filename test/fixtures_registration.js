@@ -2041,6 +2041,8 @@ module.exports = function() {
                         "gravida": "3",
                         "language": "english",
                         "msg_type": "voice",
+                        "voice_times": "2_5",
+                        "voice_days": "tue_thu",
                         "last_period_date": "20150212",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     }
@@ -2058,6 +2060,8 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "english",
                         "msg_type": "voice",
+                        "voice_times": "2_5",
+                        "voice_days": "tue_thu",
                         "last_period_date": "20150212",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     },
@@ -2090,6 +2094,8 @@ module.exports = function() {
                         "gravida": "3",
                         "language": "english",
                         "msg_type": "voice",
+                        "voice_times": "2_5",
+                        "voice_days": "tue_thu",
                         "last_period_date": "20150212",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     }
@@ -2107,6 +2113,8 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "english",
                         "msg_type": "voice",
+                        "voice_times": "2_5",
+                        "voice_days": "tue_thu",
                         "last_period_date": "20150212",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     },
@@ -2139,6 +2147,8 @@ module.exports = function() {
                         "gravida": "2",
                         "language": "english",
                         "msg_type": "voice",
+                        "voice_times": "2_5",
+                        "voice_days": "tue_thu",
                         "last_period_date": "20150212",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     }
@@ -2156,6 +2166,8 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "english",
                         "msg_type": "voice",
+                        "voice_times": "2_5",
+                        "voice_days": "tue_thu",
                         "last_period_date": "20150212",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     },
@@ -2250,7 +2262,7 @@ module.exports = function() {
             }
         },
 
-        // 53: create registration 09092222222 - friend_only / family_member - sms (voice)
+        // 53: create registration 09092222222 - friend_only / family_member - voice
         {
             'request': {
                 'method': 'POST',
@@ -2269,6 +2281,8 @@ module.exports = function() {
                         "gravida": "2",
                         "language": "igbo",
                         "msg_type": "voice",
+                        "voice_times": "2_5",
+                        "voice_days": "mon_wed",
                         "baby_dob": "20160913",
                         "user_id": "cb245673-aa41-4302-ac47-00000000001"
                     }
@@ -3181,6 +3195,8 @@ module.exports = function() {
                         "gravida": "2",
                         "language": "english",
                         "msg_type": "voice",
+                        "voice_times": "2_5",
+                        "voice_days": "tue_thu",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002",
                         "last_period_date":"20150212"
                     }
@@ -3198,6 +3214,8 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "english",
                         "msg_type": "voice",
+                        "voice_times": "2_5",
+                        "voice_days": "tue_thu",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002",
                         "last_period_date":"20150212"
                     },
