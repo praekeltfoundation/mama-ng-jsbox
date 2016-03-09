@@ -301,6 +301,7 @@ describe("Mama Nigeria App", function() {
                         });
                         assert.deepEqual(fixts_used, expected_used);
                     })
+                    .check.reply.ends_session()
                     .run();
             });
             it("to state_msisdn (from state_msisdn_already_registered)", function() {
