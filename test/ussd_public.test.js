@@ -9,7 +9,7 @@ describe("Hello Mama app", function() {
         var tester;
 
         beforeEach(function() {
-            app = new go.app.GoFC();
+            app = new go.app.GoApp();
             tester = new AppTester(app);
 
             tester
