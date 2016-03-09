@@ -46,7 +46,7 @@ describe("Mama Nigeria App", function() {
 
         // TEST RESTART
 
-        describe("When you use * to restart", function() {
+        describe("When you use 0 to restart", function() {
             it("should reset the user answers", function() {
                 return tester
                     .setup.user.addr('+07070050005')
@@ -574,7 +574,7 @@ describe("Mama Nigeria App", function() {
                 });
             });
 
-            describe("if you choose * to restart", function() {
+            describe("if you choose 0 to restart", function() {
                 it("should not restart", function() {
                     return tester
                         .setup.user.addr('+07070050005')
