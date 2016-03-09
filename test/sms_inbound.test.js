@@ -23,11 +23,6 @@ describe("Mama Nigeria App", function() {
                             api_token: 'test_token_identities',
                             url: "http://localhost:8001/api/v1/"
                         }
-                    },
-                    control: {
-                        username: 'test_user',
-                        api_key: 'test_key',
-                        url: "http://127.0.0.1:8000/api/v1/subscription/"
                     }
                 })
                 .setup(function(api) {
