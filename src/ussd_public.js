@@ -516,13 +516,28 @@ go.app = function() {
                     new Choice('state_loss_subscription', $("Mother miscarried")),
                     new Choice('state_end_loss', $("Baby stillborn")),
                     new Choice('state_end_loss', $("Baby passed away")),
-                    new Choice('state_optout_receiver', $("Messages not useful")),
-                    new Choice('state_optout_receiver', $("Other"))
+                    new Choice('state_check_subscription', $("Messages not useful")),
+                    new Choice('state_check_subscription', $("Other"))
                 ],
                 next: function(choice) {
                     return choice.value;
                 }
             });
+        });
+
+        // interstitial
+        self.states.add('state_check_subscription', function() {
+            var contact_id = self.im.user.answers.contact_id;
+            return go.utils
+                .get_identity(contact_id, self.im)
+                .then(function(contact) {
+                    // household and mother_only subscriptions bypass to end state state_end_optout
+                    if (contact.details.household_msgs_only || (self.im.user.mother_id === contact_id && self.im.user.receiver_id === 'none')) {
+                        return self.states.create("state_end_optout");
+                    } else {
+                        return self.states.create("state_optout_receiver");
+                    }
+                });
         });
 
         // ChoiceState st-14

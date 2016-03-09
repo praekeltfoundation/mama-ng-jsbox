@@ -796,7 +796,7 @@ describe("Hello Mama app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            var expected_used = [2];
+                            var expected_used = [2,9];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -821,7 +821,7 @@ describe("Hello Mama app", function() {
                             reply: "Thank you. You will no longer receive messages"
                         })
                         .check(function(api) {
-                            var expected_used = [2];
+                            var expected_used = [2,9];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
