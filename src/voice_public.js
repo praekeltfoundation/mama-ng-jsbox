@@ -15,15 +15,25 @@ go.app = function() {
 
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                if (!interrupt || !go.utils_project.should_restart(self.im))
+                if (go.utils_project.should_repeat(self.im)) {
+                    // Prevent previous content being passed to next state
+                    // thus preventing infinite repeat loop
+                    self.im.msg.content = null;
                     return creator(name, opts);
+                }
 
-                interrupt = false;
-                opts = opts || {};
-                opts.name = name;
-                // Prevent previous content being passed to next state
-                self.im.msg.content = null;
-                return self.states.create('state_start', opts);
+                if (interrupt || go.utils_project.should_restart(self.im)) {
+                    interrupt = false;
+                    opts = opts || {};
+                    opts.name = name;
+                    // Prevent previous content being passed to next state
+                    self.im.msg.content = null;
+                    // Reset user answers when restarting the app
+                    self.im.user.answers = {};
+                    return creator('state_c01_main_menu', opts);  // restarts to st-A/A1
+                }
+
+                return creator(name, opts);
             });
         };
 

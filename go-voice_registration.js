@@ -1097,7 +1097,7 @@ go.app = function() {
                     // Prevent previous content being passed to next state
                     // thus preventing infinite repeat loop
                     self.im.msg.content = null;
-                    return self.states.create(name, opts);
+                    return creator(name, opts);
                 }
 
                 if (!interrupt || !go.utils_project.should_restart(self.im))
