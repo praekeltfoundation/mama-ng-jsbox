@@ -27,7 +27,6 @@ go.app = function() {
             });
         };
 
-
     // ROUTING
 
         self.states.add('state_start', function() {
@@ -47,23 +46,34 @@ go.app = function() {
                 });
         });
 
+        // A loopback state that is required since you can't pass opts back
+        // into the same state
+        self.add('state_retry', function(name, opts) {
+            return self.states.create(opts.retry_state, {'retry': true});
+        });
+
     // CHANGE STATE
 
         // FreeText st-B
-        self.add('state_msg_receiver_msisdn', function(name) {
+        self.add('state_msg_receiver_msisdn', function(name, creator_opts) {
             var speech_option = '1';
+            var question_text = 'Welcome, Number';
+            var retry_text = 'Retry. Welcome, Number';
+            var use_text = creator_opts.retry === true ? retry_text : question_text;
             return new FreeText(name, {
-                question: $('Welcome, Number'),
+                question: $(use_text),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                check: function(content) {
+                    self.im, name, lang, speech_option, creator_opts.retry),
+                next: function(content) {
                     if (go.utils.is_valid_msisdn(content)) {
-                        return null;  // vumi expects null or undefined if check passes
+                        return 'state_check_registered';
                     } else {
-                        return $('Invalid number');
+                        return {
+                            'name': 'state_retry',
+                            'creator_opts': {'retry_state': name}
+                        };
                     }
-                },
-                next: 'state_check_registered'
+                } 
             });
         });
 

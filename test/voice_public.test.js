@@ -114,12 +114,12 @@ describe("Mama Nigeria App", function() {
                         )
                         .check.interaction({
                             state: 'state_msg_receiver_msisdn',
-                            reply: "Invalid number"
+                            reply: "Retry. Welcome, Number"
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_msisdn_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_msisdn_1_retry.mp3',
                                     wait_for: '#'
                                 }
                             }
