@@ -7,6 +7,7 @@
 // 05059996666: registered user - mother that receives own messages, linked to 05059997777
 // 05059997777: registered user - family member that receives household messages for 05059996666
 // 05059998888: number being changed to
+// 05059999999: number used to test sms app; does unsubscribe
 
 // There are 4 cases to consider when a change is attempted:
 // case 1: mother_only registration - mother dialing in (05059992222)
@@ -700,7 +701,29 @@ module.exports = function() {
             }
         },
 
-
+        // 16: get 05059999999 subscription
+        {
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'details__addresses__msisdn': '+2345059999999'
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': "http://localhost:8001/api/v1/subscription/"
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": []
+                }
+            }
+        },
 
         // x: unused - get identity 3f7c8851-5204-43f7-af7f-005059995555
         {
