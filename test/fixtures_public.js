@@ -86,6 +86,7 @@ module.exports = function() {
 
         // 2: get identity 05059992222 by msisdn
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
