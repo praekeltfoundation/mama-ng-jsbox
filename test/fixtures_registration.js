@@ -1935,9 +1935,9 @@ module.exports = function() {
                 'url': "http://localhost:8002/api/v1/registrations/",
                 'data':  {
                     "stage": "prebirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                     "data": {
                         "msg_receiver": "friend_only",
-                        "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                         "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "gravida": "3",
@@ -1953,9 +1953,9 @@ module.exports = function() {
                 "data": {
                     "id": "reg_for_09092222222_uuid",
                     "stage": "prebirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                     "data": {
                         "msg_receiver": "friend_only",
-                        "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                         "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "hausa",
@@ -1984,9 +1984,9 @@ module.exports = function() {
                 'url': "http://localhost:8002/api/v1/registrations/",
                 'data':  {
                     "stage": "postbirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                     "data": {
                         "msg_receiver": "father_only",
-                        "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                         "receiver_id": "cb245673-aa41-4302-ac47-9093333333",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "gravida": "2",
@@ -2002,9 +2002,9 @@ module.exports = function() {
                 "data": {
                     "id": "reg_for_09093333333_uuid",
                     "stage": "postbirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                     "data": {
                         "msg_receiver": "father_only",
-                        "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                         "receiver_id": "cb245673-aa41-4302-ac47-9093333333",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "igbo",
@@ -2033,9 +2033,9 @@ module.exports = function() {
                 'url': "http://localhost:8002/api/v1/registrations/",
                 'data':  {
                     "stage": "prebirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                     "data": {
                         "msg_receiver": "friend_only",
-                        "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                         "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "gravida": "3",
@@ -2051,9 +2051,9 @@ module.exports = function() {
                 "data": {
                     "id": "reg_for_09092222222_uuid",
                     "stage": "prebirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                     "data": {
                         "msg_receiver": "friend_only",
-                        "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                         "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "english",
@@ -2082,9 +2082,9 @@ module.exports = function() {
                 'url': "http://localhost:8002/api/v1/registrations/",
                 'data':  {
                     "stage": "prebirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-9094444444",
                     "data": {
                         "msg_receiver": "mother_father",
-                        "mother_id": "cb245673-aa41-4302-ac47-9094444444",
                         "receiver_id": "cb245673-aa41-4302-ac47-9095555555",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "gravida": "3",
@@ -2100,9 +2100,9 @@ module.exports = function() {
                 "data": {
                     "id": "reg_for_09092222222_uuid",
                     "stage": "prebirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-9094444444",
                     "data": {
                         "msg_receiver": "mother_father",
-                        "mother_id": "cb245673-aa41-4302-ac47-9094444444",
                         "receiver_id": "cb245673-aa41-4302-ac47-9095555555",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "english",
@@ -2131,9 +2131,9 @@ module.exports = function() {
                 'url': "http://localhost:8002/api/v1/registrations/",
                 'data':  {
                     "stage": "prebirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                     "data": {
                         "msg_receiver": "father_only",
-                        "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                         "receiver_id": "cb245673-aa41-4302-ac47-9093333333",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "gravida": "2",
@@ -2149,9 +2149,9 @@ module.exports = function() {
                 "data": {
                     "id": "reg_for_09093333333_uuid",
                     "stage": "prebirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                     "data": {
                         "msg_receiver": "father_only",
-                        "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                         "receiver_id": "cb245673-aa41-4302-ac47-9093333333",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "english",
@@ -2211,9 +2211,9 @@ module.exports = function() {
                 'url': "http://localhost:8002/api/v1/registrations/",
                 'data':  {
                     "stage": "postbirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                     "data": {
                         "msg_receiver": "friend_only",
-                        "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                         "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "gravida": "2",
@@ -2229,9 +2229,9 @@ module.exports = function() {
                 "data": {
                     "id": "reg_for_09092222222_uuid",
                     "stage": "postbirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                     "data": {
                         "msg_receiver": "friend_only",
-                        "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                         "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "gravida": "2",
@@ -2261,9 +2261,9 @@ module.exports = function() {
                 'url': "http://localhost:8002/api/v1/registrations/",
                 'data':  {
                     "stage": "postbirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                     "data": {
                         "msg_receiver": "friend_only",
-                        "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                         "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "gravida": "2",
@@ -2279,9 +2279,9 @@ module.exports = function() {
                 "data": {
                     "id": "reg_for_09092222222_uuid",
                     "stage": "postbirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                     "data": {
                         "msg_receiver": "friend_only",
-                        "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                         "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "gravida": "2",
@@ -3173,9 +3173,9 @@ module.exports = function() {
                 'url': "http://localhost:8002/api/v1/registrations/",
                 'data': {
                     "stage": "prebirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-9096666666",
                     "data": {
                         "msg_receiver": "mother_only",
-                        "mother_id": "cb245673-aa41-4302-ac47-9096666666",
                         "receiver_id": "cb245673-aa41-4302-ac47-9096666666",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "gravida": "2",
@@ -3191,9 +3191,9 @@ module.exports = function() {
                 "data": {
                     "id": "reg_for_0909666666_uuid",
                     "stage": "prebirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-9096666666",
                     "data": {
                         "msg_receiver": "mother_only",
-                        "mother_id": "cb245673-aa41-4302-ac47-9096666666",
                         "receiver_id": "cb245673-aa41-4302-ac47-9096666666",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "english",

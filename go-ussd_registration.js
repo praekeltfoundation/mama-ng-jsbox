@@ -799,9 +799,9 @@ go.utils_project = {
     compile_reg_info: function(im) {
         var reg_info = {
             stage: im.user.answers.state_pregnancy_status,
+            mother_id: im.user.answers.mother_id,
             data: {
                 msg_receiver: im.user.answers.state_msg_receiver,
-                mother_id: im.user.answers.mother_id,
                 receiver_id: im.user.answers.receiver_id,
                 operator_id: im.user.answers.operator_id,
                 gravida: im.user.answers.state_gravida,
