@@ -46,8 +46,8 @@ describe("Mama Nigeria App", function() {
 
         // TEST RESTART
 
-        describe("When you use 0 to restart", function() {
-            it("should reset the user answers", function() {
+        describe("Testing restart and replay universal instructions", function() {
+            it("'0' should restart to main_menu", function() {
                 return tester
                     .setup.user.addr('+2345059991111')
                     .inputs(
@@ -67,9 +67,24 @@ describe("Mama Nigeria App", function() {
                             '5. optout'
                         ].join('\n')
                     })
-                    /*.check.user.answers({
-                        "role_player": "guest",
-                        "user_id": "cb245673-aa41-4302-ac47-9091111111"})*/
+                    .run();
+            });
+            it("'*' should repeat message", function() {
+                return tester
+                    .setup.user.addr('+2345059991111')
+                    .inputs(
+                        {session_event: 'new'}
+                        , '05059992222' // state_msg_receiver_msisdn
+                        , '1'  // state_main_menu - baby
+                        , '*'  // state_baby_confirm_subscription - repeat
+                    )
+                    .check.interaction({
+                        state: 'state_baby_confirm_subscription',
+                        reply: [
+                            'You are already registered for baby messages.',
+                            '1. To go back to main menu, 0 then #'
+                        ].join('\n')
+                    })
                     .run();
             });
         });
