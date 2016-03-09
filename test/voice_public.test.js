@@ -105,7 +105,7 @@ describe("Mama Nigeria App", function() {
 
         describe("When you enter a number msg_receiver_msisdn", function() {
             describe("if you enter a crummy number", function() {
-                it("should navigate to state_msisdn_not_recognised", function() {
+                it("should navigate to state_msg_receiver_msisdn (retry)", function() {
                     return tester
                         .setup.user.addr('+2345059992222')
                         .inputs(
@@ -187,12 +187,78 @@ describe("Mama Nigeria App", function() {
                         )
                         .check.interaction({
                             state: 'state_msisdn_not_recognised',
-                            reply: 'Number not recognised. Redial or register.'
+                            reply: [
+                                'Number not recognised.',
+                                '1. If you entered the incorrect number, press 1',
+                                '2. to exit, press 2'
+                            ].join('\n')
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msisdn_not_recognised_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .check(function(api) {
+                            var expected_used = [0,1];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
+                        .run();
+                });
+                it("should navigate to state_msg_receiver_msisdn", function() {
+                    return tester
+                        .setup.user.addr('+2345059991111')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059991111'  // msg_receiver_msisdn
+                            , '1'  // state_msisdn_not_recognised - incorrect number
+                        )
+                        .check.interaction({
+                            state: 'state_msg_receiver_msisdn',
+                            reply: 'Welcome, Number'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_msisdn_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .check(function(api) {
+                            var expected_used = [0,1];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
+                        .run();
+                });
+                it("should navigate to state_end_exit", function() {
+                    return tester
+                        .setup.user.addr('+2345059991111')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059991111'  // msg_receiver_msisdn
+                            , '2'  // state_msisdn_not_recognised - exit
+                        )
+                        .check.interaction({
+                            state: 'state_end_exit',
+                            reply: 'Thank you for using the Hello Mama service. Goodbye.'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_exit_1.mp3',
                                     wait_for: '#'
                                 }
                             }

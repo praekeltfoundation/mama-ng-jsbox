@@ -73,7 +73,7 @@ go.app = function() {
                             'creator_opts': {'retry_state': name}
                         };
                     }
-                } 
+                }
             });
         });
 
@@ -120,18 +120,35 @@ go.app = function() {
             }
         });
 
-        // EndState st-B
+        // ChoiceState st-B
         self.add('state_msisdn_not_recognised', function(name) {
             var speech_option = '1';
+            return new ChoiceState(name, {
+                question: $('Number not recognised.'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                choices: [
+                    new Choice('state_msg_receiver_msisdn', $('If you entered the incorrect number, press 1')),
+                    new Choice('state_end_exit', $('to exit, press 2'))
+                ],
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+        // EndState st-22
+        self.add('state_end_exit', function(name) {
+            var speech_option = '1';
             return new EndState(name, {
-                text: $('Number not recognised. Redial or register.'),
+                text: $('Thank you for using the Hello Mama service. Goodbye.'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: 'state_start'
             });
         });
 
-       // ChoiceState st-A
+        // ChoiceState st-A
         self.add('state_main_menu', function(name) {
             var speech_option = '1';
             return new ChoiceState(name, {
