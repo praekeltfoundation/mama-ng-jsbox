@@ -229,7 +229,6 @@ go.utils = {
     get_identity: function(identity_id, im) {
       // Gets the identity from the Identity Store
       // Returns the identity object
-
         var endpoint = 'identities/' + identity_id + '/';
         return go.utils
         .service_api_call('identities', 'get', {}, null, endpoint, im)
@@ -699,14 +698,12 @@ go.utils_project = {
 
     should_restart: function(im) {
         var no_restart_states = [
+            // voice registration states
             'state_gravida',
-            'state_c01_main_menu',
-            'state_c02_not_registered',
-            'state_c07_loss_opt_in',
-            'state_c08_end_baby',
-            'state_c09_end_msg_times',
-            'state_c10_end_loss_opt_in',
-            'state_c11_end_optout'
+            // voice change states
+            'state_msg_receiver_msisdn',
+            'state_main_menu',
+            'state_main_menu_household'
         ];
 
         return im.msg.content === '0'
@@ -1083,7 +1080,7 @@ go.app = function() {
     var FreeText = vumigo.states.FreeText;
 
 
-    var GoFC = App.extend(function(self) {
+    var GoApp = App.extend(function(self) {
         App.call(self, 'state_start');
         var $ = self.$;
         var interrupt = true;
@@ -1142,12 +1139,14 @@ go.app = function() {
                 "Please tell us why you no longer want to receive messages so we can help you further.",
             "state_loss_subscription":
                 "We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?",
-            "state_loss_subscription_confirm":
+            "state_end_loss_subscription_confirm":
                 "Thank you. You will now receive messages to support you during this difficult time.",
             "state_optout_receiver":
                 "Who would you like to stop receiving messages?",
             "state_end_optout":
                 "Thank you. You will no longer receive messages",
+            "state_end_loss":
+                "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW",
             "state_end_exit":
                 "Thank you for using the Hello Mama service"
         };
@@ -1588,15 +1587,30 @@ go.app = function() {
                 error: $(get_error_text(name)),
                 choices: [
                     new Choice('state_loss_subscription', $("Mother miscarried")),
-                    new Choice('state_loss_subscription', $("Baby stillborn")),
-                    new Choice('state_loss_subscription', $("Baby passed away")),
-                    new Choice('state_optout_receiver', $("Messages not useful")),
-                    new Choice('state_optout_receiver', $("Other"))
+                    new Choice('state_end_loss', $("Baby stillborn")),
+                    new Choice('state_end_loss', $("Baby passed away")),
+                    new Choice('state_check_subscription', $("Messages not useful")),
+                    new Choice('state_check_subscription', $("Other"))
                 ],
                 next: function(choice) {
                     return choice.value;
                 }
             });
+        });
+
+        // interstitial
+        self.states.add('state_check_subscription', function() {
+            var contact_id = self.im.user.answers.contact_id;
+            return go.utils
+                .get_identity(contact_id, self.im)
+                .then(function(contact) {
+                    // household and mother_only subscriptions bypass to end state state_end_optout
+                    if (contact.details.household_msgs_only || (self.im.user.mother_id === contact_id && self.im.user.receiver_id === 'none')) {
+                        return self.states.create("state_end_optout");
+                    } else {
+                        return self.states.create("state_optout_receiver");
+                    }
+                });
         });
 
         // ChoiceState st-14
@@ -1605,22 +1619,17 @@ go.app = function() {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
                 choices: [
-                    new Choice('yes', $("Yes")),
-                    new Choice('no', $("No"))
+                    new Choice('state_end_loss_subscription_confirm', $("Yes")),
+                    new Choice('state_end_loss', $("No"))
                 ],
                 next: function(choice) {
-                    if(choice.value === 'yes') {
-                        return 'state_loss_subscription_confirm';
-                    }
-                    else {
-                        return 'state_end_optout';
-                    }
+                    return choice.value;
                 }
             });
         });
 
         // EndState st-15
-        self.add('state_loss_subscription_confirm', function(name) {
+        self.add('state_end_loss_subscription_confirm', function(name) {
             return new EndState(name, {
                 text: $(questions[name]),
                 next: 'state_start'
@@ -1629,47 +1638,36 @@ go.app = function() {
 
         // ChoiceState st-16
         self.add('state_optout_receiver', function(name) {
-            var role = go.utils_project.check_role(self.im.user.addr);
-            if (role === 'father_role') {
-                return new ChoiceState(name, {
-                    question: $(questions[name]),
-                    error: $(get_error_text(name)),
-                    choices: [
-                        new Choice('me', $("Only me")),
-                        new Choice('father_mother', $("The Father and the Mother"))
-                    ],
-                    next: function(choice) {
+            //var role = go.utils_project.check_role(self.im.user.addr);
+            return new ChoiceState(name, {
+                question: $(questions[name]),
+                error: $(get_error_text(name)),
+                choices: [
+                    new Choice('mother', $("Mother messages")),
+                    new Choice('household', $("Household messages")),
+                    new Choice('all', $("All messages"))
+                ],
+                next: function(choice) {
                         switch (choice.value) {
-                            case 'me':  // deliberate fall-through to default
-                            case 'father_mother':
+                            case 'mother':  // deliberate fall-through to default
+                            case 'household':
+                            case 'all':
                                 return 'state_end_optout';
                         }
-                    }
-                });
-            }
-            else {
-                return new ChoiceState(name, {
-                    question: $(questions[name]),
-                    error: $(get_error_text(name)),
-                    choices: [
-                        new Choice('me', $("Only me")),
-                        new Choice('father', $("The Father")),
-                        new Choice('father_mother', $("The Father and the Mother"))
-                    ],
-                    next: function(choice) {
-                        switch (choice.value) {
-                            case 'me':  // deliberate fall-through to default
-                            case 'father':
-                            case 'father_mother':
-                                return 'state_end_optout';
-                        }
-                    }
-                });
-            }
+                }
+            });
         });
 
         // EndState st-17
         self.add('state_end_optout', function(name) {
+            return new EndState(name, {
+                text: $(questions[name]),
+                next: 'state_start'
+            });
+        });
+
+        // EndState st-21
+        self.add('state_end_loss', function(name) {
             return new EndState(name, {
                 text: $(questions[name]),
                 next: 'state_start'
@@ -1690,7 +1688,7 @@ go.app = function() {
     });
 
     return {
-        GoFC: GoFC
+        GoApp: GoApp
     };
 }();
 

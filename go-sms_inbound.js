@@ -229,7 +229,6 @@ go.utils = {
     get_identity: function(identity_id, im) {
       // Gets the identity from the Identity Store
       // Returns the identity object
-
         var endpoint = 'identities/' + identity_id + '/';
         return go.utils
         .service_api_call('identities', 'get', {}, null, endpoint, im)
@@ -699,14 +698,12 @@ go.utils_project = {
 
     should_restart: function(im) {
         var no_restart_states = [
+            // voice registration states
             'state_gravida',
-            'state_c01_main_menu',
-            'state_c02_not_registered',
-            'state_c07_loss_opt_in',
-            'state_c08_end_baby',
-            'state_c09_end_msg_times',
-            'state_c10_end_loss_opt_in',
-            'state_c11_end_optout'
+            // voice change states
+            'state_msg_receiver_msisdn',
+            'state_main_menu',
+            'state_main_menu_household'
         ];
 
         return im.msg.content === '0'

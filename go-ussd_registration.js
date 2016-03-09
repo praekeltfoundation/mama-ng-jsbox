@@ -229,7 +229,6 @@ go.utils = {
     get_identity: function(identity_id, im) {
       // Gets the identity from the Identity Store
       // Returns the identity object
-
         var endpoint = 'identities/' + identity_id + '/';
         return go.utils
         .service_api_call('identities', 'get', {}, null, endpoint, im)
@@ -699,14 +698,12 @@ go.utils_project = {
 
     should_restart: function(im) {
         var no_restart_states = [
+            // voice registration states
             'state_gravida',
-            'state_c01_main_menu',
-            'state_c02_not_registered',
-            'state_c07_loss_opt_in',
-            'state_c08_end_baby',
-            'state_c09_end_msg_times',
-            'state_c10_end_loss_opt_in',
-            'state_c11_end_optout'
+            // voice change states
+            'state_msg_receiver_msisdn',
+            'state_main_menu',
+            'state_main_menu_household'
         ];
 
         return im.msg.content === '0'
@@ -1111,6 +1108,8 @@ go.app = function() {
                 "Please select who will receive the messages on their phone:",
             "state_msisdn":
                 "Please enter the mobile number of the person who will receive the weekly messages. For example, 08033048990",
+            "state_msisdn_already_registered":
+                "Sorry, this number is already registered. They must opt-out before registering again.",
             "state_msisdn_mother":
                 "Please enter the mother's mobile number. She must consent to receiving messages.",
             "state_msisdn_household":
@@ -1138,7 +1137,9 @@ go.app = function() {
             "state_end_voice":
                 "Thank you. The person will now start receiving calls on {{days}} between {{times}}.",
             "state_end_sms":
-                "Thank you. The person will now start receiving messages three times a week."
+                "Thank you. The person will now start receiving messages three times a week.",
+            "state_end_msisdn":
+                "Thank you for using the Hello Mama service."
         };
 
         var errors = {
@@ -1264,7 +1265,49 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: 'state_save_identities'
+                next: function(content) {
+                    var msisdn = go.utils.normalize_msisdn(
+                        content, self.im.config.country_code);
+                    return go.utils
+                        .get_identity_by_address({'msisdn': msisdn}, self.im)
+                        .then(function(contact) {
+                            if (contact && contact.details && contact.details.receiver_role) {
+                                self.im.user.set_answer('role_player', contact.details.receiver_role);
+                                self.im.user.set_answer('contact_id', contact.id);
+                                return 'state_msisdn_already_registered';
+                            } else {
+                                return 'state_save_identities';
+                            }
+                        });
+                }
+            });
+        });
+
+        // ChoiceState st-22
+        self.add('state_msisdn_already_registered', function(name) {
+            return new ChoiceState(name, {
+                question: $(questions[name]),
+                choices: [
+                    new Choice('state_msisdn', $("Try a different number")),
+                    new Choice('state_msg_receiver', $("Choose a different receiver")),
+                    new Choice('exit', $("Exit"))
+                ],
+                next: function(choice) {
+                    if (choice.value != 'exit') {
+                        return choice.value;
+                    } else {
+                        return 'state_end_msisdn';
+                    }
+
+                }
+            });
+        });
+
+        // EndState of st-22
+        self.add('state_end_msisdn', function(name) {
+            return new EndState(name, {
+                text: $(questions[name]),
+                next: 'state_start'
             });
         });
 
@@ -1283,7 +1326,7 @@ go.app = function() {
             });
         });
 
-        // FreeText st-3A
+        // FreeText st-3B
         self.add('state_msisdn_household', function(name) {
             return new FreeText(name, {
                 question: $(questions[name]).context({

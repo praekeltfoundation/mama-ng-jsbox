@@ -19,6 +19,7 @@ module.exports = function() {
 
         // 0: get identity 05059991111 by msisdn - no results
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -43,6 +44,7 @@ module.exports = function() {
 
         // 1: create identity 05059991111
         {
+            'repeatable': true,
             'request': {
                 'method': 'POST',
                 'headers': {
@@ -84,6 +86,7 @@ module.exports = function() {
 
         // 2: get identity 05059992222 by msisdn
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
