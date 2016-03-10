@@ -228,14 +228,18 @@ go.utils = {
         var search_string = 'details__addresses__' + address_type;
         params[search_string] = address_val;
 
-        return go.utils
-            .service_api_call('identities', 'get', params, null, 'identities/search/', im)
-            .then(function(json_get_response) {
-                var identities_found = json_get_response.data.results;
-                // Return the first identity in the list of identities
-                return (identities_found.length > 0)
-                ? identities_found[0]
-                : null;
+        return im
+            .log('Getting identity for: ' + JSON.stringify(params))
+            .then(function() {
+                return go.utils
+                    .service_api_call('identities', 'get', params, null, 'identities/search/', im)
+                    .then(function(json_get_response) {
+                        var identities_found = json_get_response.data.results;
+                        // Return the first identity in the list of identities
+                        return (identities_found.length > 0)
+                        ? identities_found[0]
+                        : null;
+                    });
             });
     },
 
