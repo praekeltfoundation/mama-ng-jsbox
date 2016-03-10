@@ -1,6 +1,8 @@
 /*jshint -W083 */
 var Q = require('q');
 var moment = require('moment');
+var vumigo = require('vumigo_v02');
+var HttpApi = vumigo.http.api.HttpApi;
 
 // PROJECT SPECIFIC UTILS
 go.utils_project = {
@@ -295,13 +297,29 @@ go.utils_project = {
                 '   Num: ' + num,
                 '   Retry: ' + retry,
                 ].join('\n'))
-            .then(function() {
-                return {
-                    voice: {
-                        speech_url: voice_url,
-                        wait_for: '#'
+            .then(function () {
+                var http = new HttpApi(im, {
+                    headers: {
+                        'Connection': ['close']
                     }
-                };
+                });
+                return http
+                    .head(voice_url)
+                    .then(function (response) {
+                        if(200 <= code < 300) {
+                            return {
+                                voice: {
+                                    speech_url: voice_url,
+                                    wait_for: '#'
+                                }
+                            };
+                        }
+                        return im
+                            .log('Unable to find voice file: ' + voice_url)
+                            .then(function () {
+                                return {};
+                            });
+                    });
             });
     },
 
