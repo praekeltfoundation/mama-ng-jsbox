@@ -773,7 +773,7 @@ go.utils_project = {
                 return http
                     .head(voice_url)
                     .then(function (response) {
-                        if(200 <= code < 300) {
+                        if(200 <= response.code < 300) {
                             return {
                                 voice: {
                                     speech_url: voice_url,

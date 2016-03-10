@@ -1,5 +1,6 @@
 var vumigo = require('vumigo_v02');
 var fixtures = require('./fixtures_public');
+var voice_fixtures = require('./fixtures_voice_file_check');
 var assert = require('assert');
 var AppTester = vumigo.AppTester;
 
@@ -35,6 +36,9 @@ describe("Mama Nigeria App", function() {
                 })
                 .setup(function(api) {
                     fixtures().forEach(function(d) {
+                        api.http.fixtures.add(d);
+                    });
+                    voice_fixtures().forEach(function(d) {
                         api.http.fixtures.add(d);
                     });
                 })
@@ -88,7 +92,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [0,1];
+                        var expected_used = [0,1,17];
                         var fixts = api.http.fixtures.fixtures;
                         var fixts_used = [];
                         fixts.forEach(function(f, i) {
@@ -125,7 +129,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [2];
+                            var expected_used = [2, 17];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -165,7 +169,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [0,1,2];
+                            var expected_used = [0,1,2, 17];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -202,7 +206,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [0,1];
+                            var expected_used = [0,1, 17];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -233,7 +237,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [0,1];
+                            var expected_used = [0,1, 17];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -264,7 +268,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [0,1];
+                            var expected_used = [0,1, 17];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {

@@ -2,6 +2,7 @@ var vumigo = require('vumigo_v02');
 var moment = require('moment');
 var assert = require('assert');
 var fixtures = require('./fixtures_registration');
+var voice_fixtures = require('./fixtures_voice_file_check');
 var AppTester = vumigo.AppTester;
 
 
@@ -36,6 +37,9 @@ describe("Mama Nigeria App", function() {
                 })
                 .setup(function(api) {
                     fixtures().forEach(function(d) {
+                        api.http.fixtures.add(d);
+                    });
+                    voice_fixtures().forEach(function(d) {
                         api.http.fixtures.add(d);
                     });
                 })
@@ -1574,7 +1578,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [2,6,36,37,38,52,54,59,69,77];
+                            var expected_used = [2,6,36,37,38,52,54,59,69,77,79];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -1695,7 +1699,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [2,6,36,37,38,53,54,59,70,77];
+                        var expected_used = [2,6,36,37,38,53,54,59,70,77,79];
                         var fixts = api.http.fixtures.fixtures;
                         var fixts_used = [];
                         fixts.forEach(function(f, i) {
