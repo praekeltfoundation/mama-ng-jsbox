@@ -66,9 +66,9 @@ go.utils = {
             return im
                 .log([
                     'Request: ' + method + ' ' + im.config.services[service].url + endpoint,
-                    'Payload: ' + payload,
-                    'Params: ' + params,
-                    'Response: ' + response,
+                    'Payload: ' + JSON.stringify(payload),
+                    'Params: ' + JSON.stringify(params),
+                    'Response: ' + JSON.stringify(response),
                 ].join('\n'))
                 .then(function () {
                     return response;
