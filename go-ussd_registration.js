@@ -35,26 +35,46 @@ go.utils = {
         switch (method) {
             case "post":
                 return http.post(im.config.services[service].url + endpoint, {
-                    data: payload
-                });
+                        data: payload
+                    })
+                    .then(go.utils.log_service_api_call(service, method, params, payload, endpoint, im));
             case "get":
                 return http.get(im.config.services[service].url + endpoint, {
-                    params: params
-                });
+                        params: params
+                    })
+                    .then(go.utils.log_service_api_call(service, method, params, payload, endpoint, im));
             case "patch":
                 return http.patch(im.config.services[service].url + endpoint, {
-                    data: payload
-                });
+                        data: payload
+                    })
+                    .then(go.utils.log_service_api_call(service, method, params, payload, endpoint, im));
             case "put":
                 return http.put(im.config.services[service].url + endpoint, {
                     params: params,
-                  data: payload
-                });
+                    data: payload
+                })
+                .then(go.utils.log_service_api_call(service, method, params, payload, endpoint, im));
             case "delete":
-                return http.delete(im.config.services[service].url + endpoint);
+                return http
+                    .delete(im.config.services[service].url + endpoint)
+                    .then(go.utils.log_service_api_call(service, method, params, payload, endpoint, im));
             }
     },
 
+    log_service_api_call: function(service, method, params, payload, endpoint, im) {
+        return function (response) {
+            return im
+                .log([
+                    'Request: ' + method + ' ' + im.config.services[service].url + endpoint,
+                    'Payload: ' + payload,
+                    'Params: ' + params,
+                    'Response: ' + response,
+                ].join('\n'))
+                .then(function () {
+                    return response;
+                });
+        };
+    },
 
 // MSISDN HELPERS
 
