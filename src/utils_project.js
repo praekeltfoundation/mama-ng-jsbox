@@ -285,12 +285,24 @@ go.utils_project = {
 
     // Construct helper_data object
     make_voice_helper_data: function(im, name, lang, num, retry) {
-        return {
-            voice: {
-                speech_url: go.utils_project.make_speech_url(im, name, lang, num, retry),
-                wait_for: '#'
-            }
-        };
+        var voice_url = go.utils_project.make_speech_url(im, name, lang, num, retry);
+        return im
+            .log([
+                'Voice URL is: ' + voice_url,
+                'Constructed from:',
+                '   Name: ' + name,
+                '   Lang: ' + lang,
+                '   Num: ' + num,
+                '   Retry: ' + retry,
+                ].join('\n'))
+            .then(function() {
+                return {
+                    voice: {
+                        speech_url: voice_url,
+                        wait_for: '#'
+                    }
+                };
+            });
     },
 
 
