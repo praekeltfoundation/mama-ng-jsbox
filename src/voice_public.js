@@ -50,8 +50,11 @@ go.app = function() {
         self.states.add('state_start', function() {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
-            return go.utils
-                .get_or_create_identity({'msisdn': self.im.user.addr}, self.im, null)
+            return self.im
+                .log('Starting for identity: ' + self.im.user.addr)
+                .then(function () {
+                    return go.utils.get_or_create_identity({'msisdn': self.im.user.addr}, self.im, null);
+                })
                 .then(function(user) {
                     self.im.user.set_answer('user_id', user.id);
                     if (user.details.receiver_role) {

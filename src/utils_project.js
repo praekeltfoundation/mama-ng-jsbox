@@ -1,6 +1,8 @@
 /*jshint -W083 */
 var Q = require('q');
 var moment = require('moment');
+var vumigo = require('vumigo_v02');
+var HttpApi = vumigo.http.api.HttpApi;
 
 // PROJECT SPECIFIC UTILS
 go.utils_project = {
@@ -286,12 +288,39 @@ go.utils_project = {
 
     // Construct helper_data object
     make_voice_helper_data: function(im, name, lang, num, retry) {
-        return {
-            voice: {
-                speech_url: go.utils_project.make_speech_url(im, name, lang, num, retry),
-                wait_for: '#'
-            }
-        };
+        var voice_url = go.utils_project.make_speech_url(im, name, lang, num, retry);
+        return im
+            .log([
+                'Voice URL is: ' + voice_url,
+                'Constructed from:',
+                '   Name: ' + name,
+                '   Lang: ' + lang,
+                '   Num: ' + num,
+                '   Retry: ' + retry,
+                ].join('\n'))
+            .then(function () {
+                var http = new HttpApi(im, {
+                    headers: {
+                        'Connection': ['close']
+                    }
+                });
+                return http
+                    .head(voice_url)
+                    .then(function (response) {
+                        return {
+                            voice: {
+                                speech_url: voice_url,
+                                wait_for: '#'
+                            }
+                        };
+                    }, function (error) {
+                        return im
+                            .log('Unable to find voice file: ' + voice_url)
+                            .then(function () {
+                                return {};
+                            });
+                    });
+            });
     },
 
 
@@ -369,12 +398,19 @@ go.utils_project = {
             }
         };
 
+        // add data for voice time and day if applicable
+        if (im.user.answers.state_msg_type === 'voice') {
+            reg_info.data.voice_times = im.user.answers.state_voice_times;
+            reg_info.data.voice_days = im.user.answers.state_voice_days;
+        }
+
         // add data for last_period_date or baby_dob
         if (im.user.answers.state_pregnancy_status === 'prebirth') {
             reg_info.data.last_period_date = im.user.answers.working_date;
         } else if (im.user.answers.state_pregnancy_status === 'postbirth') {
             reg_info.data.baby_dob = im.user.answers.working_date;
         }
+
         return reg_info;
     },
 
