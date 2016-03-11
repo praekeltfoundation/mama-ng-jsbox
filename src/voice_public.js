@@ -15,6 +15,9 @@ go.app = function() {
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
                 if (go.utils_project.should_repeat(self.im)) {
+                    // ensure that when the user requested a repeat by '*' when
+                    // in a retry state that the original state will rather be repeated
+                    if (opts.retry) opts.retry = false;
                     // Prevent previous content being passed to next state
                     // thus preventing infinite repeat loop
                     self.im.msg.content = null;
@@ -26,6 +29,7 @@ go.app = function() {
                     opts.name = name;
                     // Prevent previous content being passed to next state
                     self.im.msg.content = null;
+                    // ??? do what's below, assuming previous registartion OR... state_check_receiver_role... ????
                     var state_to_restart_from = self.im.user.answers.state_main_menu ? 'state_main_menu' : 'state_main_menu_household';
                     // Reset user answers when restarting the app
                     self.im.user.answers = {};
