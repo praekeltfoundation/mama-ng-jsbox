@@ -773,14 +773,13 @@ go.utils_project = {
                 return http
                     .head(voice_url)
                     .then(function (response) {
-                        if(200 <= response.code < 300) {
-                            return {
-                                voice: {
-                                    speech_url: voice_url,
-                                    wait_for: '#'
-                                }
-                            };
-                        }
+                        return {
+                            voice: {
+                                speech_url: voice_url,
+                                wait_for: '#'
+                            }
+                        };
+                    }, function (error) {
                         return im
                             .log('Unable to find voice file: ' + voice_url)
                             .then(function () {
