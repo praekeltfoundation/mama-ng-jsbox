@@ -158,7 +158,7 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                it.skip("should not restart (or skip to menu_menu state)", function() {
+                it("should not restart (or skip to menu_menu state)", function() {
                     return tester
                         .setup.user.addr('+2345059992222')
                         .inputs(
@@ -194,7 +194,7 @@ describe("Mama Nigeria App", function() {
                         .setup.user.addr('+2345059992222')
                         .inputs(
                             {session_event: 'new'}
-                            , '5551234'  // msg_receiver_msisdn
+                            , '5551234'  // state_msg_receiver_msisdn
                             , '*'   // state_msg_receiver_msisdn - repeat
                         )
                         .check.interaction({

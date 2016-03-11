@@ -1100,10 +1100,16 @@ go.app = function() {
                 if (go.utils_project.should_restart(self.im)) {
                     opts = opts || {};
                     opts.name = name;
+                    var state_to_restart_from;
+                    if (name === "state_retry" && Object.keys(opts)[0] === "retry_state") {
+                        state_to_restart_from = opts.retry_state;
+                        opts.retry = true;
+                    } else {
+                        // ??? do what's below, assuming previous registartion OR... state_check_receiver_role... ????
+                        state_to_restart_from = self.im.user.answers.state_main_menu ? 'state_main_menu' : 'state_main_menu_household';
+                    }
                     // Prevent previous content being passed to next state
                     self.im.msg.content = null;
-                    // ??? do what's below, assuming previous registartion OR... state_check_receiver_role... ????
-                    var state_to_restart_from = self.im.user.answers.state_main_menu ? 'state_main_menu' : 'state_main_menu_household';
                     // Reset user answers when restarting the app
                     self.im.user.answers = {};
                     return self.states.create(state_to_restart_from, opts);  // restarts to either st-A or st-A1
