@@ -1105,7 +1105,6 @@ go.app = function() {
                         state_to_restart_from = opts.retry_state;
                         opts.retry = true;
                     } else {
-                        // ??? do what's below, assuming previous registartion OR... state_check_receiver_role... ????
                         state_to_restart_from = self.im.user.answers.state_main_menu ? 'state_main_menu' : 'state_main_menu_household';
                     }
                     // Prevent previous content being passed to next state
