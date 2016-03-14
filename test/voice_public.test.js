@@ -79,8 +79,8 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_baby_confirm_subscription',
                         reply: [
-                            'You are already registered for baby messages.',
-                            '1. To go back to main menu, 0 then #'
+                            'Confirm baby?',
+                            '1. To confirm press 1. To go back to main menu, 0 then #'
                         ].join('\n')
                     })
                     .run();
@@ -156,7 +156,8 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                it("should not restart (or skip to menu_menu state)", function() {
+                // state_msg_receiver_msisdn is a no-restart state
+                it("should not restart, skip ahead to main_menu state", function() {
                     return tester
                         .setup.user.addr('+2345059992222')
                         .inputs(
@@ -197,12 +198,12 @@ describe("Mama Nigeria App", function() {
                         )
                         .check.interaction({
                             state: 'state_msg_receiver_msisdn',
-                            reply: "Welcome, Number"
+                            reply: "Retry. Welcome, Number"
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_msisdn_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_msisdn_1_retry.mp3',
                                     wait_for: '#'
                                 }
                             }

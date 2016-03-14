@@ -15,9 +15,6 @@ go.app = function() {
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
                 if (go.utils_project.should_repeat(self.im)) {
-                    // ensure that when the user requested a repeat by '*' when
-                    // in a retry state that the original state will rather be repeated
-                    if (opts.retry) opts.retry = false;
                     // Prevent previous content being passed to next state
                     // thus preventing infinite repeat loop
                     self.im.msg.content = null;
@@ -27,6 +24,7 @@ go.app = function() {
                 if (go.utils_project.should_restart(self.im)) {
                     opts = opts || {};
                     opts.name = name;
+
                     var state_to_restart_from;
                     if (name === "state_retry" && Object.keys(opts)[0] === "retry_state") {
                         state_to_restart_from = opts.retry_state;
@@ -34,6 +32,7 @@ go.app = function() {
                     } else {
                         state_to_restart_from = self.im.user.answers.state_main_menu ? 'state_main_menu' : 'state_main_menu_household';
                     }
+
                     // Prevent previous content being passed to next state
                     self.im.msg.content = null;
                     // Reset user answers when restarting the app
@@ -210,18 +209,15 @@ go.app = function() {
                });
         });
 
-        // ChoiceText st-01
+        // FreeText st-01
         self.add('state_baby_already_subscribed', function(name) {
             var speech_option = 1;
-            return new ChoiceText(name, {
+            return new FreeText(name, {
                 question: $('You are already subscribed. To go back to main menu, 0 then #'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
-                choices: [
-                    new Choice('back', $('To go back to main menu, 0 then #'))
-                ],
                 next: function(choice) {
-                    return choice.value;
+                    return 'state_baby_already_subscribed';
                 }
             });
         });
@@ -230,14 +226,14 @@ go.app = function() {
         self.add('state_baby_confirm_subscription', function(name) {
             var speech_option = '1';
             return new ChoiceState(name, {
-                question: $('You are already registered for baby messages.'),
+                question: $('Confirm baby?'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('back', $('To go back to main menu, 0 then #'))
+                    new Choice('confirm', $('To confirm press 1. To go back to main menu, 0 then #'))
                 ],
                 next: function(choice) {
-                    return choice.value;
+                    return 'state_baby_save';
                 }
             });
         });
