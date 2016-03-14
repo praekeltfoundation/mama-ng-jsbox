@@ -1473,21 +1473,73 @@ go.app = function() {
         });
 
         // FreeText st-09
-        self.add('state_new_msisdn', function(name) {
+        self.add('state_new_msisdn', function(name, creator_opts) {
             var speech_option = 1;
+            var question_text = 'Please enter new mobile number';
+            var retry_text = 'Invalid number. Try again. Please enter new mobile number';
+            var use_text = creator_opts.retry === true ? retry_text : question_text;
             return new FreeText(name, {
-                question: $('Please enter new mobile number'),
+                question: $(use_text),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
-                    if (go.utils.is_valid_msisdn(content)) {
-                        // TODO: save new number
-                        return self.states.create('state_end_new_msisdn');
-                    } else {
-                        return self.states.create('state_retry_msisdn');
+                    if (!go.utils.is_valid_msisdn(content)) {
+                        return {
+                            'name': 'state_retry',
+                            'creator_opts': {'retry_state': name}
+                        };
                     }
+                    var msisdn = go.utils.normalize_msisdn(
+                        content, self.im.config.country_code);
+                    return go.utils
+                        .get_identity_by_address({'msisdn': msisdn}, self.im)
+                        .then(function(identity) {
+                            if (identity && identity.details && identity.details.receiver_role) {
+                                return 'state_number_in_use';
+                            } else {
+                                return {
+                                    'name': 'state_update_number',
+                                    'creator_opts': {'new_msisdn': msisdn}
+                                };
+                            }
+                        });
                 }
             });
+        });
+
+        // ChoiceState st-22
+        self.add('state_number_in_use', function(name) {
+            var speech_option = '1';
+            return new ChoiceState(name, {
+                question: $("Sorry, this number is already registered"),
+                error: $("Invalid input."),
+                choices: [
+                    new Choice('state_new_msisdn', $("To try a different number, press 1")),
+                    new Choice('state_end_exit', $("To exit, press 2"))
+                ],
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+        // Interstitial
+        self.add('state_update_number', function(name, creator_opts) {
+            return go.utils
+                .get_identity(self.im.user.answers.contact_id, self.im)
+                .then(function(contact) {
+                    // TODO #70: Handle multiple addresses, currently overwrites existing
+                    // on assumption we're dealing with one msisdn only
+                    contact.details.addresses.msisdn = {};
+                    contact.details.addresses.msisdn[creator_opts.new_msisdn] = {};
+                    return go.utils
+                        .update_identity(self.im, contact)
+                        .then(function() {
+                            return self.states.create('state_end_new_msisdn');
+                        });
+                });
         });
 
         // EndState st-10

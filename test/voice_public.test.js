@@ -306,8 +306,8 @@ describe("Mama Nigeria App", function() {
             });
         });
 
-        describe.skip("When you enter a choice main_menu", function() {
-            describe("if you choose baby", function() {
+        describe("When you enter a choice main_menu", function() {
+            describe.skip("if you choose baby", function() {
                 it("should navigate to state_baby_already_subscribed", function() {
                     return tester
                         .setup.user.addr('082333')
@@ -412,7 +412,7 @@ describe("Mama Nigeria App", function() {
             describe("if you choose to change number", function() {
                 it("should navigate to state_new_msisdn", function() {
                     return tester
-                        .setup.user.addr('+07070050005')
+                        .setup.user.addr('+2345059992222')
                         .inputs(
                             {session_event: 'new'}
                             , '05059992222' // state_msg_receiver_msisdn
@@ -432,14 +432,114 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                it("should navigate to state_end_new_msisdn", function() {
+                it("should navigate to state_new_msisdn (invalid number)", function() {
                     return tester
-                        .setup.user.addr('+07070050005')
+                        .setup.user.addr('+2345059992222')
                         .inputs(
                             {session_event: 'new'}
                             , '05059992222' // state_msg_receiver_msisdn
                             , '3'           // state_main_menu - number
-                            , '05059992223'  // state_new_msisdn
+                            , '54321'       // state_new_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_new_msisdn',
+                            reply: 'Invalid number. Try again. Please enter new mobile number'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_new_msisdn_1_retry.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
+                it("should navigate to state_number_in_use", function() {
+                    return tester
+                        .setup.user.addr('+2345059992222')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059992222' // state_msg_receiver_msisdn
+                            , '3'           // state_main_menu - number
+                            , '05059993333'  // state_new_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_number_in_use',
+                            reply: [
+                                'Sorry, this number is already registered',
+                                '1. To try a different number, press 1',
+                                '2. To exit, press 2'
+                            ].join('\n')
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_number_in_use_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
+                it("should navigate to state_new_msisdn (via state_number_in_use)", function() {
+                    return tester
+                        .setup.user.addr('+2345059992222')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059992222' // state_msg_receiver_msisdn
+                            , '3'           // state_main_menu - number
+                            , '05059993333'       // state_new_msisdn
+                            , '1'  // state_number_in_use - try a different number
+                        )
+                        .check.interaction({
+                            state: 'state_new_msisdn',
+                            reply: 'Please enter new mobile number'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_new_msisdn_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
+                it("should navigate to state_end_exit", function() {
+                    return tester
+                        .setup.user.addr('+2345059992222')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059992222' // state_msg_receiver_msisdn
+                            , '3'           // state_main_menu - number
+                            , '05059993333'  // state_new_msisdn
+                            , '2'  // state_number_in_use - exit
+
+                        )
+                        .check.interaction({
+                            state: 'state_end_exit',
+                            reply: 'Thank you for using the Hello Mama service. Goodbye.'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_exit_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
+                it("should navigate to state_end_new_msisdn", function() {
+                    return tester
+                        .setup.user.addr('+2345059992222')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059992222' // state_msg_receiver_msisdn
+                            , '3'           // state_main_menu - number
+                            , '05059998888'  // state_new_msisdn
+
                         )
                         .check.interaction({
                             state: 'state_end_new_msisdn',
@@ -457,7 +557,7 @@ describe("Mama Nigeria App", function() {
                 });
             });
 
-            describe("if you choose to change language", function() {
+            describe.skip("if you choose to change language", function() {
                 it("should navigate to state_msg_language", function() {
                     return tester
                         .setup.user.addr('+07070050005')
