@@ -32,21 +32,7 @@ go.app = function() {
         self.states.add('state_start', function() {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
-            return self.im
-                .log('Starting for identity: ' + self.im.user.addr)
-                .then(function () {
-                    return go.utils.get_or_create_identity({'msisdn': self.im.user.addr}, self.im, null);
-                })
-                .then(function(user) {
-                    self.im.user.set_answer('user_id', user.id);
-                    if (user.details.receiver_role) {
-                        self.im.user.set_answer('role_player', user.details.receiver_role);
-                    } else {
-                        self.im.user.set_answer('role_player', 'guest');
-                    }
-
-                    return self.states.create("state_msg_receiver_msisdn");
-                });
+            return self.states.create("state_msg_receiver_msisdn");
         });
 
         // A loopback state that is required since you can't pass opts back
@@ -86,16 +72,20 @@ go.app = function() {
                 self.im.user.answers.state_msg_receiver_msisdn,
                 self.im.config.country_code
             );
-            return go.utils
-                .get_identity_by_address({'msisdn': msisdn}, self.im)
-                .then(function(contact) {
-                    if (contact && contact.details.receiver_role) {
-                        self.im.user.set_answer('role_player', contact.details.receiver_role);
-                        self.im.user.set_answer('contact_id', contact.id);
-                        return self.states.create('state_check_receiver_role');
-                    } else {
-                        return self.states.create('state_msisdn_not_recognised');
-                    }
+            return self.im
+                .log('Starting for msisdn: ' + msisdn)
+                .then(function() {
+                    return go.utils
+                        .get_identity_by_address({'msisdn': msisdn}, self.im)
+                        .then(function(contact) {
+                            if (contact && contact.details.receiver_role) {
+                                self.im.user.set_answer('role_player', contact.details.receiver_role);
+                                self.im.user.set_answer('contact_id', contact.id);
+                                return self.states.create('state_check_receiver_role');
+                            } else {
+                                return self.states.create('state_msisdn_not_recognised');
+                            }
+                        });
                 });
         });
 
