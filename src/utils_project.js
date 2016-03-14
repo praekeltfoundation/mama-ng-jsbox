@@ -266,6 +266,7 @@ go.utils_project = {
         ];
 
         return im.msg.content === '0'
+            && im.user.state.name
             && no_restart_states.indexOf(im.user.state.name) === -1;
     },
 

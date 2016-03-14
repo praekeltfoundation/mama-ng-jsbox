@@ -733,6 +733,7 @@ go.utils_project = {
         ];
 
         return im.msg.content === '0'
+            && im.user.state.name
             && no_restart_states.indexOf(im.user.state.name) === -1;
     },
 
@@ -1150,30 +1151,23 @@ go.app = function() {
 
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
+                var pass_opts = opts || {};
+                pass_opts.name = name;
+
                 if (go.utils_project.should_repeat(self.im)) {
                     // Prevent previous content being passed to next state
                     // thus preventing infinite repeat loop
                     self.im.msg.content = null;
-                    return self.states.create(name, opts);
+                    return self.states.create(name, pass_opts);
                 }
 
                 if (go.utils_project.should_restart(self.im)) {
-                    opts = opts || {};
-                    opts.name = name;
-
-                    var state_to_restart_from;
-                    if (name === "state_retry" && Object.keys(opts)[0] === "retry_state") {
-                        state_to_restart_from = opts.retry_state;
-                        opts.retry = true;
-                    } else {
-                        state_to_restart_from = self.im.user.answers.state_main_menu ? 'state_main_menu' : 'state_main_menu_household';
-                    }
-
                     // Prevent previous content being passed to next state
                     self.im.msg.content = null;
-                    // Reset user answers when restarting the app
-                    self.im.user.answers = {};
-                    return self.states.create(state_to_restart_from, opts);  // restarts to either st-A or st-A1
+                    var state_to_restart_from = self.im.user.answers.receiver_household_only
+                        ? 'state_main_menu_household'
+                        : 'state_main_menu';
+                    return self.states.create(state_to_restart_from, pass_opts);  // restarts to either st-A or st-A1
                 }
 
                 return creator(name, opts);

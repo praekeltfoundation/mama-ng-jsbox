@@ -16,20 +16,23 @@ go.app = function() {
 
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
+                var pass_opts = opts || {};
+                pass_opts.name = name;
+
                 if (go.utils_project.should_repeat(self.im)) {
                     // Prevent previous content being passed to next state
                     // thus preventing infinite repeat loop
                     self.im.msg.content = null;
-                    return creator(name, opts);
+                    return self.states.create(name, pass_opts);
                 }
 
                 if (go.utils_project.should_restart(self.im)) {
                     // Prevent previous content being passed to next state
                     self.im.msg.content = null;
-                    return self.states.create('state_start', opts);
+                    return self.states.create('state_start', pass_opts);
                 }
 
-                return creator(name, opts);
+                return creator(name, pass_opts);
             });
         };
 
