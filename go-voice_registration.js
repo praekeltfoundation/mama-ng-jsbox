@@ -1159,6 +1159,7 @@ go.app = function() {
 
                 if (go.utils_project.should_repeat(self.im)) {
                     // Prevent previous content being passed to next state
+                    // thus preventing infinite repeat loop
                     self.im.msg.content = null;
                     return self.states.create(name, pass_opts);
                 }
@@ -1168,12 +1169,6 @@ go.app = function() {
                     self.im.msg.content = null;
                     return self.states.create('state_msg_receiver', pass_opts);
                 }
-
-                //console.log("CONTENT: "+self.im.msg.content);
-        
-                /*util = require("util");
-                var obj_str2 = util.inspect(pass_opts);
-                console.log(obj_str2);*/
 
                 return creator(name, pass_opts);
             });
