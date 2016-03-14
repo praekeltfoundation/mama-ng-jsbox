@@ -42,17 +42,7 @@ go.app = function() {
         self.states.add('state_start', function(name) {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
-            return go.utils
-                .get_or_create_identity({'msisdn': self.im.user.addr}, self.im, null)
-                .then(function(user) {
-                    self.im.user.set_answer('user_id', user.id);
-                    if (user.details.personnel_code) {
-                        self.im.user.set_answer('operator_id', user.id);
-                        return self.states.create('state_msg_receiver');
-                    } else {
-                        return self.states.create('state_personnel_auth');
-                    }
-                });
+            return self.states.create('state_personnel_auth');
         });
 
         // A loopback state that is required since you can't pass opts back

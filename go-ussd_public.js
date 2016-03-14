@@ -860,10 +860,13 @@ go.utils_project = {
                 operator_id: im.user.answers.operator_id,
                 gravida: im.user.answers.state_gravida,
                 language: im.user.answers.state_msg_language,
-                msg_type: im.user.answers.state_msg_type,
-                user_id: im.user.answers.user_id
+                msg_type: im.user.answers.state_msg_type
             }
         };
+
+        if (im.user.answers.user_id) {
+            reg_info.data.user_id = im.user.answers.user_id;
+        }
 
         // add data for voice time and day if applicable
         if (im.user.answers.state_msg_type === 'voice') {

@@ -1,6 +1,5 @@
 var vumigo = require('vumigo_v02');
 var fixtures = require('./fixtures_public');
-var voice_fixtures = require('./fixtures_voice_file_check');
 var assert = require('assert');
 var AppTester = vumigo.AppTester;
 
@@ -38,12 +37,7 @@ describe("Mama Nigeria App", function() {
                     fixtures().forEach(function(d) {
                         api.http.fixtures.add(d);
                     });
-                    voice_fixtures().forEach(function(d) {
-                        api.http.fixtures.add(d);
-                    });
                 })
-                // +08080030003 is an unregistered identity
-                // +07070050005 is a registered identity
                 ;
         });
 
@@ -115,7 +109,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [0,1,17];
+                        var expected_used = [16];
                         var fixts = api.http.fixtures.fixtures;
                         var fixts_used = [];
                         fixts.forEach(function(f, i) {
@@ -152,7 +146,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [2, 17];
+                            var expected_used = [16];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -183,7 +177,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [2, 17];
+                            var expected_used = [16];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -214,7 +208,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [2, 17];
+                            var expected_used = [16];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -254,7 +248,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [0,1,2, 17];
+                            var expected_used = [2,16];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -292,7 +286,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [0,1, 17];
+                            var expected_used = [0,16];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -323,7 +317,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [0,1, 17];
+                            var expected_used = [0,16];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -354,7 +348,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [0,1, 17];
+                            var expected_used = [0,16];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {

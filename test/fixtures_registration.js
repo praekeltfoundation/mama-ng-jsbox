@@ -2231,8 +2231,7 @@ module.exports = function() {
                         "gravida": "2",
                         "language": "igbo",
                         "msg_type": "sms",
-                        "baby_dob": "20160713",
-                        "user_id": "cb245673-aa41-4302-ac47-00000000001"
+                        "baby_dob": "20160713"
                     }
                 }
             },
@@ -2249,8 +2248,7 @@ module.exports = function() {
                         "gravida": "2",
                         "language": "igbo",
                         "msg_type": "sms",
-                        "baby_dob": "20160713",
-                        "user_id": "cb245673-aa41-4302-ac47-00000000001"
+                        "baby_dob": "20160713"
                     },
                     "validated": false,
                     "source": "source",
@@ -2284,7 +2282,6 @@ module.exports = function() {
                         "voice_times": "2_5",
                         "voice_days": "mon_wed",
                         "baby_dob": "20160913",
-                        "user_id": "cb245673-aa41-4302-ac47-00000000001"
                     }
                 }
             },
@@ -2302,7 +2299,6 @@ module.exports = function() {
                         "language": "igbo",
                         "msg_type": "voice",
                         "baby_dob": "20160913",
-                        "user_id": "cb245673-aa41-4302-ac47-00000000001"
                     },
                     "validated": false,
                     "source": "source",
@@ -3450,6 +3446,23 @@ module.exports = function() {
                         "updated_at": "2015-07-10T06:13:29.693298Z"
                     }]
                 }
+            }
+        },
+
+        // 79 Fixture to make HEAD requests to mp3 files to see if they exist
+        {
+            'repeatable': true,
+            'request': {
+                'method': 'HEAD',
+                'params': {},
+                'headers': {
+                    'Connection': ['close']
+                },
+                'url': new RegExp('^http:\/\/localhost:8004\/api\/v1\/.*\.mp3$'),
+            },
+            'response': {
+                "code": 200,
+                "data": {}
             }
         },
 
