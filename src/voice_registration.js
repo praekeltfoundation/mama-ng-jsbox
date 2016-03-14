@@ -23,15 +23,13 @@ go.app = function() {
                     return creator(name, opts);
                 }
 
-                if (!go.utils_project.should_restart(self.im))
-                    return creator(name, opts);
+                if (go.utils_project.should_restart(self.im)) {
+                    // Prevent previous content being passed to next state
+                    self.im.msg.content = null;
+                    return self.states.create('state_start', opts);
+                }
 
-                opts = opts || {};
-                opts.name = name;
-                // Prevent previous content being passed to next state
-                self.im.msg.content = null;
-
-                return self.states.create('state_start', opts);
+                return creator(name, opts);
             });
         };
 
