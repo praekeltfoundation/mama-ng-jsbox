@@ -156,7 +156,7 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                // state_msg_receiver_msisdn is a no-restart state
+                // state_msg_receiver_msisdn is a no-restart state (listed in the no_restart_states in utils function should_restart)
                 it("should not restart, skip ahead to main_menu state", function() {
                     return tester
                         .setup.user.addr('+2345059992222')
