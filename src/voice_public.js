@@ -348,20 +348,22 @@ go.app = function() {
         });
 
         // FreeText st-09
-        self.add('state_new_msisdn', function(name) {
+        self.add('state_new_msisdn', function(name, creator_opts) {
             var speech_option = 1;
+            var question_text = 'Please enter new mobile number';
+            var retry_text = 'Invalid number. Try again. Please enter new mobile number';
+            var use_text = creator_opts.retry === true ? retry_text : question_text;
             return new FreeText(name, {
-                question: $('Please enter new mobile number'),
-                check: function(content) {
-                    if (go.utils.is_valid_msisdn(content)) {
-                        return null;  // vumi expects null or undefined if check passes
-                    } else {
-                        return $("Invalid number. Try again. Please enter new mobile number");
-                    }
-                },
+                question: $(use_text),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
+                    if (!go.utils.is_valid_msisdn(content)) {
+                        return {
+                            'name': 'state_retry',
+                            'creator_opts': {'retry_state': name}
+                        };
+                    }
                     var msisdn = go.utils.normalize_msisdn(
                         content, self.im.config.country_code);
                     return go.utils
