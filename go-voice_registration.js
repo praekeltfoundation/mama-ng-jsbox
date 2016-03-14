@@ -725,6 +725,7 @@ go.utils_project = {
     should_restart: function(im) {
         var no_restart_states = [
             // voice registration states
+            'state_personnel_auth',
             'state_gravida',
             // voice change states
             'state_msg_receiver_msisdn',
@@ -1158,7 +1159,6 @@ go.app = function() {
 
                 if (go.utils_project.should_repeat(self.im)) {
                     // Prevent previous content being passed to next state
-                    // thus preventing infinite repeat loop
                     self.im.msg.content = null;
                     return self.states.create(name, pass_opts);
                 }
@@ -1166,8 +1166,14 @@ go.app = function() {
                 if (go.utils_project.should_restart(self.im)) {
                     // Prevent previous content being passed to next state
                     self.im.msg.content = null;
-                    return self.states.create('state_start', pass_opts);
+                    return self.states.create('state_msg_receiver', pass_opts);
                 }
+
+                //console.log("CONTENT: "+self.im.msg.content);
+        
+                /*util = require("util");
+                var obj_str2 = util.inspect(pass_opts);
+                console.log(obj_str2);*/
 
                 return creator(name, pass_opts);
             });

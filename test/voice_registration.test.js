@@ -55,10 +55,22 @@ describe("Mama Nigeria App", function() {
                         '0'
                     )
                     .check.interaction({
-                        state: 'state_personnel_auth',
-                        reply: 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
+                        state: 'state_msg_receiver',
+                        reply: [
+                            'Choose message receiver',
+                            "1. Mother & Father",
+                            "2. Mother",
+                            "3. Father",
+                            "4. Mother & family member",
+                            "5. Mother & friend",
+                            "6. Friend",
+                            "7. Family member"
+                        ].join('\n')
                     })
-                    .check.user.answers({})
+                    .check.user.answers({
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
+                        "state_personnel_auth": "12345"
+                    })
                     .run();
             });
         });
@@ -229,22 +241,22 @@ describe("Mama Nigeria App", function() {
             });
 
             describe("if the user tries to restart with 0", function() {
-                it("should not restart", function() {
+                it.skip("should not restart", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
                             ,'aaaaa'  // state_personnel_auth
-                            ,'0'      // state_personnel_auth
+                            ,'0'      // state_personnel_auth (retry)
                         )
                         .check.interaction({
                             state: 'state_personnel_auth',
-                            reply: 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
+                            reply: 'Sorry, that is not a valid number. Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1_retry.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -302,6 +314,14 @@ describe("Mama Nigeria App", function() {
                             state: 'state_msisdn_mother',
                             reply: 'Please enter number (Mother)'
                         })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msisdn_mother_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
                         .run();
                 });
                 it("to state_msisdn_mother", function() {
@@ -316,6 +336,14 @@ describe("Mama Nigeria App", function() {
                         .check.interaction({
                             state: 'state_msisdn_mother',
                             reply: 'Sorry, invalid input. Please enter number (Mother)'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msisdn_mother_1_retry.mp3',
+                                    wait_for: '#'
+                                }
+                            }
                         })
                         .run();
                 });
@@ -332,6 +360,14 @@ describe("Mama Nigeria App", function() {
                             state: 'state_msisdn_household',
                             reply: "Please enter the father's number"
                         })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msisdn_household_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
                         .run();
                 });
                 it("to state_msisdn_household (family member message receiver)", function() {
@@ -346,6 +382,14 @@ describe("Mama Nigeria App", function() {
                         .check.interaction({
                             state: 'state_msisdn_household',
                             reply: "Please enter the family member's number"
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msisdn_household_2.mp3',
+                                    wait_for: '#'
+                                }
+                            }
                         })
                         .run();
                 });
@@ -362,6 +406,14 @@ describe("Mama Nigeria App", function() {
                             state: 'state_msisdn_household',
                             reply: "Please enter the friend's number"
                         })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msisdn_household_3.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
                         .run();
                 });
                 it("to state_msisdn_household", function() {
@@ -377,6 +429,14 @@ describe("Mama Nigeria App", function() {
                         .check.interaction({
                             state: 'state_msisdn_household',
                             reply: "Sorry, invalid input. Please enter the father's number"
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msisdn_household_1_retry.mp3',
+                                    wait_for: '#'
+                                }
+                            }
                         })
                         .run();
                 });
@@ -398,6 +458,14 @@ describe("Mama Nigeria App", function() {
                                 '2. Baby'
                             ].join('\n')
                         })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_pregnancy_status_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
                         .run();
                 });
             });
@@ -414,6 +482,14 @@ describe("Mama Nigeria App", function() {
                             state: 'state_msisdn',
                             reply: 'Please enter number'
                         })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msisdn_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
                         .run();
                 });
                 it("to state_msisdn", function() {
@@ -428,6 +504,47 @@ describe("Mama Nigeria App", function() {
                         .check.interaction({
                             state: 'state_msisdn',
                             reply: 'Sorry, invalid input. Please enter number'
+                        })
+                        .run();
+                });
+                it("repeat state_msisdn", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'     // state_personnel_auth
+                            , '7'         // state_msg_receiver - family member
+                            , '08567898'  // state_msisdn
+                            , '*'  // repeat
+                        )
+                        .check.interaction({
+                            state: 'state_msisdn',
+                            reply: 'Sorry, invalid input. Please enter number'
+                        })
+                        .run();
+                });
+                it("restart from state_msisdn", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'     // state_personnel_auth
+                            , '7'         // state_msg_receiver - family member
+                            , '08567898'  // state_msisdn
+                            , '0' // restart
+                        )
+                        .check.interaction({
+                            state: 'state_msg_receiver',
+                            reply: [
+                                'Choose message receiver',
+                                "1. Mother & Father",
+                                "2. Mother",
+                                "3. Father",
+                                "4. Mother & family member",
+                                "5. Mother & friend",
+                                "6. Friend",
+                                "7. Family member"
+                            ].join('\n')
                         })
                         .run();
                 });
@@ -535,13 +652,22 @@ describe("Mama Nigeria App", function() {
                             , '0'    // state_msg_receiver - restart
                         )
                         .check.interaction({
-                            state: 'state_personnel_auth',
-                            reply: 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
+                            state: 'state_msg_receiver',
+                            reply: [
+                                'Choose message receiver',
+                                "1. Mother & Father",
+                                "2. Mother",
+                                "3. Father",
+                                "4. Mother & family member",
+                                "5. Mother & friend",
+                                "6. Friend",
+                                "7. Family member"
+                            ].join('\n')
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_1.mp3',
                                     wait_for: '#'
                                 }
                             }
@@ -1412,6 +1538,41 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
+                it("should navigate to state_msg_language (not restart)", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'       // state_personnel_auth
+                            , '6'           // state_msg_receiver - friend_only
+                            , '09092222222' // state_msisdn
+                            , '1'           // state_pregnancy_status - pregnant
+                            , '2'           // state_last_period_year - last year
+                            , '10'          // state_last_period_month - oct
+                            , '22'          // state_last_period_day
+                            , '0' // state_gravida - restart
+                        )
+                        .check.interaction({
+                            state: 'state_msg_language',
+                            reply: [
+                                'Language?',
+                                '1. english',
+                                '2. hausa',
+                                '3. igbo',
+                                '4. pidgin',
+                                '5. yoruba'
+                            ].join('\n')
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_language_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
                 it("should navigate to state_msg_language", function() {
                     return tester
                         .setup.user.addr('07030010001')
@@ -1535,12 +1696,22 @@ describe("Mama Nigeria App", function() {
                             , '0'           // state_baby_birth_day
                         )
                         .check.interaction({
-                            state: 'state_personnel_auth'
+                            state: 'state_msg_receiver',
+                            reply: [
+                                'Choose message receiver',
+                                "1. Mother & Father",
+                                "2. Mother",
+                                "3. Father",
+                                "4. Mother & family member",
+                                "5. Mother & friend",
+                                "6. Friend",
+                                "7. Family member"
+                            ].join('\n')
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_1.mp3',
                                     wait_for: '#'
                                 }
                             }
