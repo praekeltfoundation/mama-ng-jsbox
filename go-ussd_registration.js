@@ -732,13 +732,6 @@ go.utils_project = {
             'state_main_menu_household'
         ];
 
-
-        /*console.log("CONTENT: "+im.msg.content);
-        //console.log(im.user.state.name);
-        util = require("util");
-        var obj_str = util.inspect(im.user.state);
-        console.log(obj_str);*/
-
         return im.msg.content === '0'
             && no_restart_states.indexOf(im.user.state.name) === -1;
     },
