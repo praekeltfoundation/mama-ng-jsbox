@@ -933,22 +933,21 @@ go.utils_project = {
     },
 
     optout: function(im) {
-        var mama_id = im.user.answers.mama_id;
-        return Q
-        .all([
+        var unsubscribe_result;
+        return go.utils
             // get identity so details can be updated
-            go.utils.get_identity(mama_id, im),
-            // set existing subscriptions inactive
-            go.utils_project.subscriptions_unsubscribe_all(mama_id, im)
-        ])
-        .spread(function(mama_identity, unsubscribe_result) {
-            // set new mama identity details
-            mama_identity.details.opted_out = true;
-            mama_identity.details.optout_reason = im.user.answers.state_c05_optout_reason;
+            .get_identity_by_address({'msisdn' : im.user.addr}, im)
+            .then(function(identity) {
+                // set existing subscriptions inactive
+                unsubscribe_result = go.utils.subscription_unsubscribe_all(identity, im);
 
-            // update mama identity
-            return go.utils.update_identity(im, mama_identity);
-        });
+                // set new mama identity details
+                identity.details.opted_out = true;
+                identity.details.optout_reason = im.user.answers.state_optout_reason;
+
+                // update mama identity
+                return go.utils.update_identity(im, identity);
+            });
     },
 
 
@@ -1098,7 +1097,7 @@ go.utils_project = {
             // get identity so details can be updated
             go.utils.get_identity(mama_id, im),
             // set existing subscriptions inactive
-            go.utils_project.subscriptions_unsubscribe_all(mama_id, im)
+            go.utils_project.subscription_unsubscribe_all(mama_id, im)
         ])
         .spread(function(mama_identity, unsubscribe_result) {
             // set new mama identity details

@@ -405,25 +405,26 @@ go.app = function() {
             });
         });
 
+        // ChoiceState st-13
         self.add('state_optout_reason', function(name) {
             var speech_option = '1';
             var routing = {
                 'miscarriage': 'state_loss_opt_in',
-                'stillborn': 'state_loss_opt_in',
-                'baby_died': 'state_loss_opt_in',
-                'not_useful': 'state_optin_deny',
-                'other': 'state_optin_deny'
+                'stillborn': 'state_end_loss',
+                'baby_died': 'state_end_loss',
+                'not_useful': 'state_check_subscription',
+                'other': 'state_check_subscription'
             };
             return new ChoiceState(name, {
                 question: $('Optout reason?'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('miscarriage', $('miscarriage')),
-                    new Choice('stillborn', $('stillborn')),
-                    new Choice('baby_died', $('baby_died')),
-                    new Choice('not_useful', $('not_useful')),
-                    new Choice('other', $('other'))
+                    new Choice('miscarriage', $("Mother miscarried")),
+                    new Choice('stillborn', $("Baby stillborn")),
+                    new Choice('baby_died', $("Baby passed away")),
+                    new Choice('not_useful', $("Messages not useful")),
+                    new Choice('other', $("Other"))
                 ],
                 next: function(choice) {
                     return routing[choice.value];
@@ -431,6 +432,7 @@ go.app = function() {
             });
         });
 
+        // ChoiceState st-14
         self.add('state_loss_opt_in', function(name) {
             var speech_option = '1';
             var routing = {
@@ -477,20 +479,61 @@ go.app = function() {
                 });
         });
 
-        self.add('state_end_optout', function(name) {
+        // EndState st-21
+        self.add('state_end_loss', function(name) {
             var speech_option = '1';
             return new EndState(name, {
-                text: $('Thank you - optout'),
+                text: $('We are sorry for your loss. You will no longer receive messages.'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: 'state_start'
             });
         });
 
-        self.add('state_end_not_active', function(name) {
+        // interstitial
+        self.states.add('state_check_subscription', function() {
+            var contact_id = self.im.user.answers.contact_id;
+            return go.utils
+                .get_identity(contact_id, self.im)
+                .then(function(contact) {
+                    // household and mother_only subscriptions bypass to end state state_end_optout
+                    if (contact.details.household_msgs_only || (self.im.user.mother_id === contact_id && self.im.user.receiver_id === 'none')) {
+                        return self.states.create("state_end_optout");
+                    } else {
+                        return self.states.create("state_optout_receiver");
+                    }
+                });
+        });
+
+        // ChoiceState st-16
+        self.add('state_optout_receiver', function(name) {
+            var speech_option = '1';
+            return new ChoiceState(name, {
+                question: $('Which messages to opt-out on?'),
+                error: $("Invalid input. Which message to opt-out on?"),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                choices: [
+                    new Choice('mother', $("Mother messages")),
+                    new Choice('household', $("Household messages")),
+                    new Choice('all', $("All messages"))
+                ],
+                next: function(choice) {
+                        switch (choice.value) {
+                            case 'mother':  // deliberate fall-through to default
+                            case 'household':
+                            case 'all':
+                                return 'state_end_optout';
+                        }
+                }
+            });
+        });
+
+        // EndState st-17
+        self.add('state_end_optout', function(name) {
             var speech_option = '1';
             return new EndState(name, {
-                text: $('No active subscriptions'),
+                text: $('Thank you - optout'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: 'state_start'

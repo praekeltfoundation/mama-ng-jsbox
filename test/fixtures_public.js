@@ -703,7 +703,62 @@ module.exports = function() {
             }
         },
 
+        // 16: patch identity 3f7c8851-5204-43f7-af7f-005059992222
+        {
+            'request': {
+                'method': 'PATCH',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059992222/',
+                'data': {
+                    "url": "http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059992222/",
+                    "id": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2345059992222": {}
+                            }
+                        },
+                        "receiver_role": "mother",
+                        "linked_to": null,
+                        "preferred_msg_type": "sms",
+                        "preferred_language": "igbo",
+                        "opted_out": true,
+                        "optout_reason": "miscarriage"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
 
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059992222/",
+                    "id": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2345059998888": {}
+                            }
+                        },
+                        "receiver_role": "mother",
+                        "linked_to": null,
+                        "preferred_msg_type": "sms",
+                        "preferred_language": "igbo"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
 
         // x: unused - get identity 3f7c8851-5204-43f7-af7f-005059995555
         {
