@@ -701,7 +701,7 @@ module.exports = function() {
             }
         },
 
-        // 16: get 05059999999 subscription
+        // 16: get 05059999999 subscription by msisdn parameter
         {
             'request': {
                 'method': 'GET',
