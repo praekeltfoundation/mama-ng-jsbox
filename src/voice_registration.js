@@ -13,7 +13,6 @@ go.app = function() {
         App.call(self, 'state_start');
         var $ = self.$;
         var lang = 'eng_NG';
-        var interrupt = true;
 
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
@@ -24,10 +23,9 @@ go.app = function() {
                     return creator(name, opts);
                 }
 
-                if (!interrupt || !go.utils_project.should_restart(self.im))
+                if (!go.utils_project.should_restart(self.im))
                     return creator(name, opts);
 
-                interrupt = false;
                 opts = opts || {};
                 opts.name = name;
                 // Prevent previous content being passed to next state
