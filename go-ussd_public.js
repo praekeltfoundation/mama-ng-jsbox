@@ -8,11 +8,21 @@ go;
 /*jshint -W083 */
 var vumigo = require('vumigo_v02');
 var moment = require('moment');
+var Q = require('q');
 var JsonApi = vumigo.http.api.JsonApi;
 var Choice = vumigo.states.Choice;
 
 // GENERIC UTILS
 go.utils = {
+
+// TIMEOUT HELPERS
+
+    timed_out: function(im) {
+        return im.msg.session_event === 'new'
+            && im.user.state.name
+            && im.config.no_timeout_redirects.indexOf(im.user.state.name) === -1;
+    },
+
 
 // SERVICE API CALL HELPERS
 
@@ -25,26 +35,46 @@ go.utils = {
         switch (method) {
             case "post":
                 return http.post(im.config.services[service].url + endpoint, {
-                    data: payload
-                });
+                        data: payload
+                    })
+                    .then(go.utils.log_service_api_call(service, method, params, payload, endpoint, im));
             case "get":
                 return http.get(im.config.services[service].url + endpoint, {
-                    params: params
-                });
+                        params: params
+                    })
+                    .then(go.utils.log_service_api_call(service, method, params, payload, endpoint, im));
             case "patch":
                 return http.patch(im.config.services[service].url + endpoint, {
-                    data: payload
-                });
+                        data: payload
+                    })
+                    .then(go.utils.log_service_api_call(service, method, params, payload, endpoint, im));
             case "put":
                 return http.put(im.config.services[service].url + endpoint, {
                     params: params,
-                  data: payload
-                });
+                    data: payload
+                })
+                .then(go.utils.log_service_api_call(service, method, params, payload, endpoint, im));
             case "delete":
-                return http.delete(im.config.services[service].url + endpoint);
+                return http
+                    .delete(im.config.services[service].url + endpoint)
+                    .then(go.utils.log_service_api_call(service, method, params, payload, endpoint, im));
             }
     },
 
+    log_service_api_call: function(service, method, params, payload, endpoint, im) {
+        return function (response) {
+            return im
+                .log([
+                    'Request: ' + method + ' ' + im.config.services[service].url + endpoint,
+                    'Payload: ' + JSON.stringify(payload),
+                    'Params: ' + JSON.stringify(params),
+                    'Response: ' + JSON.stringify(response),
+                ].join('\n'))
+                .then(function () {
+                    return response;
+                });
+        };
+    },
 
 // MSISDN HELPERS
 
@@ -120,9 +150,13 @@ go.utils = {
         return moment(date, format, true).isValid();
     },
 
-    is_valid_year: function(input) {
+    is_valid_year: function(input, min, max) {  // expecting string parameters
         // check that it is a number and has four digits
-        return input.length === 4 && go.utils.check_valid_number(input);
+        // AND that the number is within the range determined by the min/max parameters
+        return input.length === 4 && min.length === 4 && max.length === 4 &&
+                go.utils.check_valid_number(input) &&
+                parseInt(input, 10) >= parseInt(min, 10) &&
+                parseInt(input, 10) <= parseInt(max, 10);
     },
 
     is_valid_day_of_month: function(input) {
@@ -141,9 +175,22 @@ go.utils = {
         return input !== '' && alpha_only.test(input);
     },
 
-    is_valid_name: function(input) {
-        // check that all chars are alphabetical
-        return go.utils.check_valid_alpha(input);
+    is_valid_name: function(input, min, max) {
+        // check that the string does not include the characters listed in the
+        // regex, and min <= input string length <= max
+        var name_check = new RegExp(
+            '(^[^±!@£$%^&*_+§¡€#¢§¶•ªº«\\/<>?:;|=.,123456789]{min,max}$)'
+            .replace('min', min.toString())
+            .replace('max', max.toString())
+        );
+        return input !== '' && name_check.test(input);
+    },
+
+    get_clean_first_word: function(user_message) {
+        return user_message
+            .split(" ")[0]          // split off first word
+            .replace(/\W/g, '')     // remove non letters
+            .toUpperCase();         // capitalise
     },
 
 
@@ -188,21 +235,24 @@ go.utils = {
         var search_string = 'details__addresses__' + address_type;
         params[search_string] = address_val;
 
-        return go.utils
-            .service_api_call('identities', 'get', params, null, 'identities/search/', im)
-            .then(function(json_get_response) {
-                var identities_found = json_get_response.data.results;
-                // Return the first identity in the list of identities
-                return (identities_found.length > 0)
-                ? identities_found[0]
-                : null;
+        return im
+            .log('Getting identity for: ' + JSON.stringify(params))
+            .then(function() {
+                return go.utils
+                    .service_api_call('identities', 'get', params, null, 'identities/search/', im)
+                    .then(function(json_get_response) {
+                        var identities_found = json_get_response.data.results;
+                        // Return the first identity in the list of identities
+                        return (identities_found.length > 0)
+                        ? identities_found[0]
+                        : null;
+                    });
             });
     },
 
     get_identity: function(identity_id, im) {
-        // Gets the identity from the Identity Store
-        // Returns the identity object
-
+      // Gets the identity from the Identity Store
+      // Returns the identity object
         var endpoint = 'identities/' + identity_id + '/';
         return go.utils
         .service_api_call('identities', 'get', {}, null, endpoint, im)
@@ -212,7 +262,8 @@ go.utils = {
     },
 
     create_identity: function(im, address, communicate_through_id, operator_id) {
-        // Create a new identity
+      // Create a new identity
+      // Returns the identity object
 
         var payload = {};
         // compile base payload
@@ -344,6 +395,136 @@ go.utils = {
             });
     },
 
+// SUBSCRIPTION HELPERS
+
+    get_active_subscriptions_by_identity_id: function(identity_id, im) {
+      // Returns all active subscriptions - for unlikely case where there
+      // is more than one active subscription
+
+        var params = {
+            contact: identity_id,
+            active: "True"
+        };
+        return go.utils
+            .service_api_call("subscriptions", "get", params, null, "subscriptions/", im)
+            .then(function(json_get_response) {
+                return json_get_response.data.results;
+            });
+    },
+
+    get_active_subscription_by_identity_id: function(identity_id, im) {
+      // Returns first active subscription found
+
+        return go.utils
+            .get_active_subscriptions_by_identity_id(identity_id, im)
+            .then(function(subscriptions) {
+                return subscriptions[0];
+            });
+    },
+
+    has_active_subscriptions: function(identity_id, im) {
+      // Returns whether an identity has an active subscription
+      // Returns true / false
+
+        return go.utils
+            .get_active_subscriptions_by_identity_id(identity_id, im)
+            .then(function(subscriptions) {
+                return subscriptions.length > 0;
+            });
+    },
+
+    subscription_unsubscribe_all: function(contact, im) {
+        var params = {
+            'details__addresses__msisdn': contact.msisdn
+        };
+        return go.utils
+        .service_api_call("identities", "get", params, null, 'subscription/', im)
+        .then(function(json_result) {
+            // make all subscriptions inactive
+            var subscriptions = json_result.data;
+            var clean = true;  // clean tracks if api call is unnecessary
+            var patch_calls = [];
+            for (i=0; i<subscriptions.length; i++) {
+                if (subscriptions[i].active === true) {
+                    var updated_subscription = subscriptions[i];
+                    var endpoint = 'subscription/' + updated_subscription.id + '/';
+                    updated_subscription.active = false;
+                    // store the patch calls to be made
+                    patch_calls.push(function() {
+                        return go.utils.service_api_call("identities", "patch",
+                            {}, updated_subscription, endpoint, im);
+                    });
+                    clean = false;
+                }
+            }
+            if (!clean) {
+                return Q
+                .all(patch_calls.map(Q.try))
+                .then(function(results) {
+                    var unsubscribe_successes = 0;
+                    var unsubscribe_failures = 0;
+                    for (var index in results) {
+                        (results[index].code >= 200 && results[index].code < 300)
+                            ? unsubscribe_successes += 1
+                            : unsubscribe_failures += 1;
+                    }
+
+                    if (unsubscribe_successes > 0 && unsubscribe_failures > 0) {
+                        return Q.all([
+                            im.metrics.fire.inc(["total", "subscription_unsubscribe_success", "last"].join('.'), {amount: unsubscribe_successes}),
+                            im.metrics.fire.sum(["total", "subscription_unsubscribe_success", "sum"].join('.'), unsubscribe_successes),
+                            im.metrics.fire.inc(["total", "subscription_unsubscribe_fail", "last"].join('.'), {amount: unsubscribe_failures}),
+                            im.metrics.fire.sum(["total", "subscription_unsubscribe_fail", "sum"].join('.'), unsubscribe_failures)
+                        ]);
+                    } else if (unsubscribe_successes > 0) {
+                        return Q.all([
+                            im.metrics.fire.inc(["total", "subscription_unsubscribe_success", "last"].join('.'), {amount: unsubscribe_successes}),
+                            im.metrics.fire.sum(["total", "subscription_unsubscribe_success", "sum"].join('.'), unsubscribe_successes)
+                        ]);
+                    } else if (unsubscribe_failures > 0) {
+                        return Q.all([
+                            im.metrics.fire.inc(["total", "subscription_unsubscribe_fail", "last"].join('.'), {amount: unsubscribe_failures}),
+                            im.metrics.fire.sum(["total", "subscription_unsubscribe_fail", "sum"].join('.'), unsubscribe_failures)
+                        ]);
+                    } else {
+                        return Q();
+                    }
+                });
+            } else {
+                return Q();
+            }
+        });
+    },
+
+
+// OPTOUT & OPTIN HELPERS
+
+    opt_out: function(im, contact) {
+        contact.extra.optout_last_attempt = go.utils.get_today(im.config)
+            .format('YYYY-MM-DD hh:mm:ss.SSS');
+
+        return Q.all([
+            im.contacts.save(contact),
+            go.utils.subscription_unsubscribe_all(contact, im),
+            im.api_request('optout.optout', {
+                address_type: "msisdn",
+                address_value: contact.msisdn,
+                message_id: im.msg.message_id
+            })
+        ]);
+    },
+
+    opt_in: function(im, contact) {
+        contact.extra.optin_last_attempt = go.utils.get_today(im.config)
+            .format('YYYY-MM-DD hh:mm:ss.SSS');
+        return Q.all([
+            im.contacts.save(contact),
+            im.api_request('optout.cancel_optout', {
+                address_type: "msisdn",
+                address_value: contact.msisdn
+            }),
+        ]);
+    },
 
 "commas": "commas"
 };
@@ -351,6 +532,8 @@ go.utils = {
 /*jshint -W083 */
 var Q = require('q');
 var moment = require('moment');
+var vumigo = require('vumigo_v02');
+var HttpApi = vumigo.http.api.HttpApi;
 
 // PROJECT SPECIFIC UTILS
 go.utils_project = {
@@ -469,6 +652,7 @@ go.utils_project = {
                 .then(function(mother_identity) {
                     mother_identity.details.receiver_role = 'mother';
                     mother_identity.details.linked_to = null;
+                    mother_identity.details.gravida = im.user.answers.state_gravida;
                     mother_identity.details.preferred_language = im.user.answers.state_msg_language;
                     mother_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
 
@@ -488,6 +672,7 @@ go.utils_project = {
                 .spread(function(mother_identity, receiver_identity) {
                     mother_identity.details.receiver_role = 'mother';
                     mother_identity.details.linked_to = im.user.answers.receiver_id;
+                    mother_identity.details.gravida = im.user.answers.state_gravida;
                     mother_identity.details.preferred_language = im.user.answers.state_msg_language;
 
                     receiver_identity.details.receiver_role = msg_receiver.replace('_only', '');
@@ -515,6 +700,7 @@ go.utils_project = {
                     mother_identity.details.receiver_role = 'mother';
                     mother_identity.details.linked_to = im.user.answers.receiver_id;
                     mother_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
+                    mother_identity.details.gravida = im.user.answers.state_gravida;
                     mother_identity.details.preferred_language = im.user.answers.state_msg_language;
 
                     receiver_identity.details.receiver_role = msg_receiver.replace('mother_', '');
@@ -632,16 +818,52 @@ go.utils_project = {
 
     // Construct helper_data object
     make_voice_helper_data: function(im, name, lang, num, retry) {
-        return {
-            voice: {
-                speech_url: go.utils_project.make_speech_url(im, name, lang, num, retry),
-                wait_for: '#'
-            }
-        };
+        var voice_url = go.utils_project.make_speech_url(im, name, lang, num, retry);
+        return im
+            .log([
+                'Voice URL is: ' + voice_url,
+                'Constructed from:',
+                '   Name: ' + name,
+                '   Lang: ' + lang,
+                '   Num: ' + num,
+                '   Retry: ' + retry,
+                ].join('\n'))
+            .then(function () {
+                var http = new HttpApi(im, {
+                    headers: {
+                        'Connection': ['close']
+                    }
+                });
+                return http
+                    .head(voice_url)
+                    .then(function (response) {
+                        return {
+                            voice: {
+                                speech_url: voice_url,
+                                wait_for: '#'
+                            }
+                        };
+                    }, function (error) {
+                        return im
+                            .log('Unable to find voice file: ' + voice_url)
+                            .then(function () {
+                                return {};
+                            });
+                    });
+            });
     },
 
 
 // SPEECH OPTION HELPERS
+
+    get_speech_option_household: function(member) {
+        member_map = {
+            'father': '1',
+            'family member': '2',
+            'friend': '3'
+        };
+        return member_map[member];
+    },
 
     get_speech_option_pregnancy_status_day: function(im, month) {
         var speech_option_start;
@@ -694,16 +916,26 @@ go.utils_project = {
     compile_reg_info: function(im) {
         var reg_info = {
             stage: im.user.answers.state_pregnancy_status,
+            mother_id: im.user.answers.mother_id,
             data: {
                 msg_receiver: im.user.answers.state_msg_receiver,
-                mother_id: im.user.answers.mother_id,
                 receiver_id: im.user.answers.receiver_id,
                 operator_id: im.user.answers.operator_id,
+                gravida: im.user.answers.state_gravida,
                 language: im.user.answers.state_msg_language,
-                msg_type: im.user.answers.state_msg_type,
-                user_id: im.user.answers.user_id
+                msg_type: im.user.answers.state_msg_type
             }
         };
+
+        if (im.user.answers.user_id) {
+            reg_info.data.user_id = im.user.answers.user_id;
+        }
+
+        // add data for voice time and day if applicable
+        if (im.user.answers.state_msg_type === 'voice') {
+            reg_info.data.voice_times = im.user.answers.state_voice_times;
+            reg_info.data.voice_days = im.user.answers.state_voice_days;
+        }
 
         // add data for last_period_date or baby_dob
         if (im.user.answers.state_pregnancy_status === 'prebirth') {
@@ -711,6 +943,7 @@ go.utils_project = {
         } else if (im.user.answers.state_pregnancy_status === 'postbirth') {
             reg_info.data.baby_dob = im.user.answers.working_date;
         }
+
         return reg_info;
     },
 
@@ -737,6 +970,7 @@ go.utils_project = {
         mama_identity.details.msg_receiver = im.user.answers.state_r03_receiver;
         mama_identity.details.state_at_registration = im.user.answers.state_r04_mom_state;
         mama_identity.details.state_current = im.user.answers.state_r04_mom_state;
+        mama_identity.details.gravida = im.user.answers.state_gravida;
         mama_identity.details.lang = go.utils_project.get_lang(im);
         mama_identity.details.msg_type = im.user.answers.state_r10_message_type;
         mama_identity.details.voice_days = im.user.answers.state_r11_voice_days || 'sms';
@@ -1001,65 +1235,6 @@ go.utils_project = {
         });
     },
 
-    get_active_subscriptions_by_identity_id: function(identity_id, im) {
-        // returns all active subscriptions - for unlikely case where there
-        // is more than one active subscription
-        var params = {
-            identity: identity_id,
-            active: "True"
-        };
-        return go.utils
-        .service_api_call("subscriptions", "get", params, null, "subscriptions/", im)
-        .then(function(json_get_response) {
-            return json_get_response.data.results;
-        });
-    },
-
-    get_active_subscription_by_identity_id: function(identity_id, im) {
-        // returns first active subscription found
-        return go.utils_project
-        .get_active_subscriptions_by_identity_id(identity_id, im)
-        .then(function(subscriptions) {
-            return subscriptions[0];
-        });
-    },
-
-    has_active_subscriptions: function(identity_id, im) {
-        return go.utils_project
-        .get_active_subscriptions_by_identity_id(identity_id, im)
-        .then(function(subscriptions) {
-            return subscriptions.length > 0;
-        });
-    },
-
-    subscriptions_unsubscribe_all: function(identity_id, im) {
-        // make all subscriptions inactive
-        // unlike other functions takes into account that there may be
-        // more than one active subscription returned (unlikely)
-        return go.utils_project
-        .get_active_subscriptions_by_identity_id(identity_id, im)
-        .then(function(active_subscriptions) {
-            var subscriptions = active_subscriptions;
-            var clean = true;  // clean tracks if api call is unnecessary
-            var patch_calls = [];
-            for (i=0; i<subscriptions.length; i++) {
-                var updated_subscription = subscriptions[i];
-                var endpoint = "subscriptions/" + updated_subscription.id + '/';
-                updated_subscription.active = false;
-                // store the patch calls to be made
-                patch_calls.push(function() {
-                    return go.utils.service_api_call("subscriptions", "patch", {}, updated_subscription, endpoint, im);
-                });
-                clean = false;
-            }
-            if (!clean) {
-                return Q.all(patch_calls.map(Q.try));
-            } else {
-                return Q();
-            }
-        });
-    },
-
     switch_to_baby: function(im) {
         var mama_id = im.user.answers.mama_id;
         return Q
@@ -1096,21 +1271,7 @@ go.utils_project = {
     },
 
 
-// TIMEOUT HELPERS
-
-    timed_out: function(im) {
-        var no_redirects = [
-            'state_start',
-            'state_end_voice',
-            'state_end_sms'
-        ];
-        return im.msg.session_event === 'new'
-        && im.user.state.name
-        && no_redirects.indexOf(im.user.state.name) === -1;
-    },
-
-
-"commas": "commas"
+    "commas": "commas"
 };
 
 go.app = function() {
@@ -1122,7 +1283,7 @@ go.app = function() {
     var FreeText = vumigo.states.FreeText;
 
 
-    var GoFC = App.extend(function(self) {
+    var GoApp = App.extend(function(self) {
         App.call(self, 'state_start');
         var $ = self.$;
         var interrupt = true;
@@ -1181,12 +1342,14 @@ go.app = function() {
                 "Please tell us why you no longer want to receive messages so we can help you further.",
             "state_loss_subscription":
                 "We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?",
-            "state_loss_subscription_confirm":
+            "state_end_loss_subscription_confirm":
                 "Thank you. You will now receive messages to support you during this difficult time.",
             "state_optout_receiver":
                 "Who would you like to stop receiving messages?",
             "state_end_optout":
                 "Thank you. You will no longer receive messages",
+            "state_end_loss":
+                "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW",
             "state_end_exit":
                 "Thank you for using the Hello Mama service"
         };
@@ -1207,7 +1370,7 @@ go.app = function() {
         // override normal state adding
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                if (!interrupt || !go.utils_project.timed_out(self.im))
+                if (!interrupt || !go.utils.timed_out(self.im))
                     return creator(name, opts);
                 interrupt = false;
                 opts = opts || {};
@@ -1276,7 +1439,9 @@ go.app = function() {
                 choices: [
                     new Choice('english', $("English")),
                     new Choice('hausa', $("Hausa")),
-                    new Choice('igbo', $("Igbo"))
+                    new Choice('igbo', $("Igbo")),
+                    new Choice('pidgin', $('Pidgin')),
+                    new Choice('yoruba', $('Yoruba'))
                 ],
                 error: $(get_error_text(name)),
                 next: 'state_registered_msisdn'
@@ -1627,7 +1792,9 @@ go.app = function() {
                 choices: [
                     new Choice('english', $("English")),
                     new Choice('hausa', $("Hausa")),
-                    new Choice('igbo', $("Igbo"))
+                    new Choice('igbo', $("Igbo")),
+                    new Choice('pidgin', $('Pidgin')),
+                    new Choice('yoruba', $('Yoruba'))
                 ],
                 next: 'state_msg_language_confirm'
             });
@@ -1651,15 +1818,30 @@ go.app = function() {
                 error: $(get_error_text(name)),
                 choices: [
                     new Choice('state_loss_subscription', $("Mother miscarried")),
-                    new Choice('state_loss_subscription', $("Baby stillborn")),
-                    new Choice('state_loss_subscription', $("Baby passed away")),
-                    new Choice('state_optout_receiver', $("Messages not useful")),
-                    new Choice('state_optout_receiver', $("Other"))
+                    new Choice('state_end_loss', $("Baby stillborn")),
+                    new Choice('state_end_loss', $("Baby passed away")),
+                    new Choice('state_check_subscription', $("Messages not useful")),
+                    new Choice('state_check_subscription', $("Other"))
                 ],
                 next: function(choice) {
                     return choice.value;
                 }
             });
+        });
+
+        // interstitial
+        self.states.add('state_check_subscription', function() {
+            var contact_id = self.im.user.answers.contact_id;
+            return go.utils
+                .get_identity(contact_id, self.im)
+                .then(function(contact) {
+                    // household and mother_only subscriptions bypass to end state state_end_optout
+                    if (contact.details.household_msgs_only || (self.im.user.mother_id === contact_id && self.im.user.receiver_id === 'none')) {
+                        return self.states.create("state_end_optout");
+                    } else {
+                        return self.states.create("state_optout_receiver");
+                    }
+                });
         });
 
         // ChoiceState st-14
@@ -1668,22 +1850,17 @@ go.app = function() {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
                 choices: [
-                    new Choice('yes', $("Yes")),
-                    new Choice('no', $("No"))
+                    new Choice('state_end_loss_subscription_confirm', $("Yes")),
+                    new Choice('state_end_loss', $("No"))
                 ],
                 next: function(choice) {
-                    if(choice.value === 'yes') {
-                        return 'state_loss_subscription_confirm';
-                    }
-                    else {
-                        return 'state_end_optout';
-                    }
+                    return choice.value;
                 }
             });
         });
 
         // EndState st-15
-        self.add('state_loss_subscription_confirm', function(name) {
+        self.add('state_end_loss_subscription_confirm', function(name) {
             return new EndState(name, {
                 text: $(questions[name]),
                 next: 'state_start'
@@ -1692,47 +1869,36 @@ go.app = function() {
 
         // ChoiceState st-16
         self.add('state_optout_receiver', function(name) {
-            var role = go.utils_project.check_role(self.im.user.addr);
-            if (role === 'father_role') {
-                return new ChoiceState(name, {
-                    question: $(questions[name]),
-                    error: $(get_error_text(name)),
-                    choices: [
-                        new Choice('me', $("Only me")),
-                        new Choice('father_mother', $("The Father and the Mother"))
-                    ],
-                    next: function(choice) {
+            //var role = go.utils_project.check_role(self.im.user.addr);
+            return new ChoiceState(name, {
+                question: $(questions[name]),
+                error: $(get_error_text(name)),
+                choices: [
+                    new Choice('mother', $("Mother messages")),
+                    new Choice('household', $("Household messages")),
+                    new Choice('all', $("All messages"))
+                ],
+                next: function(choice) {
                         switch (choice.value) {
-                            case 'me':  // deliberate fall-through to default
-                            case 'father_mother':
+                            case 'mother':  // deliberate fall-through to default
+                            case 'household':
+                            case 'all':
                                 return 'state_end_optout';
                         }
-                    }
-                });
-            }
-            else {
-                return new ChoiceState(name, {
-                    question: $(questions[name]),
-                    error: $(get_error_text(name)),
-                    choices: [
-                        new Choice('me', $("Only me")),
-                        new Choice('father', $("The Father")),
-                        new Choice('father_mother', $("The Father and the Mother"))
-                    ],
-                    next: function(choice) {
-                        switch (choice.value) {
-                            case 'me':  // deliberate fall-through to default
-                            case 'father':
-                            case 'father_mother':
-                                return 'state_end_optout';
-                        }
-                    }
-                });
-            }
+                }
+            });
         });
 
         // EndState st-17
         self.add('state_end_optout', function(name) {
+            return new EndState(name, {
+                text: $(questions[name]),
+                next: 'state_start'
+            });
+        });
+
+        // EndState st-21
+        self.add('state_end_loss', function(name) {
             return new EndState(name, {
                 text: $(questions[name]),
                 next: 'state_start'
@@ -1753,7 +1919,7 @@ go.app = function() {
     });
 
     return {
-        GoFC: GoFC
+        GoApp: GoApp
     };
 }();
 

@@ -34,17 +34,7 @@ go.app = function() {
         self.states.add('state_start', function(name) {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
-            return go.utils
-                .get_or_create_identity({'msisdn': self.im.user.addr}, self.im, null)
-                .then(function(user) {
-                    self.im.user.set_answer('user_id', user.id);
-                    if (user.details.personnel_code) {
-                        self.im.user.set_answer('operator_id', user.id);
-                        return self.states.create('state_msg_receiver');
-                    } else {
-                        return self.states.create('state_personnel_auth');
-                    }
-                });
+            return self.states.create('state_personnel_auth');
         });
 
         // A loopback state that is required since you can't pass opts back
@@ -134,7 +124,7 @@ go.app = function() {
             });
         });
 
-        // FreeText st-3B
+        // FreeText st-3A
         self.add('state_msisdn_mother', function(name, creator_opts) {
             var question_text = 'Please enter number (Mother)';
             var retry_text = 'Sorry, invalid input. Please enter number (Mother)';
@@ -157,14 +147,18 @@ go.app = function() {
             });
         });
 
-        // FreeText st-3A
+        // FreeText st-3B
         self.add('state_msisdn_household', function(name, creator_opts) {
-            var question_text = 'Please enter number (household)';
-            var retry_text = 'Sorry, invalid input. Please enter number (household)';  // TODO #63 context
+            var rolePlayer = self.im.user.answers.state_msg_receiver.replace('mother_', '');  // discarding 'mother_' part of string
+            rolePlayer = rolePlayer.replace('family', 'family member');  // append ' member' to family rolePlayer string to make output clearer
+
+            var question_text = "Please enter the {{role_player}}'s number";
+            var retry_text = "Sorry, invalid input. Please enter the {{role_player}}'s number";
             var use_text = creator_opts.retry === true ? retry_text : question_text;
-            var speech_option = '1';  // TODO #63: 3 speech options required
+            var speech_option = go.utils_project.get_speech_option_household(rolePlayer);
+
             return new FreeText(name, {
-                question: $(use_text),
+                question: $(use_text).context({role_player: rolePlayer}),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
@@ -294,7 +288,7 @@ go.app = function() {
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
-                    if (!(content > 0 && content <= 31)) {
+                    if (!(go.utils.is_valid_day_of_month(content))) {
                         return {
                             'name': 'state_retry',
                             'creator_opts': {'retry_state': name}
@@ -372,7 +366,7 @@ go.app = function() {
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
-                    if (!(content > 0 && content <= 31)) {
+                    if (!(go.utils.is_valid_day_of_month(content))) {
                         return {
                             'name': 'state_retry',
                             'creator_opts': {'retry_state': name}
@@ -391,7 +385,7 @@ go.app = function() {
         self.add('state_validate_date', function(name, creator_opts) {
             var dateToValidate = self.im.user.answers.working_date;
             if (go.utils.is_valid_date(dateToValidate, 'YYYYMMDD')) {
-                return self.states.create('state_msg_language');
+                return self.states.create('state_gravida');
             } else {
                 return self.states.create('state_invalid_date');
             }
@@ -414,6 +408,17 @@ go.app = function() {
                         return 'state_baby_birth_year';
                     }
                 }
+            });
+        });
+
+        // FreeText st-19
+        self.add('state_gravida', function(name, creator_opts) {
+            var speech_option = '1';
+            return new FreeText(name, {
+                question: $('Please enter the number of times the woman has been pregnant before. This includes any pregnancies she may not have carried to term.'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option, creator_opts.retry),
+                next: 'state_msg_language'
             });
         });
 

@@ -35,6 +35,8 @@ go.app = function() {
                 "Please select who will receive the messages on their phone:",
             "state_msisdn":
                 "Please enter the mobile number of the person who will receive the weekly messages. For example, 08033048990",
+            "state_msisdn_already_registered":
+                "Sorry, this number is already registered. They must opt-out before registering again.",
             "state_msisdn_mother":
                 "Please enter the mother's mobile number. She must consent to receiving messages.",
             "state_msisdn_household":
@@ -49,6 +51,8 @@ go.app = function() {
                 "Select the month & year the baby was born:",
             "state_baby_birth_day":
                 "What day of the month was the baby born? For example, 12.",
+            "state_gravida":
+                "Please enter the number of times the woman has been pregnant before. This includes any pregnancies she may not have carried to term.",
             "state_msg_language":
                 "Which language would this person like to receive these messages in?",
             "state_msg_type":
@@ -60,7 +64,9 @@ go.app = function() {
             "state_end_voice":
                 "Thank you. The person will now start receiving calls on {{days}} between {{times}}.",
             "state_end_sms":
-                "Thank you. The person will now start receiving messages three times a week."
+                "Thank you. The person will now start receiving messages three times a week.",
+            "state_end_msisdn":
+                "Thank you for using the Hello Mama service."
         };
 
         var errors = {
@@ -78,7 +84,7 @@ go.app = function() {
         // override normal state adding
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                if (!interrupt || !go.utils_project.timed_out(self.im))
+                if (!interrupt || !go.utils.timed_out(self.im))
                     return creator(name, opts);
 
                 interrupt = false;
@@ -186,7 +192,49 @@ go.app = function() {
                         return $(get_error_text(name));
                     }
                 },
-                next: 'state_save_identities'
+                next: function(content) {
+                    var msisdn = go.utils.normalize_msisdn(
+                        content, self.im.config.country_code);
+                    return go.utils
+                        .get_identity_by_address({'msisdn': msisdn}, self.im)
+                        .then(function(contact) {
+                            if (contact && contact.details && contact.details.receiver_role) {
+                                self.im.user.set_answer('role_player', contact.details.receiver_role);
+                                self.im.user.set_answer('contact_id', contact.id);
+                                return 'state_msisdn_already_registered';
+                            } else {
+                                return 'state_save_identities';
+                            }
+                        });
+                }
+            });
+        });
+
+        // ChoiceState st-22
+        self.add('state_msisdn_already_registered', function(name) {
+            return new ChoiceState(name, {
+                question: $(questions[name]),
+                choices: [
+                    new Choice('state_msisdn', $("Try a different number")),
+                    new Choice('state_msg_receiver', $("Choose a different receiver")),
+                    new Choice('exit', $("Exit"))
+                ],
+                next: function(choice) {
+                    if (choice.value != 'exit') {
+                        return choice.value;
+                    } else {
+                        return 'state_end_msisdn';
+                    }
+
+                }
+            });
+        });
+
+        // EndState of st-22
+        self.add('state_end_msisdn', function(name) {
+            return new EndState(name, {
+                text: $(questions[name]),
+                next: 'state_start'
             });
         });
 
@@ -205,7 +253,7 @@ go.app = function() {
             });
         });
 
-        // FreeText st-3A
+        // FreeText st-3B
         self.add('state_msisdn_household', function(name) {
             return new FreeText(name, {
                 question: $(questions[name]).context({
@@ -308,6 +356,21 @@ go.app = function() {
             });
         });
 
+        //
+        self.add('state_gravida', function(name) {
+            return new FreeText(name, {
+                question: $(questions[name]),
+                check: function(content) {
+                    if (go.utils.check_valid_number(content)) {
+                        return null;  // vumi expects null or undefined if check passes
+                    } else {
+                        return $(get_error_text(name));
+                    }
+                },
+                next: 'state_msg_language'
+            });
+        });
+
         // ChoiceState st-07
         self.add('state_msg_language', function(name) {
             return new ChoiceState(name, {
@@ -315,7 +378,9 @@ go.app = function() {
                 choices: [
                     new Choice('english', $('English')),
                     new Choice('hausa', $('Hausa')),
-                    new Choice('igbo', $('Igbo'))
+                    new Choice('igbo', $('Igbo')),
+                    new Choice('pidgin', $('Pidgin')),
+                    new Choice('yoruba', $('Yoruba'))
                 ],
                 next: 'state_msg_type'
             });
@@ -439,7 +504,7 @@ go.app = function() {
 
             if (go.utils.is_valid_date(dateToValidate, 'YYYYMMDD')) {
                 self.im.user.set_answer('working_date', dateToValidate);
-                return self.states.create('state_msg_language');
+                return self.states.create('state_gravida');
             } else {
                 return self.states.create('state_invalid_date', {date: dateToValidate});
             }

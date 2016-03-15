@@ -58,8 +58,7 @@ describe("Mama Nigeria App", function() {
                         state: 'state_personnel_auth',
                         reply: 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
                     })
-                    .check.user.answers(
-                        {"user_id": "cb245673-aa41-4302-ac47-00000000001"})
+                    .check.user.answers({})
                     .run();
             });
         });
@@ -68,32 +67,34 @@ describe("Mama Nigeria App", function() {
 
         describe("When you start the app", function() {
             describe("if the user is a registered healthworker (has personnel code)", function() {
-                it("should navigate to state_msg_receiver", function() {
+                it("should navigate to state_personnel_auth", function() {
+                    // we cannot rely on the user being identified via caller id,
+                    // so the personnel code should always be gathered first
                     return tester
                         .setup.user.addr('08080070007')
                         .inputs(
                             {session_event: 'new'}
                         )
                         .check.interaction({
-                            state: 'state_msg_receiver',
-                            reply: [
-                                'Choose message receiver',
-                                "1. Mother & Father",
-                                "2. Mother",
-                                "3. Father",
-                                "4. Mother & family member",
-                                "5. Mother & friend",
-                                "6. Friend",
-                                "7. Family member"
-                            ].join('\n')
+                            state: 'state_personnel_auth',
+                            reply: 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1.mp3',
                                     wait_for: '#'
                                 }
                             }
+                        })
+                        .check(function(api) {
+                            var expected_used = [79];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
@@ -296,7 +297,7 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                it("to state_msisdn_household", function() {
+                it("to state_msisdn_household (father message receiver)", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
@@ -307,7 +308,37 @@ describe("Mama Nigeria App", function() {
                         )
                         .check.interaction({
                             state: 'state_msisdn_household',
-                            reply: 'Please enter number (household)'
+                            reply: "Please enter the father's number"
+                        })
+                        .run();
+                });
+                it("to state_msisdn_household (family member message receiver)", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'        // state_personnel_auth
+                            , '4'            // state_msg_receiver - mother & family member
+                            , '09094444444'  // state_msisdn_mother
+                        )
+                        .check.interaction({
+                            state: 'state_msisdn_household',
+                            reply: "Please enter the family member's number"
+                        })
+                        .run();
+                });
+                it("to state_msisdn_household (friend message receiver)", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'        // state_personnel_auth
+                            , '5'            // state_msg_receiver - mother & friend
+                            , '09094444444'  // state_msisdn_mother
+                        )
+                        .check.interaction({
+                            state: 'state_msisdn_household',
+                            reply: "Please enter the friend's number"
                         })
                         .run();
                 });
@@ -323,7 +354,7 @@ describe("Mama Nigeria App", function() {
                         )
                         .check.interaction({
                             state: 'state_msisdn_household',
-                            reply: 'Sorry, invalid input. Please enter number (household)'
+                            reply: "Sorry, invalid input. Please enter the father's number"
                         })
                         .run();
                 });
@@ -1312,6 +1343,33 @@ describe("Mama Nigeria App", function() {
             });
 
             describe("if it is a valid day", function() {
+                it("should navigate to state_gravida", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'       // state_personnel_auth
+                            , '6'           // state_msg_receiver - friend_only
+                            , '09092222222' // state_msisdn
+                            , '1'           // state_pregnancy_status - pregnant
+                            , '2'           // state_last_period_year - last year
+                            , '10'          // state_last_period_month - oct
+                            , '22'          // state_last_period_day
+                        )
+                        .check.interaction({
+                            state: 'state_gravida',
+                            reply: "Please enter the number of times the woman has been pregnant before. This includes any pregnancies she may not have carried to term."
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_gravida_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
                 it("should navigate to state_msg_language", function() {
                     return tester
                         .setup.user.addr('07030010001')
@@ -1324,6 +1382,7 @@ describe("Mama Nigeria App", function() {
                             , '2'           // state_last_period_year - last year
                             , '10'          // state_last_period_month - oct
                             , '22'          // state_last_period_day
+                            , '3'           // state_gravida
                         )
                         .check.interaction({
                             state: 'state_msg_language',
@@ -1393,6 +1452,7 @@ describe("Mama Nigeria App", function() {
                             , '2'           // state_baby_birth_year - last year
                             , '11'          // state_baby_birth_month - nov
                             , '12'          // state_baby_birth_day
+                            , '3'           // state_gravida
                         )
                         .check.interaction({
                             state: 'state_msg_language',
@@ -1461,6 +1521,7 @@ describe("Mama Nigeria App", function() {
                         , '2'           // state_baby_birth_year - last year
                         , '11'          // state_baby_birth_month - nov
                         , '13'          // state_baby_birth_day
+                        , '2'           // state_gravida
                         , '5'           // state_msg-language - yoruba
                     )
                     .check.interaction({
@@ -1497,6 +1558,7 @@ describe("Mama Nigeria App", function() {
                             , '2'           // state_baby_birth_year - last year
                             , '7'           // state_baby_birth_month - july
                             , '13'          // state_baby_birth_day
+                            , '2'           // state_gravida
                             , '3'           // state_msg_language - igbo
                             , '2'           // state_msg_type - sms
                         )
@@ -1513,7 +1575,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [2,6,36,37,38,52,54,59,69,77];
+                            var expected_used = [6,36,37,38,52,54,59,69,77,79];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -1539,7 +1601,8 @@ describe("Mama Nigeria App", function() {
                             , '2'           // state_baby_birth_year - last year
                             , '11'          // state_baby_birth_month - nov
                             , '13'          // state_baby_birth_day
-                            , '3'           // state_msg-language - igbo
+                            , '2'           // state_gravida
+                            , '3'           // state_msg_language - igbo
                             , '1'           // state_msg_type - voice
                         )
                         .check.interaction({
@@ -1576,6 +1639,7 @@ describe("Mama Nigeria App", function() {
                         , '2'           // state_baby_birth_year - last year
                         , '11'          // state_baby_birth_month - nov
                         , '13'          // state_baby_birth_day
+                        , '2'           // state_gravida
                         , '4'           // state_msg-language - pidgin
                         , '1'           // state_msg_type - voice
                         , '1'           // state_voice_days - monday and wednesday
@@ -1613,7 +1677,8 @@ describe("Mama Nigeria App", function() {
                         , '2'           // state_baby_birth_year - last year
                         , '9'           // state_baby_birth_month - sep
                         , '13'          // state_baby_birth_day
-                        , '3'           // state_msg-language - igbo
+                        , '2'           // state_gravida
+                        , '3'           // state_msg_language - igbo
                         , '1'           // state_msg_type - voice
                         , '1'           // state_voice_days - mon_wed
                         , '2'           // state_voice_times - 2_5
@@ -1631,7 +1696,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [2,6,36,37,38,53,54,59,70,77];
+                        var expected_used = [6,36,37,38,53,54,59,70,77,79];
                         var fixts = api.http.fixtures.fixtures;
                         var fixts_used = [];
                         fixts.forEach(function(f, i) {

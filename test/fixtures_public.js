@@ -19,6 +19,7 @@ module.exports = function() {
 
         // 0: get identity 05059991111 by msisdn - no results
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -43,6 +44,7 @@ module.exports = function() {
 
         // 1: create identity 05059991111
         {
+            'repeatable': true,
             'request': {
                 'method': 'POST',
                 'headers': {
@@ -84,6 +86,7 @@ module.exports = function() {
 
         // 2: get identity 05059992222 by msisdn
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -1021,6 +1024,23 @@ module.exports = function() {
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693272Z"
                 }
+            }
+        },
+
+        // 25 Fixture to make HEAD requests to mp3 files to see if they exist
+        {
+            'repeatable': true,
+            'request': {
+                'method': 'HEAD',
+                'params': {},
+                'headers': {
+                    'Connection': ['close']
+                },
+                'url': new RegExp('^http:\/\/localhost:8004\/api\/v1\/.*\.mp3$'),
+            },
+            'response': {
+                "code": 200,
+                "data": {}
             }
         },
 
