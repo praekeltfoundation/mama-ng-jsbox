@@ -671,10 +671,10 @@ describe("Hello Mama app", function() {
                 });
             });
 
-            describe.skip("Change states flows - opt-out", function() {
+            describe("Change states flows - opt-out", function() {
                 it("to state_optout_reason", function() {
                     return tester
-                        .setup.user.addr('082222')
+                        .setup.user.addr('05059992222')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_msisdn_permission - yes
@@ -691,11 +691,20 @@ describe("Hello Mama app", function() {
                                 "5. Other"
                             ].join('\n')
                         })
+                        .check(function(api) {
+                            var expected_used = [2];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
                         .run();
                 });
-                it("to state_loss_subscription", function() {
+                it("to state_end_loss", function() {
                     return tester
-                        .setup.user.addr('082222')
+                        .setup.user.addr('05059992222')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_msisdn_permission - yes
@@ -703,92 +712,103 @@ describe("Hello Mama app", function() {
                             , '2'  // state_optout_reason - baby stillborn
                         )
                         .check.interaction({
-                            state: 'state_loss_subscription',
-                            reply: [
-                                "We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?",
-                                "1. Yes",
-                                "2. No"
-                            ].join('\n')
+                            state: 'state_end_loss',
+                            reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
+                        })
+                        .check(function(api) {
+                            var expected_used = [2];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
                 it("to state_loss_subscription_confirm", function() {
                     return tester
-                        .setup.user.addr('082222')
+                        .setup.user.addr('05059992222')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_msisdn_permission - yes
                             , '5'  // state_main_menu - stop receiving messages
-                            , '3'  // state_optout_reason - baby passed away
+                            , '1'  // state_optout_reason - mother miscarried
                             , '1'  // state_loss_subscription - yes
                         )
                         .check.interaction({
-                            state: 'state_loss_subscription_confirm',
+                            state: 'state_end_loss_subscription_confirm',
                             reply: "Thank you. You will now receive messages to support you during this difficult time."
+                        })
+                        .check(function(api) {
+                            var expected_used = [2];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
-                it("to state_end_optout (via state 14)", function() {
+                it("to state_end_loss (via state 14)", function() {
                     return tester
-                        .setup.user.addr('082222')
+                        .setup.user.addr('05059992222')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_msisdn_permission - yes
                             , '5'  // state_main_menu - stop receiving messages
-                            , '3'  // state_optout_reason - baby passed away
-                            , '2'  // state_loss_subscription - yes
+                            , '1'  // state_optout_reason - mother miscarried
+                            , '2'  // state_loss_subscription - no
                         )
                         .check.interaction({
-                            state: 'state_end_optout',
-                            reply: "Thank you. You will no longer receive messages"
+                            state: 'state_end_loss',
+                            reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
+                        })
+                        .check(function(api) {
+                            var expected_used = [2];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
                 it("to state_optout_receiver", function() {
                     var role = go.utils_project.check_role(tester.im.user.addr);
-                    if (role === 'father_role') {
-                        return tester
-                            .setup.user.addr('082222')
-                            .inputs(
-                                {session_event: 'new'}  // dial in
-                                , '1'  // state_msisdn_permission - yes
-                                , '5'  // state_main_menu - stop receiving messages
-                                , '5'  // state_optout_reason - other
-                            )
-                            .check.interaction({
-                                state: 'state_optout_receiver',
-                                reply: [
-                                    "Who would you like to stop receiving messages?",
-                                    "1. Only me",
-                                    "2. The Father and the Mother"
-                                ].join('\n')
-                            })
-                            .run();
-                    }
-                    else {
-                        return tester
-                            .setup.user.addr('082222')
-                            .inputs(
-                                {session_event: 'new'}  // dial in
-                                , '1'  // state_msisdn_permission - yes
-                                , '5'  // state_main_menu - stop receiving messages
-                                , '5'  // state_optout_reason - other
-                            )
-                            .check.interaction({
-                                state: 'state_optout_receiver',
-                                reply: [
-                                    "Who would you like to stop receiving messages?",
-                                    "1. Only me",
-                                    "2. The Father",
-                                    "3. The Father and the Mother"
-                                ].join('\n')
-                            })
-                            .run();
-                    }
+                    return tester
+                        .setup.user.addr('05059992222')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'  // state_msisdn_permission - yes
+                            , '5'  // state_main_menu - stop receiving messages
+                            , '5'  // state_optout_reason - other
+                        )
+                        .check.interaction({
+                            state: 'state_optout_receiver',
+                            reply: [
+                                "Who would you like to stop receiving messages?",
+                                "1. Mother messages",
+                                "2. Household messages",
+                                "3. All messages"
+                            ].join('\n')
+                        })
+                        .check(function(api) {
+                            var expected_used = [2,9];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
+                        .run();
                 });
                 it("to state_end_optout (via state 16)", function() {
                     return tester
-                        .setup.user.addr('082222')
+                        .setup.user.addr('05059992222')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'  // state_msisdn_permission - yes
@@ -799,6 +819,15 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_end_optout',
                             reply: "Thank you. You will no longer receive messages"
+                        })
+                        .check(function(api) {
+                            var expected_used = [2,9];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });

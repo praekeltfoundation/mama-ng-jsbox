@@ -58,8 +58,7 @@ describe("Mama Nigeria App", function() {
                         state: 'state_personnel_auth',
                         reply: 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
                     })
-                    .check.user.answers(
-                        {"user_id": "cb245673-aa41-4302-ac47-00000000001"})
+                    .check.user.answers({})
                     .run();
             });
         });
@@ -68,32 +67,34 @@ describe("Mama Nigeria App", function() {
 
         describe("When you start the app", function() {
             describe("if the user is a registered healthworker (has personnel code)", function() {
-                it("should navigate to state_msg_receiver", function() {
+                it("should navigate to state_personnel_auth", function() {
+                    // we cannot rely on the user being identified via caller id,
+                    // so the personnel code should always be gathered first
                     return tester
                         .setup.user.addr('08080070007')
                         .inputs(
                             {session_event: 'new'}
                         )
                         .check.interaction({
-                            state: 'state_msg_receiver',
-                            reply: [
-                                'Choose message receiver',
-                                "1. Mother & Father",
-                                "2. Mother",
-                                "3. Father",
-                                "4. Mother & family member",
-                                "5. Mother & friend",
-                                "6. Friend",
-                                "7. Family member"
-                            ].join('\n')
+                            state: 'state_personnel_auth',
+                            reply: 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1.mp3',
                                     wait_for: '#'
                                 }
                             }
+                        })
+                        .check(function(api) {
+                            var expected_used = [79];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
@@ -1574,7 +1575,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [2,6,36,37,38,52,54,59,69,77];
+                            var expected_used = [6,36,37,38,52,54,59,69,77,79];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -1695,7 +1696,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [2,6,36,37,38,53,54,59,70,77];
+                        var expected_used = [6,36,37,38,53,54,59,70,77,79];
                         var fixts = api.http.fixtures.fixtures;
                         var fixts_used = [];
                         fixts.forEach(function(f, i) {

@@ -20,6 +20,7 @@ module.exports = function() {
 
         // 0: get identity 05059991111 by msisdn - no results
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -44,6 +45,7 @@ module.exports = function() {
 
         // 1: create identity 05059991111
         {
+            'repeatable': true,
             'request': {
                 'method': 'POST',
                 'headers': {
@@ -85,6 +87,7 @@ module.exports = function() {
 
         // 2: get identity 05059992222 by msisdn
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -701,7 +704,24 @@ module.exports = function() {
             }
         },
 
-        // 16: get 05059999999 subscription by msisdn parameter
+        // 16 Fixture to make HEAD requests to mp3 files to see if they exist
+        {
+            'repeatable': true,
+            'request': {
+                'method': 'HEAD',
+                'params': {},
+                'headers': {
+                    'Connection': ['close']
+                },
+                'url': new RegExp('^http:\/\/localhost:8004\/api\/v1\/.*\.mp3$'),
+            },
+            'response': {
+                "code": 200,
+                "data": {}
+            }
+        },
+
+        // 17: get 05059999999 subscription by msisdn parameter
         {
             'request': {
                 'method': 'GET',

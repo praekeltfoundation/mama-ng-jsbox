@@ -2041,6 +2041,8 @@ module.exports = function() {
                         "gravida": "3",
                         "language": "english",
                         "msg_type": "voice",
+                        "voice_times": "2_5",
+                        "voice_days": "tue_thu",
                         "last_period_date": "20150212",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     }
@@ -2058,6 +2060,8 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "english",
                         "msg_type": "voice",
+                        "voice_times": "2_5",
+                        "voice_days": "tue_thu",
                         "last_period_date": "20150212",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     },
@@ -2090,6 +2094,8 @@ module.exports = function() {
                         "gravida": "3",
                         "language": "english",
                         "msg_type": "voice",
+                        "voice_times": "2_5",
+                        "voice_days": "tue_thu",
                         "last_period_date": "20150212",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     }
@@ -2107,6 +2113,8 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "english",
                         "msg_type": "voice",
+                        "voice_times": "2_5",
+                        "voice_days": "tue_thu",
                         "last_period_date": "20150212",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     },
@@ -2139,6 +2147,8 @@ module.exports = function() {
                         "gravida": "2",
                         "language": "english",
                         "msg_type": "voice",
+                        "voice_times": "2_5",
+                        "voice_days": "tue_thu",
                         "last_period_date": "20150212",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     }
@@ -2156,6 +2166,8 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "english",
                         "msg_type": "voice",
+                        "voice_times": "2_5",
+                        "voice_days": "tue_thu",
                         "last_period_date": "20150212",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     },
@@ -2219,8 +2231,7 @@ module.exports = function() {
                         "gravida": "2",
                         "language": "igbo",
                         "msg_type": "sms",
-                        "baby_dob": "20160713",
-                        "user_id": "cb245673-aa41-4302-ac47-00000000001"
+                        "baby_dob": "20160713"
                     }
                 }
             },
@@ -2237,8 +2248,7 @@ module.exports = function() {
                         "gravida": "2",
                         "language": "igbo",
                         "msg_type": "sms",
-                        "baby_dob": "20160713",
-                        "user_id": "cb245673-aa41-4302-ac47-00000000001"
+                        "baby_dob": "20160713"
                     },
                     "validated": false,
                     "source": "source",
@@ -2250,7 +2260,7 @@ module.exports = function() {
             }
         },
 
-        // 53: create registration 09092222222 - friend_only / family_member - sms (voice)
+        // 53: create registration 09092222222 - friend_only / family_member - voice
         {
             'request': {
                 'method': 'POST',
@@ -2269,8 +2279,9 @@ module.exports = function() {
                         "gravida": "2",
                         "language": "igbo",
                         "msg_type": "voice",
+                        "voice_times": "2_5",
+                        "voice_days": "mon_wed",
                         "baby_dob": "20160913",
-                        "user_id": "cb245673-aa41-4302-ac47-00000000001"
                     }
                 }
             },
@@ -2288,7 +2299,6 @@ module.exports = function() {
                         "language": "igbo",
                         "msg_type": "voice",
                         "baby_dob": "20160913",
-                        "user_id": "cb245673-aa41-4302-ac47-00000000001"
                     },
                     "validated": false,
                     "source": "source",
@@ -3181,6 +3191,8 @@ module.exports = function() {
                         "gravida": "2",
                         "language": "english",
                         "msg_type": "voice",
+                        "voice_times": "2_5",
+                        "voice_days": "tue_thu",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002",
                         "last_period_date":"20150212"
                     }
@@ -3198,6 +3210,8 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "english",
                         "msg_type": "voice",
+                        "voice_times": "2_5",
+                        "voice_days": "tue_thu",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002",
                         "last_period_date":"20150212"
                     },
@@ -3432,6 +3446,23 @@ module.exports = function() {
                         "updated_at": "2015-07-10T06:13:29.693298Z"
                     }]
                 }
+            }
+        },
+
+        // 79 Fixture to make HEAD requests to mp3 files to see if they exist
+        {
+            'repeatable': true,
+            'request': {
+                'method': 'HEAD',
+                'params': {},
+                'headers': {
+                    'Connection': ['close']
+                },
+                'url': new RegExp('^http:\/\/localhost:8004\/api\/v1\/.*\.mp3$'),
+            },
+            'response': {
+                "code": 200,
+                "data": {}
             }
         },
 

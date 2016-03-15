@@ -35,26 +35,46 @@ go.utils = {
         switch (method) {
             case "post":
                 return http.post(im.config.services[service].url + endpoint, {
-                    data: payload
-                });
+                        data: payload
+                    })
+                    .then(go.utils.log_service_api_call(service, method, params, payload, endpoint, im));
             case "get":
                 return http.get(im.config.services[service].url + endpoint, {
-                    params: params
-                });
+                        params: params
+                    })
+                    .then(go.utils.log_service_api_call(service, method, params, payload, endpoint, im));
             case "patch":
                 return http.patch(im.config.services[service].url + endpoint, {
-                    data: payload
-                });
+                        data: payload
+                    })
+                    .then(go.utils.log_service_api_call(service, method, params, payload, endpoint, im));
             case "put":
                 return http.put(im.config.services[service].url + endpoint, {
                     params: params,
-                  data: payload
-                });
+                    data: payload
+                })
+                .then(go.utils.log_service_api_call(service, method, params, payload, endpoint, im));
             case "delete":
-                return http.delete(im.config.services[service].url + endpoint);
+                return http
+                    .delete(im.config.services[service].url + endpoint)
+                    .then(go.utils.log_service_api_call(service, method, params, payload, endpoint, im));
             }
     },
 
+    log_service_api_call: function(service, method, params, payload, endpoint, im) {
+        return function (response) {
+            return im
+                .log([
+                    'Request: ' + method + ' ' + im.config.services[service].url + endpoint,
+                    'Payload: ' + JSON.stringify(payload),
+                    'Params: ' + JSON.stringify(params),
+                    'Response: ' + JSON.stringify(response),
+                ].join('\n'))
+                .then(function () {
+                    return response;
+                });
+        };
+    },
 
 // MSISDN HELPERS
 
@@ -215,14 +235,18 @@ go.utils = {
         var search_string = 'details__addresses__' + address_type;
         params[search_string] = address_val;
 
-        return go.utils
-            .service_api_call('identities', 'get', params, null, 'identities/search/', im)
-            .then(function(json_get_response) {
-                var identities_found = json_get_response.data.results;
-                // Return the first identity in the list of identities
-                return (identities_found.length > 0)
-                ? identities_found[0]
-                : null;
+        return im
+            .log('Getting identity for: ' + JSON.stringify(params))
+            .then(function() {
+                return go.utils
+                    .service_api_call('identities', 'get', params, null, 'identities/search/', im)
+                    .then(function(json_get_response) {
+                        var identities_found = json_get_response.data.results;
+                        // Return the first identity in the list of identities
+                        return (identities_found.length > 0)
+                        ? identities_found[0]
+                        : null;
+                    });
             });
     },
 
@@ -444,6 +468,8 @@ go.utils = {
 /*jshint -W083 */
 var Q = require('q');
 var moment = require('moment');
+var vumigo = require('vumigo_v02');
+var HttpApi = vumigo.http.api.HttpApi;
 
 // PROJECT SPECIFIC UTILS
 go.utils_project = {
@@ -728,12 +754,39 @@ go.utils_project = {
 
     // Construct helper_data object
     make_voice_helper_data: function(im, name, lang, num, retry) {
-        return {
-            voice: {
-                speech_url: go.utils_project.make_speech_url(im, name, lang, num, retry),
-                wait_for: '#'
-            }
-        };
+        var voice_url = go.utils_project.make_speech_url(im, name, lang, num, retry);
+        return im
+            .log([
+                'Voice URL is: ' + voice_url,
+                'Constructed from:',
+                '   Name: ' + name,
+                '   Lang: ' + lang,
+                '   Num: ' + num,
+                '   Retry: ' + retry,
+                ].join('\n'))
+            .then(function () {
+                var http = new HttpApi(im, {
+                    headers: {
+                        'Connection': ['close']
+                    }
+                });
+                return http
+                    .head(voice_url)
+                    .then(function (response) {
+                        return {
+                            voice: {
+                                speech_url: voice_url,
+                                wait_for: '#'
+                            }
+                        };
+                    }, function (error) {
+                        return im
+                            .log('Unable to find voice file: ' + voice_url)
+                            .then(function () {
+                                return {};
+                            });
+                    });
+            });
     },
 
 
@@ -806,10 +859,19 @@ go.utils_project = {
                 operator_id: im.user.answers.operator_id,
                 gravida: im.user.answers.state_gravida,
                 language: im.user.answers.state_msg_language,
-                msg_type: im.user.answers.state_msg_type,
-                user_id: im.user.answers.user_id
+                msg_type: im.user.answers.state_msg_type
             }
         };
+
+        if (im.user.answers.user_id) {
+            reg_info.data.user_id = im.user.answers.user_id;
+        }
+
+        // add data for voice time and day if applicable
+        if (im.user.answers.state_msg_type === 'voice') {
+            reg_info.data.voice_times = im.user.answers.state_voice_times;
+            reg_info.data.voice_days = im.user.answers.state_voice_days;
+        }
 
         // add data for last_period_date or baby_dob
         if (im.user.answers.state_pregnancy_status === 'prebirth') {
@@ -817,6 +879,7 @@ go.utils_project = {
         } else if (im.user.answers.state_pregnancy_status === 'postbirth') {
             reg_info.data.baby_dob = im.user.answers.working_date;
         }
+
         return reg_info;
     },
 
@@ -1106,17 +1169,7 @@ go.app = function() {
         self.states.add('state_start', function(name) {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
-            return go.utils
-                .get_or_create_identity({'msisdn': self.im.user.addr}, self.im, null)
-                .then(function(user) {
-                    self.im.user.set_answer('user_id', user.id);
-                    if (user.details.personnel_code) {
-                        self.im.user.set_answer('operator_id', user.id);
-                        return self.states.create('state_msg_receiver');
-                    } else {
-                        return self.states.create('state_personnel_auth');
-                    }
-                });
+            return self.states.create('state_personnel_auth');
         });
 
         // A loopback state that is required since you can't pass opts back

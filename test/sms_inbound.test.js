@@ -1,5 +1,6 @@
 var vumigo = require('vumigo_v02');
 var fixtures = require('./fixtures_public');
+var assert = require('assert');
 var AppTester = vumigo.AppTester;
 var optoutstore = require('./optoutstore');
 var DummyOptoutResource = optoutstore.DummyOptoutResource;
@@ -45,6 +46,15 @@ describe("Mama Nigeria App", function() {
                         reply:
                             'You will no longer receive messages from Hello Mama. Should you ever want to re-subscribe, contact your local community health extension worker'
                     })
+                    .check(function(api) {
+                        var expected_used = [17];
+                        var fixts = api.http.fixtures.fixtures;
+                        var fixts_used = [];
+                        fixts.forEach(function(f, i) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
+                    })
                     .run();
             });
         });
@@ -58,6 +68,15 @@ describe("Mama Nigeria App", function() {
                         state: 'state_end_helpdesk',
                         reply:
                             'Currently no helpdesk functionality is active. Reply STOP to unsubscribe.'
+                    })
+                    .check(function(api) {
+                        var expected_used = [];
+                        var fixts = api.http.fixtures.fixtures;
+                        var fixts_used = [];
+                        fixts.forEach(function(f, i) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
                     })
                     .run();
             });

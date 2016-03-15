@@ -35,26 +35,46 @@ go.utils = {
         switch (method) {
             case "post":
                 return http.post(im.config.services[service].url + endpoint, {
-                    data: payload
-                });
+                        data: payload
+                    })
+                    .then(go.utils.log_service_api_call(service, method, params, payload, endpoint, im));
             case "get":
                 return http.get(im.config.services[service].url + endpoint, {
-                    params: params
-                });
+                        params: params
+                    })
+                    .then(go.utils.log_service_api_call(service, method, params, payload, endpoint, im));
             case "patch":
                 return http.patch(im.config.services[service].url + endpoint, {
-                    data: payload
-                });
+                        data: payload
+                    })
+                    .then(go.utils.log_service_api_call(service, method, params, payload, endpoint, im));
             case "put":
                 return http.put(im.config.services[service].url + endpoint, {
                     params: params,
-                  data: payload
-                });
+                    data: payload
+                })
+                .then(go.utils.log_service_api_call(service, method, params, payload, endpoint, im));
             case "delete":
-                return http.delete(im.config.services[service].url + endpoint);
+                return http
+                    .delete(im.config.services[service].url + endpoint)
+                    .then(go.utils.log_service_api_call(service, method, params, payload, endpoint, im));
             }
     },
 
+    log_service_api_call: function(service, method, params, payload, endpoint, im) {
+        return function (response) {
+            return im
+                .log([
+                    'Request: ' + method + ' ' + im.config.services[service].url + endpoint,
+                    'Payload: ' + JSON.stringify(payload),
+                    'Params: ' + JSON.stringify(params),
+                    'Response: ' + JSON.stringify(response),
+                ].join('\n'))
+                .then(function () {
+                    return response;
+                });
+        };
+    },
 
 // MSISDN HELPERS
 
@@ -215,14 +235,18 @@ go.utils = {
         var search_string = 'details__addresses__' + address_type;
         params[search_string] = address_val;
 
-        return go.utils
-            .service_api_call('identities', 'get', params, null, 'identities/search/', im)
-            .then(function(json_get_response) {
-                var identities_found = json_get_response.data.results;
-                // Return the first identity in the list of identities
-                return (identities_found.length > 0)
-                ? identities_found[0]
-                : null;
+        return im
+            .log('Getting identity for: ' + JSON.stringify(params))
+            .then(function() {
+                return go.utils
+                    .service_api_call('identities', 'get', params, null, 'identities/search/', im)
+                    .then(function(json_get_response) {
+                        var identities_found = json_get_response.data.results;
+                        // Return the first identity in the list of identities
+                        return (identities_found.length > 0)
+                        ? identities_found[0]
+                        : null;
+                    });
             });
     },
 
@@ -444,6 +468,8 @@ go.utils = {
 /*jshint -W083 */
 var Q = require('q');
 var moment = require('moment');
+var vumigo = require('vumigo_v02');
+var HttpApi = vumigo.http.api.HttpApi;
 
 // PROJECT SPECIFIC UTILS
 go.utils_project = {
@@ -728,12 +754,39 @@ go.utils_project = {
 
     // Construct helper_data object
     make_voice_helper_data: function(im, name, lang, num, retry) {
-        return {
-            voice: {
-                speech_url: go.utils_project.make_speech_url(im, name, lang, num, retry),
-                wait_for: '#'
-            }
-        };
+        var voice_url = go.utils_project.make_speech_url(im, name, lang, num, retry);
+        return im
+            .log([
+                'Voice URL is: ' + voice_url,
+                'Constructed from:',
+                '   Name: ' + name,
+                '   Lang: ' + lang,
+                '   Num: ' + num,
+                '   Retry: ' + retry,
+                ].join('\n'))
+            .then(function () {
+                var http = new HttpApi(im, {
+                    headers: {
+                        'Connection': ['close']
+                    }
+                });
+                return http
+                    .head(voice_url)
+                    .then(function (response) {
+                        return {
+                            voice: {
+                                speech_url: voice_url,
+                                wait_for: '#'
+                            }
+                        };
+                    }, function (error) {
+                        return im
+                            .log('Unable to find voice file: ' + voice_url)
+                            .then(function () {
+                                return {};
+                            });
+                    });
+            });
     },
 
 
@@ -806,10 +859,19 @@ go.utils_project = {
                 operator_id: im.user.answers.operator_id,
                 gravida: im.user.answers.state_gravida,
                 language: im.user.answers.state_msg_language,
-                msg_type: im.user.answers.state_msg_type,
-                user_id: im.user.answers.user_id
+                msg_type: im.user.answers.state_msg_type
             }
         };
+
+        if (im.user.answers.user_id) {
+            reg_info.data.user_id = im.user.answers.user_id;
+        }
+
+        // add data for voice time and day if applicable
+        if (im.user.answers.state_msg_type === 'voice') {
+            reg_info.data.voice_times = im.user.answers.state_voice_times;
+            reg_info.data.voice_days = im.user.answers.state_voice_days;
+        }
 
         // add data for last_period_date or baby_dob
         if (im.user.answers.state_pregnancy_status === 'prebirth') {
@@ -817,6 +879,7 @@ go.utils_project = {
         } else if (im.user.answers.state_pregnancy_status === 'postbirth') {
             reg_info.data.baby_dob = im.user.answers.working_date;
         }
+
         return reg_info;
     },
 
@@ -1138,12 +1201,14 @@ go.app = function() {
                 "Please tell us why you no longer want to receive messages so we can help you further.",
             "state_loss_subscription":
                 "We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?",
-            "state_loss_subscription_confirm":
+            "state_end_loss_subscription_confirm":
                 "Thank you. You will now receive messages to support you during this difficult time.",
             "state_optout_receiver":
                 "Who would you like to stop receiving messages?",
             "state_end_optout":
                 "Thank you. You will no longer receive messages",
+            "state_end_loss":
+                "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW",
             "state_end_exit":
                 "Thank you for using the Hello Mama service"
         };
@@ -1584,15 +1649,30 @@ go.app = function() {
                 error: $(get_error_text(name)),
                 choices: [
                     new Choice('state_loss_subscription', $("Mother miscarried")),
-                    new Choice('state_loss_subscription', $("Baby stillborn")),
-                    new Choice('state_loss_subscription', $("Baby passed away")),
-                    new Choice('state_optout_receiver', $("Messages not useful")),
-                    new Choice('state_optout_receiver', $("Other"))
+                    new Choice('state_end_loss', $("Baby stillborn")),
+                    new Choice('state_end_loss', $("Baby passed away")),
+                    new Choice('state_check_subscription', $("Messages not useful")),
+                    new Choice('state_check_subscription', $("Other"))
                 ],
                 next: function(choice) {
                     return choice.value;
                 }
             });
+        });
+
+        // interstitial
+        self.states.add('state_check_subscription', function() {
+            var contact_id = self.im.user.answers.contact_id;
+            return go.utils
+                .get_identity(contact_id, self.im)
+                .then(function(contact) {
+                    // household and mother_only subscriptions bypass to end state state_end_optout
+                    if (contact.details.household_msgs_only || (self.im.user.mother_id === contact_id && self.im.user.receiver_id === 'none')) {
+                        return self.states.create("state_end_optout");
+                    } else {
+                        return self.states.create("state_optout_receiver");
+                    }
+                });
         });
 
         // ChoiceState st-14
@@ -1601,22 +1681,17 @@ go.app = function() {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
                 choices: [
-                    new Choice('yes', $("Yes")),
-                    new Choice('no', $("No"))
+                    new Choice('state_end_loss_subscription_confirm', $("Yes")),
+                    new Choice('state_end_loss', $("No"))
                 ],
                 next: function(choice) {
-                    if(choice.value === 'yes') {
-                        return 'state_loss_subscription_confirm';
-                    }
-                    else {
-                        return 'state_end_optout';
-                    }
+                    return choice.value;
                 }
             });
         });
 
         // EndState st-15
-        self.add('state_loss_subscription_confirm', function(name) {
+        self.add('state_end_loss_subscription_confirm', function(name) {
             return new EndState(name, {
                 text: $(questions[name]),
                 next: 'state_start'
@@ -1625,47 +1700,36 @@ go.app = function() {
 
         // ChoiceState st-16
         self.add('state_optout_receiver', function(name) {
-            var role = go.utils_project.check_role(self.im.user.addr);
-            if (role === 'father_role') {
-                return new ChoiceState(name, {
-                    question: $(questions[name]),
-                    error: $(get_error_text(name)),
-                    choices: [
-                        new Choice('me', $("Only me")),
-                        new Choice('father_mother', $("The Father and the Mother"))
-                    ],
-                    next: function(choice) {
+            //var role = go.utils_project.check_role(self.im.user.addr);
+            return new ChoiceState(name, {
+                question: $(questions[name]),
+                error: $(get_error_text(name)),
+                choices: [
+                    new Choice('mother', $("Mother messages")),
+                    new Choice('household', $("Household messages")),
+                    new Choice('all', $("All messages"))
+                ],
+                next: function(choice) {
                         switch (choice.value) {
-                            case 'me':  // deliberate fall-through to default
-                            case 'father_mother':
+                            case 'mother':  // deliberate fall-through to default
+                            case 'household':
+                            case 'all':
                                 return 'state_end_optout';
                         }
-                    }
-                });
-            }
-            else {
-                return new ChoiceState(name, {
-                    question: $(questions[name]),
-                    error: $(get_error_text(name)),
-                    choices: [
-                        new Choice('me', $("Only me")),
-                        new Choice('father', $("The Father")),
-                        new Choice('father_mother', $("The Father and the Mother"))
-                    ],
-                    next: function(choice) {
-                        switch (choice.value) {
-                            case 'me':  // deliberate fall-through to default
-                            case 'father':
-                            case 'father_mother':
-                                return 'state_end_optout';
-                        }
-                    }
-                });
-            }
+                }
+            });
         });
 
         // EndState st-17
         self.add('state_end_optout', function(name) {
+            return new EndState(name, {
+                text: $(questions[name]),
+                next: 'state_start'
+            });
+        });
+
+        // EndState st-21
+        self.add('state_end_loss', function(name) {
             return new EndState(name, {
                 text: $(questions[name]),
                 next: 'state_start'
