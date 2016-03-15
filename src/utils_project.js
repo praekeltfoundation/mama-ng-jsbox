@@ -257,19 +257,22 @@ go.utils_project = {
 
     should_restart: function(im) {
         var no_restart_states = [
-            'state_r01_number',
-            'state_r02_retry_number',
-            'state_c01_main_menu',
-            'state_c02_not_registered',
-            'state_c07_loss_opt_in',
-            'state_c08_end_baby',
-            'state_c09_end_msg_times',
-            'state_c10_end_loss_opt_in',
-            'state_c11_end_optout'
+            // voice registration states
+            'state_personnel_auth',
+            'state_gravida',
+            // voice change states
+            'state_msg_receiver_msisdn',
+            'state_main_menu',
+            'state_main_menu_household'
         ];
 
-        return im.msg.content === '*'
+        return im.msg.content === '0'
+            && im.user.state.name
             && no_restart_states.indexOf(im.user.state.name) === -1;
+    },
+
+    should_repeat: function(im) {
+        return im.msg.content === '*';
     },
 
 

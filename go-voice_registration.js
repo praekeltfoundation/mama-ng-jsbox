@@ -724,19 +724,22 @@ go.utils_project = {
 
     should_restart: function(im) {
         var no_restart_states = [
-            'state_r01_number',
-            'state_r02_retry_number',
-            'state_c01_main_menu',
-            'state_c02_not_registered',
-            'state_c07_loss_opt_in',
-            'state_c08_end_baby',
-            'state_c09_end_msg_times',
-            'state_c10_end_loss_opt_in',
-            'state_c11_end_optout'
+            // voice registration states
+            'state_personnel_auth',
+            'state_gravida',
+            // voice change states
+            'state_msg_receiver_msisdn',
+            'state_main_menu',
+            'state_main_menu_household'
         ];
 
-        return im.msg.content === '*'
+        return im.msg.content === '0'
+            && im.user.state.name
             && no_restart_states.indexOf(im.user.state.name) === -1;
+    },
+
+    should_repeat: function(im) {
+        return im.msg.content === '*';
     },
 
 
@@ -1162,20 +1165,27 @@ go.app = function() {
         App.call(self, 'state_start');
         var $ = self.$;
         var lang = 'eng_NG';
-        var interrupt = true;
         var bypassPostbirth = true;
 
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                if (!interrupt || !go.utils_project.should_restart(self.im))
-                    return creator(name, opts);
+                var pass_opts = opts || {};
+                pass_opts.name = name;
 
-                interrupt = false;
-                opts = opts || {};
-                opts.name = name;
-                // Prevent previous content being passed to next state
-                self.im.msg.content = null;
-                return self.states.create('state_start', opts);
+                if (go.utils_project.should_repeat(self.im)) {
+                    // Prevent previous content being passed to next state
+                    // thus preventing infinite repeat loop
+                    self.im.msg.content = null;
+                    return self.states.create(name, pass_opts);
+                }
+
+                if (go.utils_project.should_restart(self.im)) {
+                    // Prevent previous content being passed to next state
+                    self.im.msg.content = null;
+                    return self.states.create('state_start', pass_opts);
+                }
+
+                return creator(name, pass_opts);
             });
         };
 
