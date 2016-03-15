@@ -803,9 +803,8 @@ go.utils_project = {
 
     get_speech_option_pregnancy_status_day: function(im, month) {
         var speech_option_start;
-        var bypassPregnancy = true;
 
-        if (im.user.answers.state_pregnancy_status === 'prebirth' || bypassPregnancy) {
+        if (im.user.answers.state_pregnancy_status === 'prebirth') {
             im.user.answers.state_last_period_year === 'last_year'
                 ? speech_option_start = 0
                 : speech_option_start = 12;
