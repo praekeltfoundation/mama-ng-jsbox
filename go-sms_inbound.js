@@ -866,8 +866,6 @@ go.utils_project = {
 // REGISTRATION HELPERS
 
     compile_reg_info: function(im) {
-        var bypassPregnancy = true;
-
         var reg_info = {
             stage: im.user.answers.state_pregnancy_status,
             mother_id: im.user.answers.mother_id,
@@ -892,7 +890,7 @@ go.utils_project = {
         }
 
         // add data for last_period_date or baby_dob
-        if (im.user.answers.state_pregnancy_status === 'prebirth' || bypassPregnancy) {
+        if (im.user.answers.state_pregnancy_status === 'prebirth') {
             reg_info.data.last_period_date = im.user.answers.working_date;
         } else if (im.user.answers.state_pregnancy_status === 'postbirth') {
             reg_info.data.baby_dob = im.user.answers.working_date;
