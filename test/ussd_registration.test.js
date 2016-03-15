@@ -809,6 +809,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
+
             // bypass postbirth flow
             it.skip("complete flow 3 - receiver: father only; mother baby, sms", function() {
                 return tester
