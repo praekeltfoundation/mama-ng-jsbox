@@ -1222,7 +1222,7 @@ describe("Mama Nigeria App", function() {
                 });
             });
 
-            describe.skip("if the month choice is valid", function() {
+            describe("if the month choice is valid", function() {
                 it("should navigate to state_baby_birth_day", function() {
                     return tester
                         .setup.user.addr('07030010001')
@@ -1408,7 +1408,7 @@ describe("Mama Nigeria App", function() {
             });
         });
 
-        describe.skip("when you enter a baby birth day", function() {
+        describe("when you enter a baby birth day", function() {
             describe("if it is an invalid day", function() {
                 it("should navigate back to state_baby_birth_day", function() {
                     return tester
@@ -1554,14 +1554,10 @@ describe("Mama Nigeria App", function() {
                             , '12345'       // state_personnel_auth
                             , '6'           // state_msg_receiver - friend_only
                             , '09092222222' // state_msisdn
-                            /*, '2'           // state_pregnancy_status - baby
+                            , '2'           // state_pregnancy_status - baby
                             , '2'           // state_baby_birth_year - last year
                             , '7'           // state_baby_birth_month - july
-                            , '13'          // state_baby_birth_day*/
-                            , '1'            // state_pregnancy_status - pregnant
-                            , '2'           // state_last_period_year - last year
-                            , '12'           // state_last_period_month - dec
-                            , '13'          // state_last_period_day
+                            , '13'          // state_baby_birth_day
                             , '2'           // state_gravida
                             , '3'           // state_msg_language - igbo
                             , '2'           // state_msg_type - sms
@@ -1677,14 +1673,10 @@ describe("Mama Nigeria App", function() {
                         , '12345'       // state_personnel_auth
                         , '6'           // state_msg_receiver - friend_only
                         , '09092222222' // state_msisdn
-                        /*, '2'           // state_pregnancy_status - baby
+                        , '2'           // state_pregnancy_status - baby
                         , '2'           // state_baby_birth_year - last year
                         , '9'           // state_baby_birth_month - sep
-                        , '13'          // state_baby_birth_day*/
-                        , '1'           // state_pregnancy_status - pregnant
-                        , '2'           // state_last_period_year - last year
-                        , '12'           // state_last_period_month - dec
-                        , '13'          // state_last_period_day
+                        , '13'          // state_baby_birth_day
                         , '2'           // state_gravida
                         , '3'           // state_msg_language - igbo
                         , '1'           // state_msg_type - voice

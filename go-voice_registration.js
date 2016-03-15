@@ -803,9 +803,8 @@ go.utils_project = {
 
     get_speech_option_pregnancy_status_day: function(im, month) {
         var speech_option_start;
-        var bypassPregnancy = true;
 
-        if (im.user.answers.state_pregnancy_status === 'prebirth' || bypassPregnancy) {
+        if (im.user.answers.state_pregnancy_status === 'prebirth') {
             im.user.answers.state_last_period_year === 'last_year'
                 ? speech_option_start = 0
                 : speech_option_start = 12;
@@ -851,7 +850,6 @@ go.utils_project = {
 // REGISTRATION HELPERS
 
     compile_reg_info: function(im) {
-        var bypassPregnancy = true;
 
         var reg_info = {
             stage: im.user.answers.state_pregnancy_status,
@@ -877,7 +875,7 @@ go.utils_project = {
         }
 
         // add data for last_period_date or baby_dob
-        if (im.user.answers.state_pregnancy_status === 'prebirth' || bypassPregnancy) {
+        if (im.user.answers.state_pregnancy_status === 'prebirth') {
             reg_info.data.last_period_date = im.user.answers.working_date;
         } else if (im.user.answers.state_pregnancy_status === 'postbirth') {
             reg_info.data.baby_dob = im.user.answers.working_date;
