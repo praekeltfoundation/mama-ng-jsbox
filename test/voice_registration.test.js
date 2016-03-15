@@ -152,7 +152,7 @@ describe("Mama Nigeria App", function() {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_1.mp3',
                                     wait_for: '#',
-                                    barge_in: true
+                                    barge_in: false
                                 }
                             }
                         })
@@ -264,7 +264,7 @@ describe("Mama Nigeria App", function() {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_1.mp3',
                                     wait_for: '#',
-                                    barge_in: true
+                                    barge_in: false
                                 }
                             }
                         })
@@ -544,7 +544,7 @@ describe("Mama Nigeria App", function() {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_1.mp3',
                                     wait_for: '#',
-                                    barge_in: true
+                                    barge_in: false
                                 }
                             }
                         })
@@ -1396,7 +1396,7 @@ describe("Mama Nigeria App", function() {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_gravida_1.mp3',
                                     wait_for: '#',
-                                    barge_in: true
+                                    barge_in: false
                                 }
                             }
                         })
@@ -1608,7 +1608,7 @@ describe("Mama Nigeria App", function() {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_sms_1.mp3',
                                     wait_for: '#',
-                                    barge_in: true
+                                    barge_in: false
                                 }
                             }
                         })
@@ -1732,7 +1732,7 @@ describe("Mama Nigeria App", function() {
                             voice: {
                                 speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_voice_3.mp3',
                                 wait_for: '#',
-                                barge_in: true
+                                barge_in: false
                             }
                         }
                     })

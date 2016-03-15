@@ -757,6 +757,12 @@ go.utils_project = {
     make_voice_helper_data: function(im, name, lang, num, retry) {
         var voice_url = go.utils_project.make_speech_url(im, name, lang, num, retry);
         var bargeInDisallowedStates = [
+            // voice registration states
+            'state_msg_receiver',
+            'state_gravida',
+            'state_end_sms',
+            'state_end_voice',
+            // voice public states
             'state_msg_receiver_msisdn',
             'state_main_menu',
             'state_main_menu_household',
