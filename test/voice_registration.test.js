@@ -575,7 +575,7 @@ describe("Mama Nigeria App", function() {
                         .run();
                 });
             });
-
+            // bypassing pregnancy flow
             describe.skip("if you choose baby", function() {
                 it("should navigate to state_baby_birth_year", function() {
                     return tester
@@ -782,6 +782,7 @@ describe("Mama Nigeria App", function() {
         });
 
         // baby
+        // bypassing pregnancy flow
         describe.skip("When you enter a baby_birth year", function() {
             describe("if 'this year' chosen", function() {
                 it("should navigate to state_baby_birth_month", function() {
@@ -1133,6 +1134,7 @@ describe("Mama Nigeria App", function() {
         });
 
         // baby
+        // bypassing pregnancy flow
         describe.skip("When you enter a baby_birth_month", function() {
             describe("if the month choice is not in valid range for this year", function() {
                 it("should navigate back to state_baby_birth_month", function() {
@@ -1408,6 +1410,7 @@ describe("Mama Nigeria App", function() {
             });
         });
 
+        // bypassing pregnancy flow
         describe.skip("when you enter a baby birth day", function() {
             describe("if it is an invalid day", function() {
                 it("should navigate back to state_baby_birth_day", function() {
