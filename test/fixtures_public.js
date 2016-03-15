@@ -703,7 +703,25 @@ module.exports = function() {
             }
         },
 
-        // 16: patch identity 3f7c8851-5204-43f7-af7f-005059992222
+        // 16 Fixture to make HEAD requests to mp3 files to see if they exist
+        {
+            'repeatable': true,
+            'request': {
+                'method': 'HEAD',
+                'params': {},
+                'headers': {
+                    'Connection': ['close']
+                },
+                'url': new RegExp('^http:\/\/localhost:8004\/api\/v1\/.*\.mp3$'),
+            },
+            'response': {
+                "code": 200,
+                "data": {}
+            }
+        },
+
+
+        // 17: patch identity 3f7c8851-5204-43f7-af7f-005059992222
         {
             'request': {
                 'method': 'PATCH',
@@ -734,7 +752,6 @@ module.exports = function() {
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
-
             },
             'response': {
                 "code": 200,

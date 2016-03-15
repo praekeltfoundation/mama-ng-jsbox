@@ -1,6 +1,5 @@
 var vumigo = require('vumigo_v02');
 var fixtures = require('./fixtures_public');
-var voice_fixtures = require('./fixtures_voice_file_check');
 var assert = require('assert');
 var AppTester = vumigo.AppTester;
 
@@ -38,12 +37,7 @@ describe("Mama Nigeria App", function() {
                     fixtures().forEach(function(d) {
                         api.http.fixtures.add(d);
                     });
-                    voice_fixtures().forEach(function(d) {
-                        api.http.fixtures.add(d);
-                    });
                 })
-                // +08080030003 is an unregistered identity
-                // +07070050005 is a registered identity
                 ;
         });
 
@@ -63,9 +57,7 @@ describe("Mama Nigeria App", function() {
                         state: 'state_msg_receiver_msisdn',
                         reply: "Welcome, Number"
                     })
-                    .check.user.answers({
-                        "role_player": "guest",
-                        "user_id": "cb245673-aa41-4302-ac47-9091111111"})
+                    .check.user.answers({})
                     .run();
             });
         });
@@ -92,7 +84,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [0,1,18];
+                        var expected_used = [16];
                         var fixts = api.http.fixtures.fixtures;
                         var fixts_used = [];
                         fixts.forEach(function(f, i) {
@@ -129,7 +121,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [2, 18];
+                            var expected_used = [16];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -169,7 +161,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [0,1,2,18];
+                            var expected_used = [2,16];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -206,7 +198,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [0,1,18];
+                            var expected_used = [0,16];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -237,7 +229,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [0,1,18];
+                            var expected_used = [0,16];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -268,7 +260,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [0,1,18];
+                            var expected_used = [0,16];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -440,6 +432,105 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
+                it("should navigate to state_new_msisdn (invalid number)", function() {
+                    return tester
+                        .setup.user.addr('+2345059992222')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059992222' // state_msg_receiver_msisdn
+                            , '3'           // state_main_menu - number
+                            , '54321'       // state_new_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_new_msisdn',
+                            reply: 'Invalid number. Try again. Please enter new mobile number'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_new_msisdn_1_retry.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
+                it("should navigate to state_number_in_use", function() {
+                    return tester
+                        .setup.user.addr('+2345059992222')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059992222' // state_msg_receiver_msisdn
+                            , '3'           // state_main_menu - number
+                            , '05059993333'  // state_new_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_number_in_use',
+                            reply: [
+                                'Sorry, this number is already registered',
+                                '1. To try a different number, press 1',
+                                '2. To exit, press 2'
+                            ].join('\n')
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_number_in_use_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
+                it("should navigate to state_new_msisdn (via state_number_in_use)", function() {
+                    return tester
+                        .setup.user.addr('+2345059992222')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059992222' // state_msg_receiver_msisdn
+                            , '3'           // state_main_menu - number
+                            , '05059993333'       // state_new_msisdn
+                            , '1'  // state_number_in_use - try a different number
+                        )
+                        .check.interaction({
+                            state: 'state_new_msisdn',
+                            reply: 'Please enter new mobile number'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_new_msisdn_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
+                it("should navigate to state_end_exit", function() {
+                    return tester
+                        .setup.user.addr('+2345059992222')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059992222' // state_msg_receiver_msisdn
+                            , '3'           // state_main_menu - number
+                            , '05059993333'  // state_new_msisdn
+                            , '2'  // state_number_in_use - exit
+
+                        )
+                        .check.interaction({
+                            state: 'state_end_exit',
+                            reply: 'Thank you for using the Hello Mama service. Goodbye.'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_exit_1.mp3',
+                                    wait_for: '#'
+                                }
+                            }
+                        })
+                        .run();
+                });
                 it("should navigate to state_end_new_msisdn", function() {
                     return tester
                         .setup.user.addr('+2345059992222')
@@ -447,7 +538,8 @@ describe("Mama Nigeria App", function() {
                             {session_event: 'new'}
                             , '05059992222' // state_msg_receiver_msisdn
                             , '3'           // state_main_menu - number
-                            , '05059992223'  // state_new_msisdn
+                            , '05059998888'  // state_new_msisdn
+
                         )
                         .check.interaction({
                             state: 'state_end_new_msisdn',
@@ -549,7 +641,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [2,4,5,18];
+                            var expected_used = [4,5,16];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -675,7 +767,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [2,4,5,18];
+                            var expected_used = [4,5,16];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -710,7 +802,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [2,4,5,18];
+                            var expected_used = [4,5,16];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -745,7 +837,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [2,4,5,18];
+                            var expected_used = [4,5,16];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -785,7 +877,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [2,4,5,18];
+                            var expected_used = [4,5,16];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -818,7 +910,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [2,4,5,18];
+                            var expected_used = [4,5,16];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -859,7 +951,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [2,4,5,18];
+                            var expected_used = [4,5,16];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -892,7 +984,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [2,4,5,18];
+                            var expected_used = [4,5,16];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -931,7 +1023,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [2,4,5,16,18];
+                            var expected_used = [2,4,5,16,17];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -968,7 +1060,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [2,4,5,16,18];
+                            var expected_used = [2,4,5,16,17];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
