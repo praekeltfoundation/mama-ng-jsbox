@@ -557,7 +557,7 @@ describe("Mama Nigeria App", function() {
                 });
             });
 
-            describe.skip("if you choose to change language", function() {
+            describe("if you choose to change language", function() {
                 it("should navigate to state_msg_language", function() {
                     return tester
                         .setup.user.addr('+07070050005')
