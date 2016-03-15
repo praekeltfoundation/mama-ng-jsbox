@@ -2213,6 +2213,7 @@ module.exports = function() {
         },
 
         // 52: create registration 09092222222 - friend_only / family_member - sms (voice)
+        // unused if bypassPostbirth = true
         {
             'request': {
                 'method': 'POST',
@@ -2263,6 +2264,7 @@ module.exports = function() {
         },
 
         // 53: create registration 09092222222 - friend_only / family_member - voice
+        // unused if bypassPostbirth = true
         {
             'request': {
                 'method': 'POST',
