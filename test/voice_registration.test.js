@@ -455,6 +455,120 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
+                it("to state_msisdn_already_registered", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'        // state_personnel_auth
+                            , '7'            // state_msg_receiver - family member
+                            , '09097777777'  // state_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_msisdn_already_registered',
+                            reply: [
+                                'Sorry, this number is already registered.',
+                                '1. Register a different number',
+                                '2. Choose a different receiver',
+                                '3. Exit'
+                            ].join('\n')
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msisdn_already_registered_1.mp3',
+                                    wait_for: '#',
+                                    barge_in: false
+                                }
+                            }
+                        })
+                        .run();
+                });
+                it("to state_msisdn (from state_msisdn_already_registered)", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'        // state_personnel_auth
+                            , '7'            // state_msg_receiver - family member
+                            , '09097777777'  // state_msisdn
+                            , '1'  // state_msisdn_already_registered - register a diff num
+                        )
+                        .check.interaction({
+                            state: 'state_msisdn',
+                            reply: 'Please enter number'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msisdn_1.mp3',
+                                    wait_for: '#',
+                                    barge_in: true
+                                }
+                            }
+                        })
+                        .run();
+                });
+                it("to state_msg_receiver (from state_msisdn_already_registered)", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'        // state_personnel_auth
+                            , '7'            // state_msg_receiver - family member
+                            , '09097777777'  // state_msisdn
+                            , '2'  // state_msisdn_already_registered - choose diff receiver
+                        )
+                        .check.interaction({
+                            state: 'state_msg_receiver',
+                            reply: [
+                                'Choose message receiver',
+                                "1. Mother & Father",
+                                "2. Mother",
+                                "3. Father",
+                                "4. Mother & family member",
+                                "5. Mother & friend",
+                                "6. Friend",
+                                "7. Family member"
+                            ].join('\n')
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_1.mp3',
+                                    wait_for: '#',
+                                    barge_in: false
+                                }
+                            }
+                        })
+                        .run();
+                });
+                it("to state_msg_receiver (from state_msisdn_already_registered)", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'        // state_personnel_auth
+                            , '7'            // state_msg_receiver - family member
+                            , '09097777777'  // state_msisdn
+                            , '3'  // state_msisdn_already_registered - exit
+                        )
+                        .check.interaction({
+                            state: 'state_end_msisdn',
+                            reply: 'Thank you for using the Hello Mama service.'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_msisdn_1.mp3',
+                                    wait_for: '#',
+                                    barge_in: false
+                                }
+                            }
+                        })
+                        .check.reply.ends_session()
+                        .run();
+                });
             });
         });
 

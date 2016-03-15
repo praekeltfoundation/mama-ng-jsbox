@@ -758,7 +758,9 @@ go.utils_project = {
         var bargeInDisallowedStates = [
             // voice registration states
             'state_msg_receiver',
+            'state_msisdn_already_registered',
             'state_gravida',
+            'state_end_msisdn',
             'state_end_sms',
             'state_end_voice',
             // voice public states
@@ -1288,7 +1290,7 @@ go.app = function() {
         });
 
         // ChoiceState st-20
-        self.add('state_msisdn_already_registered', function(name) {
+        self.add('state_msisdn_already_registered', function(name, creator_opts) {
             var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Sorry, this number is already registered.'),
@@ -1311,7 +1313,7 @@ go.app = function() {
         });
 
         // EndState of st-20
-        self.add('state_end_msisdn', function(name) {
+        self.add('state_end_msisdn', function(name, creator_opts) {
             var speech_option = '1';
             return new EndState(name, {
                 text: $('Thank you for using the Hello Mama service.'),

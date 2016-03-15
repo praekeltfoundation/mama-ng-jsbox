@@ -138,7 +138,7 @@ go.app = function() {
         });
 
         // ChoiceState st-20
-        self.add('state_msisdn_already_registered', function(name) {
+        self.add('state_msisdn_already_registered', function(name, creator_opts) {
             var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Sorry, this number is already registered.'),
@@ -161,7 +161,7 @@ go.app = function() {
         });
 
         // EndState of st-20
-        self.add('state_end_msisdn', function(name) {
+        self.add('state_end_msisdn', function(name, creator_opts) {
             var speech_option = '1';
             return new EndState(name, {
                 text: $('Thank you for using the Hello Mama service.'),
