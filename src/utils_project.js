@@ -522,45 +522,71 @@ go.utils_project = {
                 return go.utils
                     .read_messageset(im, subscription.messageset_id)
                     .then(function(messageset) {
+                        im.user.set_answer('mother_messageset', messageset);
                         return messageset.content_type;  // 'text' / 'audio'
                     });
             });
     },
 
+    change_to_audio_messageset: function(im) {
+        current_messageset_shortname = im.user.answers.mother_messageset.short_name;
+        new_messageset_shortname = current_messageset_shortname.replace('text', 'audio');
+        return new_messageset_shortname;
+    },
+
+    get_audio_schedule: function(im, voice_days, voice_times) {
+        console.log(im.user.answers.mother_subscription);
+        current_schedule = im.user.answers.mother_subscription.schedule;
+        console.log(current_schedule);
+    },
+
     update_msg_format_time: function(im, prior_msg_format, new_msg_format, voice_days, voice_times) {
       //
 
-        var mother_subscription = im.user.answers.mother_subscription;
-        // change from sms to voice
-        if (prior_msg_format === 'text' && new_msg_format === 'audio') {
-            // update subscription
-            console.log('text -> audio');
-            mother_subscription.messageset_id = 1;
-            mother_subscription.schedule = 1;
-            mother_subscription.next_sequence_number = 1;
-            return Q.all([
-                go.utils.update_subscription(im, mother_subscription),
-                // TODO: go.utils.update_identity(im, contact) for applicable contacts
-            ]);
+        var change_data = {
+            "mother_id": im.user.answers.mother_id,
+            "action": "change_messaging",
+            "data": {
+                "msg_type": new_msg_format,
+                "voice_days": voice_days || null,
+                "voice_times": voice_times || null
+            }
+        };
 
-        // change voice day & time
-        } else if (prior_msg_format === 'audio' && new_msg_format === 'audio') {
-            console.log('audio -> audio');
-            // update subscription
-            mother_subscription.messageset_id = 1;
-            mother_subscription.schedule = 1;
-            mother_subscription.next_sequence_number = 1;
-            return go.utils.update_subscription(im, mother_subscription);
+        return go.utils
+            .service_api_call("change", "post", null, change_data, "change/", im);
 
-        // change from voice to sms
-        } else if (prior_msg_format === 'audio' && new_msg_format === 'text') {
-            console.log('audio -> text');
-            // update subscription
-            mother_subscription.messageset_id = 1;
-            mother_subscription.schedule = 1;
-            mother_subscription.next_sequence_number = 1;
-            return go.utils.update_subscription(im, mother_subscription);
-        }
+        // var mother_subscription = im.user.answers.mother_subscription;
+        // // change from sms to voice
+        // if (prior_msg_format === 'text' && new_msg_format === 'audio') {
+        //     // update subscription
+        //     console.log('text -> audio');
+        //     mother_subscription.messageset_id = go.utils_project.change_to_audio_messageset(im);
+        //     mother_subscription.schedule = go.utils_project.get_audio_schedule(im, voice_days, voice_times);
+        //     mother_subscription.next_sequence_number = 1;  // TODO c
+        //     return Q.all([
+        //         go.utils.update_subscription(im, mother_subscription),
+        //         // TODO: go.utils.update_identity(im, contact) for applicable contacts
+        //     ]);
+
+        // // change voice day & time
+        // } else if (prior_msg_format === 'audio' && new_msg_format === 'audio') {
+        //     console.log('audio -> audio');
+        //     // update subscription
+        //     mother_subscription.messageset_id = 1;
+        //     mother_subscription.schedule = 1;
+        //     mother_subscription.next_sequence_number = 1;
+        //     return go.utils.update_subscription(im, mother_subscription);
+
+        // // change from voice to sms
+        // } else if (prior_msg_format === 'audio' && new_msg_format === 'text') {
+        //     console.log('audio -> text');
+        //     // update subscription
+        //     mother_subscription.messageset_id = 1;
+        //     mother_subscription.schedule = 1;
+        //     mother_subscription.next_sequence_number = 1;
+        //     return go.utils.update_subscription(im, mother_subscription);
+        // }
 
 
     },
@@ -591,10 +617,6 @@ go.utils_project = {
             }
         };
         return subscription;
-    },
-
-    get_messageset_id: function(mama_identity) {
-        return (mama_identity.details.state_current === 'pregnant') ? 1 : 2;
     },
 
     get_next_sequence_number: function(mama_identity) {

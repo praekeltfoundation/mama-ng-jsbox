@@ -32,6 +32,10 @@ describe("Hello Mama app", function() {
                             api_token: 'test_token_messagesets',
                             url: "http://localhost:8003/api/v1/"
                         },
+                        change: {
+                            api_token: 'test_token_change',
+                            url: "http://localhost:8005/api/v1/"
+                        }
                     }
                 })
                 .setup(function(api) {
@@ -354,8 +358,8 @@ describe("Hello Mama app", function() {
                 });
             });
 
-            describe.only("Change message format and time", function() {
-                describe("Change from SMS to Voice messages", function() {
+            describe("Change message format and time", function() {
+                describe.only("Change from SMS to Voice messages", function() {
                     it("case 1 > to state_change_menu_sms", function() {
                         return tester
                             .setup.user.addr('05059992222')
