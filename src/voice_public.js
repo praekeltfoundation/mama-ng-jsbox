@@ -11,19 +11,29 @@ go.app = function() {
         App.call(self, 'state_start');
         var $ = self.$;
         var lang = 'eng_NG';
-        var interrupt = true;
 
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                if (!interrupt || !go.utils_project.should_restart(self.im))
-                    return creator(name, opts);
+                var pass_opts = opts || {};
+                pass_opts.name = name;
 
-                interrupt = false;
-                opts = opts || {};
-                opts.name = name;
-                // Prevent previous content being passed to next state
-                self.im.msg.content = null;
-                return self.states.create('state_start', opts);
+                if (go.utils_project.should_repeat(self.im)) {
+                    // Prevent previous content being passed to next state
+                    // thus preventing infinite repeat loop
+                    self.im.msg.content = null;
+                    return self.states.create(name, pass_opts);
+                }
+
+                if (go.utils_project.should_restart(self.im)) {
+                    // Prevent previous content being passed to next state
+                    self.im.msg.content = null;
+                    var state_to_restart_from = self.im.user.answers.receiver_household_only
+                        ? 'state_main_menu_household'
+                        : 'state_main_menu';
+                    return self.states.create(state_to_restart_from, pass_opts);  // restarts to either st-A or st-A1
+                }
+
+                return creator(name, opts);
             });
         };
 
@@ -199,7 +209,9 @@ go.app = function() {
                 question: $('You are already subscribed. To go back to main menu, 0 then #'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
-                next: 'state_main_menu'   // TODO: add input logic to go back to main menu
+                next: function(choice) {
+                    return 'state_baby_already_subscribed';
+                }
             });
         });
 
@@ -213,7 +225,9 @@ go.app = function() {
                 choices: [
                     new Choice('confirm', $('To confirm press 1. To go back to main menu, 0 then #'))
                 ],
-                next: 'state_baby_save'
+                next: function(choice) {
+                    return 'state_baby_save';
+                }
             });
         });
 
@@ -338,21 +352,73 @@ go.app = function() {
         });
 
         // FreeText st-09
-        self.add('state_new_msisdn', function(name) {
+        self.add('state_new_msisdn', function(name, creator_opts) {
             var speech_option = 1;
+            var question_text = 'Please enter new mobile number';
+            var retry_text = 'Invalid number. Try again. Please enter new mobile number';
+            var use_text = creator_opts.retry === true ? retry_text : question_text;
             return new FreeText(name, {
-                question: $('Please enter new mobile number'),
+                question: $(use_text),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
-                    if (go.utils.is_valid_msisdn(content)) {
-                        // TODO: save new number
-                        return self.states.create('state_end_new_msisdn');
-                    } else {
-                        return self.states.create('state_retry_msisdn');
+                    if (!go.utils.is_valid_msisdn(content)) {
+                        return {
+                            'name': 'state_retry',
+                            'creator_opts': {'retry_state': name}
+                        };
                     }
+                    var msisdn = go.utils.normalize_msisdn(
+                        content, self.im.config.country_code);
+                    return go.utils
+                        .get_identity_by_address({'msisdn': msisdn}, self.im)
+                        .then(function(identity) {
+                            if (identity && identity.details && identity.details.receiver_role) {
+                                return 'state_number_in_use';
+                            } else {
+                                return {
+                                    'name': 'state_update_number',
+                                    'creator_opts': {'new_msisdn': msisdn}
+                                };
+                            }
+                        });
                 }
             });
+        });
+
+        // ChoiceState st-22
+        self.add('state_number_in_use', function(name) {
+            var speech_option = '1';
+            return new ChoiceState(name, {
+                question: $("Sorry, this number is already registered"),
+                error: $("Invalid input."),
+                choices: [
+                    new Choice('state_new_msisdn', $("To try a different number, press 1")),
+                    new Choice('state_end_exit', $("To exit, press 2"))
+                ],
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: function(choice) {
+                    return choice.value;
+                }
+            });
+        });
+
+        // Interstitial
+        self.add('state_update_number', function(name, creator_opts) {
+            return go.utils
+                .get_identity(self.im.user.answers.contact_id, self.im)
+                .then(function(contact) {
+                    // TODO #70: Handle multiple addresses, currently overwrites existing
+                    // on assumption we're dealing with one msisdn only
+                    contact.details.addresses.msisdn = {};
+                    contact.details.addresses.msisdn[creator_opts.new_msisdn] = {};
+                    return go.utils
+                        .update_identity(self.im, contact)
+                        .then(function() {
+                            return self.states.create('state_end_new_msisdn');
+                        });
+                });
         });
 
         // EndState st-10
@@ -395,25 +461,26 @@ go.app = function() {
             });
         });
 
+        // ChoiceState st-13
         self.add('state_optout_reason', function(name) {
             var speech_option = '1';
             var routing = {
                 'miscarriage': 'state_loss_opt_in',
-                'stillborn': 'state_loss_opt_in',
-                'baby_died': 'state_loss_opt_in',
-                'not_useful': 'state_optin_deny',
-                'other': 'state_optin_deny'
+                'stillborn': 'state_end_loss',
+                'baby_died': 'state_end_loss',
+                'not_useful': 'state_check_subscription',
+                'other': 'state_check_subscription'
             };
             return new ChoiceState(name, {
                 question: $('Optout reason?'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('miscarriage', $('miscarriage')),
-                    new Choice('stillborn', $('stillborn')),
-                    new Choice('baby_died', $('baby_died')),
-                    new Choice('not_useful', $('not_useful')),
-                    new Choice('other', $('other'))
+                    new Choice('miscarriage', $("Mother miscarried")),
+                    new Choice('stillborn', $("Baby stillborn")),
+                    new Choice('baby_died', $("Baby passed away")),
+                    new Choice('not_useful', $("Messages not useful")),
+                    new Choice('other', $("Other"))
                 ],
                 next: function(choice) {
                     return routing[choice.value];
@@ -421,6 +488,7 @@ go.app = function() {
             });
         });
 
+        // ChoiceState st-14
         self.add('state_loss_opt_in', function(name) {
             var speech_option = '1';
             var routing = {
@@ -467,20 +535,61 @@ go.app = function() {
                 });
         });
 
-        self.add('state_end_optout', function(name) {
+        // EndState st-21
+        self.add('state_end_loss', function(name) {
             var speech_option = '1';
             return new EndState(name, {
-                text: $('Thank you - optout'),
+                text: $('We are sorry for your loss. You will no longer receive messages.'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: 'state_start'
             });
         });
 
-        self.add('state_end_not_active', function(name) {
+        // interstitial
+        self.states.add('state_check_subscription', function() {
+            var contact_id = self.im.user.answers.contact_id;
+            return go.utils
+                .get_identity(contact_id, self.im)
+                .then(function(contact) {
+                    // household and mother_only subscriptions bypass to end state state_end_optout
+                    if (contact.details.household_msgs_only || (self.im.user.mother_id === contact_id && self.im.user.receiver_id === 'none')) {
+                        return self.states.create("state_end_optout");
+                    } else {
+                        return self.states.create("state_optout_receiver");
+                    }
+                });
+        });
+
+        // ChoiceState st-16
+        self.add('state_optout_receiver', function(name) {
+            var speech_option = '1';
+            return new ChoiceState(name, {
+                question: $('Which messages to opt-out on?'),
+                error: $("Invalid input. Which message to opt-out on?"),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                choices: [
+                    new Choice('mother', $("Mother messages")),
+                    new Choice('household', $("Household messages")),
+                    new Choice('all', $("All messages"))
+                ],
+                next: function(choice) {
+                        switch (choice.value) {
+                            case 'mother':  // deliberate fall-through to default
+                            case 'household':
+                            case 'all':
+                                return 'state_end_optout';
+                        }
+                }
+            });
+        });
+
+        // EndState st-17
+        self.add('state_end_optout', function(name) {
             var speech_option = '1';
             return new EndState(name, {
-                text: $('No active subscriptions'),
+                text: $('Thank you - optout'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: 'state_start'

@@ -545,7 +545,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will now start receiving voice calls between [time] on [days]."
                             })
                             .check(function(api) {
-                                var expected_used = [4, 5, 19, 20, 21, 27, 28];
+                                var expected_used = [4, 5, 19, 20, 21, 28, 30];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
