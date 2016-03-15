@@ -621,7 +621,7 @@ describe("Mama Nigeria App", function() {
                             , '1'            // state_msg_receiver - mother&father
                             , '09094444444'  // state_msisdn_mother
                             , '09095555555'  // state_msisdn_household
-                            ////, '1'            // state_pregnancy_status - pregnant
+                            ////, '1'            // state_pregnancy_status - pregnant  // bypassing pregnancy flow
                             , '1'            // state_last_period_year
                         )
                         .check.interaction({
@@ -662,7 +662,7 @@ describe("Mama Nigeria App", function() {
                                 , '1'               // state_msg_receiver - mother&father
                                 , '09095555555'     // state_msisdn_household
                                 , '09094444444'     // state_msisdn_mother
-                                //, '1'               // state_pregnancy_status - pregnant
+                                //, '1'               // state_pregnancy_status - pregnant  // bypassing pregnancy flow
                                 , '1'               // state_last_period_year
                                 , '12'              // state_last_period_month
                             )
@@ -706,7 +706,7 @@ describe("Mama Nigeria App", function() {
                             , '1'            // state_msg_receiver - mother&father
                             , '09094444444'  // state_msisdn_mother
                             , '09095555555'  // state_msisdn_household
-                            ////, '1'            // state_pregnancy_status - pregnant
+                            ////, '1'            // state_pregnancy_status - pregnant  // bypassing pregnancy flow
                             , '2'            // state_last_period_year - last year
                         )
                         .check.interaction({
@@ -746,7 +746,7 @@ describe("Mama Nigeria App", function() {
                             , '1'               // state_msg_receiver - mother&father
                             , '09095555555'     // state_msisdn_household
                             , '09094444444'     // state_msisdn_mother
-                            //, '1'               // state_pregnancy_status - pregnant
+                            //, '1'               // state_pregnancy_status - pregnant  // bypassing pregnancy flow
                             , '2'               // state_last_period_year - last year
                             , '1'               // state_last_period_month - jan
                         )
@@ -965,7 +965,7 @@ describe("Mama Nigeria App", function() {
                             , '1'            // state_msg_receiver - mother&father
                             , '09094444444'  // state_msisdn_mother
                             , '09095555555'  // state_msisdn_household
-                            //, '1'            // state_pregnancy_status - pregnant
+                            //, '1'            // state_pregnancy_status - pregnant  // bypassing pregnancy flow
                             , '1'            // state_last_period_year - this year
                             , '9'            // state_last_period_month - sep
                         )
@@ -1008,7 +1008,7 @@ describe("Mama Nigeria App", function() {
                             , '1'            // state_msg_receiver - mother&father
                             , '09094444444'  // state_msisdn_mother
                             , '09095555555'  // state_msisdn_household
-                            //, '1'            // state_pregnancy_status - pregnant
+                            //, '1'            // state_pregnancy_status - pregnant  // bypassing pregnancy flow
                             , '2'            // state_last_period_year - last year
                             , '3'            // state_last_period_month - mar
                         )
@@ -1052,7 +1052,7 @@ describe("Mama Nigeria App", function() {
                             , '1'           // state_msg_receiver - mother&father
                             , '09094444444' // state_msisdn_mother
                             , '09095555555' // state_msisdn_household
-                            //, '1'           // state_pregnancy_status - pregnant
+                            //, '1'           // state_pregnancy_status - pregnant  // bypassing pregnancy flow
                             , '2'           // state_last_period_year - last year
                             , '12'          // state_last_period_month - dec
                         )
@@ -1079,7 +1079,7 @@ describe("Mama Nigeria App", function() {
                             , '1'           // state_msg_receiver - mother&father
                             , '09094444444' // state_msisdn_mother
                             , '09095555555' // state_msisdn_household
-                            //, '1'           // state_pregnancy_status - pregnant
+                            //, '1'           // state_pregnancy_status - pregnant  // bypassing pregnancy flow
                             , '2'           // state_last_period_year - last year
                             , '10'           // state_last_period_month - oct
                             , '32'          // state_last_period_day
@@ -1107,7 +1107,7 @@ describe("Mama Nigeria App", function() {
                             , '1'           // state_msg_receiver - mother&father
                             , '09094444444' // state_msisdn_mother
                             , '09095555555' // state_msisdn_household
-                            //, '1'           // state_pregnancy_status - pregnant
+                            //, '1'           // state_pregnancy_status - pregnant  // bypassing pregnancy flow
                             , '2'           // state_last_period_year - last year
                             , '11'           // state_last_period_month - nov
                             , '32'          // state_last_period_day
@@ -1323,7 +1323,7 @@ describe("Mama Nigeria App", function() {
                             , '12345'       // state_personnel_auth
                             , '6'           // state_msg_receiver - friend_only
                             , '09092222222' // state_msisdn
-                            //, '1'           // state_pregnancy_status - pregnant
+                            //, '1'           // state_pregnancy_status - pregnant  // bypassing pregnancy flow
                             , '2'           // state_last_period_year - last year
                             , '10'          // state_last_period_month - oct
                             , '32'          // state_last_period_day
@@ -1353,7 +1353,7 @@ describe("Mama Nigeria App", function() {
                             , '12345'       // state_personnel_auth
                             , '6'           // state_msg_receiver - friend_only
                             , '09092222222' // state_msisdn
-                            //, '1'           // state_pregnancy_status - pregnant
+                            //, '1'           // state_pregnancy_status - pregnant  // bypassing pregnancy flow
                             , '2'           // state_last_period_year - last year
                             , '10'          // state_last_period_month - oct
                             , '22'          // state_last_period_day
@@ -1380,7 +1380,7 @@ describe("Mama Nigeria App", function() {
                             , '12345'       // state_personnel_auth
                             , '6'           // state_msg_receiver - friend_only
                             , '09092222222' // state_msisdn
-                            //, '1'           // state_pregnancy_status - pregnant
+                            //, '1'           // state_pregnancy_status - pregnant  // bypassing pregnancy flow
                             , '2'           // state_last_period_year - last year
                             , '10'          // state_last_period_month - oct
                             , '22'          // state_last_period_day
