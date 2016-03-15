@@ -7,6 +7,7 @@ go.app = function() {
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
 
+    var bypassPregnancy = true;
 
     var GoApp = App.extend(function(self) {
         App.call(self, 'state_start');
@@ -306,7 +307,9 @@ go.app = function() {
                     self.im.user.answers.operator_id
                 )
                 .then(function() {
-                    return self.states.create('state_pregnancy_status');
+                    return bypassPregnancy
+                           ? self.states.create('state_last_period_month')
+                           : self.states.create('state_pregnancy_status');
                 });
         });
 
