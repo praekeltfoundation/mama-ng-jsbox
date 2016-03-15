@@ -708,7 +708,8 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'identity': '3f7c8851-5204-43f7-af7f-005059992222'
+                    'identity': '3f7c8851-5204-43f7-af7f-005059992222',
+                    'active': 'true'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -719,20 +720,28 @@ module.exports = function() {
             'response': {
                 "code": 200,
                 "data": {
-                    'url': 'http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-2222',
-                    'id': '51fcca25-2e85-4c44-subscription-2222',
-                    'version': 1,
-                    'identity': '3f7c8851-5204-43f7-af7f-005059992222',
-                    'messageset_id': 1,
-                    'next_sequence_number': 1,
-                    'lang': "ibo_NG",
-                    'active': true,
-                    'completed': false,
-                    'schedule': 1,
-                    'process_status': 0,
-                    'metadata': {},
-                    'created_at': "2015-07-10T06:13:29.693272Z",
-                    'updated_at': "2015-07-10T06:13:29.693272Z"
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            'url': 'http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-2222',
+                            'id': '51fcca25-2e85-4c44-subscription-2222',
+                            'version': 1,
+                            'identity': '3f7c8851-5204-43f7-af7f-005059992222',
+                            'messageset_id': 1,
+                            'next_sequence_number': 1,
+                            'lang': "ibo_NG",
+                            'active': true,
+                            'completed': false,
+                            'schedule': 1,
+                            'process_status': 0,
+                            'metadata': {},
+                            'created_at': "2015-07-10T06:13:29.693272Z",
+                            'updated_at': "2015-07-10T06:13:29.693272Z"
+                        }
+                    ]
+
                 }
             }
         },
@@ -795,7 +804,8 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'identity': '3f7c8851-5204-43f7-af7f-005059995555'
+                    'identity': '3f7c8851-5204-43f7-af7f-005059995555',
+                    'active': 'true'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -806,20 +816,28 @@ module.exports = function() {
             'response': {
                 "code": 200,
                 "data": {
-                    'url': 'http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-5555',
-                    'id': '51fcca25-2e85-4c44-subscription-5555',
-                    'version': 1,
-                    'identity': '3f7c8851-5204-43f7-af7f-005059995555',
-                    'messageset_id': 2,
-                    'next_sequence_number': 1,
-                    'lang': "eng_NG",
-                    'active': true,
-                    'completed': false,
-                    'schedule': 1,
-                    'process_status': 0,
-                    'metadata': {},
-                    'created_at': "2015-07-10T06:13:29.693272Z",
-                    'updated_at': "2015-07-10T06:13:29.693272Z"
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            'url': 'http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-5555',
+                            'id': '51fcca25-2e85-4c44-subscription-5555',
+                            'version': 1,
+                            'identity': '3f7c8851-5204-43f7-af7f-005059995555',
+                            'messageset_id': 2,
+                            'next_sequence_number': 1,
+                            'lang': "eng_NG",
+                            'active': true,
+                            'completed': false,
+                            'schedule': 1,
+                            'process_status': 0,
+                            'metadata': {},
+                            'created_at': "2015-07-10T06:13:29.693272Z",
+                            'updated_at': "2015-07-10T06:13:29.693272Z"
+                        }
+                    ]
+
                 }
             }
         },
@@ -882,7 +900,8 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'identity': '3f7c8851-5204-43f7-af7f-005059996666'
+                    'identity': '3f7c8851-5204-43f7-af7f-005059996666',
+                    'active': 'true'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -893,20 +912,27 @@ module.exports = function() {
             'response': {
                 "code": 200,
                 "data": {
-                    'url': 'http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-6666',
-                    'id': '51fcca25-2e85-4c44-subscription-6666',
-                    'version': 1,
-                    'identity': '3f7c8851-5204-43f7-af7f-005059996666',
-                    'messageset_id': 3,
-                    'next_sequence_number': 1,
-                    'lang': "pcm_NG",
-                    'active': true,
-                    'completed': false,
-                    'schedule': 1,
-                    'process_status': 0,
-                    'metadata': {},
-                    'created_at': "2015-07-10T06:13:29.693272Z",
-                    'updated_at': "2015-07-10T06:13:29.693272Z"
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            'url': 'http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-6666',
+                            'id': '51fcca25-2e85-4c44-subscription-6666',
+                            'version': 1,
+                            'identity': '3f7c8851-5204-43f7-af7f-005059996666',
+                            'messageset_id': 3,
+                            'next_sequence_number': 1,
+                            'lang': "pcm_NG",
+                            'active': true,
+                            'completed': false,
+                            'schedule': 1,
+                            'process_status': 0,
+                            'metadata': {},
+                            'created_at': "2015-07-10T06:13:29.693272Z",
+                            'updated_at': "2015-07-10T06:13:29.693272Z"
+                        }
+                    ]
                 }
             }
         },

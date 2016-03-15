@@ -217,10 +217,10 @@ go.utils = {
 // IDENTITY HELPERS
 
     get_identity_by_address: function(address, im) {
-        // Searches the Identity Store for all identities with the provided address.
-        // Returns the first identity object found
-        // Address should be an object {address_type: address}, eg.
-        // {'msisdn': '0821234444'}, {'email': 'me@example.com'}
+      // Searches the Identity Store for all identities with the provided address.
+      // Returns the first identity object found
+      // Address should be an object {address_type: address}, eg.
+      // {'msisdn': '0821234444'}, {'email': 'me@example.com'}
 
         var address_type = Object.keys(address)[0];
         var address_val = address[address_type];
@@ -338,16 +338,23 @@ go.utils = {
             });
     },
 
-    read_subscription_by_identity: function(im, identity_id) {
-      // Gets the subscription from the Stage-base Store via params
-      // Returns the subscription object
+    read_active_subscription_by_identity: function(im, identity_id) {
+      // Searches the Stage-base Store for all active subscriptions with the provided identity_id
+      // Returns the first subscription object found or null if none are found
 
-        var params = {identity: identity_id};
+        var params = {
+            identity: identity_id,
+            active: true
+        };
         var endpoint = 'subscriptions/';
         return go.utils
             .service_api_call('subscriptions', 'get', params, null, endpoint, im)
             .then(function(response) {
-                return response.data;
+                var subscriptions_found = response.data.results;
+                // Return the first subscription in the list of subscriptions
+                return (subscriptions_found.length > 0)
+                ? subscriptions_found[0]
+                : null;
             });
     },
 

@@ -568,7 +568,7 @@ go.utils_project = {
 
         // get subscription
         return go.utils
-            .read_subscription_by_identity(im, mother_id)
+            .read_active_subscription_by_identity(im, mother_id)
             .then(function(subscription) {
                 im.user.set_answer('mother_subscription', subscription);
                 // get messageset
