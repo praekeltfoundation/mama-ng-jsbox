@@ -607,40 +607,19 @@ go.utils_project = {
         };
 
         return go.utils
-            .service_api_call("change", "post", null, change_data, "change/", im);
-
-        // var mother_subscription = im.user.answers.mother_subscription;
-        // // change from sms to voice
-        // if (prior_msg_format === 'text' && new_msg_format === 'audio') {
-        //     // update subscription
-        //     console.log('text -> audio');
-        //     mother_subscription.messageset_id = go.utils_project.change_to_audio_messageset(im);
-        //     mother_subscription.schedule = go.utils_project.get_audio_schedule(im, voice_days, voice_times);
-        //     mother_subscription.next_sequence_number = 1;  // TODO c
-        //     return Q.all([
-        //         go.utils.update_subscription(im, mother_subscription),
-        //         // TODO: go.utils.update_identity(im, contact) for applicable contacts
-        //     ]);
-
-        // // change voice day & time
-        // } else if (prior_msg_format === 'audio' && new_msg_format === 'audio') {
-        //     console.log('audio -> audio');
-        //     // update subscription
-        //     mother_subscription.messageset_id = 1;
-        //     mother_subscription.schedule = 1;
-        //     mother_subscription.next_sequence_number = 1;
-        //     return go.utils.update_subscription(im, mother_subscription);
-
-        // // change from voice to sms
-        // } else if (prior_msg_format === 'audio' && new_msg_format === 'text') {
-        //     console.log('audio -> text');
-        //     // update subscription
-        //     mother_subscription.messageset_id = 1;
-        //     mother_subscription.schedule = 1;
-        //     mother_subscription.next_sequence_number = 1;
-        //     return go.utils.update_subscription(im, mother_subscription);
-        // }
-
+            .service_api_call("change", "post", null, change_data, "change/", im)
+            .then(function() {
+                return go.utils
+                    .get_identity(im.user.answers.mother_id, im)
+                    .then(function(mother_identity) {
+                        // Update mother only as household messages are text only for now
+                        mother_identity.details.preferred_msg_type = new_msg_format;
+                        mother_identity.details.preferred_msg_days = voice_days || null;
+                        mother_identity.details.preferred_msg_times = voice_times || null;
+                        return go.utils
+                            .update_identity(im, mother_identity);
+                    });
+            });
 
     },
 

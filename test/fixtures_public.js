@@ -776,7 +776,7 @@ module.exports = function() {
                     "mother_id": "3f7c8851-5204-43f7-af7f-005059992222",
                     "action": "change_messaging",
                     "data": {
-                        "msg_type": "audio",
+                        "msg_type": "voice",
                         "voice_days": "tue_thu",
                         "voice_times": "9_11"
                     }
@@ -863,7 +863,7 @@ module.exports = function() {
                     "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
                     "action": "change_messaging",
                     "data": {
-                        "msg_type": "audio",
+                        "msg_type": "voice",
                         "voice_days": "mon_wed",
                         "voice_times": "2_5"
                     }
@@ -950,8 +950,8 @@ module.exports = function() {
                     "mother_id": "3f7c8851-5204-43f7-af7f-005059996666",
                     "action": "change_messaging",
                     "data": {
-                        "msg_type": "audio",
-                        "voice_days": "text",
+                        "msg_type": "sms",
+                        "voice_days": null,
                         "voice_times": null
                     }
                 }
@@ -981,11 +981,65 @@ module.exports = function() {
             }
         },
 
+        // 26: patch identity 3f7c8851-5204-43f7-af7f-005059992222
+        {
+            'request': {
+                'method': 'PATCH',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059992222/',
+                'data': {
+                    "url": "http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059992222/",
+                    "id": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2345059992222": {}
+                            }
+                        },
+                        "receiver_role": "mother",
+                        "linked_to": null,
+                        "preferred_msg_type": "voice",
+                        "preferred_language": "igbo",
+                        "preferred_msg_days": "tue_thu",
+                        "preferred_msg_times": "9_11"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059992222/",
+                    "id": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2345059992222": {}
+                            }
+                        },
+                        "receiver_role": "mother",
+                        "linked_to": null,
+                        "preferred_msg_type": "voice",
+                        "preferred_language": "igbo",
+                        "preferred_msg_days": "tue_thu",
+                        "preferred_msg_times": "9_11"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
 
-
-
-
-        // x: unused - get identity 3f7c8851-5204-43f7-af7f-005059995555
+        // 27: get identity 3f7c8851-5204-43f7-af7f-005059995555
         {
             'request': {
                 'method': 'GET',
@@ -1014,6 +1068,119 @@ module.exports = function() {
                 }
             }
         },
+
+        // 28: patch identity 3f7c8851-5204-43f7-af7f-005059995555
+        {
+            'request': {
+                'method': 'PATCH',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059995555/',
+                'data': {
+                    "url": "http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059995555/",
+                    "id": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "version": 1,
+                    "communicate_through": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "operator": null,
+                    "details": {
+                        "receiver_role": "mother",
+                        "preferred_language": "hausa",
+                        "linked_to": "cb245673-aa41-4302-ac47-9093333333",
+                        "preferred_msg_type": "voice",
+                        "preferred_msg_days": "mon_wed",
+                        "preferred_msg_times": "2_5"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059995555/",
+                    "id": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "version": 1,
+                    "communicate_through": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "operator": null,
+                    "details": {
+                        "receiver_role": "mother",
+                        "preferred_language": "hausa",
+                        "linked_to": "cb245673-aa41-4302-ac47-9093333333",
+                        "preferred_msg_type": "voice",
+                        "preferred_msg_days": "mon_wed",
+                        "preferred_msg_times": "2_5"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
+
+        // 29: patch identity 3f7c8851-5204-43f7-af7f-005059996666
+        {
+            'request': {
+                'method': 'PATCH',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059996666/',
+                'data': {
+                    "url": "http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059996666/",
+                    "id": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2345059996666": {}
+                            }
+                        },
+                        "receiver_role": "mother",
+                        "linked_to": "3f7c8851-5204-43f7-af7f-005059997777",
+                        "preferred_msg_type": "sms",
+                        "preferred_msg_days": null,
+                        "preferred_msg_times": null,
+                        "preferred_language": "pidgin"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059996666/",
+                    "id": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2345059996666": {}
+                            }
+                        },
+                        "receiver_role": "mother",
+                        "linked_to": "3f7c8851-5204-43f7-af7f-005059997777",
+                        "preferred_msg_type": "sms",
+                        "preferred_msg_days": null,
+                        "preferred_msg_times": null,
+                        "preferred_language": "pidgin"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
+
+
+
+
+
 
 
     ];

@@ -449,7 +449,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will now start receiving voice calls between [time] on [days]."
                             })
                             .check(function(api) {
-                                var expected_used = [2, 16, 17, 18];
+                                var expected_used = [2, 9, 16, 17, 18, 26];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -545,7 +545,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will now start receiving voice calls between [time] on [days]."
                             })
                             .check(function(api) {
-                                var expected_used = [4, 5, 19, 20, 21];
+                                var expected_used = [4, 5, 19, 20, 21, 27, 28];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -600,7 +600,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will now receive text messages."
                             })
                             .check(function(api) {
-                                var expected_used = [12, 22, 23, 24];
+                                var expected_used = [12, 13, 22, 23, 24, 29];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
