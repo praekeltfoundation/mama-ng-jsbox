@@ -104,7 +104,8 @@ describe("Mama Nigeria App", function() {
                         helper_metadata: {
                             voice: {
                                 speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_msisdn_1.mp3',
-                                wait_for: '#'
+                                wait_for: '#',
+                                barge_in: false
                             }
                         }
                     })
@@ -141,7 +142,8 @@ describe("Mama Nigeria App", function() {
                             helper_metadata: {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_msisdn_1_retry.mp3',
-                                    wait_for: '#'
+                                    wait_for: '#',
+                                    barge_in: false
                                 }
                             }
                         })
@@ -156,8 +158,9 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                // state_msg_receiver_msisdn is a no-restart state (listed in the no_restart_states in utils function should_restart)
                 it("should not restart, preventing skipping ahead to main_menu state", function() {
+                    // state_msg_receiver_msisdn is a no-restart state (listed in
+                    // the no_restart_states in utils function should_restart)
                     return tester
                         .setup.user.addr('+2345059992222')
                         .inputs(
@@ -173,7 +176,8 @@ describe("Mama Nigeria App", function() {
                             helper_metadata: {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_msisdn_1_retry.mp3',
-                                    wait_for: '#'
+                                    wait_for: '#',
+                                    barge_in: false
                                 }
                             }
                         })
@@ -204,7 +208,8 @@ describe("Mama Nigeria App", function() {
                             helper_metadata: {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_msisdn_1_retry.mp3',
-                                    wait_for: '#'
+                                    wait_for: '#',
+                                    barge_in: false
                                 }
                             }
                         })
@@ -244,7 +249,8 @@ describe("Mama Nigeria App", function() {
                             helper_metadata: {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_main_menu_1.mp3',
-                                    wait_for: '#'
+                                    wait_for: '#',
+                                    barge_in: false
                                 }
                             }
                         })
@@ -282,7 +288,8 @@ describe("Mama Nigeria App", function() {
                             helper_metadata: {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msisdn_not_recognised_1.mp3',
-                                    wait_for: '#'
+                                    wait_for: '#',
+                                    barge_in: true
                                 }
                             }
                         })
@@ -313,7 +320,8 @@ describe("Mama Nigeria App", function() {
                             helper_metadata: {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_msisdn_1.mp3',
-                                    wait_for: '#'
+                                    wait_for: '#',
+                                    barge_in: false
                                 }
                             }
                         })
@@ -344,7 +352,8 @@ describe("Mama Nigeria App", function() {
                             helper_metadata: {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_exit_1.mp3',
-                                    wait_for: '#'
+                                    wait_for: '#',
+                                    barge_in: false
                                 }
                             }
                         })
@@ -377,7 +386,8 @@ describe("Mama Nigeria App", function() {
                             helper_metadata: {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_not_active_1.mp3',
-                                    wait_for: '#'
+                                    wait_for: '#',
+                                    barge_in: true
                                 }
                             }
                         })
@@ -395,8 +405,8 @@ describe("Mama Nigeria App", function() {
             });
         });
 
-        describe.skip("When you enter a choice main_menu", function() {
-            describe("if you choose baby", function() {
+        describe("When you enter a choice main_menu", function() {
+            describe.skip("if you choose baby", function() {
                 it("should navigate to state_baby_already_subscribed", function() {
                     return tester
                         .setup.user.addr('082333')
@@ -413,7 +423,8 @@ describe("Mama Nigeria App", function() {
                             helper_metadata: {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_already_subscribed_1.mp3',
-                                    wait_for: '#'
+                                    wait_for: '#',
+                                    barge_in: true
                                 }
                             }
                         })
@@ -438,13 +449,14 @@ describe("Mama Nigeria App", function() {
                             helper_metadata: {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_confirm_subscription_1.mp3',
-                                    wait_for: '#'
+                                    wait_for: '#',
+                                    barge_in: true
                                 }
                             }
                         })
                         .run();
                 });
-                it.skip("should navigate to state_end_baby", function() {
+                it("should navigate to state_end_baby", function() {
                     return tester
                         .setup.user.addr('+07070050005')
                         .inputs(
@@ -461,7 +473,8 @@ describe("Mama Nigeria App", function() {
                             helper_metadata: {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_baby_1.mp3',
-                                    wait_for: '#'
+                                    wait_for: '#',
+                                    barge_in: false
                                 }
                             }
                         })
@@ -490,7 +503,8 @@ describe("Mama Nigeria App", function() {
                             helper_metadata: {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_voice_days_1.mp3',
-                                    wait_for: '#'
+                                    wait_for: '#',
+                                    barge_in: true
                                 }
                             }
                         })
@@ -501,7 +515,7 @@ describe("Mama Nigeria App", function() {
             describe("if you choose to change number", function() {
                 it("should navigate to state_new_msisdn", function() {
                     return tester
-                        .setup.user.addr('+07070050005')
+                        .setup.user.addr('+2345059992222')
                         .inputs(
                             {session_event: 'new'}
                             , '05059992222' // state_msg_receiver_msisdn
@@ -515,7 +529,111 @@ describe("Mama Nigeria App", function() {
                             helper_metadata: {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_new_msisdn_1.mp3',
-                                    wait_for: '#'
+                                    wait_for: '#',
+                                    barge_in: true
+                                }
+                            }
+                        })
+                        .run();
+                });
+                it("should navigate to state_new_msisdn (invalid number)", function() {
+                    return tester
+                        .setup.user.addr('+2345059992222')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059992222' // state_msg_receiver_msisdn
+                            , '3'           // state_main_menu - number
+                            , '54321'       // state_new_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_new_msisdn',
+                            reply: 'Invalid number. Try again. Please enter new mobile number'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_new_msisdn_1_retry.mp3',
+                                    wait_for: '#',
+                                    barge_in: true
+                                }
+                            }
+                        })
+                        .run();
+                });
+                it("should navigate to state_number_in_use", function() {
+                    return tester
+                        .setup.user.addr('+2345059992222')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059992222' // state_msg_receiver_msisdn
+                            , '3'           // state_main_menu - number
+                            , '05059993333'  // state_new_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_number_in_use',
+                            reply: [
+                                'Sorry, this number is already registered',
+                                '1. To try a different number, press 1',
+                                '2. To exit, press 2'
+                            ].join('\n')
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_number_in_use_1.mp3',
+                                    wait_for: '#',
+                                    barge_in: true
+                                }
+                            }
+                        })
+                        .run();
+                });
+                it("should navigate to state_new_msisdn (via state_number_in_use)", function() {
+                    return tester
+                        .setup.user.addr('+2345059992222')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059992222' // state_msg_receiver_msisdn
+                            , '3'           // state_main_menu - number
+                            , '05059993333'       // state_new_msisdn
+                            , '1'  // state_number_in_use - try a different number
+                        )
+                        .check.interaction({
+                            state: 'state_new_msisdn',
+                            reply: 'Please enter new mobile number'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_new_msisdn_1.mp3',
+                                    wait_for: '#',
+                                    barge_in: true
+                                }
+                            }
+                        })
+                        .run();
+                });
+                it("should navigate to state_end_exit", function() {
+                    return tester
+                        .setup.user.addr('+2345059992222')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059992222' // state_msg_receiver_msisdn
+                            , '3'           // state_main_menu - number
+                            , '05059993333'  // state_new_msisdn
+                            , '2'  // state_number_in_use - exit
+
+                        )
+                        .check.interaction({
+                            state: 'state_end_exit',
+                            reply: 'Thank you for using the Hello Mama service. Goodbye.'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_exit_1.mp3',
+                                    wait_for: '#',
+                                    barge_in: false
                                 }
                             }
                         })
@@ -523,12 +641,13 @@ describe("Mama Nigeria App", function() {
                 });
                 it("should navigate to state_end_new_msisdn", function() {
                     return tester
-                        .setup.user.addr('+07070050005')
+                        .setup.user.addr('+2345059992222')
                         .inputs(
                             {session_event: 'new'}
                             , '05059992222' // state_msg_receiver_msisdn
                             , '3'           // state_main_menu - number
-                            , '05059992223'  // state_new_msisdn
+                            , '05059998888'  // state_new_msisdn
+
                         )
                         .check.interaction({
                             state: 'state_end_new_msisdn',
@@ -538,7 +657,8 @@ describe("Mama Nigeria App", function() {
                             helper_metadata: {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_new_msisdn_1.mp3',
-                                    wait_for: '#'
+                                    wait_for: '#',
+                                    barge_in: true
                                 }
                             }
                         })
@@ -546,7 +666,7 @@ describe("Mama Nigeria App", function() {
                 });
             });
 
-            describe("if you choose to change language", function() {
+            describe.skip("if you choose to change language", function() {
                 it("should navigate to state_msg_language", function() {
                     return tester
                         .setup.user.addr('+07070050005')
@@ -570,7 +690,8 @@ describe("Mama Nigeria App", function() {
                             helper_metadata: {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_language_1.mp3',
-                                    wait_for: '#'
+                                    wait_for: '#',
+                                    barge_in: true
                                 }
                             }
                         })
@@ -593,7 +714,8 @@ describe("Mama Nigeria App", function() {
                             helper_metadata: {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_msg_language_1.mp3',
-                                    wait_for: '#'
+                                    wait_for: '#',
+                                    barge_in: true
                                 }
                             }
                         })
@@ -601,33 +723,43 @@ describe("Mama Nigeria App", function() {
                 });
             });
 
-            describe.skip("if you choose optout", function() {
+            describe("if you choose optout", function() {
                 it("should navigate to state_optout_reason", function() {
                     return tester
-                        .setup.user.addr('+07070050005')
+                        .setup.user.addr('+2345059992222')
                         .inputs(
                             {session_event: 'new'}
-                            , '05059998888'  // msg_receiver_msisdn
+                            , '05059993333'  // msg_receiver_msisdn
                             , '5'  // state_main_menu - optout
                         )
                         .check.interaction({
                             state: 'state_optout_reason',
                             reply: [
                                 'Optout reason?',
-                                '1. miscarriage',
-                                '2. stillborn',
-                                '3. baby_died',
-                                '4. not_useful',
-                                '5. other'
+                                '1. Mother miscarried',
+                                '2. Baby stillborn',
+                                '3. Baby passed away',
+                                '4. Messages not useful',
+                                '5. Other'
                             ].join('\n')
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_optout_reason_1.mp3',
-                                    wait_for: '#'
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_optout_reason_1.mp3',
+                                    wait_for: '#',
+                                    barge_in: true
                                 }
                             }
+                        })
+                        .check(function(api) {
+                            var expected_used = [4,5,16];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
@@ -652,7 +784,8 @@ describe("Mama Nigeria App", function() {
                         helper_metadata: {
                             voice: {
                                 speech_url: 'http://localhost:8001/api/v1/eng_NG/state_end_baby_1.mp3',
-                                wait_for: '#'
+                                wait_for: '#',
+                                barge_in: false
                             }
                         }
                     })
@@ -683,7 +816,8 @@ describe("Mama Nigeria App", function() {
                         helper_metadata: {
                             voice: {
                                 speech_url: 'http://localhost:8001/api/v1/eng_NG/state_voice_times_2.mp3',
-                                wait_for: '#'
+                                wait_for: '#',
+                                barge_in: true
                             }
                         }
                     })
@@ -710,7 +844,8 @@ describe("Mama Nigeria App", function() {
                         helper_metadata: {
                             voice: {
                                 speech_url: 'http://localhost:8001/api/v1/eng_NG/state_end_msg_times_2.mp3',
-                                wait_for: '#'
+                                wait_for: '#',
+                                barge_in: true
                             }
                         }
                     })
@@ -719,15 +854,15 @@ describe("Mama Nigeria App", function() {
             });
         });
 
-        describe.skip("When you choose optout reason optout_reason", function() {
+        describe("When you choose optout reason", function() {
             describe("if you choose miscarriage", function() {
                 it("should navigate to state_loss_opt_in", function() {
                     return tester
-                        .setup.user.addr('+07070050005')
+                        .setup.user.addr('+2345059992222')
                         .inputs(
                             {session_event: 'new'}
-                            , '05059998888'  // msg_receiver_msisdn
-                            , '3'  // main_menu - optout
+                            , '05059993333'  // msg_receiver_msisdn
+                            , '5'  // main_menu - optout
                             , '1'  // optout_reason - miscarriage
                         )
                         .check.interaction({
@@ -741,84 +876,145 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_loss_opt_in_1.mp3',
-                                    wait_for: '#'
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_loss_opt_in_1.mp3',
+                                    wait_for: '#',
+                                    barge_in: true
                                 }
                             }
+                        })
+                        .check(function(api) {
+                            var expected_used = [4,5,16];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
             });
 
             describe("if you choose stillborn", function() {
-                it("should navigate to state_loss_opt_in", function() {
+                it("should navigate to state_end_loss", function() {
                     return tester
-                        .setup.user.addr('+07070050005')
+                        .setup.user.addr('+2345059992222')
                         .inputs(
                             {session_event: 'new'}
-                            , '05059998888'  // msg_receiver_msisdn
-                            , '3'  // main_menu - optout
+                            , '05059993333'  // msg_receiver_msisdn
+                            , '5'  // main_menu - optout
                             , '2'  // optout_reason - stillborn
                         )
                         .check.interaction({
-                            state: 'state_loss_opt_in',
-                            reply: [
-                                'Receive loss messages?',
-                                '1. opt_in_confirm',
-                                '2. opt_in_deny'
-                            ].join('\n')
+                            state: 'state_end_loss',
+                            reply: 'We are sorry for your loss. You will no longer receive messages.'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_loss_opt_in_1.mp3',
-                                    wait_for: '#'
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_loss_1.mp3',
+                                    wait_for: '#',
+                                    barge_in: true
                                 }
                             }
+                        })
+                        .check(function(api) {
+                            var expected_used = [4,5,16];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
             });
 
             describe("if you choose baby_died", function() {
-                it("should navigate to state_loss_opt_in", function() {
+                it("should navigate to state_end_loss", function() {
                     return tester
-                        .setup.user.addr('+07070050005')
+                        .setup.user.addr('+2345059992222')
                         .inputs(
                             {session_event: 'new'}
-                            , '05059998888'  // msg_receiver_msisdn
-                            , '3'  // main_menu - optout
+                            , '05059993333'  // msg_receiver_msisdn
+                            , '5'  // main_menu - optout
                             , '3'  // optout_reason - baby_died
                         )
                         .check.interaction({
-                            state: 'state_loss_opt_in',
-                            reply: [
-                                'Receive loss messages?',
-                                '1. opt_in_confirm',
-                                '2. opt_in_deny'
-                            ].join('\n')
+                            state: 'state_end_loss',
+                            reply: 'We are sorry for your loss. You will no longer receive messages.'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_loss_opt_in_1.mp3',
-                                    wait_for: '#'
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_loss_1.mp3',
+                                    wait_for: '#',
+                                    barge_in: true
                                 }
                             }
+                        })
+                        .check(function(api) {
+                            var expected_used = [4,5,16];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
             });
 
             describe("if you choose not_useful", function() {
-                it("should navigate to state_end_optout", function() {
+                it("should navigate to state_optout_receiver", function() {
                     return tester
-                        .setup.user.addr('+07070050005')
+                        .setup.user.addr('+2345059992222')
                         .inputs(
                             {session_event: 'new'}
-                            , '05059998888'  // msg_receiver_msisdn
-                            , '3'  // main_menu - optout
+                            , '05059993333'  // msg_receiver_msisdn
+                            , '5'  // main_menu - optout
                             , '4'  // optout_reason - not_useful
+                        )
+                        .check.interaction({
+                            state: 'state_optout_receiver',
+                            reply: [
+                                'Which messages to opt-out on?',
+                                '1. Mother messages',
+                                '2. Household messages',
+                                '3. All messages'
+                            ].join('\n')
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_optout_receiver_1.mp3',
+                                    wait_for: '#',
+                                    barge_in: true
+                                }
+                            }
+                        })
+                        .check(function(api) {
+                            var expected_used = [4,5,16];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
+                        .run();
+                });
+                it("should navigate to state_end_optout", function() {
+                    return tester
+                        .setup.user.addr('+2345059992222')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059993333'  // msg_receiver_msisdn
+                            , '5'  // main_menu - optout
+                            , '4'  // optout_reason - not_useful
+                            , '3'  // state_optout_receiver - all messages
                         )
                         .check.interaction({
                             state: 'state_end_optout',
@@ -827,10 +1023,20 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_end_optout_1.mp3',
-                                    wait_for: '#'
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_optout_1.mp3',
+                                    wait_for: '#',
+                                    barge_in: true
                                 }
                             }
+                        })
+                        .check(function(api) {
+                            var expected_used = [4,5,16];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -840,12 +1046,51 @@ describe("Mama Nigeria App", function() {
             describe("if you choose other", function() {
                 it("should navigate to state_end_optout", function() {
                     return tester
-                        .setup.user.addr('+07070050005')
+                        .setup.user.addr('+2345059992222')
                         .inputs(
                             {session_event: 'new'}
-                            , '05059998888'  // msg_receiver_msisdn
-                            , '3'  // main_menu - optout
+                            , '05059993333'  // msg_receiver_msisdn
+                            , '5'  // main_menu - optout
                             , '5'  // optout_reason - other
+                        )
+                        .check.interaction({
+                            state: 'state_optout_receiver',
+                            reply: [
+                                'Which messages to opt-out on?',
+                                '1. Mother messages',
+                                '2. Household messages',
+                                '3. All messages'
+                            ].join('\n')
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_optout_receiver_1.mp3',
+                                    wait_for: '#',
+                                    barge_in: true
+                                }
+                            }
+                        })
+                        .check(function(api) {
+                            var expected_used = [4,5,16];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
+                        .run();
+                });
+                it("should navigate to state_end_optout", function() {
+                    return tester
+                        .setup.user.addr('+2345059992222')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059993333'  // msg_receiver_msisdn
+                            , '5'  // main_menu - optout
+                            , '4'  // optout_reason - not_useful
+                            , '2'  // state_optout_receiver - household messsages
                         )
                         .check.interaction({
                             state: 'state_end_optout',
@@ -854,10 +1099,20 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_end_optout_1.mp3',
-                                    wait_for: '#'
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_optout_1.mp3',
+                                    wait_for: '#',
+                                    barge_in: true
                                 }
                             }
+                        })
+                        .check(function(api) {
+                            var expected_used = [4,5,16];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -865,15 +1120,15 @@ describe("Mama Nigeria App", function() {
             });
         });
 
-        describe.skip("When you enter a choice loss_opt_in", function() {
+        describe("When you enter a choice loss_opt_in", function() {
             describe("if you choose loss messages", function() {
                 it("should navigate to state_end_loss_opt_in", function() {
                     return tester
-                        .setup.user.addr('+07070050005')
+                        .setup.user.addr('+2345059992222')
                         .inputs(
                             {session_event: 'new'}
-                            , '05059998888'  // msg_receiver_msisdn
-                            , '3'  // main_menu - optout
+                            , '05059993333'  // msg_receiver_msisdn
+                            , '5'  // main_menu - optout
                             , '1'  // optout_reason - miscarriage
                             , '1'  // loss_opt_in - confirm opt in
                         )
@@ -884,10 +1139,20 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_end_loss_opt_in_1.mp3',
-                                    wait_for: '#'
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_loss_opt_in_1.mp3',
+                                    wait_for: '#',
+                                    barge_in: true
                                 }
                             }
+                        })
+                        .check(function(api) {
+                            var expected_used = [2,4,5,16,17];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -897,11 +1162,11 @@ describe("Mama Nigeria App", function() {
             describe("if you choose no loss messages", function() {
                 it("should navigate to state_end_optout", function() {
                     return tester
-                        .setup.user.addr('+07070050005')
+                        .setup.user.addr('+2345059992222')
                         .inputs(
                             {session_event: 'new'}
-                            , '05059998888'  // msg_receiver_msisdn
-                            , '3'  // main_menu - optout
+                            , '05059993333'  // msg_receiver_msisdn
+                            , '5'  // main_menu - optout
                             , '1'  // optout_reason - miscarriage
                             , '2'  // loss_opt_in - deny opt in
                         )
@@ -912,10 +1177,20 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_end_optout_1.mp3',
-                                    wait_for: '#'
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_optout_1.mp3',
+                                    wait_for: '#',
+                                    barge_in: true
                                 }
                             }
+                        })
+                        .check(function(api) {
+                            var expected_used = [2,4,5,16,17];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -923,24 +1198,25 @@ describe("Mama Nigeria App", function() {
             });
 
             describe("if you choose 0 to restart", function() {
-                it("should not restart", function() {
+                it("should restart", function() {
                     return tester
-                        .setup.user.addr('+07070050005')
+                        .setup.user.addr('+2345059992222')
                         .inputs(
                             {session_event: 'new'}
-                            , '05059998888'  // msg_receiver_msisdn
-                            , '3'  // main_menu - optout
+                            , '05059993333'  // msg_receiver_msisdn
+                            , '5'  // main_menu - optout
                             , '1'  // optout_reason - miscarriage
                             , '0'  // loss_opt_in - restart attempt
                         )
                         .check.interaction({
-                            state: 'state_loss_opt_in'
+                            state: 'state_main_menu'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8001/api/v1/eng_NG/state_loss_opt_in_1.mp3',
-                                    wait_for: '#'
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_main_menu_1.mp3',
+                                    wait_for: '#',
+                                    barge_in: false
                                 }
                             }
                         })

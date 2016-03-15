@@ -8,11 +8,11 @@ go.app = function() {
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
 
-
     var GoApp = App.extend(function(self) {
         App.call(self, 'state_start');
         var $ = self.$;
         var lang = 'eng_NG';
+        var bypassPostbirth = true;
 
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
@@ -29,7 +29,7 @@ go.app = function() {
                 if (go.utils_project.should_restart(self.im)) {
                     // Prevent previous content being passed to next state
                     self.im.msg.content = null;
-                    return self.states.create('state_msg_receiver', pass_opts);
+                    return self.states.create('state_start', pass_opts);
                 }
 
                 return creator(name, pass_opts);
@@ -205,7 +205,12 @@ go.app = function() {
                     self.im.user.answers.operator_id
                 )
                 .then(function() {
-                    return self.states.create('state_pregnancy_status');
+                    if (bypassPostbirth) {
+                        self.im.user.set_answer('state_pregnancy_status', 'prebirth');
+                        return self.states.create('state_last_period_year');
+                    } else {
+                        return self.states.create('state_pregnancy_status');
+                    }
                 });
         });
 

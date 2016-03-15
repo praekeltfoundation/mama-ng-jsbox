@@ -758,6 +758,21 @@ go.utils_project = {
     // Construct helper_data object
     make_voice_helper_data: function(im, name, lang, num, retry) {
         var voice_url = go.utils_project.make_speech_url(im, name, lang, num, retry);
+        var bargeInDisallowedStates = [
+            // voice registration states
+            'state_msg_receiver',
+            'state_gravida',
+            'state_end_sms',
+            'state_end_voice',
+            // voice public states
+            'state_msg_receiver_msisdn',
+            'state_main_menu',
+            'state_main_menu_household',
+            'state_baby_already_subscribed',
+            'state_end_baby',
+            'state_end_exit'
+        ];
+
         return im
             .log([
                 'Voice URL is: ' + voice_url,
@@ -779,7 +794,8 @@ go.utils_project = {
                         return {
                             voice: {
                                 speech_url: voice_url,
-                                wait_for: '#'
+                                wait_for: '#',
+                                barge_in: bargeInDisallowedStates.indexOf(name) !== -1 ? false : true
                             }
                         };
                     }, function (error) {
@@ -939,22 +955,21 @@ go.utils_project = {
     },
 
     optout: function(im) {
-        var mama_id = im.user.answers.mama_id;
-        return Q
-        .all([
+        var unsubscribe_result;
+        return go.utils
             // get identity so details can be updated
-            go.utils.get_identity(mama_id, im),
-            // set existing subscriptions inactive
-            go.utils_project.subscriptions_unsubscribe_all(mama_id, im)
-        ])
-        .spread(function(mama_identity, unsubscribe_result) {
-            // set new mama identity details
-            mama_identity.details.opted_out = true;
-            mama_identity.details.optout_reason = im.user.answers.state_c05_optout_reason;
+            .get_identity_by_address({'msisdn' : im.user.addr}, im)
+            .then(function(identity) {
+                // set existing subscriptions inactive
+                unsubscribe_result = go.utils.subscription_unsubscribe_all(identity, im);
 
-            // update mama identity
-            return go.utils.update_identity(im, mama_identity);
-        });
+                // set new mama identity details
+                identity.details.opted_out = true;
+                identity.details.optout_reason = im.user.answers.state_optout_reason;
+
+                // update mama identity
+                return go.utils.update_identity(im, identity);
+            });
     },
 
 
@@ -1104,7 +1119,7 @@ go.utils_project = {
             // get identity so details can be updated
             go.utils.get_identity(mama_id, im),
             // set existing subscriptions inactive
-            go.utils_project.subscriptions_unsubscribe_all(mama_id, im)
+            go.utils_project.subscription_unsubscribe_all(mama_id, im)
         ])
         .spread(function(mama_identity, unsubscribe_result) {
             // set new mama identity details
@@ -1146,11 +1161,11 @@ go.app = function() {
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
 
-
     var GoApp = App.extend(function(self) {
         App.call(self, 'state_start');
         var $ = self.$;
         var lang = 'eng_NG';
+        var bypassPostbirth = true;
 
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
@@ -1167,7 +1182,7 @@ go.app = function() {
                 if (go.utils_project.should_restart(self.im)) {
                     // Prevent previous content being passed to next state
                     self.im.msg.content = null;
-                    return self.states.create('state_msg_receiver', pass_opts);
+                    return self.states.create('state_start', pass_opts);
                 }
 
                 return creator(name, pass_opts);
@@ -1343,7 +1358,12 @@ go.app = function() {
                     self.im.user.answers.operator_id
                 )
                 .then(function() {
-                    return self.states.create('state_pregnancy_status');
+                    if (bypassPostbirth) {
+                        self.im.user.set_answer('state_pregnancy_status', 'prebirth');
+                        return self.states.create('state_last_period_year');
+                    } else {
+                        return self.states.create('state_pregnancy_status');
+                    }
                 });
         });
 
