@@ -2,6 +2,7 @@
 var Q = require('q');
 var moment = require('moment');
 var vumigo = require('vumigo_v02');
+//var freeswitch = require('vxfreeswitch');
 var HttpApi = vumigo.http.api.HttpApi;
 
 // PROJECT SPECIFIC UTILS
@@ -309,7 +310,8 @@ go.utils_project = {
                         return {
                             voice: {
                                 speech_url: voice_url,
-                                wait_for: '#'
+                                wait_for: '#',
+                                barge_in: true
                             }
                         };
                     }, function (error) {
