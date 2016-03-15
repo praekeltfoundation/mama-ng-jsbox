@@ -383,7 +383,6 @@ go.utils_project = {
 // REGISTRATION HELPERS
 
     compile_reg_info: function(im) {
-
         var reg_info = {
             stage: im.user.answers.state_pregnancy_status,
             mother_id: im.user.answers.mother_id,

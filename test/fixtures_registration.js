@@ -2283,7 +2283,7 @@ module.exports = function() {
                         "msg_type": "voice",
                         "voice_times": "2_5",
                         "voice_days": "mon_wed",
-                        "baby_dob": "20160913"
+                        "baby_dob": "20160913",
                     }
                 }
             },
@@ -2300,7 +2300,7 @@ module.exports = function() {
                         "gravida": "2",
                         "language": "igbo",
                         "msg_type": "voice",
-                        "baby_dob": "20160913"
+                        "baby_dob": "20160913",
                     },
                     "validated": false,
                     "source": "source",
