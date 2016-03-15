@@ -8,6 +8,7 @@ go.app = function() {
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
 
+    var bypassPregnancy = true;
 
     var GoApp = App.extend(function(self) {
         App.call(self, 'state_start');
@@ -198,7 +199,9 @@ go.app = function() {
                     self.im.user.answers.operator_id
                 )
                 .then(function() {
-                    return self.states.create('state_pregnancy_status');
+                    return bypassPregnancy
+                            ? self.states.create('state_last_period_year')
+                            : self.states.create('state_pregnancy_status');
                 });
         });
 
@@ -402,7 +405,7 @@ go.app = function() {
                     new Choice('continue', $('Continue'))
                 ],
                 next: function() {
-                    if (self.im.user.answers.state_pregnancy_status === 'prebirth') {
+                    if (self.im.user.answers.state_pregnancy_status === 'prebirth' || bypassPregnancy) {
                         return 'state_last_period_year';
                     } else {
                         return 'state_baby_birth_year';
