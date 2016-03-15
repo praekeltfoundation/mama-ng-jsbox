@@ -288,6 +288,21 @@ go.utils_project = {
     // Construct helper_data object
     make_voice_helper_data: function(im, name, lang, num, retry) {
         var voice_url = go.utils_project.make_speech_url(im, name, lang, num, retry);
+        var bargeInDisallowedStates = [
+            // voice registration states
+            'state_msg_receiver',
+            'state_gravida',
+            'state_end_sms',
+            'state_end_voice',
+            // voice public states
+            'state_msg_receiver_msisdn',
+            'state_main_menu',
+            'state_main_menu_household',
+            'state_baby_already_subscribed',
+            'state_end_baby',
+            'state_end_exit'
+        ];
+
         return im
             .log([
                 'Voice URL is: ' + voice_url,
@@ -309,7 +324,8 @@ go.utils_project = {
                         return {
                             voice: {
                                 speech_url: voice_url,
-                                wait_for: '#'
+                                wait_for: '#',
+                                barge_in: bargeInDisallowedStates.indexOf(name) !== -1 ? false : true
                             }
                         };
                     }, function (error) {

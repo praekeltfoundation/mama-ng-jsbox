@@ -755,6 +755,21 @@ go.utils_project = {
     // Construct helper_data object
     make_voice_helper_data: function(im, name, lang, num, retry) {
         var voice_url = go.utils_project.make_speech_url(im, name, lang, num, retry);
+        var bargeInDisallowedStates = [
+            // voice registration states
+            'state_msg_receiver',
+            'state_gravida',
+            'state_end_sms',
+            'state_end_voice',
+            // voice public states
+            'state_msg_receiver_msisdn',
+            'state_main_menu',
+            'state_main_menu_household',
+            'state_baby_already_subscribed',
+            'state_end_baby',
+            'state_end_exit'
+        ];
+
         return im
             .log([
                 'Voice URL is: ' + voice_url,
@@ -776,7 +791,8 @@ go.utils_project = {
                         return {
                             voice: {
                                 speech_url: voice_url,
-                                wait_for: '#'
+                                wait_for: '#',
+                                barge_in: bargeInDisallowedStates.indexOf(name) !== -1 ? false : true
                             }
                         };
                     }, function (error) {
@@ -1142,12 +1158,12 @@ go.app = function() {
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
 
-
     var GoApp = App.extend(function(self) {
         App.call(self, 'state_start');
         var $ = self.$;
         var lang = 'eng_NG';
         var interrupt = true;
+        var bypassPostbirth = true;
 
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
@@ -1332,7 +1348,12 @@ go.app = function() {
                     self.im.user.answers.operator_id
                 )
                 .then(function() {
-                    return self.states.create('state_pregnancy_status');
+                    if (bypassPostbirth) {
+                        self.im.user.set_answer('state_pregnancy_status', 'prebirth');
+                        return self.states.create('state_last_period_year');
+                    } else {
+                        return self.states.create('state_pregnancy_status');
+                    }
                 });
         });
 
