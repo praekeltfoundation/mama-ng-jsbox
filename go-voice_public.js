@@ -469,7 +469,6 @@ go.utils = {
 var Q = require('q');
 var moment = require('moment');
 var vumigo = require('vumigo_v02');
-//var freeswitch = require('vxfreeswitch');
 var HttpApi = vumigo.http.api.HttpApi;
 
 // PROJECT SPECIFIC UTILS
