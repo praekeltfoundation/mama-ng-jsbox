@@ -1112,20 +1112,9 @@ go.utils_project = {
             });
     },
 
-    change_to_audio_messageset: function(im) {
-        current_messageset_shortname = im.user.answers.mother_messageset.short_name;
-        new_messageset_shortname = current_messageset_shortname.replace('text', 'audio');
-        return new_messageset_shortname;
-    },
-
-    get_audio_schedule: function(im, voice_days, voice_times) {
-        console.log(im.user.answers.mother_subscription);
-        current_schedule = im.user.answers.mother_subscription.schedule;
-        console.log(current_schedule);
-    },
-
     update_msg_format_time: function(im, new_msg_format, voice_days, voice_times) {
-      //
+      // Sends new message type, preferred day and time to Change endpoint
+      // and updates the mother's preferred msg settings
 
         var change_data = {
             "mother_id": im.user.answers.mother_id,
