@@ -364,7 +364,7 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                it.skip("should navigate to state_end_baby", function() {
+                it("should navigate to state_end_baby", function() {
                     return tester
                         .setup.user.addr('+07070050005')
                         .inputs(
