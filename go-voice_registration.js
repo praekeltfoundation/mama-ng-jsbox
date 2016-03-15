@@ -1268,9 +1268,56 @@ go.app = function() {
                             'creator_opts': {'retry_state': name}
                         };
                     } else {
-                        return 'state_save_identities';
+                        var msisdn = go.utils.normalize_msisdn(
+                            content, self.im.config.country_code);
+
+                        return go.utils
+                            .get_identity_by_address({'msisdn': msisdn}, self.im)
+                            .then(function(contact) {
+                                if (contact && contact.details && contact.details.receiver_role) {
+                                    self.im.user.set_answer('role_player', contact.details.receiver_role);
+                                    self.im.user.set_answer('contact_id', contact.id);
+                                    return 'state_msisdn_already_registered';
+                                } else {
+                                    return 'state_save_identities';
+                                }
+                            });
                     }
                 }
+            });
+        });
+
+        // ChoiceState st-20
+        self.add('state_msisdn_already_registered', function(name) {
+            var speech_option = '1';
+            return new ChoiceState(name, {
+                question: $('Sorry, this number is already registered.'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option, creator_opts.retry),
+                choices: [
+                    new Choice('state_msisdn', $("Register a different number")),
+                    new Choice('state_msg_receiver', $("Choose a different receiver")),
+                    new Choice('exit', $("Exit"))
+                ],
+                next: function(choice) {
+                    if (choice.value != 'exit') {
+                        return choice.value;
+                    } else {
+                        return 'state_end_msisdn';
+                    }
+
+                }
+            });
+        });
+
+        // EndState of st-20
+        self.add('state_end_msisdn', function(name) {
+            var speech_option = '1';
+            return new EndState(name, {
+                text: $('Thank you for using the Hello Mama service.'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option, creator_opts.retry),
+                next: 'state_start'
             });
         });
 
