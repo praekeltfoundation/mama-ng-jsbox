@@ -366,7 +366,7 @@ describe("Hello Mama app", function() {
             });
 
             describe("Change message format and time", function() {
-                describe.only("Change from SMS to Voice messages", function() {
+                describe("Change from SMS to Voice messages", function() {
                     it("case 1 > to state_change_menu_sms", function() {
                         return tester
                             .setup.user.addr('05059992222')
@@ -545,7 +545,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will now start receiving voice calls between [time] on [days]."
                             })
                             .check(function(api) {
-                                var expected_used = [4, 5, 19, 20,  21];
+                                var expected_used = [4, 5, 19, 20, 21];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {

@@ -374,7 +374,6 @@ go.app = function() {
                     return go.utils_project
                         .update_msg_format_time(
                             self.im,
-                            self.im.user.answers.msg_format,
                             'audio',
                             self.im.user.answers.state_voice_days,
                             choice.value

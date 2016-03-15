@@ -763,50 +763,29 @@ module.exports = function() {
             }
         },
 
-        // 18: patch subscription
+        // 18: Change messaging 1 - sms to voice
         {
             'request': {
-                'method': 'PATCH',
-                'params': {},
+                'method': 'POST',
                 'headers': {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-2222/',
+                'url': 'http://localhost:8005/api/v1/change/',
                 'data': {
-                    "url": "http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-2222",
-                    "id": "51fcca25-2e85-4c44-subscription-2222",
-                    "version": 1,
-                    "identity": "3f7c8851-5204-43f7-af7f-005059992222",
-                    "messageset_id": 1,
-                    "next_sequence_number": 1,
-                    "lang": "ibo_NG",
-                    "active": true,
-                    "completed": false,
-                    "schedule": 1,
-                    "process_status": 0,
-                    "metadata": {},
-                    "created_at": "2015-07-10T06:13:29.693272Z",
-                    "updated_at": "2015-07-10T06:13:29.693272Z"
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "action": "change_messaging",
+                    "data": {
+                        "msg_type": "audio",
+                        "voice_days": "tue_thu",
+                        "voice_times": "9_11"
+                    }
                 }
             },
             'response': {
-                "code": 200,
-                "data": {
-                    "url": "http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-2222",
-                    "id": "51fcca25-2e85-4c44-subscription-2222",
-                    "version": 1,
-                    "identity": "3f7c8851-5204-43f7-af7f-005059992222",
-                    "messageset_id": 1,
-                    "next_sequence_number": 1,
-                    "lang": "ibo_NG",
-                    "active": true,
-                    "completed": false,
-                    "schedule": 1,
-                    "process_status": 0,
-                    "metadata": {},
-                    "created_at": "2015-07-10T06:13:29.693272Z",
-                    "updated_at": "2015-07-10T06:13:29.693272Z"
+                'code': 201,
+                'data': {
+                    'id': 1
                 }
             }
         },
@@ -871,50 +850,29 @@ module.exports = function() {
             }
         },
 
-        // 21: patch subscription
+        // 21: Change messaging 2 - voice to voice
         {
             'request': {
-                'method': 'PATCH',
-                'params': {},
+                'method': 'POST',
                 'headers': {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-5555/',
+                'url': 'http://localhost:8005/api/v1/change/',
                 'data': {
-                    "url": "http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-5555",
-                    "id": "51fcca25-2e85-4c44-subscription-5555",
-                    "version": 1,
-                    "identity": "3f7c8851-5204-43f7-af7f-005059995555",
-                    "messageset_id": 1,
-                    "next_sequence_number": 1,
-                    "lang": "eng_NG",
-                    "active": true,
-                    "completed": false,
-                    "schedule": 1,
-                    "process_status": 0,
-                    "metadata": {},
-                    "created_at": "2015-07-10T06:13:29.693272Z",
-                    "updated_at": "2015-07-10T06:13:29.693272Z"
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "action": "change_messaging",
+                    "data": {
+                        "msg_type": "audio",
+                        "voice_days": "mon_wed",
+                        "voice_times": "2_5"
+                    }
                 }
             },
             'response': {
-                "code": 200,
-                "data": {
-                    "url": "http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-5555",
-                    "id": "51fcca25-2e85-4c44-subscription-5555",
-                    "version": 1,
-                    "identity": "3f7c8851-5204-43f7-af7f-005059995555",
-                    "messageset_id": 1,
-                    "next_sequence_number": 1,
-                    "lang": "eng_NG",
-                    "active": true,
-                    "completed": false,
-                    "schedule": 1,
-                    "process_status": 0,
-                    "metadata": {},
-                    "created_at": "2015-07-10T06:13:29.693272Z",
-                    "updated_at": "2015-07-10T06:13:29.693272Z"
+                'code': 201,
+                'data': {
+                    'id': 1
                 }
             }
         },
@@ -979,55 +937,34 @@ module.exports = function() {
             }
         },
 
-        // 24: patch subscription
+        // 24: Change messaging 3 - voice to sms
         {
             'request': {
-                'method': 'PATCH',
-                'params': {},
+                'method': 'POST',
                 'headers': {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-6666/',
+                'url': 'http://localhost:8005/api/v1/change/',
                 'data': {
-                    "url": "http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-6666",
-                    "id": "51fcca25-2e85-4c44-subscription-6666",
-                    "version": 1,
-                    "identity": "3f7c8851-5204-43f7-af7f-005059996666",
-                    "messageset_id": 1,
-                    "next_sequence_number": 1,
-                    "lang": "pcm_NG",
-                    "active": true,
-                    "completed": false,
-                    "schedule": 1,
-                    "process_status": 0,
-                    "metadata": {},
-                    "created_at": "2015-07-10T06:13:29.693272Z",
-                    "updated_at": "2015-07-10T06:13:29.693272Z"
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "action": "change_messaging",
+                    "data": {
+                        "msg_type": "audio",
+                        "voice_days": "text",
+                        "voice_times": null
+                    }
                 }
             },
             'response': {
-                "code": 200,
-                "data": {
-                    "url": "http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-6666",
-                    "id": "51fcca25-2e85-4c44-subscription-6666",
-                    "version": 1,
-                    "identity": "3f7c8851-5204-43f7-af7f-005059996666",
-                    "messageset_id": 1,
-                    "next_sequence_number": 1,
-                    "lang": "pcm_NG",
-                    "active": true,
-                    "completed": false,
-                    "schedule": 1,
-                    "process_status": 0,
-                    "metadata": {},
-                    "created_at": "2015-07-10T06:13:29.693272Z",
-                    "updated_at": "2015-07-10T06:13:29.693272Z"
+                'code': 201,
+                'data': {
+                    'id': 1
                 }
             }
         },
 
-        // 25 Fixture to make HEAD requests to mp3 files to see if they exist
+        // 25: Fixture to make HEAD requests to mp3 files to see if they exist
         {
             'repeatable': true,
             'request': {
@@ -1043,6 +980,8 @@ module.exports = function() {
                 "data": {}
             }
         },
+
+
 
 
 

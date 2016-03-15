@@ -593,7 +593,7 @@ go.utils_project = {
         console.log(current_schedule);
     },
 
-    update_msg_format_time: function(im, prior_msg_format, new_msg_format, voice_days, voice_times) {
+    update_msg_format_time: function(im, new_msg_format, voice_days, voice_times) {
       //
 
         var change_data = {
