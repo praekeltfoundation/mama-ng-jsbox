@@ -1934,7 +1934,7 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8002/api/v1/registrations/",
                 'data':  {
-                    //"stage": "prebirth",  // bypassing pregnancy flow
+                    "stage": "prebirth",  // bypassing pregnancy flow
                     "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                     "data": {
                         "msg_receiver": "friend_only",
@@ -1952,7 +1952,7 @@ module.exports = function() {
                 "code": 201,
                 "data": {
                     "id": "reg_for_09092222222_uuid",
-                    //"stage": "prebirth",
+                    "stage": "prebirth",
                     "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                     "data": {
                         "msg_receiver": "friend_only",
@@ -2032,7 +2032,7 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8002/api/v1/registrations/",
                 'data':  {
-                    //"stage": "prebirth",  // bypassing pregnancy flow
+                    "stage": "prebirth",  // bypassing pregnancy flow
                     "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                     "data": {
                         "msg_receiver": "friend_only",
@@ -2052,7 +2052,7 @@ module.exports = function() {
                 "code": 201,
                 "data": {
                     "id": "reg_for_09092222222_uuid",
-                    //"stage": "prebirth",
+                    "stage": "prebirth",
                     "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                     "data": {
                         "msg_receiver": "friend_only",
@@ -2085,7 +2085,7 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8002/api/v1/registrations/",
                 'data':  {
-                    //"stage": "prebirth",  // bypassing pregnancy flow
+                    "stage": "prebirth",  // bypassing pregnancy flow
                     "mother_id": "cb245673-aa41-4302-ac47-9094444444",
                     "data": {
                         "msg_receiver": "mother_father",
@@ -2105,7 +2105,7 @@ module.exports = function() {
                 "code": 201,
                 "data": {
                     "id": "reg_for_09092222222_uuid",
-                    //"stage": "prebirth",
+                    "stage": "prebirth",
                     "mother_id": "cb245673-aa41-4302-ac47-9094444444",
                     "data": {
                         "msg_receiver": "mother_father",
@@ -2138,7 +2138,7 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8002/api/v1/registrations/",
                 'data':  {
-                    //"stage": "prebirth",
+                    "stage": "prebirth",
                     "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                     "data": {
                         "msg_receiver": "father_only",
@@ -2158,7 +2158,7 @@ module.exports = function() {
                 "code": 201,
                 "data": {
                     "id": "reg_for_09093333333_uuid",
-                    //"stage": "prebirth",
+                    "stage": "prebirth",
                     "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                     "data": {
                         "msg_receiver": "father_only",
@@ -2213,6 +2213,7 @@ module.exports = function() {
         },
 
         // 52: create registration 09092222222 - friend_only / family_member - sms (voice)
+        // unused if bypassPostbirth = true
         {
             'request': {
                 'method': 'POST',
@@ -2222,8 +2223,7 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8002/api/v1/registrations/",
                 'data':  {
-                    //"stage": "postbirth",
-                    "stage": "prebirth",
+                    "stage": "postbirth",
                     "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                     "data": {
                         "msg_receiver": "friend_only",
@@ -2232,7 +2232,7 @@ module.exports = function() {
                         "gravida": "2",
                         "language": "igbo",
                         "msg_type": "sms",
-                        "last_period_date": "20161213"
+                        "baby_dob": "20160713"
                     }
                 }
             },
@@ -2240,8 +2240,7 @@ module.exports = function() {
                 "code": 201,
                 "data": {
                     "id": "reg_for_09092222222_uuid",
-                    //"stage": "postbirth",
-                    "stage": "prebirth",
+                    "stage": "postbirth",
                     "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                     "data": {
                         "msg_receiver": "friend_only",
@@ -2250,7 +2249,7 @@ module.exports = function() {
                         "gravida": "2",
                         "language": "igbo",
                         "msg_type": "sms",
-                        "last_period_date": "201601213"
+                        "baby_dob": "20160713"
                     },
                     "validated": false,
                     "source": "source",
@@ -2263,6 +2262,7 @@ module.exports = function() {
         },
 
         // 53: create registration 09092222222 - friend_only / family_member - voice
+        // unused if bypassPostbirth = true
         {
             'request': {
                 'method': 'POST',
@@ -2272,8 +2272,7 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8002/api/v1/registrations/",
                 'data':  {
-                    //"stage": "postbirth",
-                    "stage": "prebirth",
+                    "stage": "postbirth",
                     "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                     "data": {
                         "msg_receiver": "friend_only",
@@ -2284,7 +2283,7 @@ module.exports = function() {
                         "msg_type": "voice",
                         "voice_times": "2_5",
                         "voice_days": "mon_wed",
-                        "last_period_date": "20161213",
+                        "baby_dob": "20160913"
                     }
                 }
             },
@@ -2292,8 +2291,7 @@ module.exports = function() {
                 "code": 201,
                 "data": {
                     "id": "reg_for_09092222222_uuid",
-                    //"stage": "postbirth",
-                    "stage": "prebirth",
+                    "stage": "postbirth",
                     "mother_id": "cb245673-aa41-4302-ac47-1234567890",
                     "data": {
                         "msg_receiver": "friend_only",
@@ -2302,7 +2300,7 @@ module.exports = function() {
                         "gravida": "2",
                         "language": "igbo",
                         "msg_type": "voice",
-                        "last_period_date": "20161213",
+                        "baby_dob": "20160913"
                     },
                     "validated": false,
                     "source": "source",
@@ -3186,7 +3184,7 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8002/api/v1/registrations/",
                 'data': {
-                    //"stage": "prebirth",  // bypassing pregnancy flow
+                    "stage": "prebirth",
                     "mother_id": "cb245673-aa41-4302-ac47-9096666666",
                     "data": {
                         "msg_receiver": "mother_only",
@@ -3206,7 +3204,7 @@ module.exports = function() {
                 "code": 201,
                 "data": {
                     "id": "reg_for_0909666666_uuid",
-                    //"stage": "prebirth",
+                    "stage": "prebirth",
                     "mother_id": "cb245673-aa41-4302-ac47-9096666666",
                     "data": {
                         "msg_receiver": "mother_only",

@@ -345,7 +345,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            // bypass pregnancy flow
+            // bypass postbirth flow
             it.skip("to state_pregnancy_status", function() {
                 return tester
                     .setup.user.addr('08080020002')
@@ -374,7 +374,7 @@ describe("Mama Nigeria App", function() {
                         , '12345'   // state_auth_code - personnel code
                         , '6' // state_msg_receiver - friend_only
                         , '09092222222'  // state_msisdn
-                        //, '1'  // state_msg_pregnancy_status - pregnant  // bypass pregnancy flow
+                        //, '1'  // state_msg_pregnancy_status - pregnant  // bypass postbirth flow
                     )
                     .check.interaction({
                         state: 'state_last_period_month',
@@ -407,7 +407,7 @@ describe("Mama Nigeria App", function() {
                         , '12345'   // state_auth_code - personnel code
                         , '6' // state_msg_receiver - friend_only
                         , '09092222222'  // state_msisdn
-                        //, '1'  // state_msg_pregnancy_status - pregnant  // bypass pregnancy flow
+                        //, '1'  // state_msg_pregnancy_status - pregnant  // bypass postbirth flow
                         , '9'   // state_last_period_month - More
                     )
                     .check.interaction({
@@ -428,7 +428,7 @@ describe("Mama Nigeria App", function() {
                         , '12345'   // state_auth_code - personnel code
                         , '6' // state_msg_receiver - friend_only
                         , '09092222222'  // state_msisdn
-                        //, '1'  // state_msg_pregnancy_status - pregnant  // bypass pregnancy flow
+                        //, '1'  // state_msg_pregnancy_status - pregnant  // bypass postbirth flow
                         , '9'   // state_last_period_month - More
                         , '2'   // state_last_period_month - Back
                     )
@@ -512,7 +512,7 @@ describe("Mama Nigeria App", function() {
                     .run();
             });
             // mother has baby
-            // bypass pregnancy flow
+            // bypass postbirth flow
             it.skip("to state_baby_birth_month_year", function() {
                 return tester
                     .setup.user.addr('08080020002')
@@ -541,7 +541,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            // bypass pregnancy flow
+            // bypass postbirth flow
             it.skip("to state_baby_birth_month_year - after selecting 'More'", function() {
                 return tester
                     .setup.user.addr('08080020002')
@@ -565,7 +565,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            // bypass pregnancy flow
+            // bypass postbirth flow
             it.skip("to state_baby_birth_day", function() {
                 return tester
                     .setup.user.addr('08080020002')
@@ -583,7 +583,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            // bypass pregnancy flow
+            // bypass postbirth flow
             it.skip("to state_gravida", function() {
                 return tester
                     .setup.user.addr('08080020002')
@@ -809,7 +809,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            // bypass pregnancy flow
+            // bypass postbirth flow
             it.skip("complete flow 3 - receiver: father only; mother baby, sms", function() {
                 return tester
                     .setup.user.addr('08080020002')
@@ -984,7 +984,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            // bypass pregnancy flow
+            // bypass postbirth flow
             it.skip("validate state_baby_birth_day", function() {
                 return tester
                     .setup.user.addr('08080020002')
@@ -1012,7 +1012,7 @@ describe("Mama Nigeria App", function() {
                             , '12345'   // state_auth_code - personnel code
                             , '2'  // state_msg_receiver - mother
                             , '09091111111' // state_msisdn - mobile number
-                            //, '1'  // state_msg_pregnancy_status - pregnant   // bypass pregnancy flow
+                            //, '1'  // state_msg_pregnancy_status - pregnant   // bypass postbirth flow
                             , '3'  // state_last_period_month - Feb 15
                             , '31'  // state_last_period_day - 31 (invalid day)
                         )
@@ -1033,7 +1033,7 @@ describe("Mama Nigeria App", function() {
                             , '12345'   // state_auth_code - personnel code
                             , '2'  // state_msg_receiver - mother
                             , '09091111111' // state_msisdn - mobile number
-                            //, '1'  // state_msg_pregnancy_status - pregnant  // bypass pregnancy flow
+                            //, '1'  // state_msg_pregnancy_status - pregnant  // bypass postbirth flow
                             , '3'  // state_last_period_month - Feb 15
                             , '31'  // state_last_period_day - 31 (invalid day)
                             , '1'  // state_invalid_date - continue
@@ -1043,7 +1043,7 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                // bypass pregnancy flow
+                // bypass postbirth flow
                 it.skip("reaches state_invalid_date - via st-14/18", function() {
                     return tester
                         .setup.user.addr('08080020002')
@@ -1065,7 +1065,7 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                // bypass pregnancy flow
+                // bypass postbirth flow
                 it.skip("validate state_baby_birth_month_year - via st-14/18 looping back to st-12", function() {
                     return tester
                         .setup.user.addr('08080020002')

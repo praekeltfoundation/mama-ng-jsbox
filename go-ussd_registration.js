@@ -1145,12 +1145,12 @@ go.app = function() {
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
 
-    var bypassPregnancy = true;
 
     var GoApp = App.extend(function(self) {
         App.call(self, 'state_start');
         var $ = self.$;
         var interrupt = true;
+        var bypassPostbirth = true;
 
         self.init = function() {
             // Send a dial back reminder via sms the first time someone times out
@@ -1445,9 +1445,12 @@ go.app = function() {
                     self.im.user.answers.operator_id
                 )
                 .then(function() {
-                    return bypassPregnancy
-                           ? self.states.create('state_last_period_month')
-                           : self.states.create('state_pregnancy_status');
+                    if (bypassPostbirth) {
+                        self.im.user.set_answer('state_pregnancy_status', 'prebirth');
+                        return self.states.create('state_last_period_month');
+                    } else {
+                        return self.states.create('state_pregnancy_status');
+                    }
                 });
         });
 
