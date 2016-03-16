@@ -28,9 +28,9 @@ go.utils_project = {
         return Q()
             .then(function(q_response) {
                 if (msisdn === '082444') {
-                    return 'sms';
+                    return 'text';
                 } else if (msisdn === '082222') {
-                    return 'voice';
+                    return 'audio';
                 } else {
                     return 'none';
                 }
@@ -125,7 +125,7 @@ go.utils_project = {
                     mother_identity.details.preferred_language = im.user.answers.state_msg_language;
                     mother_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
 
-                    if (im.user.answers.state_msg_type === 'voice') {
+                    if (im.user.answers.state_msg_type === 'audio') {
                         mother_identity.details.preferred_msg_days = im.user.answers.state_voice_days;
                         mother_identity.details.preferred_msg_times = im.user.answers.state_voice_times;
                     }
@@ -149,7 +149,7 @@ go.utils_project = {
                     receiver_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
                     receiver_identity.details.preferred_language = im.user.answers.state_msg_language;
 
-                    if (im.user.answers.state_msg_type === 'voice') {
+                    if (im.user.answers.state_msg_type === 'audio') {
                         receiver_identity.details.preferred_msg_days = im.user.answers.state_voice_days;
                         receiver_identity.details.preferred_msg_times = im.user.answers.state_voice_times;
                     }
@@ -178,7 +178,7 @@ go.utils_project = {
                     receiver_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
                     receiver_identity.details.preferred_language = im.user.answers.state_msg_language;
 
-                    if (im.user.answers.state_msg_type === 'voice') {
+                    if (im.user.answers.state_msg_type === 'audio') {
                         mother_identity.details.preferred_msg_days = im.user.answers.state_voice_days;
                         mother_identity.details.preferred_msg_times = im.user.answers.state_voice_times;
                         receiver_identity.details.preferred_msg_days = im.user.answers.state_voice_days;
@@ -420,7 +420,7 @@ go.utils_project = {
         }
 
         // add data for voice time and day if applicable
-        if (im.user.answers.state_msg_type === 'voice') {
+        if (im.user.answers.state_msg_type === 'audio') {
             reg_info.data.voice_times = im.user.answers.state_voice_times;
             reg_info.data.voice_days = im.user.answers.state_voice_days;
         }
@@ -461,8 +461,8 @@ go.utils_project = {
         mama_identity.details.gravida = im.user.answers.state_gravida;
         mama_identity.details.lang = go.utils_project.get_lang(im);
         mama_identity.details.msg_type = im.user.answers.state_r10_message_type;
-        mama_identity.details.voice_days = im.user.answers.state_r11_voice_days || 'sms';
-        mama_identity.details.voice_times = im.user.answers.state_r12_voice_times || 'sms';
+        mama_identity.details.voice_days = im.user.answers.state_r11_voice_days || 'text';
+        mama_identity.details.voice_times = im.user.answers.state_r12_voice_times || 'text';
         return mama_identity;
     },
 
@@ -581,6 +581,55 @@ go.utils_project = {
 
 // SUBSCRIPTION HELPERS
 
+    get_subscription_msg_type: function(im, mother_id) {
+      // Look up what type of messages the mother is receiving
+
+        // get subscription
+        return go.utils
+            .get_active_subscription_by_identity(im, mother_id)
+            .then(function(subscription) {
+                im.user.set_answer('mother_subscription', subscription);
+                // get messageset
+                return go.utils
+                    .get_messageset(im, subscription.messageset_id)
+                    .then(function(messageset) {
+                        im.user.set_answer('mother_messageset', messageset);
+                        return messageset.content_type;  // 'text' / 'audio'
+                    });
+            });
+    },
+
+    update_msg_format_time: function(im, new_msg_format, voice_days, voice_times) {
+      // Sends new message type, preferred day and time to Change endpoint
+      // and updates the mother's preferred msg settings
+
+        var change_data = {
+            "mother_id": im.user.answers.mother_id,
+            "action": "change_messaging",
+            "data": {
+                "msg_type": new_msg_format,
+                "voice_days": voice_days || null,
+                "voice_times": voice_times || null
+            }
+        };
+
+        return go.utils
+            .service_api_call("change", "post", null, change_data, "change/", im)
+            .then(function() {
+                return go.utils
+                    .get_identity(im.user.answers.mother_id, im)
+                    .then(function(mother_identity) {
+                        // Update mother only as household messages are text only for now
+                        mother_identity.details.preferred_msg_type = new_msg_format;
+                        mother_identity.details.preferred_msg_days = voice_days || null;
+                        mother_identity.details.preferred_msg_times = voice_times || null;
+                        return go.utils
+                            .update_identity(im, mother_identity);
+                    });
+            });
+
+    },
+
     is_registered: function(identity_id, im) {
         // Determine whether identity is registered
         return go.utils
@@ -607,10 +656,6 @@ go.utils_project = {
             }
         };
         return subscription;
-    },
-
-    get_messageset_id: function(mama_identity) {
-        return (mama_identity.details.state_current === 'pregnant') ? 1 : 2;
     },
 
     get_next_sequence_number: function(mama_identity) {

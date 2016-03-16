@@ -256,7 +256,7 @@ go.app = function() {
             return go.utils_project
                 .check_msg_type(self.im)
                 .then(function(messageType) {
-                    if (messageType == "sms") {
+                    if (messageType == "text") {
                         return self.states.create('state_sms_change');
                     } else {   // is subscribed for voice messages
                         return self.states.create('state_voice_change');
