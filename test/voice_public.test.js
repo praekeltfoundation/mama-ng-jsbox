@@ -689,7 +689,7 @@ describe("Mama Nigeria App", function() {
                     }
                 })
                 .check(function(api) {
-                    var expected_used = [12,22,23,25];
+                    var expected_used = [12,13,22,23,24,25,29];
                     var fixts = api.http.fixtures.fixtures;
                     var fixts_used = [];
                     fixts.forEach(function(f, i) {

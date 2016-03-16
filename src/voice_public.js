@@ -349,7 +349,20 @@ go.app = function() {
                     new Choice('state_end_sms_confirm', $('Change mother message from voice to text'))
                 ],
                 next: function(choice) {
-                        return choice.value;
+                        if (choice.value !== 'state_end_sms_confirm') {
+                            return choice.value;
+                        } else {
+                            return go.utils_project
+                                .update_msg_format_time(
+                                    self.im,
+                                    'text',
+                                    null,
+                                    null
+                                )
+                                .then(function() {
+                                    return 'state_end_sms_confirm';
+                                });
+                        }
                 }
             });
         });
@@ -357,7 +370,6 @@ go.app = function() {
         // EndState st-09
         self.add('state_end_sms_confirm', function(name) {
             var speech_option = '1';
-            self.im.user.set_answer('msg_format', 'text');
 
             return new EndState(name, {
                 text: $('Thank you. You will now receive text messages.'),
