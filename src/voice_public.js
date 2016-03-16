@@ -258,15 +258,15 @@ go.app = function() {
                 .then(function(msg_format) {
                     self.im.user.set_answer('msg_format', msg_format);
                     if (msg_format == "text") {
-                        return self.states.create('state_sms_change');
+                        return self.states.create('state_change_menu_sms');
                     } else {   // is subscribed for voice messages
-                        return self.states.create('state_voice_change');
+                        return self.states.create('state_change_menu_voice');
                     }
                 });
         });
 
         // ChoiceState st-03
-        self.add('state_sms_change', function(name) {
+        self.add('state_change_menu_sms', function(name) {
             var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Please select what you would like to do:'),
@@ -280,7 +280,7 @@ go.app = function() {
                     if (choice.value === 'change') {
                         return 'state_voice_days';
                     } else {
-                        return 'state_sms_change';
+                        return 'state_change_menu_sms';
                     }
                 }
             });
@@ -345,7 +345,7 @@ go.app = function() {
         });
 
         // ChoiceState st-07
-        self.add('state_voice_change', function(name) {
+        self.add('state_change_menu_voice', function(name) {
             var speech_option = '1';
             return new ChoiceState(name, {
                 question: $('Please select what you would like to do:'),
@@ -360,7 +360,7 @@ go.app = function() {
                     if (choice.value !== 'back') {
                         return choice.value;
                     } else {
-                        return 'state_voice_change';
+                        return 'state_change_menu_voice';
                     }
                 }
             });

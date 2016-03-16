@@ -448,7 +448,7 @@ describe("Mama Nigeria App", function() {
         });
 
         describe("Flow from main menu - message preferences", function() {
-            it("should navigate to state_sms_change if registered for sms", function() {
+            it("should navigate to state_change_menu_sms if registered for sms", function() {
                 return tester
                 .setup.user.addr('+07070050005')
                 .inputs(
@@ -457,7 +457,7 @@ describe("Mama Nigeria App", function() {
                     , '2'  // main_menu - msg_pref
                 )
                 .check.interaction({
-                    state: 'state_sms_change',
+                    state: 'state_change_menu_sms',
                     reply: [
                         'Please select what you would like to do:',
                         '1. Change from text to voice',
@@ -467,7 +467,7 @@ describe("Mama Nigeria App", function() {
                 .check.reply.properties({
                     helper_metadata: {
                         voice: {
-                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_sms_change_1.mp3',
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_change_menu_sms_1.mp3',
                             wait_for: '#',
                             barge_in: true
                         }
@@ -491,7 +491,7 @@ describe("Mama Nigeria App", function() {
                     {session_event: 'new'}
                     , '05059992222'  // msg_receiver_msisdn
                     , '2'  // main_menu - msg_pref
-                    , '1'  // state_sms_change - change text to voice
+                    , '1'  // state_change_menu_sms - change text to voice
                 )
                 .check.interaction({
                     state: 'state_voice_days',
@@ -528,7 +528,7 @@ describe("Mama Nigeria App", function() {
                     {session_event: 'new'}
                     , '05059992222'  // msg_receiver_msisdn
                     , '2'  // main_menu - msg_pref
-                    , '1'  // state_sms_change - change text to voice
+                    , '1'  // state_change_menu_sms - change text to voice
                     , '1'  // state_voice_days - Mon & Wed
                 )
                 .check.interaction({
@@ -566,7 +566,7 @@ describe("Mama Nigeria App", function() {
                     {session_event: 'new'}
                     , '05059992222'  // msg_receiver_msisdn
                     , '2'  // main_menu - msg_pref
-                    , '1'  // state_sms_change - change text to voice
+                    , '1'  // state_change_menu_sms - change text to voice
                     , '2'  // state_voice_days - Tue & Thu
                     , '1'  // state_voice_times - 9-11am
                 )
@@ -594,7 +594,7 @@ describe("Mama Nigeria App", function() {
                 })
                 .run();
             });
-            it("should navigate to state_voice_change if registered for voice", function() {
+            it("should navigate to state_change_menu_voice if registered for voice", function() {
                 return tester
                 .setup.user.addr('+07070050005')
                 .inputs(
@@ -603,7 +603,7 @@ describe("Mama Nigeria App", function() {
                     , '2'  // main_menu - msg_pref
                 )
                 .check.interaction({
-                    state: 'state_voice_change',
+                    state: 'state_change_menu_voice',
                     reply: [
                         'Please select what you would like to do:',
                         '1. Change times',
@@ -614,7 +614,7 @@ describe("Mama Nigeria App", function() {
                 .check.reply.properties({
                     helper_metadata: {
                         voice: {
-                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_voice_change_1.mp3',
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_change_menu_voice_1.mp3',
                             wait_for: '#',
                             barge_in: true
                         }
@@ -638,7 +638,7 @@ describe("Mama Nigeria App", function() {
                     {session_event: 'new'}
                     , '05059996666'  // msg_receiver_msisdn
                     , '2'  // state_main_menu - msg_pref
-                    , '1'  // state_voice_change
+                    , '1'  // state_change_menu_voice
                 )
                 .check.interaction({
                     state: 'state_voice_days',
@@ -675,7 +675,7 @@ describe("Mama Nigeria App", function() {
                     {session_event: 'new'}
                     , '05059996666'  // msg_receiver_msisdn
                     , '2'  // state_main_menu - msg_pref
-                    , '2'  // state_voice_change
+                    , '2'  // state_change_menu_voice
                 )
                 .check.interaction({
                     state: 'state_end_sms_confirm',
