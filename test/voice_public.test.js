@@ -602,7 +602,7 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                it.skip("should navigate to state_end_voice_confirm", function() {
+                it("should navigate to state_end_voice_confirm", function() {
                     return tester
                         .setup.user.addr('+07070050005')
                         .inputs(
@@ -610,24 +610,24 @@ describe("Mama Nigeria App", function() {
                             , '05059992222'  // msg_receiver_msisdn
                             , '2'  // main_menu - msg_pref
                             , '1'  // state_sms_change - change text to voice
-                            , '1'  // state_voice_days - Mon & Wed
-                            , '2'  // state_voice_times - 2-5pm
+                            , '2'  // state_voice_days - Tue & Thu
+                            , '1'  // state_voice_times - 9-11am
                         )
                         .check.interaction({
                             state: 'state_end_voice_confirm',
-                            reply: 'Thank you! Time: 2_5. Days: mon_wed.'
+                            reply: 'Thank you! Time: 9_11. Days: tue_thu.'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_voice_confirm_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_voice_confirm_2.mp3',
                                     wait_for: '#',
                                     barge_in: false
                                 }
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [2,16,17,25];
+                            var expected_used = [2,9,16,17,18,25,26];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {

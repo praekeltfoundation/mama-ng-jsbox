@@ -1140,7 +1140,7 @@ go.utils_project = {
                 "voice_times": voice_times || null
             }
         };
-
+        
         return go.utils
             .service_api_call("change", "post", null, change_data, "change/", im)
             .then(function() {
@@ -1568,16 +1568,16 @@ go.app = function() {
                     new Choice('2_5', $('2-5pm'))
                 ],
                 next: function(choice) {
-                    go.utils_project
-                    .update_msg_format_time(
-                        self.im,
-                        'audio',
-                        self.im.user.answers.state_voice_days,
-                        choice.value
-                    )
-                    .then(function() {
-                        return 'state_end_voice_confirm';
-                    });
+                    return go.utils_project
+                        .update_msg_format_time(
+                            self.im,
+                            'audio',
+                            self.im.user.answers.state_voice_days,
+                            choice.value
+                        )
+                        .then(function() {
+                            return 'state_end_voice_confirm';
+                        });
                 }
             });
         });
