@@ -703,7 +703,294 @@ module.exports = function() {
             }
         },
 
-        // 16 Fixture to make HEAD requests to mp3 files to see if they exist
+        // 16: get subscription for identity 3f7c8851-5204-43f7-af7f-005059992222
+        {
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'identity': '3f7c8851-5204-43f7-af7f-005059992222',
+                    'active': 'true'
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/subscriptions/'
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            'url': 'http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-2222',
+                            'id': '51fcca25-2e85-4c44-subscription-2222',
+                            'version': 1,
+                            'identity': '3f7c8851-5204-43f7-af7f-005059992222',
+                            'messageset_id': 1,
+                            'next_sequence_number': 1,
+                            'lang': "ibo_NG",
+                            'active': true,
+                            'completed': false,
+                            'schedule': 1,
+                            'process_status': 0,
+                            'metadata': {},
+                            'created_at': "2015-07-10T06:13:29.693272Z",
+                            'updated_at': "2015-07-10T06:13:29.693272Z"
+                        }
+                    ]
+
+                }
+            }
+        },
+
+        // 17: get messageset 1
+        {
+            'request': {
+                'method': 'GET',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8003/api/v1/messagesets/1/'
+            },
+            'response': {
+                'code': 200,
+                'data': {
+                    'id': 1,
+                    'short_name': 'pregnant_mother_text_10_42',
+                    'notes': null,
+                    'next_set': 4,
+                    'default_schedule': 1,
+                    'content_type': 'text',
+                    'created_at': "2015-07-10T06:13:29.693272Z",
+                    'updated_at': "2015-07-10T06:13:29.693272Z"
+                }
+            }
+        },
+
+        // 18: Change messaging 1 - sms to voice
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8005/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "action": "change_messaging",
+                    "data": {
+                        "msg_type": "voice",
+                        "voice_days": "tue_thu",
+                        "voice_times": "9_11"
+                    }
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 19: get subscription for identity 3f7c8851-5204-43f7-af7f-005059995555
+        {
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'identity': '3f7c8851-5204-43f7-af7f-005059995555',
+                    'active': 'true'
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/subscriptions/'
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            'url': 'http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-5555',
+                            'id': '51fcca25-2e85-4c44-subscription-5555',
+                            'version': 1,
+                            'identity': '3f7c8851-5204-43f7-af7f-005059995555',
+                            'messageset_id': 2,
+                            'next_sequence_number': 1,
+                            'lang': "eng_NG",
+                            'active': true,
+                            'completed': false,
+                            'schedule': 1,
+                            'process_status': 0,
+                            'metadata': {},
+                            'created_at': "2015-07-10T06:13:29.693272Z",
+                            'updated_at': "2015-07-10T06:13:29.693272Z"
+                        }
+                    ]
+
+                }
+            }
+        },
+
+        // 20: get messageset 2
+        {
+            'request': {
+                'method': 'GET',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8003/api/v1/messagesets/2/'
+            },
+            'response': {
+                'code': 200,
+                'data': {
+                    'id': 1,
+                    'short_name': 'messageset 2',
+                    'notes': null,
+                    'next_set': 3,
+                    'default_schedule': 1,
+                    'content_type': 'audio',
+                    'created_at': "2015-07-10T06:13:29.693272Z",
+                    'updated_at': "2015-07-10T06:13:29.693272Z"
+                }
+            }
+        },
+
+        // 21: Change messaging 2 - voice to voice
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8005/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "action": "change_messaging",
+                    "data": {
+                        "msg_type": "voice",
+                        "voice_days": "mon_wed",
+                        "voice_times": "2_5"
+                    }
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 22: get subscription for identity 3f7c8851-5204-43f7-af7f-005059996666
+        {
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'identity': '3f7c8851-5204-43f7-af7f-005059996666',
+                    'active': 'true'
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/subscriptions/'
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            'url': 'http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-6666',
+                            'id': '51fcca25-2e85-4c44-subscription-6666',
+                            'version': 1,
+                            'identity': '3f7c8851-5204-43f7-af7f-005059996666',
+                            'messageset_id': 3,
+                            'next_sequence_number': 1,
+                            'lang': "pcm_NG",
+                            'active': true,
+                            'completed': false,
+                            'schedule': 1,
+                            'process_status': 0,
+                            'metadata': {},
+                            'created_at': "2015-07-10T06:13:29.693272Z",
+                            'updated_at': "2015-07-10T06:13:29.693272Z"
+                        }
+                    ]
+                }
+            }
+        },
+
+        // 23: get messageset 3
+        {
+            'request': {
+                'method': 'GET',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8003/api/v1/messagesets/3/'
+            },
+            'response': {
+                'code': 200,
+                'data': {
+                    'id': 1,
+                    'short_name': 'messageset 3',
+                    'notes': null,
+                    'next_set': 4,
+                    'default_schedule': 1,
+                    'content_type': 'audio',
+                    'created_at': "2015-07-10T06:13:29.693272Z",
+                    'updated_at': "2015-07-10T06:13:29.693272Z"
+                }
+            }
+        },
+
+        // 24: Change messaging 3 - voice to sms
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8005/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "action": "change_messaging",
+                    "data": {
+                        "msg_type": "sms",
+                        "voice_days": null,
+                        "voice_times": null
+                    }
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 25: Fixture to make HEAD requests to mp3 files to see if they exist
         {
             'repeatable': true,
             'request': {
@@ -720,8 +1007,65 @@ module.exports = function() {
             }
         },
 
+        // 26: patch identity 3f7c8851-5204-43f7-af7f-005059992222
+        {
+            'request': {
+                'method': 'PATCH',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059992222/',
+                'data': {
+                    "url": "http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059992222/",
+                    "id": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2345059992222": {}
+                            }
+                        },
+                        "receiver_role": "mother",
+                        "linked_to": null,
+                        "preferred_msg_type": "voice",
+                        "preferred_language": "igbo",
+                        "preferred_msg_days": "tue_thu",
+                        "preferred_msg_times": "9_11"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059992222/",
+                    "id": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2345059992222": {}
+                            }
+                        },
+                        "receiver_role": "mother",
+                        "linked_to": null,
+                        "preferred_msg_type": "voice",
+                        "preferred_language": "igbo",
+                        "preferred_msg_days": "tue_thu",
+                        "preferred_msg_times": "9_11"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
 
-        // 17: patch identity 3f7c8851-5204-43f7-af7f-005059992222
+        // 27: patch identity 3f7c8851-5204-43f7-af7f-005059992222
         {
             'request': {
                 'method': 'PATCH',
@@ -777,7 +1121,115 @@ module.exports = function() {
             }
         },
 
-        // x: unused - get identity 3f7c8851-5204-43f7-af7f-005059995555
+        // 28: patch identity 3f7c8851-5204-43f7-af7f-005059995555
+        {
+            'request': {
+                'method': 'PATCH',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059995555/',
+                'data': {
+                    "url": "http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059995555/",
+                    "id": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "version": 1,
+                    "communicate_through": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "operator": null,
+                    "details": {
+                        "receiver_role": "mother",
+                        "preferred_language": "hausa",
+                        "linked_to": "cb245673-aa41-4302-ac47-9093333333",
+                        "preferred_msg_type": "voice",
+                        "preferred_msg_days": "mon_wed",
+                        "preferred_msg_times": "2_5"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059995555/",
+                    "id": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "version": 1,
+                    "communicate_through": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "operator": null,
+                    "details": {
+                        "receiver_role": "mother",
+                        "preferred_language": "hausa",
+                        "linked_to": "cb245673-aa41-4302-ac47-9093333333",
+                        "preferred_msg_type": "voice",
+                        "preferred_msg_days": "mon_wed",
+                        "preferred_msg_times": "2_5"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
+
+        // 29: patch identity 3f7c8851-5204-43f7-af7f-005059996666
+        {
+            'request': {
+                'method': 'PATCH',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059996666/',
+                'data': {
+                    "url": "http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059996666/",
+                    "id": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2345059996666": {}
+                            }
+                        },
+                        "receiver_role": "mother",
+                        "linked_to": "3f7c8851-5204-43f7-af7f-005059997777",
+                        "preferred_msg_type": "sms",
+                        "preferred_msg_days": null,
+                        "preferred_msg_times": null,
+                        "preferred_language": "pidgin"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059996666/",
+                    "id": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2345059996666": {}
+                            }
+                        },
+                        "receiver_role": "mother",
+                        "linked_to": "3f7c8851-5204-43f7-af7f-005059997777",
+                        "preferred_msg_type": "sms",
+                        "preferred_msg_days": null,
+                        "preferred_msg_times": null,
+                        "preferred_language": "pidgin"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
+
+        // 30: get identity 3f7c8851-5204-43f7-af7f-005059995555
         {
             'request': {
                 'method': 'GET',
@@ -806,6 +1258,9 @@ module.exports = function() {
                 }
             }
         },
+
+
+
 
 
     ];
