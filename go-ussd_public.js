@@ -1477,15 +1477,24 @@ go.app = function() {
             var role = self.im.user.answers.role_player;
             var contact_id = self.im.user.answers.contact_id;
             if (role === 'mother') {
-                self.im.user.set_answer('mother_id', contact_id);
-                self.im.user.set_answer('receiver_id', 'none');
-                return self.states.create('state_main_menu');
+                // lookup contact so we can get the link to the household receiver (if any)
+                return go.utils
+                    .get_identity(contact_id, self.im)
+                    .then(function(mother) {
+                        self.im.user.set_answer('mother_id', contact_id);
+                        if (mother.details.linked_to) {
+                            self.im.user.set_answer('household_id', mother.details.linked_to);
+                        } else {
+                            self.im.user.set_answer('household_id', null);
+                        }
+                        return self.states.create('state_main_menu');
+                    });
             } else {
                 // lookup contact so we can get the link to the mother
                 return go.utils
                     .get_identity(contact_id, self.im)
                     .then(function(contact) {
-                        self.im.user.set_answer('receiver_id', contact.id);
+                        self.im.user.set_answer('household_id', contact.id);
                         self.im.user.set_answer('mother_id', contact.details.linked_to);
                         if (contact.details.household_msgs_only) {
                             self.im.user.set_answer('receiver_household_only', true);
@@ -1830,13 +1839,23 @@ go.app = function() {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
                 choices: [
-                    new Choice('state_end_loss_subscription_confirm', $("Yes")),
+                    new Choice('state_switch_loss', $("Yes")),
                     new Choice('state_end_loss', $("No"))
                 ],
                 next: function(choice) {
                     return choice.value;
                 }
             });
+        });
+
+        self.add('state_switch_loss', function(name) {
+            return Q
+                .all([
+
+                ])
+                .then(function() {
+                    return 'state_end_loss_subscription_confirm';
+                });
         });
 
         // EndState st-15
