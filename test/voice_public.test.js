@@ -482,8 +482,8 @@ describe("Mama Nigeria App", function() {
                 });
             });
 
-            describe.skip("if you choose preferences", function() {
-                it("should navigate to state_voice_days", function() {
+            describe("if you choose to change message preferences", function() {
+                it.skip("should navigate to state_sms_change if registered for sms", function() {
                     return tester
                         .setup.user.addr('+07070050005')
                         .inputs(
@@ -492,21 +492,67 @@ describe("Mama Nigeria App", function() {
                             , '2'  // main_menu - msg_pref
                         )
                         .check.interaction({
-                            state: 'state_voice_days',
+                            state: 'state_sms_change',
                             reply: [
-                                'Message days?',
-                                '1. mon_wed',
-                                '2. tue_thu'
+                                'Please select what you would like to do:',
+                                '1. Change from text to voice',
+                                '2. To go Back to main menu, press 0 then #'
                             ].join('\n')
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_voice_days_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_sms_change_1.mp3',
                                     wait_for: '#',
                                     barge_in: true
                                 }
                             }
+                        })
+                        .check(function(api) {
+                            var expected_used = [2];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
+                        .run();
+                });
+                it("should navigate to state_voice_change if registered for voice", function() {
+                    return tester
+                        .setup.user.addr('+07070050005')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059993333'  // msg_receiver_msisdn
+                            , '2'  // main_menu - msg_pref
+                        )
+                        .check.interaction({
+                            state: 'state_voice_change',
+                            reply: [
+                                'Please select what you would like to do:',
+                                '1. Change times',
+                                '2. Change mother message from voice to text',
+                                '3. To go Back to main menu, press 0 then #'
+                            ].join('\n')
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_voice_change_1.mp3',
+                                    wait_for: '#',
+                                    barge_in: true
+                                }
+                            }
+                        })
+                        .check(function(api) {
+                            var expected_used = [4,5,16];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });

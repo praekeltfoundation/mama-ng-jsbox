@@ -160,7 +160,7 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 choices: [
                     new Choice('state_baby_check', $('baby')),
-                    new Choice('state_voice_days', $('preferences')),
+                    new Choice('state_msg_type_check', $('preferences')),
                     new Choice('state_new_msisdn', $('number')),
                     new Choice('state_msg_language', $('language')),
                     new Choice('state_optout_reason', $('optout'))
@@ -257,23 +257,23 @@ go.app = function() {
                 .check_msg_type(self.im)
                 .then(function(messageType) {
                     if (messageType == "sms") {
-                        return self.states.create('state_sms_menu');
+                        return self.states.create('state_sms_change');
                     } else {   // is subscribed for voice messages
-                        return self.states.create('state_voice_menu');
+                        return self.states.create('state_voice_change');
                     }
                 });
         });
 
         // ChoiceState st-03
-        self.add('state_sms_menu', function(name) {
+        self.add('state_sms_change', function(name) {
             var speech_option = '1';
             return new ChoiceState(name, {
-                question: $('What would you like to do?'),
+                question: $('Please select what you would like to do:'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
                     new Choice('change', $('Change from text to voice')),
-                    new Choice('back', $('Go back to main menu, press 0 then #')),
+                    new Choice('back', $('To go Back to main menu, press 0 then #')),
                 ],
                 next: 'state_voice_days'
             });
@@ -336,16 +336,16 @@ go.app = function() {
         });
 
         // ChoiceState st-07
-        self.add('state_voice_menu', function(name) {
+        self.add('state_voice_change', function(name) {
             var speech_option = '1';
             return new ChoiceState(name, {
-                question: $('What would you like to do?'),
+                question: $('Please select what you would like to do:'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
                     new Choice('change', $('Change times')),
-                    new Choice('change', $('Change from voice to text')),
-                    new Choice('back', $('Go back to main menu, press 0 then #'))
+                    new Choice('change', $('Change mother message from voice to text')),
+                    new Choice('back', $('To go Back to main menu, press 0 then #'))
                 ],
                 next: 'state_baby_save'
             });
