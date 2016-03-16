@@ -1419,7 +1419,7 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 choices: [
                     new Choice('state_baby_check', $('baby')),
-                    new Choice('state_msg_type_check', $('preferences')),
+                    new Choice('state_check_msg_type', $('preferences')),
                     new Choice('state_new_msisdn', $('number')),
                     new Choice('state_msg_language', $('language')),
                     new Choice('state_optout_reason', $('optout'))
@@ -1511,15 +1511,17 @@ go.app = function() {
         });
 
         // interstitial to check what type of messages the user is registered for
-        self.add('state_msg_type_check', function(name) {
+        self.add('state_check_msg_type', function(name) {
             return go.utils_project
                 .get_subscription_msg_type(self.im, self.im.user.answers.mother_id)
                 .then(function(msg_format) {
                     self.im.user.set_answer('msg_format', msg_format);
-                    if (msg_format == "text") {
+                    if (msg_format === 'text') {
                         return self.states.create('state_change_menu_sms');
-                    } else {   // is subscribed for voice messages
+                    } else if (msg_format === 'audio') {
                         return self.states.create('state_change_menu_voice');
+                    } else {
+                        return self.states.create('state_end_exit');
                     }
                 });
         });
