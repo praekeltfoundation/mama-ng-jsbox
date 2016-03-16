@@ -37,7 +37,9 @@ go.app = function() {
             });
         };
 
-    // ROUTING
+    // START STATE
+
+        // ROUTING
 
         self.states.add('state_start', function() {
             // Reset user answers when restarting the app
@@ -51,7 +53,7 @@ go.app = function() {
             return self.states.create(opts.retry_state, {'retry': true});
         });
 
-    // CHANGE STATE
+    // INITIAL STATES
 
         // FreeText st-B
         self.add('state_msg_receiver_msisdn', function(name, creator_opts) {
@@ -140,17 +142,6 @@ go.app = function() {
             });
         });
 
-        // EndState st-22
-        self.add('state_end_exit', function(name) {
-            var speech_option = '1';
-            return new EndState(name, {
-                text: $('Thank you for using the Hello Mama service. Goodbye.'),
-                helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                next: 'state_start'
-            });
-        });
-
         // ChoiceState st-A
         self.add('state_main_menu', function(name) {
             var speech_option = '1';
@@ -190,6 +181,9 @@ go.app = function() {
             });
         });
 
+    // BABY CHANGE STATES
+
+        // interstitial
         self.add('state_baby_check', function(name) {
             return go.utils_project
                 .check_baby_subscription(self.im.user.addr)
@@ -250,6 +244,8 @@ go.app = function() {
                 next: 'state_start'
             });
         });
+
+    // MSG CHANGE STATES
 
         // interstitial to check what type of messages the user is registered for
         self.add('state_check_msg_type', function(name) {
@@ -381,6 +377,8 @@ go.app = function() {
             });
         });
 
+    // NUMBER CHANGE STATES
+
         // FreeText st-09
         self.add('state_new_msisdn', function(name, creator_opts) {
             var speech_option = 1;
@@ -462,6 +460,8 @@ go.app = function() {
             });
         });
 
+    // LANGUAGE CHANGE STATES
+
         // ChoiceState st-11
         self.add('state_msg_language', function(name) {
             var speech_option = '1';
@@ -490,6 +490,8 @@ go.app = function() {
                 next: 'state_start'
             });
         });
+
+    // OPTOUT STATES
 
         // ChoiceState st-13
         self.add('state_optout_reason', function(name) {
@@ -620,6 +622,19 @@ go.app = function() {
             var speech_option = '1';
             return new EndState(name, {
                 text: $('Thank you - optout'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: 'state_start'
+            });
+        });
+
+    // GENERAL END STATE
+
+        // EndState st-22
+        self.add('state_end_exit', function(name) {
+            var speech_option = '1';
+            return new EndState(name, {
+                text: $('Thank you for using the Hello Mama service. Goodbye.'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: 'state_start'
