@@ -333,7 +333,7 @@ go.utils = {
 
 // STAGE-BASE HELPERS
 
-    read_subscription: function(im, subscription_id) {
+    get_subscription: function(im, subscription_id) {
       // Gets the subscription from the Stage-base Store
       // Returns the subscription object
 
@@ -345,7 +345,7 @@ go.utils = {
             });
     },
 
-    read_active_subscription_by_identity: function(im, identity_id) {
+    get_active_subscription_by_identity: function(im, identity_id) {
       // Searches the Stage-base Store for all active subscriptions with the provided identity_id
       // Returns the first subscription object found or null if none are found
 
@@ -377,7 +377,7 @@ go.utils = {
             });
     },
 
-    read_messageset: function(im, messageset_id) {
+    get_messageset: function(im, messageset_id) {
       // Gets the messageset from the Stage-base Store
       // Returns the messageset object
 
@@ -389,18 +389,6 @@ go.utils = {
             });
     },
 
-    read_messageset_by_shortname: function(im, shortname) {
-      // Gets the messageset from the Stage-base Store via params
-      // Returns the messageset object
-
-        var params = {shortname: shortname};
-        var endpoint = 'messagesets/';
-        return go.utils
-            .service_api_call('messagesets', 'get', params, null, endpoint, im)
-            .then(function(response) {
-                return response.data;
-            });
-    },
 
 // SUBSCRIPTION HELPERS
 
@@ -566,9 +554,9 @@ go.utils_project = {
         return Q()
             .then(function(q_response) {
                 if (msisdn === '082444') {
-                    return 'sms';
+                    return 'text';
                 } else if (msisdn === '082222') {
-                    return 'voice';
+                    return 'audio';
                 } else {
                     return 'none';
                 }
@@ -663,7 +651,7 @@ go.utils_project = {
                     mother_identity.details.preferred_language = im.user.answers.state_msg_language;
                     mother_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
 
-                    if (im.user.answers.state_msg_type === 'voice') {
+                    if (im.user.answers.state_msg_type === 'audio') {
                         mother_identity.details.preferred_msg_days = im.user.answers.state_voice_days;
                         mother_identity.details.preferred_msg_times = im.user.answers.state_voice_times;
                     }
@@ -687,7 +675,7 @@ go.utils_project = {
                     receiver_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
                     receiver_identity.details.preferred_language = im.user.answers.state_msg_language;
 
-                    if (im.user.answers.state_msg_type === 'voice') {
+                    if (im.user.answers.state_msg_type === 'audio') {
                         receiver_identity.details.preferred_msg_days = im.user.answers.state_voice_days;
                         receiver_identity.details.preferred_msg_times = im.user.answers.state_voice_times;
                     }
@@ -716,7 +704,7 @@ go.utils_project = {
                     receiver_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
                     receiver_identity.details.preferred_language = im.user.answers.state_msg_language;
 
-                    if (im.user.answers.state_msg_type === 'voice') {
+                    if (im.user.answers.state_msg_type === 'audio') {
                         mother_identity.details.preferred_msg_days = im.user.answers.state_voice_days;
                         mother_identity.details.preferred_msg_times = im.user.answers.state_voice_times;
                         receiver_identity.details.preferred_msg_days = im.user.answers.state_voice_days;
@@ -960,7 +948,7 @@ go.utils_project = {
         }
 
         // add data for voice time and day if applicable
-        if (im.user.answers.state_msg_type === 'voice') {
+        if (im.user.answers.state_msg_type === 'audio') {
             reg_info.data.voice_times = im.user.answers.state_voice_times;
             reg_info.data.voice_days = im.user.answers.state_voice_days;
         }
@@ -1001,8 +989,8 @@ go.utils_project = {
         mama_identity.details.gravida = im.user.answers.state_gravida;
         mama_identity.details.lang = go.utils_project.get_lang(im);
         mama_identity.details.msg_type = im.user.answers.state_r10_message_type;
-        mama_identity.details.voice_days = im.user.answers.state_r11_voice_days || 'sms';
-        mama_identity.details.voice_times = im.user.answers.state_r12_voice_times || 'sms';
+        mama_identity.details.voice_days = im.user.answers.state_r11_voice_days || 'text';
+        mama_identity.details.voice_times = im.user.answers.state_r12_voice_times || 'text';
         return mama_identity;
     },
 
@@ -1126,12 +1114,12 @@ go.utils_project = {
 
         // get subscription
         return go.utils
-            .read_active_subscription_by_identity(im, mother_id)
+            .get_active_subscription_by_identity(im, mother_id)
             .then(function(subscription) {
                 im.user.set_answer('mother_subscription', subscription);
                 // get messageset
                 return go.utils
-                    .read_messageset(im, subscription.messageset_id)
+                    .get_messageset(im, subscription.messageset_id)
                     .then(function(messageset) {
                         im.user.set_answer('mother_messageset', messageset);
                         return messageset.content_type;  // 'text' / 'audio'
@@ -1778,11 +1766,11 @@ go.app = function() {
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
-                    new Choice('voice', $('voice')),
-                    new Choice('sms', $('sms'))
+                    new Choice('audio', $('voice')),
+                    new Choice('text', $('sms'))
                 ],
                 next: function(choice) {
-                    if (choice.value === 'voice') {
+                    if (choice.value === 'audio') {
                         return 'state_voice_days';
                     } else {
                         return go.utils_project

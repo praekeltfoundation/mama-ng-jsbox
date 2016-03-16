@@ -117,7 +117,7 @@ module.exports = function() {
                             },
                             "receiver_role": "mother",
                             "linked_to": null,
-                            "preferred_msg_type": "sms",
+                            "preferred_msg_type": "text",
                             "preferred_language": "igbo"
                         },
                         "created_at": "2015-07-10T06:13:29.693272Z",
@@ -197,7 +197,7 @@ module.exports = function() {
                             },
                             "receiver_role": "friend",
                             "linked_to": "3f7c8851-5204-43f7-af7f-005059995555",
-                            "preferred_msg_type": "voice",
+                            "preferred_msg_type": "audio",
                             "preferred_msg_days": "mon_wed",
                             "preferred_msg_times": "9_11",
                             "preferred_language": "hausa"
@@ -236,7 +236,7 @@ module.exports = function() {
                         },
                         "receiver_role": "friend",
                         "linked_to": "3f7c8851-5204-43f7-af7f-005059995555",
-                        "preferred_msg_type": "voice",
+                        "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
                         "preferred_language": "hausa"
@@ -280,7 +280,7 @@ module.exports = function() {
                             "receiver_role": "family",
                             "linked_to": "3f7c8851-5204-43f7-af7f-005059996666",
                             "household_msgs_only": true,
-                            "preferred_msg_type": "voice",
+                            "preferred_msg_type": "audio",
                             "preferred_msg_days": "mon_wed",
                             "preferred_msg_times": "9_11",
                             "preferred_language": "hausa"
@@ -320,7 +320,7 @@ module.exports = function() {
                         "receiver_role": "family",
                         "linked_to": "3f7c8851-5204-43f7-af7f-005059996666",
                         "household_msgs_only": true,
-                        "preferred_msg_type": "voice",
+                        "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
                         "preferred_language": "hausa"
@@ -381,7 +381,7 @@ module.exports = function() {
                         },
                         "receiver_role": "mother",
                         "linked_to": null,
-                        "preferred_msg_type": "sms",
+                        "preferred_msg_type": "text",
                         "preferred_language": "igbo"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
@@ -413,7 +413,7 @@ module.exports = function() {
                         },
                         "receiver_role": "mother",
                         "linked_to": null,
-                        "preferred_msg_type": "sms",
+                        "preferred_msg_type": "text",
                         "preferred_language": "igbo"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
@@ -436,7 +436,7 @@ module.exports = function() {
                         },
                         "receiver_role": "mother",
                         "linked_to": null,
-                        "preferred_msg_type": "sms",
+                        "preferred_msg_type": "text",
                         "preferred_language": "igbo"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
@@ -468,7 +468,7 @@ module.exports = function() {
                         },
                         "receiver_role": "friend",
                         "linked_to": "3f7c8851-5204-43f7-af7f-005059995555",
-                        "preferred_msg_type": "voice",
+                        "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
                         "preferred_language": "hausa"
@@ -493,7 +493,7 @@ module.exports = function() {
                         },
                         "receiver_role": "friend",
                         "linked_to": "3f7c8851-5204-43f7-af7f-005059995555",
-                        "preferred_msg_type": "voice",
+                        "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
                         "preferred_language": "hausa"
@@ -536,7 +536,7 @@ module.exports = function() {
                             },
                             "receiver_role": "mother",
                             "linked_to": "3f7c8851-5204-43f7-af7f-005059997777",
-                            "preferred_msg_type": "voice",
+                            "preferred_msg_type": "audio",
                             "preferred_msg_days": "mon_wed",
                             "preferred_msg_times": "9_11",
                             "preferred_language": "pidgin"
@@ -574,7 +574,7 @@ module.exports = function() {
                         },
                         "receiver_role": "mother",
                         "linked_to": "3f7c8851-5204-43f7-af7f-005059997777",
-                        "preferred_msg_type": "voice",
+                        "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
                         "preferred_language": "pidgin"
@@ -608,7 +608,7 @@ module.exports = function() {
                         },
                         "receiver_role": "mother",
                         "linked_to": "3f7c8851-5204-43f7-af7f-005059997777",
-                        "preferred_msg_type": "voice",
+                        "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
                         "preferred_language": "pidgin"
@@ -632,7 +632,7 @@ module.exports = function() {
                         },
                         "receiver_role": "mother",
                         "linked_to": "3f7c8851-5204-43f7-af7f-005059997777",
-                        "preferred_msg_type": "voice",
+                        "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
                         "preferred_language": "pidgin"
@@ -667,7 +667,7 @@ module.exports = function() {
                         "receiver_role": "family",
                         "linked_to": "3f7c8851-5204-43f7-af7f-005059996666",
                         "household_msgs_only": true,
-                        "preferred_msg_type": "voice",
+                        "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
                         "preferred_language": "hausa"
@@ -692,7 +692,7 @@ module.exports = function() {
                         "receiver_role": "family",
                         "linked_to": "3f7c8851-5204-43f7-af7f-005059996666",
                         "household_msgs_only": true,
-                        "preferred_msg_type": "voice",
+                        "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
                         "preferred_language": "hausa"
@@ -785,7 +785,7 @@ module.exports = function() {
                     "mother_id": "3f7c8851-5204-43f7-af7f-005059992222",
                     "action": "change_messaging",
                     "data": {
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "voice_days": "tue_thu",
                         "voice_times": "9_11"
                     }
@@ -881,7 +881,7 @@ module.exports = function() {
                     "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
                     "action": "change_messaging",
                     "data": {
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "voice_days": "mon_wed",
                         "voice_times": "2_5"
                     }
@@ -976,7 +976,7 @@ module.exports = function() {
                     "mother_id": "3f7c8851-5204-43f7-af7f-005059996666",
                     "action": "change_messaging",
                     "data": {
-                        "msg_type": "sms",
+                        "msg_type": "text",
                         "voice_days": null,
                         "voice_times": null
                     }
@@ -1030,7 +1030,7 @@ module.exports = function() {
                         },
                         "receiver_role": "mother",
                         "linked_to": null,
-                        "preferred_msg_type": "voice",
+                        "preferred_msg_type": "audio",
                         "preferred_language": "igbo",
                         "preferred_msg_days": "tue_thu",
                         "preferred_msg_times": "9_11"
@@ -1054,7 +1054,7 @@ module.exports = function() {
                         },
                         "receiver_role": "mother",
                         "linked_to": null,
-                        "preferred_msg_type": "voice",
+                        "preferred_msg_type": "audio",
                         "preferred_language": "igbo",
                         "preferred_msg_days": "tue_thu",
                         "preferred_msg_times": "9_11"
@@ -1088,7 +1088,7 @@ module.exports = function() {
                         },
                         "receiver_role": "mother",
                         "linked_to": null,
-                        "preferred_msg_type": "sms",
+                        "preferred_msg_type": "text",
                         "preferred_language": "igbo",
                         "opted_out": true,
                         "optout_reason": "miscarriage"
@@ -1112,7 +1112,7 @@ module.exports = function() {
                         },
                         "receiver_role": "mother",
                         "linked_to": null,
-                        "preferred_msg_type": "sms",
+                        "preferred_msg_type": "text",
                         "preferred_language": "igbo"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
@@ -1141,7 +1141,7 @@ module.exports = function() {
                         "receiver_role": "mother",
                         "preferred_language": "hausa",
                         "linked_to": "cb245673-aa41-4302-ac47-9093333333",
-                        "preferred_msg_type": "voice",
+                        "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "2_5"
                     },
@@ -1161,7 +1161,7 @@ module.exports = function() {
                         "receiver_role": "mother",
                         "preferred_language": "hausa",
                         "linked_to": "cb245673-aa41-4302-ac47-9093333333",
-                        "preferred_msg_type": "voice",
+                        "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "2_5"
                     },
@@ -1194,7 +1194,7 @@ module.exports = function() {
                         },
                         "receiver_role": "mother",
                         "linked_to": "3f7c8851-5204-43f7-af7f-005059997777",
-                        "preferred_msg_type": "sms",
+                        "preferred_msg_type": "text",
                         "preferred_msg_days": null,
                         "preferred_msg_times": null,
                         "preferred_language": "pidgin"
@@ -1218,7 +1218,7 @@ module.exports = function() {
                         },
                         "receiver_role": "mother",
                         "linked_to": "3f7c8851-5204-43f7-af7f-005059997777",
-                        "preferred_msg_type": "sms",
+                        "preferred_msg_type": "text",
                         "preferred_msg_days": null,
                         "preferred_msg_times": null,
                         "preferred_language": "pidgin"

@@ -507,11 +507,11 @@ go.app = function() {
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
-                    new Choice('voice', $('voice')),
-                    new Choice('sms', $('sms'))
+                    new Choice('audio', $('voice')),
+                    new Choice('text', $('sms'))
                 ],
                 next: function(choice) {
-                    if (choice.value === 'voice') {
+                    if (choice.value === 'audio') {
                         return 'state_voice_days';
                     } else {
                         return go.utils_project

@@ -374,7 +374,7 @@ go.app = function() {
                     return go.utils_project
                         .update_msg_format_time(
                             self.im,
-                            'voice',
+                            'audio',
                             self.im.user.answers.state_voice_days,
                             choice.value
                         )
@@ -410,7 +410,7 @@ go.app = function() {
                         return go.utils_project
                             .update_msg_format_time(
                                 self.im,
-                                'sms',
+                                'text',
                                 null,
                                 null
                             )
