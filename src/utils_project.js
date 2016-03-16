@@ -294,7 +294,9 @@ go.utils_project = {
         var bargeInDisallowedStates = [
             // voice registration states
             'state_msg_receiver',
+            'state_msisdn_already_registered',
             'state_gravida',
+            'state_end_msisdn',
             'state_end_sms',
             'state_end_voice',
             // voice public states
