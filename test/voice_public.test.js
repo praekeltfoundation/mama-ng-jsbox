@@ -35,6 +35,10 @@ describe("Mama Nigeria App", function() {
                             api_token: "test_token_voice_content",
                             url: "http://localhost:8004/api/v1/"
                         },
+                        change: {
+                            api_token: 'test_token_change',
+                            url: "http://localhost:8005/api/v1/"
+                        }
                     }
                 })
                 .setup(function(api) {
@@ -509,6 +513,116 @@ describe("Mama Nigeria App", function() {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_sms_change_1.mp3',
                                     wait_for: '#',
                                     barge_in: true
+                                }
+                            }
+                        })
+                        .check(function(api) {
+                            var expected_used = [2,16,17,25];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
+                        .run();
+                });
+                it("should navigate to state_voice_days", function() {
+                    return tester
+                        .setup.user.addr('+07070050005')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059992222'  // msg_receiver_msisdn
+                            , '2'  // main_menu - msg_pref
+                            , '1'  // state_sms_change - change text to voice
+                        )
+                        .check.interaction({
+                            state: 'state_voice_days',
+                            reply: [
+                                'Message days?',
+                                '1. Monday and Wednesday',
+                                '2. Tuesday and Thursday'
+                            ].join('\n')
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_voice_days_1.mp3',
+                                    wait_for: '#',
+                                    barge_in: true
+                                }
+                            }
+                        })
+                        .check(function(api) {
+                            var expected_used = [2,16,17,25];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
+                        .run();
+                });
+                it("should navigate to state_voice_times", function() {
+                    return tester
+                        .setup.user.addr('+07070050005')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059992222'  // msg_receiver_msisdn
+                            , '2'  // main_menu - msg_pref
+                            , '1'  // state_sms_change - change text to voice
+                            , '1'  // state_voice_days - Mon & Wed
+                        )
+                        .check.interaction({
+                            state: 'state_voice_times',
+                            reply: [
+                                'Message times?',
+                                '1. 9-11am',
+                                '2. 2-5pm'
+                            ].join('\n')
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_voice_times_1.mp3',
+                                    wait_for: '#',
+                                    barge_in: true
+                                }
+                            }
+                        })
+                        .check(function(api) {
+                            var expected_used = [2,16,17,25];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
+                        .run();
+                });
+                it.skip("should navigate to state_end_voice_confirm", function() {
+                    return tester
+                        .setup.user.addr('+07070050005')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059992222'  // msg_receiver_msisdn
+                            , '2'  // main_menu - msg_pref
+                            , '1'  // state_sms_change - change text to voice
+                            , '1'  // state_voice_days - Mon & Wed
+                            , '2'  // state_voice_times - 2-5pm
+                        )
+                        .check.interaction({
+                            state: 'state_end_voice_confirm',
+                            reply: 'Thank you! Time: 2_5. Days: mon_wed.'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_voice_confirm_1.mp3',
+                                    wait_for: '#',
+                                    barge_in: false
                                 }
                             }
                         })

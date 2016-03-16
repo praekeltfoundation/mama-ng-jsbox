@@ -288,8 +288,8 @@ go.app = function() {
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('mon_wed', $('mon_wed')),
-                    new Choice('tue_thu', $('tue_thu'))
+                    new Choice('mon_wed', $('Monday and Wednesday')),
+                    new Choice('tue_thu', $('Tuesday and Thursday'))
                 ],
                 next: 'state_voice_times'
             });
@@ -305,24 +305,26 @@ go.app = function() {
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('9_11', $('9_11')),
-                    new Choice('2_5', $('2_5'))
+                    new Choice('9_11', $('9-11am')),
+                    new Choice('2_5', $('2-5pm'))
                 ],
-                next: 'state_voice_save'
+                next: function(choice) {
+                    go.utils_project
+                    .update_msg_format_time(
+                        self.im,
+                        'audio',
+                        self.im.user.answers.state_voice_days,
+                        choice.value
+                    )
+                    .then(function() {
+                        return 'state_end_voice_confirm';
+                    });
+                }
             });
         });
 
-        // interstitial to save subscription to baby messages
-        /*self.add('state_voice_save', function(name) {
-            return go.utils_project
-                .update_identity ...?
-                .then(function() {
-                    return self.states.create('state_end_voice');
-                });
-        });*/
-
         // EndState st-06
-        self.add('state_end_msg_times', function(name) {
+        self.add('state_end_voice_confirm', function(name) {
             var days = self.im.user.answers.state_voice_days;
             var time = self.im.user.answers.state_voice_times;
             var speech_option = go.utils_project.get_speech_option_days_time(days, time);
