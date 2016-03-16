@@ -460,8 +460,7 @@ describe("Mama Nigeria App", function() {
                     state: 'state_change_menu_sms',
                     reply: [
                         'Please select what you would like to do:',
-                        '1. Change from text to voice',
-                        '2. To go Back to main menu, press 0 then #'
+                        '1. Change from text to voice'
                     ].join('\n')
                 })
                 .check.reply.properties({
@@ -607,8 +606,7 @@ describe("Mama Nigeria App", function() {
                     reply: [
                         'Please select what you would like to do:',
                         '1. Change times',
-                        '2. Change mother message from voice to text',
-                        '3. To go Back to main menu, press 0 then #'
+                        '2. Change mother message from voice to text'
                     ].join('\n')
                 })
                 .check.reply.properties({

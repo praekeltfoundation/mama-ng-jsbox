@@ -1532,16 +1532,9 @@ go.app = function() {
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('change', $('Change from text to voice')),
-                    new Choice('back', $('To go Back to main menu, press 0 then #')),
+                    new Choice('change', $('Change from text to voice'))
                 ],
-                next: function(choice) {
-                    if (choice.value === 'change') {
-                        return 'state_voice_days';
-                    } else {
-                        return 'state_change_menu_sms';
-                    }
-                }
+                next: 'state_voice_days'
             });
         });
 
@@ -1612,15 +1605,10 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 choices: [
                     new Choice('state_voice_days', $('Change times')),
-                    new Choice('state_end_sms_confirm', $('Change mother message from voice to text')),
-                    new Choice('back', $('To go Back to main menu, press 0 then #'))
+                    new Choice('state_end_sms_confirm', $('Change mother message from voice to text'))
                 ],
                 next: function(choice) {
-                    if (choice.value !== 'back') {
                         return choice.value;
-                    } else {
-                        return 'state_change_menu_voice';
-                    }
                 }
             });
         });
