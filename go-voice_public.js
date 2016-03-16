@@ -845,6 +845,7 @@ go.utils_project = {
             'state_main_menu',
             'state_main_menu_household',
             'state_baby_already_subscribed',
+            'state_end_voice_confirm',
             'state_end_baby',
             'state_end_exit'
         ];
@@ -1323,7 +1324,9 @@ go.app = function() {
             });
         };
 
-    // ROUTING
+    // START STATE
+
+        // ROUTING
 
         self.states.add('state_start', function() {
             // Reset user answers when restarting the app
@@ -1337,7 +1340,7 @@ go.app = function() {
             return self.states.create(opts.retry_state, {'retry': true});
         });
 
-    // CHANGE STATE
+    // INITIAL STATES
 
         // FreeText st-B
         self.add('state_msg_receiver_msisdn', function(name, creator_opts) {
@@ -1426,17 +1429,6 @@ go.app = function() {
             });
         });
 
-        // EndState st-22
-        self.add('state_end_exit', function(name) {
-            var speech_option = '1';
-            return new EndState(name, {
-                text: $('Thank you for using the Hello Mama service. Goodbye.'),
-                helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                next: 'state_start'
-            });
-        });
-
         // ChoiceState st-A
         self.add('state_main_menu', function(name) {
             var speech_option = '1';
@@ -1446,7 +1438,7 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 choices: [
                     new Choice('state_baby_check', $('baby')),
-                    new Choice('state_voice_days', $('preferences')),
+                    new Choice('state_check_msg_type', $('preferences')),
                     new Choice('state_new_msisdn', $('number')),
                     new Choice('state_msg_language', $('language')),
                     new Choice('state_optout_reason', $('optout'))
@@ -1476,6 +1468,9 @@ go.app = function() {
             });
         });
 
+    // BABY CHANGE STATES
+
+        // interstitial
         self.add('state_baby_check', function(name) {
             return go.utils_project
                 .check_baby_subscription(self.im.user.addr)
@@ -1537,29 +1532,33 @@ go.app = function() {
             });
         });
 
+    // MSG CHANGE STATES
+
         // interstitial to check what type of messages the user is registered for
-        self.add('state_msg_type_check', function(name) {
+        self.add('state_check_msg_type', function(name) {
             return go.utils_project
-                .check_msg_type(self.im)
-                .then(function(messageType) {
-                    if (messageType == "text") {
-                        return self.states.create('state_sms_menu');
-                    } else {   // is subscribed for voice messages
-                        return self.states.create('state_voice_menu');
+                .get_subscription_msg_type(self.im, self.im.user.answers.mother_id)
+                .then(function(msg_format) {
+                    self.im.user.set_answer('msg_format', msg_format);
+                    if (msg_format === 'text') {
+                        return self.states.create('state_change_menu_sms');
+                    } else if (msg_format === 'audio') {
+                        return self.states.create('state_change_menu_voice');
+                    } else {
+                        return self.states.create('state_end_exit');
                     }
                 });
         });
 
         // ChoiceState st-03
-        self.add('state_sms_menu', function(name) {
+        self.add('state_change_menu_sms', function(name) {
             var speech_option = '1';
             return new ChoiceState(name, {
-                question: $('What would you like to do?'),
+                question: $('Please select what you would like to do:'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('change', $('Change from text to voice')),
-                    new Choice('back', $('Go back to main menu, press 0 then #')),
+                    new Choice('change', $('Change from text to voice'))
                 ],
                 next: 'state_voice_days'
             });
@@ -1573,8 +1572,8 @@ go.app = function() {
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('mon_wed', $('mon_wed')),
-                    new Choice('tue_thu', $('tue_thu'))
+                    new Choice('mon_wed', $('Monday and Wednesday')),
+                    new Choice('tue_thu', $('Tuesday and Thursday'))
                 ],
                 next: 'state_voice_times'
             });
@@ -1590,24 +1589,26 @@ go.app = function() {
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('9_11', $('9_11')),
-                    new Choice('2_5', $('2_5'))
+                    new Choice('9_11', $('9-11am')),
+                    new Choice('2_5', $('2-5pm'))
                 ],
-                next: 'state_voice_save'
+                next: function(choice) {
+                    return go.utils_project
+                        .update_msg_format_time(
+                            self.im,
+                            'audio',
+                            self.im.user.answers.state_voice_days,
+                            choice.value
+                        )
+                        .then(function() {
+                            return 'state_end_voice_confirm';
+                        });
+                }
             });
         });
 
-        // interstitial to save subscription to baby messages
-        /*self.add('state_voice_save', function(name) {
-            return go.utils_project
-                .update_identity ...?
-                .then(function() {
-                    return self.states.create('state_end_voice');
-                });
-        });*/
-
         // EndState st-06
-        self.add('state_end_msg_times', function(name) {
+        self.add('state_end_voice_confirm', function(name) {
             var days = self.im.user.answers.state_voice_days;
             var time = self.im.user.answers.state_voice_times;
             var speech_option = go.utils_project.get_speech_option_days_time(days, time);
@@ -1622,20 +1623,48 @@ go.app = function() {
         });
 
         // ChoiceState st-07
-        self.add('state_voice_menu', function(name) {
+        self.add('state_change_menu_voice', function(name) {
             var speech_option = '1';
             return new ChoiceState(name, {
-                question: $('What would you like to do?'),
+                question: $('Please select what you would like to do:'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('change', $('Change times')),
-                    new Choice('change', $('Change from voice to text')),
-                    new Choice('back', $('Go back to main menu, press 0 then #'))
+                    new Choice('state_voice_days', $('Change times')),
+                    new Choice('state_end_sms_confirm', $('Change mother message from voice to text'))
                 ],
-                next: 'state_baby_save'
+                next: function(choice) {
+                        if (choice.value !== 'state_end_sms_confirm') {
+                            return choice.value;
+                        } else {
+                            return go.utils_project
+                                .update_msg_format_time(
+                                    self.im,
+                                    'text',
+                                    null,
+                                    null
+                                )
+                                .then(function() {
+                                    return 'state_end_sms_confirm';
+                                });
+                        }
+                }
             });
         });
+
+        // EndState st-09
+        self.add('state_end_sms_confirm', function(name) {
+            var speech_option = '1';
+
+            return new EndState(name, {
+                text: $('Thank you. You will now receive text messages.'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: 'state_start'
+            });
+        });
+
+    // NUMBER CHANGE STATES
 
         // FreeText st-09
         self.add('state_new_msisdn', function(name, creator_opts) {
@@ -1718,6 +1747,8 @@ go.app = function() {
             });
         });
 
+    // LANGUAGE CHANGE STATES
+
         // ChoiceState st-11
         self.add('state_msg_language', function(name) {
             var speech_option = '1';
@@ -1746,6 +1777,8 @@ go.app = function() {
                 next: 'state_start'
             });
         });
+
+    // OPTOUT STATES
 
         // ChoiceState st-13
         self.add('state_optout_reason', function(name) {
@@ -1876,6 +1909,19 @@ go.app = function() {
             var speech_option = '1';
             return new EndState(name, {
                 text: $('Thank you - optout'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: 'state_start'
+            });
+        });
+
+    // GENERAL END STATE
+
+        // EndState st-22
+        self.add('state_end_exit', function(name) {
+            var speech_option = '1';
+            return new EndState(name, {
+                text: $('Thank you for using the Hello Mama service. Goodbye.'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: 'state_start'

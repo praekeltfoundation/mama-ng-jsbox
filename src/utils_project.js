@@ -304,6 +304,7 @@ go.utils_project = {
             'state_main_menu',
             'state_main_menu_household',
             'state_baby_already_subscribed',
+            'state_end_voice_confirm',
             'state_end_baby',
             'state_end_exit'
         ];
