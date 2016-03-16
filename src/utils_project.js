@@ -28,9 +28,9 @@ go.utils_project = {
         return Q()
             .then(function(q_response) {
                 if (msisdn === '082444') {
-                    return 'sms';
+                    return 'text';
                 } else if (msisdn === '082222') {
-                    return 'voice';
+                    return 'audio';
                 } else {
                     return 'none';
                 }
@@ -125,7 +125,7 @@ go.utils_project = {
                     mother_identity.details.preferred_language = im.user.answers.state_msg_language;
                     mother_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
 
-                    if (im.user.answers.state_msg_type === 'voice') {
+                    if (im.user.answers.state_msg_type === 'audio') {
                         mother_identity.details.preferred_msg_days = im.user.answers.state_voice_days;
                         mother_identity.details.preferred_msg_times = im.user.answers.state_voice_times;
                     }
@@ -149,7 +149,7 @@ go.utils_project = {
                     receiver_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
                     receiver_identity.details.preferred_language = im.user.answers.state_msg_language;
 
-                    if (im.user.answers.state_msg_type === 'voice') {
+                    if (im.user.answers.state_msg_type === 'audio') {
                         receiver_identity.details.preferred_msg_days = im.user.answers.state_voice_days;
                         receiver_identity.details.preferred_msg_times = im.user.answers.state_voice_times;
                     }
@@ -178,7 +178,7 @@ go.utils_project = {
                     receiver_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
                     receiver_identity.details.preferred_language = im.user.answers.state_msg_language;
 
-                    if (im.user.answers.state_msg_type === 'voice') {
+                    if (im.user.answers.state_msg_type === 'audio') {
                         mother_identity.details.preferred_msg_days = im.user.answers.state_voice_days;
                         mother_identity.details.preferred_msg_times = im.user.answers.state_voice_times;
                         receiver_identity.details.preferred_msg_days = im.user.answers.state_voice_days;
@@ -257,19 +257,22 @@ go.utils_project = {
 
     should_restart: function(im) {
         var no_restart_states = [
-            'state_r01_number',
-            'state_r02_retry_number',
-            'state_c01_main_menu',
-            'state_c02_not_registered',
-            'state_c07_loss_opt_in',
-            'state_c08_end_baby',
-            'state_c09_end_msg_times',
-            'state_c10_end_loss_opt_in',
-            'state_c11_end_optout'
+            // voice registration states
+            'state_personnel_auth',
+            'state_gravida',
+            // voice change states
+            'state_msg_receiver_msisdn',
+            'state_main_menu',
+            'state_main_menu_household'
         ];
 
-        return im.msg.content === '*'
+        return im.msg.content === '0'
+            && im.user.state.name
             && no_restart_states.indexOf(im.user.state.name) === -1;
+    },
+
+    should_repeat: function(im) {
+        return im.msg.content === '*';
     },
 
 
@@ -288,6 +291,23 @@ go.utils_project = {
     // Construct helper_data object
     make_voice_helper_data: function(im, name, lang, num, retry) {
         var voice_url = go.utils_project.make_speech_url(im, name, lang, num, retry);
+        var bargeInDisallowedStates = [
+            // voice registration states
+            'state_msg_receiver',
+            'state_msisdn_already_registered',
+            'state_gravida',
+            'state_end_msisdn',
+            'state_end_sms',
+            'state_end_voice',
+            // voice public states
+            'state_msg_receiver_msisdn',
+            'state_main_menu',
+            'state_main_menu_household',
+            'state_baby_already_subscribed',
+            'state_end_baby',
+            'state_end_exit'
+        ];
+
         return im
             .log([
                 'Voice URL is: ' + voice_url,
@@ -309,7 +329,8 @@ go.utils_project = {
                         return {
                             voice: {
                                 speech_url: voice_url,
-                                wait_for: '#'
+                                wait_for: '#',
+                                barge_in: bargeInDisallowedStates.indexOf(name) !== -1 ? false : true
                             }
                         };
                     }, function (error) {
@@ -401,7 +422,7 @@ go.utils_project = {
         }
 
         // add data for voice time and day if applicable
-        if (im.user.answers.state_msg_type === 'voice') {
+        if (im.user.answers.state_msg_type === 'audio') {
             reg_info.data.voice_times = im.user.answers.state_voice_times;
             reg_info.data.voice_days = im.user.answers.state_voice_days;
         }
@@ -442,8 +463,8 @@ go.utils_project = {
         mama_identity.details.gravida = im.user.answers.state_gravida;
         mama_identity.details.lang = go.utils_project.get_lang(im);
         mama_identity.details.msg_type = im.user.answers.state_r10_message_type;
-        mama_identity.details.voice_days = im.user.answers.state_r11_voice_days || 'sms';
-        mama_identity.details.voice_times = im.user.answers.state_r12_voice_times || 'sms';
+        mama_identity.details.voice_days = im.user.answers.state_r11_voice_days || 'text';
+        mama_identity.details.voice_times = im.user.answers.state_r12_voice_times || 'text';
         return mama_identity;
     },
 
@@ -469,22 +490,21 @@ go.utils_project = {
     },
 
     optout: function(im) {
-        var mama_id = im.user.answers.mama_id;
-        return Q
-        .all([
+        var unsubscribe_result;
+        return go.utils
             // get identity so details can be updated
-            go.utils.get_identity(mama_id, im),
-            // set existing subscriptions inactive
-            go.utils_project.subscriptions_unsubscribe_all(mama_id, im)
-        ])
-        .spread(function(mama_identity, unsubscribe_result) {
-            // set new mama identity details
-            mama_identity.details.opted_out = true;
-            mama_identity.details.optout_reason = im.user.answers.state_c05_optout_reason;
+            .get_identity_by_address({'msisdn' : im.user.addr}, im)
+            .then(function(identity) {
+                // set existing subscriptions inactive
+                unsubscribe_result = go.utils.subscription_unsubscribe_all(identity, im);
 
-            // update mama identity
-            return go.utils.update_identity(im, mama_identity);
-        });
+                // set new mama identity details
+                identity.details.opted_out = true;
+                identity.details.optout_reason = im.user.answers.state_optout_reason;
+
+                // update mama identity
+                return go.utils.update_identity(im, identity);
+            });
     },
 
 
@@ -563,6 +583,55 @@ go.utils_project = {
 
 // SUBSCRIPTION HELPERS
 
+    get_subscription_msg_type: function(im, mother_id) {
+      // Look up what type of messages the mother is receiving
+
+        // get subscription
+        return go.utils
+            .get_active_subscription_by_identity(im, mother_id)
+            .then(function(subscription) {
+                im.user.set_answer('mother_subscription', subscription);
+                // get messageset
+                return go.utils
+                    .get_messageset(im, subscription.messageset_id)
+                    .then(function(messageset) {
+                        im.user.set_answer('mother_messageset', messageset);
+                        return messageset.content_type;  // 'text' / 'audio'
+                    });
+            });
+    },
+
+    update_msg_format_time: function(im, new_msg_format, voice_days, voice_times) {
+      // Sends new message type, preferred day and time to Change endpoint
+      // and updates the mother's preferred msg settings
+
+        var change_data = {
+            "mother_id": im.user.answers.mother_id,
+            "action": "change_messaging",
+            "data": {
+                "msg_type": new_msg_format,
+                "voice_days": voice_days || null,
+                "voice_times": voice_times || null
+            }
+        };
+
+        return go.utils
+            .service_api_call("change", "post", null, change_data, "change/", im)
+            .then(function() {
+                return go.utils
+                    .get_identity(im.user.answers.mother_id, im)
+                    .then(function(mother_identity) {
+                        // Update mother only as household messages are text only for now
+                        mother_identity.details.preferred_msg_type = new_msg_format;
+                        mother_identity.details.preferred_msg_days = voice_days || null;
+                        mother_identity.details.preferred_msg_times = voice_times || null;
+                        return go.utils
+                            .update_identity(im, mother_identity);
+                    });
+            });
+
+    },
+
     is_registered: function(identity_id, im) {
         // Determine whether identity is registered
         return go.utils
@@ -589,10 +658,6 @@ go.utils_project = {
             }
         };
         return subscription;
-    },
-
-    get_messageset_id: function(mama_identity) {
-        return (mama_identity.details.state_current === 'pregnant') ? 1 : 2;
     },
 
     get_next_sequence_number: function(mama_identity) {
@@ -634,7 +699,7 @@ go.utils_project = {
             // get identity so details can be updated
             go.utils.get_identity(mama_id, im),
             // set existing subscriptions inactive
-            go.utils_project.subscriptions_unsubscribe_all(mama_id, im)
+            go.utils_project.subscription_unsubscribe_all(mama_id, im)
         ])
         .spread(function(mama_identity, unsubscribe_result) {
             // set new mama identity details
