@@ -12,20 +12,27 @@ go.app = function() {
         App.call(self, 'state_start');
         var $ = self.$;
         var lang = 'eng_NG';
-        var interrupt = true;
         var bypassPostbirth = true;
 
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                if (!interrupt || !go.utils_project.should_restart(self.im))
-                    return creator(name, opts);
+                var pass_opts = opts || {};
+                pass_opts.name = name;
 
-                interrupt = false;
-                opts = opts || {};
-                opts.name = name;
-                // Prevent previous content being passed to next state
-                self.im.msg.content = null;
-                return self.states.create('state_start', opts);
+                if (go.utils_project.should_repeat(self.im)) {
+                    // Prevent previous content being passed to next state
+                    // thus preventing infinite repeat loop
+                    self.im.msg.content = null;
+                    return self.states.create(name, pass_opts);
+                }
+
+                if (go.utils_project.should_restart(self.im)) {
+                    // Prevent previous content being passed to next state
+                    self.im.msg.content = null;
+                    return self.states.create('state_start', pass_opts);
+                }
+
+                return creator(name, pass_opts);
             });
         };
 

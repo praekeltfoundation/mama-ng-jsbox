@@ -44,20 +44,45 @@ describe("Mama Nigeria App", function() {
 
         // TEST RESTART
 
-        describe("When you use * to restart", function() {
-            it("should reset the user answers", function() {
+        describe("Testing restart and replay universal instructions", function() {
+            it("'0' should restart to main_menu", function() {
                 return tester
                     .setup.user.addr('+2345059991111')
                     .inputs(
                         {session_event: 'new'}
-                        , '1'  // main_menu - baby
-                        , '*'  // baby_confirm - restart
+                        , '05059992222' // state_msg_receiver_msisdn
+                        , '1'  // state_main_menu - baby
+                        , '0'  // state_baby_confirm_subscription - restart
                     )
                     .check.interaction({
-                        state: 'state_msg_receiver_msisdn',
-                        reply: "Welcome, Number"
+                        state: 'state_main_menu',
+                        reply: [
+                            'Choose:',
+                            '1. baby',
+                            '2. preferences',
+                            '3. number',
+                            '4. language',
+                            '5. optout'
+                        ].join('\n')
                     })
-                    .check.user.answers({})
+                    .run();
+            });
+            it("'*' should repeat message", function() {
+                return tester
+                    .setup.user.addr('+2345059991111')
+                    .inputs(
+                        {session_event: 'new'}
+                        , '05059992222' // state_msg_receiver_msisdn
+                        , '1'  // state_main_menu - baby
+                        , '*'  // state_baby_confirm_subscription - repeat
+                    )
+                    .check.interaction({
+                        state: 'state_baby_confirm_subscription',
+                        reply: [
+                            'Confirm baby?',
+                            '1. To confirm press 1. To go back to main menu, 0 then #'
+                        ].join('\n')
+                    })
                     .run();
             });
         });
@@ -133,6 +158,72 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
+                it("should not restart, preventing skipping ahead to main_menu state", function() {
+                    // state_msg_receiver_msisdn is a no-restart state (listed in
+                    // the no_restart_states in utils function should_restart)
+                    return tester
+                        .setup.user.addr('+2345059992222')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '5551234'  // state_msg_receiver_msisdn
+                            , '0'  // state_msg_receiver_msisdn - restart
+                        )
+                        .check.interaction({
+                            state: 'state_msg_receiver_msisdn',
+                            reply: "Retry. Welcome, Number"
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_msisdn_1_retry.mp3',
+                                    wait_for: '#',
+                                    barge_in: false
+                                }
+                            }
+                        })
+                        .check(function(api) {
+                            var expected_used = [16];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
+                        .run();
+                });
+                it("should repeat state_msg_receiver_msisdn (not in retry state)", function() {
+                    return tester
+                        .setup.user.addr('+2345059992222')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '5551234'  // state_msg_receiver_msisdn
+                            , '*'   // state_msg_receiver_msisdn - repeat
+                        )
+                        .check.interaction({
+                            state: 'state_msg_receiver_msisdn',
+                            reply: "Retry. Welcome, Number"
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_msisdn_1_retry.mp3',
+                                    wait_for: '#',
+                                    barge_in: false
+                                }
+                            }
+                        })
+                        .check(function(api) {
+                            var expected_used = [16];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
+                        .run();
+                });
             });
 
             describe("if you enter a registered user number", function() {
@@ -174,6 +265,7 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
+
             });
 
             describe("if you enter an unregistered number", function() {
@@ -1105,8 +1197,8 @@ describe("Mama Nigeria App", function() {
                 });
             });
 
-            describe.skip("if you choose * to restart", function() {
-                it("should not restart", function() {
+            describe("if you choose 0 to restart", function() {
+                it("should restart", function() {
                     return tester
                         .setup.user.addr('+2345059992222')
                         .inputs(
@@ -1114,17 +1206,17 @@ describe("Mama Nigeria App", function() {
                             , '05059993333'  // msg_receiver_msisdn
                             , '5'  // main_menu - optout
                             , '1'  // optout_reason - miscarriage
-                            , '*'  // loss_opt_in - restart attempt
+                            , '0'  // loss_opt_in - restart attempt
                         )
                         .check.interaction({
-                            state: 'state_loss_opt_in'
+                            state: 'state_main_menu'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_loss_opt_in_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_main_menu_1.mp3',
                                     wait_for: '#',
-                                    barge_in: true
+                                    barge_in: false
                                 }
                             }
                         })

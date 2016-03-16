@@ -11,19 +11,29 @@ go.app = function() {
         App.call(self, 'state_start');
         var $ = self.$;
         var lang = 'eng_NG';
-        var interrupt = true;
 
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                if (!interrupt || !go.utils_project.should_restart(self.im))
-                    return creator(name, opts);
+                var pass_opts = opts || {};
+                pass_opts.name = name;
 
-                interrupt = false;
-                opts = opts || {};
-                opts.name = name;
-                // Prevent previous content being passed to next state
-                self.im.msg.content = null;
-                return self.states.create('state_start', opts);
+                if (go.utils_project.should_repeat(self.im)) {
+                    // Prevent previous content being passed to next state
+                    // thus preventing infinite repeat loop
+                    self.im.msg.content = null;
+                    return self.states.create(name, pass_opts);
+                }
+
+                if (go.utils_project.should_restart(self.im)) {
+                    // Prevent previous content being passed to next state
+                    self.im.msg.content = null;
+                    var state_to_restart_from = self.im.user.answers.receiver_household_only
+                        ? 'state_main_menu_household'
+                        : 'state_main_menu';
+                    return self.states.create(state_to_restart_from, pass_opts);  // restarts to either st-A or st-A1
+                }
+
+                return creator(name, opts);
             });
         };
 
@@ -199,7 +209,9 @@ go.app = function() {
                 question: $('You are already subscribed. To go back to main menu, 0 then #'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
-                next: 'state_main_menu'   // TODO: add input logic to go back to main menu
+                next: function(choice) {
+                    return 'state_baby_already_subscribed';
+                }
             });
         });
 
@@ -213,7 +225,9 @@ go.app = function() {
                 choices: [
                     new Choice('confirm', $('To confirm press 1. To go back to main menu, 0 then #'))
                 ],
-                next: 'state_baby_save'
+                next: function(choice) {
+                    return 'state_baby_save';
+                }
             });
         });
 
