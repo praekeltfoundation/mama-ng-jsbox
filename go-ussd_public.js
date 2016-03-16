@@ -830,6 +830,7 @@ go.utils_project = {
             'state_main_menu',
             'state_main_menu_household',
             'state_baby_already_subscribed',
+            'state_end_voice_confirm',
             'state_end_baby',
             'state_end_exit'
         ];
@@ -1130,7 +1131,6 @@ go.utils_project = {
     update_msg_format_time: function(im, new_msg_format, voice_days, voice_times) {
       // Sends new message type, preferred day and time to Change endpoint
       // and updates the mother's preferred msg settings
-
         var change_data = {
             "mother_id": im.user.answers.mother_id,
             "action": "change_messaging",
@@ -1585,7 +1585,7 @@ go.app = function() {
                     } else if (msg_format === 'audio') {
                         return self.states.create('state_change_menu_voice');
                     } else {
-                        return self.state.create('state_end_exit');
+                        return self.states.create('state_end_exit');
                     }
                 });
         });

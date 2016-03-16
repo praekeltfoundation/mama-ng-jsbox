@@ -326,7 +326,7 @@ go.app = function() {
                     } else if (msg_format === 'audio') {
                         return self.states.create('state_change_menu_voice');
                     } else {
-                        return self.state.create('state_end_exit');
+                        return self.states.create('state_end_exit');
                     }
                 });
         });
