@@ -397,11 +397,11 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 choices: [
-                    new Choice('voice', $('Voice calls')),
-                    new Choice('sms', $('Text SMSs'))
+                    new Choice('audio', $('Voice calls')),
+                    new Choice('text', $('Text SMSs'))
                 ],
                 next: function(choice) {
-                    if (choice.value === 'voice') {
+                    if (choice.value === 'audio') {
                         return 'state_voice_days';
                     } else {
                         return go.utils_project
