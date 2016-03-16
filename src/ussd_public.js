@@ -88,7 +88,6 @@ go.app = function() {
         };
 
 
-
     // TIMEOUT HANDLING
 
         // override normal state adding

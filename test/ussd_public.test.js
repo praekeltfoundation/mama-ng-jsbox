@@ -1056,8 +1056,8 @@ describe("Hello Mama app", function() {
                 });
             });
 
-            describe.skip("Complete flows", function() {
-                it(" - via baby messages to exit", function() {
+            describe("Complete flows", function() {
+                it.skip(" - via baby messages to exit", function() {
                     return tester
                         .setup.user.addr('082333')
                         .inputs(
@@ -1072,24 +1072,7 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
-                it(" - via changing messages preferences to end of the line", function() {
-                    return tester
-                        .setup.user.addr('082222')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_msisdn_permission - yes
-                            , '2'  // state_main_menu - change message preferences (registered for voice)
-                            , '1'  // state_change_menu_voice - change date/time to receive messages
-                            , '1'  // state_voice_days - monday & wednesday
-                            , '2'  // state_voice_time - 2-5pm
-                        )
-                        .check.interaction({
-                            state: 'state_end_voice_confirm',
-                            reply: "Thank you. You will now start receiving voice calls between [time] on [days]."
-                        })
-                        .run();
-                });
-                it(" - via opt-out, loss-subscription, to end of the line", function() {
+                it.skip(" - via opt-out, loss-subscription, to end of the line", function() {
                     return tester
                         .setup.user.addr('082222')
                         .inputs(
@@ -1105,7 +1088,7 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
-                it(" - via opt-out, state_optout_receiver, to end of the line", function() {
+                it.skip(" - via opt-out, state_optout_receiver, to end of the line", function() {
                     return tester
                         .setup.user.addr('082222')
                         .inputs(
