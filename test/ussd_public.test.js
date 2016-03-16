@@ -35,6 +35,10 @@ describe("Hello Mama app", function() {
                         change: {
                             api_token: 'test_token_change',
                             url: "http://localhost:8005/api/v1/"
+                        },
+                        optout: {
+                            api_token: 'test_token_change',
+                            url: "http://localhost:8001/api/v1/"
                         }
                     },
                     no_timeout_redirects: [
@@ -45,60 +49,6 @@ describe("Hello Mama app", function() {
                 })
                 .setup(function(api) {
                     fixtures().forEach(api.http.fixtures.add);
-                })
-                .setup(function(api) {
-                    // new user 082101  (*** assume father role ***)
-                    api.contacts.add({
-                        msisdn: '+082101',
-                        extra: {},
-                        key: "contact_key_082111",
-                        user_account: "contact_user_account"
-                    });
-                })
-                .setup(function(api) {
-                    // new user 082111
-                    api.contacts.add({
-                        msisdn: '+082111',
-                        extra: {},
-                        key: "contact_key_082111",
-                        user_account: "contact_user_account"
-                    });
-                })
-                .setup(function(api) {
-                    // registered user 082222
-                    api.contacts.add({
-                        msisdn: '+082222',
-                        extra: {},
-                        key: "contact_key_082222",
-                        user_account: "contact_user_account"
-                    });
-                })
-                .setup(function(api) {
-                    // registered user 082333, registered for baby messages
-                    api.contacts.add({
-                        msisdn: '+082333',
-                        extra: {},
-                        key: "contact_key_082333",
-                        user_account: "contact_user_account"
-                    });
-                })
-                .setup(function(api) {
-                    // registered user 082444, registered for sms
-                    api.contacts.add({
-                        msisdn: '+082444',
-                        extra: {},
-                        key: "contact_key_082444",
-                        user_account: "contact_user_account"
-                    });
-                })
-                .setup(function(api) {
-                    // registered user 082555, registered for voice (*** assume father role ***)
-                    api.contacts.add({
-                        msisdn: '+082555',
-                        extra: {},
-                        key: "contact_key_082555",
-                        user_account: "contact_user_account"
-                    });
                 })
                 ;
         });
@@ -277,7 +227,7 @@ describe("Hello Mama app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            var expected_used = [2];
+                            var expected_used = [2,9];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -384,7 +334,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [2, 16, 17];
+                                var expected_used = [2,9,16,17];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -576,7 +526,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [12, 22, 23];
+                                var expected_used = [12,13,22,23];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -627,7 +577,7 @@ describe("Hello Mama app", function() {
                             reply: "Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899"
                         })
                         .check(function(api) {
-                            var expected_used = [2];
+                            var expected_used = [2,9];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -655,7 +605,7 @@ describe("Hello Mama app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            var expected_used = [2, 4];
+                            var expected_used = [2,4,9];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -680,7 +630,7 @@ describe("Hello Mama app", function() {
                             reply: "Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899"
                         })
                         .check(function(api) {
-                            var expected_used = [2, 4];
+                            var expected_used = [2,4,9];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -705,7 +655,7 @@ describe("Hello Mama app", function() {
                             reply: "Thank you for using the Hello Mama service"
                         })
                         .check(function(api) {
-                            var expected_used = [2, 4];
+                            var expected_used = [2,4,9];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -873,7 +823,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [2];
+                                var expected_used = [2,9];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -902,7 +852,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [2];
+                                var expected_used = [2,9];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -928,7 +878,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will now receive messages to support you during this difficult time."
                             })
                             .check(function(api) {
-                                var expected_used = [2];
+                                var expected_used = [2,9,31];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -939,7 +889,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 1, 2 - miscarriage, no
-                    it("case 1 > to state_end_loss (miscarriage)", function() {
+                    it.skip("case 1 > to state_end_loss (miscarriage)", function() {
                         return tester
                             .setup.user.addr('05059992222')
                             .inputs(
@@ -965,7 +915,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 2 - stillborn
-                    it("case 1 > to state_end_loss (stillborn)", function() {
+                    it.skip("case 1 > to state_end_loss (stillborn)", function() {
                         return tester
                             .setup.user.addr('05059992222')
                             .inputs(
@@ -990,7 +940,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 3 - baby death
-                    it("case 1 > to state_end_loss (stillborn)", function() {
+                    it.skip("case 1 > to state_end_loss (stillborn)", function() {
                         return tester
                             .setup.user.addr('05059992222')
                             .inputs(
@@ -1015,7 +965,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 4 - not useful
-                    it("case 1 > to state_end_optout", function() {
+                    it.skip("case 1 > to state_end_optout", function() {
                         return tester
                             .setup.user.addr('05059992222')
                             .inputs(
@@ -1040,7 +990,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 5 - other
-                    it("case 1 > to state_end_optout", function() {
+                    it.skip("case 1 > to state_end_optout", function() {
                         return tester
                             .setup.user.addr('05059992222')
                             .inputs(
@@ -1143,7 +1093,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will now receive messages to support you during this difficult time."
                             })
                             .check(function(api) {
-                                var expected_used = [4,5];
+                                var expected_used = [4,5,32,33];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1154,7 +1104,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 1, 2 - miscarriage, no
-                    it("case 2 > to state_end_loss (miscarriage)", function() {
+                    it.skip("case 2 > to state_end_loss (miscarriage)", function() {
                         return tester
                             .setup.user.addr('05059993333')
                             .inputs(
@@ -1180,7 +1130,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 2 - stillborn
-                    it("case 2 > to state_end_loss (stillborn)", function() {
+                    it.skip("case 2 > to state_end_loss (stillborn)", function() {
                         return tester
                             .setup.user.addr('05059993333')
                             .inputs(
@@ -1205,7 +1155,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 3 - baby death
-                    it("case 2 > to state_end_loss (stillborn)", function() {
+                    it.skip("case 2 > to state_end_loss (stillborn)", function() {
                         return tester
                             .setup.user.addr('05059993333')
                             .inputs(
@@ -1230,7 +1180,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 4 - not useful
-                    it("case 2 > to state_optout_receiver", function() {
+                    it.skip("case 2 > to state_optout_receiver", function() {
                         return tester
                             .setup.user.addr('05059993333')
                             .inputs(
@@ -1260,7 +1210,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 4, 1 - unsubscribe mother
-                    it("case 2 > to state_end_optout", function() {
+                    it.skip("case 2 > to state_end_optout", function() {
                         return tester
                             .setup.user.addr('05059993333')
                             .inputs(
@@ -1286,7 +1236,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 4, 2 - unsubscribe household
-                    it("case 2 > to state_end_optout", function() {
+                    it.skip("case 2 > to state_end_optout", function() {
                         return tester
                             .setup.user.addr('05059993333')
                             .inputs(
@@ -1312,7 +1262,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 4, 3 - unsubscribe all
-                    it("case 2 > to state_end_optout", function() {
+                    it.skip("case 2 > to state_end_optout", function() {
                         return tester
                             .setup.user.addr('05059993333')
                             .inputs(
@@ -1338,7 +1288,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 5 - other
-                    it("case 2 > to state_optout_receiver", function() {
+                    it.skip("case 2 > to state_optout_receiver", function() {
                         return tester
                             .setup.user.addr('05059993333')
                             .inputs(
@@ -1391,7 +1341,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [12];
+                                var expected_used = [12,13];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1420,7 +1370,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [12];
+                                var expected_used = [12,13];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1446,7 +1396,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will now receive messages to support you during this difficult time."
                             })
                             .check(function(api) {
-                                var expected_used = [12];
+                                var expected_used = [12,13,34,35];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1457,7 +1407,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 1, 2 - miscarriage, no
-                    it("case 3 > to state_end_loss (miscarriage)", function() {
+                    it.skip("case 3 > to state_end_loss (miscarriage)", function() {
                         return tester
                             .setup.user.addr('05059996666')
                             .inputs(
@@ -1483,7 +1433,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 2 - stillborn
-                    it("case 3 > to state_end_loss (stillborn)", function() {
+                    it.skip("case 3 > to state_end_loss (stillborn)", function() {
                         return tester
                             .setup.user.addr('05059996666')
                             .inputs(
@@ -1508,7 +1458,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 3 - baby death
-                    it("case 3 > to state_end_loss (stillborn)", function() {
+                    it.skip("case 3 > to state_end_loss (stillborn)", function() {
                         return tester
                             .setup.user.addr('05059996666')
                             .inputs(
@@ -1533,7 +1483,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 4 - not useful
-                    it("case 3 > to state_optout_receiver", function() {
+                    it.skip("case 3 > to state_optout_receiver", function() {
                         return tester
                             .setup.user.addr('05059996666')
                             .inputs(
@@ -1563,7 +1513,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 4, 1 - unsubscribe mother
-                    it("case 3 > to state_end_optout", function() {
+                    it.skip("case 3 > to state_end_optout", function() {
                         return tester
                             .setup.user.addr('05059996666')
                             .inputs(
@@ -1589,7 +1539,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 4, 2 - unsubscribe household
-                    it("case 3 > to state_end_optout", function() {
+                    it.skip("case 3 > to state_end_optout", function() {
                         return tester
                             .setup.user.addr('05059996666')
                             .inputs(
@@ -1615,7 +1565,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 4, 3 - unsubscribe all
-                    it("case 3 > to state_end_optout", function() {
+                    it.skip("case 3 > to state_end_optout", function() {
                         return tester
                             .setup.user.addr('05059996666')
                             .inputs(
@@ -1641,7 +1591,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 5 - other
-                    it("case 3 > to state_optout_receiver", function() {
+                    it.skip("case 3 > to state_optout_receiver", function() {
                         return tester
                             .setup.user.addr('05059996666')
                             .inputs(
@@ -1749,7 +1699,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will now receive messages to support you during this difficult time."
                             })
                             .check(function(api) {
-                                var expected_used = [6,7];
+                                var expected_used = [6,7,34,35];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1760,7 +1710,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 1, 2 - miscarriage, no
-                    it("case 4 > to state_end_loss (miscarriage)", function() {
+                    it.skip("case 4 > to state_end_loss (miscarriage)", function() {
                         return tester
                             .setup.user.addr('05059997777')
                             .inputs(
@@ -1786,7 +1736,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 2 - stillborn
-                    it("case 4 > to state_end_loss (stillborn)", function() {
+                    it.skip("case 4 > to state_end_loss (stillborn)", function() {
                         return tester
                             .setup.user.addr('05059997777')
                             .inputs(
@@ -1811,7 +1761,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 3 - baby death
-                    it("case 4 > to state_end_loss (stillborn)", function() {
+                    it.skip("case 4 > to state_end_loss (stillborn)", function() {
                         return tester
                             .setup.user.addr('05059997777')
                             .inputs(
@@ -1836,7 +1786,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 4 - not useful
-                    it("case 4 > to state_end_optout", function() {
+                    it.skip("case 4 > to state_end_optout", function() {
                         return tester
                             .setup.user.addr('05059997777')
                             .inputs(
@@ -1861,7 +1811,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 5 - other
-                    it("case 4 > to state_end_optout", function() {
+                    it.skip("case 4 > to state_end_optout", function() {
                         return tester
                             .setup.user.addr('05059997777')
                             .inputs(
@@ -1885,34 +1835,6 @@ describe("Hello Mama app", function() {
                             })
                             .run();
                     });
-                });
-
-
-
-                it("to state_end_optout (via state 16)", function() {
-                    return tester
-                        .setup.user.addr('05059992222')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_msisdn_permission - yes
-                            , '5'  // state_main_menu - stop receiving messages
-                            , '4'  // state_optout_reason - messages not useful
-                            , '1'  // state_optout_receiver - only me
-                        )
-                        .check.interaction({
-                            state: 'state_end_optout',
-                            reply: "Thank you. You will no longer receive messages"
-                        })
-                        .check(function(api) {
-                            var expected_used = [2,9];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
-                        })
-                        .run();
                 });
             });
 

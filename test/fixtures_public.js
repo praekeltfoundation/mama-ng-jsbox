@@ -357,6 +357,7 @@ module.exports = function() {
 
         // 9: get identity 3f7c8851-5204-43f7-af7f-005059992222
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {},
@@ -550,6 +551,7 @@ module.exports = function() {
 
         // 13: get identity 3f7c8851-5204-43f7-af7f-005059996666
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {},
@@ -1259,8 +1261,128 @@ module.exports = function() {
             }
         },
 
+        // 31: Change to loss 1
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8005/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "action": "change_loss",
+                    "data": {
+                        "loss_reason": "miscarriage"
+                    }
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 2
+                }
+            }
+        },
 
+        // 31: Change to loss 2
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8005/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "action": "change_loss",
+                    "data": {
+                        "loss_reason": "miscarriage"
+                    }
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 2
+                }
+            }
+        },
 
+        // 32: Unsubscribe 1
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8005/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "action": "unsubscribe_household_only",
+                    "data": {
+                        "household_id": "3f7c8851-5204-43f7-af7f-005059993333",
+                        "loss_reason": "miscarriage"
+                    }
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 31: Change to loss 3
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8005/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "action": "change_loss",
+                    "data": {
+                        "loss_reason": "miscarriage"
+                    }
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 3
+                }
+            }
+        },
+
+        // 31: Optout 1
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059997777",
+                    "reason": "miscarriage"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
 
 
     ];

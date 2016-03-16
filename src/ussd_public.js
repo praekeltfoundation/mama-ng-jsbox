@@ -1,5 +1,6 @@
 go.app = function() {
     var vumigo = require('vumigo_v02');
+    // var Q = require('q');
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
@@ -225,8 +226,10 @@ go.app = function() {
                         self.im.user.set_answer('mother_id', contact_id);
                         if (mother.details.linked_to) {
                             self.im.user.set_answer('household_id', mother.details.linked_to);
+                            self.im.user.set_answer('seperate_household_receiver', true);
                         } else {
                             self.im.user.set_answer('household_id', null);
+                            self.im.user.set_answer('seperate_household_receiver', false);
                         }
                         return self.states.create('state_main_menu');
                     });
@@ -238,9 +241,12 @@ go.app = function() {
                         self.im.user.set_answer('household_id', contact.id);
                         self.im.user.set_answer('mother_id', contact.details.linked_to);
                         if (contact.details.household_msgs_only) {
-                            self.im.user.set_answer('receiver_household_only', true);
+                            // set true for mother_friend, mother_family, mother_father identification
+                            self.im.user.set_answer('seperate_household_receiver', true);
                             return self.states.create('state_main_menu_household');
                         } else {
+                            // set false for friend_only, family_only, father_only identification
+                            self.im.user.set_answer('seperate_household_receiver', false);
                             return self.states.create('state_main_menu');
                         }
                     });
@@ -547,14 +553,20 @@ go.app = function() {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
                 choices: [
-                    new Choice('state_loss_subscription', $("Mother miscarried")),
-                    new Choice('state_end_loss', $("Baby stillborn")),
-                    new Choice('state_end_loss', $("Baby passed away")),
-                    new Choice('state_check_subscription', $("Messages not useful")),
-                    new Choice('state_check_subscription', $("Other"))
+                    new Choice('miscarriage', $("Mother miscarried")),
+                    new Choice('stillborn', $("Baby stillborn")),
+                    new Choice('baby_death', $("Baby passed away")),
+                    new Choice('not_useful', $("Messages not useful")),
+                    new Choice('other', $("Other"))
                 ],
                 next: function(choice) {
-                    return choice.value;
+                    switch (choice.value) {
+                        case 'miscarriage': return 'state_loss_subscription';
+                        case 'stillborn': return 'state_end_loss';
+                        case 'baby_death': return 'state_end_loss';
+                        case 'not_useful': return 'state_check_subscription';
+                        case 'other': return 'state_check_subscription';
+                    }
                 }
             });
         });
@@ -590,12 +602,30 @@ go.app = function() {
         });
 
         self.add('state_switch_loss', function(name) {
-            return Q
-                .all([
-
-                ])
+            return go.utils_project
+                .switch_to_loss(self.im, self.im.user.answers.mother_id,
+                                self.im.user.answers.state_optout_reason)
                 .then(function() {
-                    return 'state_end_loss_subscription_confirm';
+                    if (self.im.user.answers.household_id &&
+                        self.im.user.answers.seperate_household_receiver === true) {
+                        return go.utils
+                            .optout(self.im, self.im.user.answers.household_id,
+                                    self.im.user.answers.state_optout_reason)
+                            .then(function() {
+                                return self.states.create('state_end_loss_subscription_confirm');
+                            });
+                    } else if (self.im.user.answers.household_id &&
+                               self.im.user.answers.seperate_household_receiver === false) {
+                        return go.utils_project
+                            .unsub_household(self.im, self.im.user.answers.mother_id,
+                                             self.im.user.answers.household_id,
+                                             self.im.user.answers.state_optout_reason)
+                            .then(function() {
+                                return self.states.create('state_end_loss_subscription_confirm');
+                            });
+                    } else {
+                        return self.states.create('state_end_loss_subscription_confirm');
+                    }
                 });
         });
 

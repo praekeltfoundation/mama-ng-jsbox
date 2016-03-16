@@ -487,6 +487,21 @@ go.utils = {
 
 // OPTOUT & OPTIN HELPERS
 
+    optout: function(im, identity_id, optout_reason) {
+      // Posts an optout with a reason to the identity store optout endpoint
+
+        // TODO: use correct optout data
+        var optout_info = {
+            identity: identity_id,
+            reason: optout_reason || 'unknown'
+        };
+        return go.utils
+            .service_api_call("optout", "post", null, optout_info, "optout/", im)
+            .then(function(response) {
+                return response;
+            });
+    },
+
     opt_out: function(im, contact) {
         contact.extra.optout_last_attempt = go.utils.get_today(im.config)
             .format('YYYY-MM-DD hh:mm:ss.SSS');
