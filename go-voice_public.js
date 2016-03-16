@@ -1140,7 +1140,7 @@ go.utils_project = {
                 "voice_times": voice_times || null
             }
         };
-        
+
         return go.utils
             .service_api_call("change", "post", null, change_data, "change/", im)
             .then(function() {
@@ -1535,7 +1535,13 @@ go.app = function() {
                     new Choice('change', $('Change from text to voice')),
                     new Choice('back', $('To go Back to main menu, press 0 then #')),
                 ],
-                next: 'state_voice_days'
+                next: function(choice) {
+                    if (choice.value === 'change') {
+                        return 'state_voice_days';
+                    } else {
+                        return 'state_sms_change';
+                    }
+                }
             });
         });
 
@@ -1605,11 +1611,30 @@ go.app = function() {
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('change', $('Change times')),
-                    new Choice('change', $('Change mother message from voice to text')),
+                    new Choice('state_voice_days', $('Change times')),
+                    new Choice('state_end_sms_confirm', $('Change mother message from voice to text')),
                     new Choice('back', $('To go Back to main menu, press 0 then #'))
                 ],
-                next: 'state_baby_save'
+                next: function(choice) {
+                    if (choice.value !== 'back') {
+                        return choice.value;
+                    } else {
+                        return 'state_voice_change';
+                    }
+                }
+            });
+        });
+
+        // EndState st-09
+        self.add('state_end_sms_confirm', function(name) {
+            var speech_option = '1';
+            self.im.user.set_answer('msg_format', 'text');
+
+            return new EndState(name, {
+                text: $('Thank you. You will now receive text messages.'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: 'state_start'
             });
         });
 

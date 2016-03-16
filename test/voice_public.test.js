@@ -642,7 +642,7 @@ describe("Mama Nigeria App", function() {
                         .setup.user.addr('+07070050005')
                         .inputs(
                             {session_event: 'new'}
-                            , '05059993333'  // msg_receiver_msisdn
+                            , '05059996666'  // msg_receiver_msisdn
                             , '2'  // main_menu - msg_pref
                         )
                         .check.interaction({
@@ -664,7 +664,77 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [4,5,19,20,25];
+                            var expected_used = [12,22,23,25];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
+                        .run();
+                });
+                it("should navigate to state_voice_days", function() {
+                    return tester
+                        .setup.user.addr('+07070050005')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059996666'  // msg_receiver_msisdn
+                            , '2'  // state_main_menu - msg_pref
+                            , '1'  // state_voice_change
+                        )
+                        .check.interaction({
+                            state: 'state_voice_days',
+                            reply: [
+                                'Message days?',
+                                '1. Monday and Wednesday',
+                                '2. Tuesday and Thursday'
+                            ].join('\n')
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_voice_days_1.mp3',
+                                    wait_for: '#',
+                                    barge_in: true
+                                }
+                            }
+                        })
+                        .check(function(api) {
+                            var expected_used = [12,22,23,25];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
+                        .run();
+                });
+                it("should navigate to state_end_sms_confirm", function() {
+                    return tester
+                        .setup.user.addr('+07070050005')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '05059996666'  // msg_receiver_msisdn
+                            , '2'  // state_main_menu - msg_pref
+                            , '2'  // state_voice_change
+                        )
+                        .check.interaction({
+                            state: 'state_end_sms_confirm',
+                            reply: 'Thank you. You will now receive text messages.'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_sms_confirm_1.mp3',
+                                    wait_for: '#',
+                                    barge_in: true
+                                }
+                            }
+                        })
+                        .check(function(api) {
+                            var expected_used = [12,22,23,25];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {

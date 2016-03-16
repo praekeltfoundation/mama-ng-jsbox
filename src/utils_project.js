@@ -614,7 +614,7 @@ go.utils_project = {
                 "voice_times": voice_times || null
             }
         };
-        
+
         return go.utils
             .service_api_call("change", "post", null, change_data, "change/", im)
             .then(function() {
