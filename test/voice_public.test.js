@@ -448,261 +448,377 @@ describe("Mama Nigeria App", function() {
         });
 
         describe("Flow from main menu - message preferences", function() {
-            it("should navigate to state_change_menu_sms if registered for sms", function() {
-                return tester
-                .setup.user.addr('+07070050005')
-                .inputs(
-                    {session_event: 'new'}
-                    , '05059992222'  // msg_receiver_msisdn
-                    , '2'  // main_menu - msg_pref
-                )
-                .check.interaction({
-                    state: 'state_change_menu_sms',
-                    reply: [
-                        'Please select what you would like to do:',
-                        '1. Change from text to voice'
-                    ].join('\n')
-                })
-                .check.reply.properties({
-                    helper_metadata: {
-                        voice: {
-                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_change_menu_sms_1.mp3',
-                            wait_for: '#',
-                            barge_in: true
+            describe("Change from SMS to Voice messages", function() {
+                it("case 1 > should navigate to state_change_menu_sms if registered for sms", function() {
+                    return tester
+                    .setup.user.addr('+07070050005')
+                    .inputs(
+                        {session_event: 'new'}
+                        , '05059992222'  // msg_receiver_msisdn
+                        , '2'  // main_menu - msg_pref
+                    )
+                    .check.interaction({
+                        state: 'state_change_menu_sms',
+                        reply: [
+                            'Please select what you would like to do:',
+                            '1. Change from text to voice'
+                        ].join('\n')
+                    })
+                    .check.reply.properties({
+                        helper_metadata: {
+                            voice: {
+                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_change_menu_sms_1.mp3',
+                                wait_for: '#',
+                                barge_in: true
+                            }
                         }
-                    }
-                })
-                .check(function(api) {
-                    var expected_used = [2,16,17,25];
-                    var fixts = api.http.fixtures.fixtures;
-                    var fixts_used = [];
-                    fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                    });
-                    assert.deepEqual(fixts_used, expected_used);
-                })
-                .run();
+                    })
+                    .check(function(api) {
+                        var expected_used = [2,16,17,25];
+                        var fixts = api.http.fixtures.fixtures;
+                        var fixts_used = [];
+                        fixts.forEach(function(f, i) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
+                    })
+                    .run();
+                });
+                it("case 1 > should navigate to state_voice_days", function() {
+                    return tester
+                    .setup.user.addr('+07070050005')
+                    .inputs(
+                        {session_event: 'new'}
+                        , '05059992222'  // msg_receiver_msisdn
+                        , '2'  // main_menu - msg_pref
+                        , '1'  // state_change_menu_sms - change text to voice
+                    )
+                    .check.interaction({
+                        state: 'state_voice_days',
+                        reply: [
+                            'Message days?',
+                            '1. Monday and Wednesday',
+                            '2. Tuesday and Thursday'
+                        ].join('\n')
+                    })
+                    .check.reply.properties({
+                        helper_metadata: {
+                            voice: {
+                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_voice_days_1.mp3',
+                                wait_for: '#',
+                                barge_in: true
+                            }
+                        }
+                    })
+                    .check(function(api) {
+                        var expected_used = [2,16,17,25];
+                        var fixts = api.http.fixtures.fixtures;
+                        var fixts_used = [];
+                        fixts.forEach(function(f, i) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
+                    })
+                    .run();
+                });
+                it("case 1 > should navigate to state_voice_times", function() {
+                    return tester
+                    .setup.user.addr('+07070050005')
+                    .inputs(
+                        {session_event: 'new'}
+                        , '05059992222'  // msg_receiver_msisdn
+                        , '2'  // main_menu - msg_pref
+                        , '1'  // state_change_menu_sms - change text to voice
+                        , '1'  // state_voice_days - Mon & Wed
+                    )
+                    .check.interaction({
+                        state: 'state_voice_times',
+                        reply: [
+                            'Message times?',
+                            '1. 9-11am',
+                            '2. 2-5pm'
+                        ].join('\n')
+                    })
+                    .check.reply.properties({
+                        helper_metadata: {
+                            voice: {
+                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_voice_times_1.mp3',
+                                wait_for: '#',
+                                barge_in: true
+                            }
+                        }
+                    })
+                    .check(function(api) {
+                        var expected_used = [2,16,17,25];
+                        var fixts = api.http.fixtures.fixtures;
+                        var fixts_used = [];
+                        fixts.forEach(function(f, i) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
+                    })
+                    .run();
+                });
+                it("case 1 > should navigate to state_end_voice_confirm", function() {
+                    return tester
+                    .setup.user.addr('+07070050005')
+                    .inputs(
+                        {session_event: 'new'}
+                        , '05059992222'  // msg_receiver_msisdn
+                        , '2'  // main_menu - msg_pref
+                        , '1'  // state_change_menu_sms - change text to voice
+                        , '2'  // state_voice_days - Tue & Thu
+                        , '1'  // state_voice_times - 9-11am
+                    )
+                    .check.interaction({
+                        state: 'state_end_voice_confirm',
+                        reply: 'Thank you! Time: 9_11. Days: tue_thu.'
+                    })
+                    .check.reply.properties({
+                        helper_metadata: {
+                            voice: {
+                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_voice_confirm_2.mp3',
+                                wait_for: '#',
+                                barge_in: false
+                            }
+                        }
+                    })
+                    .check(function(api) {
+                        var expected_used = [2,9,16,17,18,25,26];
+                        var fixts = api.http.fixtures.fixtures;
+                        var fixts_used = [];
+                        fixts.forEach(function(f, i) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
+                    })
+                    .run();
+                });
             });
-            it("should navigate to state_voice_days", function() {
-                return tester
-                .setup.user.addr('+07070050005')
-                .inputs(
-                    {session_event: 'new'}
-                    , '05059992222'  // msg_receiver_msisdn
-                    , '2'  // main_menu - msg_pref
-                    , '1'  // state_change_menu_sms - change text to voice
-                )
-                .check.interaction({
-                    state: 'state_voice_days',
-                    reply: [
-                        'Message days?',
-                        '1. Monday and Wednesday',
-                        '2. Tuesday and Thursday'
-                    ].join('\n')
-                })
-                .check.reply.properties({
-                    helper_metadata: {
-                        voice: {
-                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_voice_days_1.mp3',
-                            wait_for: '#',
-                            barge_in: true
+            describe("Change Voice message days and times", function() {
+                it("case 2 > should navigate to state_voice_days", function() {
+                    return tester
+                    .setup.user.addr('+07070050005')
+                    .inputs(
+                        {session_event: 'new'}
+                        , '05059993333'  // msg_receiver_msisdn
+                        , '2'  // state_main_menu - msg_pref
+                        , '1'  // state_change_menu_voice - change times
+                    )
+                    .check.interaction({
+                        state: 'state_voice_days',
+                        reply: [
+                            'Message days?',
+                            '1. Monday and Wednesday',
+                            '2. Tuesday and Thursday'
+                        ].join('\n')
+                    })
+                    .check.reply.properties({
+                        helper_metadata: {
+                            voice: {
+                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_voice_days_1.mp3',
+                                wait_for: '#',
+                                barge_in: true
+                            }
                         }
-                    }
-                })
-                .check(function(api) {
-                    var expected_used = [2,16,17,25];
-                    var fixts = api.http.fixtures.fixtures;
-                    var fixts_used = [];
-                    fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                    });
-                    assert.deepEqual(fixts_used, expected_used);
-                })
-                .run();
+                    })
+                    .check(function(api) {
+                        var expected_used = [4,5,19,20,25];
+                        var fixts = api.http.fixtures.fixtures;
+                        var fixts_used = [];
+                        fixts.forEach(function(f, i) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
+                    })
+                    .run();
+                });
+                it("case 2 > should navigate to state_voice_days", function() {
+                    return tester
+                    .setup.user.addr('+07070050005')
+                    .inputs(
+                        {session_event: 'new'}
+                        , '05059993333'  // msg_receiver_msisdn
+                        , '2'  // main_menu - msg_pref
+                        , '1'  // state_change_menu_sms - change text to voice
+                    )
+                    .check.interaction({
+                        state: 'state_voice_days',
+                        reply: [
+                            'Message days?',
+                            '1. Monday and Wednesday',
+                            '2. Tuesday and Thursday'
+                        ].join('\n')
+                    })
+                    .check.reply.properties({
+                        helper_metadata: {
+                            voice: {
+                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_voice_days_1.mp3',
+                                wait_for: '#',
+                                barge_in: true
+                            }
+                        }
+                    })
+                    .check(function(api) {
+                        var expected_used = [4,5,19,20,25];
+                        var fixts = api.http.fixtures.fixtures;
+                        var fixts_used = [];
+                        fixts.forEach(function(f, i) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
+                    })
+                    .run();
+                });
+                it("case 2 > should navigate to state_voice_times", function() {
+                    return tester
+                    .setup.user.addr('+07070050005')
+                    .inputs(
+                        {session_event: 'new'}
+                        , '05059993333'  // msg_receiver_msisdn
+                        , '2'  // main_menu - msg_pref
+                        , '1'  // state_change_menu_sms - change text to voice
+                        , '1'  // state_voice_days - Mon & Wed
+                    )
+                    .check.interaction({
+                        state: 'state_voice_times',
+                        reply: [
+                            'Message times?',
+                            '1. 9-11am',
+                            '2. 2-5pm'
+                        ].join('\n')
+                    })
+                    .check.reply.properties({
+                        helper_metadata: {
+                            voice: {
+                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_voice_times_1.mp3',
+                                wait_for: '#',
+                                barge_in: true
+                            }
+                        }
+                    })
+                    .check(function(api) {
+                        var expected_used = [4,5,19,20,25];
+                        var fixts = api.http.fixtures.fixtures;
+                        var fixts_used = [];
+                        fixts.forEach(function(f, i) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
+                    })
+                    .run();
+                });
+                it("case 2 > should navigate to state_end_voice_confirm", function() {
+                    return tester
+                    .setup.user.addr('+07070050005')
+                    .inputs(
+                        {session_event: 'new'}
+                        , '05059993333'  // msg_receiver_msisdn
+                        , '2'  // main_menu - msg_pref
+                        , '1'  // state_change_menu_sms - change text to voice
+                        , '1'  // state_voice_days - Mon & Wed
+                        , '2'  // state_voice_times - 2-5pm
+                    )
+                    .check.interaction({
+                        state: 'state_end_voice_confirm',
+                        reply: 'Thank you! Time: 2_5. Days: mon_wed.'
+                    })
+                    .check.reply.properties({
+                        helper_metadata: {
+                            voice: {
+                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_voice_confirm_3.mp3',
+                                wait_for: '#',
+                                barge_in: false
+                            }
+                        }
+                    })
+                    .check(function(api) {
+                        var expected_used = [4,5,19,20,21,25,28,30];
+                        var fixts = api.http.fixtures.fixtures;
+                        var fixts_used = [];
+                        fixts.forEach(function(f, i) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
+                    })
+                    .run();
+                });
             });
-            it("should navigate to state_voice_times", function() {
-                return tester
-                .setup.user.addr('+07070050005')
-                .inputs(
-                    {session_event: 'new'}
-                    , '05059992222'  // msg_receiver_msisdn
-                    , '2'  // main_menu - msg_pref
-                    , '1'  // state_change_menu_sms - change text to voice
-                    , '1'  // state_voice_days - Mon & Wed
-                )
-                .check.interaction({
-                    state: 'state_voice_times',
-                    reply: [
-                        'Message times?',
-                        '1. 9-11am',
-                        '2. 2-5pm'
-                    ].join('\n')
-                })
-                .check.reply.properties({
-                    helper_metadata: {
-                        voice: {
-                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_voice_times_1.mp3',
-                            wait_for: '#',
-                            barge_in: true
+            describe("Change from Voice to SMS messages", function() {
+                it("case 3 > should navigate to state_change_menu_voice if registered for voice", function() {
+                    return tester
+                    .setup.user.addr('+07070050005')
+                    .inputs(
+                        {session_event: 'new'}
+                        , '05059996666'  // msg_receiver_msisdn
+                        , '2'  // main_menu - msg_pref
+                    )
+                    .check.interaction({
+                        state: 'state_change_menu_voice',
+                        reply: [
+                            'Please select what you would like to do:',
+                            '1. Change times',
+                            '2. Change mother message from voice to text'
+                        ].join('\n')
+                    })
+                    .check.reply.properties({
+                        helper_metadata: {
+                            voice: {
+                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_change_menu_voice_1.mp3',
+                                wait_for: '#',
+                                barge_in: true
+                            }
                         }
-                    }
-                })
-                .check(function(api) {
-                    var expected_used = [2,16,17,25];
-                    var fixts = api.http.fixtures.fixtures;
-                    var fixts_used = [];
-                    fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                    });
-                    assert.deepEqual(fixts_used, expected_used);
-                })
-                .run();
-            });
-            it("should navigate to state_end_voice_confirm", function() {
-                return tester
-                .setup.user.addr('+07070050005')
-                .inputs(
-                    {session_event: 'new'}
-                    , '05059992222'  // msg_receiver_msisdn
-                    , '2'  // main_menu - msg_pref
-                    , '1'  // state_change_menu_sms - change text to voice
-                    , '2'  // state_voice_days - Tue & Thu
-                    , '1'  // state_voice_times - 9-11am
-                )
-                .check.interaction({
-                    state: 'state_end_voice_confirm',
-                    reply: 'Thank you! Time: 9_11. Days: tue_thu.'
-                })
-                .check.reply.properties({
-                    helper_metadata: {
-                        voice: {
-                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_voice_confirm_2.mp3',
-                            wait_for: '#',
-                            barge_in: false
+                    })
+                    .check(function(api) {
+                        var expected_used = [12,22,23,25];
+                        var fixts = api.http.fixtures.fixtures;
+                        var fixts_used = [];
+                        fixts.forEach(function(f, i) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
+                    })
+                    .run();
+                });
+                it("case 3 > should navigate to state_end_sms_confirm", function() {
+                    return tester
+                    .setup.user.addr('+07070050005')
+                    .inputs(
+                        {session_event: 'new'}
+                        , '05059996666'  // msg_receiver_msisdn
+                        , '2'  // state_main_menu - msg_pref
+                        , '2'  // state_change_menu_voice - voice to text
+                    )
+                    .check.interaction({
+                        state: 'state_end_sms_confirm',
+                        reply: 'Thank you. You will now receive text messages.'
+                    })
+                    .check.reply.properties({
+                        helper_metadata: {
+                            voice: {
+                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_sms_confirm_1.mp3',
+                                wait_for: '#',
+                                barge_in: true
+                            }
                         }
-                    }
-                })
-                .check(function(api) {
-                    var expected_used = [2,9,16,17,18,25,26];
-                    var fixts = api.http.fixtures.fixtures;
-                    var fixts_used = [];
-                    fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                    });
-                    assert.deepEqual(fixts_used, expected_used);
-                })
-                .run();
-            });
-            it("should navigate to state_change_menu_voice if registered for voice", function() {
-                return tester
-                .setup.user.addr('+07070050005')
-                .inputs(
-                    {session_event: 'new'}
-                    , '05059996666'  // msg_receiver_msisdn
-                    , '2'  // main_menu - msg_pref
-                )
-                .check.interaction({
-                    state: 'state_change_menu_voice',
-                    reply: [
-                        'Please select what you would like to do:',
-                        '1. Change times',
-                        '2. Change mother message from voice to text'
-                    ].join('\n')
-                })
-                .check.reply.properties({
-                    helper_metadata: {
-                        voice: {
-                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_change_menu_voice_1.mp3',
-                            wait_for: '#',
-                            barge_in: true
-                        }
-                    }
-                })
-                .check(function(api) {
-                    var expected_used = [12,22,23,25];
-                    var fixts = api.http.fixtures.fixtures;
-                    var fixts_used = [];
-                    fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                    });
-                    assert.deepEqual(fixts_used, expected_used);
-                })
-                .run();
-            });
-            it("should navigate to state_voice_days", function() {
-                return tester
-                .setup.user.addr('+07070050005')
-                .inputs(
-                    {session_event: 'new'}
-                    , '05059996666'  // msg_receiver_msisdn
-                    , '2'  // state_main_menu - msg_pref
-                    , '1'  // state_change_menu_voice
-                )
-                .check.interaction({
-                    state: 'state_voice_days',
-                    reply: [
-                        'Message days?',
-                        '1. Monday and Wednesday',
-                        '2. Tuesday and Thursday'
-                    ].join('\n')
-                })
-                .check.reply.properties({
-                    helper_metadata: {
-                        voice: {
-                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_voice_days_1.mp3',
-                            wait_for: '#',
-                            barge_in: true
-                        }
-                    }
-                })
-                .check(function(api) {
-                    var expected_used = [12,22,23,25];
-                    var fixts = api.http.fixtures.fixtures;
-                    var fixts_used = [];
-                    fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                    });
-                    assert.deepEqual(fixts_used, expected_used);
-                })
-                .run();
-            });
-            it("should navigate to state_end_sms_confirm", function() {
-                return tester
-                .setup.user.addr('+07070050005')
-                .inputs(
-                    {session_event: 'new'}
-                    , '05059996666'  // msg_receiver_msisdn
-                    , '2'  // state_main_menu - msg_pref
-                    , '2'  // state_change_menu_voice
-                )
-                .check.interaction({
-                    state: 'state_end_sms_confirm',
-                    reply: 'Thank you. You will now receive text messages.'
-                })
-                .check.reply.properties({
-                    helper_metadata: {
-                        voice: {
-                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_sms_confirm_1.mp3',
-                            wait_for: '#',
-                            barge_in: true
-                        }
-                    }
-                })
-                .check(function(api) {
-                    var expected_used = [12,13,22,23,24,25,29];
-                    var fixts = api.http.fixtures.fixtures;
-                    var fixts_used = [];
-                    fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                    });
-                    assert.deepEqual(fixts_used, expected_used);
-                })
-                .run();
+                    })
+                    .check(function(api) {
+                        var expected_used = [12,13,22,23,24,25,29];
+                        var fixts = api.http.fixtures.fixtures;
+                        var fixts_used = [];
+                        fixts.forEach(function(f, i) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
+                    })
+                    .run();
+                });
             });
         });
 
         describe("Flow from main menu - change number", function() {
-            it("should navigate to state_new_msisdn", function() {
+            it("case 1 > should navigate to state_new_msisdn", function() {
                 return tester
                 .setup.user.addr('+2345059992222')
                 .inputs(
@@ -725,7 +841,7 @@ describe("Mama Nigeria App", function() {
                 })
                 .run();
             });
-            it("should navigate to state_new_msisdn (invalid number)", function() {
+            it("case 1 > should navigate to state_new_msisdn (invalid number)", function() {
                 return tester
                 .setup.user.addr('+2345059992222')
                 .inputs(
@@ -749,7 +865,7 @@ describe("Mama Nigeria App", function() {
                 })
                 .run();
             });
-            it("should navigate to state_number_in_use", function() {
+            it("case 1 > should navigate to state_number_in_use", function() {
                 return tester
                 .setup.user.addr('+2345059992222')
                 .inputs(
@@ -777,7 +893,7 @@ describe("Mama Nigeria App", function() {
                 })
                 .run();
             });
-            it("should navigate to state_new_msisdn (via state_number_in_use)", function() {
+            it("case 1 > should navigate to state_new_msisdn (via state_number_in_use)", function() {
                 return tester
                 .setup.user.addr('+2345059992222')
                 .inputs(
@@ -802,7 +918,7 @@ describe("Mama Nigeria App", function() {
                 })
                 .run();
             });
-            it("should navigate to state_end_exit", function() {
+            it("case 1 > should navigate to state_end_exit", function() {
                 return tester
                 .setup.user.addr('+2345059992222')
                 .inputs(
@@ -828,7 +944,7 @@ describe("Mama Nigeria App", function() {
                 })
                 .run();
             });
-            it("should navigate to state_end_new_msisdn", function() {
+            it("case 1 > should navigate to state_end_new_msisdn", function() {
                 return tester
                 .setup.user.addr('+2345059992222')
                 .inputs(
