@@ -586,12 +586,12 @@ go.utils_project = {
 
         // get subscription
         return go.utils
-            .read_active_subscription_by_identity(im, mother_id)
+            .get_active_subscription_by_identity(im, mother_id)
             .then(function(subscription) {
                 im.user.set_answer('mother_subscription', subscription);
                 // get messageset
                 return go.utils
-                    .read_messageset(im, subscription.messageset_id)
+                    .get_messageset(im, subscription.messageset_id)
                     .then(function(messageset) {
                         im.user.set_answer('mother_messageset', messageset);
                         return messageset.content_type;  // 'text' / 'audio'

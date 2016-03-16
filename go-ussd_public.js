@@ -333,7 +333,7 @@ go.utils = {
 
 // STAGE-BASE HELPERS
 
-    read_subscription: function(im, subscription_id) {
+    get_subscription: function(im, subscription_id) {
       // Gets the subscription from the Stage-base Store
       // Returns the subscription object
 
@@ -345,7 +345,7 @@ go.utils = {
             });
     },
 
-    read_active_subscription_by_identity: function(im, identity_id) {
+    get_active_subscription_by_identity: function(im, identity_id) {
       // Searches the Stage-base Store for all active subscriptions with the provided identity_id
       // Returns the first subscription object found or null if none are found
 
@@ -377,7 +377,7 @@ go.utils = {
             });
     },
 
-    read_messageset: function(im, messageset_id) {
+    get_messageset: function(im, messageset_id) {
       // Gets the messageset from the Stage-base Store
       // Returns the messageset object
 
@@ -389,18 +389,6 @@ go.utils = {
             });
     },
 
-    read_messageset_by_shortname: function(im, shortname) {
-      // Gets the messageset from the Stage-base Store via params
-      // Returns the messageset object
-
-        var params = {shortname: shortname};
-        var endpoint = 'messagesets/';
-        return go.utils
-            .service_api_call('messagesets', 'get', params, null, endpoint, im)
-            .then(function(response) {
-                return response.data;
-            });
-    },
 
 // SUBSCRIPTION HELPERS
 
@@ -1124,12 +1112,12 @@ go.utils_project = {
 
         // get subscription
         return go.utils
-            .read_active_subscription_by_identity(im, mother_id)
+            .get_active_subscription_by_identity(im, mother_id)
             .then(function(subscription) {
                 im.user.set_answer('mother_subscription', subscription);
                 // get messageset
                 return go.utils
-                    .read_messageset(im, subscription.messageset_id)
+                    .get_messageset(im, subscription.messageset_id)
                     .then(function(messageset) {
                         im.user.set_answer('mother_messageset', messageset);
                         return messageset.content_type;  // 'text' / 'audio'
