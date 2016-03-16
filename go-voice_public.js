@@ -1511,9 +1511,10 @@ go.app = function() {
         // interstitial to check what type of messages the user is registered for
         self.add('state_msg_type_check', function(name) {
             return go.utils_project
-                .check_msg_type(self.im)
-                .then(function(messageType) {
-                    if (messageType == "text") {
+                .get_subscription_msg_type(self.im, self.im.user.answers.mother_id)
+                .then(function(msg_format) {
+                    self.im.user.set_answer('msg_format', msg_format);
+                    if (msg_format == "text") {
                         return self.states.create('state_sms_change');
                     } else {   // is subscribed for voice messages
                         return self.states.create('state_voice_change');

@@ -27,6 +27,10 @@ describe("Mama Nigeria App", function() {
                             api_token: 'test_token_subscriptions',
                             url: "http://localhost:8002/api/v1/"
                         },
+                        messagesets: {
+                            api_token: 'test_token_messagesets',
+                            url: "http://localhost:8003/api/v1/"
+                        },
                         voice_content: {
                             api_token: "test_token_voice_content",
                             url: "http://localhost:8004/api/v1/"
@@ -483,7 +487,7 @@ describe("Mama Nigeria App", function() {
             });
 
             describe("if you choose to change message preferences", function() {
-                it.skip("should navigate to state_sms_change if registered for sms", function() {
+                it("should navigate to state_sms_change if registered for sms", function() {
                     return tester
                         .setup.user.addr('+07070050005')
                         .inputs(
@@ -509,7 +513,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [2];
+                            var expected_used = [2,16,17,25];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -546,7 +550,7 @@ describe("Mama Nigeria App", function() {
                             }
                         })
                         .check(function(api) {
-                            var expected_used = [4,5,25];
+                            var expected_used = [4,5,19,20,25];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
