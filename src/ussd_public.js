@@ -689,7 +689,6 @@ go.app = function() {
 
         // ChoiceState st-16
         self.add('state_optout_receiver', function(name) {
-            //var role = go.utils_project.check_role(self.im.user.addr);
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
@@ -699,12 +698,34 @@ go.app = function() {
                     new Choice('all', $("All messages"))
                 ],
                 next: function(choice) {
-                        switch (choice.value) {
-                            case 'mother':  // deliberate fall-through to default
-                            case 'household':
-                            case 'all':
-                                return 'state_end_optout';
-                        }
+                    switch (choice.value) {
+                        case 'mother':
+                            return go.utils
+                                .optout(self.im, self.im.user.answers.mother_id,
+                                        self.im.user.answers.state_optout_reason)
+                                .then(function() {
+                                    return 'state_end_optout';
+                                });
+                        case 'household':
+                            return go.utils_project
+                                .unsub_household(self.im, self.im.user.answers.mother_id,
+                                                 self.im.user.answers.household_id,
+                                                 self.im.user.answers.state_optout_reason)
+                                .then(function() {
+                                    return 'state_end_optout';
+                                });
+                        case 'all':
+                            return Q
+                                .all([
+                                    go.utils.optout(self.im, self.im.user.answers.mother_id,
+                                                    self.im.user.answers.state_optout_reason),
+                                    go.utils.optout(self.im, self.im.user.answers.household_id,
+                                                    self.im.user.answers.state_optout_reason)
+                                ])
+                                .then(function() {
+                                    return 'state_end_optout';
+                                });
+                    }
                 }
             });
         });
