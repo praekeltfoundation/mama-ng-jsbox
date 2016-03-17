@@ -1180,7 +1180,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 4 - not useful
-                    it.skip("case 2 > to state_optout_receiver", function() {
+                    it("case 2 > to state_optout_receiver", function() {
                         return tester
                             .setup.user.addr('05059993333')
                             .inputs(
@@ -1288,7 +1288,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 5 - other
-                    it.skip("case 2 > to state_optout_receiver", function() {
+                    it("case 2 > to state_optout_receiver", function() {
                         return tester
                             .setup.user.addr('05059993333')
                             .inputs(
@@ -1483,7 +1483,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 4 - not useful
-                    it.skip("case 3 > to state_optout_receiver", function() {
+                    it("case 3 > to state_optout_receiver", function() {
                         return tester
                             .setup.user.addr('05059996666')
                             .inputs(
@@ -1502,7 +1502,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [12];
+                                var expected_used = [12,13];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1591,7 +1591,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 5 - other
-                    it.skip("case 3 > to state_optout_receiver", function() {
+                    it("case 3 > to state_optout_receiver", function() {
                         return tester
                             .setup.user.addr('05059996666')
                             .inputs(
@@ -1610,7 +1610,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [12];
+                                var expected_used = [12,13];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {

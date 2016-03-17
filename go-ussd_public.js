@@ -1878,7 +1878,7 @@ go.app = function() {
                                 return self.states.create('state_end_optout');
                             });
                     } else if (self.im.user.answers.reg_type === 'mother_and_other' &&
-                         self.im.user.answers.role !== 'mother') {
+                         self.im.user.answers.role_player !== 'mother') {
                         return go.utils
                             .optout(self.im, self.im.user.answers.household_id,
                                     self.im.user.answers.state_optout_reason)
