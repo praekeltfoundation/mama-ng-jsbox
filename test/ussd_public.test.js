@@ -889,7 +889,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 1, 2 - miscarriage, no
-                    it.skip("case 1 > to state_end_loss (miscarriage)", function() {
+                    it("case 1 > to state_end_loss (miscarriage)", function() {
                         return tester
                             .setup.user.addr('05059992222')
                             .inputs(
@@ -904,7 +904,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
                             })
                             .check(function(api) {
-                                var expected_used = [2];
+                                var expected_used = [2,9,36];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1104,7 +1104,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 1, 2 - miscarriage, no
-                    it.skip("case 2 > to state_end_loss (miscarriage)", function() {
+                    it("case 2 > to state_end_loss (miscarriage)", function() {
                         return tester
                             .setup.user.addr('05059993333')
                             .inputs(
@@ -1119,7 +1119,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
                             })
                             .check(function(api) {
-                                var expected_used = [4,5];
+                                var expected_used = [4,5,37,38];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1407,7 +1407,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 1, 2 - miscarriage, no
-                    it.skip("case 3 > to state_end_loss (miscarriage)", function() {
+                    it("case 3 > to state_end_loss (miscarriage)", function() {
                         return tester
                             .setup.user.addr('05059996666')
                             .inputs(
@@ -1422,7 +1422,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
                             })
                             .check(function(api) {
-                                var expected_used = [12];
+                                var expected_used = [12,13,35,39];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1710,7 +1710,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 1, 2 - miscarriage, no
-                    it.skip("case 4 > to state_end_loss (miscarriage)", function() {
+                    it("case 4 > to state_end_loss (miscarriage)", function() {
                         return tester
                             .setup.user.addr('05059997777')
                             .inputs(
@@ -1725,7 +1725,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
                             })
                             .check(function(api) {
-                                var expected_used = [6,7];
+                                var expected_used = [6,7,35,39];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {

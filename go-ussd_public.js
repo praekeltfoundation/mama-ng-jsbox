@@ -1287,7 +1287,7 @@ go.utils_project = {
 
 go.app = function() {
     var vumigo = require('vumigo_v02');
-    // var Q = require('q');
+    var Q = require('q');
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
@@ -1880,12 +1880,34 @@ go.app = function() {
                 error: $(get_error_text(name)),
                 choices: [
                     new Choice('state_switch_loss', $("Yes")),
-                    new Choice('state_end_loss', $("No"))
+                    new Choice('state_optout_all', $("No"))
                 ],
                 next: function(choice) {
                     return choice.value;
                 }
             });
+        });
+
+        self.add('state_optout_all', function(name) {
+            if (self.im.user.answers.household_id === null) {
+                return go.utils
+                    .optout(self.im, self.im.user.answers.mother_id,
+                            self.im.user.answers.state_optout_reason)
+                    .then(function() {
+                        return self.states.create('state_end_loss');
+                    });
+            } else {
+                return Q
+                    .all([
+                        go.utils.optout(self.im, self.im.user.answers.mother_id,
+                                        self.im.user.answers.state_optout_reason),
+                        go.utils.optout(self.im, self.im.user.answers.household_id,
+                                        self.im.user.answers.state_optout_reason)
+                    ])
+                    .then(function() {
+                        return self.states.create('state_end_loss');
+                    });
+            }
         });
 
         self.add('state_switch_loss', function(name) {

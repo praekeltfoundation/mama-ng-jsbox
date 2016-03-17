@@ -1286,7 +1286,7 @@ module.exports = function() {
             }
         },
 
-        // 31: Change to loss 2
+        // 32: Change to loss 2
         {
             'request': {
                 'method': 'POST',
@@ -1311,7 +1311,7 @@ module.exports = function() {
             }
         },
 
-        // 32: Unsubscribe 1
+        // 33: Unsubscribe 1
         {
             'request': {
                 'method': 'POST',
@@ -1337,7 +1337,7 @@ module.exports = function() {
             }
         },
 
-        // 31: Change to loss 3
+        // 34: Change to loss 3
         {
             'request': {
                 'method': 'POST',
@@ -1362,7 +1362,7 @@ module.exports = function() {
             }
         },
 
-        // 31: Optout 1
+        // 35: Optout 1
         {
             'request': {
                 'method': 'POST',
@@ -1380,6 +1380,94 @@ module.exports = function() {
                 'code': 201,
                 'data': {
                     'id': 1
+                }
+            }
+        },
+
+        // 36: Optout 2
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "reason": "miscarriage"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 2
+                }
+            }
+        },
+
+        // 37: Optout 3
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "reason": "miscarriage"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 3
+                }
+            }
+        },
+
+        // 38: Optout 4
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "reason": "miscarriage"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 39: Optout 5
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "reason": "miscarriage"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 5
                 }
             }
         },
