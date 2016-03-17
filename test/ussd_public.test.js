@@ -18,7 +18,8 @@ describe("Hello Mama app", function() {
                     name: 'ussd-public-test',
                     country_code: '234',  // nigeria
                     channel: '*120*8864*0000#',
-                    testing_today: '2015-04-03 06:07:08.999',
+                    testing_today: '2015-04-03 06:07:08.999',  // testing only
+                    testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',  // testing only
                     services: {
                         identities: {
                             api_token: 'test_token_identities',
@@ -259,7 +260,7 @@ describe("Hello Mama app", function() {
                             ].join('\n')
                         })
                         .check(function(api) {
-                            var expected_used = [6, 7];
+                            var expected_used = [6,7,13];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -530,7 +531,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [12,13,22,23];
+                                var expected_used = [7,12,13,22,23];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -554,7 +555,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will now receive text messages."
                             })
                             .check(function(api) {
-                                var expected_used = [12, 13, 22, 23, 24, 29];
+                                var expected_used = [7,12,13,22,23,24,29];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -731,7 +732,7 @@ describe("Hello Mama app", function() {
                             reply: "Thank you. The number which receives messages has been updated."
                         })
                         .check(function(api) {
-                            var expected_used = [8, 12, 13, 14];
+                            var expected_used = [7,8,12,13,14];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -755,7 +756,7 @@ describe("Hello Mama app", function() {
                             reply: "Thank you. The number which receives messages has been updated."
                         })
                         .check(function(api) {
-                            var expected_used = [6, 7, 8, 15];
+                            var expected_used = [6,7,8,13,15];
                             var fixts = api.http.fixtures.fixtures;
                             var fixts_used = [];
                             fixts.forEach(function(f, i) {
@@ -1206,7 +1207,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
                             })
                             .check(function(api) {
-                                var expected_used = [4,5,37,38];
+                                var expected_used = [4,5,38];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1231,7 +1232,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
                             })
                             .check(function(api) {
-                                var expected_used = [4,5,42,43];
+                                var expected_used = [4,5,43];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1256,7 +1257,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
                             })
                             .check(function(api) {
-                                var expected_used = [4,5,47,48];
+                                var expected_used = [4,5,48];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1506,7 +1507,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [12,13];
+                                var expected_used = [7,12,13];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1535,7 +1536,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [12,13];
+                                var expected_used = [7,12,13];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1561,7 +1562,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will now receive messages to support you during this difficult time."
                             })
                             .check(function(api) {
-                                var expected_used = [12,13,34,35];
+                                var expected_used = [7,12,13,34,35];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1587,7 +1588,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
                             })
                             .check(function(api) {
-                                var expected_used = [12,13,35,39];
+                                var expected_used = [7,12,13,35,39];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1612,7 +1613,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
                             })
                             .check(function(api) {
-                                var expected_used = [12,13,40,44];
+                                var expected_used = [7,12,13,40,44];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1637,7 +1638,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
                             })
                             .check(function(api) {
-                                var expected_used = [12,13,45,49];
+                                var expected_used = [7,12,13,45,49];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1667,7 +1668,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [12,13];
+                                var expected_used = [7,12,13];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1693,7 +1694,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [12,13,54];
+                                var expected_used = [7,12,13,54];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1719,7 +1720,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [12,13,50];
+                                var expected_used = [7,12,13,50];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1745,7 +1746,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [12,13,50,54];
+                                var expected_used = [7,12,13,50,54];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1775,7 +1776,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [12,13];
+                                var expected_used = [7,12,13];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1793,7 +1794,7 @@ describe("Hello Mama app", function() {
                                 {session_event: 'new'}  // dial in
                                 , '1'  // state_msisdn_permission - yes
                                 , '5'  // state_main_menu - stop receiving messages
-                                , '5'  // state_optout_reason - not_useful
+                                , '5'  // state_optout_reason - other
                                 , '1'  // state_optout_receiver - unsubscribe mother
                             )
                             .check.interaction({
@@ -1801,7 +1802,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [12,13,59];
+                                var expected_used = [7,12,13,59];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1827,7 +1828,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [12,13,55];
+                                var expected_used = [7,12,13,55];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1853,7 +1854,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [12,13,55,59];
+                                var expected_used = [7,12,13,55,59];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1887,7 +1888,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [6,7];
+                                var expected_used = [6,7,13];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1916,7 +1917,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [6,7];
+                                var expected_used = [6,7,13];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1942,7 +1943,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will now receive messages to support you during this difficult time."
                             })
                             .check(function(api) {
-                                var expected_used = [6,7,34,35];
+                                var expected_used = [6,7,13,34,35];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1968,7 +1969,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
                             })
                             .check(function(api) {
-                                var expected_used = [6,7,35,39];
+                                var expected_used = [6,7,13,35,39];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1993,7 +1994,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
                             })
                             .check(function(api) {
-                                var expected_used = [6,7,40,44];
+                                var expected_used = [6,7,13,40,44];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -2018,7 +2019,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
                             })
                             .check(function(api) {
-                                var expected_used = [6,7,45,49];
+                                var expected_used = [6,7,13,45,49];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -2043,7 +2044,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [6,7,50];
+                                var expected_used = [6,7,13,50];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -2068,7 +2069,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [6,7,55];
+                                var expected_used = [6,7,13,55];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {

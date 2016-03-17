@@ -581,6 +581,27 @@ go.utils_project = {
             });
     },
 
+    unsub_mother: function(im, mother_id, household_id, loss_reason) {
+      // A unique change endpoint that unsubscribes from the mother messages only
+      // in an _only registration case; rather than doing an optout which would
+      // block the household messages from getting through to the receiver
+
+        var change_data = {
+            "mother_id": mother_id,
+            "action": "unsubscribe_mother_only",
+            "data": {
+                "household_id": household_id,
+                "loss_reason": loss_reason
+            }
+        };
+
+        return go.utils
+            .service_api_call("registrations", "post", null, change_data, "change/", im)
+            .then(function(response) {
+                return response;
+            });
+    },
+
     change_language: function(im, new_lang, mother_id, household_id) {
       // Sends an Api request to the registration store to change the
       // subscriptions' languages, and sends a patch request to the identity
@@ -623,7 +644,6 @@ go.utils_project = {
                         ]);
                 });
         }
-
     },
 
 
