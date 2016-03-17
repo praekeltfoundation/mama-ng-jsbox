@@ -1372,8 +1372,13 @@ module.exports = function() {
                 },
                 'url': 'http://localhost:8001/api/v1/optout/',
                 'data': {
+                    "optout_type": "stop",
                     "identity": "3f7c8851-5204-43f7-af7f-005059997777",
-                    "reason": "miscarriage"
+                    "reason": "miscarriage",
+                    "address_type": "msisdn",
+                    "address": "+2345059997777",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1394,8 +1399,13 @@ module.exports = function() {
                 },
                 'url': 'http://localhost:8001/api/v1/optout/',
                 'data': {
+                    "optout_type": "stop",
                     "identity": "3f7c8851-5204-43f7-af7f-005059992222",
-                    "reason": "miscarriage"
+                    "reason": "miscarriage",
+                    "address_type": "msisdn",
+                    "address": "+2345059992222",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1406,7 +1416,7 @@ module.exports = function() {
             }
         },
 
-        // 37: Optout - miscarriage 5555
+        // 37: Optout - miscarriage 5555 - unused
         {
             'request': {
                 'method': 'POST',
@@ -1438,8 +1448,13 @@ module.exports = function() {
                 },
                 'url': 'http://localhost:8001/api/v1/optout/',
                 'data': {
+                    "optout_type": "stop",
                     "identity": "3f7c8851-5204-43f7-af7f-005059993333",
-                    "reason": "miscarriage"
+                    "reason": "miscarriage",
+                    "address_type": "msisdn",
+                    "address": "+2345059993333",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1460,8 +1475,13 @@ module.exports = function() {
                 },
                 'url': 'http://localhost:8001/api/v1/optout/',
                 'data': {
+                    "optout_type": "stop",
                     "identity": "3f7c8851-5204-43f7-af7f-005059996666",
-                    "reason": "miscarriage"
+                    "reason": "miscarriage",
+                    "address_type": "msisdn",
+                    "address": "+2345059996666",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1482,8 +1502,13 @@ module.exports = function() {
                 },
                 'url': 'http://localhost:8001/api/v1/optout/',
                 'data': {
+                    "optout_type": "stop",
                     "identity": "3f7c8851-5204-43f7-af7f-005059997777",
-                    "reason": "stillborn"
+                    "reason": "stillborn",
+                    "address_type": "msisdn",
+                    "address": "+2345059997777",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1504,8 +1529,13 @@ module.exports = function() {
                 },
                 'url': 'http://localhost:8001/api/v1/optout/',
                 'data': {
+                    "optout_type": "stop",
                     "identity": "3f7c8851-5204-43f7-af7f-005059992222",
-                    "reason": "stillborn"
+                    "reason": "stillborn",
+                    "address_type": "msisdn",
+                    "address": "+2345059992222",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1516,7 +1546,7 @@ module.exports = function() {
             }
         },
 
-        // 42: Optout - stillborn 5555
+        // 42: Optout - stillborn 5555 - unused
         {
             'request': {
                 'method': 'POST',
@@ -1548,8 +1578,13 @@ module.exports = function() {
                 },
                 'url': 'http://localhost:8001/api/v1/optout/',
                 'data': {
+                    "optout_type": "stop",
                     "identity": "3f7c8851-5204-43f7-af7f-005059993333",
-                    "reason": "stillborn"
+                    "reason": "stillborn",
+                    "address_type": "msisdn",
+                    "address": "+2345059993333",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1570,8 +1605,13 @@ module.exports = function() {
                 },
                 'url': 'http://localhost:8001/api/v1/optout/',
                 'data': {
+                    "optout_type": "stop",
                     "identity": "3f7c8851-5204-43f7-af7f-005059996666",
-                    "reason": "stillborn"
+                    "reason": "stillborn",
+                    "address_type": "msisdn",
+                    "address": "+2345059996666",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1592,8 +1632,13 @@ module.exports = function() {
                 },
                 'url': 'http://localhost:8001/api/v1/optout/',
                 'data': {
+                    "optout_type": "stop",
                     "identity": "3f7c8851-5204-43f7-af7f-005059997777",
-                    "reason": "baby_death"
+                    "reason": "baby_death",
+                    "address_type": "msisdn",
+                    "address": "+2345059997777",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1614,8 +1659,13 @@ module.exports = function() {
                 },
                 'url': 'http://localhost:8001/api/v1/optout/',
                 'data': {
+                    "optout_type": "stop",
                     "identity": "3f7c8851-5204-43f7-af7f-005059992222",
-                    "reason": "baby_death"
+                    "reason": "baby_death",
+                    "address_type": "msisdn",
+                    "address": "+2345059992222",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1626,7 +1676,7 @@ module.exports = function() {
             }
         },
 
-        // 47: Optout - baby_death 5555
+        // 47: Optout - baby_death 5555 - unused
         {
             'request': {
                 'method': 'POST',
@@ -1658,8 +1708,13 @@ module.exports = function() {
                 },
                 'url': 'http://localhost:8001/api/v1/optout/',
                 'data': {
+                    "optout_type": "stop",
                     "identity": "3f7c8851-5204-43f7-af7f-005059993333",
-                    "reason": "baby_death"
+                    "reason": "baby_death",
+                    "address_type": "msisdn",
+                    "address": "+2345059993333",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1680,8 +1735,13 @@ module.exports = function() {
                 },
                 'url': 'http://localhost:8001/api/v1/optout/',
                 'data': {
+                    "optout_type": "stop",
                     "identity": "3f7c8851-5204-43f7-af7f-005059996666",
-                    "reason": "baby_death"
+                    "reason": "baby_death",
+                    "address_type": "msisdn",
+                    "address": "+2345059996666",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1702,8 +1762,13 @@ module.exports = function() {
                 },
                 'url': 'http://localhost:8001/api/v1/optout/',
                 'data': {
+                    "optout_type": "stop",
                     "identity": "3f7c8851-5204-43f7-af7f-005059997777",
-                    "reason": "not_useful"
+                    "reason": "not_useful",
+                    "address_type": "msisdn",
+                    "address": "+2345059997777",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1724,8 +1789,13 @@ module.exports = function() {
                 },
                 'url': 'http://localhost:8001/api/v1/optout/',
                 'data': {
+                    "optout_type": "stop",
                     "identity": "3f7c8851-5204-43f7-af7f-005059992222",
-                    "reason": "not_useful"
+                    "reason": "not_useful",
+                    "address_type": "msisdn",
+                    "address": "+2345059992222",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1744,10 +1814,14 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8001/api/v1/optout/',
+                'url': 'http://localhost:8002/api/v1/change/',
                 'data': {
-                    "identity": "3f7c8851-5204-43f7-af7f-005059995555",
-                    "reason": "not_useful"
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "action": "unsubscribe_mother_only",
+                    "data": {
+                        "household_id": "3f7c8851-5204-43f7-af7f-005059993333",
+                        "loss_reason": "not_useful"
+                    }
                 }
             },
             'response': {
@@ -1768,8 +1842,13 @@ module.exports = function() {
                 },
                 'url': 'http://localhost:8001/api/v1/optout/',
                 'data': {
+                    "optout_type": "stop",
                     "identity": "3f7c8851-5204-43f7-af7f-005059993333",
-                    "reason": "not_useful"
+                    "reason": "not_useful",
+                    "address_type": "msisdn",
+                    "address": "+2345059993333",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1790,8 +1869,13 @@ module.exports = function() {
                 },
                 'url': 'http://localhost:8001/api/v1/optout/',
                 'data': {
+                    "optout_type": "stop",
                     "identity": "3f7c8851-5204-43f7-af7f-005059996666",
-                    "reason": "not_useful"
+                    "reason": "not_useful",
+                    "address_type": "msisdn",
+                    "address": "+2345059996666",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1812,8 +1896,13 @@ module.exports = function() {
                 },
                 'url': 'http://localhost:8001/api/v1/optout/',
                 'data': {
+                    "optout_type": "stop",
                     "identity": "3f7c8851-5204-43f7-af7f-005059997777",
-                    "reason": "other"
+                    "reason": "other",
+                    "address_type": "msisdn",
+                    "address": "+2345059997777",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1834,8 +1923,13 @@ module.exports = function() {
                 },
                 'url': 'http://localhost:8001/api/v1/optout/',
                 'data': {
+                    "optout_type": "stop",
                     "identity": "3f7c8851-5204-43f7-af7f-005059992222",
-                    "reason": "other"
+                    "reason": "other",
+                    "address_type": "msisdn",
+                    "address": "+2345059992222",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1846,7 +1940,7 @@ module.exports = function() {
             }
         },
 
-        // 57: Optout - other 5555
+        // 57: Unsub mother - other 5555
         {
             'request': {
                 'method': 'POST',
@@ -1854,10 +1948,14 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8001/api/v1/optout/',
+                'url': 'http://localhost:8002/api/v1/change/',
                 'data': {
-                    "identity": "3f7c8851-5204-43f7-af7f-005059995555",
-                    "reason": "other"
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "action": "unsubscribe_mother_only",
+                    "data": {
+                        "household_id": "3f7c8851-5204-43f7-af7f-005059993333",
+                        "loss_reason": "other"
+                    }
                 }
             },
             'response': {
@@ -1878,8 +1976,13 @@ module.exports = function() {
                 },
                 'url': 'http://localhost:8001/api/v1/optout/',
                 'data': {
+                    "optout_type": "stop",
                     "identity": "3f7c8851-5204-43f7-af7f-005059993333",
-                    "reason": "other"
+                    "reason": "other",
+                    "address_type": "msisdn",
+                    "address": "+2345059993333",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1900,8 +2003,13 @@ module.exports = function() {
                 },
                 'url': 'http://localhost:8001/api/v1/optout/',
                 'data': {
+                    "optout_type": "stop",
                     "identity": "3f7c8851-5204-43f7-af7f-005059996666",
-                    "reason": "other"
+                    "reason": "other",
+                    "address_type": "msisdn",
+                    "address": "+2345059996666",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {

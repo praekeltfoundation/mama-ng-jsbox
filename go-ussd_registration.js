@@ -494,13 +494,18 @@ go.utils = {
 
 // OPTOUT & OPTIN HELPERS
 
-    optout: function(im, identity_id, optout_reason) {
-      // Posts an optout with a reason to the identity store optout endpoint
+    optout: function(im, identity_id, optout_reason, address_type, address,
+                     request_source, request_source_id, optout_type, config) {
+      // Posts an optout to the identity store optout endpoint
 
-        // TODO: use correct optout data
         var optout_info = {
+            optout_type: optout_type || 'stop',  // default to 'stop'
             identity: identity_id,
-            reason: optout_reason || 'unknown'
+            reason: optout_reason || 'unknown',  // default to 'unknown'
+            address_type: address_type || 'msisdn',  // default to 'msisdn'
+            address: address,
+            request_source: request_source,
+            request_source_id: request_source_id
         };
         return go.utils
             .service_api_call("identities", "post", null, optout_info, "optout/", im)
@@ -1109,6 +1114,27 @@ go.utils_project = {
         var change_data = {
             "mother_id": mother_id,
             "action": "unsubscribe_household_only",
+            "data": {
+                "household_id": household_id,
+                "loss_reason": loss_reason
+            }
+        };
+
+        return go.utils
+            .service_api_call("registrations", "post", null, change_data, "change/", im)
+            .then(function(response) {
+                return response;
+            });
+    },
+
+    unsub_mother: function(im, mother_id, household_id, loss_reason) {
+      // A unique change endpoint that unsubscribes from the mother messages only
+      // in an _only registration case; rather than doing an optout which would
+      // block the household messages from getting through to the receiver
+
+        var change_data = {
+            "mother_id": mother_id,
+            "action": "unsubscribe_mother_only",
             "data": {
                 "household_id": household_id,
                 "loss_reason": loss_reason
