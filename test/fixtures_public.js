@@ -1692,6 +1692,224 @@ module.exports = function() {
             }
         },
 
+        // 50: Optout - not_useful 7777
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059997777",
+                    "reason": "not_useful"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
 
+        // 51: Optout - not_useful 2222
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "reason": "not_useful"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 2
+                }
+            }
+        },
+
+        // 52: Optout - not_useful 5555
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "reason": "not_useful"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 3
+                }
+            }
+        },
+
+        // 53: Optout - not_useful 3333
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "reason": "not_useful"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 54: Optout - not_useful 6666
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "reason": "not_useful"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 5
+                }
+            }
+        },
+
+        // 55: Optout - other 7777
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059997777",
+                    "reason": "other"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 56: Optout - other 2222
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "reason": "other"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 2
+                }
+            }
+        },
+
+        // 57: Optout - other 5555
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "reason": "other"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 3
+                }
+            }
+        },
+
+        // 58: Optout - other 3333
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "reason": "other"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 59: Optout - other 6666
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "reason": "other"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 5
+                }
+            }
+        },
     ];
 };

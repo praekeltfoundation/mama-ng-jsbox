@@ -1514,9 +1514,12 @@ go.app = function() {
                         if (mother.details.linked_to) {
                             self.im.user.set_answer('household_id', mother.details.linked_to);
                             self.im.user.set_answer('seperate_household_receiver', true);
+                            self.im.user.set_answer('reg_type', 'mother_and_other');
                         } else {
+                            // mother_only
                             self.im.user.set_answer('household_id', null);
                             self.im.user.set_answer('seperate_household_receiver', false);
+                            self.im.user.set_answer('reg_type', 'mother_only');
                         }
                         return self.states.create('state_main_menu');
                     });
@@ -1530,10 +1533,12 @@ go.app = function() {
                         if (contact.details.household_msgs_only) {
                             // set true for mother_friend, mother_family, mother_father identification
                             self.im.user.set_answer('seperate_household_receiver', true);
+                            self.im.user.set_answer('reg_type', 'mother_and_other');
                             return self.states.create('state_main_menu_household');
                         } else {
                             // set false for friend_only, family_only, father_only identification
                             self.im.user.set_answer('seperate_household_receiver', false);
+                            self.im.user.set_answer('reg_type', 'other_only');
                             return self.states.create('state_main_menu');
                         }
                     });
@@ -1864,9 +1869,22 @@ go.app = function() {
             return go.utils
                 .get_identity(contact_id, self.im)
                 .then(function(contact) {
-                    // household and mother_only subscriptions bypass to end state state_end_optout
-                    if (contact.details.household_msgs_only || (self.im.user.mother_id === contact_id && self.im.user.receiver_id === 'none')) {
-                        return self.states.create("state_end_optout");
+                    //  and mother_only subscriptions bypass to end state state_end_optout
+                    if (self.im.user.answers.reg_type === 'mother_only') {
+                        return go.utils
+                            .optout(self.im, self.im.user.answers.mother_id,
+                                    self.im.user.answers.state_optout_reason)
+                            .then(function() {
+                                return self.states.create('state_end_optout');
+                            });
+                    } else if (self.im.user.answers.reg_type === 'mother_and_other' &&
+                         self.im.user.answers.role !== 'mother') {
+                        return go.utils
+                            .optout(self.im, self.im.user.answers.household_id,
+                                    self.im.user.answers.state_optout_reason)
+                            .then(function() {
+                                return self.states.create('state_end_optout');
+                            });
                     } else {
                         return self.states.create("state_optout_receiver");
                     }
@@ -1894,7 +1912,12 @@ go.app = function() {
                     .optout(self.im, self.im.user.answers.mother_id,
                             self.im.user.answers.state_optout_reason)
                     .then(function() {
-                        return self.states.create('state_end_loss');
+                        if (self.im.user.answers.state_optout_reason === 'not_useful' ||
+                            self.im.user.answers.state_optout_reason === 'other') {
+                            return self.states.create('state_end_optout');
+                        } else {
+                            return self.states.create('state_end_loss');
+                        }
                     });
             } else {
                 return Q
@@ -1905,7 +1928,12 @@ go.app = function() {
                                         self.im.user.answers.state_optout_reason)
                     ])
                     .then(function() {
-                        return self.states.create('state_end_loss');
+                        if (self.im.user.answers.state_optout_reason === 'not_useful' ||
+                            self.im.user.answers.state_optout_reason === 'other') {
+                            return self.states.create('state_end_optout');
+                        } else {
+                            return self.states.create('state_end_loss');
+                        }
                     });
             }
         });
