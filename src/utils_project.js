@@ -481,6 +481,33 @@ go.utils_project = {
 
 // OPTOUT HELPERS
 
+    optout_mother_ussd: function(im) {
+        return go.utils.optout(
+            im,
+            im.user.answers.mother_id,
+            im.user.answers.state_optout_reason,
+            'msisdn',
+            im.user.answers.mother_msisdn,
+            'ussd_public',
+            im.config.testing_message_id ||
+              im.msg.message_id,
+            'stop'
+        );
+    },
+
+    optout_household_ussd: function(im) {
+        return go.utils.optout(
+            im,
+            im.user.answers.household_id,
+            im.user.answers.state_optout_reason,
+            'msisdn',
+            im.user.answers.household_msisdn,
+            'ussd_public',
+            im.config.testing_message_id || im.msg.message_id,
+            'stop'
+        );
+    },
+
     optout_loss_opt_in: function(im) {
         return go.utils_project
         .optout(im)
