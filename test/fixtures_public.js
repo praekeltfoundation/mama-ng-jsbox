@@ -1582,6 +1582,116 @@ module.exports = function() {
             }
         },
 
+        // 45: Optout - baby_death 7777
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059997777",
+                    "reason": "baby_death"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 46: Optout - baby_death 2222
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "reason": "baby_death"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 2
+                }
+            }
+        },
+
+        // 47: Optout - baby_death 5555
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "reason": "baby_death"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 3
+                }
+            }
+        },
+
+        // 48: Optout - baby_death 3333
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "reason": "baby_death"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 49: Optout - baby_death 6666
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "reason": "baby_death"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 5
+                }
+            }
+        },
+
 
     ];
 };
