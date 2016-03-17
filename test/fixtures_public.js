@@ -1261,7 +1261,7 @@ module.exports = function() {
             }
         },
 
-        // 31: Change to loss 1
+        // 31: Change to loss 1 - miscarriage 2222
         {
             'request': {
                 'method': 'POST',
@@ -1286,7 +1286,7 @@ module.exports = function() {
             }
         },
 
-        // 32: Change to loss 2
+        // 32: Change to loss 2 - miscarriage 5555
         {
             'request': {
                 'method': 'POST',
@@ -1311,7 +1311,7 @@ module.exports = function() {
             }
         },
 
-        // 33: Unsubscribe 1
+        // 33: Unsubscribe 1 - miscarriage 3333
         {
             'request': {
                 'method': 'POST',
@@ -1337,7 +1337,7 @@ module.exports = function() {
             }
         },
 
-        // 34: Change to loss 3
+        // 34: Change to loss 3 - miscarriage 6666
         {
             'request': {
                 'method': 'POST',
@@ -1362,7 +1362,7 @@ module.exports = function() {
             }
         },
 
-        // 35: Optout 1
+        // 35: Optout - miscarriage 7777
         {
             'request': {
                 'method': 'POST',
@@ -1384,7 +1384,7 @@ module.exports = function() {
             }
         },
 
-        // 36: Optout 2
+        // 36: Optout - miscarriage 2222
         {
             'request': {
                 'method': 'POST',
@@ -1406,7 +1406,7 @@ module.exports = function() {
             }
         },
 
-        // 37: Optout 3
+        // 37: Optout - miscarriage 5555
         {
             'request': {
                 'method': 'POST',
@@ -1428,7 +1428,7 @@ module.exports = function() {
             }
         },
 
-        // 38: Optout 4
+        // 38: Optout - miscarriage 3333
         {
             'request': {
                 'method': 'POST',
@@ -1450,7 +1450,7 @@ module.exports = function() {
             }
         },
 
-        // 39: Optout 5
+        // 39: Optout - miscarriage 6666
         {
             'request': {
                 'method': 'POST',
@@ -1462,6 +1462,116 @@ module.exports = function() {
                 'data': {
                     "identity": "3f7c8851-5204-43f7-af7f-005059996666",
                     "reason": "miscarriage"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 5
+                }
+            }
+        },
+
+        // 40: Optout - stillborn 7777
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059997777",
+                    "reason": "stillborn"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 41: Optout - stillborn 2222
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "reason": "stillborn"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 2
+                }
+            }
+        },
+
+        // 42: Optout - stillborn 5555
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "reason": "stillborn"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 3
+                }
+            }
+        },
+
+        // 43: Optout - stillborn 3333
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "reason": "stillborn"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 44: Optout - stillborn 6666
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "reason": "stillborn"
                 }
             },
             'response': {

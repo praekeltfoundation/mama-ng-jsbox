@@ -915,7 +915,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 2 - stillborn
-                    it.skip("case 1 > to state_end_loss (stillborn)", function() {
+                    it("case 1 > to state_end_loss (stillborn)", function() {
                         return tester
                             .setup.user.addr('05059992222')
                             .inputs(
@@ -929,7 +929,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
                             })
                             .check(function(api) {
-                                var expected_used = [2];
+                                var expected_used = [2,9,41];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -940,7 +940,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 3 - baby death
-                    it.skip("case 1 > to state_end_loss (stillborn)", function() {
+                    it.skip("case 1 > to state_end_loss (baby death)", function() {
                         return tester
                             .setup.user.addr('05059992222')
                             .inputs(
@@ -1130,7 +1130,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 2 - stillborn
-                    it.skip("case 2 > to state_end_loss (stillborn)", function() {
+                    it("case 2 > to state_end_loss (stillborn)", function() {
                         return tester
                             .setup.user.addr('05059993333')
                             .inputs(
@@ -1144,7 +1144,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
                             })
                             .check(function(api) {
-                                var expected_used = [4,5];
+                                var expected_used = [4,5,42,43];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1155,7 +1155,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 3 - baby death
-                    it.skip("case 2 > to state_end_loss (stillborn)", function() {
+                    it.skip("case 2 > to state_end_loss (baby death)", function() {
                         return tester
                             .setup.user.addr('05059993333')
                             .inputs(
@@ -1433,7 +1433,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 2 - stillborn
-                    it.skip("case 3 > to state_end_loss (stillborn)", function() {
+                    it("case 3 > to state_end_loss (stillborn)", function() {
                         return tester
                             .setup.user.addr('05059996666')
                             .inputs(
@@ -1447,7 +1447,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
                             })
                             .check(function(api) {
-                                var expected_used = [12];
+                                var expected_used = [12,13,40,44];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1458,7 +1458,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 3 - baby death
-                    it.skip("case 3 > to state_end_loss (stillborn)", function() {
+                    it.skip("case 3 > to state_end_loss (baby death)", function() {
                         return tester
                             .setup.user.addr('05059996666')
                             .inputs(
@@ -1736,7 +1736,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 2 - stillborn
-                    it.skip("case 4 > to state_end_loss (stillborn)", function() {
+                    it("case 4 > to state_end_loss (stillborn)", function() {
                         return tester
                             .setup.user.addr('05059997777')
                             .inputs(
@@ -1750,7 +1750,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
                             })
                             .check(function(api) {
-                                var expected_used = [6,7];
+                                var expected_used = [6,7,40,44];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1761,7 +1761,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 3 - baby death
-                    it.skip("case 4 > to state_end_loss (stillborn)", function() {
+                    it.skip("case 4 > to state_end_loss (baby death)", function() {
                         return tester
                             .setup.user.addr('05059997777')
                             .inputs(

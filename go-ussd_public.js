@@ -1849,8 +1849,8 @@ go.app = function() {
                 next: function(choice) {
                     switch (choice.value) {
                         case 'miscarriage': return 'state_loss_subscription';
-                        case 'stillborn': return 'state_end_loss';
-                        case 'baby_death': return 'state_end_loss';
+                        case 'stillborn': return 'state_optout_all';
+                        case 'baby_death': return 'state_optout_all';
                         case 'not_useful': return 'state_check_subscription';
                         case 'other': return 'state_check_subscription';
                     }
