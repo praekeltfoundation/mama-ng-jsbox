@@ -503,7 +503,7 @@ go.utils = {
             reason: optout_reason || 'unknown'
         };
         return go.utils
-            .service_api_call("optout", "post", null, optout_info, "optout/", im)
+            .service_api_call("identities", "post", null, optout_info, "optout/", im)
             .then(function(response) {
                 return response;
             });

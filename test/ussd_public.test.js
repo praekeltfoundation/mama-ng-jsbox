@@ -35,10 +35,6 @@ describe("Hello Mama app", function() {
                         change: {
                             api_token: 'test_token_change',
                             url: "http://localhost:8005/api/v1/"
-                        },
-                        optout: {
-                            api_token: 'test_token_change',
-                            url: "http://localhost:8001/api/v1/"
                         }
                     },
                     no_timeout_redirects: [
