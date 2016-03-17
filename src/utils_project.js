@@ -526,7 +526,7 @@ go.utils_project = {
         };
 
         return go.utils
-            .service_api_call("change", "post", null, change_data, "change/", im)
+            .service_api_call("registrations", "post", null, change_data, "change/", im)
             .then(function() {
                 return go.utils
                     .get_identity(im.user.answers.mother_id, im)
@@ -542,7 +542,8 @@ go.utils_project = {
     },
 
     switch_to_loss: function(im, mother_id, loss_reason) {
-      //
+      // Sends an Api request to the registration store to switch the mother
+      // to loss messages
 
         var change_data = {
             "mother_id": mother_id,
@@ -553,7 +554,7 @@ go.utils_project = {
         };
 
         return go.utils
-            .service_api_call("change", "post", null, change_data, "change/", im)
+            .service_api_call("registrations", "post", null, change_data, "change/", im)
             .then(function(response) {
                 return response;
             });
@@ -574,7 +575,7 @@ go.utils_project = {
         };
 
         return go.utils
-            .service_api_call("change", "post", null, change_data, "change/", im)
+            .service_api_call("registrations", "post", null, change_data, "change/", im)
             .then(function(response) {
                 return response;
             });

@@ -717,7 +717,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8002/api/v1/subscriptions/'
+                'url': 'http://localhost:8005/api/v1/subscriptions/'
             },
             'response': {
                 "code": 200,
@@ -782,7 +782,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8005/api/v1/change/',
+                'url': 'http://localhost:8002/api/v1/change/',
                 'data': {
                     "mother_id": "3f7c8851-5204-43f7-af7f-005059992222",
                     "action": "change_messaging",
@@ -813,7 +813,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8002/api/v1/subscriptions/'
+                'url': 'http://localhost:8005/api/v1/subscriptions/'
             },
             'response': {
                 "code": 200,
@@ -878,7 +878,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8005/api/v1/change/',
+                'url': 'http://localhost:8002/api/v1/change/',
                 'data': {
                     "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
                     "action": "change_messaging",
@@ -909,7 +909,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8002/api/v1/subscriptions/'
+                'url': 'http://localhost:8005/api/v1/subscriptions/'
             },
             'response': {
                 "code": 200,
@@ -973,7 +973,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8005/api/v1/change/',
+                'url': 'http://localhost:8002/api/v1/change/',
                 'data': {
                     "mother_id": "3f7c8851-5204-43f7-af7f-005059996666",
                     "action": "change_messaging",
@@ -1269,7 +1269,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8005/api/v1/change/',
+                'url': 'http://localhost:8002/api/v1/change/',
                 'data': {
                     "mother_id": "3f7c8851-5204-43f7-af7f-005059992222",
                     "action": "change_loss",
@@ -1294,7 +1294,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8005/api/v1/change/',
+                'url': 'http://localhost:8002/api/v1/change/',
                 'data': {
                     "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
                     "action": "change_loss",
@@ -1319,7 +1319,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8005/api/v1/change/',
+                'url': 'http://localhost:8002/api/v1/change/',
                 'data': {
                     "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
                     "action": "unsubscribe_household_only",
@@ -1345,7 +1345,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8005/api/v1/change/',
+                'url': 'http://localhost:8002/api/v1/change/',
                 'data': {
                     "mother_id": "3f7c8851-5204-43f7-af7f-005059996666",
                     "action": "change_loss",
@@ -1920,7 +1920,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8005/api/v1/change/',
+                'url': 'http://localhost:8002/api/v1/change/',
                 'data': {
                     "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
                     "action": "unsubscribe_household_only",
@@ -1946,7 +1946,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8005/api/v1/change/',
+                'url': 'http://localhost:8002/api/v1/change/',
                 'data': {
                     "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
                     "action": "unsubscribe_household_only",
