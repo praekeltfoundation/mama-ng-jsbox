@@ -1994,13 +1994,25 @@ go.app = function() {
                                     return 'state_end_optout';
                                 });
                         case 'household':
-                            return go.utils_project
-                                .unsub_household(self.im, self.im.user.answers.mother_id,
-                                                 self.im.user.answers.household_id,
-                                                 self.im.user.answers.state_optout_reason)
-                                .then(function() {
-                                    return 'state_end_optout';
-                                });
+                            // unsubscribe from household messages only
+                            if (self.im.user.answers.reg_type === 'other_only') {
+                                return go.utils_project
+                                    .unsub_household(self.im, self.im.user.answers.mother_id,
+                                                     self.im.user.answers.household_id,
+                                                     self.im.user.answers.state_optout_reason)
+                                    .then(function() {
+                                        return 'state_end_optout';
+                                    });
+                            // opt out household messages receiver
+                            } else {
+                                return go.utils
+                                    .optout(self.im, self.im.user.answers.household_id,
+                                            self.im.user.answers.state_optout_reason)
+                                    .then(function() {
+                                        return 'state_end_optout';
+                                    });
+                            }
+                            break;
                         case 'all':
                             return Q
                                 .all([

@@ -1513,7 +1513,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 4, 1 - unsubscribe mother
-                    it.skip("case 3 > to state_end_optout", function() {
+                    it("case 3 > to state_end_optout", function() {
                         return tester
                             .setup.user.addr('05059996666')
                             .inputs(
@@ -1528,7 +1528,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [12];
+                                var expected_used = [12,13,54];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1539,7 +1539,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 4, 2 - unsubscribe household
-                    it.skip("case 3 > to state_end_optout", function() {
+                    it("case 3 > to state_end_optout", function() {
                         return tester
                             .setup.user.addr('05059996666')
                             .inputs(
@@ -1554,7 +1554,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [12];
+                                var expected_used = [12,13,50];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
@@ -1565,7 +1565,7 @@ describe("Hello Mama app", function() {
                             .run();
                     });
                     // 4, 3 - unsubscribe all
-                    it.skip("case 3 > to state_end_optout", function() {
+                    it("case 3 > to state_end_optout", function() {
                         return tester
                             .setup.user.addr('05059996666')
                             .inputs(
@@ -1580,7 +1580,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [12];
+                                var expected_used = [12,13,50,54];
                                 var fixts = api.http.fixtures.fixtures;
                                 var fixts_used = [];
                                 fixts.forEach(function(f, i) {
