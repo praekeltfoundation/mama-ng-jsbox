@@ -1912,7 +1912,7 @@ module.exports = function() {
             }
         },
 
-        // 60: Unsubscribe 1 - not_useful 3333
+        // 60: Unsubscribe 2 - not_useful 3333
         {
             'request': {
                 'method': 'POST',
@@ -1927,6 +1927,32 @@ module.exports = function() {
                     "data": {
                         "household_id": "3f7c8851-5204-43f7-af7f-005059993333",
                         "loss_reason": "not_useful"
+                    }
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 60: Unsubscribe 3 - other 3333
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8005/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "action": "unsubscribe_household_only",
+                    "data": {
+                        "household_id": "3f7c8851-5204-43f7-af7f-005059993333",
+                        "loss_reason": "other"
                     }
                 }
             },
