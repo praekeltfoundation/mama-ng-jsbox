@@ -28,10 +28,22 @@ describe("Mama Nigeria App", function() {
                             api_token: 'test_token_registrations',
                             url: "http://localhost:8002/api/v1/"
                         },
+                        messagesets: {
+                            api_token: 'test_token_messagesets',
+                            url: "http://localhost:8003/api/v1/"
+                        },
                         voice_content: {
                             api_token: "test_token_voice_content",
                             url: "http://localhost:8004/api/v1/"
                         },
+                        subscriptions: {
+                            api_token: 'test_token_subscriptions',
+                            url: "http://localhost:8005/api/v1/"
+                        },
+                        outbound: {
+                            api_token: 'test_token_outbond',
+                            url: "http://localhost:8006/api/v1/"
+                        }
                     }
                 })
                 .setup(function(api) {

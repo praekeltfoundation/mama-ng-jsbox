@@ -357,6 +357,7 @@ module.exports = function() {
 
         // 9: get identity 3f7c8851-5204-43f7-af7f-005059992222
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {},
@@ -550,6 +551,7 @@ module.exports = function() {
 
         // 13: get identity 3f7c8851-5204-43f7-af7f-005059996666
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {},
@@ -715,7 +717,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8002/api/v1/subscriptions/'
+                'url': 'http://localhost:8005/api/v1/subscriptions/'
             },
             'response': {
                 "code": 200,
@@ -780,7 +782,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8005/api/v1/change/',
+                'url': 'http://localhost:8002/api/v1/change/',
                 'data': {
                     "mother_id": "3f7c8851-5204-43f7-af7f-005059992222",
                     "action": "change_messaging",
@@ -811,7 +813,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8002/api/v1/subscriptions/'
+                'url': 'http://localhost:8005/api/v1/subscriptions/'
             },
             'response': {
                 "code": 200,
@@ -876,7 +878,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8005/api/v1/change/',
+                'url': 'http://localhost:8002/api/v1/change/',
                 'data': {
                     "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
                     "action": "change_messaging",
@@ -907,7 +909,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8002/api/v1/subscriptions/'
+                'url': 'http://localhost:8005/api/v1/subscriptions/'
             },
             'response': {
                 "code": 200,
@@ -971,7 +973,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8005/api/v1/change/',
+                'url': 'http://localhost:8002/api/v1/change/',
                 'data': {
                     "mother_id": "3f7c8851-5204-43f7-af7f-005059996666",
                     "action": "change_messaging",
@@ -1259,9 +1261,815 @@ module.exports = function() {
             }
         },
 
+        // 31: Change to loss 1 - miscarriage 2222
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "action": "change_loss",
+                    "data": {
+                        "loss_reason": "miscarriage"
+                    }
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 2
+                }
+            }
+        },
 
+        // 32: Change to loss 2 - miscarriage 5555
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "action": "change_loss",
+                    "data": {
+                        "loss_reason": "miscarriage"
+                    }
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 2
+                }
+            }
+        },
 
+        // 33: Unsubscribe 1 - miscarriage 3333
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "action": "unsubscribe_household_only",
+                    "data": {
+                        "household_id": "3f7c8851-5204-43f7-af7f-005059993333",
+                        "loss_reason": "miscarriage"
+                    }
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
 
+        // 34: Change to loss 3 - miscarriage 6666
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "action": "change_loss",
+                    "data": {
+                        "loss_reason": "miscarriage"
+                    }
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 3
+                }
+            }
+        },
 
+        // 35: Optout - miscarriage 7777
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059997777",
+                    "reason": "miscarriage",
+                    "address_type": "msisdn",
+                    "address": "+2345059997777",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 36: Optout - miscarriage 2222
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "reason": "miscarriage",
+                    "address_type": "msisdn",
+                    "address": "+2345059992222",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 2
+                }
+            }
+        },
+
+        // 37: Optout - miscarriage 5555 - unused
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "reason": "miscarriage"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 3
+                }
+            }
+        },
+
+        // 38: Optout - miscarriage 3333
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "reason": "miscarriage",
+                    "address_type": "msisdn",
+                    "address": "+2345059993333",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 39: Optout - miscarriage 6666
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "reason": "miscarriage",
+                    "address_type": "msisdn",
+                    "address": "+2345059996666",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 5
+                }
+            }
+        },
+
+        // 40: Optout - stillborn 7777
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059997777",
+                    "reason": "stillborn",
+                    "address_type": "msisdn",
+                    "address": "+2345059997777",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 41: Optout - stillborn 2222
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "reason": "stillborn",
+                    "address_type": "msisdn",
+                    "address": "+2345059992222",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 2
+                }
+            }
+        },
+
+        // 42: Optout - stillborn 5555 - unused
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "reason": "stillborn"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 3
+                }
+            }
+        },
+
+        // 43: Optout - stillborn 3333
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "reason": "stillborn",
+                    "address_type": "msisdn",
+                    "address": "+2345059993333",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 44: Optout - stillborn 6666
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "reason": "stillborn",
+                    "address_type": "msisdn",
+                    "address": "+2345059996666",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 5
+                }
+            }
+        },
+
+        // 45: Optout - baby_death 7777
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059997777",
+                    "reason": "baby_death",
+                    "address_type": "msisdn",
+                    "address": "+2345059997777",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 46: Optout - baby_death 2222
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "reason": "baby_death",
+                    "address_type": "msisdn",
+                    "address": "+2345059992222",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 2
+                }
+            }
+        },
+
+        // 47: Optout - baby_death 5555 - unused
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "identity": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "reason": "baby_death"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 3
+                }
+            }
+        },
+
+        // 48: Optout - baby_death 3333
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "reason": "baby_death",
+                    "address_type": "msisdn",
+                    "address": "+2345059993333",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 49: Optout - baby_death 6666
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "reason": "baby_death",
+                    "address_type": "msisdn",
+                    "address": "+2345059996666",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 5
+                }
+            }
+        },
+
+        // 50: Optout - not_useful 7777
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059997777",
+                    "reason": "not_useful",
+                    "address_type": "msisdn",
+                    "address": "+2345059997777",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 51: Optout - not_useful 2222
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "reason": "not_useful",
+                    "address_type": "msisdn",
+                    "address": "+2345059992222",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 2
+                }
+            }
+        },
+
+        // 52: Optout - not_useful 5555
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "action": "unsubscribe_mother_only",
+                    "data": {
+                        "household_id": "3f7c8851-5204-43f7-af7f-005059993333",
+                        "loss_reason": "not_useful"
+                    }
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 3
+                }
+            }
+        },
+
+        // 53: Optout - not_useful 3333
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "reason": "not_useful",
+                    "address_type": "msisdn",
+                    "address": "+2345059993333",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 54: Optout - not_useful 6666
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "reason": "not_useful",
+                    "address_type": "msisdn",
+                    "address": "+2345059996666",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 5
+                }
+            }
+        },
+
+        // 55: Optout - other 7777
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059997777",
+                    "reason": "other",
+                    "address_type": "msisdn",
+                    "address": "+2345059997777",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 56: Optout - other 2222
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "reason": "other",
+                    "address_type": "msisdn",
+                    "address": "+2345059992222",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 2
+                }
+            }
+        },
+
+        // 57: Unsub mother - other 5555
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "action": "unsubscribe_mother_only",
+                    "data": {
+                        "household_id": "3f7c8851-5204-43f7-af7f-005059993333",
+                        "loss_reason": "other"
+                    }
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 3
+                }
+            }
+        },
+
+        // 58: Optout - other 3333
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "reason": "other",
+                    "address_type": "msisdn",
+                    "address": "+2345059993333",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 59: Optout - other 6666
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "reason": "other",
+                    "address_type": "msisdn",
+                    "address": "+2345059996666",
+                    "request_source": "ussd_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 5
+                }
+            }
+        },
+
+        // 60: Unsubscribe 2 - not_useful 3333
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "action": "unsubscribe_household_only",
+                    "data": {
+                        "household_id": "3f7c8851-5204-43f7-af7f-005059993333",
+                        "loss_reason": "not_useful"
+                    }
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 60: Unsubscribe 3 - other 3333
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "action": "unsubscribe_household_only",
+                    "data": {
+                        "household_id": "3f7c8851-5204-43f7-af7f-005059993333",
+                        "loss_reason": "other"
+                    }
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
     ];
 };

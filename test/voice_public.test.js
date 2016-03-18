@@ -23,8 +23,8 @@ describe("Mama Nigeria App", function() {
                             api_token: 'test_token_identities',
                             url: "http://localhost:8001/api/v1/"
                         },
-                        subscriptions: {
-                            api_token: 'test_token_subscriptions',
+                        registrations: {
+                            api_token: 'test_token_registrations',
                             url: "http://localhost:8002/api/v1/"
                         },
                         messagesets: {
@@ -35,9 +35,13 @@ describe("Mama Nigeria App", function() {
                             api_token: "test_token_voice_content",
                             url: "http://localhost:8004/api/v1/"
                         },
-                        change: {
-                            api_token: 'test_token_change',
+                        subscriptions: {
+                            api_token: 'test_token_subscriptions',
                             url: "http://localhost:8005/api/v1/"
+                        },
+                        outbound: {
+                            api_token: 'test_token_outbond',
+                            url: "http://localhost:8006/api/v1/"
                         }
                     }
                 })
