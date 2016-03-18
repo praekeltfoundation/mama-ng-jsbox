@@ -285,10 +285,10 @@ describe("Hello Mama app", function() {
                 });
             });
 
-            describe.skip("Change to baby messages", function() {
+            describe("Change to baby messages", function() {
                 it("to state_already_registered_baby", function() {
                     return tester
-                        .setup.user.addr('082333')
+                        .setup.user.addr('05059999999')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'   // state_msisdn_permission - yes
@@ -302,19 +302,106 @@ describe("Hello Mama app", function() {
                                 "2. Exit"
                             ].join('\n')
                         })
+                        .check(function(api) {
+                            var expected_used = [70,71,72,73];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
                         .run();
                 });
-                it("to state_new_registeration_baby", function() {
+                it("case 1 > to state_new_registration_baby", function() {
                     return tester
-                        .setup.user.addr('082222')
+                        .setup.user.addr('05059992222')
                         .inputs(
                             {session_event: 'new'}  // dial in
                             , '1'   // state_msisdn_permission - yes
                             , '1'   // state_main_menu - start baby messages
                         )
                         .check.interaction({
-                            state: 'state_new_registeration_baby',
+                            state: 'state_new_registration_baby',
                             reply: "Thank you. You will now receive messages about caring for baby"
+                        })
+                        .check(function(api) {
+                            var expected_used = [2,9,16,17,74];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
+                        .run();
+                });
+                it("case 2 > to state_new_registration_baby", function() {
+                    return tester
+                        .setup.user.addr('05059993333')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'   // state_msisdn_permission - yes
+                            , '1'   // state_main_menu - start baby messages
+                        )
+                        .check.interaction({
+                            state: 'state_new_registration_baby',
+                            reply: "Thank you. You will now receive messages about caring for baby"
+                        })
+                        .check(function(api) {
+                            var expected_used = [4,5,19,20,75];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
+                        .run();
+                });
+                it("case 3 > to state_new_registration_baby", function() {
+                    return tester
+                        .setup.user.addr('05059996666')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'   // state_msisdn_permission - yes
+                            , '1'   // state_main_menu - start baby messages
+                        )
+                        .check.interaction({
+                            state: 'state_new_registration_baby',
+                            reply: "Thank you. You will now receive messages about caring for baby"
+                        })
+                        .check(function(api) {
+                            var expected_used = [7,12,13,22,23,76];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
+                        })
+                        .run();
+                });
+                it("case 4 > to state_new_registration_baby", function() {
+                    return tester
+                        .setup.user.addr('05059997777')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '1'   // state_msisdn_permission - yes
+                            , '1'   // state_main_menu - start baby messages
+                        )
+                        .check.interaction({
+                            state: 'state_new_registration_baby',
+                            reply: "Thank you. You will now receive messages about caring for baby"
+                        })
+                        .check(function(api) {
+                            var expected_used = [6,7,13,22,23,76];
+                            var fixts = api.http.fixtures.fixtures;
+                            var fixts_used = [];
+                            fixts.forEach(function(f, i) {
+                                f.uses > 0 ? fixts_used.push(i) : null;
+                            });
+                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });

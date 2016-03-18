@@ -563,13 +563,6 @@ go.utils_project = {
             });
     },
 
-    check_baby_subscription: function(msisdn) {
-        return Q()
-            .then(function(q_response) {
-                return (msisdn === '082333');
-            });
-    },
-
     check_msg_type: function(msisdn) {
         return Q()
             .then(function(q_response) {
@@ -1133,6 +1126,23 @@ go.utils_project = {
             });
     },
 
+    switch_to_baby: function(im, mother_id) {
+      // Sends an Api request to the registration store to switch the mother
+      // to baby messages
+
+        var change_data = {
+            "mother_id": mother_id,
+            "action": "change_baby",
+            "data": {}
+        };
+
+        return go.utils
+            .service_api_call("registrations", "post", null, change_data, "change/", im)
+            .then(function(response) {
+                return response;
+            });
+    },
+
     unsub_household: function(im, mother_id, household_id, loss_reason) {
       // A unique change endpoint that unsubscribes only the household receiver
       // in an _only registration case; rather than doing an optout which would
@@ -1266,21 +1276,60 @@ go.utils_project = {
 
 // SUBSCRIPTION HELPERS
 
-    get_subscription_msg_type: function(im, mother_id) {
-      // Look up what type of messages the mother is receiving
+    get_subscription_messageset_through_identity: function(im, mother_id, household_id) {
+      // Return the messageset that an identity is subscribed to
 
         // get subscription
         return go.utils
             .get_active_subscription_by_identity(im, mother_id)
             .then(function(subscription) {
-                im.user.set_answer('mother_subscription', subscription);
-                // get messageset
-                return go.utils
-                    .get_messageset(im, subscription.messageset_id)
-                    .then(function(messageset) {
-                        im.user.set_answer('mother_messageset', messageset);
-                        return messageset.content_type;  // 'text' / 'audio'
-                    });
+                if (subscription === null) {
+                    // try to look for an active subscription on the household_id
+                    return go.utils
+                        .get_active_subscription_by_identity(im, household_id)
+                        .then(function(subscription) {
+                            if (subscription === null) {
+                                return 'no_active_subs_found';
+                            } else {
+                                // get messageset
+                                return go.utils
+                                    .get_messageset(im, subscription.messageset_id)
+                                    .then(function(messageset) {
+                                        return messageset;
+                                    });
+                            }
+                        });
+                } else {
+                    // get messageset
+                    return go.utils
+                        .get_messageset(im, subscription.messageset_id)
+                        .then(function(messageset) {
+                            return messageset;
+                        });
+                    }
+            });
+    },
+
+    get_subscription_msg_type: function(im, mother_id) {
+      // Look up what type of messages the mother is receiving
+
+        return go.utils_project
+            .get_subscription_messageset_through_identity(im, mother_id)
+            .then(function(messageset) {
+                return messageset.content_type;  // 'text' / 'audio'
+            });
+    },
+
+    check_postbirth_subscription: function(im, mother_id) {
+      // Look up if the mother is subscribed to postbirth messages
+        return go.utils_project
+            .get_subscription_messageset_through_identity(im, mother_id)
+            .then(function(messageset) {
+                if (messageset === 'no_active_subs_found') {
+                    return 'no_active_subs_found';
+                } else {
+                    return messageset.short_name.substring(0,9) === 'postbirth';
+                }
             });
     },
 
@@ -1341,32 +1390,6 @@ go.utils_project = {
         .service_api_call("subscriptions", "post", null, payload, "subscriptions/", im)
         .then(function(response) {
             return response.data.id;
-        });
-    },
-
-    switch_to_baby: function(im) {
-        var mama_id = im.user.answers.mama_id;
-        return Q
-        .all([
-            // get identity so details can be updated
-            go.utils.get_identity(mama_id, im),
-            // set existing subscriptions inactive
-            go.utils_project.subscription_unsubscribe_all(mama_id, im)
-        ])
-        .spread(function(mama_identity, unsubscribe_result) {
-            // set new mama identity details
-            mama_identity.details.baby_dob = go.utils.get_today(im.config).format('YYYY-MM-DD');
-            mama_identity.details.state_current = "baby";
-
-            // set up baby message subscription
-            baby_subscription = go.utils_project.setup_subscription(im, mama_identity);
-
-            return Q.all([
-                // update mama identity
-                go.utils.update_identity(im, mama_identity),
-                // subscribe to baby messages
-                go.utils_project.subscribe_identity(im, baby_subscription)
-            ]);
         });
     },
 

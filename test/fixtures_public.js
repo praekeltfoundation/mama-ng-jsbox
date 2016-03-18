@@ -1,12 +1,13 @@
 // Identity roles
 // 05059991111: heretofore unseen number
 // 05059992222: registered user - mother only registration, sms, pregnant, igbo
-// 05059993333: registered user - friend_only, voice, baby, english, receives for 05059995555
+// 05059993333: registered user - friend_only, voice, pregnant, english, receives for 05059995555
 // 05059994444: existing contact that does not have a receiver_role
 // 05059995555: registered user - mother that receives messages via 05059993333
 // 05059996666: registered user - mother that receives own messages, linked to 05059997777
 // 05059997777: registered user - family member that receives household messages for 05059996666
 // 05059998888: number being changed to
+// 05059999999: registered user - mother only already subscribed to baby
 
 // There are 4 cases to consider when a change is attempted:
 // case 1: mother_only registration - mother dialing in (05059992222)
@@ -763,7 +764,7 @@ module.exports = function() {
                 'code': 200,
                 'data': {
                     'id': 1,
-                    'short_name': 'pregnant_mother_text_10_42',
+                    'short_name': 'prebirth_mother_text_10_42',
                     'notes': null,
                     'next_set': 4,
                     'default_schedule': 1,
@@ -859,7 +860,7 @@ module.exports = function() {
                 'code': 200,
                 'data': {
                     'id': 1,
-                    'short_name': 'messageset 2',
+                    'short_name': 'prebirth_mother_audio_10_42',
                     'notes': null,
                     'next_set': 3,
                     'default_schedule': 1,
@@ -954,7 +955,7 @@ module.exports = function() {
                 'code': 200,
                 'data': {
                     'id': 1,
-                    'short_name': 'messageset 3',
+                    'short_name': 'prebirth_household_text_10_42',
                     'notes': null,
                     'next_set': 4,
                     'default_schedule': 1,
@@ -2424,6 +2425,222 @@ module.exports = function() {
             }
         },
 
+        // 70: get identity 05059999999 by msisdn
+        {
+            'repeatable': true,
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'details__addresses__msisdn': '+2345059999999'
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/identities/search/',
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [{
+                        "url": "http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059999999/",
+                        "id": "3f7c8851-5204-43f7-af7f-005059999999",
+                        "version": 1,
+                        "details": {
+                            "default_addr_type": "msisdn",
+                            "addresses": {
+                                "msisdn": {
+                                    "+2345059999999": {}
+                                }
+                            },
+                            "receiver_role": "mother",
+                            "linked_to": null,
+                            "preferred_msg_type": "text",
+                            "preferred_language": "igbo"
+                        },
+                        "created_at": "2015-07-10T06:13:29.693272Z",
+                        "updated_at": "2015-07-10T06:13:29.693298Z"
+                    }]
+                }
+            }
+        },
+
+        // 71: get identity 3f7c8851-5204-43f7-af7f-005059999999
+        {
+            'repeatable': true,
+            'request': {
+                'method': 'GET',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059999999/',
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059999999/",
+                    "id": "3f7c8851-5204-43f7-af7f-005059999999",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2345059999999": {}
+                            }
+                        },
+                        "receiver_role": "mother",
+                        "linked_to": null,
+                        "preferred_msg_type": "text",
+                        "preferred_language": "igbo"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
+
+        // 72: get subscription for identity 3f7c8851-5204-43f7-af7f-005059999999
+        {
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'identity': '3f7c8851-5204-43f7-af7f-005059999999',
+                    'active': 'true'
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8005/api/v1/subscriptions/'
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            'url': 'http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-9999',
+                            'id': '51fcca25-2e85-4c44-subscription-9999',
+                            'version': 1,
+                            'identity': '3f7c8851-5204-43f7-af7f-005059999999',
+                            'messageset_id': 4,
+                            'next_sequence_number': 1,
+                            'lang': "ibo_NG",
+                            'active': true,
+                            'completed': false,
+                            'schedule': 1,
+                            'process_status': 0,
+                            'metadata': {},
+                            'created_at': "2015-07-10T06:13:29.693272Z",
+                            'updated_at': "2015-07-10T06:13:29.693272Z"
+                        }
+                    ]
+
+                }
+            }
+        },
+
+        // 73: get messageset 4
+        {
+            'request': {
+                'method': 'GET',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8003/api/v1/messagesets/4/'
+            },
+            'response': {
+                'code': 200,
+                'data': {
+                    'id': 1,
+                    'short_name': 'postbirth_mother_text_0_12',
+                    'notes': null,
+                    'next_set': 4,
+                    'default_schedule': 1,
+                    'content_type': 'text',
+                    'created_at': "2015-07-10T06:13:29.693272Z",
+                    'updated_at': "2015-07-10T06:13:29.693272Z"
+                }
+            }
+        },
+
+        // 74: Change to baby - 2222
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "action": "change_baby",
+                    "data": {}
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 75: Change to baby - 5555
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "action": "change_baby",
+                    "data": {}
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 74: Change to baby - 6666
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "action": "change_baby",
+                    "data": {}
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
 
     ];
 };
