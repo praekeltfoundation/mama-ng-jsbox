@@ -17,6 +17,13 @@ go.utils_project = {
             });
     },
 
+    check_baby_subscription: function(msisdn) {
+        return Q()
+            .then(function(q_response) {
+                return (msisdn === '082333');
+            });
+    },
+
     check_msg_type: function(msisdn) {
         return Q()
             .then(function(q_response) {
