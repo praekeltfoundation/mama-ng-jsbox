@@ -37,7 +37,7 @@ go.app = function() {
                 "We do not recognise this number. Please dial from the registered number or sign up with your local Community Health Extension worker.",
             "state_already_registered_baby":
                 "You are already registered for baby messages.",
-            "state_new_registeration_baby":
+            "state_new_registration_baby":
                 "Thank you. You will now receive messages about caring for baby",
             "state_change_menu_sms":
                 "Please select what you would like to do:",
@@ -319,12 +319,14 @@ go.app = function() {
         // Interstitials
         self.add('state_check_baby_subscription', function(name) {
             return go.utils_project
-                .check_baby_subscription(self.im.user.addr)
-                .then(function(isSubscribed) {
-                    if (isSubscribed) {
+                .check_postbirth_subscription(self.im, self.im.user.answers.mother_id)
+                .then(function(postbirth_sub) {
+                    if (postbirth_sub === true) {
                         return self.states.create('state_already_registered_baby');
+                    } else if (postbirth_sub === 'no_active_subs_found') {
+                        return self.states.create('state_baby_switch_broken');  // TODO #101
                     } else {
-                        return self.states.create('state_new_registeration_baby');
+                        return self.states.create('state_change_baby');
                     }
                 });
         });
@@ -344,8 +346,16 @@ go.app = function() {
             });
         });
 
+        self.add('state_change_baby', function(name) {
+            return go.utils_project
+                .switch_to_baby(self.im, self.im.user.answers.mother_id)
+                .then(function() {
+                    return self.states.create('state_new_registration_baby');
+                });
+        });
+
         // EndState st-02
-        self.add('state_new_registeration_baby', function(name) {
+        self.add('state_new_registration_baby', function(name) {
             return new EndState(name, {
                 text: $(questions[name]),
                 next: 'state_start'
