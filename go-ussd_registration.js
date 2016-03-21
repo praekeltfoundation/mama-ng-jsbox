@@ -1586,11 +1586,11 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 choices: [
-                    new Choice('mother_father', $("Mother & Father")),
+                    new Choice('mother_father', $("Mother, Father")),
                     new Choice('mother_only', $("Mother")),
                     new Choice('father_only', $("Father")),
-                    new Choice('mother_family', $("Mother & family member")),
-                    new Choice('mother_friend', $("Mother & friend")),
+                    new Choice('mother_family', $("Mother, family member")),
+                    new Choice('mother_friend', $("Mother, friend")),
                     new Choice('friend_only', $("Friend")),
                     new Choice('family_only', $("Family member"))
                 ],
