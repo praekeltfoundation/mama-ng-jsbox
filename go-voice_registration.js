@@ -825,7 +825,7 @@ go.utils_project = {
 // VOICE HELPERS
 
     make_default_speech_url: function () {
-        return im.config.services.voice_content.url + lang + '/__default.mp3';
+        return im.config.services.voice_content.url + lang + '/voice_file_not_found.mp3';
     },
 
     // Construct url string
