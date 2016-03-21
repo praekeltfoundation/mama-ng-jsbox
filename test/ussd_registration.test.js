@@ -207,11 +207,11 @@ describe("Mama Nigeria App", function() {
                         state: 'state_msg_receiver',
                         reply: [
                             "Please select who will receive the messages on their phone:",
-                            "1. Mother & Father",
+                            "1. Mother, Father",
                             "2. Mother",
                             "3. Father",
-                            "4. Mother & family member",
-                            "5. Mother & friend",
+                            "4. Mother, family member",
+                            "5. Mother, friend",
                             "6. Friend",
                             "7. Family member"
                         ].join('\n')
@@ -346,11 +346,11 @@ describe("Mama Nigeria App", function() {
                         state: 'state_msg_receiver',
                         reply: [
                             "Please select who will receive the messages on their phone:",
-                            "1. Mother & Father",
+                            "1. Mother, Father",
                             "2. Mother",
                             "3. Father",
-                            "4. Mother & family member",
-                            "5. Mother & friend",
+                            "4. Mother, family member",
+                            "5. Mother, friend",
                             "6. Friend",
                             "7. Family member"
                         ].join('\n')
