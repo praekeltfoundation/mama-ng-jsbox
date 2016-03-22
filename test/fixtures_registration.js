@@ -1414,7 +1414,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': "http://localhost:8003/api/v1/outbound/",
+                'url': "http://localhost:8006/api/v1/outbound/",
                 'data':  {
                     "identity": "cb245673-aa41-4302-ac47-00000000002",
                     "content": "Please dial back in to *120*8864*0000# to complete the Hello MAMA registration"

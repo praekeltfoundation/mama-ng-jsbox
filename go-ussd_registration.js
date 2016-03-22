@@ -494,6 +494,26 @@ go.utils = {
 
 // OPTOUT & OPTIN HELPERS
 
+    optout: function(im, identity_id, optout_reason, address_type, address,
+                     request_source, request_source_id, optout_type, config) {
+      // Posts an optout to the identity store optout endpoint
+
+        var optout_info = {
+            optout_type: optout_type || 'stop',  // default to 'stop'
+            identity: identity_id,
+            reason: optout_reason || 'unknown',  // default to 'unknown'
+            address_type: address_type || 'msisdn',  // default to 'msisdn'
+            address: address,
+            request_source: request_source,
+            request_source_id: request_source_id
+        };
+        return go.utils
+            .service_api_call("identities", "post", null, optout_info, "optout/", im)
+            .then(function(response) {
+                return response;
+            });
+    },
+
     opt_out: function(im, contact) {
         contact.extra.optout_last_attempt = go.utils.get_today(im.config)
             .format('YYYY-MM-DD hh:mm:ss.SSS');
@@ -804,6 +824,10 @@ go.utils_project = {
 
 // VOICE HELPERS
 
+    make_default_speech_url: function (im, lang) {
+        return im.config.services.voice_content.url + lang + '/voice_file_not_found.mp3';
+    },
+
     // Construct url string
     make_speech_url: function(im, name, lang, num, retry) {
         var url_start = im.config.services.voice_content.url + lang + '/' + name + '_' + num;
@@ -830,6 +854,7 @@ go.utils_project = {
             'state_main_menu',
             'state_main_menu_household',
             'state_baby_already_subscribed',
+            'state_end_voice_confirm',
             'state_end_baby',
             'state_end_exit'
         ];
@@ -863,7 +888,11 @@ go.utils_project = {
                         return im
                             .log('Unable to find voice file: ' + voice_url)
                             .then(function () {
-                                return {};
+                                return {
+                                    voice: {
+                                        speech_url: go.utils_project.make_default_speech_url(im, lang)
+                                    }
+                                };
                             });
                     });
             });
@@ -1006,6 +1035,33 @@ go.utils_project = {
 
 // OPTOUT HELPERS
 
+    optout_mother_ussd: function(im) {
+        return go.utils.optout(
+            im,
+            im.user.answers.mother_id,
+            im.user.answers.state_optout_reason,
+            'msisdn',
+            im.user.answers.mother_msisdn,
+            'ussd_public',
+            im.config.testing_message_id ||
+              im.msg.message_id,
+            'stop'
+        );
+    },
+
+    optout_household_ussd: function(im) {
+        return go.utils.optout(
+            im,
+            im.user.answers.household_id,
+            im.user.answers.state_optout_reason,
+            'msisdn',
+            im.user.answers.household_msisdn,
+            'ussd_public',
+            im.config.testing_message_id || im.msg.message_id,
+            'stop'
+        );
+    },
+
     optout_loss_opt_in: function(im) {
         return go.utils_project
         .optout(im)
@@ -1036,30 +1092,156 @@ go.utils_project = {
 
 // CHANGE HELPERS
 
-    change_msg_times: function(im) {
-        var mama_id = im.user.answers.mama_id;
-        return Q
-        .all([
-            // get identity so details can be updated
-            go.utils.get_identity(mama_id, im),
-            // get existing subscriptions so schedule can be updated
-            go.utils_project.get_active_subscription_by_identity_id(mama_id, im)
-        ])
-        .spread(function(mama_identity, subscription) {
-            // set new mama identity details
-            mama_identity.details.voice_days = im.user.answers.state_c04_voice_days;
-            mama_identity.details.voice_times = im.user.answers.state_c06_voice_times;
+    update_msg_format_time: function(im, new_msg_format, voice_days, voice_times) {
+      // Sends new message type, preferred day and time to Change endpoint
+      // and updates the mother's preferred msg settings
 
-            // set new subscription schedule
-            subscription.schedule = go.utils_project.get_schedule(mama_identity);
+        var change_data = {
+            "mother_id": im.user.answers.mother_id,
+            "action": "change_messaging",
+            "data": {
+                "msg_type": new_msg_format,
+                "voice_days": voice_days || null,
+                "voice_times": voice_times || null
+            }
+        };
 
-            return Q.all([
-                // update mama identity
-                go.utils.update_identity(im, mama_identity),
-                // update subscription
-                go.utils_project.update_subscription(im, subscription)
-            ]);
-        });
+        return go.utils
+            .service_api_call("registrations", "post", null, change_data, "change/", im)
+            .then(function() {
+                return go.utils
+                    .get_identity(im.user.answers.mother_id, im)
+                    .then(function(mother_identity) {
+                        // Update mother only as household messages are text only for now
+                        mother_identity.details.preferred_msg_type = new_msg_format;
+                        mother_identity.details.preferred_msg_days = voice_days || null;
+                        mother_identity.details.preferred_msg_times = voice_times || null;
+                        return go.utils
+                            .update_identity(im, mother_identity);
+                    });
+            });
+    },
+
+    switch_to_loss: function(im, mother_id, loss_reason) {
+      // Sends an Api request to the registration store to switch the mother
+      // to loss messages
+
+        var change_data = {
+            "mother_id": mother_id,
+            "action": "change_loss",
+            "data": {
+                "loss_reason": loss_reason
+            }
+        };
+
+        return go.utils
+            .service_api_call("registrations", "post", null, change_data, "change/", im)
+            .then(function(response) {
+                return response;
+            });
+    },
+
+    switch_to_baby: function(im, mother_id) {
+      // Sends an Api request to the registration store to switch the mother
+      // to baby messages
+
+        var change_data = {
+            "mother_id": mother_id,
+            "action": "change_baby",
+            "data": {}
+        };
+
+        return go.utils
+            .service_api_call("registrations", "post", null, change_data, "change/", im)
+            .then(function(response) {
+                return response;
+            });
+    },
+
+    unsub_household: function(im, mother_id, household_id, loss_reason) {
+      // A unique change endpoint that unsubscribes only the household receiver
+      // in an _only registration case; rather than doing an optout which would
+      // block the mother's messages from getting through to the receiver
+
+        var change_data = {
+            "mother_id": mother_id,
+            "action": "unsubscribe_household_only",
+            "data": {
+                "household_id": household_id,
+                "loss_reason": loss_reason
+            }
+        };
+
+        return go.utils
+            .service_api_call("registrations", "post", null, change_data, "change/", im)
+            .then(function(response) {
+                return response;
+            });
+    },
+
+    unsub_mother: function(im, mother_id, household_id, loss_reason) {
+      // A unique change endpoint that unsubscribes from the mother messages only
+      // in an _only registration case; rather than doing an optout which would
+      // block the household messages from getting through to the receiver
+
+        var change_data = {
+            "mother_id": mother_id,
+            "action": "unsubscribe_mother_only",
+            "data": {
+                "household_id": household_id,
+                "loss_reason": loss_reason
+            }
+        };
+
+        return go.utils
+            .service_api_call("registrations", "post", null, change_data, "change/", im)
+            .then(function(response) {
+                return response;
+            });
+    },
+
+    change_language: function(im, new_lang, mother_id, household_id) {
+      // Sends an Api request to the registration store to change the
+      // subscriptions' languages, and sends a patch request to the identity
+      // store to change the identities' languages
+
+        var change_data = {
+            "mother_id": mother_id,
+            "action": "change_language",
+            "data": {
+                "new_language": new_lang,
+                "household_id": household_id
+            }
+        };
+
+        if (household_id === null) {
+            return go.utils
+                .get_identity(mother_id, im)
+                .then(function(mother_identity) {
+                    mother_identity.details.preferred_language = new_lang;
+                    return Q
+                        .all([
+                            go.utils.update_identity(im, mother_identity),
+                            go.utils.service_api_call("registrations", "post", null, change_data, "change/", im)
+                        ]);
+                });
+        } else {
+            return Q
+                .all([
+                    go.utils.get_identity(mother_id, im),
+                    go.utils.get_identity(household_id, im)
+                ])
+                .spread(function(mother_identity, household_identity) {
+                    mother_identity.details.preferred_language = new_lang;
+                    household_identity.details.preferred_language = new_lang;
+                    return Q
+                        .all([
+                            go.utils.update_identity(im, mother_identity),
+                            go.utils.update_identity(im, household_identity),
+                            go.utils.service_api_call("registrations", "post", null, change_data, "change/", im)
+                        ]);
+                });
+        }
     },
 
 
@@ -1109,53 +1291,61 @@ go.utils_project = {
 
 // SUBSCRIPTION HELPERS
 
-    get_subscription_msg_type: function(im, mother_id) {
-      // Look up what type of messages the mother is receiving
+    get_subscription_messageset_through_identity: function(im, mother_id, household_id) {
+      // Return the messageset that an identity is subscribed to
 
         // get subscription
         return go.utils
             .get_active_subscription_by_identity(im, mother_id)
             .then(function(subscription) {
-                im.user.set_answer('mother_subscription', subscription);
-                // get messageset
-                return go.utils
-                    .get_messageset(im, subscription.messageset_id)
-                    .then(function(messageset) {
-                        im.user.set_answer('mother_messageset', messageset);
-                        return messageset.content_type;  // 'text' / 'audio'
-                    });
+                if (subscription === null) {
+                    // try to look for an active subscription on the household_id
+                    return go.utils
+                        .get_active_subscription_by_identity(im, household_id)
+                        .then(function(subscription) {
+                            if (subscription === null) {
+                                return 'no_active_subs_found';
+                            } else {
+                                // get messageset
+                                return go.utils
+                                    .get_messageset(im, subscription.messageset_id)
+                                    .then(function(messageset) {
+                                        return messageset;
+                                    });
+                            }
+                        });
+                } else {
+                    // get messageset
+                    return go.utils
+                        .get_messageset(im, subscription.messageset_id)
+                        .then(function(messageset) {
+                            return messageset;
+                        });
+                    }
             });
     },
 
-    update_msg_format_time: function(im, new_msg_format, voice_days, voice_times) {
-      // Sends new message type, preferred day and time to Change endpoint
-      // and updates the mother's preferred msg settings
+    get_subscription_msg_type: function(im, mother_id) {
+      // Look up what type of messages the mother is receiving
 
-        var change_data = {
-            "mother_id": im.user.answers.mother_id,
-            "action": "change_messaging",
-            "data": {
-                "msg_type": new_msg_format,
-                "voice_days": voice_days || null,
-                "voice_times": voice_times || null
-            }
-        };
-
-        return go.utils
-            .service_api_call("change", "post", null, change_data, "change/", im)
-            .then(function() {
-                return go.utils
-                    .get_identity(im.user.answers.mother_id, im)
-                    .then(function(mother_identity) {
-                        // Update mother only as household messages are text only for now
-                        mother_identity.details.preferred_msg_type = new_msg_format;
-                        mother_identity.details.preferred_msg_days = voice_days || null;
-                        mother_identity.details.preferred_msg_times = voice_times || null;
-                        return go.utils
-                            .update_identity(im, mother_identity);
-                    });
+        return go.utils_project
+            .get_subscription_messageset_through_identity(im, mother_id)
+            .then(function(messageset) {
+                return messageset.content_type;  // 'text' / 'audio'
             });
+    },
 
+    check_postbirth_subscription: function(im, mother_id) {
+      // Look up if the mother is subscribed to postbirth messages
+        return go.utils_project
+            .get_subscription_messageset_through_identity(im, mother_id)
+            .then(function(messageset) {
+                if (messageset === 'no_active_subs_found') {
+                    return 'no_active_subs_found';
+                } else {
+                    return messageset.short_name.substring(0,9) === 'postbirth';
+                }
+            });
     },
 
     is_registered: function(identity_id, im) {
@@ -1215,32 +1405,6 @@ go.utils_project = {
         .service_api_call("subscriptions", "post", null, payload, "subscriptions/", im)
         .then(function(response) {
             return response.data.id;
-        });
-    },
-
-    switch_to_baby: function(im) {
-        var mama_id = im.user.answers.mama_id;
-        return Q
-        .all([
-            // get identity so details can be updated
-            go.utils.get_identity(mama_id, im),
-            // set existing subscriptions inactive
-            go.utils_project.subscription_unsubscribe_all(mama_id, im)
-        ])
-        .spread(function(mama_identity, unsubscribe_result) {
-            // set new mama identity details
-            mama_identity.details.baby_dob = go.utils.get_today(im.config).format('YYYY-MM-DD');
-            mama_identity.details.state_current = "baby";
-
-            // set up baby message subscription
-            baby_subscription = go.utils_project.setup_subscription(im, mama_identity);
-
-            return Q.all([
-                // update mama identity
-                go.utils.update_identity(im, mama_identity),
-                // subscribe to baby messages
-                go.utils_project.subscribe_identity(im, baby_subscription)
-            ]);
         });
     },
 
@@ -1422,11 +1586,11 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 choices: [
-                    new Choice('mother_father', $("Mother & Father")),
+                    new Choice('mother_father', $("Mother, Father")),
                     new Choice('mother_only', $("Mother")),
                     new Choice('father_only', $("Father")),
-                    new Choice('mother_family', $("Mother & family member")),
-                    new Choice('mother_friend', $("Mother & friend")),
+                    new Choice('mother_family', $("Mother, family member")),
+                    new Choice('mother_friend', $("Mother, friend")),
                     new Choice('friend_only', $("Friend")),
                     new Choice('family_only', $("Family member"))
                 ],

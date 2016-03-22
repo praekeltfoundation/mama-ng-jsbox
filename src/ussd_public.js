@@ -1,5 +1,6 @@
 go.app = function() {
     var vumigo = require('vumigo_v02');
+    var Q = require('q');
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
@@ -36,7 +37,7 @@ go.app = function() {
                 "We do not recognise this number. Please dial from the registered number or sign up with your local Community Health Extension worker.",
             "state_already_registered_baby":
                 "You are already registered for baby messages.",
-            "state_new_registeration_baby":
+            "state_new_registration_baby":
                 "Thank you. You will now receive messages about caring for baby",
             "state_change_menu_sms":
                 "Please select what you would like to do:",
@@ -86,7 +87,6 @@ go.app = function() {
         get_error_text = function(name) {
             return errors[name] || "Sorry not a valid input. " + questions[name];
         };
-
 
 
     // TIMEOUT HANDLING
@@ -219,20 +219,59 @@ go.app = function() {
             var role = self.im.user.answers.role_player;
             var contact_id = self.im.user.answers.contact_id;
             if (role === 'mother') {
-                self.im.user.set_answer('mother_id', contact_id);
-                self.im.user.set_answer('receiver_id', 'none');
-                return self.states.create('state_main_menu');
+                // lookup contact so we can get the link to the household receiver (if any)
+                return go.utils
+                    .get_identity(contact_id, self.im)
+                    .then(function(mother) {
+                        self.im.user.set_answer('mother_id', contact_id);
+                        self.im.user.set_answer('mother_msisdn',
+                            Object.keys(mother.details.addresses.msisdn)[0]);
+                        if (mother.details.linked_to) {
+                            self.im.user.set_answer('household_id', mother.details.linked_to);
+                            self.im.user.set_answer('seperate_household_receiver', true);
+                            self.im.user.set_answer('reg_type', 'mother_and_other');
+                            // lookup household so we can save their msisdn
+                            return go.utils
+                                .get_identity(self.im.user.answers.household_id, self.im)
+                                .then(function(household) {
+                                    self.im.user.set_answer('household_msisdn',
+                                        Object.keys(household.details.addresses.msisdn)[0]);
+                                    return self.states.create('state_main_menu');
+                                });
+                        } else {
+                            // mother_only
+                            self.im.user.set_answer('household_id', null);
+                            self.im.user.set_answer('seperate_household_receiver', false);
+                            self.im.user.set_answer('reg_type', 'mother_only');
+                            return self.states.create('state_main_menu');
+                        }
+                    });
             } else {
                 // lookup contact so we can get the link to the mother
                 return go.utils
                     .get_identity(contact_id, self.im)
                     .then(function(contact) {
-                        self.im.user.set_answer('receiver_id', contact.id);
+                        self.im.user.set_answer('household_id', contact_id);
                         self.im.user.set_answer('mother_id', contact.details.linked_to);
+                        self.im.user.set_answer('household_msisdn',
+                            Object.keys(contact.details.addresses.msisdn)[0]);
                         if (contact.details.household_msgs_only) {
-                            self.im.user.set_answer('receiver_household_only', true);
-                            return self.states.create('state_main_menu_household');
+                            // set true for mother_friend, mother_family, mother_father identification
+                            self.im.user.set_answer('seperate_household_receiver', true);
+                            self.im.user.set_answer('reg_type', 'mother_and_other');
+                            // lookup mother so we can save her msisdn
+                            return go.utils
+                                .get_identity(self.im.user.answers.mother_id, self.im)
+                                .then(function(mother) {
+                                    self.im.user.set_answer('mother_msisdn',
+                                        Object.keys(mother.details.addresses.msisdn)[0]);
+                                    return self.states.create('state_main_menu_household');
+                                });
                         } else {
+                            // set false for friend_only, family_only, father_only identification
+                            // cannot set mother msisdn as it doesn't exist
+                            self.im.user.set_answer('seperate_household_receiver', false);
+                            self.im.user.set_answer('reg_type', 'other_only');
                             return self.states.create('state_main_menu');
                         }
                     });
@@ -280,12 +319,14 @@ go.app = function() {
         // Interstitials
         self.add('state_check_baby_subscription', function(name) {
             return go.utils_project
-                .check_baby_subscription(self.im.user.addr)
-                .then(function(isSubscribed) {
-                    if (isSubscribed) {
+                .check_postbirth_subscription(self.im, self.im.user.answers.mother_id)
+                .then(function(postbirth_sub) {
+                    if (postbirth_sub === true) {
                         return self.states.create('state_already_registered_baby');
+                    } else if (postbirth_sub === 'no_active_subs_found') {
+                        return self.states.create('state_baby_switch_broken');  // TODO #101
                     } else {
-                        return self.states.create('state_new_registeration_baby');
+                        return self.states.create('state_change_baby');
                     }
                 });
         });
@@ -305,8 +346,16 @@ go.app = function() {
             });
         });
 
+        self.add('state_change_baby', function(name) {
+            return go.utils_project
+                .switch_to_baby(self.im, self.im.user.answers.mother_id)
+                .then(function() {
+                    return self.states.create('state_new_registration_baby');
+                });
+        });
+
         // EndState st-02
-        self.add('state_new_registeration_baby', function(name) {
+        self.add('state_new_registration_baby', function(name) {
             return new EndState(name, {
                 text: $(questions[name]),
                 next: 'state_start'
@@ -326,7 +375,7 @@ go.app = function() {
                     } else if (msg_format === 'audio') {
                         return self.states.create('state_change_menu_voice');
                     } else {
-                        return self.state.create('state_end_exit');
+                        return self.states.create('state_end_exit');
                     }
                 });
         });
@@ -518,8 +567,21 @@ go.app = function() {
                     new Choice('pidgin', $('Pidgin')),
                     new Choice('yoruba', $('Yoruba'))
                 ],
-                next: 'state_msg_language_confirm'
+                next: 'state_change_language'
             });
+        });
+
+        self.add('state_change_language', function(name) {
+            return go.utils_project
+                .change_language(
+                    self.im,
+                    self.im.user.answers.state_msg_language,
+                    self.im.user.answers.mother_id,
+                    self.im.user.answers.household_id
+                )
+                .then(function() {
+                    return self.states.create('state_msg_language_confirm');
+                });
         });
 
         // EndState st-12
@@ -539,14 +601,20 @@ go.app = function() {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
                 choices: [
-                    new Choice('state_loss_subscription', $("Mother miscarried")),
-                    new Choice('state_end_loss', $("Baby stillborn")),
-                    new Choice('state_end_loss', $("Baby passed away")),
-                    new Choice('state_check_subscription', $("Messages not useful")),
-                    new Choice('state_check_subscription', $("Other"))
+                    new Choice('miscarriage', $("Mother miscarried")),
+                    new Choice('stillborn', $("Baby stillborn")),
+                    new Choice('baby_death', $("Baby passed away")),
+                    new Choice('not_useful', $("Messages not useful")),
+                    new Choice('other', $("Other"))
                 ],
                 next: function(choice) {
-                    return choice.value;
+                    switch (choice.value) {
+                        case 'miscarriage': return 'state_loss_subscription';
+                        case 'stillborn': return 'state_optout_all';
+                        case 'baby_death': return 'state_optout_all';
+                        case 'not_useful': return 'state_check_subscription';
+                        case 'other': return 'state_check_subscription';
+                    }
                 }
             });
         });
@@ -557,9 +625,20 @@ go.app = function() {
             return go.utils
                 .get_identity(contact_id, self.im)
                 .then(function(contact) {
-                    // household and mother_only subscriptions bypass to end state state_end_optout
-                    if (contact.details.household_msgs_only || (self.im.user.mother_id === contact_id && self.im.user.receiver_id === 'none')) {
-                        return self.states.create("state_end_optout");
+                    //  and mother_only subscriptions bypass to end state state_end_optout
+                    if (self.im.user.answers.reg_type === 'mother_only') {
+                        return go.utils_project
+                            .optout_mother_ussd(self.im)
+                            .then(function() {
+                                return self.states.create('state_end_optout');
+                            });
+                    } else if (self.im.user.answers.reg_type === 'mother_and_other' &&
+                         self.im.user.answers.role_player !== 'mother') {
+                        return go.utils_project
+                            .optout_household_ussd(self.im)
+                            .then(function() {
+                                return self.states.create('state_end_optout');
+                            });
                     } else {
                         return self.states.create("state_optout_receiver");
                     }
@@ -572,13 +651,80 @@ go.app = function() {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
                 choices: [
-                    new Choice('state_end_loss_subscription_confirm', $("Yes")),
-                    new Choice('state_end_loss', $("No"))
+                    new Choice('state_switch_loss', $("Yes")),
+                    new Choice('state_optout_all', $("No"))
                 ],
                 next: function(choice) {
                     return choice.value;
                 }
             });
+        });
+
+        self.add('state_optout_all', function(name) {
+            if (self.im.user.answers.household_id === null) {
+                return go.utils_project
+                    .optout_mother_ussd(self.im)
+                    .then(function() {
+                        if (self.im.user.answers.state_optout_reason === 'not_useful' ||
+                            self.im.user.answers.state_optout_reason === 'other') {
+                            return self.states.create('state_end_optout');
+                        } else {
+                            return self.states.create('state_end_loss');
+                        }
+                    });
+            } else if (self.im.user.answers.reg_type === 'other_only') {
+                return go.utils_project
+                    .optout_household_ussd(self.im)
+                    .then(function() {
+                        if (self.im.user.answers.state_optout_reason === 'not_useful' ||
+                            self.im.user.answers.state_optout_reason === 'other') {
+                            return self.states.create('state_end_optout');
+                        } else {
+                            return self.states.create('state_end_loss');
+                        }
+                    });
+            } else {
+                return Q
+                    .all([
+                        go.utils_project.optout_mother_ussd(self.im),
+                        go.utils_project.optout_household_ussd(self.im)
+                    ])
+                    .then(function() {
+                        if (self.im.user.answers.state_optout_reason === 'not_useful' ||
+                            self.im.user.answers.state_optout_reason === 'other') {
+                            return self.states.create('state_end_optout');
+                        } else {
+                            return self.states.create('state_end_loss');
+                        }
+                    });
+            }
+        });
+
+        self.add('state_switch_loss', function(name) {
+            return go.utils_project
+                .switch_to_loss(self.im, self.im.user.answers.mother_id,
+                                self.im.user.answers.state_optout_reason)
+                .then(function() {
+                    if (self.im.user.answers.household_id &&
+                        self.im.user.answers.seperate_household_receiver === true) {
+                        return go.utils_project
+                            .optout_household_ussd(self.im)
+                            .then(function() {
+                                return self.states.create('state_end_loss_subscription_confirm');
+                            });
+                    } else if (self.im.user.answers.household_id &&
+                               self.im.user.answers.seperate_household_receiver === false) {
+                        return go.utils_project
+                            .unsub_household(self.im, self.im.user.answers.mother_id,
+                                             self.im.user.answers.household_id,
+                                             self.im.user.answers.state_optout_reason)
+                            .then(function() {
+                                return self.states.create('state_end_loss_subscription_confirm');
+                            });
+                    } else {
+                        return self.states.create('state_end_loss_subscription_confirm');
+                    }
+                });
         });
 
         // EndState st-15
@@ -591,7 +737,6 @@ go.app = function() {
 
         // ChoiceState st-16
         self.add('state_optout_receiver', function(name) {
-            //var role = go.utils_project.check_role(self.im.user.addr);
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
@@ -601,12 +746,68 @@ go.app = function() {
                     new Choice('all', $("All messages"))
                 ],
                 next: function(choice) {
-                        switch (choice.value) {
-                            case 'mother':  // deliberate fall-through to default
-                            case 'household':
-                            case 'all':
-                                return 'state_end_optout';
-                        }
+                    switch (choice.value) {
+                        case 'mother':
+                            if (self.im.user.answers.reg_type === 'other_only') {
+                                return go.utils_project
+                                    .unsub_mother(self.im, self.im.user.answers.mother_id,
+                                                  self.im.user.answers.household_id,
+                                                  self.im.user.answers.state_optout_reason)
+                                    .then(function() {
+                                        return 'state_end_optout';
+                                    });
+                            } else {
+                                return go.utils_project
+                                    .optout_mother_ussd(self.im)
+                                    .then(function() {
+                                        return 'state_end_optout';
+                                    });
+                            }
+                            break;
+                        case 'household':
+                            // unsubscribe from household messages only
+                            if (self.im.user.answers.reg_type === 'other_only') {
+                                return go.utils_project
+                                    .unsub_household(self.im, self.im.user.answers.mother_id,
+                                                     self.im.user.answers.household_id,
+                                                     self.im.user.answers.state_optout_reason)
+                                    .then(function() {
+                                        return 'state_end_optout';
+                                    });
+                            // opt out household messages receiver
+                            } else {
+                                return go.utils_project
+                                    .optout_household_ussd(self.im)
+                                    .then(function() {
+                                        return 'state_end_optout';
+                                    });
+                            }
+                            break;
+                        case 'all':
+                            if (self.im.user.answers.reg_type === 'other_only') {
+                                return Q
+                                    .all([
+                                        go.utils_project.unsub_mother(
+                                            self.im, self.im.user.answers.mother_id,
+                                            self.im.user.answers.household_id,
+                                            self.im.user.answers.state_optout_reason
+                                        ),
+                                        go.utils_project.optout_household_ussd(self.im)
+                                    ])
+                                    .then(function() {
+                                        return 'state_end_optout';
+                                    });
+                            } else {
+                                return Q
+                                    .all([
+                                        go.utils_project.optout_mother_ussd(self.im),
+                                        go.utils_project.optout_household_ussd(self.im)
+                                    ])
+                                    .then(function() {
+                                        return 'state_end_optout';
+                                    });
+                            }
+                    }
                 }
             });
         });

@@ -37,7 +37,7 @@ describe("Mama Nigeria App", function() {
         });
 
         describe("when the user sends a STOP message", function() {
-            it("should opt them out", function() {
+            it.skip("should opt them out", function() {
                 return tester
                     .setup.user.addr('+2345059999999')
                     .inputs('stop and wait for green')
