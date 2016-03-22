@@ -2913,5 +2913,274 @@ module.exports = function() {
             }
         },
 
+        // 85: Optout - miscarriage 6666 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "reason": "miscarriage",
+                    "address_type": "msisdn",
+                    "address": "+2345059996666",
+                    "request_source": "voice_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 86: Optout - stillborn 6666 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "reason": "stillborn",
+                    "address_type": "msisdn",
+                    "address": "+2345059996666",
+                    "request_source": "voice_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 87: Optout - baby death 6666 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "reason": "baby_death",
+                    "address_type": "msisdn",
+                    "address": "+2345059996666",
+                    "request_source": "voice_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 88: Optout - not_useful 6666 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "reason": "not_useful",
+                    "address_type": "msisdn",
+                    "address": "+2345059996666",
+                    "request_source": "voice_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 89: Optout - other 6666 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "reason": "other",
+                    "address_type": "msisdn",
+                    "address": "+2345059996666",
+                    "request_source": "voice_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 90: Optout - miscarriage 7777 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059997777",
+                    "reason": "miscarriage",
+                    "address_type": "msisdn",
+                    "address": "+2345059997777",
+                    "request_source": "voice_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 91: Optout - stillborn 7777 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059997777",
+                    "reason": "stillborn",
+                    "address_type": "msisdn",
+                    "address": "+2345059997777",
+                    "request_source": "voice_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 92: Optout - baby death 7777 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059997777",
+                    "reason": "baby_death",
+                    "address_type": "msisdn",
+                    "address": "+2345059997777",
+                    "request_source": "voice_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        //93: Optout - not_useful 7777 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059997777",
+                    "reason": "not_useful",
+                    "address_type": "msisdn",
+                    "address": "+2345059997777",
+                    "request_source": "voice_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 94: Optout - other 7777 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059997777",
+                    "reason": "other",
+                    "address_type": "msisdn",
+                    "address": "+2345059997777",
+                    "request_source": "voice_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
     ];
 };
