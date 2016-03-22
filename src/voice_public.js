@@ -105,20 +105,59 @@ go.app = function() {
             var role = self.im.user.answers.role_player;
             var contact_id = self.im.user.answers.contact_id;
             if (role === 'mother') {
-                self.im.user.set_answer('mother_id', contact_id);
-                self.im.user.set_answer('receiver_id', 'none');
-                return self.states.create('state_main_menu');
+                // lookup contact so we can get the link to the household receiver (if any)
+                return go.utils
+                    .get_identity(contact_id, self.im)
+                    .then(function(mother) {
+                        self.im.user.set_answer('mother_id', contact_id);
+                        self.im.user.set_answer('mother_msisdn',
+                            Object.keys(mother.details.addresses.msisdn)[0]);
+                        if (mother.details.linked_to) {
+                            self.im.user.set_answer('household_id', mother.details.linked_to);
+                            self.im.user.set_answer('seperate_household_receiver', true);
+                            self.im.user.set_answer('reg_type', 'mother_and_other');
+                            // lookup household so we can save their msisdn
+                            return go.utils
+                                .get_identity(self.im.user.answers.household_id, self.im)
+                                .then(function(household) {
+                                    self.im.user.set_answer('household_msisdn',
+                                        Object.keys(household.details.addresses.msisdn)[0]);
+                                    return self.states.create('state_main_menu');
+                                });
+                        } else {
+                            // mother_only
+                            self.im.user.set_answer('household_id', null);
+                            self.im.user.set_answer('seperate_household_receiver', false);
+                            self.im.user.set_answer('reg_type', 'mother_only');
+                            return self.states.create('state_main_menu');
+                        }
+                    });
             } else {
                 // lookup contact so we can get the link to the mother
                 return go.utils
                     .get_identity(contact_id, self.im)
                     .then(function(contact) {
-                        self.im.user.set_answer('receiver_id', contact.id);
+                        self.im.user.set_answer('household_id', contact_id);
                         self.im.user.set_answer('mother_id', contact.details.linked_to);
+                        self.im.user.set_answer('household_msisdn',
+                            Object.keys(contact.details.addresses.msisdn)[0]);
                         if (contact.details.household_msgs_only) {
-                            self.im.user.set_answer('receiver_household_only', true);
-                            return self.states.create('state_main_menu_household');
+                            // set true for mother_friend, mother_family, mother_father identification
+                            self.im.user.set_answer('seperate_household_receiver', true);
+                            self.im.user.set_answer('reg_type', 'mother_and_other');
+                            // lookup mother so we can save her msisdn
+                            return go.utils
+                                .get_identity(self.im.user.answers.mother_id, self.im)
+                                .then(function(mother) {
+                                    self.im.user.set_answer('mother_msisdn',
+                                        Object.keys(mother.details.addresses.msisdn)[0]);
+                                    return self.states.create('state_main_menu_household');
+                                });
                         } else {
+                            // set false for friend_only, family_only, father_only identification
+                            // cannot set mother msisdn as it doesn't exist
+                            self.im.user.set_answer('seperate_household_receiver', false);
+                            self.im.user.set_answer('reg_type', 'other_only');
                             return self.states.create('state_main_menu');
                         }
                     });
@@ -476,12 +515,25 @@ go.app = function() {
                     new Choice('pidgin', $('Pidgin')),
                     new Choice('yoruba', $('Yoruba'))
                 ],
-                next: 'state_end_msg_language'
+                next: 'state_change_language'
             });
         });
 
+        self.add('state_change_language', function(name) {
+            return go.utils_project
+                .change_language(
+                    self.im,
+                    self.im.user.answers.state_msg_language,
+                    self.im.user.answers.mother_id,
+                    self.im.user.answers.household_id
+                )
+                .then(function() {
+                    return self.states.create('state_end_msg_language_confirm');
+                });
+        });
+
         // EndState st-12
-        self.add('state_end_msg_language', function(name) {
+        self.add('state_end_msg_language_confirm', function(name) {
             var speech_option = 1;
             return new EndState(name, {
                 text: $('Thank you. Language preference updated.'),

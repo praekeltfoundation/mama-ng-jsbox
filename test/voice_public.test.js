@@ -263,7 +263,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [2,25];
+                        var expected_used = [2,9,25];
                         var fixts = api.http.fixtures.fixtures;
                         var fixts_used = [];
                         fixts.forEach(function(f, i) {
@@ -478,7 +478,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [2,16,17,25];
+                        var expected_used = [2,9,16,17,25];
                         var fixts = api.http.fixtures.fixtures;
                         var fixts_used = [];
                         fixts.forEach(function(f, i) {
@@ -515,7 +515,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [2,16,17,25];
+                        var expected_used = [2,9,16,17,25];
                         var fixts = api.http.fixtures.fixtures;
                         var fixts_used = [];
                         fixts.forEach(function(f, i) {
@@ -553,7 +553,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [2,16,17,25];
+                        var expected_used = [2,9,16,17,25];
                         var fixts = api.http.fixtures.fixtures;
                         var fixts_used = [];
                         fixts.forEach(function(f, i) {
@@ -775,7 +775,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [12,22,23,25];
+                        var expected_used = [7,12,13,22,23,25];
                         var fixts = api.http.fixtures.fixtures;
                         var fixts_used = [];
                         fixts.forEach(function(f, i) {
@@ -808,7 +808,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [12,13,22,23,24,25,29];
+                        var expected_used = [7,12,13,22,23,24,25,29];
                         var fixts = api.http.fixtures.fixtures;
                         var fixts_used = [];
                         fixts.forEach(function(f, i) {
@@ -1014,16 +1014,16 @@ describe("Mama Nigeria App", function() {
                     {session_event: 'new'}
                     , '05059992222' // state_msg_receiver_msisdn
                     , '4'           // state_main_menu - language
-                    , '3'   // state_msg_language - igbo
+                    , '4'   // state_msg_language - pidgin
                 )
                 .check.interaction({
-                    state: 'state_end_msg_language',
+                    state: 'state_end_msg_language_confirm',
                     reply: 'Thank you. Language preference updated.'
                 })
                 .check.reply.properties({
                     helper_metadata: {
                         voice: {
-                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_msg_language_1.mp3',
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_msg_language_confirm_1.mp3',
                             wait_for: '#',
                             barge_in: true
                         }

@@ -1204,7 +1204,7 @@ go.utils_project = {
       // Sends an Api request to the registration store to change the
       // subscriptions' languages, and sends a patch request to the identity
       // store to change the identities' languages
-
+      
         var change_data = {
             "mother_id": mother_id,
             "action": "change_language",
