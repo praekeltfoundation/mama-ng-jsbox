@@ -454,7 +454,7 @@ describe("Mama Nigeria App", function() {
 
         describe("Flow from main menu - message preferences", function() {
             describe("Change from SMS to Voice messages", function() {
-                it("case 1 > should navigate to state_change_menu_sms if registered for sms", function() {
+                it("case 1 > to state_change_menu_sms if registered for sms", function() {
                     return tester
                     .setup.user.addr('+07070050005')
                     .inputs(
@@ -489,7 +489,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
                 });
-                it("case 1 > should navigate to state_voice_days", function() {
+                it("case 1 > to state_voice_days", function() {
                     return tester
                     .setup.user.addr('+07070050005')
                     .inputs(
@@ -526,7 +526,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
                 });
-                it("case 1 > should navigate to state_voice_times", function() {
+                it("case 1 > to state_voice_times", function() {
                     return tester
                     .setup.user.addr('+07070050005')
                     .inputs(
@@ -564,7 +564,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
                 });
-                it("case 1 > should navigate to state_end_voice_confirm", function() {
+                it("case 1 > to state_end_voice_confirm", function() {
                     return tester
                     .setup.user.addr('+07070050005')
                     .inputs(
@@ -601,7 +601,7 @@ describe("Mama Nigeria App", function() {
                 });
             });
             describe("Change Voice message days and times", function() {
-                it("case 2 > should navigate to state_voice_days", function() {
+                it("case 2 > to state_voice_days", function() {
                     return tester
                     .setup.user.addr('+07070050005')
                     .inputs(
@@ -638,7 +638,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
                 });
-                it("case 2 > should navigate to state_voice_days", function() {
+                it("case 2 > to state_voice_days", function() {
                     return tester
                     .setup.user.addr('+07070050005')
                     .inputs(
@@ -675,7 +675,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
                 });
-                it("case 2 > should navigate to state_voice_times", function() {
+                it("case 2 > to state_voice_times", function() {
                     return tester
                     .setup.user.addr('+07070050005')
                     .inputs(
@@ -713,7 +713,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
                 });
-                it("case 2 > should navigate to state_end_voice_confirm", function() {
+                it("case 2 > to state_end_voice_confirm", function() {
                     return tester
                     .setup.user.addr('+07070050005')
                     .inputs(
@@ -750,7 +750,7 @@ describe("Mama Nigeria App", function() {
                 });
             });
             describe("Change from Voice to SMS messages", function() {
-                it("case 3 > should navigate to state_change_menu_voice if registered for voice", function() {
+                it("case 3 > to state_change_menu_voice if registered for voice", function() {
                     return tester
                     .setup.user.addr('+07070050005')
                     .inputs(
@@ -786,7 +786,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
                 });
-                it("case 3 > should navigate to state_end_sms_confirm", function() {
+                it("case 3 > to state_end_sms_confirm", function() {
                     return tester
                     .setup.user.addr('+07070050005')
                     .inputs(
@@ -823,7 +823,7 @@ describe("Mama Nigeria App", function() {
         });
 
         describe("Flow from main menu - change number", function() {
-            it("case 1 > should navigate to state_new_msisdn", function() {
+            it("case 1 > to state_new_msisdn", function() {
                 return tester
                 .setup.user.addr('+2345059992222')
                 .inputs(
@@ -846,7 +846,7 @@ describe("Mama Nigeria App", function() {
                 })
                 .run();
             });
-            it("case 1 > should navigate to state_new_msisdn (invalid number)", function() {
+            it("case 1 > to state_new_msisdn (invalid number)", function() {
                 return tester
                 .setup.user.addr('+2345059992222')
                 .inputs(
@@ -870,7 +870,7 @@ describe("Mama Nigeria App", function() {
                 })
                 .run();
             });
-            it("case 1 > should navigate to state_number_in_use", function() {
+            it("case 1 > to state_number_in_use", function() {
                 return tester
                 .setup.user.addr('+2345059992222')
                 .inputs(
@@ -898,7 +898,7 @@ describe("Mama Nigeria App", function() {
                 })
                 .run();
             });
-            it("case 1 > should navigate to state_new_msisdn (via state_number_in_use)", function() {
+            it("case 1 > to state_new_msisdn (via state_number_in_use)", function() {
                 return tester
                 .setup.user.addr('+2345059992222')
                 .inputs(
@@ -923,7 +923,7 @@ describe("Mama Nigeria App", function() {
                 })
                 .run();
             });
-            it("case 1 > should navigate to state_end_exit", function() {
+            it("case 1 > to state_end_exit", function() {
                 return tester
                 .setup.user.addr('+2345059992222')
                 .inputs(
@@ -949,7 +949,7 @@ describe("Mama Nigeria App", function() {
                 })
                 .run();
             });
-            it("case 1 > should navigate to state_end_new_msisdn", function() {
+            it("case 1 > to state_end_new_msisdn", function() {
                 return tester
                 .setup.user.addr('+2345059992222')
                 .inputs(
@@ -1036,7 +1036,7 @@ describe("Mama Nigeria App", function() {
         describe("Flow from main menu - optout", function() {
             // to optout menu
             describe("case 1", function() {
-                it("should navigate to state_optout_reason", function() {
+                it("to state_optout_reason", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1075,7 +1075,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
                 });
-                it("miscarriage; should navigate to state_loss_subscription", function() {
+                it("miscarriage; to state_loss_subscription", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1113,7 +1113,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // 1, 1 - miscarriage, yes
-                it("loss messagages opt-in; should navigate to state_end_loss_subscription_confirm", function() {
+                it("loss messagages opt-in; to state_end_loss_subscription_confirm", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1149,7 +1149,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // 1, 2 - miscarriage, no
-                it("loss messages opt-out; should navigate to state_end_loss (miscarriage)", function() {
+                it("loss messages opt-out; to state_end_loss (miscarriage)", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1185,7 +1185,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // stillborn
-                it("should navigate to state_end_loss (stillborn)", function() {
+                it("to state_end_loss (stillborn)", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1219,7 +1219,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // baby passed away
-                it("should navigate to state_end_loss (baby death)", function() {
+                it("to state_end_loss (baby death)", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1253,7 +1253,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // not useful
-                it("should navigate to state_end_optout", function() {
+                it("to state_end_optout", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1287,7 +1287,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // other
-                it("should navigate to state_end_optout", function() {
+                it("to state_end_optout", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1347,7 +1347,7 @@ describe("Mama Nigeria App", function() {
                 });
             });
             describe("case 2", function() {
-                it("should navigate to state_optout_reason", function() {
+                it("to state_optout_reason", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1386,7 +1386,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
                 });
-                it("should navigate to state_loss_subscription (miscarriage)", function() {
+                it("to state_loss_subscription (miscarriage)", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1424,7 +1424,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // 1, 1 - miscarriage, yes
-                it("loss messages opt-in; should navigate to state_end_loss_subscription_confirm", function() {
+                it("loss messages opt-in; to state_end_loss_subscription_confirm", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1460,7 +1460,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // 1, 2 - miscarriage, no
-                it("loss messages opt-out; should navigate to state_end_loss (miscarriage)", function() {
+                it("loss messages opt-out; to state_end_loss (miscarriage)", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1496,7 +1496,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // stillborn
-                it("should navigate to state_end_loss (stillborn)", function() {
+                it("to state_end_loss (stillborn)", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1530,7 +1530,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // baby passed away
-                it("should navigate to state_end_loss (baby death)", function() {
+                it("to state_end_loss (baby death)", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1564,7 +1564,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // not useful
-                it("should navigate to state_optout_receiver", function() {
+                it("to state_optout_receiver", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1603,7 +1603,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // 4, 1 - unsubscribe mother
-                it("should navigate to state_end_optout", function() {
+                it("to state_end_optout", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1638,7 +1638,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // 4, 2 - unsubscribe household
-                it("should navigate to state_end_optout", function() {
+                it("to state_end_optout", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1673,7 +1673,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // 4, 3 - unsubscribe all
-                it("should navigate to state_end_optout", function() {
+                it("to state_end_optout", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1708,7 +1708,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // other
-                it("should navigate to state_optout_receiver", function() {
+                it("to state_optout_receiver", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1747,7 +1747,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // 5, 1 - unsubscribe mother
-                it("should navigate to state_end_optout", function() {
+                it("to state_end_optout", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1782,7 +1782,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // 5, 2 - unsubscribe household
-                it("should navigate to state_end_optout", function() {
+                it("to state_end_optout", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1817,7 +1817,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // 5, 3 - unsubscribe all
-                it("should navigate to state_end_optout", function() {
+                it("to state_end_optout", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1854,7 +1854,7 @@ describe("Mama Nigeria App", function() {
             });
 
             describe("case 3", function() {
-                it("should navigate to state_optout_reason", function() {
+                it("to state_optout_reason", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1893,7 +1893,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
                 });
-                it("should navigate to state_loss_subscription (miscarriage)", function() {
+                it("to state_loss_subscription (miscarriage)", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1931,7 +1931,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // 1, 1 - miscarriage, yes
-                it("loss messages opt-in; should navigate to state_end_loss_subscription_confirm", function() {
+                it("loss messages opt-in; to state_end_loss_subscription_confirm", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1967,7 +1967,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // 1, 2 - miscarriage, no
-                it("loss messages opt-out; should navigate to state_end_loss (miscarriage)", function() {
+                it("loss messages opt-out; to state_end_loss (miscarriage)", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -2003,7 +2003,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // stillborn
-                it("should navigate to state_end_loss (stillborn)", function() {
+                it("to state_end_loss (stillborn)", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -2037,7 +2037,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // baby passed away
-                it("should navigate to state_end_loss (baby death)", function() {
+                it("to state_end_loss (baby death)", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -2071,7 +2071,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // not useful
-                it("should navigate to state_optout_receiver", function() {
+                it("to state_optout_receiver", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -2110,7 +2110,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // 4, 1 - unsubscribe mother
-                it("should navigate to state_end_optout", function() {
+                it("to state_end_optout", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -2145,7 +2145,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // 4, 2 - unsubscribe household
-                it("should navigate to state_end_optout", function() {
+                it("to state_end_optout", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -2180,7 +2180,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // 4, 3 - unsubscribe all
-                it("should navigate to state_end_optout", function() {
+                it("to state_end_optout", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -2215,7 +2215,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // other
-                it("should navigate to state_optout_receiver", function() {
+                it("to state_optout_receiver", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -2254,7 +2254,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // 5, 1 - unsubscribe mother
-                it("should navigate to state_end_optout", function() {
+                it("to state_end_optout", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -2289,7 +2289,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // 5, 2 - unsubscribe household
-                it("should navigate to state_end_optout", function() {
+                it("to state_end_optout", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -2324,7 +2324,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // 5, 3 - unsubscribe all
-                it("should navigate to state_end_optout", function() {
+                it("to state_end_optout", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -2361,7 +2361,7 @@ describe("Mama Nigeria App", function() {
             });
 
             describe("case 4", function() {
-                it("should navigate to state_optout_reason", function() {
+                it("to state_optout_reason", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -2400,7 +2400,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
                 });
-                it("miscarriage; should navigate to state_loss_subscription", function() {
+                it("miscarriage; to state_loss_subscription", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -2438,7 +2438,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // 1, 1 - miscarriage, yes
-                it("loss messagages opt-in; should navigate to state_end_loss_subscription_confirm", function() {
+                it("loss messagages opt-in; to state_end_loss_subscription_confirm", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -2474,7 +2474,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // 1, 2 - miscarriage, no
-                it("loss messages opt-out; should navigate to state_end_loss (miscarriage)", function() {
+                it("loss messages opt-out; to state_end_loss (miscarriage)", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -2510,7 +2510,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // stillborn
-                it("should navigate to state_end_loss (stillborn)", function() {
+                it("to state_end_loss (stillborn)", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -2544,7 +2544,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // baby passed away
-                it("should navigate to state_end_loss (baby death)", function() {
+                it("to state_end_loss (baby death)", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -2578,7 +2578,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // not useful
-                it("should navigate to state_end_optout", function() {
+                it("to state_end_optout", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -2612,7 +2612,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // other
-                it("should navigate to state_end_optout", function() {
+                it("to state_end_optout", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
