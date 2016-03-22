@@ -1007,7 +1007,7 @@ describe("Mama Nigeria App", function() {
                 .run();
             });
 
-            it("should navigate to state_end_msg_language", function() {
+            it("case 1 > to state_end_msg_language", function() {
                 return tester
                 .setup.user.addr('+07070050005')
                 .inputs(
@@ -1025,7 +1025,79 @@ describe("Mama Nigeria App", function() {
                         voice: {
                             speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_msg_language_confirm_1.mp3',
                             wait_for: '#',
-                            barge_in: true
+                            barge_in: false
+                        }
+                    }
+                })
+                .run();
+            });
+            it("case 2 > to state_end_msg_language_confirm", function() {
+                return tester
+                .setup.user.addr('+07070050005')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059993333' // state_msg_receiver_msisdn
+                    , '4'           // state_main_menu - language
+                    , '4'   // state_msg_language - pidgin
+                )
+                .check.interaction({
+                    state: 'state_end_msg_language_confirm',
+                    reply: 'Thank you. Language preference updated.'
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_msg_language_confirm_1.mp3',
+                            wait_for: '#',
+                            barge_in: false
+                        }
+                    }
+                })
+                .run();
+            });
+            it("case 3 > to state_end_msg_language_confirm", function() {
+                return tester
+                .setup.user.addr('+07070050005')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059996666' // state_msg_receiver_msisdn
+                    , '4'           // state_main_menu - language
+                    , '4'   // state_msg_language - pidgin
+                )
+                .check.interaction({
+                    state: 'state_end_msg_language_confirm',
+                    reply: 'Thank you. Language preference updated.'
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_msg_language_confirm_1.mp3',
+                            wait_for: '#',
+                            barge_in: false
+                        }
+                    }
+                })
+                .run();
+            });
+            it("case 4 > to state_end_msg_language_confirm", function() {
+                return tester
+                .setup.user.addr('+07070050005')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059997777' // state_msg_receiver_msisdn
+                    , '3'           // state_main_menu_household - language
+                    , '4'   // state_msg_language - pidgin
+                )
+                .check.interaction({
+                    state: 'state_end_msg_language_confirm',
+                    reply: 'Thank you. Language preference updated.'
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_msg_language_confirm_1.mp3',
+                            wait_for: '#',
+                            barge_in: false
                         }
                     }
                 })
