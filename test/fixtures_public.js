@@ -2778,5 +2778,140 @@ module.exports = function() {
             }
         },
 
+        // 80: Optout - miscarriage 3333 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "reason": "miscarriage",
+                    "address_type": "msisdn",
+                    "address": "+2345059993333",
+                    "request_source": "voice_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 81: Optout - stillborn 3333 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "reason": "stillborn",
+                    "address_type": "msisdn",
+                    "address": "+2345059993333",
+                    "request_source": "voice_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 82: Optout - baby_death 3333 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "reason": "baby_death",
+                    "address_type": "msisdn",
+                    "address": "+2345059993333",
+                    "request_source": "voice_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 83: Optout - not_useful 3333 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "reason": "not_useful",
+                    "address_type": "msisdn",
+                    "address": "+2345059993333",
+                    "request_source": "voice_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 84: Optout - other 3333 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "reason": "other",
+                    "address_type": "msisdn",
+                    "address": "+2345059993333",
+                    "request_source": "voice_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
     ];
 };

@@ -305,6 +305,7 @@ go.utils_project = {
             'state_end_voice',
             'state_end_loss_subscription_confirm',
             'state_end_loss',
+            'state_end_optout',
             // voice public states
             'state_msg_receiver_msisdn',
             'state_main_menu',

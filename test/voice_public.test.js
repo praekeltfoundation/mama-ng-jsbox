@@ -1036,7 +1036,7 @@ describe("Mama Nigeria App", function() {
         describe("Flow from main menu - optout", function() {
             // to optout menu
             describe("case 1", function() {
-                it("case 1 > should navigate to state_optout_reason", function() {
+                it("should navigate to state_optout_reason", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1075,7 +1075,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
                 });
-                it("case 1 > miscarriage; should navigate to state_loss_subscription", function() {
+                it("miscarriage; should navigate to state_loss_subscription", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1113,7 +1113,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // 1, 1 - miscarriage, yes
-                it("case 1 > loss messagages opt-in; should navigate to state_end_loss_subscription_confirm", function() {
+                it("loss messagages opt-in; should navigate to state_end_loss_subscription_confirm", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1149,7 +1149,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // 1, 2 - miscarriage, no
-                it("case 1 > loss messages opt-out; should navigate to state_end_loss", function() {
+                it("loss messages opt-out; should navigate to state_end_loss (miscarriage)", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1185,7 +1185,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // stillborn
-                it("case 1 > should navigate to state_end_loss", function() {
+                it("should navigate to state_end_loss (stillborn)", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1219,7 +1219,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // baby passed away
-                it("case 1 > should navigate to state_end_loss", function() {
+                it("should navigate to state_end_loss (baby death)", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1253,7 +1253,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // not useful
-                it("case 1 > should navigate to state_end_optout", function() {
+                it("should navigate to state_end_optout", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1271,7 +1271,7 @@ describe("Mama Nigeria App", function() {
                             voice: {
                                 speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_optout_1.mp3',
                                 wait_for: '#',
-                                barge_in: true
+                                barge_in: false
                             }
                         }
                     })
@@ -1287,7 +1287,7 @@ describe("Mama Nigeria App", function() {
                     .run();
                 });
                 // other
-                it("case 1 > should navigate to state_end_optout", function() {
+                it("should navigate to state_end_optout", function() {
                     return tester
                     .setup.user.addr('+2345059992222')
                     .inputs(
@@ -1305,7 +1305,7 @@ describe("Mama Nigeria App", function() {
                             voice: {
                                 speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_optout_1.mp3',
                                 wait_for: '#',
-                                barge_in: true
+                                barge_in: false
                             }
                         }
                     })
@@ -1347,7 +1347,510 @@ describe("Mama Nigeria App", function() {
                 });
             });
         describe("case 2", function() {
-
+            it("should navigate to state_optout_reason", function() {
+                return tester
+                .setup.user.addr('+2345059992222')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059993333'  // msg_receiver_msisdn
+                    , '5'  // state_main_menu - optout
+                )
+                .check.interaction({
+                    state: 'state_optout_reason',
+                    reply: [
+                        'Optout reason?',
+                        '1. Mother miscarried',
+                        '2. Baby stillborn',
+                        '3. Baby passed away',
+                        '4. Messages not useful',
+                        '5. Other'
+                    ].join('\n')
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_optout_reason_1.mp3',
+                            wait_for: '#',
+                            barge_in: true
+                        }
+                    }
+                })
+                .check(function(api) {
+                    var expected_used = [4,5,25];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                        f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
+                })
+                .run();
+            });
+            it("should navigate to state_loss_subscription (miscarriage)", function() {
+                return tester
+                .setup.user.addr('+2345059992222')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059993333'  // msg_receiver_msisdn
+                    , '5'  // main_menu - optout
+                    , '1'  // optout_reason - miscarriage
+                )
+                .check.interaction({
+                    state: 'state_loss_subscription',
+                    reply: [
+                    'Receive loss messages?',
+                    '1. Yes',
+                    '2. No'
+                    ].join('\n')
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_loss_subscription_1.mp3',
+                            wait_for: '#',
+                            barge_in: true
+                        }
+                    }
+                })
+                .check(function(api) {
+                    var expected_used = [4,5,25];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                        f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
+                })
+                .run();
+            });
+            // 1, 1 - miscarriage, yes
+            it("loss messages opt-in; should navigate to state_end_loss_subscription_confirm", function() {
+                return tester
+                .setup.user.addr('+2345059992222')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059993333'  // msg_receiver_msisdn
+                    , '5'  // main_menu - optout
+                    , '1'  // optout_reason - miscarriage
+                    , '1'  // state_end_loss_subscription_confirm - confirm opt in
+                )
+                .check.interaction({
+                    state: 'state_end_loss_subscription_confirm',
+                    reply: 'Thank you. You will now receive messages to support you during this difficult time.'
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_loss_subscription_confirm_1.mp3',
+                            wait_for: '#',
+                            barge_in: false
+                        }
+                    }
+                })
+                .check(function(api) {
+                    var expected_used = [4,5,25,32,33];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                    f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
+                })
+                .check.reply.ends_session()
+                .run();
+            });
+            // 1, 2 - miscarriage, no
+            it("loss messages opt-out; should navigate to state_end_loss (miscarriage)", function() {
+                return tester
+                .setup.user.addr('+2345059992222')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059993333'  // msg_receiver_msisdn
+                    , '5'  // main_menu - optout
+                    , '1'  // optout_reason - miscarriage
+                    , '2'  // state_loss_subscription - no
+                )
+                .check.interaction({
+                    state: 'state_end_loss',
+                    reply: 'We are sorry for your loss. You will no longer receive messages.'
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_loss_1.mp3',
+                            wait_for: '#',
+                            barge_in: false
+                        }
+                    }
+                })
+                .check(function(api) {
+                    var expected_used = [4,5,25,82];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                        f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
+                })
+                .check.reply.ends_session()
+                .run();
+            });
+            // stillborn
+            it("should navigate to state_end_loss (stillborn)", function() {
+                return tester
+                .setup.user.addr('+2345059992222')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059993333'  // msg_receiver_msisdn
+                    , '5'  // main_menu - optout
+                    , '2'  // optout_reason - stillborn
+                )
+                .check.interaction({
+                    state: 'state_end_loss',
+                    reply: 'We are sorry for your loss. You will no longer receive messages.'
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_loss_1.mp3',
+                            wait_for: '#',
+                            barge_in: false
+                        }
+                    }
+                })
+                .check(function(api) {
+                    var expected_used = [4,5,25,83];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                        f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
+                })
+                .run();
+            });
+            // baby passed away
+            it("should navigate to state_end_loss (baby death)", function() {
+                return tester
+                .setup.user.addr('+2345059992222')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059993333'  // msg_receiver_msisdn
+                    , '5'  // main_menu - optout
+                    , '3'  // optout_reason - baby_died
+                )
+                .check.interaction({
+                    state: 'state_end_loss',
+                    reply: 'We are sorry for your loss. You will no longer receive messages.'
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_loss_1.mp3',
+                            wait_for: '#',
+                            barge_in: false
+                        }
+                    }
+                })
+                .check(function(api) {
+                    var expected_used = [4,5,25,84];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                    f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
+                })
+                .run();
+            });
+            // not useful
+            it("should navigate to state_optout_receiver", function() {
+                return tester
+                .setup.user.addr('+2345059992222')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059993333'  // msg_receiver_msisdn
+                    , '5'  // main_menu - optout
+                    , '4'  // optout_reason - not_useful
+                )
+                .check.interaction({
+                    state: 'state_optout_receiver',
+                    reply: [
+                        'Which messages to opt-out on?',
+                        '1. Mother messages',
+                        '2. Household messages',
+                        '3. All messages'
+                    ].join('\n')
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_optout_receiver_1.mp3',
+                            wait_for: '#',
+                            barge_in: true
+                        }
+                    }
+                })
+                .check(function(api) {
+                    var expected_used = [4,5,25];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                    f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
+                })
+                .run();
+            });
+            // 4, 1 - unsubscribe mother
+            it("should navigate to state_end_optout", function() {
+                return tester
+                .setup.user.addr('+2345059992222')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059993333'  // msg_receiver_msisdn
+                    , '5'  // main_menu - optout
+                    , '4'  // optout_reason - not_useful
+                    , '1'  // state_optout_receiver - mother messages
+                )
+                .check.interaction({
+                    state: 'state_end_optout',
+                    reply: "Thank you - optout"
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_optout_1.mp3',
+                            wait_for: '#',
+                            barge_in: false
+                        }
+                    }
+                })
+                .check(function(api) {
+                    var expected_used = [4,5,25,52];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                    f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
+                })
+                .run();
+            });
+            // 4, 2 - unsubscribe household
+            it("should navigate to state_end_optout", function() {
+                return tester
+                .setup.user.addr('+2345059992222')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059993333'  // msg_receiver_msisdn
+                    , '5'  // main_menu - optout
+                    , '4'  // optout_reason - not_useful
+                    , '2'  // state_optout_receiver - household messages
+                )
+                .check.interaction({
+                    state: 'state_end_optout',
+                    reply: "Thank you - optout"
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_optout_1.mp3',
+                            wait_for: '#',
+                            barge_in: false
+                        }
+                    }
+                })
+                .check(function(api) {
+                    var expected_used = [4,5,25,60];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                    f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
+                })
+                .run();
+            });
+            // 4, 3 - unsubscribe all
+            it("should navigate to state_end_optout", function() {
+                return tester
+                .setup.user.addr('+2345059992222')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059993333'  // msg_receiver_msisdn
+                    , '5'  // main_menu - optout
+                    , '4'  // optout_reason - not_useful
+                    , '3'  // state_optout_receiver - all messages
+                )
+                .check.interaction({
+                    state: 'state_end_optout',
+                    reply: "Thank you - optout"
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_optout_1.mp3',
+                            wait_for: '#',
+                            barge_in: false
+                        }
+                    }
+                })
+                .check(function(api) {
+                    var expected_used = [4,5,25,52,85];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                    f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
+                })
+                .run();
+            });
+            // other
+            it("should navigate to state_optout_receiver", function() {
+                return tester
+                .setup.user.addr('+2345059992222')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059993333'  // msg_receiver_msisdn
+                    , '5'  // main_menu - optout
+                    , '5'  // optout_reason - other
+                )
+                .check.interaction({
+                    state: 'state_optout_receiver',
+                    reply: [
+                        'Which messages to opt-out on?',
+                        '1. Mother messages',
+                        '2. Household messages',
+                        '3. All messages'
+                    ].join('\n')
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_optout_receiver_1.mp3',
+                            wait_for: '#',
+                            barge_in: true
+                        }
+                    }
+                })
+                .check(function(api) {
+                    var expected_used = [4,5,25];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                    f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
+                })
+                .run();
+            });
+            // 5, 1 - unsubscribe mother
+            it("should navigate to state_end_optout", function() {
+                return tester
+                .setup.user.addr('+2345059992222')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059993333'  // msg_receiver_msisdn
+                    , '5'  // main_menu - optout
+                    , '5'  // optout_reason - not_useful
+                    , '1'  // state_optout_receiver - mother messages
+                )
+                .check.interaction({
+                    state: 'state_end_optout',
+                    reply: "Thank you - optout"
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_optout_1.mp3',
+                            wait_for: '#',
+                            barge_in: false
+                        }
+                    }
+                })
+                .check(function(api) {
+                    var expected_used = [4,5,25,57];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                    f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
+                })
+                .run();
+            });
+            // 5, 2 - unsubscribe household
+            it("should navigate to state_end_optout", function() {
+                return tester
+                .setup.user.addr('+2345059992222')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059993333'  // msg_receiver_msisdn
+                    , '5'  // main_menu - optout
+                    , '5'  // optout_reason - not_useful
+                    , '2'  // state_optout_receiver - household messages
+                )
+                .check.interaction({
+                    state: 'state_end_optout',
+                    reply: "Thank you - optout"
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_optout_1.mp3',
+                            wait_for: '#',
+                            barge_in: false
+                        }
+                    }
+                })
+                .check(function(api) {
+                    var expected_used = [4,5,25,61];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                    f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
+                })
+                .run();
+            });
+            // 5, 3 - unsubscribe all
+            it("should navigate to state_end_optout", function() {
+                return tester
+                .setup.user.addr('+2345059992222')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059993333'  // msg_receiver_msisdn
+                    , '5'  // main_menu - optout
+                    , '5'  // optout_reason - not_useful
+                    , '3'  // state_optout_receiver - all messages
+                )
+                .check.interaction({
+                    state: 'state_end_optout',
+                    reply: "Thank you - optout"
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_optout_1.mp3',
+                            wait_for: '#',
+                            barge_in: false
+                        }
+                    }
+                })
+                .check(function(api) {
+                    var expected_used = [4,5,25,57,86];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                    f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
+                })
+                .run();
+            });
         });
 
         describe("case 3", function() {
