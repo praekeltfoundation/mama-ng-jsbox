@@ -217,10 +217,10 @@ go.utils = {
 // IDENTITY HELPERS
 
     get_identity_by_address: function(address, im) {
-        // Searches the Identity Store for all identities with the provided address.
-        // Returns the first identity object found
-        // Address should be an object {address_type: address}, eg.
-        // {'msisdn': '0821234444'}, {'email': 'me@example.com'}
+      // Searches the Identity Store for all identities with the provided address.
+      // Returns the first identity object found
+      // Address should be an object {address_type: address}, eg.
+      // {'msisdn': '0821234444'}, {'email': 'me@example.com'}
 
         var address_type = Object.keys(address)[0];
         var address_val = address[address_type];
@@ -320,6 +320,65 @@ go.utils = {
             .service_api_call('identities', 'patch', {}, identity, endpoint, im)
             .then(function(response) {
                 return response.data.id;
+            });
+    },
+
+
+// STAGE-BASE HELPERS
+
+    get_subscription: function(im, subscription_id) {
+      // Gets the subscription from the Stage-base Store
+      // Returns the subscription object
+
+        var endpoint = 'subscriptions/' + subscription_id + '/';
+        return go.utils
+            .service_api_call('subscriptions', 'get', {}, null, endpoint, im)
+            .then(function(response) {
+                return response.data;
+            });
+    },
+
+    get_active_subscription_by_identity: function(im, identity_id) {
+      // Searches the Stage-base Store for all active subscriptions with the provided identity_id
+      // Returns the first subscription object found or null if none are found
+
+        var params = {
+            identity: identity_id,
+            active: true
+        };
+        var endpoint = 'subscriptions/';
+        return go.utils
+            .service_api_call('subscriptions', 'get', params, null, endpoint, im)
+            .then(function(response) {
+                var subscriptions_found = response.data.results;
+                // Return the first subscription in the list of subscriptions
+                return (subscriptions_found.length > 0)
+                ? subscriptions_found[0]
+                : null;
+            });
+    },
+
+    update_subscription: function(im, subscription) {
+      // Update a subscription by passing in the full updated subscription object
+      // Returns the id (which should be the same as the subscription's id)
+
+        var endpoint = 'subscriptions/' + subscription.id + '/';
+        return go.utils
+            .service_api_call('subscriptions', 'patch', {}, subscription, endpoint, im)
+            .then(function(response) {
+                return response.data.id;
+            });
+    },
+
+    get_messageset: function(im, messageset_id) {
+      // Gets the messageset from the Stage-base Store
+      // Returns the messageset object
+
+        var endpoint = 'messagesets/' + messageset_id + '/';
+        return go.utils
+            .service_api_call('messagesets', 'get', {}, null, endpoint, im)
+            .then(function(response) {
+                return response.data;
             });
     },
 
@@ -427,6 +486,26 @@ go.utils = {
 
 
 // OPTOUT & OPTIN HELPERS
+
+    optout: function(im, identity_id, optout_reason, address_type, address,
+                     request_source, request_source_id, optout_type, config) {
+      // Posts an optout to the identity store optout endpoint
+
+        var optout_info = {
+            optout_type: optout_type || 'stop',  // default to 'stop'
+            identity: identity_id,
+            reason: optout_reason || 'unknown',  // default to 'unknown'
+            address_type: address_type || 'msisdn',  // default to 'msisdn'
+            address: address,
+            request_source: request_source,
+            request_source_id: request_source_id
+        };
+        return go.utils
+            .service_api_call("identities", "post", null, optout_info, "optout/", im)
+            .then(function(response) {
+                return response;
+            });
+    },
 
     opt_out: function(im, contact) {
         contact.extra.optout_last_attempt = go.utils.get_today(im.config)

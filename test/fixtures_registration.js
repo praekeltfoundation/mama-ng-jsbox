@@ -175,7 +175,7 @@ module.exports = function() {
                             "state_at_registration": "pregnant",
                             "state_current": "pregnant",
                             "lang": "eng_NG",
-                            "msg_type": "voice",
+                            "msg_type": "audio",
                             "voice_days": "mon_wed",
                             "voice_times": "2_5"
                         },
@@ -227,7 +227,7 @@ module.exports = function() {
                             "state_at_registration": "pregnant",
                             "state_current": "pregnant",
                             "lang": "eng_NG",
-                            "msg_type": "voice",
+                            "msg_type": "audio",
                             "voice_days": "mon_wed",
                             "voice_times": "2_5"
                         },
@@ -495,7 +495,7 @@ module.exports = function() {
                         "state_at_registration": "pregnant",
                         "state_current": "pregnant",
                         "lang": "eng_NG",
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "voice_days": "mon_wed",
                         "voice_times": "2_5"
                     },
@@ -538,7 +538,7 @@ module.exports = function() {
                         "state_at_registration": "pregnant",
                         "state_current": "pregnant",
                         "lang": "eng_NG",
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "voice_days": "mon_wed",
                         "voice_times": "2_5"
                     },
@@ -577,7 +577,7 @@ module.exports = function() {
                         "state_at_registration": "baby",
                         "state_current": "baby",
                         "lang": "eng_NG",
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "voice_days": "mon_wed",
                         "voice_times": "2_5"
                     },
@@ -607,7 +607,7 @@ module.exports = function() {
                         "state_at_registration": "baby",
                         "state_current": "baby",
                         "lang": "eng_NG",
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "voice_days": "mon_wed",
                         "voice_times": "2_5"
                     },
@@ -658,7 +658,7 @@ module.exports = function() {
                     "schedule": 2,
                     "process_status": 0,
                     "metadata": {
-                        "msg_type":"voice"
+                        "msg_type":"audio"
                     }
                 }
             },
@@ -675,7 +675,7 @@ module.exports = function() {
                     "schedule": 2,
                     "process_status": 0,
                     "metadata": {
-                        "msg_type":"voice"
+                        "msg_type":"audio"
                     }
                 }
             }
@@ -755,9 +755,9 @@ module.exports = function() {
                         "state_at_registration": "pregnant",
                         "state_current": "pregnant",
                         "lang": "eng_NG",
-                        "msg_type": "sms",
-                        "voice_days": "sms",
-                        "voice_times": "sms"
+                        "msg_type": "text",
+                        "voice_days": "text",
+                        "voice_times": "text"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -785,9 +785,9 @@ module.exports = function() {
                         "state_at_registration": "pregnant",
                         "state_current": "pregnant",
                         "lang": "eng_NG",
-                        "msg_type": "sms",
-                        "voice_days": "sms",
-                        "voice_times": "sms"
+                        "msg_type": "text",
+                        "voice_days": "text",
+                        "voice_times": "text"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -815,7 +815,7 @@ module.exports = function() {
                     "schedule": 1,
                     "process_status": 0,
                     "metadata": {
-                        "msg_type":"sms"
+                        "msg_type": "text"
                     }
                 }
             },
@@ -833,7 +833,7 @@ module.exports = function() {
                     "schedule": 1,
                     "process_status": 0,
                     "metadata": {
-                        "msg_type":"sms"
+                        "msg_type": "text"
                     }
                 }
             }
@@ -874,7 +874,7 @@ module.exports = function() {
                             "schedule": 1,
                             "process_status": 0,
                             "metadata": {
-                                "msg_type": "voice",
+                                "msg_type": "audio",
                             },
                             "created_at": "2015-07-30T15:19:01.734812Z",
                             "updated_at": "2015-08-05T07:00:00.826924Z"
@@ -931,7 +931,7 @@ module.exports = function() {
                     "schedule": 1,
                     "process_status": 0,
                     "metadata": {
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                     },
                     "created_at": "2015-07-30T15:19:01.734812Z",
                     "updated_at": "2015-08-05T07:00:00.826924Z"
@@ -952,7 +952,7 @@ module.exports = function() {
                     "schedule": 1,
                     "process_status": 0,
                     "metadata": {
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                     },
                     "created_at": "2015-07-30T15:19:01.734812Z",
                     "updated_at": "2015-08-05T07:00:00.826924Z"
@@ -988,7 +988,7 @@ module.exports = function() {
                         "state_at_registration": "pregnant",
                         "state_current": "baby",
                         "lang": "eng_NG",
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "voice_days": "mon_wed",
                         "voice_times": "2_5"
                     },
@@ -1019,7 +1019,7 @@ module.exports = function() {
                         "state_at_registration": "pregnant",
                         "state_current": "baby",
                         "lang": "eng_NG",
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "voice_days": "mon_wed",
                         "voice_times": "2_5"
                     },
@@ -1049,7 +1049,7 @@ module.exports = function() {
                     "schedule": 2,
                     "process_status": 0,
                     "metadata": {
-                        "msg_type":"voice"
+                        "msg_type":"audio"
                     }
                 }
             },
@@ -1067,7 +1067,7 @@ module.exports = function() {
                     "schedule": 2,
                     "process_status": 0,
                     "metadata": {
-                        "msg_type":"voice"
+                        "msg_type":"audio"
                     }
                 }
             }
@@ -1101,7 +1101,7 @@ module.exports = function() {
                         "state_at_registration": "pregnant",
                         "state_current": "pregnant",
                         "lang": "eng_NG",
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "voice_days": "tue_thu",
                         "voice_times": "9_11"
                     },
@@ -1132,7 +1132,7 @@ module.exports = function() {
                         "state_at_registration": "pregnant",
                         "state_current": "pregnant",
                         "lang": "eng_NG",
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "voice_days": "tue_thu",
                         "voice_times": "9_11"
                     },
@@ -1164,7 +1164,7 @@ module.exports = function() {
                     "schedule":3,
                     "process_status":0,
                     "metadata":{
-                        "msg_type":"voice"
+                        "msg_type":"audio"
                     },
                     "created_at":"2015-07-30T15:19:01.734812Z",
                     "updated_at":"2015-08-05T07:00:00.826924Z"
@@ -1185,7 +1185,7 @@ module.exports = function() {
                     "schedule":3,
                     "process_status":0,
                     "metadata":{
-                        "msg_type":"voice"
+                        "msg_type":"audio"
                     },
                     "created_at":"2015-07-30T15:19:01.734812Z",
                     "updated_at":"2015-08-05T07:00:00.826924Z"
@@ -1222,7 +1222,7 @@ module.exports = function() {
                         "state_at_registration": "pregnant",
                         "state_current": "pregnant",
                         "lang": "eng_NG",
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "voice_days": "mon_wed",
                         "voice_times": "2_5"
                     },
@@ -1254,7 +1254,7 @@ module.exports = function() {
                         "state_at_registration": "pregnant",
                         "state_current": "pregnant",
                         "lang": "eng_NG",
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "voice_days": "mon_wed",
                         "voice_times": "2_5"
                     },
@@ -1293,7 +1293,7 @@ module.exports = function() {
                         "state_at_registration": "pregnant",
                         "state_current": "pregnant",
                         "lang": "eng_NG",
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "voice_days": "mon_wed",
                         "voice_times": "2_5"
                     },
@@ -1325,7 +1325,7 @@ module.exports = function() {
                         "state_at_registration": "pregnant",
                         "state_current": "pregnant",
                         "lang": "eng_NG",
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "voice_days": "mon_wed",
                         "voice_times": "2_5"
                     },
@@ -1364,7 +1364,7 @@ module.exports = function() {
                         "state_at_registration": "pregnant",
                         "state_current": "pregnant",
                         "lang": "eng_NG",
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "voice_days": "mon_wed",
                         "voice_times": "2_5"
                     },
@@ -1396,7 +1396,7 @@ module.exports = function() {
                         "state_at_registration": "pregnant",
                         "state_current": "pregnant",
                         "lang": "eng_NG",
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "voice_days": "mon_wed",
                         "voice_times": "2_5"
                     },
@@ -1414,7 +1414,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': "http://localhost:8003/api/v1/outbound/",
+                'url': "http://localhost:8006/api/v1/outbound/",
                 'data':  {
                     "identity": "cb245673-aa41-4302-ac47-00000000002",
                     "content": "Please dial back in to *120*8864*0000# to complete the Hello MAMA registration"
@@ -1942,7 +1942,7 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "gravida": "3",
                         "language": "hausa",
-                        "msg_type": "sms",
+                        "msg_type": "text",
                         "last_period_date": "20150212",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     }
@@ -1959,7 +1959,7 @@ module.exports = function() {
                         "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "hausa",
-                        "msg_type": "sms",
+                        "msg_type": "text",
                         "last_period_date": "20150212",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     },
@@ -1974,6 +1974,7 @@ module.exports = function() {
         },
 
         // 47: create registration 09093333333 - father_only - sms
+        // unused if bypassPostbirth = true
         {
             'request': {
                 'method': 'POST',
@@ -1991,7 +1992,7 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "gravida": "2",
                         "language": "igbo",
-                        "msg_type": "sms",
+                        "msg_type": "text",
                         "baby_dob": "20150112",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     }
@@ -2008,7 +2009,7 @@ module.exports = function() {
                         "receiver_id": "cb245673-aa41-4302-ac47-9093333333",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "igbo",
-                        "msg_type": "sms",
+                        "msg_type": "text",
                         "baby_dob": "20150112",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     },
@@ -2040,7 +2041,7 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "gravida": "3",
                         "language": "english",
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "voice_times": "2_5",
                         "voice_days": "tue_thu",
                         "last_period_date": "20150212",
@@ -2059,7 +2060,7 @@ module.exports = function() {
                         "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "english",
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "voice_times": "2_5",
                         "voice_days": "tue_thu",
                         "last_period_date": "20150212",
@@ -2093,7 +2094,7 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "gravida": "3",
                         "language": "english",
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "voice_times": "2_5",
                         "voice_days": "tue_thu",
                         "last_period_date": "20150212",
@@ -2112,7 +2113,7 @@ module.exports = function() {
                         "receiver_id": "cb245673-aa41-4302-ac47-9095555555",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "english",
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "voice_times": "2_5",
                         "voice_days": "tue_thu",
                         "last_period_date": "20150212",
@@ -2146,7 +2147,7 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "gravida": "2",
                         "language": "english",
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "voice_times": "2_5",
                         "voice_days": "tue_thu",
                         "last_period_date": "20150212",
@@ -2165,7 +2166,7 @@ module.exports = function() {
                         "receiver_id": "cb245673-aa41-4302-ac47-9093333333",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "english",
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "voice_times": "2_5",
                         "voice_days": "tue_thu",
                         "last_period_date": "20150212",
@@ -2213,6 +2214,7 @@ module.exports = function() {
         },
 
         // 52: create registration 09092222222 - friend_only / family_member - sms (voice)
+        // unused if bypassPostbirth = true
         {
             'request': {
                 'method': 'POST',
@@ -2230,7 +2232,7 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "gravida": "2",
                         "language": "igbo",
-                        "msg_type": "sms",
+                        "msg_type": "text",
                         "baby_dob": "20160713"
                     }
                 }
@@ -2247,7 +2249,7 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "gravida": "2",
                         "language": "igbo",
-                        "msg_type": "sms",
+                        "msg_type": "text",
                         "baby_dob": "20160713"
                     },
                     "validated": false,
@@ -2261,6 +2263,7 @@ module.exports = function() {
         },
 
         // 53: create registration 09092222222 - friend_only / family_member - voice
+        // unused if bypassPostbirth = true
         {
             'request': {
                 'method': 'POST',
@@ -2278,7 +2281,7 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "gravida": "2",
                         "language": "igbo",
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "voice_times": "2_5",
                         "voice_days": "mon_wed",
                         "baby_dob": "20160913",
@@ -2297,7 +2300,7 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "gravida": "2",
                         "language": "igbo",
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "baby_dob": "20160913",
                     },
                     "validated": false,
@@ -2354,7 +2357,7 @@ module.exports = function() {
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "details": {
                         "receiver_role": "mother",
-                        "preferred_msg_type": "sms",
+                        "preferred_msg_type": "text",
                         "preferred_language": "igbo"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
@@ -2371,7 +2374,7 @@ module.exports = function() {
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "details": {
                         "receiver_role": "mother",
-                        "preferred_msg_type": "sms",
+                        "preferred_msg_type": "text",
                         "preferred_language": "igbo"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
@@ -2481,7 +2484,7 @@ module.exports = function() {
                         },
                         "receiver_role": "father",
                         "linked_to": "cb245673-aa41-4302-ac47-1234567890",
-                        "preferred_msg_type": "sms",
+                        "preferred_msg_type": "text",
                         "preferred_language": "igbo"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
@@ -2504,7 +2507,7 @@ module.exports = function() {
                         },
                         "receiver_role": "father",
                         "linked_to": "cb245673-aa41-4302-ac47-1234567890",
-                        "preferred_msg_type": "sms",
+                        "preferred_msg_type": "text",
                         "preferred_language": "igbo"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
@@ -2613,7 +2616,7 @@ module.exports = function() {
                         },
                         "receiver_role": "friend",
                         "linked_to": "cb245673-aa41-4302-ac47-1234567890",
-                        "preferred_msg_type": "sms",
+                        "preferred_msg_type": "text",
                         "preferred_language": "hausa"
                     },
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
@@ -2635,7 +2638,7 @@ module.exports = function() {
                         },
                         "receiver_role": "friend",
                         "linked_to": "cb245673-aa41-4302-ac47-1234567890",
-                        "preferred_msg_type": "sms",
+                        "preferred_msg_type": "text",
                         "preferred_language": "hausa"
                     },
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
@@ -2709,7 +2712,7 @@ module.exports = function() {
                         },
                         "receiver_role":"friend",
                         "linked_to": "cb245673-aa41-4302-ac47-1234567890",
-                        "preferred_msg_type":"voice",
+                        "preferred_msg_type": "audio",
                         "preferred_language":"english",
                         "preferred_msg_days":"tue_thu",
                         "preferred_msg_times":"2_5"
@@ -2734,7 +2737,7 @@ module.exports = function() {
                         },
                         "receiver_role":"friend",
                         "linked_to": "cb245673-aa41-4302-ac47-1234567890",
-                        "preferred_msg_type":"voice",
+                        "preferred_msg_type": "audio",
                         "preferred_language":"english",
                         "preferred_msg_days":"tue_thu",
                         "preferred_msg_times":"2_5"
@@ -2834,7 +2837,7 @@ module.exports = function() {
                         },
                         "receiver_role":"mother",
                         "linked_to":"cb245673-aa41-4302-ac47-9095555555",
-                        "preferred_msg_type":"voice",
+                        "preferred_msg_type": "audio",
                         "gravida": "3",
                         "preferred_language":"english",
                         "preferred_msg_days":"tue_thu",
@@ -2860,7 +2863,7 @@ module.exports = function() {
                         },
                         "receiver_role":"mother",
                         "linked_to":"cb245673-aa41-4302-ac47-9095555555",
-                        "preferred_msg_type":"voice",
+                        "preferred_msg_type": "audio",
                         "gravida": "3",
                         "preferred_language":"english",
                         "preferred_msg_days":"tue_thu",
@@ -2896,7 +2899,7 @@ module.exports = function() {
                         "receiver_role": "father",
                         "linked_to":"cb245673-aa41-4302-ac47-9094444444",
                         "household_msgs_only":true,
-                        "preferred_msg_type": "voice",
+                        "preferred_msg_type": "audio",
                         "preferred_language": "english",
                         "preferred_msg_days": "tue_thu",
                         "preferred_msg_times": "2_5"
@@ -2922,7 +2925,7 @@ module.exports = function() {
                         "receiver_role": "father",
                         "linked_to":"cb245673-aa41-4302-ac47-9094444444",
                         "household_msgs_only":true,
-                        "preferred_msg_type": "voice",
+                        "preferred_msg_type": "audio",
                         "preferred_language": "english",
                         "preferred_msg_days": "tue_thu",
                         "preferred_msg_times": "2_5"
@@ -2956,7 +2959,7 @@ module.exports = function() {
                         },
                         "receiver_role": "father",
                         "linked_to": "cb245673-aa41-4302-ac47-1234567890",
-                        "preferred_msg_type": "voice",
+                        "preferred_msg_type": "audio",
                         "preferred_language": "english",
                         "preferred_msg_days":"tue_thu",
                         "preferred_msg_times":"2_5"
@@ -2981,7 +2984,7 @@ module.exports = function() {
                         },
                         "receiver_role": "father",
                         "linked_to": "cb245673-aa41-4302-ac47-1234567890",
-                        "preferred_msg_type": "voice",
+                        "preferred_msg_type": "audio",
                         "preferred_language": "english",
                         "preferred_msg_days":"tue_thu",
                         "preferred_msg_times":"2_5"
@@ -3015,7 +3018,7 @@ module.exports = function() {
                         },
                         "receiver_role": "friend",
                         "linked_to": "cb245673-aa41-4302-ac47-1234567890",
-                        "preferred_msg_type": "sms",
+                        "preferred_msg_type": "text",
                         "preferred_language": "igbo"
                     },
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
@@ -3038,7 +3041,7 @@ module.exports = function() {
                         },
                         "receiver_role": "friend",
                         "linked_to": "cb245673-aa41-4302-ac47-1234567890",
-                        "preferred_msg_type": "sms",
+                        "preferred_msg_type": "text",
                         "preferred_language": "igbo"
                     },
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
@@ -3070,7 +3073,7 @@ module.exports = function() {
                         },
                         "receiver_role": "friend",
                         "linked_to": "cb245673-aa41-4302-ac47-1234567890",
-                        "preferred_msg_type": "voice",
+                        "preferred_msg_type": "audio",
                         "preferred_language": "igbo",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "2_5"
@@ -3095,7 +3098,7 @@ module.exports = function() {
                         },
                         "receiver_role": "friend",
                         "linked_to": "cb245673-aa41-4302-ac47-1234567890",
-                        "preferred_msg_type": "voice",
+                        "preferred_msg_type": "audio",
                         "preferred_language": "igbo",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "2_5"
@@ -3190,7 +3193,7 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "gravida": "2",
                         "language": "english",
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "voice_times": "2_5",
                         "voice_days": "tue_thu",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002",
@@ -3209,7 +3212,7 @@ module.exports = function() {
                         "receiver_id": "cb245673-aa41-4302-ac47-9096666666",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "english",
-                        "msg_type": "voice",
+                        "msg_type": "audio",
                         "voice_times": "2_5",
                         "voice_days": "tue_thu",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002",
@@ -3282,7 +3285,7 @@ module.exports = function() {
                         "linked_to": null,
                         "gravida": "2",
                         "preferred_language": "english",
-                        "preferred_msg_type": "voice",
+                        "preferred_msg_type": "audio",
                         "preferred_msg_days": "tue_thu",
                         "preferred_msg_times": "2_5"
                     },
@@ -3308,7 +3311,7 @@ module.exports = function() {
                         "linked_to": null,
                         "gravida": "2",
                         "preferred_language": "english",
-                        "preferred_msg_type": "voice",
+                        "preferred_msg_type": "audio",
                         "preferred_msg_days": "tue_thu",
                         "preferred_msg_times": "2_5"
                     },
@@ -3439,7 +3442,7 @@ module.exports = function() {
                             },
                             "receiver_role": "mother",
                             "linked_to": null,
-                            "preferred_msg_type": "sms",
+                            "preferred_msg_type": "text",
                             "preferred_language": "igbo"
                         },
                         "created_at": "2015-07-10T06:13:29.693272Z",
@@ -3449,7 +3452,7 @@ module.exports = function() {
             }
         },
 
-        // 79 Fixture to make HEAD requests to mp3 files to see if they exist
+        // 79: Fixture to make HEAD requests to mp3 files to see if they exist
         {
             'repeatable': true,
             'request': {
@@ -3463,6 +3466,131 @@ module.exports = function() {
             'response': {
                 "code": 200,
                 "data": {}
+            }
+        },
+
+        // 80: create registration 09092222222 - friend_only / family_member - sms (voice)
+        // unused if bypassPostbirth = false - from 52
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': "http://localhost:8002/api/v1/registrations/",
+                'data':  {
+                    "stage": "prebirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-1234567890",
+                    "data": {
+                        "msg_receiver": "friend_only",
+                        "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
+                        "gravida": "2",
+                        "language": "igbo",
+                        "msg_type": "text",
+                        "last_period_date": "20161213"
+                    }
+                }
+            },
+            'response': {
+                "code": 201,
+                "data": {
+                    "id": "reg_for_09092222222_uuid",
+                    "stage": "prebirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-1234567890",
+                    "data": {
+                        "msg_receiver": "friend_only",
+                        "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
+                        "gravida": "2",
+                        "language": "igbo",
+                        "msg_type": "text",
+                        "last_period_date": "20161213"
+                    },
+                    "validated": false,
+                    "source": "source",
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z",
+                    "created_by": "user",
+                    "updated_by": "user"
+                }
+            }
+        },
+
+        // 81: create registration 09092222222 - friend_only / family_member - voice
+        // unused if bypassPostbirth = false - from 53
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': "http://localhost:8002/api/v1/registrations/",
+                'data':  {
+                    "stage": "prebirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-1234567890",
+                    "data": {
+                        "msg_receiver": "friend_only",
+                        "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
+                        "gravida": "2",
+                        "language": "igbo",
+                        "msg_type": "audio",
+                        "voice_times": "2_5",
+                        "voice_days": "mon_wed",
+                        "last_period_date":"20161213"
+                    }
+                }
+            },
+            'response': {
+                "code": 201,
+                "data": {
+                    "id": "reg_for_09092222222_uuid",
+                    "stage": "prebirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-1234567890",
+                    "data": {
+                        "msg_receiver": "friend_only",
+                        "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
+                        "gravida": "2",
+                        "language": "igbo",
+                        "msg_type": "audio",
+                        "last_period_date":"20161213"
+                    },
+                    "validated": false,
+                    "source": "source",
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z",
+                    "created_by": "user",
+                    "updated_by": "user"
+                }
+            }
+        },
+
+        // 82: get identity by personnel code 0 - no results
+        {
+            'repeatable': true,
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'details__personnel_code': '0'
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/identities/search/',
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": []
+                }
             }
         },
 

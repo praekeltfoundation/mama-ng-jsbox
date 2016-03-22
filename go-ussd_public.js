@@ -224,10 +224,10 @@ go.utils = {
 // IDENTITY HELPERS
 
     get_identity_by_address: function(address, im) {
-        // Searches the Identity Store for all identities with the provided address.
-        // Returns the first identity object found
-        // Address should be an object {address_type: address}, eg.
-        // {'msisdn': '0821234444'}, {'email': 'me@example.com'}
+      // Searches the Identity Store for all identities with the provided address.
+      // Returns the first identity object found
+      // Address should be an object {address_type: address}, eg.
+      // {'msisdn': '0821234444'}, {'email': 'me@example.com'}
 
         var address_type = Object.keys(address)[0];
         var address_val = address[address_type];
@@ -327,6 +327,65 @@ go.utils = {
             .service_api_call('identities', 'patch', {}, identity, endpoint, im)
             .then(function(response) {
                 return response.data.id;
+            });
+    },
+
+
+// STAGE-BASE HELPERS
+
+    get_subscription: function(im, subscription_id) {
+      // Gets the subscription from the Stage-base Store
+      // Returns the subscription object
+
+        var endpoint = 'subscriptions/' + subscription_id + '/';
+        return go.utils
+            .service_api_call('subscriptions', 'get', {}, null, endpoint, im)
+            .then(function(response) {
+                return response.data;
+            });
+    },
+
+    get_active_subscription_by_identity: function(im, identity_id) {
+      // Searches the Stage-base Store for all active subscriptions with the provided identity_id
+      // Returns the first subscription object found or null if none are found
+
+        var params = {
+            identity: identity_id,
+            active: true
+        };
+        var endpoint = 'subscriptions/';
+        return go.utils
+            .service_api_call('subscriptions', 'get', params, null, endpoint, im)
+            .then(function(response) {
+                var subscriptions_found = response.data.results;
+                // Return the first subscription in the list of subscriptions
+                return (subscriptions_found.length > 0)
+                ? subscriptions_found[0]
+                : null;
+            });
+    },
+
+    update_subscription: function(im, subscription) {
+      // Update a subscription by passing in the full updated subscription object
+      // Returns the id (which should be the same as the subscription's id)
+
+        var endpoint = 'subscriptions/' + subscription.id + '/';
+        return go.utils
+            .service_api_call('subscriptions', 'patch', {}, subscription, endpoint, im)
+            .then(function(response) {
+                return response.data.id;
+            });
+    },
+
+    get_messageset: function(im, messageset_id) {
+      // Gets the messageset from the Stage-base Store
+      // Returns the messageset object
+
+        var endpoint = 'messagesets/' + messageset_id + '/';
+        return go.utils
+            .service_api_call('messagesets', 'get', {}, null, endpoint, im)
+            .then(function(response) {
+                return response.data;
             });
     },
 
@@ -435,6 +494,26 @@ go.utils = {
 
 // OPTOUT & OPTIN HELPERS
 
+    optout: function(im, identity_id, optout_reason, address_type, address,
+                     request_source, request_source_id, optout_type, config) {
+      // Posts an optout to the identity store optout endpoint
+
+        var optout_info = {
+            optout_type: optout_type || 'stop',  // default to 'stop'
+            identity: identity_id,
+            reason: optout_reason || 'unknown',  // default to 'unknown'
+            address_type: address_type || 'msisdn',  // default to 'msisdn'
+            address: address,
+            request_source: request_source,
+            request_source_id: request_source_id
+        };
+        return go.utils
+            .service_api_call("identities", "post", null, optout_info, "optout/", im)
+            .then(function(response) {
+                return response;
+            });
+    },
+
     opt_out: function(im, contact) {
         contact.extra.optout_last_attempt = go.utils.get_today(im.config)
             .format('YYYY-MM-DD hh:mm:ss.SSS');
@@ -495,9 +574,9 @@ go.utils_project = {
         return Q()
             .then(function(q_response) {
                 if (msisdn === '082444') {
-                    return 'sms';
+                    return 'text';
                 } else if (msisdn === '082222') {
-                    return 'voice';
+                    return 'audio';
                 } else {
                     return 'none';
                 }
@@ -592,7 +671,7 @@ go.utils_project = {
                     mother_identity.details.preferred_language = im.user.answers.state_msg_language;
                     mother_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
 
-                    if (im.user.answers.state_msg_type === 'voice') {
+                    if (im.user.answers.state_msg_type === 'audio') {
                         mother_identity.details.preferred_msg_days = im.user.answers.state_voice_days;
                         mother_identity.details.preferred_msg_times = im.user.answers.state_voice_times;
                     }
@@ -616,7 +695,7 @@ go.utils_project = {
                     receiver_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
                     receiver_identity.details.preferred_language = im.user.answers.state_msg_language;
 
-                    if (im.user.answers.state_msg_type === 'voice') {
+                    if (im.user.answers.state_msg_type === 'audio') {
                         receiver_identity.details.preferred_msg_days = im.user.answers.state_voice_days;
                         receiver_identity.details.preferred_msg_times = im.user.answers.state_voice_times;
                     }
@@ -645,7 +724,7 @@ go.utils_project = {
                     receiver_identity.details.preferred_msg_type = im.user.answers.state_msg_type;
                     receiver_identity.details.preferred_language = im.user.answers.state_msg_language;
 
-                    if (im.user.answers.state_msg_type === 'voice') {
+                    if (im.user.answers.state_msg_type === 'audio') {
                         mother_identity.details.preferred_msg_days = im.user.answers.state_voice_days;
                         mother_identity.details.preferred_msg_times = im.user.answers.state_voice_times;
                         receiver_identity.details.preferred_msg_days = im.user.answers.state_voice_days;
@@ -724,23 +803,30 @@ go.utils_project = {
 
     should_restart: function(im) {
         var no_restart_states = [
-            'state_r01_number',
-            'state_r02_retry_number',
-            'state_c01_main_menu',
-            'state_c02_not_registered',
-            'state_c07_loss_opt_in',
-            'state_c08_end_baby',
-            'state_c09_end_msg_times',
-            'state_c10_end_loss_opt_in',
-            'state_c11_end_optout'
+            // voice registration states
+            'state_personnel_auth',
+            'state_gravida',
+            // voice change states
+            'state_msg_receiver_msisdn',
+            'state_main_menu',
+            'state_main_menu_household'
         ];
 
-        return im.msg.content === '*'
+        return im.msg.content === '0'
+            && im.user.state.name
             && no_restart_states.indexOf(im.user.state.name) === -1;
+    },
+
+    should_repeat: function(im) {
+        return im.msg.content === '*';
     },
 
 
 // VOICE HELPERS
+
+    make_default_speech_url: function (im, lang) {
+        return im.config.services.voice_content.url + lang + '/voice_file_not_found.mp3';
+    },
 
     // Construct url string
     make_speech_url: function(im, name, lang, num, retry) {
@@ -755,6 +841,24 @@ go.utils_project = {
     // Construct helper_data object
     make_voice_helper_data: function(im, name, lang, num, retry) {
         var voice_url = go.utils_project.make_speech_url(im, name, lang, num, retry);
+        var bargeInDisallowedStates = [
+            // voice registration states
+            'state_msg_receiver',
+            'state_msisdn_already_registered',
+            'state_gravida',
+            'state_end_msisdn',
+            'state_end_sms',
+            'state_end_voice',
+            // voice public states
+            'state_msg_receiver_msisdn',
+            'state_main_menu',
+            'state_main_menu_household',
+            'state_baby_already_subscribed',
+            'state_end_voice_confirm',
+            'state_end_baby',
+            'state_end_exit'
+        ];
+
         return im
             .log([
                 'Voice URL is: ' + voice_url,
@@ -776,14 +880,19 @@ go.utils_project = {
                         return {
                             voice: {
                                 speech_url: voice_url,
-                                wait_for: '#'
+                                wait_for: '#',
+                                barge_in: bargeInDisallowedStates.indexOf(name) !== -1 ? false : true
                             }
                         };
                     }, function (error) {
                         return im
                             .log('Unable to find voice file: ' + voice_url)
                             .then(function () {
-                                return {};
+                                return {
+                                    voice: {
+                                        speech_url: go.utils_project.make_default_speech_url(im, lang)
+                                    }
+                                };
                             });
                     });
             });
@@ -868,7 +977,7 @@ go.utils_project = {
         }
 
         // add data for voice time and day if applicable
-        if (im.user.answers.state_msg_type === 'voice') {
+        if (im.user.answers.state_msg_type === 'audio') {
             reg_info.data.voice_times = im.user.answers.state_voice_times;
             reg_info.data.voice_days = im.user.answers.state_voice_days;
         }
@@ -909,8 +1018,8 @@ go.utils_project = {
         mama_identity.details.gravida = im.user.answers.state_gravida;
         mama_identity.details.lang = go.utils_project.get_lang(im);
         mama_identity.details.msg_type = im.user.answers.state_r10_message_type;
-        mama_identity.details.voice_days = im.user.answers.state_r11_voice_days || 'sms';
-        mama_identity.details.voice_times = im.user.answers.state_r12_voice_times || 'sms';
+        mama_identity.details.voice_days = im.user.answers.state_r11_voice_days || 'text';
+        mama_identity.details.voice_times = im.user.answers.state_r12_voice_times || 'text';
         return mama_identity;
     },
 
@@ -926,6 +1035,33 @@ go.utils_project = {
 
 // OPTOUT HELPERS
 
+    optout_mother_ussd: function(im) {
+        return go.utils.optout(
+            im,
+            im.user.answers.mother_id,
+            im.user.answers.state_optout_reason,
+            'msisdn',
+            im.user.answers.mother_msisdn,
+            'ussd_public',
+            im.config.testing_message_id ||
+              im.msg.message_id,
+            'stop'
+        );
+    },
+
+    optout_household_ussd: function(im) {
+        return go.utils.optout(
+            im,
+            im.user.answers.household_id,
+            im.user.answers.state_optout_reason,
+            'msisdn',
+            im.user.answers.household_msisdn,
+            'ussd_public',
+            im.config.testing_message_id || im.msg.message_id,
+            'stop'
+        );
+    },
+
     optout_loss_opt_in: function(im) {
         return go.utils_project
         .optout(im)
@@ -936,51 +1072,176 @@ go.utils_project = {
     },
 
     optout: function(im) {
-        var mama_id = im.user.answers.mama_id;
-        return Q
-        .all([
+        var unsubscribe_result;
+        return go.utils
             // get identity so details can be updated
-            go.utils.get_identity(mama_id, im),
-            // set existing subscriptions inactive
-            go.utils_project.subscriptions_unsubscribe_all(mama_id, im)
-        ])
-        .spread(function(mama_identity, unsubscribe_result) {
-            // set new mama identity details
-            mama_identity.details.opted_out = true;
-            mama_identity.details.optout_reason = im.user.answers.state_c05_optout_reason;
+            .get_identity_by_address({'msisdn' : im.user.addr}, im)
+            .then(function(identity) {
+                // set existing subscriptions inactive
+                unsubscribe_result = go.utils.subscription_unsubscribe_all(identity, im);
 
-            // update mama identity
-            return go.utils.update_identity(im, mama_identity);
-        });
+                // set new mama identity details
+                identity.details.opted_out = true;
+                identity.details.optout_reason = im.user.answers.state_optout_reason;
+
+                // update mama identity
+                return go.utils.update_identity(im, identity);
+            });
     },
 
 
 // CHANGE HELPERS
 
-    change_msg_times: function(im) {
-        var mama_id = im.user.answers.mama_id;
-        return Q
-        .all([
-            // get identity so details can be updated
-            go.utils.get_identity(mama_id, im),
-            // get existing subscriptions so schedule can be updated
-            go.utils_project.get_active_subscription_by_identity_id(mama_id, im)
-        ])
-        .spread(function(mama_identity, subscription) {
-            // set new mama identity details
-            mama_identity.details.voice_days = im.user.answers.state_c04_voice_days;
-            mama_identity.details.voice_times = im.user.answers.state_c06_voice_times;
+    update_msg_format_time: function(im, new_msg_format, voice_days, voice_times) {
+      // Sends new message type, preferred day and time to Change endpoint
+      // and updates the mother's preferred msg settings
 
-            // set new subscription schedule
-            subscription.schedule = go.utils_project.get_schedule(mama_identity);
+        var change_data = {
+            "mother_id": im.user.answers.mother_id,
+            "action": "change_messaging",
+            "data": {
+                "msg_type": new_msg_format,
+                "voice_days": voice_days || null,
+                "voice_times": voice_times || null
+            }
+        };
 
-            return Q.all([
-                // update mama identity
-                go.utils.update_identity(im, mama_identity),
-                // update subscription
-                go.utils_project.update_subscription(im, subscription)
-            ]);
-        });
+        return go.utils
+            .service_api_call("registrations", "post", null, change_data, "change/", im)
+            .then(function() {
+                return go.utils
+                    .get_identity(im.user.answers.mother_id, im)
+                    .then(function(mother_identity) {
+                        // Update mother only as household messages are text only for now
+                        mother_identity.details.preferred_msg_type = new_msg_format;
+                        mother_identity.details.preferred_msg_days = voice_days || null;
+                        mother_identity.details.preferred_msg_times = voice_times || null;
+                        return go.utils
+                            .update_identity(im, mother_identity);
+                    });
+            });
+    },
+
+    switch_to_loss: function(im, mother_id, loss_reason) {
+      // Sends an Api request to the registration store to switch the mother
+      // to loss messages
+
+        var change_data = {
+            "mother_id": mother_id,
+            "action": "change_loss",
+            "data": {
+                "loss_reason": loss_reason
+            }
+        };
+
+        return go.utils
+            .service_api_call("registrations", "post", null, change_data, "change/", im)
+            .then(function(response) {
+                return response;
+            });
+    },
+
+    switch_to_baby: function(im, mother_id) {
+      // Sends an Api request to the registration store to switch the mother
+      // to baby messages
+
+        var change_data = {
+            "mother_id": mother_id,
+            "action": "change_baby",
+            "data": {}
+        };
+
+        return go.utils
+            .service_api_call("registrations", "post", null, change_data, "change/", im)
+            .then(function(response) {
+                return response;
+            });
+    },
+
+    unsub_household: function(im, mother_id, household_id, loss_reason) {
+      // A unique change endpoint that unsubscribes only the household receiver
+      // in an _only registration case; rather than doing an optout which would
+      // block the mother's messages from getting through to the receiver
+
+        var change_data = {
+            "mother_id": mother_id,
+            "action": "unsubscribe_household_only",
+            "data": {
+                "household_id": household_id,
+                "loss_reason": loss_reason
+            }
+        };
+
+        return go.utils
+            .service_api_call("registrations", "post", null, change_data, "change/", im)
+            .then(function(response) {
+                return response;
+            });
+    },
+
+    unsub_mother: function(im, mother_id, household_id, loss_reason) {
+      // A unique change endpoint that unsubscribes from the mother messages only
+      // in an _only registration case; rather than doing an optout which would
+      // block the household messages from getting through to the receiver
+
+        var change_data = {
+            "mother_id": mother_id,
+            "action": "unsubscribe_mother_only",
+            "data": {
+                "household_id": household_id,
+                "loss_reason": loss_reason
+            }
+        };
+
+        return go.utils
+            .service_api_call("registrations", "post", null, change_data, "change/", im)
+            .then(function(response) {
+                return response;
+            });
+    },
+
+    change_language: function(im, new_lang, mother_id, household_id) {
+      // Sends an Api request to the registration store to change the
+      // subscriptions' languages, and sends a patch request to the identity
+      // store to change the identities' languages
+
+        var change_data = {
+            "mother_id": mother_id,
+            "action": "change_language",
+            "data": {
+                "new_language": new_lang,
+                "household_id": household_id
+            }
+        };
+
+        if (household_id === null) {
+            return go.utils
+                .get_identity(mother_id, im)
+                .then(function(mother_identity) {
+                    mother_identity.details.preferred_language = new_lang;
+                    return Q
+                        .all([
+                            go.utils.update_identity(im, mother_identity),
+                            go.utils.service_api_call("registrations", "post", null, change_data, "change/", im)
+                        ]);
+                });
+        } else {
+            return Q
+                .all([
+                    go.utils.get_identity(mother_id, im),
+                    go.utils.get_identity(household_id, im)
+                ])
+                .spread(function(mother_identity, household_identity) {
+                    mother_identity.details.preferred_language = new_lang;
+                    household_identity.details.preferred_language = new_lang;
+                    return Q
+                        .all([
+                            go.utils.update_identity(im, mother_identity),
+                            go.utils.update_identity(im, household_identity),
+                            go.utils.service_api_call("registrations", "post", null, change_data, "change/", im)
+                        ]);
+                });
+        }
     },
 
 
@@ -1030,6 +1291,63 @@ go.utils_project = {
 
 // SUBSCRIPTION HELPERS
 
+    get_subscription_messageset_through_identity: function(im, mother_id, household_id) {
+      // Return the messageset that an identity is subscribed to
+
+        // get subscription
+        return go.utils
+            .get_active_subscription_by_identity(im, mother_id)
+            .then(function(subscription) {
+                if (subscription === null) {
+                    // try to look for an active subscription on the household_id
+                    return go.utils
+                        .get_active_subscription_by_identity(im, household_id)
+                        .then(function(subscription) {
+                            if (subscription === null) {
+                                return 'no_active_subs_found';
+                            } else {
+                                // get messageset
+                                return go.utils
+                                    .get_messageset(im, subscription.messageset_id)
+                                    .then(function(messageset) {
+                                        return messageset;
+                                    });
+                            }
+                        });
+                } else {
+                    // get messageset
+                    return go.utils
+                        .get_messageset(im, subscription.messageset_id)
+                        .then(function(messageset) {
+                            return messageset;
+                        });
+                    }
+            });
+    },
+
+    get_subscription_msg_type: function(im, mother_id) {
+      // Look up what type of messages the mother is receiving
+
+        return go.utils_project
+            .get_subscription_messageset_through_identity(im, mother_id)
+            .then(function(messageset) {
+                return messageset.content_type;  // 'text' / 'audio'
+            });
+    },
+
+    check_postbirth_subscription: function(im, mother_id) {
+      // Look up if the mother is subscribed to postbirth messages
+        return go.utils_project
+            .get_subscription_messageset_through_identity(im, mother_id)
+            .then(function(messageset) {
+                if (messageset === 'no_active_subs_found') {
+                    return 'no_active_subs_found';
+                } else {
+                    return messageset.short_name.substring(0,9) === 'postbirth';
+                }
+            });
+    },
+
     is_registered: function(identity_id, im) {
         // Determine whether identity is registered
         return go.utils
@@ -1056,10 +1374,6 @@ go.utils_project = {
             }
         };
         return subscription;
-    },
-
-    get_messageset_id: function(mama_identity) {
-        return (mama_identity.details.state_current === 'pregnant') ? 1 : 2;
     },
 
     get_next_sequence_number: function(mama_identity) {
@@ -1094,32 +1408,6 @@ go.utils_project = {
         });
     },
 
-    switch_to_baby: function(im) {
-        var mama_id = im.user.answers.mama_id;
-        return Q
-        .all([
-            // get identity so details can be updated
-            go.utils.get_identity(mama_id, im),
-            // set existing subscriptions inactive
-            go.utils_project.subscriptions_unsubscribe_all(mama_id, im)
-        ])
-        .spread(function(mama_identity, unsubscribe_result) {
-            // set new mama identity details
-            mama_identity.details.baby_dob = go.utils.get_today(im.config).format('YYYY-MM-DD');
-            mama_identity.details.state_current = "baby";
-
-            // set up baby message subscription
-            baby_subscription = go.utils_project.setup_subscription(im, mama_identity);
-
-            return Q.all([
-                // update mama identity
-                go.utils.update_identity(im, mama_identity),
-                // subscribe to baby messages
-                go.utils_project.subscribe_identity(im, baby_subscription)
-            ]);
-        });
-    },
-
     update_subscription: function(im, subscription) {
         var endpoint = "subscriptions/" + subscription.id + '/';
         return go.utils
@@ -1135,6 +1423,7 @@ go.utils_project = {
 
 go.app = function() {
     var vumigo = require('vumigo_v02');
+    var Q = require('q');
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
@@ -1171,7 +1460,7 @@ go.app = function() {
                 "We do not recognise this number. Please dial from the registered number or sign up with your local Community Health Extension worker.",
             "state_already_registered_baby":
                 "You are already registered for baby messages.",
-            "state_new_registeration_baby":
+            "state_new_registration_baby":
                 "Thank you. You will now receive messages about caring for baby",
             "state_change_menu_sms":
                 "Please select what you would like to do:",
@@ -1179,11 +1468,11 @@ go.app = function() {
                 "We will call twice a week. On what days would the person like to receive messages?",
             "state_voice_times":
                 "Thank you. At what time would they like to receive these calls?",
-            "state_voice_confirm":
+            "state_end_voice_confirm":
                 "Thank you. You will now start receiving voice calls between [time] on [days].",
             "state_change_menu_voice":
                 "Please select what you would like to do:",
-            "state_sms_confirm":
+            "state_end_sms_confirm":
                 "Thank you. You will now receive text messages.",
             "state_new_msisdn":
                 "Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899",
@@ -1223,7 +1512,6 @@ go.app = function() {
         };
 
 
-
     // TIMEOUT HANDLING
 
         // override normal state adding
@@ -1239,6 +1527,7 @@ go.app = function() {
                 return self.states.create('state_msisdn_permission', opts);
             });
         };
+
 
     // START STATE
 
@@ -1353,20 +1642,59 @@ go.app = function() {
             var role = self.im.user.answers.role_player;
             var contact_id = self.im.user.answers.contact_id;
             if (role === 'mother') {
-                self.im.user.set_answer('mother_id', contact_id);
-                self.im.user.set_answer('receiver_id', 'none');
-                return self.states.create('state_main_menu');
+                // lookup contact so we can get the link to the household receiver (if any)
+                return go.utils
+                    .get_identity(contact_id, self.im)
+                    .then(function(mother) {
+                        self.im.user.set_answer('mother_id', contact_id);
+                        self.im.user.set_answer('mother_msisdn',
+                            Object.keys(mother.details.addresses.msisdn)[0]);
+                        if (mother.details.linked_to) {
+                            self.im.user.set_answer('household_id', mother.details.linked_to);
+                            self.im.user.set_answer('seperate_household_receiver', true);
+                            self.im.user.set_answer('reg_type', 'mother_and_other');
+                            // lookup household so we can save their msisdn
+                            return go.utils
+                                .get_identity(self.im.user.answers.household_id, self.im)
+                                .then(function(household) {
+                                    self.im.user.set_answer('household_msisdn',
+                                        Object.keys(household.details.addresses.msisdn)[0]);
+                                    return self.states.create('state_main_menu');
+                                });
+                        } else {
+                            // mother_only
+                            self.im.user.set_answer('household_id', null);
+                            self.im.user.set_answer('seperate_household_receiver', false);
+                            self.im.user.set_answer('reg_type', 'mother_only');
+                            return self.states.create('state_main_menu');
+                        }
+                    });
             } else {
                 // lookup contact so we can get the link to the mother
                 return go.utils
                     .get_identity(contact_id, self.im)
                     .then(function(contact) {
-                        self.im.user.set_answer('receiver_id', contact.id);
+                        self.im.user.set_answer('household_id', contact_id);
                         self.im.user.set_answer('mother_id', contact.details.linked_to);
+                        self.im.user.set_answer('household_msisdn',
+                            Object.keys(contact.details.addresses.msisdn)[0]);
                         if (contact.details.household_msgs_only) {
-                            self.im.user.set_answer('receiver_household_only', true);
-                            return self.states.create('state_main_menu_household');
+                            // set true for mother_friend, mother_family, mother_father identification
+                            self.im.user.set_answer('seperate_household_receiver', true);
+                            self.im.user.set_answer('reg_type', 'mother_and_other');
+                            // lookup mother so we can save her msisdn
+                            return go.utils
+                                .get_identity(self.im.user.answers.mother_id, self.im)
+                                .then(function(mother) {
+                                    self.im.user.set_answer('mother_msisdn',
+                                        Object.keys(mother.details.addresses.msisdn)[0]);
+                                    return self.states.create('state_main_menu_household');
+                                });
                         } else {
+                            // set false for friend_only, family_only, father_only identification
+                            // cannot set mother msisdn as it doesn't exist
+                            self.im.user.set_answer('seperate_household_receiver', false);
+                            self.im.user.set_answer('reg_type', 'other_only');
                             return self.states.create('state_main_menu');
                         }
                     });
@@ -1414,12 +1742,14 @@ go.app = function() {
         // Interstitials
         self.add('state_check_baby_subscription', function(name) {
             return go.utils_project
-                .check_baby_subscription(self.im.user.addr)
-                .then(function(isSubscribed) {
-                    if (isSubscribed) {
+                .check_postbirth_subscription(self.im, self.im.user.answers.mother_id)
+                .then(function(postbirth_sub) {
+                    if (postbirth_sub === true) {
                         return self.states.create('state_already_registered_baby');
+                    } else if (postbirth_sub === 'no_active_subs_found') {
+                        return self.states.create('state_baby_switch_broken');  // TODO #101
                     } else {
-                        return self.states.create('state_new_registeration_baby');
+                        return self.states.create('state_change_baby');
                     }
                 });
         });
@@ -1439,8 +1769,16 @@ go.app = function() {
             });
         });
 
+        self.add('state_change_baby', function(name) {
+            return go.utils_project
+                .switch_to_baby(self.im, self.im.user.answers.mother_id)
+                .then(function() {
+                    return self.states.create('state_new_registration_baby');
+                });
+        });
+
         // EndState st-02
-        self.add('state_new_registeration_baby', function(name) {
+        self.add('state_new_registration_baby', function(name) {
             return new EndState(name, {
                 text: $(questions[name]),
                 next: 'state_start'
@@ -1452,14 +1790,15 @@ go.app = function() {
 
         self.add('state_check_msg_type', function(name) {
             return go.utils_project
-                .check_msg_type(self.im.user.addr)
-                .then(function(msgType) {
-                    if (msgType === 'sms') {
+                .get_subscription_msg_type(self.im, self.im.user.answers.mother_id)
+                .then(function(msg_format) {
+                    self.im.user.set_answer('msg_format', msg_format);
+                    if (msg_format === 'text') {
                         return self.states.create('state_change_menu_sms');
-                    } else if (msgType === 'voice') {
+                    } else if (msg_format === 'audio') {
                         return self.states.create('state_change_menu_voice');
                     } else {
-                        return self.state.create('state_end_exit');
+                        return self.states.create('state_end_exit');
                     }
                 });
         });
@@ -1476,7 +1815,7 @@ go.app = function() {
                 next: function(choice) {
                     return choice.value === 'to_voice'
                         ? 'state_voice_days'
-                        : 'state_main_menu';
+                        : 'state_check_receiver_role';
                 }
             });
         });
@@ -1503,12 +1842,23 @@ go.app = function() {
                     new Choice('9_11', $("Between 9-11am")),
                     new Choice('2_5', $("Between 2-5pm"))
                 ],
-                next: 'state_voice_confirm'
+                next: function(choice) {
+                    return go.utils_project
+                        .update_msg_format_time(
+                            self.im,
+                            'audio',
+                            self.im.user.answers.state_voice_days,
+                            choice.value
+                        )
+                        .then(function() {
+                            return 'state_end_voice_confirm';
+                        });
+                }
             });
         });
 
         // EndState st-06
-        self.add('state_voice_confirm', function(name) {
+        self.add('state_end_voice_confirm', function(name) {
             return new EndState(name, {
                 text: $(questions[name]),
                 next: 'state_start'
@@ -1522,17 +1872,30 @@ go.app = function() {
                 error: $(get_error_text(name)),
                 choices: [
                     new Choice('state_voice_days', $("Change the day and time I receive messages")),
-                    new Choice('state_sms_confirm', $("Change from voice to text messages")),
+                    new Choice('state_end_sms_confirm', $("Change from voice to text messages")),
                     new Choice('state_check_receiver_role', $("Back to main menu"))
                 ],
                 next: function(choice) {
-                    return choice.value;
+                    if (choice.value !== 'state_end_sms_confirm') {
+                        return choice.value;
+                    } else {
+                        return go.utils_project
+                            .update_msg_format_time(
+                                self.im,
+                                'text',
+                                null,
+                                null
+                            )
+                            .then(function() {
+                                return 'state_end_sms_confirm';
+                            });
+                    }
                 }
             });
         });
 
         // EndState st-08
-        self.add('state_sms_confirm', function(name) {
+        self.add('state_end_sms_confirm', function(name) {
             return new EndState(name, {
                 text: $(questions[name]),
                 next: 'state_start'
@@ -1627,8 +1990,21 @@ go.app = function() {
                     new Choice('pidgin', $('Pidgin')),
                     new Choice('yoruba', $('Yoruba'))
                 ],
-                next: 'state_msg_language_confirm'
+                next: 'state_change_language'
             });
+        });
+
+        self.add('state_change_language', function(name) {
+            return go.utils_project
+                .change_language(
+                    self.im,
+                    self.im.user.answers.state_msg_language,
+                    self.im.user.answers.mother_id,
+                    self.im.user.answers.household_id
+                )
+                .then(function() {
+                    return self.states.create('state_msg_language_confirm');
+                });
         });
 
         // EndState st-12
@@ -1648,14 +2024,20 @@ go.app = function() {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
                 choices: [
-                    new Choice('state_loss_subscription', $("Mother miscarried")),
-                    new Choice('state_end_loss', $("Baby stillborn")),
-                    new Choice('state_end_loss', $("Baby passed away")),
-                    new Choice('state_check_subscription', $("Messages not useful")),
-                    new Choice('state_check_subscription', $("Other"))
+                    new Choice('miscarriage', $("Mother miscarried")),
+                    new Choice('stillborn', $("Baby stillborn")),
+                    new Choice('baby_death', $("Baby passed away")),
+                    new Choice('not_useful', $("Messages not useful")),
+                    new Choice('other', $("Other"))
                 ],
                 next: function(choice) {
-                    return choice.value;
+                    switch (choice.value) {
+                        case 'miscarriage': return 'state_loss_subscription';
+                        case 'stillborn': return 'state_optout_all';
+                        case 'baby_death': return 'state_optout_all';
+                        case 'not_useful': return 'state_check_subscription';
+                        case 'other': return 'state_check_subscription';
+                    }
                 }
             });
         });
@@ -1666,9 +2048,20 @@ go.app = function() {
             return go.utils
                 .get_identity(contact_id, self.im)
                 .then(function(contact) {
-                    // household and mother_only subscriptions bypass to end state state_end_optout
-                    if (contact.details.household_msgs_only || (self.im.user.mother_id === contact_id && self.im.user.receiver_id === 'none')) {
-                        return self.states.create("state_end_optout");
+                    //  and mother_only subscriptions bypass to end state state_end_optout
+                    if (self.im.user.answers.reg_type === 'mother_only') {
+                        return go.utils_project
+                            .optout_mother_ussd(self.im)
+                            .then(function() {
+                                return self.states.create('state_end_optout');
+                            });
+                    } else if (self.im.user.answers.reg_type === 'mother_and_other' &&
+                         self.im.user.answers.role_player !== 'mother') {
+                        return go.utils_project
+                            .optout_household_ussd(self.im)
+                            .then(function() {
+                                return self.states.create('state_end_optout');
+                            });
                     } else {
                         return self.states.create("state_optout_receiver");
                     }
@@ -1681,13 +2074,80 @@ go.app = function() {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
                 choices: [
-                    new Choice('state_end_loss_subscription_confirm', $("Yes")),
-                    new Choice('state_end_loss', $("No"))
+                    new Choice('state_switch_loss', $("Yes")),
+                    new Choice('state_optout_all', $("No"))
                 ],
                 next: function(choice) {
                     return choice.value;
                 }
             });
+        });
+
+        self.add('state_optout_all', function(name) {
+            if (self.im.user.answers.household_id === null) {
+                return go.utils_project
+                    .optout_mother_ussd(self.im)
+                    .then(function() {
+                        if (self.im.user.answers.state_optout_reason === 'not_useful' ||
+                            self.im.user.answers.state_optout_reason === 'other') {
+                            return self.states.create('state_end_optout');
+                        } else {
+                            return self.states.create('state_end_loss');
+                        }
+                    });
+            } else if (self.im.user.answers.reg_type === 'other_only') {
+                return go.utils_project
+                    .optout_household_ussd(self.im)
+                    .then(function() {
+                        if (self.im.user.answers.state_optout_reason === 'not_useful' ||
+                            self.im.user.answers.state_optout_reason === 'other') {
+                            return self.states.create('state_end_optout');
+                        } else {
+                            return self.states.create('state_end_loss');
+                        }
+                    });
+            } else {
+                return Q
+                    .all([
+                        go.utils_project.optout_mother_ussd(self.im),
+                        go.utils_project.optout_household_ussd(self.im)
+                    ])
+                    .then(function() {
+                        if (self.im.user.answers.state_optout_reason === 'not_useful' ||
+                            self.im.user.answers.state_optout_reason === 'other') {
+                            return self.states.create('state_end_optout');
+                        } else {
+                            return self.states.create('state_end_loss');
+                        }
+                    });
+            }
+        });
+
+        self.add('state_switch_loss', function(name) {
+            return go.utils_project
+                .switch_to_loss(self.im, self.im.user.answers.mother_id,
+                                self.im.user.answers.state_optout_reason)
+                .then(function() {
+                    if (self.im.user.answers.household_id &&
+                        self.im.user.answers.seperate_household_receiver === true) {
+                        return go.utils_project
+                            .optout_household_ussd(self.im)
+                            .then(function() {
+                                return self.states.create('state_end_loss_subscription_confirm');
+                            });
+                    } else if (self.im.user.answers.household_id &&
+                               self.im.user.answers.seperate_household_receiver === false) {
+                        return go.utils_project
+                            .unsub_household(self.im, self.im.user.answers.mother_id,
+                                             self.im.user.answers.household_id,
+                                             self.im.user.answers.state_optout_reason)
+                            .then(function() {
+                                return self.states.create('state_end_loss_subscription_confirm');
+                            });
+                    } else {
+                        return self.states.create('state_end_loss_subscription_confirm');
+                    }
+                });
         });
 
         // EndState st-15
@@ -1700,7 +2160,6 @@ go.app = function() {
 
         // ChoiceState st-16
         self.add('state_optout_receiver', function(name) {
-            //var role = go.utils_project.check_role(self.im.user.addr);
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
@@ -1710,12 +2169,68 @@ go.app = function() {
                     new Choice('all', $("All messages"))
                 ],
                 next: function(choice) {
-                        switch (choice.value) {
-                            case 'mother':  // deliberate fall-through to default
-                            case 'household':
-                            case 'all':
-                                return 'state_end_optout';
-                        }
+                    switch (choice.value) {
+                        case 'mother':
+                            if (self.im.user.answers.reg_type === 'other_only') {
+                                return go.utils_project
+                                    .unsub_mother(self.im, self.im.user.answers.mother_id,
+                                                  self.im.user.answers.household_id,
+                                                  self.im.user.answers.state_optout_reason)
+                                    .then(function() {
+                                        return 'state_end_optout';
+                                    });
+                            } else {
+                                return go.utils_project
+                                    .optout_mother_ussd(self.im)
+                                    .then(function() {
+                                        return 'state_end_optout';
+                                    });
+                            }
+                            break;
+                        case 'household':
+                            // unsubscribe from household messages only
+                            if (self.im.user.answers.reg_type === 'other_only') {
+                                return go.utils_project
+                                    .unsub_household(self.im, self.im.user.answers.mother_id,
+                                                     self.im.user.answers.household_id,
+                                                     self.im.user.answers.state_optout_reason)
+                                    .then(function() {
+                                        return 'state_end_optout';
+                                    });
+                            // opt out household messages receiver
+                            } else {
+                                return go.utils_project
+                                    .optout_household_ussd(self.im)
+                                    .then(function() {
+                                        return 'state_end_optout';
+                                    });
+                            }
+                            break;
+                        case 'all':
+                            if (self.im.user.answers.reg_type === 'other_only') {
+                                return Q
+                                    .all([
+                                        go.utils_project.unsub_mother(
+                                            self.im, self.im.user.answers.mother_id,
+                                            self.im.user.answers.household_id,
+                                            self.im.user.answers.state_optout_reason
+                                        ),
+                                        go.utils_project.optout_household_ussd(self.im)
+                                    ])
+                                    .then(function() {
+                                        return 'state_end_optout';
+                                    });
+                            } else {
+                                return Q
+                                    .all([
+                                        go.utils_project.optout_mother_ussd(self.im),
+                                        go.utils_project.optout_household_ussd(self.im)
+                                    ])
+                                    .then(function() {
+                                        return 'state_end_optout';
+                                    });
+                            }
+                    }
                 }
             });
         });

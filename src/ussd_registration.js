@@ -12,6 +12,7 @@ go.app = function() {
         App.call(self, 'state_start');
         var $ = self.$;
         var interrupt = true;
+        var bypassPostbirth = true;
 
         self.init = function() {
             // Send a dial back reminder via sms the first time someone times out
@@ -162,11 +163,11 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 choices: [
-                    new Choice('mother_father', $("Mother & Father")),
+                    new Choice('mother_father', $("Mother, Father")),
                     new Choice('mother_only', $("Mother")),
                     new Choice('father_only', $("Father")),
-                    new Choice('mother_family', $("Mother & family member")),
-                    new Choice('mother_friend', $("Mother & friend")),
+                    new Choice('mother_family', $("Mother, family member")),
+                    new Choice('mother_friend', $("Mother, friend")),
                     new Choice('friend_only', $("Friend")),
                     new Choice('family_only', $("Family member"))
                 ],
@@ -306,7 +307,12 @@ go.app = function() {
                     self.im.user.answers.operator_id
                 )
                 .then(function() {
-                    return self.states.create('state_pregnancy_status');
+                    if (bypassPostbirth) {
+                        self.im.user.set_answer('state_pregnancy_status', 'prebirth');
+                        return self.states.create('state_last_period_month');
+                    } else {
+                        return self.states.create('state_pregnancy_status');
+                    }
                 });
         });
 
@@ -391,11 +397,11 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 choices: [
-                    new Choice('voice', $('Voice calls')),
-                    new Choice('sms', $('Text SMSs'))
+                    new Choice('audio', $('Voice calls')),
+                    new Choice('text', $('Text SMSs'))
                 ],
                 next: function(choice) {
-                    if (choice.value === 'voice') {
+                    if (choice.value === 'audio') {
                         return 'state_voice_days';
                     } else {
                         return go.utils_project
