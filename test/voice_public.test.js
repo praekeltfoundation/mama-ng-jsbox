@@ -1112,7 +1112,7 @@ describe("Mama Nigeria App", function() {
                 .run();
             });
             // 1, 1 - miscarriage, yes
-            it.skip("case 1 > loss messagages opt-in; should navigate to state_end_loss_subscription_confirm", function() {
+            it("case 1 > loss messagages opt-in; should navigate to state_end_loss_subscription_confirm", function() {
                 return tester
                 .setup.user.addr('+2345059992222')
                 .inputs(
@@ -1131,12 +1131,12 @@ describe("Mama Nigeria App", function() {
                         voice: {
                             speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_loss_subscription_confirm_1.mp3',
                             wait_for: '#',
-                            barge_in: true
+                            barge_in: false
                         }
                     }
                 })
                 .check(function(api) {
-                    var expected_used = [2,9,25,36];
+                    var expected_used = [4,5,25,32,33];
                     var fixts = api.http.fixtures.fixtures;
                     var fixts_used = [];
                     fixts.forEach(function(f, i) {

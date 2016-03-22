@@ -2042,6 +2042,33 @@ go.app = function() {
             }
         });
 
+        self.add('state_switch_loss', function(name) {
+            return go.utils_project
+                .switch_to_loss(self.im, self.im.user.answers.mother_id,
+                                self.im.user.answers.state_optout_reason)
+                .then(function() {
+                    if (self.im.user.answers.household_id &&
+                        self.im.user.answers.seperate_household_receiver === true) {
+                        return go.utils_project
+                            .optout_household(self.im, 'voice_public')
+                            .then(function() {
+                                return self.states.create('state_end_loss_subscription_confirm');
+                            });
+                    } else if (self.im.user.answers.household_id &&
+                               self.im.user.answers.seperate_household_receiver === false) {
+                        return go.utils_project
+                            .unsub_household(self.im, self.im.user.answers.mother_id,
+                                             self.im.user.answers.household_id,
+                                             self.im.user.answers.state_optout_reason)
+                            .then(function() {
+                                return self.states.create('state_end_loss_subscription_confirm');
+                            });
+                    } else {
+                        return self.states.create('state_end_loss_subscription_confirm');
+                    }
+                });
+        });
+
         // interstitial
         self.states.add('state_check_subscription', function() {
             var contact_id = self.im.user.answers.contact_id;
