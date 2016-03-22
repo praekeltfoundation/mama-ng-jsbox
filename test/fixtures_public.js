@@ -1390,7 +1390,7 @@ module.exports = function() {
             }
         },
 
-        // 36: Optout - miscarriage 2222
+        // 36: Optout - miscarriage 2222 (ussd_public)
         {
             'request': {
                 'method': 'POST',
@@ -2638,6 +2638,33 @@ module.exports = function() {
                 'code': 201,
                 'data': {
                     'id': 1
+                }
+            }
+        },
+
+        // 75: Optout - miscarriage 2222 (voice_public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "reason": "miscarriage",
+                    "address_type": "msisdn",
+                    "address": "+2345059992222",
+                    "request_source": "voice_public",
+                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 2
                 }
             }
         },

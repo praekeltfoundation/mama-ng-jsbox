@@ -303,6 +303,8 @@ go.utils_project = {
             'state_end_msisdn',
             'state_end_sms',
             'state_end_voice',
+            'state_end_loss_subscription_confirm',
+            'state_end_loss',
             // voice public states
             'state_msg_receiver_msisdn',
             'state_main_menu',
@@ -489,28 +491,28 @@ go.utils_project = {
 
 // OPTOUT HELPERS
 
-    optout_mother_ussd: function(im) {
+    optout_mother: function(im, request_source) {
         return go.utils.optout(
             im,
             im.user.answers.mother_id,
             im.user.answers.state_optout_reason,
             'msisdn',
             im.user.answers.mother_msisdn,
-            'ussd_public',
+            request_source,
             im.config.testing_message_id ||
               im.msg.message_id,
             'stop'
         );
     },
 
-    optout_household_ussd: function(im) {
+    optout_household: function(im, request_source) {
         return go.utils.optout(
             im,
             im.user.answers.household_id,
             im.user.answers.state_optout_reason,
             'msisdn',
             im.user.answers.household_msisdn,
-            'ussd_public',
+            request_source,
             im.config.testing_message_id || im.msg.message_id,
             'stop'
         );
