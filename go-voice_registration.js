@@ -856,7 +856,11 @@ go.utils_project = {
             'state_already_registered_baby',
             'state_end_voice_confirm',
             'state_end_baby',
-            'state_end_exit'
+            'state_end_exit',
+            'state_end_msg_language_confirm',
+            'state_end_loss_subscription_confirm',
+            'state_end_loss',
+            'state_end_optout'
         ];
 
         return im
@@ -1027,7 +1031,9 @@ go.utils_project = {
         lang_map = {
             'english': 'eng_NG',
             'hausa': 'hau_NG',
-            'igbo': 'ibo_NG'
+            'igbo': 'ibo_NG',
+            'pidgin': 'pcm_NG',
+            'yoruba': 'yor_NG'
         };
         return lang_map[im.user.answers.state_r09_language];
     },
@@ -1035,28 +1041,28 @@ go.utils_project = {
 
 // OPTOUT HELPERS
 
-    optout_mother_ussd: function(im) {
+    optout_mother: function(im, request_source) {
         return go.utils.optout(
             im,
             im.user.answers.mother_id,
             im.user.answers.state_optout_reason,
             'msisdn',
             im.user.answers.mother_msisdn,
-            'ussd_public',
+            request_source,
             im.config.testing_message_id ||
               im.msg.message_id,
             'stop'
         );
     },
 
-    optout_household_ussd: function(im) {
+    optout_household: function(im, request_source) {
         return go.utils.optout(
             im,
             im.user.answers.household_id,
             im.user.answers.state_optout_reason,
             'msisdn',
             im.user.answers.household_msisdn,
-            'ussd_public',
+            request_source,
             im.config.testing_message_id || im.msg.message_id,
             'stop'
         );
@@ -1912,11 +1918,11 @@ go.app = function() {
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
-                    new Choice('english', $('english')),
-                    new Choice('hausa', $('hausa')),
-                    new Choice('igbo', $('igbo')),
-                    new Choice('pidgin', $('pidgin')),
-                    new Choice('yoruba', $('yoruba'))
+                    new Choice('eng_NG', $('english')),
+                    new Choice('hau_NG', $('hausa')),
+                    new Choice('ibo_NG', $('igbo')),
+                    new Choice('pcm_NG', $('pidgin')),
+                    new Choice('yor_NG', $('yoruba'))
                 ],
                 next: 'state_msg_type'
             });

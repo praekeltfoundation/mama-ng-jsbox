@@ -1,5 +1,6 @@
 go.app = function() {
     var vumigo = require('vumigo_v02');
+    var Q = require('q');
     var App = vumigo.App;
     var ChoiceState = vumigo.states.ChoiceState;
     var Choice = vumigo.states.Choice;
@@ -105,20 +106,59 @@ go.app = function() {
             var role = self.im.user.answers.role_player;
             var contact_id = self.im.user.answers.contact_id;
             if (role === 'mother') {
-                self.im.user.set_answer('mother_id', contact_id);
-                self.im.user.set_answer('receiver_id', 'none');
-                return self.states.create('state_main_menu');
+                // lookup contact so we can get the link to the household receiver (if any)
+                return go.utils
+                    .get_identity(contact_id, self.im)
+                    .then(function(mother) {
+                        self.im.user.set_answer('mother_id', contact_id);
+                        self.im.user.set_answer('mother_msisdn',
+                            Object.keys(mother.details.addresses.msisdn)[0]);
+                        if (mother.details.linked_to) {
+                            self.im.user.set_answer('household_id', mother.details.linked_to);
+                            self.im.user.set_answer('seperate_household_receiver', true);
+                            self.im.user.set_answer('reg_type', 'mother_and_other');
+                            // lookup household so we can save their msisdn
+                            return go.utils
+                                .get_identity(self.im.user.answers.household_id, self.im)
+                                .then(function(household) {
+                                    self.im.user.set_answer('household_msisdn',
+                                        Object.keys(household.details.addresses.msisdn)[0]);
+                                    return self.states.create('state_main_menu');
+                                });
+                        } else {
+                            // mother_only
+                            self.im.user.set_answer('household_id', null);
+                            self.im.user.set_answer('seperate_household_receiver', false);
+                            self.im.user.set_answer('reg_type', 'mother_only');
+                            return self.states.create('state_main_menu');
+                        }
+                    });
             } else {
                 // lookup contact so we can get the link to the mother
                 return go.utils
                     .get_identity(contact_id, self.im)
                     .then(function(contact) {
-                        self.im.user.set_answer('receiver_id', contact.id);
+                        self.im.user.set_answer('household_id', contact_id);
                         self.im.user.set_answer('mother_id', contact.details.linked_to);
+                        self.im.user.set_answer('household_msisdn',
+                            Object.keys(contact.details.addresses.msisdn)[0]);
                         if (contact.details.household_msgs_only) {
-                            self.im.user.set_answer('receiver_household_only', true);
-                            return self.states.create('state_main_menu_household');
+                            // set true for mother_friend, mother_family, mother_father identification
+                            self.im.user.set_answer('seperate_household_receiver', true);
+                            self.im.user.set_answer('reg_type', 'mother_and_other');
+                            // lookup mother so we can save her msisdn
+                            return go.utils
+                                .get_identity(self.im.user.answers.mother_id, self.im)
+                                .then(function(mother) {
+                                    self.im.user.set_answer('mother_msisdn',
+                                        Object.keys(mother.details.addresses.msisdn)[0]);
+                                    return self.states.create('state_main_menu_household');
+                                });
                         } else {
+                            // set false for friend_only, family_only, father_only identification
+                            // cannot set mother msisdn as it doesn't exist
+                            self.im.user.set_answer('seperate_household_receiver', false);
+                            self.im.user.set_answer('reg_type', 'other_only');
                             return self.states.create('state_main_menu');
                         }
                     });
@@ -472,18 +512,31 @@ go.app = function() {
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('english', $('English')),
-                    new Choice('hausa', $('Hausa')),
-                    new Choice('igbo', $('Igbo')),
-                    new Choice('pidgin', $('Pidgin')),
-                    new Choice('yoruba', $('Yoruba'))
+                    new Choice('eng_NG', $('English')),
+                    new Choice('hau_NG', $('Hausa')),
+                    new Choice('ibo_NG', $('Igbo')),
+                    new Choice('pcm_NG', $('Pidgin')),
+                    new Choice('yor_NG', $('Yoruba'))
                 ],
-                next: 'state_end_msg_language'
+                next: 'state_change_language'
             });
         });
 
+        self.add('state_change_language', function(name) {
+            return go.utils_project
+                .change_language(
+                    self.im,
+                    self.im.user.answers.state_msg_language,
+                    self.im.user.answers.mother_id,
+                    self.im.user.answers.household_id
+                )
+                .then(function() {
+                    return self.states.create('state_end_msg_language_confirm');
+                });
+        });
+
         // EndState st-12
-        self.add('state_end_msg_language', function(name) {
+        self.add('state_end_msg_language_confirm', function(name) {
             var speech_option = 1;
             return new EndState(name, {
                 text: $('Thank you. Language preference updated.'),
@@ -498,13 +551,7 @@ go.app = function() {
         // ChoiceState st-13
         self.add('state_optout_reason', function(name) {
             var speech_option = '1';
-            var routing = {
-                'miscarriage': 'state_loss_opt_in',
-                'stillborn': 'state_end_loss',
-                'baby_died': 'state_end_loss',
-                'not_useful': 'state_check_subscription',
-                'other': 'state_check_subscription'
-            };
+
             return new ChoiceState(name, {
                 question: $('Optout reason?'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
@@ -512,72 +559,104 @@ go.app = function() {
                 choices: [
                     new Choice('miscarriage', $("Mother miscarried")),
                     new Choice('stillborn', $("Baby stillborn")),
-                    new Choice('baby_died', $("Baby passed away")),
+                    new Choice('baby_death', $("Baby passed away")),
                     new Choice('not_useful', $("Messages not useful")),
                     new Choice('other', $("Other"))
                 ],
                 next: function(choice) {
-                    return routing[choice.value];
+                    switch (choice.value) {
+                        case 'miscarriage': return 'state_loss_subscription';
+                        case 'stillborn': return 'state_optout_all';
+                        case 'baby_death': return 'state_optout_all';
+                        case 'not_useful': return 'state_check_subscription';
+                        case 'other': return 'state_check_subscription';
+                    }
                 }
             });
         });
 
         // ChoiceState st-14
-        self.add('state_loss_opt_in', function(name) {
+        self.add('state_loss_subscription', function(name) {
             var speech_option = '1';
-            var routing = {
-                'opt_in_confirm': 'state_optin_confirm',
-                'opt_in_deny': 'state_optin_deny'
-            };
             return new ChoiceState(name, {
                 question: $('Receive loss messages?'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('opt_in_confirm', $('opt_in_confirm')),
-                    new Choice('opt_in_deny', $('opt_in_deny'))
+                    new Choice('state_switch_loss', $("Yes")),
+                    new Choice('state_optout_all', $("No"))
                 ],
                 next: function(choice) {
-                    return routing[choice.value];
+                    return choice.value;
                 }
             });
         });
 
-        self.add('state_optin_confirm', function(name) {
+        self.add('state_optout_all', function(name) {
+            if (self.im.user.answers.household_id === null) {
+                return go.utils_project
+                    .optout_mother(self.im, 'voice_public')
+                    .then(function() {
+                        if (self.im.user.answers.state_optout_reason === 'not_useful' ||
+                            self.im.user.answers.state_optout_reason === 'other') {
+                            return self.states.create('state_end_optout');
+                        } else {
+                            return self.states.create('state_end_loss');
+                        }
+                    });
+            } else if (self.im.user.answers.reg_type === 'other_only') {
+                return go.utils_project
+                    .optout_household(self.im, 'voice_public')
+                    .then(function() {
+                        if (self.im.user.answers.state_optout_reason === 'not_useful' ||
+                            self.im.user.answers.state_optout_reason === 'other') {
+                            return self.states.create('state_end_optout');
+                        } else {
+                            return self.states.create('state_end_loss');
+                        }
+                    });
+            } else {
+                return Q
+                    .all([
+                        go.utils_project.optout_mother(self.im, 'voice_public'),
+                        go.utils_project.optout_household(self.im, 'voice_public')
+                    ])
+                    .then(function() {
+                        if (self.im.user.answers.state_optout_reason === 'not_useful' ||
+                            self.im.user.answers.state_optout_reason === 'other') {
+                            return self.states.create('state_end_optout');
+                        } else {
+                            return self.states.create('state_end_loss');
+                        }
+                    });
+            }
+        });
+
+        self.add('state_switch_loss', function(name) {
             return go.utils_project
-                .optout_loss_opt_in(self.im)
+                .switch_to_loss(self.im, self.im.user.answers.mother_id,
+                                self.im.user.answers.state_optout_reason)
                 .then(function() {
-                    return self.states.create('state_end_loss_opt_in');
+                    if (self.im.user.answers.household_id &&
+                        self.im.user.answers.seperate_household_receiver === true) {
+                        return go.utils_project
+                            .optout_household(self.im, 'voice_public')
+                            .then(function() {
+                                return self.states.create('state_end_loss_subscription_confirm');
+                            });
+                    } else if (self.im.user.answers.household_id &&
+                               self.im.user.answers.seperate_household_receiver === false) {
+                        return go.utils_project
+                            .unsub_household(self.im, self.im.user.answers.mother_id,
+                                             self.im.user.answers.household_id,
+                                             self.im.user.answers.state_optout_reason)
+                            .then(function() {
+                                return self.states.create('state_end_loss_subscription_confirm');
+                            });
+                    } else {
+                        return self.states.create('state_end_loss_subscription_confirm');
+                    }
                 });
-        });
-
-        self.add('state_end_loss_opt_in', function(name) {
-            var speech_option = '1';
-            return new EndState(name, {
-                text: $('Thank you - loss opt in'),
-                helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                next: 'state_start'
-            });
-        });
-
-        self.add('state_optin_deny', function(name) {
-            return go.utils_project
-                .optout(self.im)
-                .then(function() {
-                    return self.states.create('state_end_optout');
-                });
-        });
-
-        // EndState st-21
-        self.add('state_end_loss', function(name) {
-            var speech_option = '1';
-            return new EndState(name, {
-                text: $('We are sorry for your loss. You will no longer receive messages.'),
-                helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                next: 'state_start'
-            });
         });
 
         // interstitial
@@ -586,13 +665,35 @@ go.app = function() {
             return go.utils
                 .get_identity(contact_id, self.im)
                 .then(function(contact) {
-                    // household and mother_only subscriptions bypass to end state state_end_optout
-                    if (contact.details.household_msgs_only || (self.im.user.mother_id === contact_id && self.im.user.receiver_id === 'none')) {
-                        return self.states.create("state_end_optout");
+                    //  and mother_only subscriptions bypass to end state state_end_optout
+                    if (self.im.user.answers.reg_type === 'mother_only') {
+                        return go.utils_project
+                            .optout_mother(self.im, 'voice_public')
+                            .then(function() {
+                                return self.states.create('state_end_optout');
+                            });
+                    } else if (self.im.user.answers.reg_type === 'mother_and_other' &&
+                         self.im.user.answers.role_player !== 'mother') {
+                        return go.utils_project
+                            .optout_household(self.im, 'voice_public')
+                            .then(function() {
+                                return self.states.create('state_end_optout');
+                            });
                     } else {
                         return self.states.create("state_optout_receiver");
                     }
                 });
+        });
+
+        // EndState st-15
+        self.add('state_end_loss_subscription_confirm', function(name) {
+            var speech_option = '1';
+            return new EndState(name, {
+                text: $('Thank you. You will now receive messages to support you during this difficult time.'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: 'state_start'
+            });
         });
 
         // ChoiceState st-16
@@ -609,12 +710,68 @@ go.app = function() {
                     new Choice('all', $("All messages"))
                 ],
                 next: function(choice) {
-                        switch (choice.value) {
-                            case 'mother':  // deliberate fall-through to default
-                            case 'household':
-                            case 'all':
-                                return 'state_end_optout';
-                        }
+                    switch (choice.value) {
+                        case 'mother':
+                            if (self.im.user.answers.reg_type === 'other_only') {
+                                return go.utils_project
+                                    .unsub_mother(self.im, self.im.user.answers.mother_id,
+                                                  self.im.user.answers.household_id,
+                                                  self.im.user.answers.state_optout_reason)
+                                    .then(function() {
+                                        return 'state_end_optout';
+                                    });
+                            } else {
+                                return go.utils_project
+                                    .optout_mother(self.im, 'voice_public')
+                                    .then(function() {
+                                        return 'state_end_optout';
+                                    });
+                            }
+                            break;
+                        case 'household':
+                            // unsubscribe from household messages only
+                            if (self.im.user.answers.reg_type === 'other_only') {
+                                return go.utils_project
+                                    .unsub_household(self.im, self.im.user.answers.mother_id,
+                                                     self.im.user.answers.household_id,
+                                                     self.im.user.answers.state_optout_reason)
+                                    .then(function() {
+                                        return 'state_end_optout';
+                                    });
+                            // opt out household messages receiver
+                            } else {
+                                return go.utils_project
+                                    .optout_household(self.im, 'voice_public')
+                                    .then(function() {
+                                        return 'state_end_optout';
+                                    });
+                            }
+                            break;
+                        case 'all':
+                            if (self.im.user.answers.reg_type === 'other_only') {
+                                return Q
+                                    .all([
+                                        go.utils_project.unsub_mother(
+                                            self.im, self.im.user.answers.mother_id,
+                                            self.im.user.answers.household_id,
+                                            self.im.user.answers.state_optout_reason
+                                        ),
+                                        go.utils_project.optout_household(self.im, 'voice_public')
+                                    ])
+                                    .then(function() {
+                                        return 'state_end_optout';
+                                    });
+                            } else {
+                                return Q
+                                    .all([
+                                        go.utils_project.optout_mother(self.im, 'voice_public'),
+                                        go.utils_project.optout_household(self.im, 'voice_public')
+                                    ])
+                                    .then(function() {
+                                        return 'state_end_optout';
+                                    });
+                            }
+                    }
                 }
             });
         });
@@ -624,6 +781,17 @@ go.app = function() {
             var speech_option = '1';
             return new EndState(name, {
                 text: $('Thank you - optout'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, lang, speech_option),
+                next: 'state_start'
+            });
+        });
+
+        // EndState st-21
+        self.add('state_end_loss', function(name) {
+            var speech_option = '1';
+            return new EndState(name, {
+                text: $('We are sorry for your loss. You will no longer receive messages.'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: 'state_start'
