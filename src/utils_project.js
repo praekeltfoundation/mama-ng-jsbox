@@ -303,9 +303,6 @@ go.utils_project = {
             'state_end_msisdn',
             'state_end_sms',
             'state_end_voice',
-            'state_end_loss_subscription_confirm',
-            'state_end_loss',
-            'state_end_optout',
             // voice public states
             'state_msg_receiver_msisdn',
             'state_main_menu',
@@ -313,7 +310,10 @@ go.utils_project = {
             'state_baby_already_subscribed',
             'state_end_voice_confirm',
             'state_end_baby',
-            'state_end_exit'
+            'state_end_exit',
+            'state_end_loss_subscription_confirm',
+            'state_end_loss',
+            'state_end_optout'
         ];
 
         return im
