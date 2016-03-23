@@ -1041,7 +1041,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('+2345059992222')
                     .inputs(
                         {session_event: 'new'}
-                        , '05059993333'  // msg_receiver_msisdn
+                        , '05059992222'  // msg_receiver_msisdn
                         , '5'  // state_main_menu - optout
                     )
                     .check.interaction({
@@ -1065,7 +1065,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [4,5,25];
+                        var expected_used = [2,9,25];
                         var fixts = api.http.fixtures.fixtures;
                         var fixts_used = [];
                         fixts.forEach(function(f, i) {
@@ -1080,7 +1080,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('+2345059992222')
                     .inputs(
                         {session_event: 'new'}
-                        , '05059993333'  // msg_receiver_msisdn
+                        , '05059992222'  // msg_receiver_msisdn
                         , '5'  // main_menu - optout
                         , '1'  // optout_reason - miscarriage
                     )
@@ -1102,7 +1102,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [4,5,25];
+                        var expected_used = [2,9,25];
                         var fixts = api.http.fixtures.fixtures;
                         var fixts_used = [];
                         fixts.forEach(function(f, i) {
@@ -1118,7 +1118,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('+2345059992222')
                     .inputs(
                         {session_event: 'new'}
-                        , '05059993333'  // msg_receiver_msisdn
+                        , '05059992222'  // msg_receiver_msisdn
                         , '5'  // main_menu - optout
                         , '1'  // optout_reason - miscarriage
                         , '1'  // loss_opt_in - confirm opt in
@@ -1137,7 +1137,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [4,5,25,32,33];
+                        var expected_used = [2,9,25,31];
                         var fixts = api.http.fixtures.fixtures;
                         var fixts_used = [];
                         fixts.forEach(function(f, i) {
@@ -1326,7 +1326,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('+2345059992222')
                     .inputs(
                         {session_event: 'new'}
-                        , '05059993333'  // msg_receiver_msisdn
+                        , '05059992222'  // msg_receiver_msisdn
                         , '5'  // main_menu - optout
                         , '1'  // optout_reason - miscarriage
                         , '0'  // loss_opt_in - restart attempt
