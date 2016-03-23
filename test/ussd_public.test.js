@@ -42,7 +42,7 @@ describe("Hello Mama app", function() {
                             url: "http://localhost:8005/api/v1/"
                         },
                         outbound: {
-                            api_token: 'test_token_outbond',
+                            api_token: 'test_token_outbound',
                             url: "http://localhost:8006/api/v1/"
                         }
                     },

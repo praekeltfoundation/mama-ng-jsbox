@@ -488,7 +488,7 @@ go.utils = {
 // OPTOUT & OPTIN HELPERS
 
     optout: function(im, identity_id, optout_reason, address_type, address,
-                     request_source, request_source_id, optout_type, config) {
+                     request_source, requestor_source_id, optout_type, config) {
       // Posts an optout to the identity store optout endpoint
 
         var optout_info = {
@@ -498,7 +498,7 @@ go.utils = {
             address_type: address_type || 'msisdn',  // default to 'msisdn'
             address: address,
             request_source: request_source,
-            request_source_id: request_source_id
+            requestor_source_id: requestor_source_id
         };
         return go.utils
             .service_api_call("identities", "post", null, optout_info, "optout/", im)
