@@ -161,11 +161,11 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 choices: [
-                    new Choice('english', $("English")),
-                    new Choice('hausa', $("Hausa")),
-                    new Choice('igbo', $("Igbo")),
-                    new Choice('pidgin', $('Pidgin')),
-                    new Choice('yoruba', $('Yoruba'))
+                    new Choice('eng_NG', $("English")),
+                    new Choice('hau_NG', $("Hausa")),
+                    new Choice('ibo_NG', $("Igbo")),
+                    new Choice('pcm_NG', $('Pidgin')),
+                    new Choice('yor_NG', $('Yoruba'))
                 ],
                 error: $(get_error_text(name)),
                 next: 'state_registered_msisdn'
@@ -561,11 +561,11 @@ go.app = function() {
                 question: $(questions[name]),
                 error: $(get_error_text(name)),
                 choices: [
-                    new Choice('english', $("English")),
-                    new Choice('hausa', $("Hausa")),
-                    new Choice('igbo', $("Igbo")),
-                    new Choice('pidgin', $('Pidgin')),
-                    new Choice('yoruba', $('Yoruba'))
+                    new Choice('eng_NG', $("English")),
+                    new Choice('hau_NG', $("Hausa")),
+                    new Choice('ibo_NG', $("Igbo")),
+                    new Choice('pcm_NG', $('Pidgin')),
+                    new Choice('yor_NG', $('Yoruba'))
                 ],
                 next: 'state_change_language'
             });

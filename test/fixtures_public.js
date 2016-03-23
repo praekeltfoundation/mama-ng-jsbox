@@ -119,7 +119,7 @@ module.exports = function() {
                             "receiver_role": "mother",
                             "linked_to": null,
                             "preferred_msg_type": "text",
-                            "preferred_language": "igbo"
+                            "preferred_language": "ibo_NG"
                         },
                         "created_at": "2015-07-10T06:13:29.693272Z",
                         "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -201,7 +201,7 @@ module.exports = function() {
                             "preferred_msg_type": "audio",
                             "preferred_msg_days": "mon_wed",
                             "preferred_msg_times": "9_11",
-                            "preferred_language": "hausa"
+                            "preferred_language": "hau_NG"
                         },
                         "created_at": "2015-07-10T06:13:29.693272Z",
                         "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -240,7 +240,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "hausa"
+                        "preferred_language": "hau_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -284,7 +284,7 @@ module.exports = function() {
                             "preferred_msg_type": "audio",
                             "preferred_msg_days": "mon_wed",
                             "preferred_msg_times": "9_11",
-                            "preferred_language": "hausa"
+                            "preferred_language": "hau_NG"
                         },
                         "created_at": "2015-07-10T06:13:29.693272Z",
                         "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -324,7 +324,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "hausa"
+                        "preferred_language": "hau_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -384,7 +384,7 @@ module.exports = function() {
                         "receiver_role": "mother",
                         "linked_to": null,
                         "preferred_msg_type": "text",
-                        "preferred_language": "igbo"
+                        "preferred_language": "ibo_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -416,7 +416,7 @@ module.exports = function() {
                         "receiver_role": "mother",
                         "linked_to": null,
                         "preferred_msg_type": "text",
-                        "preferred_language": "igbo"
+                        "preferred_language": "ibo_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -439,7 +439,7 @@ module.exports = function() {
                         "receiver_role": "mother",
                         "linked_to": null,
                         "preferred_msg_type": "text",
-                        "preferred_language": "igbo"
+                        "preferred_language": "ibo_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -473,7 +473,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "hausa"
+                        "preferred_language": "hau_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -498,7 +498,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "hausa"
+                        "preferred_language": "hau_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -541,7 +541,7 @@ module.exports = function() {
                             "preferred_msg_type": "audio",
                             "preferred_msg_days": "mon_wed",
                             "preferred_msg_times": "9_11",
-                            "preferred_language": "pidgin"
+                            "preferred_language": "pcm_NG"
                         },
                         "created_at": "2015-07-10T06:13:29.693272Z",
                         "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -580,7 +580,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -614,7 +614,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -638,7 +638,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -673,7 +673,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "hausa"
+                        "preferred_language": "hau_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -698,7 +698,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "hausa"
+                        "preferred_language": "hau_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -1034,7 +1034,7 @@ module.exports = function() {
                         "receiver_role": "mother",
                         "linked_to": null,
                         "preferred_msg_type": "audio",
-                        "preferred_language": "igbo",
+                        "preferred_language": "ibo_NG",
                         "preferred_msg_days": "tue_thu",
                         "preferred_msg_times": "9_11"
                     },
@@ -1058,7 +1058,7 @@ module.exports = function() {
                         "receiver_role": "mother",
                         "linked_to": null,
                         "preferred_msg_type": "audio",
-                        "preferred_language": "igbo",
+                        "preferred_language": "ibo_NG",
                         "preferred_msg_days": "tue_thu",
                         "preferred_msg_times": "9_11"
                     },
@@ -1092,7 +1092,7 @@ module.exports = function() {
                         "receiver_role": "mother",
                         "linked_to": null,
                         "preferred_msg_type": "text",
-                        "preferred_language": "igbo",
+                        "preferred_language": "ibo_NG",
                         "opted_out": true,
                         "optout_reason": "miscarriage"
                     },
@@ -1116,7 +1116,7 @@ module.exports = function() {
                         "receiver_role": "mother",
                         "linked_to": null,
                         "preferred_msg_type": "text",
-                        "preferred_language": "igbo"
+                        "preferred_language": "ibo_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -1142,7 +1142,7 @@ module.exports = function() {
                     "operator": null,
                     "details": {
                         "receiver_role": "mother",
-                        "preferred_language": "hausa",
+                        "preferred_language": "hau_NG",
                         "linked_to": "cb245673-aa41-4302-ac47-9093333333",
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
@@ -1162,7 +1162,7 @@ module.exports = function() {
                     "operator": null,
                     "details": {
                         "receiver_role": "mother",
-                        "preferred_language": "hausa",
+                        "preferred_language": "hau_NG",
                         "linked_to": "cb245673-aa41-4302-ac47-9093333333",
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
@@ -1200,7 +1200,7 @@ module.exports = function() {
                         "preferred_msg_type": "text",
                         "preferred_msg_days": null,
                         "preferred_msg_times": null,
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -1224,7 +1224,7 @@ module.exports = function() {
                         "preferred_msg_type": "text",
                         "preferred_msg_days": null,
                         "preferred_msg_times": null,
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -1253,7 +1253,7 @@ module.exports = function() {
                     "operator": null,
                     "details": {
                         "receiver_role": "mother",
-                        "preferred_language": "hausa",
+                        "preferred_language": "hau_NG",
                         "linked_to": "cb245673-aa41-4302-ac47-9093333333"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
@@ -2087,7 +2087,7 @@ module.exports = function() {
                     "action": "change_language",
                     "data": {
                         "household_id": null,
-                        "new_language": "pidgin"
+                        "new_language": "pcm_NG"
                     }
                 }
             },
@@ -2123,7 +2123,7 @@ module.exports = function() {
                         "receiver_role": "mother",
                         "linked_to": null,
                         "preferred_msg_type": "text",
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -2145,7 +2145,7 @@ module.exports = function() {
                         "receiver_role": "mother",
                         "linked_to": null,
                         "preferred_msg_type": "text",
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -2167,7 +2167,7 @@ module.exports = function() {
                     "action": "change_language",
                     "data": {
                         "household_id": "3f7c8851-5204-43f7-af7f-005059993333",
-                        "new_language": "pidgin"
+                        "new_language": "pcm_NG"
                     }
                 }
             },
@@ -2197,7 +2197,7 @@ module.exports = function() {
                     "operator": null,
                     "details": {
                         "receiver_role": "mother",
-                        "preferred_language": "pidgin",
+                        "preferred_language": "pcm_NG",
                         "linked_to": "cb245673-aa41-4302-ac47-9093333333"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
@@ -2214,7 +2214,7 @@ module.exports = function() {
                     "operator": null,
                     "details": {
                         "receiver_role": "mother",
-                        "preferred_language": "pidgin",
+                        "preferred_language": "pcm_NG",
                         "linked_to": "cb245673-aa41-4302-ac47-9093333333"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
@@ -2249,7 +2249,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -2273,7 +2273,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -2295,7 +2295,7 @@ module.exports = function() {
                     "action": "change_language",
                     "data": {
                         "household_id": "3f7c8851-5204-43f7-af7f-005059997777",
-                        "new_language": "pidgin"
+                        "new_language": "pcm_NG"
                     }
                 }
             },
@@ -2333,7 +2333,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -2357,7 +2357,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -2392,7 +2392,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -2417,7 +2417,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -2459,7 +2459,7 @@ module.exports = function() {
                             "receiver_role": "mother",
                             "linked_to": null,
                             "preferred_msg_type": "text",
-                            "preferred_language": "igbo"
+                            "preferred_language": "ibo_NG"
                         },
                         "created_at": "2015-07-10T06:13:29.693272Z",
                         "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -2496,7 +2496,7 @@ module.exports = function() {
                         "receiver_role": "mother",
                         "linked_to": null,
                         "preferred_msg_type": "text",
-                        "preferred_language": "igbo"
+                        "preferred_language": "ibo_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"

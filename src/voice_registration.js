@@ -489,11 +489,11 @@ go.app = function() {
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
-                    new Choice('english', $('english')),
-                    new Choice('hausa', $('hausa')),
-                    new Choice('igbo', $('igbo')),
-                    new Choice('pidgin', $('pidgin')),
-                    new Choice('yoruba', $('yoruba'))
+                    new Choice('eng_NG', $('english')),
+                    new Choice('hau_NG', $('hausa')),
+                    new Choice('ibo_NG', $('igbo')),
+                    new Choice('pcm_NG', $('pidgin')),
+                    new Choice('yor_NG', $('yoruba'))
                 ],
                 next: 'state_msg_type'
             });

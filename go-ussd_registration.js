@@ -1027,7 +1027,9 @@ go.utils_project = {
         lang_map = {
             'english': 'eng_NG',
             'hausa': 'hau_NG',
-            'igbo': 'ibo_NG'
+            'igbo': 'ibo_NG',
+            'pidgin': 'pcm_NG',
+            'yoruba': 'yor_NG'
         };
         return lang_map[im.user.answers.state_r09_language];
     },
@@ -1805,11 +1807,11 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $(questions[name]),
                 choices: [
-                    new Choice('english', $('English')),
-                    new Choice('hausa', $('Hausa')),
-                    new Choice('igbo', $('Igbo')),
-                    new Choice('pidgin', $('Pidgin')),
-                    new Choice('yoruba', $('Yoruba'))
+                    new Choice('eng_NG', $('English')),
+                    new Choice('hau_NG', $('Hausa')),
+                    new Choice('ibo_NG', $('Igbo')),
+                    new Choice('pcm_NG', $('Pidgin')),
+                    new Choice('yor_NG', $('Yoruba'))
                 ],
                 next: 'state_msg_type'
             });
