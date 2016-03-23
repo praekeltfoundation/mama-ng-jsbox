@@ -311,7 +311,10 @@ go.utils_project = {
             'state_end_voice_confirm',
             'state_end_baby',
             'state_end_exit',
-            'state_end_msg_language_confirm'
+            'state_end_msg_language_confirm',
+            'state_end_loss_subscription_confirm',
+            'state_end_loss',
+            'state_end_optout'
         ];
 
         return im
@@ -482,7 +485,9 @@ go.utils_project = {
         lang_map = {
             'english': 'eng_NG',
             'hausa': 'hau_NG',
-            'igbo': 'ibo_NG'
+            'igbo': 'ibo_NG',
+            'pidgin': 'pcm_NG',
+            'yoruba': 'yor_NG'
         };
         return lang_map[im.user.answers.state_r09_language];
     },
@@ -490,28 +495,28 @@ go.utils_project = {
 
 // OPTOUT HELPERS
 
-    optout_mother_ussd: function(im) {
+    optout_mother: function(im, request_source) {
         return go.utils.optout(
             im,
             im.user.answers.mother_id,
             im.user.answers.state_optout_reason,
             'msisdn',
             im.user.answers.mother_msisdn,
-            'ussd_public',
+            request_source,
             im.config.testing_message_id ||
               im.msg.message_id,
             'stop'
         );
     },
 
-    optout_household_ussd: function(im) {
+    optout_household: function(im, request_source) {
         return go.utils.optout(
             im,
             im.user.answers.household_id,
             im.user.answers.state_optout_reason,
             'msisdn',
             im.user.answers.household_msisdn,
-            'ussd_public',
+            request_source,
             im.config.testing_message_id || im.msg.message_id,
             'stop'
         );
