@@ -393,7 +393,7 @@ describe("Mama Nigeria App", function() {
                         voice: {
                             speech_url: 'http://localhost:8004/api/v1/eng_NG/state_already_registered_baby_1.mp3',
                             wait_for: '#',
-                            barge_in: true
+                            barge_in: false
                         }
                     }
                 })
