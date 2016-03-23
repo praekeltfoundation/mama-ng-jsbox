@@ -857,6 +857,7 @@ go.utils_project = {
             'state_end_voice_confirm',
             'state_end_baby',
             'state_end_exit',
+            'state_end_msg_language_confirm',
             'state_end_loss_subscription_confirm',
             'state_end_loss',
             'state_end_optout'
@@ -1944,12 +1945,25 @@ go.app = function() {
                     new Choice('pcm_NG', $('Pidgin')),
                     new Choice('yor_NG', $('Yoruba'))
                 ],
-                next: 'state_end_msg_language'
+                next: 'state_change_language'
             });
         });
 
+        self.add('state_change_language', function(name) {
+            return go.utils_project
+                .change_language(
+                    self.im,
+                    self.im.user.answers.state_msg_language,
+                    self.im.user.answers.mother_id,
+                    self.im.user.answers.household_id
+                )
+                .then(function() {
+                    return self.states.create('state_end_msg_language_confirm');
+                });
+        });
+
         // EndState st-12
-        self.add('state_end_msg_language', function(name) {
+        self.add('state_end_msg_language_confirm', function(name) {
             var speech_option = 1;
             return new EndState(name, {
                 text: $('Thank you. Language preference updated.'),

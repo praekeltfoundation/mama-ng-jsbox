@@ -311,6 +311,7 @@ go.utils_project = {
             'state_end_voice_confirm',
             'state_end_baby',
             'state_end_exit',
+            'state_end_msg_language_confirm',
             'state_end_loss_subscription_confirm',
             'state_end_loss',
             'state_end_optout'
