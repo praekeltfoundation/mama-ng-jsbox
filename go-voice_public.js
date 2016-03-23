@@ -853,10 +853,11 @@ go.utils_project = {
             'state_msg_receiver_msisdn',
             'state_main_menu',
             'state_main_menu_household',
-            'state_baby_already_subscribed',
+            'state_already_registered_baby',
             'state_end_voice_confirm',
             'state_end_baby',
             'state_end_exit',
+            'state_end_msg_language_confirm',
             'state_end_loss_subscription_confirm',
             'state_end_loss',
             'state_end_optout'
@@ -1618,7 +1619,7 @@ go.app = function() {
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('state_baby_check', $('baby')),
+                    new Choice('state_check_baby_subscription', $('baby')),
                     new Choice('state_check_msg_type', $('preferences')),
                     new Choice('state_new_msisdn', $('number')),
                     new Choice('state_msg_language', $('language')),
@@ -1638,7 +1639,7 @@ go.app = function() {
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('state_baby_check', $('baby')),
+                    new Choice('state_check_baby_subscription', $('baby')),
                     new Choice('state_new_msisdn', $('number')),
                     new Choice('state_msg_language', $('language')),
                     new Choice('state_optout_reason', $('optout'))
@@ -1652,27 +1653,29 @@ go.app = function() {
     // BABY CHANGE STATES
 
         // interstitial
-        self.add('state_baby_check', function(name) {
+        self.add('state_check_baby_subscription', function(name) {
             return go.utils_project
-                .check_baby_subscription(self.im.user.addr)
-                .then(function(isSubscribed) {
-                    if (isSubscribed) {
-                        return self.states.create('state_baby_already_subscribed');
+                .check_postbirth_subscription(self.im, self.im.user.answers.mother_id)
+                .then(function(postbirth_sub) {
+                    if (postbirth_sub === true) {
+                        return self.states.create('state_already_registered_baby');
+                    } else if (postbirth_sub === 'no_active_subs_found') {
+                        return self.states.create('state_baby_switch_broken');  // TODO #101
                     } else {
                         return self.states.create('state_baby_confirm_subscription');
                     }
-               });
+                });
         });
 
         // FreeText st-01
-        self.add('state_baby_already_subscribed', function(name) {
+        self.add('state_already_registered_baby', function(name) {
             var speech_option = 1;
             return new FreeText(name, {
                 question: $('You are already subscribed. To go back to main menu, 0 then #'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: function(choice) {
-                    return 'state_baby_already_subscribed';
+                    return 'state_already_registered_baby';
                 }
             });
         });
@@ -1688,15 +1691,15 @@ go.app = function() {
                     new Choice('confirm', $('To confirm press 1. To go back to main menu, 0 then #'))
                 ],
                 next: function(choice) {
-                    return 'state_baby_save';
+                    return 'state_change_baby';
                 }
             });
         });
 
         // interstitial to save subscription to baby messages
-        self.add('state_baby_save', function(name) {
+        self.add('state_change_baby', function(name) {
             return go.utils_project
-                .switch_to_baby(self.im)
+                .switch_to_baby(self.im, self.im.user.answers.mother_id)
                 .then(function() {
                     return self.states.create('state_end_baby');
                 });
@@ -1944,12 +1947,25 @@ go.app = function() {
                     new Choice('pcm_NG', $('Pidgin')),
                     new Choice('yor_NG', $('Yoruba'))
                 ],
-                next: 'state_end_msg_language'
+                next: 'state_change_language'
             });
         });
 
+        self.add('state_change_language', function(name) {
+            return go.utils_project
+                .change_language(
+                    self.im,
+                    self.im.user.answers.state_msg_language,
+                    self.im.user.answers.mother_id,
+                    self.im.user.answers.household_id
+                )
+                .then(function() {
+                    return self.states.create('state_end_msg_language_confirm');
+                });
+        });
+
         // EndState st-12
-        self.add('state_end_msg_language', function(name) {
+        self.add('state_end_msg_language_confirm', function(name) {
             var speech_option = 1;
             return new EndState(name, {
                 text: $('Thank you. Language preference updated.'),

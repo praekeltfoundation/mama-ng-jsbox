@@ -376,31 +376,40 @@ describe("Mama Nigeria App", function() {
             });
         });
 
-        describe.skip("Flow from main menu - baby messages", function() {
-            it("should navigate to state_baby_already_subscribed", function() {
+        describe("Flow from main menu - baby messages", function() {
+            it("should navigate to state_already_registered_baby", function() {
                 return tester
-                .setup.user.addr('082333')
+                .setup.user.addr('+07070050005')
                 .inputs(
                     {session_event: 'new'}
-                    , '05059992222'  // msg_receiver_msisdn
+                    , '05059999999'  // msg_receiver_msisdn
                     , '1'  // main_menu - baby
                 )
                 .check.interaction({
-                    state: 'state_baby_already_subscribed',
+                    state: 'state_already_registered_baby',
                     reply: 'You are already subscribed. To go back to main menu, 0 then #'
                 })
                 .check.reply.properties({
                     helper_metadata: {
                         voice: {
-                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_already_subscribed_1.mp3',
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_already_registered_baby_1.mp3',
                             wait_for: '#',
-                            barge_in: true
+                            barge_in: false
                         }
                     }
                 })
+                .check(function(api) {
+                    var expected_used = [25,70,71,72,73];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                        f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
+                })
                 .run();
             });
-            it("should navigate to state_baby_confirm_subscription", function() {
+            it("case 1 > state_baby_confirm_subscription", function() {
                 return tester
                 .setup.user.addr('+07070050005')
                 .inputs(
@@ -424,9 +433,18 @@ describe("Mama Nigeria App", function() {
                         }
                     }
                 })
+                .check(function(api) {
+                    var expected_used = [2,9,16,17,25];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                        f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
+                })
                 .run();
             });
-            it("should navigate to state_end_baby", function() {
+            it("case 1 > to state_end_baby", function() {
                 return tester
                 .setup.user.addr('+07070050005')
                 .inputs(
@@ -447,6 +465,219 @@ describe("Mama Nigeria App", function() {
                             barge_in: false
                         }
                     }
+                })
+                .check(function(api) {
+                    var expected_used = [2,9,16,17,25,74];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                        f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
+                })
+                .run();
+            });
+            it("case 2 > state_baby_confirm_subscription", function() {
+                return tester
+                .setup.user.addr('+07070050005')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059993333'  // msg_receiver_msisdn
+                    , '1'  // main_menu - baby
+                )
+                .check.interaction({
+                    state: 'state_baby_confirm_subscription',
+                    reply: [
+                        'Confirm baby?',
+                        '1. To confirm press 1. To go back to main menu, 0 then #'
+                    ].join('\n')
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_confirm_subscription_1.mp3',
+                            wait_for: '#',
+                            barge_in: true
+                        }
+                    }
+                })
+                .check(function(api) {
+                    var expected_used = [4,5,19,20,25];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                        f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
+                })
+                .run();
+            });
+            it("case 2 > to state_end_baby", function() {
+                return tester
+                .setup.user.addr('+07070050005')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059993333'  // msg_receiver_msisdn
+                    , '1'  // main_menu - baby
+                    , '1'  // state_baby_confirm_subscription
+                )
+                .check.interaction({
+                    state: 'state_end_baby',
+                    reply: 'Thank you - baby'
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_baby_1.mp3',
+                            wait_for: '#',
+                            barge_in: false
+                        }
+                    }
+                })
+                .check(function(api) {
+                    var expected_used = [4,5,19,20,25,75];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                        f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
+                })
+                .run();
+            });
+            it("case 3 > state_baby_confirm_subscription", function() {
+                return tester
+                .setup.user.addr('+07070050005')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059996666'  // msg_receiver_msisdn
+                    , '1'  // main_menu - baby
+                )
+                .check.interaction({
+                    state: 'state_baby_confirm_subscription',
+                    reply: [
+                        'Confirm baby?',
+                        '1. To confirm press 1. To go back to main menu, 0 then #'
+                    ].join('\n')
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_confirm_subscription_1.mp3',
+                            wait_for: '#',
+                            barge_in: true
+                        }
+                    }
+                })
+                .check(function(api) {
+                    var expected_used = [7,12,13,22,23,25];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                        f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
+                })
+                .run();
+            });
+            it("case 3 > to state_end_baby", function() {
+                return tester
+                .setup.user.addr('+07070050005')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059996666'  // msg_receiver_msisdn
+                    , '1'  // main_menu - baby
+                    , '1'  // state_baby_confirm_subscription
+                )
+                .check.interaction({
+                    state: 'state_end_baby',
+                    reply: 'Thank you - baby'
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_baby_1.mp3',
+                            wait_for: '#',
+                            barge_in: false
+                        }
+                    }
+                })
+                .check(function(api) {
+                    var expected_used = [7,12,13,22,23,25,76];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                        f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
+                })
+                .run();
+            });
+            it("case 4 > state_baby_confirm_subscription", function() {
+                return tester
+                .setup.user.addr('+07070050005')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059997777'  // msg_receiver_msisdn
+                    , '1'  // main_menu - baby
+                )
+                .check.interaction({
+                    state: 'state_baby_confirm_subscription',
+                    reply: [
+                        'Confirm baby?',
+                        '1. To confirm press 1. To go back to main menu, 0 then #'
+                    ].join('\n')
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_confirm_subscription_1.mp3',
+                            wait_for: '#',
+                            barge_in: true
+                        }
+                    }
+                })
+                .check(function(api) {
+                    var expected_used = [6,7,13,22,23,25];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                        f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
+                })
+                .run();
+            });
+            it("case 4 > to state_end_baby", function() {
+                return tester
+                .setup.user.addr('+07070050005')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059997777'  // msg_receiver_msisdn
+                    , '1'  // main_menu - baby
+                    , '1'  // state_baby_confirm_subscription
+                )
+                .check.interaction({
+                    state: 'state_end_baby',
+                    reply: 'Thank you - baby'
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_baby_1.mp3',
+                            wait_for: '#',
+                            barge_in: false
+                        }
+                    }
+                })
+                .check(function(api) {
+                    var expected_used = [6,7,13,22,23,25,76];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                        f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
                 })
                 .run();
             });
@@ -976,7 +1207,7 @@ describe("Mama Nigeria App", function() {
             });
         });
 
-        describe.skip("Flow from main menu - change language", function() {
+        describe("Flow from main menu - change language", function() {
             it("should navigate to state_msg_language", function() {
                 return tester
                 .setup.user.addr('+07070050005')
@@ -1007,25 +1238,98 @@ describe("Mama Nigeria App", function() {
                 })
                 .run();
             });
-            it("should navigate to state_end_msg_language", function() {
+
+            it("case 1 > to state_end_msg_language", function() {
                 return tester
                 .setup.user.addr('+07070050005')
                 .inputs(
                     {session_event: 'new'}
                     , '05059992222' // state_msg_receiver_msisdn
                     , '4'           // state_main_menu - language
-                    , '3'   // state_msg_language - igbo
+                    , '4'   // state_msg_language - pidgin
                 )
                 .check.interaction({
-                    state: 'state_end_msg_language',
+                    state: 'state_end_msg_language_confirm',
                     reply: 'Thank you. Language preference updated.'
                 })
                 .check.reply.properties({
                     helper_metadata: {
                         voice: {
-                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_msg_language_1.mp3',
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_msg_language_confirm_1.mp3',
                             wait_for: '#',
-                            barge_in: true
+                            barge_in: false
+                        }
+                    }
+                })
+                .run();
+            });
+            it("case 2 > to state_end_msg_language_confirm", function() {
+                return tester
+                .setup.user.addr('+07070050005')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059993333' // state_msg_receiver_msisdn
+                    , '4'           // state_main_menu - language
+                    , '4'   // state_msg_language - pidgin
+                )
+                .check.interaction({
+                    state: 'state_end_msg_language_confirm',
+                    reply: 'Thank you. Language preference updated.'
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_msg_language_confirm_1.mp3',
+                            wait_for: '#',
+                            barge_in: false
+                        }
+                    }
+                })
+                .run();
+            });
+            it("case 3 > to state_end_msg_language_confirm", function() {
+                return tester
+                .setup.user.addr('+07070050005')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059996666' // state_msg_receiver_msisdn
+                    , '4'           // state_main_menu - language
+                    , '4'   // state_msg_language - pidgin
+                )
+                .check.interaction({
+                    state: 'state_end_msg_language_confirm',
+                    reply: 'Thank you. Language preference updated.'
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_msg_language_confirm_1.mp3',
+                            wait_for: '#',
+                            barge_in: false
+                        }
+                    }
+                })
+                .run();
+            });
+            it("case 4 > to state_end_msg_language_confirm", function() {
+                return tester
+                .setup.user.addr('+07070050005')
+                .inputs(
+                    {session_event: 'new'}
+                    , '05059997777' // state_msg_receiver_msisdn
+                    , '3'           // state_main_menu_household - language
+                    , '4'   // state_msg_language - pidgin
+                )
+                .check.interaction({
+                    state: 'state_end_msg_language_confirm',
+                    reply: 'Thank you. Language preference updated.'
+                })
+                .check.reply.properties({
+                    helper_metadata: {
+                        voice: {
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_msg_language_confirm_1.mp3',
+                            wait_for: '#',
+                            barge_in: false
                         }
                     }
                 })

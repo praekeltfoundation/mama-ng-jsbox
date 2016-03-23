@@ -853,10 +853,11 @@ go.utils_project = {
             'state_msg_receiver_msisdn',
             'state_main_menu',
             'state_main_menu_household',
-            'state_baby_already_subscribed',
+            'state_already_registered_baby',
             'state_end_voice_confirm',
             'state_end_baby',
             'state_end_exit',
+            'state_end_msg_language_confirm',
             'state_end_loss_subscription_confirm',
             'state_end_loss',
             'state_end_optout'
