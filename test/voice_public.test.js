@@ -40,7 +40,7 @@ describe("Mama Nigeria App", function() {
                             url: "http://localhost:8005/api/v1/"
                         },
                         outbound: {
-                            api_token: 'test_token_outbond',
+                            api_token: 'test_token_outbound',
                             url: "http://localhost:8006/api/v1/"
                         }
                     }
@@ -375,27 +375,36 @@ describe("Mama Nigeria App", function() {
             });
         });
 
-        describe.skip("Flow from main menu - baby messages", function() {
-            it("should navigate to state_baby_already_subscribed", function() {
+        describe("Flow from main menu - baby messages", function() {
+            it("should navigate to state_already_registered_baby", function() {
                 return tester
-                .setup.user.addr('082333')
+                .setup.user.addr('+07070050005')
                 .inputs(
                     {session_event: 'new'}
-                    , '05059992222'  // msg_receiver_msisdn
+                    , '05059999999'  // msg_receiver_msisdn
                     , '1'  // main_menu - baby
                 )
                 .check.interaction({
-                    state: 'state_baby_already_subscribed',
+                    state: 'state_already_registered_baby',
                     reply: 'You are already subscribed. To go back to main menu, 0 then #'
                 })
                 .check.reply.properties({
                     helper_metadata: {
                         voice: {
-                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_already_subscribed_1.mp3',
+                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_already_registered_baby_1.mp3',
                             wait_for: '#',
                             barge_in: true
                         }
                     }
+                })
+                .check(function(api) {
+                    var expected_used = [25,70,72,73];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                        f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
                 })
                 .run();
             });
@@ -423,6 +432,15 @@ describe("Mama Nigeria App", function() {
                         }
                     }
                 })
+                .check(function(api) {
+                    var expected_used = [2,16,17,25];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                        f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
+                })
                 .run();
             });
             it("should navigate to state_end_baby", function() {
@@ -446,6 +464,15 @@ describe("Mama Nigeria App", function() {
                             barge_in: false
                         }
                     }
+                })
+                .check(function(api) {
+                    var expected_used = [2,16,17,25,74];
+                    var fixts = api.http.fixtures.fixtures;
+                    var fixts_used = [];
+                    fixts.forEach(function(f, i) {
+                        f.uses > 0 ? fixts_used.push(i) : null;
+                    });
+                    assert.deepEqual(fixts_used, expected_used);
                 })
                 .run();
             });
@@ -1084,9 +1111,9 @@ describe("Mama Nigeria App", function() {
                 .check.interaction({
                     state: 'state_loss_opt_in',
                     reply: [
-                    'Receive loss messages?',
-                    '1. opt_in_confirm',
-                    '2. opt_in_deny'
+                        'Receive loss messages?',
+                        '1. opt_in_confirm',
+                        '2. opt_in_deny'
                     ].join('\n')
                 })
                 .check.reply.properties({
