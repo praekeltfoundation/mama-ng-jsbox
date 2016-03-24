@@ -76,6 +76,7 @@ go.utils = {
         };
     },
 
+
 // MSISDN HELPERS
 
     // Check that it's a number and starts with 0 and approximate length
@@ -150,13 +151,13 @@ go.utils = {
         return moment(date, format, true).isValid();
     },
 
-    is_valid_year: function(input, min, max) {  // expecting string parameters
-        // check that it is a number and has four digits
-        // AND that the number is within the range determined by the min/max parameters
-        return input.length === 4 && min.length === 4 && max.length === 4 &&
-                go.utils.check_valid_number(input) &&
-                parseInt(input, 10) >= parseInt(min, 10) &&
-                parseInt(input, 10) <= parseInt(max, 10);
+    is_valid_year: function(year, minYear, maxYear) {
+        // expects string parameters
+        // checks that the number is within the range determined by the
+        // minYear & maxYear parameters
+        return go.utils.check_valid_number(year)
+            && parseInt(year, 10) >= parseInt(minYear, 10)
+            && parseInt(year, 10) <= parseInt(maxYear, 10);
     },
 
     is_valid_day_of_month: function(input) {
