@@ -292,8 +292,6 @@ go.utils = {
             payload.operator = operator_id;
         }
 
-
-
         return go.utils
             .service_api_call("identities", "post", null, payload, 'identities/', im)
             .then(function(json_post_response) {
