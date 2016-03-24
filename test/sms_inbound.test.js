@@ -2,8 +2,6 @@ var vumigo = require('vumigo_v02');
 var fixtures = require('./fixtures_public');
 var assert = require('assert');
 var AppTester = vumigo.AppTester;
-var optoutstore = require('./optoutstore');
-var DummyOptoutResource = optoutstore.DummyOptoutResource;
 
 
 describe("Mama Nigeria App", function() {

@@ -1458,7 +1458,7 @@ go.app = function() {
             var user_first_word = go.utils.get_clean_first_word(self.im.msg.content);
             switch (user_first_word) {
                 case "STOP":
-                    return self.states.create("state_opt_out");
+                    return self.states.create("state_end_opt_out");
                 default:
                     return self.states.create("state_end_helpdesk");
             }
