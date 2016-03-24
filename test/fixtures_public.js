@@ -119,7 +119,7 @@ module.exports = function() {
                             "receiver_role": "mother",
                             "linked_to": null,
                             "preferred_msg_type": "text",
-                            "preferred_language": "igbo"
+                            "preferred_language": "ibo_NG"
                         },
                         "created_at": "2015-07-10T06:13:29.693272Z",
                         "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -201,7 +201,7 @@ module.exports = function() {
                             "preferred_msg_type": "audio",
                             "preferred_msg_days": "mon_wed",
                             "preferred_msg_times": "9_11",
-                            "preferred_language": "hausa"
+                            "preferred_language": "hau_NG"
                         },
                         "created_at": "2015-07-10T06:13:29.693272Z",
                         "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -240,7 +240,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "hausa"
+                        "preferred_language": "hau_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -284,7 +284,7 @@ module.exports = function() {
                             "preferred_msg_type": "audio",
                             "preferred_msg_days": "mon_wed",
                             "preferred_msg_times": "9_11",
-                            "preferred_language": "hausa"
+                            "preferred_language": "hau_NG"
                         },
                         "created_at": "2015-07-10T06:13:29.693272Z",
                         "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -324,7 +324,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "hausa"
+                        "preferred_language": "hau_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -384,7 +384,7 @@ module.exports = function() {
                         "receiver_role": "mother",
                         "linked_to": null,
                         "preferred_msg_type": "text",
-                        "preferred_language": "igbo"
+                        "preferred_language": "ibo_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -416,7 +416,7 @@ module.exports = function() {
                         "receiver_role": "mother",
                         "linked_to": null,
                         "preferred_msg_type": "text",
-                        "preferred_language": "igbo"
+                        "preferred_language": "ibo_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -439,7 +439,7 @@ module.exports = function() {
                         "receiver_role": "mother",
                         "linked_to": null,
                         "preferred_msg_type": "text",
-                        "preferred_language": "igbo"
+                        "preferred_language": "ibo_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -473,7 +473,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "hausa"
+                        "preferred_language": "hau_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -498,7 +498,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "hausa"
+                        "preferred_language": "hau_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -541,7 +541,7 @@ module.exports = function() {
                             "preferred_msg_type": "audio",
                             "preferred_msg_days": "mon_wed",
                             "preferred_msg_times": "9_11",
-                            "preferred_language": "pidgin"
+                            "preferred_language": "pcm_NG"
                         },
                         "created_at": "2015-07-10T06:13:29.693272Z",
                         "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -580,7 +580,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -614,7 +614,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -638,7 +638,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -673,7 +673,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "hausa"
+                        "preferred_language": "hau_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -698,7 +698,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "hausa"
+                        "preferred_language": "hau_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -1034,7 +1034,7 @@ module.exports = function() {
                         "receiver_role": "mother",
                         "linked_to": null,
                         "preferred_msg_type": "audio",
-                        "preferred_language": "igbo",
+                        "preferred_language": "ibo_NG",
                         "preferred_msg_days": "tue_thu",
                         "preferred_msg_times": "9_11"
                     },
@@ -1058,7 +1058,7 @@ module.exports = function() {
                         "receiver_role": "mother",
                         "linked_to": null,
                         "preferred_msg_type": "audio",
-                        "preferred_language": "igbo",
+                        "preferred_language": "ibo_NG",
                         "preferred_msg_days": "tue_thu",
                         "preferred_msg_times": "9_11"
                     },
@@ -1092,7 +1092,7 @@ module.exports = function() {
                         "receiver_role": "mother",
                         "linked_to": null,
                         "preferred_msg_type": "text",
-                        "preferred_language": "igbo",
+                        "preferred_language": "ibo_NG",
                         "opted_out": true,
                         "optout_reason": "miscarriage"
                     },
@@ -1116,7 +1116,7 @@ module.exports = function() {
                         "receiver_role": "mother",
                         "linked_to": null,
                         "preferred_msg_type": "text",
-                        "preferred_language": "igbo"
+                        "preferred_language": "ibo_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -1142,7 +1142,7 @@ module.exports = function() {
                     "operator": null,
                     "details": {
                         "receiver_role": "mother",
-                        "preferred_language": "hausa",
+                        "preferred_language": "hau_NG",
                         "linked_to": "cb245673-aa41-4302-ac47-9093333333",
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
@@ -1162,7 +1162,7 @@ module.exports = function() {
                     "operator": null,
                     "details": {
                         "receiver_role": "mother",
-                        "preferred_language": "hausa",
+                        "preferred_language": "hau_NG",
                         "linked_to": "cb245673-aa41-4302-ac47-9093333333",
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
@@ -1200,7 +1200,7 @@ module.exports = function() {
                         "preferred_msg_type": "text",
                         "preferred_msg_days": null,
                         "preferred_msg_times": null,
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -1224,7 +1224,7 @@ module.exports = function() {
                         "preferred_msg_type": "text",
                         "preferred_msg_days": null,
                         "preferred_msg_times": null,
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -1253,7 +1253,7 @@ module.exports = function() {
                     "operator": null,
                     "details": {
                         "receiver_role": "mother",
-                        "preferred_language": "hausa",
+                        "preferred_language": "hau_NG",
                         "linked_to": "cb245673-aa41-4302-ac47-9093333333"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
@@ -1379,7 +1379,7 @@ module.exports = function() {
                     "address_type": "msisdn",
                     "address": "+2345059997777",
                     "request_source": "ussd_public",
-                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1390,7 +1390,7 @@ module.exports = function() {
             }
         },
 
-        // 36: Optout - miscarriage 2222
+        // 36: Optout - miscarriage 2222 (ussd_public)
         {
             'request': {
                 'method': 'POST',
@@ -1406,7 +1406,7 @@ module.exports = function() {
                     "address_type": "msisdn",
                     "address": "+2345059992222",
                     "request_source": "ussd_public",
-                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1455,7 +1455,7 @@ module.exports = function() {
                     "address_type": "msisdn",
                     "address": "+2345059993333",
                     "request_source": "ussd_public",
-                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1482,7 +1482,7 @@ module.exports = function() {
                     "address_type": "msisdn",
                     "address": "+2345059996666",
                     "request_source": "ussd_public",
-                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1509,7 +1509,7 @@ module.exports = function() {
                     "address_type": "msisdn",
                     "address": "+2345059997777",
                     "request_source": "ussd_public",
-                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1536,7 +1536,7 @@ module.exports = function() {
                     "address_type": "msisdn",
                     "address": "+2345059992222",
                     "request_source": "ussd_public",
-                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1585,7 +1585,7 @@ module.exports = function() {
                     "address_type": "msisdn",
                     "address": "+2345059993333",
                     "request_source": "ussd_public",
-                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1612,7 +1612,7 @@ module.exports = function() {
                     "address_type": "msisdn",
                     "address": "+2345059996666",
                     "request_source": "ussd_public",
-                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1639,7 +1639,7 @@ module.exports = function() {
                     "address_type": "msisdn",
                     "address": "+2345059997777",
                     "request_source": "ussd_public",
-                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1666,7 +1666,7 @@ module.exports = function() {
                     "address_type": "msisdn",
                     "address": "+2345059992222",
                     "request_source": "ussd_public",
-                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1715,7 +1715,7 @@ module.exports = function() {
                     "address_type": "msisdn",
                     "address": "+2345059993333",
                     "request_source": "ussd_public",
-                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1742,7 +1742,7 @@ module.exports = function() {
                     "address_type": "msisdn",
                     "address": "+2345059996666",
                     "request_source": "ussd_public",
-                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1769,7 +1769,7 @@ module.exports = function() {
                     "address_type": "msisdn",
                     "address": "+2345059997777",
                     "request_source": "ussd_public",
-                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1796,7 +1796,7 @@ module.exports = function() {
                     "address_type": "msisdn",
                     "address": "+2345059992222",
                     "request_source": "ussd_public",
-                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1849,7 +1849,7 @@ module.exports = function() {
                     "address_type": "msisdn",
                     "address": "+2345059993333",
                     "request_source": "ussd_public",
-                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1876,7 +1876,7 @@ module.exports = function() {
                     "address_type": "msisdn",
                     "address": "+2345059996666",
                     "request_source": "ussd_public",
-                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1903,7 +1903,7 @@ module.exports = function() {
                     "address_type": "msisdn",
                     "address": "+2345059997777",
                     "request_source": "ussd_public",
-                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1930,7 +1930,7 @@ module.exports = function() {
                     "address_type": "msisdn",
                     "address": "+2345059992222",
                     "request_source": "ussd_public",
-                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -1983,7 +1983,7 @@ module.exports = function() {
                     "address_type": "msisdn",
                     "address": "+2345059993333",
                     "request_source": "ussd_public",
-                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -2010,7 +2010,7 @@ module.exports = function() {
                     "address_type": "msisdn",
                     "address": "+2345059996666",
                     "request_source": "ussd_public",
-                    "request_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
                 }
             },
             'response': {
@@ -2087,7 +2087,7 @@ module.exports = function() {
                     "action": "change_language",
                     "data": {
                         "household_id": null,
-                        "new_language": "pidgin"
+                        "new_language": "pcm_NG"
                     }
                 }
             },
@@ -2123,7 +2123,7 @@ module.exports = function() {
                         "receiver_role": "mother",
                         "linked_to": null,
                         "preferred_msg_type": "text",
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -2145,7 +2145,7 @@ module.exports = function() {
                         "receiver_role": "mother",
                         "linked_to": null,
                         "preferred_msg_type": "text",
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -2167,7 +2167,7 @@ module.exports = function() {
                     "action": "change_language",
                     "data": {
                         "household_id": "3f7c8851-5204-43f7-af7f-005059993333",
-                        "new_language": "pidgin"
+                        "new_language": "pcm_NG"
                     }
                 }
             },
@@ -2197,7 +2197,7 @@ module.exports = function() {
                     "operator": null,
                     "details": {
                         "receiver_role": "mother",
-                        "preferred_language": "pidgin",
+                        "preferred_language": "pcm_NG",
                         "linked_to": "cb245673-aa41-4302-ac47-9093333333"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
@@ -2214,7 +2214,7 @@ module.exports = function() {
                     "operator": null,
                     "details": {
                         "receiver_role": "mother",
-                        "preferred_language": "pidgin",
+                        "preferred_language": "pcm_NG",
                         "linked_to": "cb245673-aa41-4302-ac47-9093333333"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
@@ -2249,7 +2249,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -2273,7 +2273,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -2295,7 +2295,7 @@ module.exports = function() {
                     "action": "change_language",
                     "data": {
                         "household_id": "3f7c8851-5204-43f7-af7f-005059997777",
-                        "new_language": "pidgin"
+                        "new_language": "pcm_NG"
                     }
                 }
             },
@@ -2333,7 +2333,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -2357,7 +2357,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -2392,7 +2392,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -2417,7 +2417,7 @@ module.exports = function() {
                         "preferred_msg_type": "audio",
                         "preferred_msg_days": "mon_wed",
                         "preferred_msg_times": "9_11",
-                        "preferred_language": "pidgin"
+                        "preferred_language": "pcm_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -2459,7 +2459,7 @@ module.exports = function() {
                             "receiver_role": "mother",
                             "linked_to": null,
                             "preferred_msg_type": "text",
-                            "preferred_language": "igbo"
+                            "preferred_language": "ibo_NG"
                         },
                         "created_at": "2015-07-10T06:13:29.693272Z",
                         "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -2496,7 +2496,7 @@ module.exports = function() {
                         "receiver_role": "mother",
                         "linked_to": null,
                         "preferred_msg_type": "text",
-                        "preferred_language": "igbo"
+                        "preferred_language": "ibo_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -2642,5 +2642,545 @@ module.exports = function() {
             }
         },
 
+        // 75: Optout - miscarriage 2222 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "reason": "miscarriage",
+                    "address_type": "msisdn",
+                    "address": "+2345059992222",
+                    "request_source": "voice_public",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 2
+                }
+            }
+        },
+
+        // 76: Optout - stillborn 2222 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "reason": "stillborn",
+                    "address_type": "msisdn",
+                    "address": "+2345059992222",
+                    "request_source": "voice_public",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+
+        // 77: Optout - baby_death 2222 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "reason": "baby_death",
+                    "address_type": "msisdn",
+                    "address": "+2345059992222",
+                    "request_source": "voice_public",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 2
+                }
+            }
+        },
+
+        // 78: Optout - not_useful 2222 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "reason": "not_useful",
+                    "address_type": "msisdn",
+                    "address": "+2345059992222",
+                    "request_source": "voice_public",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 2
+                }
+            }
+        },
+
+        // 79: Optout - other 2222 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "reason": "other",
+                    "address_type": "msisdn",
+                    "address": "+2345059992222",
+                    "request_source": "voice_public",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 2
+                }
+            }
+        },
+
+        // 80: Optout - miscarriage 3333 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "reason": "miscarriage",
+                    "address_type": "msisdn",
+                    "address": "+2345059993333",
+                    "request_source": "voice_public",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 81: Optout - stillborn 3333 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "reason": "stillborn",
+                    "address_type": "msisdn",
+                    "address": "+2345059993333",
+                    "request_source": "voice_public",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 82: Optout - baby_death 3333 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "reason": "baby_death",
+                    "address_type": "msisdn",
+                    "address": "+2345059993333",
+                    "request_source": "voice_public",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 83: Optout - not_useful 3333 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "reason": "not_useful",
+                    "address_type": "msisdn",
+                    "address": "+2345059993333",
+                    "request_source": "voice_public",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 84: Optout - other 3333 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "reason": "other",
+                    "address_type": "msisdn",
+                    "address": "+2345059993333",
+                    "request_source": "voice_public",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 85: Optout - miscarriage 6666 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "reason": "miscarriage",
+                    "address_type": "msisdn",
+                    "address": "+2345059996666",
+                    "request_source": "voice_public",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 86: Optout - stillborn 6666 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "reason": "stillborn",
+                    "address_type": "msisdn",
+                    "address": "+2345059996666",
+                    "request_source": "voice_public",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 87: Optout - baby death 6666 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "reason": "baby_death",
+                    "address_type": "msisdn",
+                    "address": "+2345059996666",
+                    "request_source": "voice_public",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 88: Optout - not_useful 6666 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "reason": "not_useful",
+                    "address_type": "msisdn",
+                    "address": "+2345059996666",
+                    "request_source": "voice_public",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 89: Optout - other 6666 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "reason": "other",
+                    "address_type": "msisdn",
+                    "address": "+2345059996666",
+                    "request_source": "voice_public",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 90: Optout - miscarriage 7777 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059997777",
+                    "reason": "miscarriage",
+                    "address_type": "msisdn",
+                    "address": "+2345059997777",
+                    "request_source": "voice_public",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 91: Optout - stillborn 7777 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059997777",
+                    "reason": "stillborn",
+                    "address_type": "msisdn",
+                    "address": "+2345059997777",
+                    "request_source": "voice_public",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 92: Optout - baby death 7777 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059997777",
+                    "reason": "baby_death",
+                    "address_type": "msisdn",
+                    "address": "+2345059997777",
+                    "request_source": "voice_public",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        //93: Optout - not_useful 7777 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059997777",
+                    "reason": "not_useful",
+                    "address_type": "msisdn",
+                    "address": "+2345059997777",
+                    "request_source": "voice_public",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
+
+        // 94: Optout - other 7777 (voice public)
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/optout/',
+                'data': {
+                    "optout_type": "stop",
+                    "identity": "3f7c8851-5204-43f7-af7f-005059997777",
+                    "reason": "other",
+                    "address_type": "msisdn",
+                    "address": "+2345059997777",
+                    "request_source": "voice_public",
+                    "requestor_source_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee"
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 4
+                }
+            }
+        },
     ];
 };
