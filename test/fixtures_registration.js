@@ -1686,7 +1686,11 @@ module.exports = function() {
                 'url': "http://localhost:8001/api/v1/identities/",
                 'data':  {
                     "communicate_through": "cb245673-aa41-4302-ac47-9092222222",
-                    "operator": "cb245673-aa41-4302-ac47-00000000007"
+                    "operator": "cb245673-aa41-4302-ac47-00000000007",
+                    "details": {
+                        "default_addr_type": null,
+                        "addresses":{}
+                    }
                 },
             },
             'response': {
@@ -1696,6 +1700,10 @@ module.exports = function() {
                     "id": "cb245673-aa41-4302-ac47-1234567890",
                     "version": 1,
                     "communicate_through": "cb245673-aa41-4302-ac47-9092222222",
+                    "details": {
+                        "default_addr_type": null,
+                        "addresses":{}
+                    },
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -1778,6 +1786,10 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8001/api/v1/identities/",
                 'data':  {
+                    "details": {
+                        "default_addr_type": null,
+                        "addresses":{}
+                    },
                     "communicate_through": "cb245673-aa41-4302-ac47-9093333333",
                     "operator": "cb245673-aa41-4302-ac47-00000000007"
                 }
@@ -1789,6 +1801,10 @@ module.exports = function() {
                     "id": "cb245673-aa41-4302-ac47-1234567890",
                     "version": 1,
                     "communicate_through": "cb245673-aa41-4302-ac47-9093333333",
+                    "details": {
+                        "default_addr_type": null,
+                        "addresses":{}
+                    },
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
@@ -2333,7 +2349,10 @@ module.exports = function() {
                     "version": 1,
                     "communicate_through": "cb245673-aa41-4302-ac47-9093333333",
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
-                    "details": {},
+                    "details": {
+                        "default_addr_type": null,
+                        "addresses":{}
+                    },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
@@ -2356,6 +2375,8 @@ module.exports = function() {
                     "communicate_through": "cb245673-aa41-4302-ac47-9093333333",
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "details": {
+                        "default_addr_type": null,
+                        "addresses": {},
                         "receiver_role": "mother",
                         "preferred_msg_type": "text",
                         "preferred_language": "ibo_NG"
@@ -2373,6 +2394,8 @@ module.exports = function() {
                     "communicate_through": "cb245673-aa41-4302-ac47-9093333333",
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "details": {
+                        "default_addr_type": null,
+                        "addresses": {},
                         "receiver_role": "mother",
                         "preferred_msg_type": "text",
                         "preferred_language": "ibo_NG"
@@ -2432,6 +2455,8 @@ module.exports = function() {
                     "communicate_through": "cb245673-aa41-4302-ac47-9093333333",
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "details": {
+                        "default_addr_type": null,
+                        "addresses": {},
                         "receiver_role": "mother",
                         "linked_to": "cb245673-aa41-4302-ac47-9093333333",
                         "gravida": "2",
@@ -2450,6 +2475,8 @@ module.exports = function() {
                     "communicate_through": "cb245673-aa41-4302-ac47-9093333333",
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "details": {
+                        "default_addr_type": null,
+                        "addresses": {},
                         "receiver_role": "mother",
                         "linked_to": "cb245673-aa41-4302-ac47-9093333333",
                         "gravida": "2",
@@ -2565,6 +2592,8 @@ module.exports = function() {
                     "communicate_through": "cb245673-aa41-4302-ac47-9093333333",
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "details": {
+                        "default_addr_type": null,
+                        "addresses": {},
                         "receiver_role": "mother",
                         "linked_to": "cb245673-aa41-4302-ac47-9092222222",
                         "gravida": "3",
@@ -2583,6 +2612,8 @@ module.exports = function() {
                     "communicate_through": "cb245673-aa41-4302-ac47-9093333333",
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "details": {
+                        "default_addr_type": null,
+                        "addresses": {},
                         "receiver_role": "mother",
                         "linked_to": "cb245673-aa41-4302-ac47-9092222222",
                         "gravida": "3",
@@ -2663,6 +2694,8 @@ module.exports = function() {
                     "communicate_through":"cb245673-aa41-4302-ac47-9093333333",
                     "operator":"cb245673-aa41-4302-ac47-00000000007",
                     "details": {
+                        "default_addr_type": null,
+                        "addresses": {},
                         "receiver_role":"mother",
                         "gravida": "3",
                         "preferred_language":"eng_NG",
@@ -2680,6 +2713,8 @@ module.exports = function() {
                     "communicate_through":"cb245673-aa41-4302-ac47-9093333333",
                     "operator":"cb245673-aa41-4302-ac47-00000000007",
                     "details": {
+                        "default_addr_type": null,
+                        "addresses": {},
                         "receiver_role":"mother",
                         "gravida": "3",
                         "preferred_language":"eng_NG",
@@ -3338,6 +3373,8 @@ module.exports = function() {
                     "communicate_through":"cb245673-aa41-4302-ac47-9093333333",
                     "operator":"cb245673-aa41-4302-ac47-00000000007",
                     "details": {
+                        "default_addr_type": null,
+                        "addresses": {},
                         "receiver_role":"mother",
                         "gravida": "2",
                         "preferred_language":"eng_NG",
@@ -3355,6 +3392,8 @@ module.exports = function() {
                     "communicate_through":"cb245673-aa41-4302-ac47-9093333333",
                     "operator":"cb245673-aa41-4302-ac47-00000000007",
                     "details": {
+                        "default_addr_type": null,
+                        "addresses": {},
                         "receiver_role":"mother",
                         "gravida": "2",
                         "preferred_language":"eng_NG",
@@ -3381,6 +3420,8 @@ module.exports = function() {
                     "communicate_through": "cb245673-aa41-4302-ac47-9093333333",
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "details": {
+                        "default_addr_type": null,
+                        "addresses": {},
                         "receiver_role": "mother",
                         "linked_to": "cb245673-aa41-4302-ac47-9092222222",
                         "gravida": "2",
@@ -3399,6 +3440,8 @@ module.exports = function() {
                     "communicate_through": "cb245673-aa41-4302-ac47-9093333333",
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "details": {
+                        "default_addr_type": null,
+                        "addresses": {},
                         "receiver_role": "mother",
                         "linked_to": "cb245673-aa41-4302-ac47-9092222222",
                         "gravida": "2",

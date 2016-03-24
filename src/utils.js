@@ -258,7 +258,12 @@ go.utils = {
       // Create a new identity
       // Returns the identity object
 
-        var payload = {};
+        var payload = {
+            "details": {
+                "default_addr_type": null,
+                "addresses": {}
+            }
+        };
         // compile base payload
         if (address) {
             var address_type = Object.keys(address);
@@ -279,6 +284,7 @@ go.utils = {
         if (operator_id) {
             payload.operator = operator_id;
         }
+
         return go.utils
             .service_api_call("identities", "post", null, payload, 'identities/', im)
             .then(function(json_post_response) {
