@@ -7,48 +7,6 @@ var HttpApi = vumigo.http.api.HttpApi;
 // PROJECT SPECIFIC UTILS
 go.utils_project = {
 
-// TEMPORARY
-
-    check_msisdn_hcp: function(msisdn) {
-        return Q()
-            .then(function(q_response) {
-                return msisdn === '082222' || msisdn === '082333'
-                    || msisdn === '082444' || msisdn === '082555' || msisdn === '0803304899';
-            });
-    },
-
-    check_baby_subscription: function(msisdn) {
-        return Q()
-            .then(function(q_response) {
-                return (msisdn === '082333');
-            });
-    },
-
-    check_msg_type: function(msisdn) {
-        return Q()
-            .then(function(q_response) {
-                if (msisdn === '082444') {
-                    return 'text';
-                } else if (msisdn === '082222') {
-                    return 'audio';
-                } else {
-                    return 'none';
-                }
-            });
-    },
-
-    check_role: function(msisdn) {
-        return Q()
-            .then(function(q_response) {
-                if (msisdn === '082101' || msisdn === '082555') {
-                    return 'father_role';
-                }
-                else {
-                    return 'mother_role';
-                }
-            });
-    },
-
 
 // IDENTITY HELPERS
 
@@ -520,33 +478,6 @@ go.utils_project = {
             im.config.testing_message_id || im.msg.message_id,
             'stop'
         );
-    },
-
-    optout_loss_opt_in: function(im) {
-        return go.utils_project
-        .optout(im)
-        .then(function(identity_id) {
-            // TODO #17 Subscribe to loss messages
-            return Q();
-        });
-    },
-
-    optout: function(im) {
-        var unsubscribe_result;
-        return go.utils
-            // get identity so details can be updated
-            .get_identity_by_address({'msisdn' : im.user.addr}, im)
-            .then(function(identity) {
-                // set existing subscriptions inactive
-                unsubscribe_result = go.utils.subscription_unsubscribe_all(identity, im);
-
-                // set new mama identity details
-                identity.details.opted_out = true;
-                identity.details.optout_reason = im.user.answers.state_optout_reason;
-
-                // update mama identity
-                return go.utils.update_identity(im, identity);
-            });
     },
 
 

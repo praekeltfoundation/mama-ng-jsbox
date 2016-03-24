@@ -1,7 +1,6 @@
 /*jshint -W083 */
 var vumigo = require('vumigo_v02');
 var moment = require('moment');
-var Q = require('q');
 var JsonApi = vumigo.http.api.JsonApi;
 var Choice = vumigo.states.Choice;
 
@@ -331,7 +330,7 @@ go.utils = {
     },
 
 
-// STAGE-BASE HELPERS
+// SUBSCRIPTION HELPERS
 
     get_subscription: function(im, subscription_id) {
       // Gets the subscription from the Stage-base Store
@@ -345,7 +344,7 @@ go.utils = {
             });
     },
 
-    get_active_subscription_by_identity: function(im, identity_id) {
+    get_active_subscriptions_by_identity: function(im, identity_id) {
       // Searches the Stage-base Store for all active subscriptions with the provided identity_id
       // Returns the first subscription object found or null if none are found
 
@@ -357,11 +356,31 @@ go.utils = {
         return go.utils
             .service_api_call('subscriptions', 'get', params, null, endpoint, im)
             .then(function(response) {
-                var subscriptions_found = response.data.results;
-                // Return the first subscription in the list of subscriptions
+                return response.data.results;
+            });
+    },
+
+    get_active_subscription_by_identity: function(im, identity_id) {
+      // Searches the Stage-base Store for all active subscriptions with the provided identity_id
+      // Returns the first subscription object found or null if none are found
+
+        return go.utils
+            .get_active_subscriptions_by_identity(im, identity_id)
+            .then(function(subscriptions_found) {
                 return (subscriptions_found.length > 0)
-                ? subscriptions_found[0]
-                : null;
+                    ? subscriptions_found[0]
+                    : null;
+            });
+    },
+
+    has_active_subscription: function(identity_id, im) {
+      // Returns whether an identity has an active subscription
+      // Returns true / false
+
+        return go.utils
+            .get_active_subscriptions_by_identity(im, identity_id)
+            .then(function(subscriptions) {
+                return subscriptions.length > 0;
             });
     },
 
@@ -377,6 +396,9 @@ go.utils = {
             });
     },
 
+
+// MESSAGESET HELPERS
+
     get_messageset: function(im, messageset_id) {
       // Gets the messageset from the Stage-base Store
       // Returns the messageset object
@@ -387,108 +409,6 @@ go.utils = {
             .then(function(response) {
                 return response.data;
             });
-    },
-
-
-// SUBSCRIPTION HELPERS
-
-    get_active_subscriptions_by_identity_id: function(identity_id, im) {
-      // Returns all active subscriptions - for unlikely case where there
-      // is more than one active subscription
-
-        var params = {
-            contact: identity_id,
-            active: "True"
-        };
-        return go.utils
-            .service_api_call("subscriptions", "get", params, null, "subscriptions/", im)
-            .then(function(json_get_response) {
-                return json_get_response.data.results;
-            });
-    },
-
-    get_active_subscription_by_identity_id: function(identity_id, im) {
-      // Returns first active subscription found
-
-        return go.utils
-            .get_active_subscriptions_by_identity_id(identity_id, im)
-            .then(function(subscriptions) {
-                return subscriptions[0];
-            });
-    },
-
-    has_active_subscriptions: function(identity_id, im) {
-      // Returns whether an identity has an active subscription
-      // Returns true / false
-
-        return go.utils
-            .get_active_subscriptions_by_identity_id(identity_id, im)
-            .then(function(subscriptions) {
-                return subscriptions.length > 0;
-            });
-    },
-
-    subscription_unsubscribe_all: function(contact, im) {
-        var params = {
-            'details__addresses__msisdn': contact.msisdn
-        };
-        return go.utils
-        .service_api_call("identities", "get", params, null, 'subscription/', im)
-        .then(function(json_result) {
-            // make all subscriptions inactive
-            var subscriptions = json_result.data;
-            var clean = true;  // clean tracks if api call is unnecessary
-            var patch_calls = [];
-            for (i=0; i<subscriptions.length; i++) {
-                if (subscriptions[i].active === true) {
-                    var updated_subscription = subscriptions[i];
-                    var endpoint = 'subscription/' + updated_subscription.id + '/';
-                    updated_subscription.active = false;
-                    // store the patch calls to be made
-                    patch_calls.push(function() {
-                        return go.utils.service_api_call("identities", "patch",
-                            {}, updated_subscription, endpoint, im);
-                    });
-                    clean = false;
-                }
-            }
-            if (!clean) {
-                return Q
-                .all(patch_calls.map(Q.try))
-                .then(function(results) {
-                    var unsubscribe_successes = 0;
-                    var unsubscribe_failures = 0;
-                    for (var index in results) {
-                        (results[index].code >= 200 && results[index].code < 300)
-                            ? unsubscribe_successes += 1
-                            : unsubscribe_failures += 1;
-                    }
-
-                    if (unsubscribe_successes > 0 && unsubscribe_failures > 0) {
-                        return Q.all([
-                            im.metrics.fire.inc(["total", "subscription_unsubscribe_success", "last"].join('.'), {amount: unsubscribe_successes}),
-                            im.metrics.fire.sum(["total", "subscription_unsubscribe_success", "sum"].join('.'), unsubscribe_successes),
-                            im.metrics.fire.inc(["total", "subscription_unsubscribe_fail", "last"].join('.'), {amount: unsubscribe_failures}),
-                            im.metrics.fire.sum(["total", "subscription_unsubscribe_fail", "sum"].join('.'), unsubscribe_failures)
-                        ]);
-                    } else if (unsubscribe_successes > 0) {
-                        return Q.all([
-                            im.metrics.fire.inc(["total", "subscription_unsubscribe_success", "last"].join('.'), {amount: unsubscribe_successes}),
-                            im.metrics.fire.sum(["total", "subscription_unsubscribe_success", "sum"].join('.'), unsubscribe_successes)
-                        ]);
-                    } else if (unsubscribe_failures > 0) {
-                        return Q.all([
-                            im.metrics.fire.inc(["total", "subscription_unsubscribe_fail", "last"].join('.'), {amount: unsubscribe_failures}),
-                            im.metrics.fire.sum(["total", "subscription_unsubscribe_fail", "sum"].join('.'), unsubscribe_failures)
-                        ]);
-                    } else {
-                        return Q();
-                    }
-                });
-            } else {
-                return Q();
-            }
-        });
     },
 
 
@@ -514,32 +434,6 @@ go.utils = {
             });
     },
 
-    opt_out: function(im, contact) {
-        contact.extra.optout_last_attempt = go.utils.get_today(im.config)
-            .format('YYYY-MM-DD hh:mm:ss.SSS');
-
-        return Q.all([
-            im.contacts.save(contact),
-            go.utils.subscription_unsubscribe_all(contact, im),
-            im.api_request('optout.optout', {
-                address_type: "msisdn",
-                address_value: contact.msisdn,
-                message_id: im.msg.message_id
-            })
-        ]);
-    },
-
-    opt_in: function(im, contact) {
-        contact.extra.optin_last_attempt = go.utils.get_today(im.config)
-            .format('YYYY-MM-DD hh:mm:ss.SSS');
-        return Q.all([
-            im.contacts.save(contact),
-            im.api_request('optout.cancel_optout', {
-                address_type: "msisdn",
-                address_value: contact.msisdn
-            }),
-        ]);
-    },
 
 "commas": "commas"
 };
