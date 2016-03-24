@@ -18,17 +18,41 @@ describe("Mama Nigeria App", function() {
             tester
                 .setup.char_limit(160)
                 .setup.config.app({
-                    name: 'smsapp',
+                    name: 'sms_inbound',
+                    country_code: '234',  // nigeria
+                    channel: '*120*8864*0000#',
+                    testing_today: '2015-04-03 06:07:08.999',
                     services: {
                         identities: {
                             api_token: 'test_token_identities',
                             url: "http://localhost:8001/api/v1/"
+                        },
+                        registrations: {
+                            api_token: 'test_token_registrations',
+                            url: "http://localhost:8002/api/v1/"
+                        },
+                        messagesets: {
+                            api_token: 'test_token_messagesets',
+                            url: "http://localhost:8003/api/v1/"
+                        },
+                        voice_content: {
+                            api_token: "test_token_voice_content",
+                            url: "http://localhost:8004/api/v1/"
+                        },
+                        subscriptions: {
+                            api_token: 'test_token_subscriptions',
+                            url: "http://localhost:8005/api/v1/"
+                        },
+                        outbound: {
+                            api_token: 'test_token_outbond',
+                            url: "http://localhost:8006/api/v1/"
                         }
-                    }
-                })
-                .setup(function(api) {
-                    api.resources.add(new DummyOptoutResource());
-                    api.resources.attach(api);
+                    },
+                    no_timeout_redirects: [
+                        'state_start',
+                        'state_end_voice',
+                        'state_end_sms'
+                    ]
                 })
                 .setup(function(api) {
                     fixtures().forEach(api.http.fixtures.add);
