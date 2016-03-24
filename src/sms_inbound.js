@@ -8,15 +8,7 @@ go.app = function() {
         App.call(self, 'state_start');
         var $ = self.$;
 
-        self.init = function() {
-
-            // Load self.contact
-            return self.im.contacts
-                .for_user()
-                .then(function(user_contact) {
-                   self.contact = user_contact;
-               });
-        };
+        self.init = function() {};
 
 
         self.states.add('state_start', function() {
