@@ -8,11 +8,24 @@ go;
 /*jshint -W083 */
 var vumigo = require('vumigo_v02');
 var moment = require('moment');
+var assert = require('assert');
 var JsonApi = vumigo.http.api.JsonApi;
 var Choice = vumigo.states.Choice;
 
 // GENERIC UTILS
 go.utils = {
+
+// FIXTURES HELPERS
+
+    checkFixturesUsed: function(api, fixturesArray) {
+        var expected_used = fixturesArray;
+        var fixts = api.http.fixtures.fixtures;
+        var fixts_used = [];
+        fixts.forEach(function(f, i) {
+            f.uses > 0 ? fixts_used.push(i) : null;
+        });
+        assert.deepEqual(fixts_used, expected_used);
+    },
 
 // TIMEOUT HELPERS
 
@@ -20,6 +33,10 @@ go.utils = {
         return im.msg.session_event === 'new'
             && im.user.state.name
             && im.config.no_timeout_redirects.indexOf(im.user.state.name) === -1;
+    },
+
+    timeout_redirect: function(im) {
+        return im.config.timeout_redirects.indexOf(im.user.state.name) !== -1;
     },
 
 
@@ -326,7 +343,17 @@ go.utils = {
 
     update_identity: function(im, identity) {
       // Update an identity by passing in the full updated identity object
+      // Removes potentially added fields that auto-complete and should not
+      // be submitted
       // Returns the id (which should be the same as the identity's id)
+
+        auto_fields = ["url", "created_at", "updated_at", "created_by", "updated_by", "user"];
+        for (var i in auto_fields) {
+            field = auto_fields[i];
+            if (field in identity) {
+                delete identity[field];
+            }
+        }
 
         var endpoint = 'identities/' + identity.id + '/';
         return go.utils

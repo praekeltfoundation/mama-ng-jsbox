@@ -81,6 +81,9 @@ describe("Mama Nigeria App", function() {
                             "2. No, start new registration"
                         ].join('\n')
                     })
+                    .check(function(api) {
+                        go.utils.checkFixturesUsed(api, [1,6,11,30,33]);
+                    })
                     .run();
             });
             it("should continue", function() {

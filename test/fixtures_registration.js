@@ -558,7 +558,6 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/",
                 'data':  {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/",
                     "id": "cb245673-aa41-4302-ac47-00000000002",
                     "version": 1,
                     "details": {
@@ -581,14 +580,11 @@ module.exports = function() {
                         "voice_days": "mon_wed",
                         "voice_times": "2_5"
                     },
-                    "created_at": "2015-07-10T06:13:29.693272Z",
-                    "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
             },
             'response': {
                 "code": 200,
                 "data": {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/",
                     "id": "cb245673-aa41-4302-ac47-00000000002",
                     "version": 1,
                     "details": {
@@ -611,8 +607,6 @@ module.exports = function() {
                         "voice_days": "mon_wed",
                         "voice_times": "2_5"
                     },
-                    "created_at": "2015-07-10T06:13:29.693272Z",
-                    "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
             }
         },
@@ -687,7 +681,6 @@ module.exports = function() {
                 'method': 'PATCH',
                 'url': 'http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/',
                 'data': {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/",
                     "id": "cb245673-aa41-4302-ac47-00000000001",
                     "version": 1,
                     "details": {
@@ -700,8 +693,6 @@ module.exports = function() {
                         "mamas_registered_ids": ["cb245673-aa41-4302-ac47-00000000002"],
                         "mamas_registered_qty": 1
                     },
-                    "created_at":"2015-07-10T06:13:29.693272Z",
-                    "updated_at":"2015-07-10T06:13:29.693298Z"
                 }
             },
             'response': {
@@ -736,7 +727,6 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/",
                 'data':  {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/",
                     "id": "cb245673-aa41-4302-ac47-00000000002",
                     "version": 1,
                     "details": {
@@ -759,8 +749,6 @@ module.exports = function() {
                         "voice_days": "text",
                         "voice_times": "text"
                     },
-                    "created_at": "2015-07-10T06:13:29.693272Z",
-                    "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
             },
             'response': {
@@ -969,7 +957,6 @@ module.exports = function() {
                     'Content-Type': ['application/json']
                 },
                 "data": {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000005/",
                     "id": "cb245673-aa41-4302-ac47-00000000005",
                     "version": 1,
                     "details": {
@@ -992,8 +979,6 @@ module.exports = function() {
                         "voice_days": "mon_wed",
                         "voice_times": "2_5"
                     },
-                    "created_at": "2015-07-10T06:13:29.693272Z",
-                    "updated_at": "2015-07-10T06:13:29.693298Z"
                 },
                 'url': "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000005/"
             },
@@ -1507,7 +1492,6 @@ module.exports = function() {
                     'Content-Type': ['application/json']
                 },
                 "data": {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/",
                     "id": "cb245673-aa41-4302-ac47-00000000002",
                     "version": 1,
                     "details": {
@@ -1519,8 +1503,6 @@ module.exports = function() {
                         },
                         "dialback_sent":true
                     },
-                    "created_at": "2015-07-10T06:13:29.693272Z",
-                    "updated_at": "2015-07-10T06:13:29.693298Z"
                 },
                 'url': "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000002/"
             },
@@ -2449,7 +2431,6 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-1234567890/",
                 'data':  {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-1234567890/",
                     "id": "cb245673-aa41-4302-ac47-1234567890",
                     "version": 1,
                     "communicate_through": "cb245673-aa41-4302-ac47-9093333333",
@@ -2462,8 +2443,6 @@ module.exports = function() {
                         "gravida": "2",
                         "preferred_language": "ibo_NG"
                     },
-                    "created_at": "2015-07-10T06:13:29.693272Z",
-                    "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
             },
             'response': {
@@ -2498,7 +2477,6 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-9093333333/",
                 'data':  {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-9093333333/",
                     "id": "cb245673-aa41-4302-ac47-9093333333",
                     "version": 1,
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
@@ -2514,8 +2492,6 @@ module.exports = function() {
                         "preferred_msg_type": "text",
                         "preferred_language": "ibo_NG"
                     },
-                    "created_at": "2015-07-10T06:13:29.693272Z",
-                    "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
             },
             'response': {
@@ -2586,7 +2562,6 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-1234567890/",
                 'data': {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-1234567890/",
                     "id": "cb245673-aa41-4302-ac47-1234567890",
                     "version": 1,
                     "communicate_through": "cb245673-aa41-4302-ac47-9093333333",
@@ -2599,8 +2574,6 @@ module.exports = function() {
                         "gravida": "3",
                         "preferred_language": "hau_NG"
                     },
-                    "created_at": "2015-07-10T06:13:29.693272Z",
-                    "updated_at":"2015-07-10T06:13:29.693298Z"
                 }
             },
             'response': {
@@ -2635,7 +2608,6 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-9092222222/",
                 'data': {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-9092222222/",
                     "id": "cb245673-aa41-4302-ac47-9092222222",
                     "version": 1,
                     "details": {
@@ -2651,8 +2623,7 @@ module.exports = function() {
                         "preferred_language": "hau_NG"
                     },
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
-                    "created_at": "2015-07-10T06:13:29.693272Z",
-                    "updated_at": "2015-07-10T06:13:29.693298Z"}
+                }
             },
             'response': {
                 "code": 200,
@@ -2688,7 +2659,6 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-1234567890/",
                 'data': {
-                    "url":"http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-1234567890/",
                     "id":"cb245673-aa41-4302-ac47-1234567890",
                     "version":1,
                     "communicate_through":"cb245673-aa41-4302-ac47-9093333333",
@@ -2701,8 +2671,7 @@ module.exports = function() {
                         "preferred_language":"eng_NG",
                         "linked_to":"cb245673-aa41-4302-ac47-9092222222"
                     },
-                "created_at":"2015-07-10T06:13:29.693272Z",
-                "updated_at":"2015-07-10T06:13:29.693298Z"}
+                }
             },
             'response': {
                 "code": 200,
@@ -2735,7 +2704,6 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-9092222222/",
                 'data': {
-                    "url":"http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-9092222222/",
                     "id":"cb245673-aa41-4302-ac47-9092222222",
                     "version":1,
                     "details": {
@@ -2753,8 +2721,6 @@ module.exports = function() {
                         "preferred_msg_times":"2_5"
                     },
                     "operator":"cb245673-aa41-4302-ac47-00000000007",
-                    "created_at":"2015-07-10T06:13:29.693272Z",
-                    "updated_at":"2015-07-10T06:13:29.693298Z"
                 }
             },
             'response': {
@@ -2860,7 +2826,6 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-9094444444/",
                 'data': {
-                    "url":"http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-9094444444/",
                     "id":"cb245673-aa41-4302-ac47-9094444444",
                     "version":1,
                     "details": {
@@ -2879,8 +2844,6 @@ module.exports = function() {
                         "preferred_msg_times":"2_5"
                     },
                     "operator":"cb245673-aa41-4302-ac47-00000000007",
-                    "created_at":"2015-07-10T06:13:29.693272Z",
-                    "updated_at":"2015-07-10T06:13:29.693298Z"
                 }
             },
             'response': {
@@ -2921,7 +2884,6 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-9095555555/",
                 'data': {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-9095555555/",
                     "id": "cb245673-aa41-4302-ac47-9095555555",
                     "version": 1,
                     "details": {
@@ -2940,8 +2902,6 @@ module.exports = function() {
                         "preferred_msg_times": "2_5"
                     },
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
-                    "created_at": "2015-07-10T06:13:29.693272Z",
-                    "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
             },
             'response': {
@@ -2982,7 +2942,6 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-9093333333/",
                 'data': {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-9093333333/",
                     "id": "cb245673-aa41-4302-ac47-9093333333",
                     "version": 1,
                     "details": {
@@ -3000,8 +2959,6 @@ module.exports = function() {
                         "preferred_msg_times":"2_5"
                     },
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
-                    "created_at": "2015-07-10T06:13:29.693272Z",
-                    "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
             },
             'response': {
@@ -3041,7 +2998,6 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-9092222222/",
                 'data': {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-9092222222/",
                     "id": "cb245673-aa41-4302-ac47-9092222222",
                     "version": 1,
                     "details": {
@@ -3057,8 +3013,6 @@ module.exports = function() {
                         "preferred_language": "ibo_NG"
                     },
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
-                    "created_at": "2015-07-10T06:13:29.693272Z",
-                    "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
             },
             'response': {
@@ -3096,7 +3050,6 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-9092222222/",
                 'data': {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-9092222222/",
                     "id": "cb245673-aa41-4302-ac47-9092222222",
                     "version": 1,
                     "details": {
@@ -3114,8 +3067,6 @@ module.exports = function() {
                         "preferred_msg_times": "2_5"
                     },
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
-                    "created_at": "2015-07-10T06:13:29.693272Z",
-                    "updated_at":"2015-07-10T06:13:29.693298Z"
                 }
             },
             'response': {
@@ -3306,7 +3257,6 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-9096666666/",
                 'data': {
-                    "url":"http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-9096666666/",
                     "id":"cb245673-aa41-4302-ac47-9096666666",
                     "version": 1,
                     "details": {
@@ -3325,8 +3275,6 @@ module.exports = function() {
                         "preferred_msg_times": "2_5"
                     },
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
-                    "created_at": "2015-07-10T06:13:29.693272Z",
-                    "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
             },
             'response': {
@@ -3367,7 +3315,6 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-1234567890/",
                 'data': {
-                    "url":"http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-1234567890/",
                     "id":"cb245673-aa41-4302-ac47-1234567890",
                     "version":1,
                     "communicate_through":"cb245673-aa41-4302-ac47-9093333333",
@@ -3380,8 +3327,7 @@ module.exports = function() {
                         "preferred_language":"eng_NG",
                         "linked_to":"cb245673-aa41-4302-ac47-9093333333"
                     },
-                "created_at":"2015-07-10T06:13:29.693272Z",
-                "updated_at":"2015-07-10T06:13:29.693298Z"}
+                }
             },
             'response': {
                 "code": 200,
@@ -3414,7 +3360,6 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-1234567890/",
                 'data':  {
-                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-1234567890/",
                     "id": "cb245673-aa41-4302-ac47-1234567890",
                     "version": 1,
                     "communicate_through": "cb245673-aa41-4302-ac47-9093333333",
@@ -3427,8 +3372,6 @@ module.exports = function() {
                         "gravida": "2",
                         "preferred_language": "ibo_NG"
                     },
-                    "created_at": "2015-07-10T06:13:29.693272Z",
-                    "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
             },
             'response': {
