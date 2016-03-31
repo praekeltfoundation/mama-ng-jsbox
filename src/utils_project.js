@@ -302,7 +302,7 @@ go.utils_project = {
                         };
                     }, function (error) {
                         return im
-                            .log('Unable to find voice file: ' + voice_url)
+                            .log('Unable to find voice file: ' + voice_url + '. Error: ' + error)
                             .then(function () {
                                 return {
                                     voice: {
