@@ -437,9 +437,9 @@ go.utils = {
       // Gets the messageset from the Stage-base Store
       // Returns the messageset object
 
-        var endpoint = 'messagesets/' + messageset_id + '/';
+        var endpoint = 'messageset/' + messageset_id + '/';
         return go.utils
-            .service_api_call('messagesets', 'get', {}, null, endpoint, im)
+            .service_api_call('subscriptions', 'get', {}, null, endpoint, im)
             .then(function(response) {
                 return response.data;
             });
@@ -1173,7 +1173,7 @@ go.utils_project = {
                             } else {
                                 // get messageset
                                 return go.utils
-                                    .get_messageset(im, subscription.messageset_id)
+                                    .get_messageset(im, subscription.messageset)
                                     .then(function(messageset) {
                                         return messageset;
                                     });
@@ -1182,7 +1182,7 @@ go.utils_project = {
                 } else {
                     // get messageset
                     return go.utils
-                        .get_messageset(im, subscription.messageset_id)
+                        .get_messageset(im, subscription.messageset)
                         .then(function(messageset) {
                             return messageset;
                         });
@@ -1227,7 +1227,7 @@ go.utils_project = {
         subscription = {
             identity: "/api/v1/identities/" + mama_identity.id + "/",
             version: 1,
-            messageset_id: go.utils_project.get_messageset_id(mama_identity),
+            messageset: go.utils_project.get_messageset_id(mama_identity),
             next_sequence_number: go.utils_project.get_next_sequence_number(mama_identity),
             lang: mama_identity.details.lang,
             active: true,
