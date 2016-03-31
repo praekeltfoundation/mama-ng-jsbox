@@ -1484,7 +1484,7 @@ go.app = function() {
             return go.utils
                 .get_identity_by_address({'msisdn': msisdn}, self.im)
                 .then(function(contact) {
-                    if (contact.details.receiver_role) {
+                    if (contact && contact.details && contact.details.receiver_role) {
                         self.im.user.set_answer('role_player', contact.details.receiver_role);
                         self.im.user.set_answer('contact_id', contact.id);
                         return self.states.create('state_check_receiver_role');
