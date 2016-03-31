@@ -1,4 +1,4 @@
-// Identity roles - Registration
+http://localhost:8002/api/v1/ Identity roles - Registration
 // 08080070007: registered healthworker - personnel code 12345
 // 07030010001: unregistered mother but with existing identity (voice)
 // 08080020002: unregistered mother but with existing identity (ussd)
@@ -1930,7 +1930,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': "http://localhost:8002/api/v1/registrations/",
+                'url': "http://localhost:8002/api/v1/registration/",
                 'data':  {
                     "stage": "prebirth",
                     "mother_id": "cb245673-aa41-4302-ac47-1234567890",
@@ -1980,7 +1980,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': "http://localhost:8002/api/v1/registrations/",
+                'url': "http://localhost:8002/api/v1/registration/",
                 'data':  {
                     "stage": "postbirth",
                     "mother_id": "cb245673-aa41-4302-ac47-1234567890",
@@ -2029,7 +2029,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': "http://localhost:8002/api/v1/registrations/",
+                'url': "http://localhost:8002/api/v1/registration/",
                 'data':  {
                     "stage": "prebirth",
                     "mother_id": "cb245673-aa41-4302-ac47-1234567890",
@@ -2082,7 +2082,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': "http://localhost:8002/api/v1/registrations/",
+                'url': "http://localhost:8002/api/v1/registration/",
                 'data':  {
                     "stage": "prebirth",
                     "mother_id": "cb245673-aa41-4302-ac47-9094444444",
@@ -2135,7 +2135,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': "http://localhost:8002/api/v1/registrations/",
+                'url': "http://localhost:8002/api/v1/registration/",
                 'data':  {
                     "stage": "prebirth",
                     "mother_id": "cb245673-aa41-4302-ac47-1234567890",
@@ -2220,7 +2220,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': "http://localhost:8002/api/v1/registrations/",
+                'url': "http://localhost:8002/api/v1/registration/",
                 'data':  {
                     "stage": "postbirth",
                     "mother_id": "cb245673-aa41-4302-ac47-1234567890",
@@ -2269,7 +2269,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': "http://localhost:8002/api/v1/registrations/",
+                'url': "http://localhost:8002/api/v1/registration/",
                 'data':  {
                     "stage": "postbirth",
                     "mother_id": "cb245673-aa41-4302-ac47-1234567890",
@@ -3169,7 +3169,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': "http://localhost:8002/api/v1/registrations/",
+                'url': "http://localhost:8002/api/v1/registration/",
                 'data': {
                     "stage": "prebirth",
                     "mother_id": "cb245673-aa41-4302-ac47-9096666666",
@@ -3464,7 +3464,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': "http://localhost:8002/api/v1/registrations/",
+                'url': "http://localhost:8002/api/v1/registration/",
                 'data':  {
                     "stage": "prebirth",
                     "mother_id": "cb245673-aa41-4302-ac47-1234567890",
@@ -3513,7 +3513,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': "http://localhost:8002/api/v1/registrations/",
+                'url': "http://localhost:8002/api/v1/registration/",
                 'data':  {
                     "stage": "prebirth",
                     "mother_id": "cb245673-aa41-4302-ac47-1234567890",
