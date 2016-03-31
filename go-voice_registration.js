@@ -1213,66 +1213,6 @@ go.utils_project = {
             });
     },
 
-    is_registered: function(identity_id, im) {
-        // Determine whether identity is registered
-        return go.utils
-            .get_identity(identity_id, im)
-            .then(function(identity) {
-                var true_options = ['true', 'True', true];
-                return true_options.indexOf(identity.details.has_registered) !== -1;
-            });
-    },
-
-    setup_subscription: function(im, mama_identity) {
-        subscription = {
-            identity: "/api/v1/identities/" + mama_identity.id + "/",
-            version: 1,
-            messageset: go.utils_project.get_messageset_id(mama_identity),
-            next_sequence_number: go.utils_project.get_next_sequence_number(mama_identity),
-            lang: mama_identity.details.lang,
-            active: true,
-            completed: false,
-            schedule: go.utils_project.get_schedule(mama_identity),
-            process_status: 0,
-            metadata: {
-                msg_type: mama_identity.details.msg_type
-            }
-        };
-        return subscription;
-    },
-
-    get_next_sequence_number: function(mama_identity) {
-        return 1;
-    },
-
-    get_schedule: function(mama_identity) {
-        var schedule_id;
-        var days = mama_identity.details.voice_days;
-        var times = mama_identity.details.voice_times;
-
-        if (days === 'mon_wed' && times === '9_11') {
-            schedule_id = 1;
-        } else if (days === 'mon_wed' && times === '2_5') {
-            schedule_id = 2;
-        } else if (days === 'tue_thu' && times === '9_11') {
-            schedule_id = 3;
-        } else if (days === 'tue_thu' && times === '2_5') {
-            schedule_id = 4;
-        } else {
-            schedule_id = 1;  // for sms
-        }
-        return schedule_id;
-    },
-
-    subscribe_identity: function(im, subscription) {
-        var payload = subscription;
-        return go.utils
-        .service_api_call("subscriptions", "post", null, payload, "subscriptions/", im)
-        .then(function(response) {
-            return response.data.id;
-        });
-    },
-
     update_subscription: function(im, subscription) {
         var endpoint = "subscriptions/" + subscription.id + '/';
         return go.utils
