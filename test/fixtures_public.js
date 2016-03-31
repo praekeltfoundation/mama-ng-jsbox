@@ -720,7 +720,7 @@ module.exports = function() {
                             'id': '51fcca25-2e85-4c44-subscription-2222',
                             'version': 1,
                             'identity': '3f7c8851-5204-43f7-af7f-005059992222',
-                            'messageset_id': 1,
+                            'messageset': 1,
                             'next_sequence_number': 1,
                             'lang': "ibo_NG",
                             'active': true,
@@ -746,7 +746,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8003/api/v1/messagesets/1/'
+                'url': 'http://localhost:8005/api/v1/messageset/1/'
             },
             'response': {
                 'code': 200,
@@ -816,7 +816,7 @@ module.exports = function() {
                             'id': '51fcca25-2e85-4c44-subscription-5555',
                             'version': 1,
                             'identity': '3f7c8851-5204-43f7-af7f-005059995555',
-                            'messageset_id': 2,
+                            'messageset': 2,
                             'next_sequence_number': 1,
                             'lang': "eng_NG",
                             'active': true,
@@ -842,7 +842,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8003/api/v1/messagesets/2/'
+                'url': 'http://localhost:8005/api/v1/messageset/2/'
             },
             'response': {
                 'code': 200,
@@ -912,7 +912,7 @@ module.exports = function() {
                             'id': '51fcca25-2e85-4c44-subscription-6666',
                             'version': 1,
                             'identity': '3f7c8851-5204-43f7-af7f-005059996666',
-                            'messageset_id': 3,
+                            'messageset': 3,
                             'next_sequence_number': 1,
                             'lang': "pcm_NG",
                             'active': true,
@@ -937,7 +937,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8003/api/v1/messagesets/3/'
+                'url': 'http://localhost:8005/api/v1/messageset/3/'
             },
             'response': {
                 'code': 200,
@@ -2491,7 +2491,7 @@ module.exports = function() {
                             'id': '51fcca25-2e85-4c44-subscription-9999',
                             'version': 1,
                             'identity': '3f7c8851-5204-43f7-af7f-005059999999',
-                            'messageset_id': 4,
+                            'messageset': 4,
                             'next_sequence_number': 1,
                             'lang': "ibo_NG",
                             'active': true,
@@ -2517,7 +2517,7 @@ module.exports = function() {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': 'http://localhost:8003/api/v1/messagesets/4/'
+                'url': 'http://localhost:8005/api/v1/messageset/4/'
             },
             'response': {
                 'code': 200,
