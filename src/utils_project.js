@@ -671,7 +671,7 @@ go.utils_project = {
             // $ does not work well with fixtures here since it's an object
         };
         return go.utils
-        .service_api_call("outbound", "post", null, payload, 'outbound/', im)
+        .service_api_call("message_sender", "post", null, payload, 'outbound/', im)
         .then(function(json_post_response) {
             var outbound_response = json_post_response.data;
             // Return the outbound id

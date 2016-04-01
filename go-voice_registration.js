@@ -445,7 +445,7 @@ go.utils = {
     },
 
 
-// INBOUND & OUTBOUND HELPERS
+// MESSAGE_SENDER HELPERS
 
     save_inbound_message: function(im, from_addr, content) {
       // Saves the inbound messages to seed-message-sender
@@ -461,10 +461,10 @@ go.utils = {
             "helper_metadata": {}
         };
         return go.utils
-            .service_api_call("outbound", "post", null, payload, 'inbound/', im)
+            .service_api_call("message_sender", "post", null, payload, 'inbound/', im)
             .then(function(json_post_response) {
                 var inbound_response = json_post_response.data;
-                // Return the outbound id
+                // Return the inbound id
                 return inbound_response.id;
             });
     },
@@ -1169,7 +1169,7 @@ go.utils_project = {
             // $ does not work well with fixtures here since it's an object
         };
         return go.utils
-        .service_api_call("outbound", "post", null, payload, 'outbound/', im)
+        .service_api_call("message_sender", "post", null, payload, 'outbound/', im)
         .then(function(json_post_response) {
             var outbound_response = json_post_response.data;
             // Return the outbound id

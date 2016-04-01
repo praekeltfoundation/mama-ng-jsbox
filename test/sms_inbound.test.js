@@ -39,8 +39,8 @@ describe("Mama Nigeria App", function() {
                             api_token: 'test_token_subscriptions',
                             url: "http://localhost:8005/api/v1/"
                         },
-                        outbound: {
-                            api_token: 'test_token_outbond',
+                        message_sender: {
+                            api_token: 'test_token_message_sender',
                             url: "http://localhost:8006/api/v1/"
                         }
                     },
