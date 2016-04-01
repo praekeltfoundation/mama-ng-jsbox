@@ -19,7 +19,7 @@ go.app = function() {
                 case "STOP":
                     return self.states.create("state_find_identity");
                 default:
-                    return self.states.create("state_end_helpdesk");
+                    return self.states.create("state_save_inbound");
             }
         });
 
@@ -63,16 +63,25 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_end_helpdesk', function(name) {
+        self.states.add('state_end_unrecognised', function(name) {
             return new EndState(name, {
-                text: $("Currently no helpdesk functionality is active. Reply STOP to unsubscribe."),
+                text: $("We do not recognise your number and can therefore not opt you out."),
                 next: 'state_start'
             });
         });
 
-        self.states.add('state_end_unrecognised', function(name) {
+        self.states.add('state_save_inbound', function(name) {
+            return go.utils
+                .save_inbound_message(self.im, self.im.user.addr,
+                    self.im.user.answers.state_start)
+                .then(function() {
+                    return self.states.create('state_end_helpdesk');
+                });
+        });
+
+        self.states.add('state_end_helpdesk', function(name) {
             return new EndState(name, {
-                text: $("We do not recognise your number and can therefore not opt you out."),
+                text: $("Currently no helpdesk functionality is active. Reply STOP to unsubscribe."),
                 next: 'state_start'
             });
         });

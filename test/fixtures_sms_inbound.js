@@ -75,7 +75,6 @@ module.exports = function() {
 
     // 2: get identity 05059991111 by msisdn - no results
     {
-        'repeatable': true,
         'request': {
             'method': 'GET',
             'params': {
@@ -95,6 +94,32 @@ module.exports = function() {
                 "previous": null,
                 "results": []
             }
+        }
+    },
+
+    // 3: post inbound message
+    {
+        'request': {
+            'method': 'POST',
+            'params': {},
+            'headers': {
+                'Authorization': ['Token test_key'],
+                'Content-Type': ['application/json']
+            },
+            'url': 'http://localhost:8006/api/v1/inbound/',
+            'data': {
+                "message_id": "0170b7bb-978e-4b8a-35d2-662af5b6daee",
+                "in_reply_to": null,
+                "to_addr": "2341234",
+                "from_addr": "05059991111",
+                "transport_name": "aggregator_sms",
+                "transport_type": "sms",
+                "helper_metadata": {}
+            }
+        },
+        'response': {
+            "code": 201,
+            "data": {}
         }
     },
 

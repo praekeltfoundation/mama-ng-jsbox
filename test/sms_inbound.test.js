@@ -1,6 +1,5 @@
 var vumigo = require('vumigo_v02');
 var fixtures = require('./fixtures_sms_inbound');
-var assert = require('assert');
 var AppTester = vumigo.AppTester;
 
 
@@ -18,7 +17,9 @@ describe("Mama Nigeria App", function() {
                 .setup.config.app({
                     name: 'sms_inbound',
                     country_code: '234',  // nigeria
-                    channel: '*120*8864*0000#',
+                    channel: '2341234',
+                    transport_name: 'aggregator_sms',
+                    transport_type: 'sms',
                     testing_today: '2015-04-03 06:07:08.999',  // testing only
                     testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',  // testing only
                     services: {
@@ -87,7 +88,7 @@ describe("Mama Nigeria App", function() {
         describe("when the user sends any other message", function() {
             it("should display helpdesk message", function() {
                 return tester
-                    .setup.user.addr('+2345059999999')
+                    .setup.user.addr('05059991111')
                     .inputs('go when the light is green')
                     .check.interaction({
                         state: 'state_end_helpdesk',
@@ -95,13 +96,7 @@ describe("Mama Nigeria App", function() {
                             'Currently no helpdesk functionality is active. Reply STOP to unsubscribe.'
                     })
                     .check(function(api) {
-                        var expected_used = [];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [3]);
                     })
                     .run();
             });

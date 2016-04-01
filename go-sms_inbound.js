@@ -445,6 +445,31 @@ go.utils = {
     },
 
 
+// INBOUND & OUTBOUND HELPERS
+
+    save_inbound_message: function(im, from_addr, content) {
+      // Saves the inbound messages to seed-message-sender
+
+        var payload = {
+            "message_id": im.config.testing_message_id || im.msg.message_id,
+            "in_reply_to": null,
+            "to_addr": im.config.channel,
+            "from_addr": from_addr,
+            "content": content,
+            "transport_name": im.config.transport_name,
+            "transport_type": im.config.transport_type,
+            "helper_metadata": {}
+        };
+        return go.utils
+            .service_api_call("outbound", "post", null, payload, 'inbound/', im)
+            .then(function(json_post_response) {
+                var inbound_response = json_post_response.data;
+                // Return the outbound id
+                return inbound_response.id;
+            });
+    },
+
+
 // OPTOUT & OPTIN HELPERS
 
     optout: function(im, identity_id, optout_reason, address_type, address,
@@ -1246,7 +1271,7 @@ go.app = function() {
                 case "STOP":
                     return self.states.create("state_find_identity");
                 default:
-                    return self.states.create("state_end_helpdesk");
+                    return self.states.create("state_save_inbound");
             }
         });
 
@@ -1290,16 +1315,25 @@ go.app = function() {
             });
         });
 
-        self.states.add('state_end_helpdesk', function(name) {
+        self.states.add('state_end_unrecognised', function(name) {
             return new EndState(name, {
-                text: $("Currently no helpdesk functionality is active. Reply STOP to unsubscribe."),
+                text: $("We do not recognise your number and can therefore not opt you out."),
                 next: 'state_start'
             });
         });
 
-        self.states.add('state_end_unrecognised', function(name) {
+        self.states.add('state_save_inbound', function(name) {
+            return go.utils
+                .save_inbound_message(self.im, self.im.user.addr,
+                    self.im.user.answers.state_start)
+                .then(function() {
+                    return self.states.create('state_end_helpdesk');
+                });
+        });
+
+        self.states.add('state_end_helpdesk', function(name) {
             return new EndState(name, {
-                text: $("We do not recognise your number and can therefore not opt you out."),
+                text: $("Currently no helpdesk functionality is active. Reply STOP to unsubscribe."),
                 next: 'state_start'
             });
         });
