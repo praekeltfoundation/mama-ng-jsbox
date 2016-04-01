@@ -40,8 +40,8 @@ describe("Mama Nigeria App", function() {
                             api_token: 'test_token_subscriptions',
                             url: "http://localhost:8005/api/v1/"
                         },
-                        outbound: {
-                            api_token: 'test_token_outbond',
+                        message_sender: {
+                            api_token: 'test_token_message_sender',
                             url: "http://localhost:8006/api/v1/"
                         }
                     },
@@ -78,7 +78,7 @@ describe("Mama Nigeria App", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        go.utils.checkFixturesUsed(api, [1,6,11,30,33]);
+                        go.utils.check_fixtures_used(api, [1,6,11,30,33]);
                     })
                     .run();
             });

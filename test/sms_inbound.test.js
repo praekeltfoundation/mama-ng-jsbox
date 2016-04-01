@@ -1,6 +1,5 @@
 var vumigo = require('vumigo_v02');
-var fixtures = require('./fixtures_public');
-var assert = require('assert');
+var fixtures = require('./fixtures_sms_inbound');
 var AppTester = vumigo.AppTester;
 
 
@@ -18,8 +17,11 @@ describe("Mama Nigeria App", function() {
                 .setup.config.app({
                     name: 'sms_inbound',
                     country_code: '234',  // nigeria
-                    channel: '*120*8864*0000#',
-                    testing_today: '2015-04-03 06:07:08.999',
+                    channel: '2341234',
+                    transport_name: 'aggregator_sms',
+                    transport_type: 'sms',
+                    testing_today: '2015-04-03 06:07:08.999',  // testing only
+                    testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',  // testing only
                     services: {
                         identities: {
                             api_token: 'test_token_identities',
@@ -37,8 +39,8 @@ describe("Mama Nigeria App", function() {
                             api_token: 'test_token_subscriptions',
                             url: "http://localhost:8005/api/v1/"
                         },
-                        outbound: {
-                            api_token: 'test_token_outbond',
+                        message_sender: {
+                            api_token: 'test_token_message_sender',
                             url: "http://localhost:8006/api/v1/"
                         }
                     },
@@ -55,23 +57,29 @@ describe("Mama Nigeria App", function() {
         });
 
         describe("when the user sends a STOP message", function() {
-            it.skip("should opt them out", function() {
+            it("should opt them out if contact found", function() {
                 return tester
-                    .setup.user.addr('+2345059999999')
+                    .setup.user.addr('05059992222')
                     .inputs('stop and wait for green')
                     .check.interaction({
                         state: 'state_end_opt_out',
-                        reply:
-                            'You will no longer receive messages from Hello Mama. Should you ever want to re-subscribe, contact your local community health extension worker'
+                        reply: 'You will no longer receive messages from Hello Mama. Should you ever want to re-subscribe, contact your local community health extension worker'
                     })
                     .check(function(api) {
-                        var expected_used = [31];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [0,1]);
+                    })
+                    .run();
+            });
+            it("should report problem if contact not found", function() {
+                return tester
+                    .setup.user.addr('05059991111')
+                    .inputs('stop')
+                    .check.interaction({
+                        state: 'state_end_unrecognised',
+                        reply: "We do not recognise your number and can therefore not opt you out."
+                    })
+                    .check(function(api) {
+                        go.utils.check_fixtures_used(api, [2]);
                     })
                     .run();
             });
@@ -80,7 +88,7 @@ describe("Mama Nigeria App", function() {
         describe("when the user sends any other message", function() {
             it("should display helpdesk message", function() {
                 return tester
-                    .setup.user.addr('+2345059999999')
+                    .setup.user.addr('05059991111')
                     .inputs('go when the light is green')
                     .check.interaction({
                         state: 'state_end_helpdesk',
@@ -88,13 +96,7 @@ describe("Mama Nigeria App", function() {
                             'Currently no helpdesk functionality is active. Reply STOP to unsubscribe.'
                     })
                     .check(function(api) {
-                        var expected_used = [];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [3]);
                     })
                     .run();
             });
