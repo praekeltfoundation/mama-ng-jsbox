@@ -78,7 +78,7 @@ describe("Mama Nigeria App", function() {
                         ].join('\n')
                     })
                     .check(function(api) {
-                        go.utils.checkFixturesUsed(api, [1,6,11,30,33]);
+                        go.utils.check_fixtures_used(api, [1,6,11,30,33]);
                     })
                     .run();
             });

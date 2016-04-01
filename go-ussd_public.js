@@ -17,8 +17,7 @@ go.utils = {
 
 // FIXTURES HELPERS
 
-    checkFixturesUsed: function(api, fixturesArray) {
-        var expected_used = fixturesArray;
+    check_fixtures_used: function(api, expected_used) {
         var fixts = api.http.fixtures.fixtures;
         var fixts_used = [];
         fixts.forEach(function(f, i) {
