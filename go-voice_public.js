@@ -1011,7 +1011,7 @@ go.utils_project = {
             });
     },
 
-    switch_to_loss: function(im, mother_id, loss_reason) {
+    switch_to_loss: function(im, mother_id, reason) {
       // Sends an Api request to the registration store to switch the mother
       // to loss messages
 
@@ -1019,7 +1019,7 @@ go.utils_project = {
             "mother_id": mother_id,
             "action": "change_loss",
             "data": {
-                "loss_reason": loss_reason
+                "reason": reason
             }
         };
 
@@ -1047,7 +1047,7 @@ go.utils_project = {
             });
     },
 
-    unsub_household: function(im, mother_id, household_id, loss_reason) {
+    unsub_household: function(im, mother_id, household_id, reason) {
       // A unique change endpoint that unsubscribes only the household receiver
       // in an _only registration case; rather than doing an optout which would
       // block the mother's messages from getting through to the receiver
@@ -1057,7 +1057,7 @@ go.utils_project = {
             "action": "unsubscribe_household_only",
             "data": {
                 "household_id": household_id,
-                "loss_reason": loss_reason
+                "reason": reason
             }
         };
 
@@ -1068,7 +1068,7 @@ go.utils_project = {
             });
     },
 
-    unsub_mother: function(im, mother_id, household_id, loss_reason) {
+    unsub_mother: function(im, mother_id, household_id, reason) {
       // A unique change endpoint that unsubscribes from the mother messages only
       // in an _only registration case; rather than doing an optout which would
       // block the household messages from getting through to the receiver
@@ -1078,7 +1078,7 @@ go.utils_project = {
             "action": "unsubscribe_mother_only",
             "data": {
                 "household_id": household_id,
-                "loss_reason": loss_reason
+                "reason": reason
             }
         };
 

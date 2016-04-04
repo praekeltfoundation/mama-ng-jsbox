@@ -1251,7 +1251,7 @@ module.exports = function() {
                     "mother_id": "3f7c8851-5204-43f7-af7f-005059992222",
                     "action": "change_loss",
                     "data": {
-                        "loss_reason": "miscarriage"
+                        "reason": "miscarriage"
                     }
                 }
             },
@@ -1276,7 +1276,7 @@ module.exports = function() {
                     "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
                     "action": "change_loss",
                     "data": {
-                        "loss_reason": "miscarriage"
+                        "reason": "miscarriage"
                     }
                 }
             },
@@ -1302,7 +1302,7 @@ module.exports = function() {
                     "action": "unsubscribe_household_only",
                     "data": {
                         "household_id": "3f7c8851-5204-43f7-af7f-005059993333",
-                        "loss_reason": "miscarriage"
+                        "reason": "miscarriage"
                     }
                 }
             },
@@ -1327,7 +1327,7 @@ module.exports = function() {
                     "mother_id": "3f7c8851-5204-43f7-af7f-005059996666",
                     "action": "change_loss",
                     "data": {
-                        "loss_reason": "miscarriage"
+                        "reason": "miscarriage"
                     }
                 }
             },
@@ -1797,7 +1797,7 @@ module.exports = function() {
                     "action": "unsubscribe_mother_only",
                     "data": {
                         "household_id": "3f7c8851-5204-43f7-af7f-005059993333",
-                        "loss_reason": "not_useful"
+                        "reason": "not_useful"
                     }
                 }
             },
@@ -1931,7 +1931,7 @@ module.exports = function() {
                     "action": "unsubscribe_mother_only",
                     "data": {
                         "household_id": "3f7c8851-5204-43f7-af7f-005059993333",
-                        "loss_reason": "other"
+                        "reason": "other"
                     }
                 }
             },
@@ -2011,7 +2011,7 @@ module.exports = function() {
                     "action": "unsubscribe_household_only",
                     "data": {
                         "household_id": "3f7c8851-5204-43f7-af7f-005059993333",
-                        "loss_reason": "not_useful"
+                        "reason": "not_useful"
                     }
                 }
             },
@@ -2037,7 +2037,7 @@ module.exports = function() {
                     "action": "unsubscribe_household_only",
                     "data": {
                         "household_id": "3f7c8851-5204-43f7-af7f-005059993333",
-                        "loss_reason": "other"
+                        "reason": "other"
                     }
                 }
             },
