@@ -1274,7 +1274,7 @@ go.app = function() {
             "state_timed_out":
                 "You have an incomplete registration. Would you like to continue with this registration?",
             "state_msisdn_permission":  //st-B
-                "Welcome to Hello Mama. Do you have permission to manage the number [MSISDN]?",
+                "Welcome to Hello Mama. Do you have permission to manage the number {{msisdn}}?",
             "state_msisdn_no_permission":  // unnamed state on flow diagram
                 "We're sorry, you do not have permission to update the preferences for this subscriber.",
             "state_language":   // st-D
@@ -1370,6 +1370,7 @@ go.app = function() {
                     self.im.user.set_answer('user_id', user.id);
                     if (user.details.receiver_role) {
                         self.im.user.set_answer('role_player', user.details.receiver_role);
+                        self.im.user.set_answer('contact_msisdn', self.im.user.addr);
                         return self.states.create('state_msisdn_permission');
                     } else {
                         self.im.user.set_answer('role_player', 'guest');
@@ -1384,7 +1385,8 @@ go.app = function() {
         // ChoiceState st-B
         self.add('state_msisdn_permission', function(name) {
             return new ChoiceState(name, {
-                question: $(questions[name]),
+                question: $(questions[name]).context({
+                    msisdn: self.im.user.answers.contact_msisdn}),
                 choices: [
                     new Choice('state_check_receiver_role', $("Yes")),
                     new Choice('state_msisdn_no_permission', $("No")),
@@ -1450,6 +1452,7 @@ go.app = function() {
                 .then(function(contact) {
                     if (contact && contact.details && contact.details.receiver_role) {
                         self.im.user.set_answer('role_player', contact.details.receiver_role);
+                        self.im.user.set_answer('contact_msisdn', self.im.user.answers.state_registered_msisdn);
                         self.im.user.set_answer('contact_id', contact.id);
                         return self.states.create('state_check_receiver_role');
                     } else {

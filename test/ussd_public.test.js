@@ -117,7 +117,7 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_msisdn_permission',
                             reply: [
-                                "Welcome to Hello Mama. Do you have permission to manage the number [MSISDN]?",
+                                "Welcome to Hello Mama. Do you have permission to manage the number 05059992222?",
                                 "1. Yes",
                                 "2. No",
                                 "3. Change the number I'd like to manage"
