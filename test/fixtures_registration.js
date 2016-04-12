@@ -1,4 +1,4 @@
-http://localhost:8002/api/v1/ Identity roles - Registration
+// Identity roles - Registration
 // 08080070007: registered healthworker - personnel code 12345
 // 07030010001: unregistered mother but with existing identity (voice)
 // 08080020002: unregistered mother but with existing identity (ussd)
