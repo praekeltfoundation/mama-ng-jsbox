@@ -1438,27 +1438,11 @@ go.app = function() {
 
         self.add('state_start', function(name) {
             self.im.user.answers = {};  // reset answers
-            return self.states.create('state_auth_code');
+            return self.states.create('state_msg_receiver');
         });
 
 
     // REGISTRATION STATES
-
-        // FreeText st-1
-        self.add('state_auth_code', function(name) {
-            return new FreeText(name, {
-                question: questions[name],
-                check: function(content) {
-                    var personnel_code = content;
-                    if (go.utils.check_valid_number(personnel_code) && content.length === 5) {
-                        return null;
-                    } else {
-                        return errors[name];
-                    }
-                },
-                next: 'state_msg_receiver'
-            });
-        });
 
         // ChoiceState st-02
         self.add('state_msg_receiver', function(name) {
