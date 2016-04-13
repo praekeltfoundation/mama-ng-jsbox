@@ -1376,7 +1376,7 @@ go.app = function() {
                     self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
                     if (go.utils.is_valid_msisdn(content)) {
-                        return 'state_check_registered';
+                        return 'state_main_menu';
                     } else {
                         return {
                             'name': 'state_retry',
