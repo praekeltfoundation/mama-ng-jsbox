@@ -1,7 +1,7 @@
 var vumigo = require('vumigo_v02');
 var moment = require('moment');
 var assert = require('assert');
-var fixtures = require('./fixtures_registration');
+// TR02 var fixtures = require('./fixtures_registration');
 var AppTester = vumigo.AppTester;
 
 
@@ -17,34 +17,12 @@ describe("Mama Nigeria App", function() {
             tester
                 .setup.config.app({
                     testing_today: '2017-07-22',
-                    name: 'voice-registration-test',
+                    name: 'train-ivr-reg-test',
                     country_code: '234',  // nigeria
-                    services: {
-                        identities: {
-                            api_token: 'test_token_identities',
-                            url: "http://localhost:8001/api/v1/"
-                        },
-                        registrations: {
-                            api_token: 'test_token_registrations',
-                            url: "http://localhost:8002/api/v1/"
-                        },
-                        voice_content: {
-                            api_token: "test_token_voice_content",
-                            url: "http://localhost:8004/api/v1/"
-                        },
-                        subscriptions: {
-                            api_token: 'test_token_subscriptions',
-                            url: "http://localhost:8005/api/v1/"
-                        },
-                        message_sender: {
-                            api_token: 'test_token_message_sender',
-                            url: "http://localhost:8006/api/v1/"
-                        }
-                    }
                 })
                 .setup(function(api) {
                     fixtures().forEach(function(d) {
-                        api.http.fixtures.add(d);
+                        // TR02 don't add any fixtures
                     });
                 })
                 ;
