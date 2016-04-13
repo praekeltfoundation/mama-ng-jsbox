@@ -1,11 +1,8 @@
 var vumigo = require('vumigo_v02');
-var fixtures = require('./fixtures_registration');
-var moment = require('moment');
-var assert = require('assert');
+// TR02 var fixtures = require('./fixtures_registration');
 var AppTester = vumigo.AppTester;
 var App = vumigo.App;
 App.call(App);
-var $ = App.$;
 
 describe("Mama Nigeria App", function() {
     describe("USSD Registration", function() {
@@ -23,28 +20,6 @@ describe("Mama Nigeria App", function() {
                     country_code: '234',  // nigeria
                     channel: '*120*8864*0000#',
                     testing_today: '2015-04-03 06:07:08.999',
-                    services: {
-                        identities: {
-                            api_token: 'test_token_identities',
-                            url: "http://localhost:8001/api/v1/"
-                        },
-                        registrations: {
-                            api_token: 'test_token_registrations',
-                            url: "http://localhost:8002/api/v1/"
-                        },
-                        voice_content: {
-                            api_token: "test_token_voice_content",
-                            url: "http://localhost:8004/api/v1/"
-                        },
-                        subscriptions: {
-                            api_token: 'test_token_subscriptions',
-                            url: "http://localhost:8005/api/v1/"
-                        },
-                        message_sender: {
-                            api_token: 'test_token_message_sender',
-                            url: "http://localhost:8006/api/v1/"
-                        }
-                    },
                     no_timeout_redirects: [
                         'state_start',
                         'state_end_voice',
@@ -52,14 +27,14 @@ describe("Mama Nigeria App", function() {
                     ]
                 })
                 .setup(function(api) {
-                    fixtures().forEach(api.http.fixtures.add);
+                    // TR02 don't add any fixtures
                 })
                 ;
         });
 
         // TEST TIMEOUTS
 
-        describe.skip("Timeout testing", function() {
+        describe("Timeout testing", function() {
             it("should ask about continuing", function() {
                 return tester
                     .setup.user.addr('08080020002')
@@ -76,9 +51,6 @@ describe("Mama Nigeria App", function() {
                             "1. Yes",
                             "2. No, start new registration"
                         ].join('\n')
-                    })
-                    .check(function(api) {
-                        go.utils.check_fixtures_used(api, [1,6,11,30,33]);
                     })
                     .run();
             });
@@ -110,10 +82,6 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_auth_code'
                     })
-                    .check(function(api) {
-                        var fixt1 = api.http.fixtures.fixtures[1];
-                        assert.equal(fixt1.uses, 2);
-                    })
                     .run();
             });
             it("should send a dialback sms on first timeout", function() {
@@ -124,10 +92,6 @@ describe("Mama Nigeria App", function() {
                         , '12345'  // state_auth_code - personnel code
                         , {session_event: 'close'}
                     )
-                    .check(function(api) {
-                        var fixt1 = api.http.fixtures.fixtures[30];
-                        assert.equal(fixt1.uses, 1);
-                    })
                     .run();
             });
             it("should not send a dialback sms on second timeout", function() {
@@ -138,16 +102,12 @@ describe("Mama Nigeria App", function() {
                         , '12345'  // state_auth_code - personnel code
                         , {session_event: 'close'}
                     )
-                    .check(function(api) {
-                        var fixt1 = api.http.fixtures.fixtures[32];
-                        assert.equal(fixt1.uses, 1);
-                    })
                     .run();
             });
         });
 
         // TEST START OF SESSION ACTIONS
-        describe.skip("Start of session", function() {
+        describe("Start of session", function() {
             it("should reset user answers", function() {
                 return tester
                     .setup.user.addr('08080020002')
@@ -158,24 +118,7 @@ describe("Mama Nigeria App", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                     )
-                    .check.user.answers({
-                        "user_id": "cb245673-aa41-4302-ac47-00000000002"})
-                    .run();
-            });
-        });
-
-        // TEST HCP RECOGNISED USER
-
-        describe.skip("HCP recognised user", function() {
-            it("should not be asked for personnel code", function() {
-                return tester
-                    .setup.user.addr('08080070007')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                    )
-                    .check.interaction({
-                        state: 'state_msg_receiver'
-                    })
+                    .check.user.answers({})
                     .run();
             });
         });
@@ -183,7 +126,7 @@ describe("Mama Nigeria App", function() {
         // TEST REGISTRATION
 
         describe("Flow testing - registration", function() {
-            it.only("to state_auth_code", function() {
+            it("to state_auth_code", function() {
                 return tester
                     .setup.user.addr('08080020002')
                     .inputs(
@@ -192,9 +135,6 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_auth_code',
                         reply: "Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345"
-                    })
-                    .check(function(api) {
-                        go.utils.check_fixtures_used(api, [1]);
                     })
                     .run();
             });
@@ -226,7 +166,7 @@ describe("Mama Nigeria App", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'  // state_auth_code - personnel code
-                        , '7'       // state_msg_receiver - family_only
+                        , '7'  // state_msg_receiver - family_only
                     )
                     .check.interaction({
                         state: 'state_msisdn',
@@ -240,7 +180,7 @@ describe("Mama Nigeria App", function() {
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'  // state_auth_code - personnel code
-                        , '1'       // state_msg_receiver - mother_father
+                        , '1'  // state_msg_receiver - mother_father
                     )
                     .check.interaction({
                         state: 'state_msisdn_mother',
@@ -260,102 +200,6 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_msisdn_household',
                         reply: "Please enter the father's number. They will receive a weekly SMS and must consent to receiving messages."
-                    })
-                    .run();
-            });
-            it("to state_msisdn_already_registered", function() {
-                return tester
-                    .setup.user.addr('08080020002')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '12345'   // state_auth_code - personnel code
-                        , '2' // state_msg_receiver - mother_only
-                        , '09097777777'  // state_msisdn
-                    )
-                    .check.interaction({
-                        state: 'state_msisdn_already_registered',
-                        reply: [
-                            "Sorry, this number is already registered. They must opt-out before registering again.",
-                            "1. Try a different number",
-                            "2. Choose a different receiver",
-                            "3. Exit"
-                        ].join('\n')
-                    })
-                    .check(function(api) {
-                        var expected_used = [1,6,78];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
-                    })
-                    .run();
-            });
-            it("to state_end_msisdn", function() {
-                return tester
-                    .setup.user.addr('08080020002')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '12345'  // state_auth_code - personnel code
-                        , '2' // state_msg_receiver - mother_only
-                        , '09097777777'  // state_msisdn
-                        , '3' // state_end_msisdn - exit
-                    )
-                    .check.interaction({
-                        state: 'state_end_msisdn',
-                        reply: "Thank you for using the Hello Mama service."
-                    })
-                    .check(function(api) {
-                        var expected_used = [1,6,78];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
-                    })
-                    .check.reply.ends_session()
-                    .run();
-            });
-            it("to state_msisdn (from state_msisdn_already_registered)", function() {
-                return tester
-                    .setup.user.addr('08080020002')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '12345'  // state_auth_code - personnel code
-                        , '2' // state_msg_receiver - mother_only
-                        , '09097777777'  // state_msisdn
-                        , '1' // state_end_msisdn - try different number
-                    )
-                    .check.interaction({
-                        state: 'state_msisdn',
-                        reply: "Please enter the mobile number of the person who will receive the weekly messages. For example, 08033048990"
-                    })
-                    .run();
-            });
-            it("to state_msg_receiver (from state_msisdn_already_registered)", function() {
-                return tester
-                    .setup.user.addr('08080020002')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '12345'  // state_auth_code - personnel code
-                        , '2' // state_msg_receiver - mother_only
-                        , '09097777777'  // state_msisdn
-                        , '2' // state_end_msisdn - choose different receiver
-                    )
-                    .check.interaction({
-                        state: 'state_msg_receiver',
-                        reply: [
-                            "Please select who will receive the messages on their phone:",
-                            "1. Mother, Father",
-                            "2. Mother",
-                            "3. Father",
-                            "4. Mother, family member",
-                            "5. Mother, friend",
-                            "6. Friend",
-                            "7. Family member"
-                        ].join('\n')
                     })
                     .run();
             });
@@ -404,12 +248,6 @@ describe("Mama Nigeria App", function() {
                             "8. September 14",
                             "9. More"
                         ].join('\n')
-                    })
-                    .check(function(api) {
-                        var fixt37 = api.http.fixtures.fixtures[37];
-                        assert.equal(fixt37.uses, 1);
-                        var fixt38 = api.http.fixtures.fixtures[38];
-                        assert.equal(fixt38.uses, 1);
                     })
                     .run();
             });
@@ -713,15 +551,6 @@ describe("Mama Nigeria App", function() {
                         state: 'state_end_voice',
                         reply: "Thank you. The person will now start receiving calls on Tuesday and Thursday between 2pm - 5pm."
                     })
-                    .check(function(api) {
-                        var expected_used = [1,6,36,37,38,48,54,59,62,63];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
-                    })
                     .check.reply.ends_session()
                     .run();
             });
@@ -745,21 +574,12 @@ describe("Mama Nigeria App", function() {
                         state: 'state_end_sms',
                         reply: "Thank you. The person will now start receiving messages three times a week."
                     })
-                    .check(function(api) {
-                        var expected_used = [1,6,36,37,38,46,54,59,60,61];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
-                    })
                     .check.reply.ends_session()
                     .run();
             });
         });
 
-        describe.skip("Flow testing - complete flows", function() {
+        describe("Flow testing - complete flows", function() {
             it("complete flow 1 - receiver: trusted friend; mother pregnant, voice", function() {
                 return tester
                     .setup.user.addr('08080020002')
@@ -779,15 +599,6 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_end_voice',
-                    })
-                    .check(function(api) {
-                        var expected_used = [1,6,36,37,38,48,54,59,62,63];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
                     })
                     .run();
             });
@@ -812,15 +623,6 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_end_voice',
                     })
-                    .check(function(api) {
-                        var expected_used = [1,6,42,43,44,45,49,64,65,66,67];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
-                    })
                     .run();
             });
 
@@ -842,15 +644,6 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_end_sms',
-                    })
-                    .check(function(api) {
-                        var expected_used = [1,6,39,40,41,47,54,56,57,58];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
                     })
                     .run();
             });
@@ -875,15 +668,6 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_end_voice',
                     })
-                    .check(function(api) {
-                        var expected_used = [1,6,39,40,41,50,54,56,68,76];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
-                    })
                     .run();
             });
             it("complete flow 5 - receiver: mother_only; mother pregnant, voice", function() {
@@ -906,22 +690,13 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_end_voice',
                     })
-                    .check(function(api) {
-                        var expected_used = [1,6,71,72,73,74,75];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
-                    })
                     .run();
             });
         });
 
         // TEST VALIDATION
 
-        describe.skip("Validation testing", function() {
+        describe("Validation testing", function() {
             it("validate state_auth_code", function() {
                 return tester
                     .setup.user.addr('08080020002')
@@ -1102,134 +877,5 @@ describe("Mama Nigeria App", function() {
             });
         });
 
-        describe.skip("utils function testing", function() {
-            describe("make_month_choices", function() {
-                it('should return a Choice array of correct size - forward in same year', function() {
-                    // test data
-                    var testDate = moment("2015-04-26");
-                    var limit = 6;     // should determine the size of the returned array
-                    var increment = 1; // should determine subsequent direction of array elements
-
-                    // function call
-                    var expectedChoiceArray = go.utils
-                        .make_month_choices($, testDate, limit, increment, "YYYYMM", "MMMM YY");
-
-                    // expected results
-                    assert.equal(expectedChoiceArray.length, limit);
-                    assert.equal(expectedChoiceArray[0].value, "201504");
-                    assert.equal(expectedChoiceArray[1].value, "201505");
-                    assert.equal(expectedChoiceArray[2].value, "201506");
-                    assert.equal(expectedChoiceArray[3].value, "201507");
-                    assert.equal(expectedChoiceArray[4].value, "201508");
-                    assert.equal(expectedChoiceArray[5].value, "201509");
-                });
-                it('should return a Choice array of correct size - backwards in same year', function() {
-                    // test data
-                    var testDate = moment("2015-07-26");
-                    var limit = 7;     // should determine the size of the returned array
-                    var increment = -1; // should determine subsequent direction of array elements
-
-                    // function call
-                    var expectedChoiceArray = go.utils
-                        .make_month_choices($, testDate, limit, increment, "YYYYMM", "MMMM YY");
-
-                    // expected results
-                    assert.equal(expectedChoiceArray.length, limit);
-                    assert.equal(expectedChoiceArray[0].value, "201507");
-                    assert.equal(expectedChoiceArray[1].value, "201506");
-                    assert.equal(expectedChoiceArray[2].value, "201505");
-                    assert.equal(expectedChoiceArray[3].value, "201504");
-                    assert.equal(expectedChoiceArray[4].value, "201503");
-                    assert.equal(expectedChoiceArray[5].value, "201502");
-                    assert.equal(expectedChoiceArray[6].value, "201501");
-                });
-                it('should return a Choice array of correct size - forward across years', function() {
-                    // test data
-                    var testDate = moment("2015-12-26");
-                    var limit = 4;     // should determine the size of the returned array
-                    var increment = 1; // should determine subsequent direction of array elements
-
-                    // function call
-                    var expectedChoiceArray = go.utils
-                        .make_month_choices($, testDate, limit, increment, "YYYYMM", "MMMM YY");
-
-                    // expected results
-                    assert.equal(expectedChoiceArray.length, limit);
-                    assert.equal(expectedChoiceArray[0].value, "201512");
-                    assert.equal(expectedChoiceArray[1].value, "201601");
-                    assert.equal(expectedChoiceArray[2].value, "201602");
-                    assert.equal(expectedChoiceArray[3].value, "201603");
-                });
-                it('should return an array of choices - backwards across years', function() {
-                    // test data
-                    var testDate = moment("2015-01-26");
-                    var limit = 3;     // should determine the size of the returned array
-                    var increment = -1; // should determine subsequent direction of array elements
-
-                    // function call
-                    var expectedChoiceArray = go.utils
-                        .make_month_choices($, testDate, limit, increment, "YYYYMM", "MMMM YY");
-
-                    // expected results
-                    assert.equal(expectedChoiceArray.length, limit);
-                    assert.equal(expectedChoiceArray[0].value, "201501");
-                    assert.equal(expectedChoiceArray[1].value, "201412");
-                    assert.equal(expectedChoiceArray[2].value, "201411");
-                });
-                it('should return an array of choices - forwards, with elements separated by 3 months', function() {
-                    // test data
-                    var testDate = moment("2015-01-26");
-                    var limit = 3;     // should determine the size of the returned array
-                    var increment = 3; // should determine subsequent direction of array elements
-
-                    // function call
-                    var expectedChoiceArray = go.utils
-                        .make_month_choices($, testDate, limit, increment, "YYYYMM", "MMMM YY");
-
-                    // expected results
-                    assert.equal(expectedChoiceArray.length, limit);
-                    assert.equal(expectedChoiceArray[0].value, "201501");
-                    assert.equal(expectedChoiceArray[1].value, "201504");
-                    assert.equal(expectedChoiceArray[2].value, "201507");
-                });
-            });
-
-            describe("is_valid_msisdn", function() {
-                it('should return true/false if the msisdn is valid', function() {
-                    // test data
-                        // needs to start with 0 and be 10 - 13 characters in length to Validate
-                    var testDataArray = [
-                        '12345',
-                        'abcde',
-                        '082123',
-                        '12345678910',
-                        '01987654321',
-                        '08033048990',
-                        '080330ab990',
-                        '08033048990123',    // 14 chars in length
-                        '0803304899012'      // 13 chars in length
-                    ];
-
-                    // function call
-                    var resultsArray = [];
-                    for (var i=0; i<testDataArray.length; i++) {
-                        resultsArray.push(go.utils.is_valid_msisdn(testDataArray[i]));
-                    }
-
-                    // expected results
-                    assert.equal(resultsArray.length, 9);
-                    assert.equal(resultsArray[0], false);
-                    assert.equal(resultsArray[1], false);
-                    assert.equal(resultsArray[2], false);
-                    assert.equal(resultsArray[3], false);
-                    assert.equal(resultsArray[4], true);
-                    assert.equal(resultsArray[5], true);
-                    assert.equal(resultsArray[6], false);
-                    assert.equal(resultsArray[7], false);
-                    assert.equal(resultsArray[8], true);
-                });
-            });
-
-        });
     });
 });
