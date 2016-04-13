@@ -1,6 +1,5 @@
 var vumigo = require('vumigo_v02');
-var fixtures = require('./fixtures_public');
-var assert = require('assert');
+// TR02 var fixtures = require('./fixtures_public');
 var AppTester = vumigo.AppTester;
 
 describe("Hello Mama app", function() {
@@ -20,28 +19,6 @@ describe("Hello Mama app", function() {
                     channel: '*120*8864*0000#',
                     testing_today: '2015-04-03 06:07:08.999',  // testing only
                     testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',  // testing only
-                    services: {
-                        identities: {
-                            api_token: 'test_token_identities',
-                            url: "http://localhost:8001/api/v1/"
-                        },
-                        registrations: {
-                            api_token: 'test_token_registrations',
-                            url: "http://localhost:8002/api/v1/"
-                        },
-                        voice_content: {
-                            api_token: "test_token_voice_content",
-                            url: "http://localhost:8004/api/v1/"
-                        },
-                        subscriptions: {
-                            api_token: 'test_token_subscriptions',
-                            url: "http://localhost:8005/api/v1/"
-                        },
-                        message_sender: {
-                            api_token: 'test_token_message_sender',
-                            url: "http://localhost:8006/api/v1/"
-                        }
-                    },
                     no_timeout_redirects: [
                         'state_start',
                         'state_end_voice',
@@ -49,7 +26,7 @@ describe("Hello Mama app", function() {
                     ]
                 })
                 .setup(function(api) {
-                    fixtures().forEach(api.http.fixtures.add);
+                    // TR02 don't add any fixtures
                 })
                 ;
         });
@@ -75,15 +52,6 @@ describe("Hello Mama app", function() {
                                 "5. Yoruba"
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            var expected_used = [0, 1];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
-                        })
                         .run();
                 });
                 it("to state_registered_msisdn via state_language", function() { //st-C
@@ -96,15 +64,6 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_registered_msisdn',
                             reply: "Please enter the number which is registered to receive messages. For example, 0803304899"
-                        })
-                        .check(function(api) {
-                            var expected_used = [0, 1];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
@@ -123,15 +82,6 @@ describe("Hello Mama app", function() {
                                 "3. Change the number I'd like to manage"
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            var expected_used = [2];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
-                        })
                         .run();
                 });
                 it("to state_registered_msisdn via state_msisdn_permission", function() {  //st-C
@@ -144,15 +94,6 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_registered_msisdn',
                             reply: "Please enter the number which is registered to receive messages. For example, 0803304899"
-                        })
-                        .check(function(api) {
-                            var expected_used = [2];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
@@ -167,15 +108,6 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_msisdn_not_recognised',
                             reply: "We do not recognise this number. Please dial from the registered number or sign up with your local Community Health Extension worker."
-                        })
-                        .check(function(api) {
-                            var expected_used = [0, 1, 3];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
@@ -198,15 +130,6 @@ describe("Hello Mama app", function() {
                                 "5. Stop receiving messages"
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            var expected_used = [0, 1, 4, 5];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
-                        })
                         .run();
                 });
                 it("to state_main_menu (mother)", function() {
@@ -227,15 +150,6 @@ describe("Hello Mama app", function() {
                                 "5. Stop receiving messages"
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            var expected_used = [2,9];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
-                        })
                         .run();
                 });
                 it("to state_main_menu_household", function() {
@@ -254,15 +168,6 @@ describe("Hello Mama app", function() {
                                 "3. Change language",
                                 "4. Stop receiving messages"
                             ].join('\n')
-                        })
-                        .check(function(api) {
-                            var expected_used = [6,7,13];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
@@ -298,15 +203,6 @@ describe("Hello Mama app", function() {
                                 "2. Exit"
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            var expected_used = [70,71,72,73];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
-                        })
                         .run();
                 });
                 it("case 1 > to state_new_registration_baby", function() {
@@ -320,15 +216,6 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_new_registration_baby',
                             reply: "Thank you. You will now receive messages about caring for baby"
-                        })
-                        .check(function(api) {
-                            var expected_used = [2,9,16,17,74];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
@@ -344,15 +231,6 @@ describe("Hello Mama app", function() {
                             state: 'state_new_registration_baby',
                             reply: "Thank you. You will now receive messages about caring for baby"
                         })
-                        .check(function(api) {
-                            var expected_used = [4,5,19,20,75];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
-                        })
                         .run();
                 });
                 it("case 3 > to state_new_registration_baby", function() {
@@ -367,15 +245,6 @@ describe("Hello Mama app", function() {
                             state: 'state_new_registration_baby',
                             reply: "Thank you. You will now receive messages about caring for baby"
                         })
-                        .check(function(api) {
-                            var expected_used = [7,12,13,22,23,76];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
-                        })
                         .run();
                 });
                 it("case 4 > to state_new_registration_baby", function() {
@@ -389,15 +258,6 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_new_registration_baby',
                             reply: "Thank you. You will now receive messages about caring for baby"
-                        })
-                        .check(function(api) {
-                            var expected_used = [6,7,13,22,23,76];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
@@ -420,15 +280,6 @@ describe("Hello Mama app", function() {
                                     "1. Change from text to voice messages",
                                     "2. Back to main menu"
                                 ].join('\n')
-                            })
-                            .check(function(api) {
-                                var expected_used = [2,9,16,17];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
                             })
                             .run();
                     });
@@ -486,15 +337,6 @@ describe("Hello Mama app", function() {
                                 state: 'state_end_voice_confirm',
                                 reply: "Thank you. You will now start receiving voice calls between [time] on [days]."
                             })
-                            .check(function(api) {
-                                var expected_used = [2, 9, 16, 17, 18, 26];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .check.reply.ends_session()
                             .run();
                     });
@@ -516,15 +358,6 @@ describe("Hello Mama app", function() {
                                     "2. Change from voice to text messages",
                                     "3. Back to main menu"
                                 ].join('\n')
-                            })
-                            .check(function(api) {
-                                var expected_used = [4, 5, 19, 20];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
                             })
                             .run();
                     });
@@ -582,15 +415,6 @@ describe("Hello Mama app", function() {
                                 state: 'state_end_voice_confirm',
                                 reply: "Thank you. You will now start receiving voice calls between [time] on [days]."
                             })
-                            .check(function(api) {
-                                var expected_used = [4, 5, 19, 20, 21, 28, 30];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .check.reply.ends_session()
                             .run();
                     });
@@ -613,15 +437,6 @@ describe("Hello Mama app", function() {
                                     "3. Back to main menu"
                                 ].join('\n')
                             })
-                            .check(function(api) {
-                                var expected_used = [7,12,13,22,23];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     it("case 3 > to state_end_sms_confirm", function() {
@@ -636,15 +451,6 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_end_sms_confirm',
                                 reply: "Thank you. You will now receive text messages."
-                            })
-                            .check(function(api) {
-                                var expected_used = [7,12,13,22,23,24,29];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
                             })
                             .run();
                     });
@@ -663,15 +469,6 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_new_msisdn',
                             reply: "Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899"
-                        })
-                        .check(function(api) {
-                            var expected_used = [2,9];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
@@ -692,15 +489,6 @@ describe("Hello Mama app", function() {
                                 "2. Exit"
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            var expected_used = [2,4,9];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
-                        })
                         .run();
                 });
                 it("case 1 > to state_new_msisdn - via state_number_in_use", function() {
@@ -716,15 +504,6 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_new_msisdn',
                             reply: "Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899"
-                        })
-                        .check(function(api) {
-                            var expected_used = [2,4,9];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
@@ -742,15 +521,6 @@ describe("Hello Mama app", function() {
                             state: 'state_end_exit',
                             reply: "Thank you for using the Hello Mama service"
                         })
-                        .check(function(api) {
-                            var expected_used = [2,4,9];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
-                        })
                         .run();
                 });
                 it("case 1 > to state_end_number_change", function() {
@@ -765,15 +535,6 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_end_number_change',
                             reply: "Thank you. The number which receives messages has been updated."
-                        })
-                        .check(function(api) {
-                            var expected_used = [2, 8, 9, 10];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
@@ -790,15 +551,6 @@ describe("Hello Mama app", function() {
                             state: 'state_end_number_change',
                             reply: "Thank you. The number which receives messages has been updated."
                         })
-                        .check(function(api) {
-                            var expected_used = [4, 5, 8, 11];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
-                        })
                         .run();
                 });
                 it("case 3 > to state_end_number_change", function() {
@@ -814,15 +566,6 @@ describe("Hello Mama app", function() {
                             state: 'state_end_number_change',
                             reply: "Thank you. The number which receives messages has been updated."
                         })
-                        .check(function(api) {
-                            var expected_used = [7,8,12,13,14];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
-                        })
                         .run();
                 });
                 it("case 4 > to state_end_number_change", function() {
@@ -837,15 +580,6 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_end_number_change',
                             reply: "Thank you. The number which receives messages has been updated."
-                        })
-                        .check(function(api) {
-                            var expected_used = [6,7,8,13,15];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
@@ -886,15 +620,6 @@ describe("Hello Mama app", function() {
                             state: 'state_msg_language_confirm',
                             reply: "Thank you. You language preference has been updated and you will start to receive messages in this language."
                         })
-                        .check(function(api) {
-                            var expected_used = [2,9,62,63];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
-                        })
                         .run();
                 });
                 it("case 2 > to state_msg_language_confirm", function() {
@@ -909,15 +634,6 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_msg_language_confirm',
                             reply: "Thank you. You language preference has been updated and you will start to receive messages in this language."
-                        })
-                        .check(function(api) {
-                            var expected_used = [4,5,30,64,65,66];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
@@ -934,15 +650,6 @@ describe("Hello Mama app", function() {
                             state: 'state_msg_language_confirm',
                             reply: "Thank you. You language preference has been updated and you will start to receive messages in this language."
                         })
-                        .check(function(api) {
-                            var expected_used = [7,12,13,67,68,69];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
-                        })
                         .run();
                 });
                 it("case 4 > to state_msg_language_confirm", function() {
@@ -957,15 +664,6 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_msg_language_confirm',
                             reply: "Thank you. You language preference has been updated and you will start to receive messages in this language."
-                        })
-                        .check(function(api) {
-                            var expected_used = [6,7,13,67,68,69];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
@@ -993,15 +691,6 @@ describe("Hello Mama app", function() {
                                     "5. Other"
                                 ].join('\n')
                             })
-                            .check(function(api) {
-                                var expected_used = [2,9];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 1 - miscarriage
@@ -1022,15 +711,6 @@ describe("Hello Mama app", function() {
                                     "2. No"
                                 ].join('\n')
                             })
-                            .check(function(api) {
-                                var expected_used = [2,9];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 1, 1 - miscarriage, yes
@@ -1047,15 +727,6 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_end_loss_subscription_confirm',
                                 reply: "Thank you. You will now receive messages to support you during this difficult time."
-                            })
-                            .check(function(api) {
-                                var expected_used = [2,9,31];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
                             })
                             .run();
                     });
@@ -1074,15 +745,6 @@ describe("Hello Mama app", function() {
                                 state: 'state_end_loss',
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
                             })
-                            .check(function(api) {
-                                var expected_used = [2,9,36];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 2 - stillborn
@@ -1098,15 +760,6 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_end_loss',
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
-                            })
-                            .check(function(api) {
-                                var expected_used = [2,9,41];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
                             })
                             .run();
                     });
@@ -1124,15 +777,6 @@ describe("Hello Mama app", function() {
                                 state: 'state_end_loss',
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
                             })
-                            .check(function(api) {
-                                var expected_used = [2,9,46];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 4 - not useful
@@ -1149,15 +793,6 @@ describe("Hello Mama app", function() {
                                 state: 'state_end_optout',
                                 reply: "Thank you. You will no longer receive messages"
                             })
-                            .check(function(api) {
-                                var expected_used = [2,9,51];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 5 - other
@@ -1173,15 +808,6 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_end_optout',
                                 reply: "Thank you. You will no longer receive messages"
-                            })
-                            .check(function(api) {
-                                var expected_used = [2,9,56];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
                             })
                             .run();
                     });
@@ -1208,15 +834,6 @@ describe("Hello Mama app", function() {
                                     "5. Other"
                                 ].join('\n')
                             })
-                            .check(function(api) {
-                                var expected_used = [4,5];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 1 - miscarriage
@@ -1237,15 +854,6 @@ describe("Hello Mama app", function() {
                                     "2. No"
                                 ].join('\n')
                             })
-                            .check(function(api) {
-                                var expected_used = [4,5];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 1, 1 - miscarriage, yes
@@ -1262,15 +870,6 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_end_loss_subscription_confirm',
                                 reply: "Thank you. You will now receive messages to support you during this difficult time."
-                            })
-                            .check(function(api) {
-                                var expected_used = [4,5,32,33];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
                             })
                             .run();
                     });
@@ -1289,15 +888,6 @@ describe("Hello Mama app", function() {
                                 state: 'state_end_loss',
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
                             })
-                            .check(function(api) {
-                                var expected_used = [4,5,38];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 2 - stillborn
@@ -1314,15 +904,6 @@ describe("Hello Mama app", function() {
                                 state: 'state_end_loss',
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
                             })
-                            .check(function(api) {
-                                var expected_used = [4,5,43];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 3 - baby death
@@ -1338,15 +919,6 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_end_loss',
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
-                            })
-                            .check(function(api) {
-                                var expected_used = [4,5,48];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
                             })
                             .run();
                     });
@@ -1369,15 +941,6 @@ describe("Hello Mama app", function() {
                                     "3. All messages"
                                 ].join('\n')
                             })
-                            .check(function(api) {
-                                var expected_used = [4,5];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 4, 1 - unsubscribe mother
@@ -1394,15 +957,6 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_end_optout',
                                 reply: "Thank you. You will no longer receive messages"
-                            })
-                            .check(function(api) {
-                                var expected_used = [4,5,52];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
                             })
                             .run();
                     });
@@ -1421,15 +975,6 @@ describe("Hello Mama app", function() {
                                 state: 'state_end_optout',
                                 reply: "Thank you. You will no longer receive messages"
                             })
-                            .check(function(api) {
-                                var expected_used = [4,5,60];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 4, 3 - unsubscribe all
@@ -1446,15 +991,6 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_end_optout',
                                 reply: "Thank you. You will no longer receive messages"
-                            })
-                            .check(function(api) {
-                                var expected_used = [4,5,52,53];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
                             })
                             .run();
                     });
@@ -1477,15 +1013,6 @@ describe("Hello Mama app", function() {
                                     "3. All messages"
                                 ].join('\n')
                             })
-                            .check(function(api) {
-                                var expected_used = [4,5];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 5, 1 - unsubscribe mother
@@ -1502,15 +1029,6 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_end_optout',
                                 reply: "Thank you. You will no longer receive messages"
-                            })
-                            .check(function(api) {
-                                var expected_used = [4,5,57];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
                             })
                             .run();
                     });
@@ -1529,15 +1047,6 @@ describe("Hello Mama app", function() {
                                 state: 'state_end_optout',
                                 reply: "Thank you. You will no longer receive messages"
                             })
-                            .check(function(api) {
-                                var expected_used = [4,5,61];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 5, 3 - unsubscribe all
@@ -1554,15 +1063,6 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_end_optout',
                                 reply: "Thank you. You will no longer receive messages"
-                            })
-                            .check(function(api) {
-                                var expected_used = [4,5,57,58];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
                             })
                             .run();
                     });
@@ -1589,15 +1089,6 @@ describe("Hello Mama app", function() {
                                     "5. Other"
                                 ].join('\n')
                             })
-                            .check(function(api) {
-                                var expected_used = [7,12,13];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 1 - miscarriage
@@ -1618,15 +1109,6 @@ describe("Hello Mama app", function() {
                                     "2. No"
                                 ].join('\n')
                             })
-                            .check(function(api) {
-                                var expected_used = [7,12,13];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 1, 1 - miscarriage, yes
@@ -1643,15 +1125,6 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_end_loss_subscription_confirm',
                                 reply: "Thank you. You will now receive messages to support you during this difficult time."
-                            })
-                            .check(function(api) {
-                                var expected_used = [7,12,13,34,35];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
                             })
                             .run();
                     });
@@ -1670,15 +1143,6 @@ describe("Hello Mama app", function() {
                                 state: 'state_end_loss',
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
                             })
-                            .check(function(api) {
-                                var expected_used = [7,12,13,35,39];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 2 - stillborn
@@ -1695,15 +1159,6 @@ describe("Hello Mama app", function() {
                                 state: 'state_end_loss',
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
                             })
-                            .check(function(api) {
-                                var expected_used = [7,12,13,40,44];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 3 - baby death
@@ -1719,15 +1174,6 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_end_loss',
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
-                            })
-                            .check(function(api) {
-                                var expected_used = [7,12,13,45,49];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
                             })
                             .run();
                     });
@@ -1750,15 +1196,6 @@ describe("Hello Mama app", function() {
                                     "3. All messages"
                                 ].join('\n')
                             })
-                            .check(function(api) {
-                                var expected_used = [7,12,13];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 4, 1 - unsubscribe mother
@@ -1775,15 +1212,6 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_end_optout',
                                 reply: "Thank you. You will no longer receive messages"
-                            })
-                            .check(function(api) {
-                                var expected_used = [7,12,13,54];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
                             })
                             .run();
                     });
@@ -1802,15 +1230,6 @@ describe("Hello Mama app", function() {
                                 state: 'state_end_optout',
                                 reply: "Thank you. You will no longer receive messages"
                             })
-                            .check(function(api) {
-                                var expected_used = [7,12,13,50];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 4, 3 - unsubscribe all
@@ -1827,15 +1246,6 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_end_optout',
                                 reply: "Thank you. You will no longer receive messages"
-                            })
-                            .check(function(api) {
-                                var expected_used = [7,12,13,50,54];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
                             })
                             .run();
                     });
@@ -1858,15 +1268,6 @@ describe("Hello Mama app", function() {
                                     "3. All messages"
                                 ].join('\n')
                             })
-                            .check(function(api) {
-                                var expected_used = [7,12,13];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 5, 1 - unsubscribe mother
@@ -1883,15 +1284,6 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_end_optout',
                                 reply: "Thank you. You will no longer receive messages"
-                            })
-                            .check(function(api) {
-                                var expected_used = [7,12,13,59];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
                             })
                             .run();
                     });
@@ -1910,15 +1302,6 @@ describe("Hello Mama app", function() {
                                 state: 'state_end_optout',
                                 reply: "Thank you. You will no longer receive messages"
                             })
-                            .check(function(api) {
-                                var expected_used = [7,12,13,55];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 5, 3 - unsubscribe all
@@ -1935,15 +1318,6 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_end_optout',
                                 reply: "Thank you. You will no longer receive messages"
-                            })
-                            .check(function(api) {
-                                var expected_used = [7,12,13,55,59];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
                             })
                             .run();
                     });
@@ -1970,15 +1344,6 @@ describe("Hello Mama app", function() {
                                     "5. Other"
                                 ].join('\n')
                             })
-                            .check(function(api) {
-                                var expected_used = [6,7,13];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 1 - miscarriage
@@ -1999,15 +1364,6 @@ describe("Hello Mama app", function() {
                                     "2. No"
                                 ].join('\n')
                             })
-                            .check(function(api) {
-                                var expected_used = [6,7,13];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 1, 1 - miscarriage, yes
@@ -2024,15 +1380,6 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_end_loss_subscription_confirm',
                                 reply: "Thank you. You will now receive messages to support you during this difficult time."
-                            })
-                            .check(function(api) {
-                                var expected_used = [6,7,13,34,35];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
                             })
                             .run();
                     });
@@ -2051,15 +1398,6 @@ describe("Hello Mama app", function() {
                                 state: 'state_end_loss',
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
                             })
-                            .check(function(api) {
-                                var expected_used = [6,7,13,35,39];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 2 - stillborn
@@ -2075,15 +1413,6 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_end_loss',
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
-                            })
-                            .check(function(api) {
-                                var expected_used = [6,7,13,40,44];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
                             })
                             .run();
                     });
@@ -2101,15 +1430,6 @@ describe("Hello Mama app", function() {
                                 state: 'state_end_loss',
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
                             })
-                            .check(function(api) {
-                                var expected_used = [6,7,13,45,49];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 4 - not useful
@@ -2126,15 +1446,6 @@ describe("Hello Mama app", function() {
                                 state: 'state_end_optout',
                                 reply: "Thank you. You will no longer receive messages"
                             })
-                            .check(function(api) {
-                                var expected_used = [6,7,13,50];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     // 5 - other
@@ -2150,15 +1461,6 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_end_optout',
                                 reply: "Thank you. You will no longer receive messages"
-                            })
-                            .check(function(api) {
-                                var expected_used = [6,7,13,55];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
                             })
                             .run();
                     });
