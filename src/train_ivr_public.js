@@ -79,109 +79,6 @@ go.app = function() {
             });
         });
 
-        // Interstitial - determine contact registration
-        self.states.add('state_check_registered', function() {
-            var msisdn = go.utils.normalize_msisdn(
-                self.im.user.answers.state_msg_receiver_msisdn,
-                self.im.config.country_code
-            );
-            return self.im
-                .log('Starting for msisdn: ' + msisdn)
-                .then(function() {
-                    return go.utils
-                        .get_identity_by_address({'msisdn': msisdn}, self.im)
-                        .then(function(contact) {
-                            if (contact && contact.details.receiver_role) {
-                                self.im.user.set_answer('role_player', contact.details.receiver_role);
-                                self.im.user.set_answer('contact_id', contact.id);
-                                return self.states.create('state_check_receiver_role');
-                            } else {
-                                return self.states.create('state_msisdn_not_recognised');
-                            }
-                        });
-                });
-        });
-
-        self.add('state_check_receiver_role', function(name) {
-            var role = self.im.user.answers.role_player;
-            var contact_id = self.im.user.answers.contact_id;
-            if (role === 'mother') {
-                // lookup contact so we can get the link to the household receiver (if any)
-                return go.utils
-                    .get_identity(contact_id, self.im)
-                    .then(function(mother) {
-                        self.im.user.set_answer('mother_id', contact_id);
-                        self.im.user.set_answer('mother_msisdn',
-                            Object.keys(mother.details.addresses.msisdn)[0]);
-                        if (mother.details.linked_to) {
-                            self.im.user.set_answer('household_id', mother.details.linked_to);
-                            self.im.user.set_answer('seperate_household_receiver', true);
-                            self.im.user.set_answer('reg_type', 'mother_and_other');
-                            // lookup household so we can save their msisdn
-                            return go.utils
-                                .get_identity(self.im.user.answers.household_id, self.im)
-                                .then(function(household) {
-                                    self.im.user.set_answer('household_msisdn',
-                                        Object.keys(household.details.addresses.msisdn)[0]);
-                                    return self.states.create('state_main_menu');
-                                });
-                        } else {
-                            // mother_only
-                            self.im.user.set_answer('household_id', null);
-                            self.im.user.set_answer('seperate_household_receiver', false);
-                            self.im.user.set_answer('reg_type', 'mother_only');
-                            return self.states.create('state_main_menu');
-                        }
-                    });
-            } else {
-                // lookup contact so we can get the link to the mother
-                return go.utils
-                    .get_identity(contact_id, self.im)
-                    .then(function(contact) {
-                        self.im.user.set_answer('household_id', contact_id);
-                        self.im.user.set_answer('mother_id', contact.details.linked_to);
-                        self.im.user.set_answer('household_msisdn',
-                            Object.keys(contact.details.addresses.msisdn)[0]);
-                        if (contact.details.household_msgs_only) {
-                            // set true for mother_friend, mother_family, mother_father identification
-                            self.im.user.set_answer('seperate_household_receiver', true);
-                            self.im.user.set_answer('reg_type', 'mother_and_other');
-                            // lookup mother so we can save her msisdn
-                            return go.utils
-                                .get_identity(self.im.user.answers.mother_id, self.im)
-                                .then(function(mother) {
-                                    self.im.user.set_answer('mother_msisdn',
-                                        Object.keys(mother.details.addresses.msisdn)[0]);
-                                    return self.states.create('state_main_menu_household');
-                                });
-                        } else {
-                            // set false for friend_only, family_only, father_only identification
-                            // cannot set mother msisdn as it doesn't exist
-                            self.im.user.set_answer('seperate_household_receiver', false);
-                            self.im.user.set_answer('reg_type', 'other_only');
-                            return self.states.create('state_main_menu');
-                        }
-                    });
-            }
-        });
-
-        // ChoiceState st-B
-        self.add('state_msisdn_not_recognised', function(name) {
-            var speech_option = '1';
-            return new ChoiceState(name, {
-                question: $('Number not recognised.'),
-                helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                choices: [
-                    new Choice('state_msg_receiver_msisdn', $('If you entered the incorrect number, press 1')),
-                    new Choice('state_end_exit', $('to exit, press 2'))
-                ],
-                next: function(choice) {
-                    return choice.value;
-                }
-            });
-        });
-
         // ChoiceState st-A
         self.add('state_main_menu', function(name) {
             var speech_option = '1';
@@ -190,27 +87,8 @@ go.app = function() {
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 choices: [
-                    new Choice('state_check_baby_subscription', $('baby')),
+                    new Choice('state_baby_confirm_subscription', $('baby')),
                     new Choice('state_check_msg_type', $('preferences')),
-                    new Choice('state_new_msisdn', $('number')),
-                    new Choice('state_msg_language', $('language')),
-                    new Choice('state_optout_reason', $('optout'))
-                ],
-                next: function(choice) {
-                    return choice.value;
-                }
-            });
-        });
-
-       // ChoiceState st-A1
-        self.add('state_main_menu_household', function(name) {
-            var speech_option = '1';
-            return new ChoiceState(name, {
-                question: $('Choose:'),
-                helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                choices: [
-                    new Choice('state_check_baby_subscription', $('baby')),
                     new Choice('state_new_msisdn', $('number')),
                     new Choice('state_msg_language', $('language')),
                     new Choice('state_optout_reason', $('optout'))
@@ -223,34 +101,6 @@ go.app = function() {
 
     // BABY CHANGE STATES
 
-        // interstitial
-        self.add('state_check_baby_subscription', function(name) {
-            return go.utils_project
-                .check_postbirth_subscription(self.im, self.im.user.answers.mother_id)
-                .then(function(postbirth_sub) {
-                    if (postbirth_sub === true) {
-                        return self.states.create('state_already_registered_baby');
-                    } else if (postbirth_sub === 'no_active_subs_found') {
-                        return self.states.create('state_baby_switch_broken');  // TODO #101
-                    } else {
-                        return self.states.create('state_baby_confirm_subscription');
-                    }
-                });
-        });
-
-        // FreeText st-01
-        self.add('state_already_registered_baby', function(name) {
-            var speech_option = 1;
-            return new FreeText(name, {
-                question: $('You are already subscribed. To go back to main menu, 0 then #'),
-                helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                next: function(choice) {
-                    return 'state_already_registered_baby';
-                }
-            });
-        });
-
         // ChoiceState st-1A
         self.add('state_baby_confirm_subscription', function(name) {
             var speech_option = '1';
@@ -262,18 +112,9 @@ go.app = function() {
                     new Choice('confirm', $('To confirm press 1. To go back to main menu, 0 then #'))
                 ],
                 next: function(choice) {
-                    return 'state_change_baby';
+                    return 'state_end_baby';
                 }
             });
-        });
-
-        // interstitial to save subscription to baby messages
-        self.add('state_change_baby', function(name) {
-            return go.utils_project
-                .switch_to_baby(self.im, self.im.user.answers.mother_id)
-                .then(function() {
-                    return self.states.create('state_end_baby');
-                });
         });
 
         // EndState st-02
