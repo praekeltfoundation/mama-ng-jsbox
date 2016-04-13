@@ -1372,13 +1372,13 @@ go.app = function() {
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
-                    if (go.utils.is_valid_msisdn(content) === false) {
+                    if (go.utils.check_valid_number(content) && content.length === 5) {
+                        return 'state_msg_receiver';
+                    } else {
                         return {
                             'name': 'state_retry',
                             'creator_opts': {'retry_state': name}
                         };
-                    } else {
-                        return 'state_msg_receiver';
                     }
                 }
             });

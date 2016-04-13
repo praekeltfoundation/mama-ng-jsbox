@@ -71,7 +71,7 @@ describe("Mama Nigeria App", function() {
         // TEST REGISTRATION FLOW
 
         describe("When you start the app", function() {
-            it.only("should navigate to state_personnel_auth", function() {
+            it("should navigate to state_personnel_auth", function() {
                 return tester
                     .setup.user.addr('08080070007')
                     .inputs(
@@ -92,54 +92,31 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            describe("if the user is not a registered healthworker", function() {
-                it("should navigate to state_personnel_auth", function() {
-                    return tester
-                        .setup.user.addr('07030010001')
-                        .inputs(
-                            {session_event: 'new'}
-                        )
-                        .check.interaction({
-                            state: 'state_personnel_auth',
-                            reply: 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1.mp3',
-                                    wait_for: '#',
-                                    barge_in: true
-                                }
+            it("'*' should repeat state_personnel_auth", function() {
+                return tester
+                    .setup.user.addr('08080070007')
+                    .inputs(
+                        {session_event: 'new'},
+                        '*'  // state_personnel_auth
+                    )
+                    .check.interaction({
+                        state: 'state_personnel_auth',
+                        reply: 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
+                    })
+                    .check.reply.properties({
+                        helper_metadata: {
+                            voice: {
+                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1.mp3',
+                                wait_for: '#',
+                                barge_in: true
                             }
-                        })
-                        .run();
-                });
-                it("should repeat state_personnel_auth", function() {
-                    return tester
-                        .setup.user.addr('07030010001')
-                        .inputs(
-                            {session_event: 'new'},
-                            '*' // state_personnel_auth
-                        )
-                        .check.interaction({
-                            state: 'state_personnel_auth',
-                            reply: 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1.mp3',
-                                    wait_for: '#',
-                                    barge_in: true
-                                }
-                            }
-                        })
-                        .run();
-                });
+                        }
+                    })
+                    .run();
             });
         });
 
-        describe("Entering a personnel (chew) code", function() {
+        describe.only("Entering a personnel (chew) code", function() {
             describe("if code validates", function() {
                 it("should navigate to state_msg_receiver", function() {
                     return tester
