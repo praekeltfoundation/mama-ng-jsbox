@@ -270,12 +270,12 @@ module.exports = function (grunt) {
             // test_sms_inbound: {
             //      src: ['<%= paths.test.sms_inbound %>']
             // },
-            test_train_ivr_reg: {
-                src: ['<%= paths.test.train_ivr_reg %>']
-            },
-            // test_train_ivr_public: {
-            //     src: ['<%= paths.test.train_ivr_public %>']
+            // test_train_ivr_reg: {
+            //     src: ['<%= paths.test.train_ivr_reg %>']
             // },
+            test_train_ivr_public: {
+                src: ['<%= paths.test.train_ivr_public %>']
+            },
             // test_train_ussd_reg_unrecognised: {
             //     src: ['<%= paths.test.train_ussd_reg_unrecognised %>']
             // },
