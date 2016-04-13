@@ -1,5 +1,5 @@
 var vumigo = require('vumigo_v02');
-var fixtures = require('./fixtures_public');
+// TR02 var fixtures = require('./fixtures_public');
 var assert = require('assert');
 var AppTester = vumigo.AppTester;
 
@@ -17,34 +17,31 @@ describe("Mama Nigeria App", function() {
                 .setup.config.app({
                     testing_today: '2015-07-22',
                     testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',  // testing only
-                    name: 'voice-public-test',
+                    name: 'train-ivr-public-test',
                     country_code: '234',  // nigeria
                     services: {
-                        identities: {
-                            api_token: 'test_token_identities',
-                            url: "http://localhost:8001/api/v1/"
-                        },
-                        registrations: {
-                            api_token: 'test_token_registrations',
-                            url: "http://localhost:8002/api/v1/"
-                        },
                         voice_content: {
                             api_token: "test_token_voice_content",
                             url: "http://localhost:8004/api/v1/"
                         },
-                        subscriptions: {
-                            api_token: 'test_token_subscriptions',
-                            url: "http://localhost:8005/api/v1/"
-                        },
-                        message_sender: {
-                            api_token: 'test_token_message_sender',
-                            url: "http://localhost:8006/api/v1/"
-                        }
                     }
                 })
                 .setup(function(api) {
-                    fixtures().forEach(function(d) {
-                        api.http.fixtures.add(d);
+                    // TR03 add logging fixture
+                    api.http.fixtures.add({
+                        'repeatable': true,
+                        'request': {
+                            'method': 'HEAD',
+                            'params': {},
+                            'headers': {
+                                'Connection': ['close']
+                            },
+                            'url': new RegExp('^http:\/\/localhost:8004\/api\/v1\/.*\.mp3$'),
+                        },
+                        'response': {
+                            "code": 200,
+                            "data": {}
+                        }
                     });
                 })
                 ;
