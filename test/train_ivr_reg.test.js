@@ -19,10 +19,29 @@ describe("Mama Nigeria App", function() {
                     testing_today: '2017-07-22',
                     name: 'train-ivr-reg-test',
                     country_code: '234',  // nigeria
+                    services: {
+                        voice_content: {
+                            api_token: "test_token_voice_content",
+                            url: "http://localhost:8004/api/v1/"
+                        },
+                    }
                 })
                 .setup(function(api) {
-                    fixtures().forEach(function(d) {
-                        // TR02 don't add any fixtures
+                    // TR03 add logging fixture
+                    api.http.fixtures.add({
+                        'repeatable': true,
+                        'request': {
+                            'method': 'HEAD',
+                            'params': {},
+                            'headers': {
+                                'Connection': ['close']
+                            },
+                            'url': new RegExp('^http:\/\/localhost:8004\/api\/v1\/.*\.mp3$'),
+                        },
+                        'response': {
+                            "code": 200,
+                            "data": {}
+                        }
                     });
                 })
                 ;
@@ -52,39 +71,26 @@ describe("Mama Nigeria App", function() {
         // TEST REGISTRATION FLOW
 
         describe("When you start the app", function() {
-            describe("if the user is a registered healthworker (has personnel code)", function() {
-                it("should navigate to state_personnel_auth", function() {
-                    // we cannot rely on the user being identified via caller id,
-                    // so the personnel code should always be gathered first
-                    return tester
-                        .setup.user.addr('08080070007')
-                        .inputs(
-                            {session_event: 'new'}
-                        )
-                        .check.interaction({
-                            state: 'state_personnel_auth',
-                            reply: 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
-                        })
-                        .check.reply.properties({
-                            helper_metadata: {
-                                voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1.mp3',
-                                    wait_for: '#',
-                                    barge_in: true
-                                }
+            it.only("should navigate to state_personnel_auth", function() {
+                return tester
+                    .setup.user.addr('08080070007')
+                    .inputs(
+                        {session_event: 'new'}
+                    )
+                    .check.interaction({
+                        state: 'state_personnel_auth',
+                        reply: 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
+                    })
+                    .check.reply.properties({
+                        helper_metadata: {
+                            voice: {
+                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1.mp3',
+                                wait_for: '#',
+                                barge_in: true
                             }
-                        })
-                        .check(function(api) {
-                            var expected_used = [79];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
-                        })
-                        .run();
-                });
+                        }
+                    })
+                    .run();
             });
             describe("if the user is not a registered healthworker", function() {
                 it("should navigate to state_personnel_auth", function() {

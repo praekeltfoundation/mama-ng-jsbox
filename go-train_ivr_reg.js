@@ -1372,19 +1372,14 @@ go.app = function() {
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
-                    return go.utils_project
-                        .find_healthworker_with_personnel_code(self.im, content)
-                        .then(function(healthworker) {
-                            if (healthworker) {
-                                self.im.user.set_answer('operator_id', healthworker.id);
-                                return 'state_msg_receiver';
-                            } else {
-                                return {
-                                    'name': 'state_retry',
-                                    'creator_opts': {'retry_state': name}
-                                };
-                            }
-                        });
+                    if (go.utils.is_valid_msisdn(content) === false) {
+                        return {
+                            'name': 'state_retry',
+                            'creator_opts': {'retry_state': name}
+                        };
+                    } else {
+                        return 'state_msg_receiver';
+                    }
                 }
             });
         });
