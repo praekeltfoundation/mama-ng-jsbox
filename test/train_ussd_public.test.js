@@ -14,7 +14,7 @@ describe("Hello Mama app", function() {
             tester
                 .setup.char_limit(182)
                 .setup.config.app({
-                    name: 'ussd-public-test',
+                    name: 'train-ussd-public-test',
                     country_code: '234',  // nigeria
                     channel: '*120*8864*0000#',
                     testing_today: '2015-04-03 06:07:08.999',  // testing only
