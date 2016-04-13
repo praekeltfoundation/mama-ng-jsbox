@@ -34,7 +34,7 @@ describe("Hello Mama app", function() {
         // TEST CHANGE FLOW
 
         describe("Flow testing - ", function() {
-            describe.only("Initial states enroute to st-A (state_main_menu)", function() {
+            describe("Initial states enroute to st-A (state_main_menu)", function() {
                 it("to state_language", function() {
                     return tester
                         .setup.user.addr('05059991111')
@@ -90,74 +90,15 @@ describe("Hello Mama app", function() {
                 });
             });
 
-            describe("Change to baby messages", function() {
-                it("to state_already_registered_baby", function() {
+            describe.only("Change to baby messages", function() {
+                it("to state_new_registration_baby", function() {
                     return tester
-                        .setup.user.addr('05059999999')
+                        .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '1'   // state_msisdn_permission - yes
-                            , '1'   // state_main_menu - start baby messages
-                        )
-                        .check.interaction({
-                            state: 'state_already_registered_baby',
-                            reply: [
-                                "You are already registered for baby messages.",
-                                "1. Back to main menu",
-                                "2. Exit"
-                            ].join('\n')
-                        })
-                        .run();
-                });
-                it("case 1 > to state_new_registration_baby", function() {
-                    return tester
-                        .setup.user.addr('05059992222')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'   // state_msisdn_permission - yes
-                            , '1'   // state_main_menu - start baby messages
-                        )
-                        .check.interaction({
-                            state: 'state_new_registration_baby',
-                            reply: "Thank you. You will now receive messages about caring for baby"
-                        })
-                        .run();
-                });
-                it("case 2 > to state_new_registration_baby", function() {
-                    return tester
-                        .setup.user.addr('05059993333')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'   // state_msisdn_permission - yes
-                            , '1'   // state_main_menu - start baby messages
-                        )
-                        .check.interaction({
-                            state: 'state_new_registration_baby',
-                            reply: "Thank you. You will now receive messages about caring for baby"
-                        })
-                        .run();
-                });
-                it("case 3 > to state_new_registration_baby", function() {
-                    return tester
-                        .setup.user.addr('05059996666')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'   // state_msisdn_permission - yes
-                            , '1'   // state_main_menu - start baby messages
-                        )
-                        .check.interaction({
-                            state: 'state_new_registration_baby',
-                            reply: "Thank you. You will now receive messages about caring for baby"
-                        })
-                        .run();
-                });
-                it("case 4 > to state_new_registration_baby", function() {
-                    return tester
-                        .setup.user.addr('05059997777')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'   // state_msisdn_permission - yes
-                            , '1'   // state_main_menu - start baby messages
+                            , '4'   // state_language - pidgin
+                            , '05059993333'  // state_registered_msisdn
+                            , '1'  // state_main_menu - start baby messages
                         )
                         .check.interaction({
                             state: 'state_new_registration_baby',

@@ -1488,7 +1488,7 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: questions[name],
                 choices: [
-                    new Choice('state_check_baby_subscription', $("Start Baby messages")),
+                    new Choice('state_new_registration_baby', $("Start Baby messages")),
                     new Choice('state_check_msg_type', $("Change message preferences")),
                     new Choice('state_new_msisdn', $("Change my number")),
                     new Choice('state_msg_language', $("Change language")),
@@ -1503,44 +1503,6 @@ go.app = function() {
 
 
     // BABY CHANGE STATES
-
-        // Interstitials
-        self.add('state_check_baby_subscription', function(name) {
-            return go.utils_project
-                .check_postbirth_subscription(self.im, self.im.user.answers.mother_id)
-                .then(function(postbirth_sub) {
-                    if (postbirth_sub === true) {
-                        return self.states.create('state_already_registered_baby');
-                    } else if (postbirth_sub === 'no_active_subs_found') {
-                        return self.states.create('state_baby_switch_broken');  // TODO #101
-                    } else {
-                        return self.states.create('state_change_baby');
-                    }
-                });
-        });
-
-        // ChoiceState st-01
-        self.add('state_already_registered_baby', function(name) {
-            return new ChoiceState(name, {
-                question: questions[name],
-                error: errors[name],
-                choices: [
-                    new Choice('state_check_receiver_role', $("Back to main menu")),
-                    new Choice('state_end_exit', $("Exit"))
-                ],
-                next: function(choice) {
-                    return choice.value;
-                }
-            });
-        });
-
-        self.add('state_change_baby', function(name) {
-            return go.utils_project
-                .switch_to_baby(self.im, self.im.user.answers.mother_id)
-                .then(function() {
-                    return self.states.create('state_new_registration_baby');
-                });
-        });
 
         // EndState st-02
         self.add('state_new_registration_baby', function(name) {
