@@ -141,8 +141,7 @@ go.app = function() {
             return new FreeText(name, {
                 question: questions[name],
                 check: function(content) {
-                    var personnel_code = content;
-                    if (go.utils.check_valid_number(personnel_code) && content.length === 5) {
+                    if (go.utils.check_valid_number(content) && content.length === 5) {
                         return null;
                     } else {
                         return errors[name];
