@@ -1,0 +1,116 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2016-04-12 02:54:+0000\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+
+#: go-sms_inbound.js:232
+msgid "{{pre}}January{{post}}"
+msgstr ""
+
+#: go-sms_inbound.js:233
+msgid "{{pre}}February{{post}}"
+msgstr ""
+
+#: go-sms_inbound.js:234
+msgid "{{pre}}March{{post}}"
+msgstr ""
+
+#: go-sms_inbound.js:235
+msgid "{{pre}}April{{post}}"
+msgstr ""
+
+#: go-sms_inbound.js:236 go-sms_inbound.js:258
+msgid "{{pre}}May{{post}}"
+msgstr ""
+
+#: go-sms_inbound.js:237
+msgid "{{pre}}June{{post}}"
+msgstr ""
+
+#: go-sms_inbound.js:238
+msgid "{{pre}}July{{post}}"
+msgstr ""
+
+#: go-sms_inbound.js:239
+msgid "{{pre}}August{{post}}"
+msgstr ""
+
+#: go-sms_inbound.js:240
+msgid "{{pre}}September{{post}}"
+msgstr ""
+
+#: go-sms_inbound.js:241
+msgid "{{pre}}October{{post}}"
+msgstr ""
+
+#: go-sms_inbound.js:242
+msgid "{{pre}}November{{post}}"
+msgstr ""
+
+#: go-sms_inbound.js:243
+msgid "{{pre}}December{{post}}"
+msgstr ""
+
+#: go-sms_inbound.js:254
+msgid "{{pre}}Jan{{post}}"
+msgstr ""
+
+#: go-sms_inbound.js:255
+msgid "{{pre}}Feb{{post}}"
+msgstr ""
+
+#: go-sms_inbound.js:256
+msgid "{{pre}}Mar{{post}}"
+msgstr ""
+
+#: go-sms_inbound.js:257
+msgid "{{pre}}Apr{{post}}"
+msgstr ""
+
+#: go-sms_inbound.js:259
+msgid "{{pre}}Jun{{post}}"
+msgstr ""
+
+#: go-sms_inbound.js:260
+msgid "{{pre}}Jul{{post}}"
+msgstr ""
+
+#: go-sms_inbound.js:261
+msgid "{{pre}}Aug{{post}}"
+msgstr ""
+
+#: go-sms_inbound.js:262
+msgid "{{pre}}Sep{{post}}"
+msgstr ""
+
+#: go-sms_inbound.js:263
+msgid "{{pre}}Oct{{post}}"
+msgstr ""
+
+#: go-sms_inbound.js:264
+msgid "{{pre}}Nov{{post}}"
+msgstr ""
+
+#: go-sms_inbound.js:265
+msgid "{{pre}}Dec{{post}}"
+msgstr ""
+
+#: go-sms_inbound.js:1369
+msgid ""
+"You will no longer receive messages from Hello Mama. Should you ever want "
+"to re-subscribe, contact your local community health extension worker"
+msgstr ""
+
+#: go-sms_inbound.js:1376
+msgid "We do not recognise your number and can therefore not opt you out."
+msgstr ""
+
+#: go-sms_inbound.js:1392
+msgid "Currently no helpdesk functionality is active. Reply STOP to unsubscribe."
+msgstr ""
