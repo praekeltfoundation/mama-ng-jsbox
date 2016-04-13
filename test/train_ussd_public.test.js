@@ -188,6 +188,29 @@ describe("Hello Mama app", function() {
                         .check.reply.ends_session()
                         .run();
                 });
+                it("back to state_main_menu", function() {
+                    return tester
+                        .setup.user.addr('05059991111')
+                        .inputs(
+                            {session_event: 'new'}  // dial in
+                            , '4'   // state_language - pidgin
+                            , '05059993333'  // state_registered_msisdn
+                            , '2'  // state_main_menu - change message preferences
+                            , '2'  // state_change_menu_sms - back to main menu
+                        )
+                        .check.interaction({
+                            state: 'state_main_menu',
+                            reply: [
+                                "Select:",
+                                "1. Start Baby messages",
+                                "2. Change message preferences",
+                                "3. Change my number",
+                                "4. Change language",
+                                "5. Stop receiving messages"
+                            ].join('\n')
+                        })
+                        .run();
+                });
             });
 
             describe("Change number", function() {

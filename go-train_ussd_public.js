@@ -1527,7 +1527,7 @@ go.app = function() {
                 next: function(choice) {
                     return choice.value === 'to_voice'
                         ? 'state_voice_days'
-                        : 'state_check_receiver_role';
+                        : 'state_main_menu';
                 }
             });
         });
@@ -1567,44 +1567,6 @@ go.app = function() {
                 next: 'state_start'
             });
         });
-
-        // ChoiceState st-07
-        self.add('state_change_menu_voice', function(name) {
-            return new ChoiceState(name, {
-                question: questions[name],
-                error: errors[name],
-                choices: [
-                    new Choice('state_voice_days', $("Change the day and time I receive messages")),
-                    new Choice('state_end_sms_confirm', $("Change from voice to text messages")),
-                    new Choice('state_check_receiver_role', $("Back to main menu"))
-                ],
-                next: function(choice) {
-                    if (choice.value !== 'state_end_sms_confirm') {
-                        return choice.value;
-                    } else {
-                        return go.utils_project
-                            .update_msg_format_time(
-                                self.im,
-                                'text',
-                                null,
-                                null
-                            )
-                            .then(function() {
-                                return 'state_end_sms_confirm';
-                            });
-                    }
-                }
-            });
-        });
-
-        // EndState st-08
-        self.add('state_end_sms_confirm', function(name) {
-            return new EndState(name, {
-                text: questions[name],
-                next: 'state_start'
-            });
-        });
-
 
     // NUMBER CHANGE STATES
 
