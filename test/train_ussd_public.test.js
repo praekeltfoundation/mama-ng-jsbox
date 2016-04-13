@@ -108,7 +108,7 @@ describe("Hello Mama app", function() {
                 });
             });
 
-            describe.only("Change message format and time", function() {
+            describe("Change message format and time", function() {
                 it("to state_change_menu_sms", function() {
                     return tester
                         .setup.user.addr('05059991111')
@@ -213,13 +213,14 @@ describe("Hello Mama app", function() {
                 });
             });
 
-            describe("Change number", function() {
-                it("case 1 > to state_new_msisdn", function() {
+            describe.only("Change number", function() {
+                it("to state_new_msisdn", function() {
                     return tester
-                        .setup.user.addr('05059992222')
+                        .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '1'  // state_msisdn_permission - yes
+                            , '4'   // state_language - pidgin
+                            , '05059993333'  // state_registered_msisdn
                             , '3'  // state_main_menu - change number
                         )
                         .check.interaction({
@@ -228,109 +229,14 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
-                it("case 1 > to state_number_in_use", function() {
+                it("to state_end_number_change", function() {
                     return tester
-                        .setup.user.addr('05059992222')
+                        .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '1'  // state_msisdn_permission - yes
+                            , '4'   // state_language - pidgin
+                            , '05059993333'  // state_registered_msisdn
                             , '3'  // state_main_menu - change number
-                            , '05059993333' // state_new_msisdn
-                        )
-                        .check.interaction({
-                            state: 'state_number_in_use',
-                            reply: [
-                                "Sorry, this number is already registered. They must opt-out before they can register again.",
-                                "1. Try a different number",
-                                "2. Exit"
-                            ].join('\n')
-                        })
-                        .run();
-                });
-                it("case 1 > to state_new_msisdn - via state_number_in_use", function() {
-                    return tester
-                        .setup.user.addr('05059992222')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_msisdn_permission - yes
-                            , '3'  // state_main_menu - change number
-                            , '05059993333' // state_new_msisdn
-                            , '1'  // state_number_in_use - different number
-                        )
-                        .check.interaction({
-                            state: 'state_new_msisdn',
-                            reply: "Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899"
-                        })
-                        .run();
-                });
-                it("case 1 > to state_end_exit", function() {
-                    return tester
-                        .setup.user.addr('05059992222')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_msisdn_permission - yes
-                            , '3'  // state_main_menu - change number
-                            , '05059993333' // state_new_msisdn
-                            , '2'  // state_number_in_use - exit
-                        )
-                        .check.interaction({
-                            state: 'state_end_exit',
-                            reply: "Thank you for using the Hello Mama service"
-                        })
-                        .run();
-                });
-                it("case 1 > to state_end_number_change", function() {
-                    return tester
-                        .setup.user.addr('05059992222')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_msisdn_permission - yes
-                            , '3'  // state_main_menu - change number
-                            , '05059998888' // state_new_msisdn
-                        )
-                        .check.interaction({
-                            state: 'state_end_number_change',
-                            reply: "Thank you. The number which receives messages has been updated."
-                        })
-                        .run();
-                });
-                it("case 2 > to state_end_number_change", function() {
-                    return tester
-                        .setup.user.addr('05059993333')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_msisdn_permission - yes
-                            , '3'  // state_main_menu - change number
-                            , '05059998888' // state_new_msisdn
-                        )
-                        .check.interaction({
-                            state: 'state_end_number_change',
-                            reply: "Thank you. The number which receives messages has been updated."
-                        })
-                        .run();
-                });
-                it("case 3 > to state_end_number_change", function() {
-                    return tester
-                        .setup.user.addr('05059996666')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_msisdn_permission - yes
-                            , '3'  // state_main_menu - change number
-                            , '05059998888' // state_new_msisdn
-                        )
-                        .check.interaction({
-                            state: 'state_end_number_change',
-                            reply: "Thank you. The number which receives messages has been updated."
-                        })
-                        .run();
-                });
-                it("case 4 > to state_end_number_change", function() {
-                    return tester
-                        .setup.user.addr('05059997777')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_msisdn_permission - yes
-                            , '2'  // state_main_menu_household - change number
                             , '05059998888' // state_new_msisdn
                         )
                         .check.interaction({
