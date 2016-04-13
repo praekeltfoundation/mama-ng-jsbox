@@ -553,11 +553,6 @@ go.utils = {
 };
 
 /*jshint -W083 */
-
-// TRAINING UTILS
-go.utils_training = {};
-
-/*jshint -W083 */
 var Q = require('q');
 var moment = require('moment');
 var vumigo = require('vumigo_v02');

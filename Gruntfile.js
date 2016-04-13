@@ -57,7 +57,6 @@ module.exports = function (grunt) {
                 train_ivr_reg: [
                     'src/index.js',
                     'src/utils.js',
-                    'src/utils_training.js',
                     'src/utils_project.js',
                     '<%= paths.src.app.train_ivr_reg %>',
                     'src/init.js'
@@ -65,14 +64,12 @@ module.exports = function (grunt) {
                 train_ivr_public: [
                     'src/index.js',
                     'src/utils.js',
-                    'src/utils_training.js',
                     'src/utils_project.js',
                     '<%= paths.src.app.train_ivr_public %>',
                     'src/init.js'
                 ],
                 train_ussd_reg_unrecognised: [
                     'src/index.js',
-                    'src/utils_training.js',
                     'src/utils.js',
                     'src/utils_project.js',
                     '<%= paths.src.app.train_ussd_reg_unrecognised %>',
@@ -81,7 +78,6 @@ module.exports = function (grunt) {
                 train_ussd_reg_recognised: [
                     'src/index.js',
                     'src/utils.js',
-                    'src/utils_training.js',
                     'src/utils_project.js',
                     '<%= paths.src.app.train_ussd_reg_recognised %>',
                     'src/init.js'
@@ -89,7 +85,6 @@ module.exports = function (grunt) {
                 train_ussd_public: [
                     'src/index.js',
                     'src/utils.js',
-                    'src/utils_training.js',
                     'src/utils_project.js',
                     '<%= paths.src.app.train_ussd_public %>',
                     'src/init.js'
@@ -149,7 +144,6 @@ module.exports = function (grunt) {
                 train_ivr_reg: [
                     'test/setup.js',
                     'src/utils.js',
-                    'src/utils_training.js',
                     'src/utils_project.js',
                     '<%= paths.src.app.train_ivr_reg %>',
                     'test/train_ivr_reg.test.js'
@@ -157,7 +151,6 @@ module.exports = function (grunt) {
                 train_ivr_public: [
                     'test/setup.js',
                     'src/utils.js',
-                    'src/utils_training.js',
                     'src/utils_project.js',
                     '<%= paths.src.app.train_ivr_public %>',
                     'test/train_ivr_public.test.js'
@@ -165,7 +158,6 @@ module.exports = function (grunt) {
                 train_ussd_reg_unrecognised: [
                     'test/setup.js',
                     'src/utils.js',
-                    'src/utils_training.js',
                     'src/utils_project.js',
                     '<%= paths.src.app.train_ussd_reg_unrecognised %>',
                     'test/train_ussd_reg_unrecognised.test.js'
@@ -173,7 +165,6 @@ module.exports = function (grunt) {
                 train_ussd_reg_recognised: [
                     'test/setup.js',
                     'src/utils.js',
-                    'src/utils_training.js',
                     'src/utils_project.js',
                     '<%= paths.src.app.train_ussd_reg_recognised %>',
                     'test/train_ussd_reg_recognised.test.js'
@@ -181,7 +172,6 @@ module.exports = function (grunt) {
                 train_ussd_public: [
                     'test/setup.js',
                     'src/utils.js',
-                    'src/utils_training.js',
                     'src/utils_project.js',
                     '<%= paths.src.app.train_ussd_public %>',
                     'test/train_ussd_public.test.js'

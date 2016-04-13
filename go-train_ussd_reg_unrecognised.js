@@ -6,11 +6,6 @@ var go = {};
 go;
 
 /*jshint -W083 */
-
-// TRAINING UTILS
-go.utils_training = {};
-
-/*jshint -W083 */
 var vumigo = require('vumigo_v02');
 var moment = require('moment');
 var assert = require('assert');
