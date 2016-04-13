@@ -213,7 +213,7 @@ describe("Hello Mama app", function() {
                 });
             });
 
-            describe.only("Change number", function() {
+            describe("Change number", function() {
                 it("to state_new_msisdn", function() {
                     return tester
                         .setup.user.addr('05059991111')
@@ -247,13 +247,14 @@ describe("Hello Mama app", function() {
                 });
             });
 
-            describe("Change language", function() {
+            describe.only("Change language", function() {
                 it("to state_msg_language", function() {
                     return tester
-                        .setup.user.addr('05059992222')
+                        .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '1'  // state_msisdn_permission - yes
+                            , '4'   // state_language - pidgin
+                            , '05059993333'  // state_registered_msisdn
                             , '4'  // state_main_menu - change language
                         )
                         .check.interaction({
@@ -269,59 +270,15 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
-                it("case 1 > to state_msg_language_confirm", function() {
+                it("to state_msg_language_confirm", function() {
                     return tester
-                        .setup.user.addr('05059992222')
+                        .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '1'  // state_msisdn_permission - yes
+                            , '4'   // state_language - pidgin
+                            , '05059993333'  // state_registered_msisdn
                             , '4'  // state_main_menu - change language
-                            , '4'  // state_msg_language - pidgin
-                        )
-                        .check.interaction({
-                            state: 'state_msg_language_confirm',
-                            reply: "Thank you. You language preference has been updated and you will start to receive messages in this language."
-                        })
-                        .run();
-                });
-                it("case 2 > to state_msg_language_confirm", function() {
-                    return tester
-                        .setup.user.addr('05059993333')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_msisdn_permission - yes
-                            , '4'  // state_main_menu - change language
-                            , '4'  // state_msg_language - pidgin
-                        )
-                        .check.interaction({
-                            state: 'state_msg_language_confirm',
-                            reply: "Thank you. You language preference has been updated and you will start to receive messages in this language."
-                        })
-                        .run();
-                });
-                it("case 3 > to state_msg_language_confirm", function() {
-                    return tester
-                        .setup.user.addr('05059996666')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_msisdn_permission - yes
-                            , '4'  // state_main_menu - change language
-                            , '4'  // state_msg_language - pidgin
-                        )
-                        .check.interaction({
-                            state: 'state_msg_language_confirm',
-                            reply: "Thank you. You language preference has been updated and you will start to receive messages in this language."
-                        })
-                        .run();
-                });
-                it("case 4 > to state_msg_language_confirm", function() {
-                    return tester
-                        .setup.user.addr('05059997777')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_msisdn_permission - yes
-                            , '3'  // state_main_menu_household - change language
-                            , '4'  // state_msg_language - pidgin
+                            , '5'  // state_msg_language - yoruba
                         )
                         .check.interaction({
                             state: 'state_msg_language_confirm',
