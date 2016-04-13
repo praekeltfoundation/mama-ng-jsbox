@@ -127,7 +127,7 @@ go.app = function() {
                 opts.name = name;
                 // Prevent previous content being passed to next state
                 self.im.msg.content = null;
-                return self.states.create('state_msisdn_permission', opts);
+                return self.states.create('state_start', opts);
             });
         };
 
@@ -138,51 +138,11 @@ go.app = function() {
         self.states.add('state_start', function() {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
-            return go.utils
-                .get_or_create_identity({'msisdn': self.im.user.addr}, self.im, null)
-                .then(function(user) {
-                    self.im.user.set_answer('user_id', user.id);
-                    if (user.details.receiver_role) {
-                        self.im.user.set_answer('role_player', user.details.receiver_role);
-                        self.im.user.set_answer('contact_msisdn', self.im.user.addr);
-                        return self.states.create('state_msisdn_permission');
-                    } else {
-                        self.im.user.set_answer('role_player', 'guest');
-                        return self.states.create('state_language');
-                    }
-                });
+            return self.states.create('state_language');
         });
 
 
     // INITIAL STATES
-
-        // ChoiceState st-B
-        self.add('state_msisdn_permission', function(name) {
-            return new ChoiceState(name, {
-                question: questions[name].context({
-                    msisdn: self.im.user.answers.contact_msisdn}),
-                choices: [
-                    new Choice('state_check_receiver_role', $("Yes")),
-                    new Choice('state_msisdn_no_permission', $("No")),
-                    new Choice('state_registered_msisdn', $("Change the number I'd like to manage"))
-                ],
-                error: errors[name],
-                next: function(choice) {
-                    if (choice.value === 'state_check_receiver_role') {
-                        self.im.user.set_answer('contact_id', self.im.user.answers.user_id);
-                    }
-                    return choice.value;
-                }
-            });
-        });
-
-        // unnamed on flow diagram
-        self.add('state_msisdn_no_permission', function(name) {
-            return new EndState(name, {
-                text: questions[name],
-                next: 'state_start'
-            });
-        });
 
         // ChoiceState st-D
         self.add('state_language', function(name) {
@@ -211,100 +171,8 @@ go.app = function() {
                         return errors[name];
                     }
                 },
-                next: 'state_check_registered'
+                next: 'state_main_menu'
             });
-        });
-
-        // Interstitial - determine contact registration
-        self.states.add('state_check_registered', function() {
-            var msisdn = go.utils.normalize_msisdn(
-                self.im.user.answers.state_registered_msisdn,
-                self.im.config.country_code
-            );
-            return go.utils
-                .get_identity_by_address({'msisdn': msisdn}, self.im)
-                .then(function(contact) {
-                    if (contact && contact.details && contact.details.receiver_role) {
-                        self.im.user.set_answer('role_player', contact.details.receiver_role);
-                        self.im.user.set_answer('contact_msisdn', self.im.user.answers.state_registered_msisdn);
-                        self.im.user.set_answer('contact_id', contact.id);
-                        return self.states.create('state_check_receiver_role');
-                    } else {
-                        return self.states.create('state_msisdn_not_recognised');
-                    }
-                });
-        });
-
-        // EndState st-F
-        self.add('state_msisdn_not_recognised', function(name) {
-            return new EndState(name, {
-                text: questions[name],
-                next: 'state_start'
-            });
-        });
-
-        // Interstitial - before main menu
-        self.add('state_check_receiver_role', function(name) {
-            var role = self.im.user.answers.role_player;
-            var contact_id = self.im.user.answers.contact_id;
-            if (role === 'mother') {
-                // lookup contact so we can get the link to the household receiver (if any)
-                return go.utils
-                    .get_identity(contact_id, self.im)
-                    .then(function(mother) {
-                        self.im.user.set_answer('mother_id', contact_id);
-                        self.im.user.set_answer('mother_msisdn',
-                            Object.keys(mother.details.addresses.msisdn)[0]);
-                        if (mother.details.linked_to) {
-                            self.im.user.set_answer('household_id', mother.details.linked_to);
-                            self.im.user.set_answer('seperate_household_receiver', true);
-                            self.im.user.set_answer('reg_type', 'mother_and_other');
-                            // lookup household so we can save their msisdn
-                            return go.utils
-                                .get_identity(self.im.user.answers.household_id, self.im)
-                                .then(function(household) {
-                                    self.im.user.set_answer('household_msisdn',
-                                        Object.keys(household.details.addresses.msisdn)[0]);
-                                    return self.states.create('state_main_menu');
-                                });
-                        } else {
-                            // mother_only
-                            self.im.user.set_answer('household_id', null);
-                            self.im.user.set_answer('seperate_household_receiver', false);
-                            self.im.user.set_answer('reg_type', 'mother_only');
-                            return self.states.create('state_main_menu');
-                        }
-                    });
-            } else {
-                // lookup contact so we can get the link to the mother
-                return go.utils
-                    .get_identity(contact_id, self.im)
-                    .then(function(contact) {
-                        self.im.user.set_answer('household_id', contact_id);
-                        self.im.user.set_answer('mother_id', contact.details.linked_to);
-                        self.im.user.set_answer('household_msisdn',
-                            Object.keys(contact.details.addresses.msisdn)[0]);
-                        if (contact.details.household_msgs_only) {
-                            // set true for mother_friend, mother_family, mother_father identification
-                            self.im.user.set_answer('seperate_household_receiver', true);
-                            self.im.user.set_answer('reg_type', 'mother_and_other');
-                            // lookup mother so we can save her msisdn
-                            return go.utils
-                                .get_identity(self.im.user.answers.mother_id, self.im)
-                                .then(function(mother) {
-                                    self.im.user.set_answer('mother_msisdn',
-                                        Object.keys(mother.details.addresses.msisdn)[0]);
-                                    return self.states.create('state_main_menu_household');
-                                });
-                        } else {
-                            // set false for friend_only, family_only, father_only identification
-                            // cannot set mother msisdn as it doesn't exist
-                            self.im.user.set_answer('seperate_household_receiver', false);
-                            self.im.user.set_answer('reg_type', 'other_only');
-                            return self.states.create('state_main_menu');
-                        }
-                    });
-            }
         });
 
         // ChoiceState st-A
@@ -314,23 +182,6 @@ go.app = function() {
                 choices: [
                     new Choice('state_check_baby_subscription', $("Start Baby messages")),
                     new Choice('state_check_msg_type', $("Change message preferences")),
-                    new Choice('state_new_msisdn', $("Change my number")),
-                    new Choice('state_msg_language', $("Change language")),
-                    new Choice('state_optout_reason', $("Stop receiving messages"))
-                ],
-                error: errors[name],
-                next: function(choice) {
-                    return choice.value;
-                }
-            });
-        });
-
-        // ChoiceState st-A1
-        self.add('state_main_menu_household', function(name) {
-            return new ChoiceState(name, {
-                question: questions[name],
-                choices: [
-                    new Choice('state_check_baby_subscription', $("Start Baby messages")),
                     new Choice('state_new_msisdn', $("Change my number")),
                     new Choice('state_msg_language', $("Change language")),
                     new Choice('state_optout_reason', $("Stop receiving messages"))

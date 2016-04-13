@@ -34,8 +34,8 @@ describe("Hello Mama app", function() {
         // TEST CHANGE FLOW
 
         describe("Flow testing - ", function() {
-            describe("Initial states enroute to st-A (state_main_menu)", function() {
-                it("to state_language", function() {  //st-D
+            describe.only("Initial states enroute to st-A (state_main_menu)", function() {
+                it("to state_language", function() {
                     return tester
                         .setup.user.addr('05059991111')
                         .inputs(
@@ -54,7 +54,7 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
-                it("to state_registered_msisdn via state_language", function() { //st-C
+                it("to state_registered_msisdn", function() { //st-C
                     return tester
                         .setup.user.addr('05059991111')
                         .inputs(
@@ -67,51 +67,7 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
-                it("to state_msisdn_permission", function() {  //st-B
-                    return tester
-                        .setup.user.addr('05059992222')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                        )
-                        .check.interaction({
-                            state: 'state_msisdn_permission',
-                            reply: [
-                                "Welcome to Hello Mama. Do you have permission to manage the number 05059992222?",
-                                "1. Yes",
-                                "2. No",
-                                "3. Change the number I'd like to manage"
-                            ].join('\n')
-                        })
-                        .run();
-                });
-                it("to state_registered_msisdn via state_msisdn_permission", function() {  //st-C
-                    return tester
-                        .setup.user.addr('05059992222')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '3'  // state_msisdn_permission
-                        )
-                        .check.interaction({
-                            state: 'state_registered_msisdn',
-                            reply: "Please enter the number which is registered to receive messages. For example, 0803304899"
-                        })
-                        .run();
-                });
-                it("to state_msisdn_not_recognised", function() {  //st-F
-                    return tester
-                        .setup.user.addr('05059991111')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '2'   // state_language - hausa
-                            , '05059994444'  // state_registered_msisdn
-                        )
-                        .check.interaction({
-                            state: 'state_msisdn_not_recognised',
-                            reply: "We do not recognise this number. Please dial from the registered number or sign up with your local Community Health Extension worker."
-                        })
-                        .run();
-                });
-                it("to state_main_menu (receives for mother)", function() {
+                it("to state_main_menu", function() {
                     return tester
                         .setup.user.addr('05059991111')
                         .inputs(
@@ -129,58 +85,6 @@ describe("Hello Mama app", function() {
                                 "4. Change language",
                                 "5. Stop receiving messages"
                             ].join('\n')
-                        })
-                        .run();
-                });
-                it("to state_main_menu (mother)", function() {
-                    return tester
-                        .setup.user.addr('05059992222')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'   // state_msisdn_permission - yes
-                        )
-                        .check.interaction({
-                            state: 'state_main_menu',
-                            reply: [
-                                "Select:",
-                                "1. Start Baby messages",
-                                "2. Change message preferences",
-                                "3. Change my number",
-                                "4. Change language",
-                                "5. Stop receiving messages"
-                            ].join('\n')
-                        })
-                        .run();
-                });
-                it("to state_main_menu_household", function() {
-                    return tester
-                        .setup.user.addr('05059997777')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'   // state_msisdn_permission - yes
-                        )
-                        .check.interaction({
-                            state: 'state_main_menu_household',
-                            reply: [
-                                "Select:",
-                                "1. Start Baby messages",
-                                "2. Change my number",
-                                "3. Change language",
-                                "4. Stop receiving messages"
-                            ].join('\n')
-                        })
-                        .run();
-                });
-                it("to state_msisdn_no_permission", function() {  // via st-B
-                    return tester
-                        .setup.user.addr('05059992222')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '2'   // state_msisdn_permission - no
-                        )
-                        .check.interaction({
-                            state: 'state_msisdn_no_permission',
-                            reply: "We're sorry, you do not have permission to update the preferences for this subscriber."
                         })
                         .run();
                 });
