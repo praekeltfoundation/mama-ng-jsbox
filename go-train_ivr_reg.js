@@ -1747,11 +1747,7 @@ go.app = function() {
                     if (choice.value === 'audio') {
                         return 'state_voice_days';
                     } else {
-                        return go.utils_project
-                            .finish_registration(self.im)
-                            .then(function() {
-                                return 'state_end_sms';
-                            });
+                        return 'state_end_sms';
                     }
                 }
             });
@@ -1797,11 +1793,7 @@ go.app = function() {
                     new Choice('2_5', $('2_5'))
                 ],
                 next: function() {
-                    return go.utils_project
-                        .finish_registration(self.im)
-                        .then(function() {
-                            return 'state_end_voice';
-                        });
+                    return 'state_end_voice';
                 }
             });
         });

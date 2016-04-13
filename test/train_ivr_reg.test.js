@@ -264,7 +264,7 @@ describe("Mama Nigeria App", function() {
             });
         });
 
-        describe.only("Flows from chosen message receiver options", function() {
+        describe("Flows from chosen message receiver options", function() {
             describe("(option 1 - Mother & Father as receivers)", function() {
                 it("to state_msisdn_mother", function() {
                     return tester
@@ -1769,16 +1769,6 @@ describe("Mama Nigeria App", function() {
                                 }
                             }
                         })
-                        .check(function(api) {
-                            // var expected_used = [6,36,37,38,52,54,59,69,77,79];
-                            var expected_used = [6,36,37,38,54,59,69,77,79,80];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
-                        })
                         .check.reply.ends_session()
                         .run();
                 });
@@ -1905,16 +1895,6 @@ describe("Mama Nigeria App", function() {
                                 barge_in: false
                             }
                         }
-                    })
-                    .check(function(api) {
-                        // var expected_used = [6,36,37,38,53,54,59,70,77,79];
-                        var expected_used = [6,36,37,38,54,59,70,77,79,81];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
                     })
                     .check.reply.ends_session()
                     .run();
