@@ -8,26 +8,17 @@ module.exports = function (grunt) {
         paths: {
             src: {
                 app: {
-                    voice_registration: 'src/voice_registration.js',
-                    voice_public: 'src/voice_public.js',
-                    ussd_public: 'src/ussd_public.js',
                     ussd_registration: 'src/ussd_registration.js',
-                    sms_inbound: 'src/sms_inbound.js'
+                    voice_registration: 'src/voice_registration.js',
+                    ussd_public: 'src/ussd_public.js',
+                    voice_public: 'src/voice_public.js',
+                    sms_inbound: 'src/sms_inbound.js',
+                    train_ussd_reg_unrecognised: 'src/train_ussd_reg_unrecognised.js',
+                    train_ussd_reg_recognised: 'src/train_ussd_reg_recognised.js',
+                    train_ussd_public: 'src/train_ussd_public.js',
+                    train_ivr_reg: 'src/train_ivr_reg.js',
+                    train_ivr_public: 'src/train_ivr_public.js',
                 },
-                voice_registration: [
-                    'src/index.js',
-                    'src/utils.js',
-                    'src/utils_project.js',
-                    '<%= paths.src.app.voice_registration %>',
-                    'src/init.js'
-                ],
-                voice_public: [
-                    'src/index.js',
-                    'src/utils.js',
-                    'src/utils_project.js',
-                    '<%= paths.src.app.voice_public %>',
-                    'src/init.js'
-                ],
                 ussd_registration: [
                     'src/index.js',
                     'src/utils.js',
@@ -35,11 +26,11 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.ussd_registration %>',
                     'src/init.js'
                 ],
-                sms_inbound: [
+                voice_registration: [
                     'src/index.js',
                     'src/utils.js',
                     'src/utils_project.js',
-                    '<%= paths.src.app.sms_inbound %>',
+                    '<%= paths.src.app.voice_registration %>',
                     'src/init.js'
                 ],
                 ussd_public: [
@@ -49,24 +40,92 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.ussd_public %>',
                     'src/init.js'
                 ],
+                voice_public: [
+                    'src/index.js',
+                    'src/utils.js',
+                    'src/utils_project.js',
+                    '<%= paths.src.app.voice_public %>',
+                    'src/init.js'
+                ],
+                sms_inbound: [
+                    'src/index.js',
+                    'src/utils.js',
+                    'src/utils_project.js',
+                    '<%= paths.src.app.sms_inbound %>',
+                    'src/init.js'
+                ],
+                train_ivr_reg: [
+                    'src/index.js',
+                    'src/utils.js',
+                    'src/utils_project.js',
+                    '<%= paths.src.app.train_ivr_reg %>',
+                    'src/init.js'
+                ],
+                train_ivr_public: [
+                    'src/index.js',
+                    'src/utils.js',
+                    'src/utils_project.js',
+                    '<%= paths.src.app.train_ivr_public %>',
+                    'src/init.js'
+                ],
+                train_ussd_reg_unrecognised: [
+                    'src/index.js',
+                    'src/utils.js',
+                    'src/utils_project.js',
+                    '<%= paths.src.app.train_ussd_reg_unrecognised %>',
+                    'src/init.js'
+                ],
+                train_ussd_reg_recognised: [
+                    'src/index.js',
+                    'src/utils.js',
+                    'src/utils_project.js',
+                    '<%= paths.src.app.train_ussd_reg_recognised %>',
+                    'src/init.js'
+                ],
+                train_ussd_public: [
+                    'src/index.js',
+                    'src/utils.js',
+                    'src/utils_project.js',
+                    '<%= paths.src.app.train_ussd_public %>',
+                    'src/init.js'
+                ],
                 all: [
                     'src/**/*.js'
                 ]
             },
             dest: {
+                ussd_registration: 'go-ussd_registration.js',
                 voice_registration: 'go-voice_registration.js',
+                ussd_public: 'go-ussd_public.js',
                 voice_public: 'go-voice_public.js',
                 sms_inbound: 'go-sms_inbound.js',
-                ussd_public: 'go-ussd_public.js',
-                ussd_registration: 'go-ussd_registration.js'
+                train_ivr_reg: 'go-train_ivr_reg.js',
+                train_ivr_public: 'go-train_ivr_public.js',
+                train_ussd_reg_unrecognised: 'go-train_ussd_reg_unrecognised.js',
+                train_ussd_reg_recognised: 'go-train_ussd_reg_recognised.js',
+                train_ussd_public: 'go-train_ussd_public.js',
             },
             test: {
+                ussd_registration: [
+                    'test/setup.js',
+                    'src/utils.js',
+                    'src/utils_project.js',
+                    '<%= paths.src.app.ussd_registration %>',
+                    'test/ussd_registration.test.js'
+                ],
                 voice_registration: [
                     'test/setup.js',
                     'src/utils.js',
                     'src/utils_project.js',
                     '<%= paths.src.app.voice_registration %>',
                     'test/voice_registration.test.js'
+                ],
+                ussd_public: [
+                    'test/setup.js',
+                    'src/utils.js',
+                    'src/utils_project.js',
+                    '<%= paths.src.app.ussd_public %>',
+                    'test/ussd_public.test.js'
                 ],
                 voice_public: [
                     'test/setup.js',
@@ -75,13 +134,6 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.voice_public %>',
                     'test/voice_public.test.js'
                 ],
-                ussd_registration: [
-                    'test/setup.js',
-                    'src/utils.js',
-                    'src/utils_project.js',
-                    '<%= paths.src.app.ussd_registration %>',
-                    'test/ussd_registration.test.js'
-                ],
                 sms_inbound: [
                     'test/setup.js',
                     'src/utils.js',
@@ -89,13 +141,41 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.sms_inbound %>',
                     'test/sms_inbound.test.js'
                 ],
-                ussd_public: [
+                train_ivr_reg: [
                     'test/setup.js',
                     'src/utils.js',
                     'src/utils_project.js',
-                    '<%= paths.src.app.ussd_public %>',
-                    'test/ussd_public.test.js'
-                ]
+                    '<%= paths.src.app.train_ivr_reg %>',
+                    'test/train_ivr_reg.test.js'
+                ],
+                train_ivr_public: [
+                    'test/setup.js',
+                    'src/utils.js',
+                    'src/utils_project.js',
+                    '<%= paths.src.app.train_ivr_public %>',
+                    'test/train_ivr_public.test.js'
+                ],
+                train_ussd_reg_unrecognised: [
+                    'test/setup.js',
+                    'src/utils.js',
+                    'src/utils_project.js',
+                    '<%= paths.src.app.train_ussd_reg_unrecognised %>',
+                    'test/train_ussd_reg_unrecognised.test.js'
+                ],
+                train_ussd_reg_recognised: [
+                    'test/setup.js',
+                    'src/utils.js',
+                    'src/utils_project.js',
+                    '<%= paths.src.app.train_ussd_reg_recognised %>',
+                    'test/train_ussd_reg_recognised.test.js'
+                ],
+                train_ussd_public: [
+                    'test/setup.js',
+                    'src/utils.js',
+                    'src/utils_project.js',
+                    '<%= paths.src.app.train_ussd_public %>',
+                    'test/train_ussd_public.test.js'
+                ],
             }
         },
 
@@ -140,14 +220,34 @@ module.exports = function (grunt) {
                 src: ['<%= paths.src.ussd_registration %>'],
                 dest: '<%= paths.dest.ussd_registration %>'
             },
+            ussd_public: {
+                src: ['<%= paths.src.ussd_public %>'],
+                dest: '<%= paths.dest.ussd_public %>'
+            },
             sms_inbound: {
                 src: ['<%= paths.src.sms_inbound %>'],
                 dest: '<%= paths.dest.sms_inbound %>'
             },
-            ussd_public: {
-                src: ['<%= paths.src.ussd_public %>'],
-                dest: '<%= paths.dest.ussd_public %>'
-            }
+            train_ivr_reg: {
+                src: ['<%= paths.src.train_ivr_reg %>'],
+                dest: '<%= paths.dest.train_ivr_reg %>'
+            },
+            train_ivr_public: {
+                src: ['<%= paths.src.train_ivr_public %>'],
+                dest: '<%= paths.dest.train_ivr_public %>'
+            },
+            train_ussd_reg_unrecognised: {
+                src: ['<%= paths.src.train_ussd_reg_unrecognised %>'],
+                dest: '<%= paths.dest.train_ussd_reg_unrecognised %>'
+            },
+            train_ussd_reg_recognised: {
+                src: ['<%= paths.src.train_ussd_reg_recognised %>'],
+                dest: '<%= paths.dest.train_ussd_reg_recognised %>'
+            },
+            train_ussd_public: {
+                src: ['<%= paths.src.train_ussd_public %>'],
+                dest: '<%= paths.dest.train_ussd_public %>'
+            },
 
         },
 
@@ -169,7 +269,22 @@ module.exports = function (grunt) {
             },
             test_sms_inbound: {
                  src: ['<%= paths.test.sms_inbound %>']
-            }
+            },
+            test_train_ivr_reg: {
+                src: ['<%= paths.test.train_ivr_reg %>']
+            },
+            test_train_ivr_public: {
+                src: ['<%= paths.test.train_ivr_public %>']
+            },
+            test_train_ussd_reg_unrecognised: {
+                src: ['<%= paths.test.train_ussd_reg_unrecognised %>']
+            },
+            test_train_ussd_reg_recognised: {
+                src: ['<%= paths.test.train_ussd_reg_recognised %>']
+            },
+            test_train_ussd_public: {
+                src: ['<%= paths.test.train_ussd_public %>']
+            },
         }
     });
 
