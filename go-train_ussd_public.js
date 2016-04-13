@@ -1489,7 +1489,7 @@ go.app = function() {
                 question: questions[name],
                 choices: [
                     new Choice('state_new_registration_baby', $("Start Baby messages")),
-                    new Choice('state_check_msg_type', $("Change message preferences")),
+                    new Choice('state_change_menu_sms', $("Change message preferences")),
                     new Choice('state_new_msisdn', $("Change my number")),
                     new Choice('state_msg_language', $("Change language")),
                     new Choice('state_optout_reason', $("Stop receiving messages"))
@@ -1514,21 +1514,6 @@ go.app = function() {
 
 
     // MSG CHANGE STATES
-
-        self.add('state_check_msg_type', function(name) {
-            return go.utils_project
-                .get_subscription_msg_type(self.im, self.im.user.answers.mother_id)
-                .then(function(msg_format) {
-                    self.im.user.set_answer('msg_format', msg_format);
-                    if (msg_format === 'text') {
-                        return self.states.create('state_change_menu_sms');
-                    } else if (msg_format === 'audio') {
-                        return self.states.create('state_change_menu_voice');
-                    } else {
-                        return self.states.create('state_end_exit');
-                    }
-                });
-        });
 
         // ChoiceState st-03
         self.add('state_change_menu_sms', function(name) {
@@ -1570,16 +1555,7 @@ go.app = function() {
                     new Choice('2_5', $("Between 2-5pm"))
                 ],
                 next: function(choice) {
-                    return go.utils_project
-                        .update_msg_format_time(
-                            self.im,
-                            'audio',
-                            self.im.user.answers.state_voice_days,
-                            choice.value
-                        )
-                        .then(function() {
-                            return 'state_end_voice_confirm';
-                        });
+                    return 'state_end_voice_confirm';
                 }
             });
         });
