@@ -1308,7 +1308,6 @@ go.utils_project = {
 
 go.app = function() {
     var vumigo = require('vumigo_v02');
-    var Q = require('q');
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
@@ -1638,39 +1637,13 @@ go.app = function() {
                 next: function(choice) {
                     switch (choice.value) {
                         case 'miscarriage': return 'state_loss_subscription';
-                        case 'stillborn': return 'state_optout_all';
-                        case 'baby_death': return 'state_optout_all';
-                        case 'not_useful': return 'state_check_subscription';
-                        case 'other': return 'state_check_subscription';
+                        case 'stillborn': return 'state_end_loss';
+                        case 'baby_death': return 'state_end_loss';
+                        case 'not_useful': return 'state_optout_receiver';
+                        case 'other': return 'state_optout_receiver';
                     }
                 }
             });
-        });
-
-        // interstitial
-        self.states.add('state_check_subscription', function() {
-            var contact_id = self.im.user.answers.contact_id;
-            return go.utils
-                .get_identity(contact_id, self.im)
-                .then(function(contact) {
-                    //  and mother_only subscriptions bypass to end state state_end_optout
-                    if (self.im.user.answers.reg_type === 'mother_only') {
-                        return go.utils_project
-                            .optout_mother(self.im, 'ussd_public')
-                            .then(function() {
-                                return self.states.create('state_end_optout');
-                            });
-                    } else if (self.im.user.answers.reg_type === 'mother_and_other' &&
-                         self.im.user.answers.role_player !== 'mother') {
-                        return go.utils_project
-                            .optout_household(self.im, 'ussd_public')
-                            .then(function() {
-                                return self.states.create('state_end_optout');
-                            });
-                    } else {
-                        return self.states.create("state_optout_receiver");
-                    }
-                });
         });
 
         // ChoiceState st-14
@@ -1679,80 +1652,13 @@ go.app = function() {
                 question: questions[name],
                 error: errors[name],
                 choices: [
-                    new Choice('state_switch_loss', $("Yes")),
-                    new Choice('state_optout_all', $("No"))
+                    new Choice('state_end_loss_subscription_confirm', $("Yes")),
+                    new Choice('state_end_loss', $("No"))
                 ],
                 next: function(choice) {
                     return choice.value;
                 }
             });
-        });
-
-        self.add('state_optout_all', function(name) {
-            if (self.im.user.answers.household_id === null) {
-                return go.utils_project
-                    .optout_mother(self.im, 'ussd_public')
-                    .then(function() {
-                        if (self.im.user.answers.state_optout_reason === 'not_useful' ||
-                            self.im.user.answers.state_optout_reason === 'other') {
-                            return self.states.create('state_end_optout');
-                        } else {
-                            return self.states.create('state_end_loss');
-                        }
-                    });
-            } else if (self.im.user.answers.reg_type === 'other_only') {
-                return go.utils_project
-                    .optout_household(self.im, 'ussd_public')
-                    .then(function() {
-                        if (self.im.user.answers.state_optout_reason === 'not_useful' ||
-                            self.im.user.answers.state_optout_reason === 'other') {
-                            return self.states.create('state_end_optout');
-                        } else {
-                            return self.states.create('state_end_loss');
-                        }
-                    });
-            } else {
-                return Q
-                    .all([
-                        go.utils_project.optout_mother(self.im, 'ussd_public'),
-                        go.utils_project.optout_household(self.im, 'ussd_public')
-                    ])
-                    .then(function() {
-                        if (self.im.user.answers.state_optout_reason === 'not_useful' ||
-                            self.im.user.answers.state_optout_reason === 'other') {
-                            return self.states.create('state_end_optout');
-                        } else {
-                            return self.states.create('state_end_loss');
-                        }
-                    });
-            }
-        });
-
-        self.add('state_switch_loss', function(name) {
-            return go.utils_project
-                .switch_to_loss(self.im, self.im.user.answers.mother_id,
-                                self.im.user.answers.state_optout_reason)
-                .then(function() {
-                    if (self.im.user.answers.household_id &&
-                        self.im.user.answers.seperate_household_receiver === true) {
-                        return go.utils_project
-                            .optout_household(self.im, 'ussd_public')
-                            .then(function() {
-                                return self.states.create('state_end_loss_subscription_confirm');
-                            });
-                    } else if (self.im.user.answers.household_id &&
-                               self.im.user.answers.seperate_household_receiver === false) {
-                        return go.utils_project
-                            .unsub_household(self.im, self.im.user.answers.mother_id,
-                                             self.im.user.answers.household_id,
-                                             self.im.user.answers.state_optout_reason)
-                            .then(function() {
-                                return self.states.create('state_end_loss_subscription_confirm');
-                            });
-                    } else {
-                        return self.states.create('state_end_loss_subscription_confirm');
-                    }
-                });
         });
 
         // EndState st-15
@@ -1773,70 +1679,7 @@ go.app = function() {
                     new Choice('household', $("Household messages")),
                     new Choice('all', $("All messages"))
                 ],
-                next: function(choice) {
-                    switch (choice.value) {
-                        case 'mother':
-                            if (self.im.user.answers.reg_type === 'other_only') {
-                                return go.utils_project
-                                    .unsub_mother(self.im, self.im.user.answers.mother_id,
-                                                  self.im.user.answers.household_id,
-                                                  self.im.user.answers.state_optout_reason)
-                                    .then(function() {
-                                        return 'state_end_optout';
-                                    });
-                            } else {
-                                return go.utils_project
-                                    .optout_mother(self.im, 'ussd_public')
-                                    .then(function() {
-                                        return 'state_end_optout';
-                                    });
-                            }
-                            break;
-                        case 'household':
-                            // unsubscribe from household messages only
-                            if (self.im.user.answers.reg_type === 'other_only') {
-                                return go.utils_project
-                                    .unsub_household(self.im, self.im.user.answers.mother_id,
-                                                     self.im.user.answers.household_id,
-                                                     self.im.user.answers.state_optout_reason)
-                                    .then(function() {
-                                        return 'state_end_optout';
-                                    });
-                            // opt out household messages receiver
-                            } else {
-                                return go.utils_project
-                                    .optout_household(self.im, 'ussd_public')
-                                    .then(function() {
-                                        return 'state_end_optout';
-                                    });
-                            }
-                            break;
-                        case 'all':
-                            if (self.im.user.answers.reg_type === 'other_only') {
-                                return Q
-                                    .all([
-                                        go.utils_project.unsub_mother(
-                                            self.im, self.im.user.answers.mother_id,
-                                            self.im.user.answers.household_id,
-                                            self.im.user.answers.state_optout_reason
-                                        ),
-                                        go.utils_project.optout_household(self.im, 'ussd_public')
-                                    ])
-                                    .then(function() {
-                                        return 'state_end_optout';
-                                    });
-                            } else {
-                                return Q
-                                    .all([
-                                        go.utils_project.optout_mother(self.im, 'ussd_public'),
-                                        go.utils_project.optout_household(self.im, 'ussd_public')
-                                    ])
-                                    .then(function() {
-                                        return 'state_end_optout';
-                                    });
-                            }
-                    }
-                }
+                next: 'state_end_optout'
             });
         });
 
