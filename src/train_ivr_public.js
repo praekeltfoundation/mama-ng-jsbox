@@ -88,7 +88,7 @@ go.app = function() {
                     self.im, name, lang, speech_option),
                 choices: [
                     new Choice('state_baby_confirm_subscription', $('baby')),
-                    new Choice('state_check_msg_type', $('preferences')),
+                    new Choice('state_change_menu_sms', $('preferences')),
                     new Choice('state_new_msisdn', $('number')),
                     new Choice('state_msg_language', $('language')),
                     new Choice('state_optout_reason', $('optout'))
@@ -129,22 +129,6 @@ go.app = function() {
         });
 
     // MSG CHANGE STATES
-
-        // interstitial to check what type of messages the user is registered for
-        self.add('state_check_msg_type', function(name) {
-            return go.utils_project
-                .get_subscription_msg_type(self.im, self.im.user.answers.mother_id)
-                .then(function(msg_format) {
-                    self.im.user.set_answer('msg_format', msg_format);
-                    if (msg_format === 'text') {
-                        return self.states.create('state_change_menu_sms');
-                    } else if (msg_format === 'audio') {
-                        return self.states.create('state_change_menu_voice');
-                    } else {
-                        return self.states.create('state_end_exit');
-                    }
-                });
-        });
 
         // ChoiceState st-03
         self.add('state_change_menu_sms', function(name) {
@@ -189,16 +173,7 @@ go.app = function() {
                     new Choice('2_5', $('2-5pm'))
                 ],
                 next: function(choice) {
-                    return go.utils_project
-                        .update_msg_format_time(
-                            self.im,
-                            'audio',
-                            self.im.user.answers.state_voice_days,
-                            choice.value
-                        )
-                        .then(function() {
-                            return 'state_end_voice_confirm';
-                        });
+                    return 'state_end_voice_confirm';
                 }
             });
         });
@@ -212,48 +187,6 @@ go.app = function() {
             return new EndState(name, {
                 text: $('Thank you! Time: {{ time }}. Days: {{ days }}.'
                     ).context({ time: time, days: days }),
-                helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                next: 'state_start'
-            });
-        });
-
-        // ChoiceState st-07
-        self.add('state_change_menu_voice', function(name) {
-            var speech_option = '1';
-            return new ChoiceState(name, {
-                question: $('Please select what you would like to do:'),
-                helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
-                choices: [
-                    new Choice('state_voice_days', $('Change times')),
-                    new Choice('state_end_sms_confirm', $('Change mother message from voice to text'))
-                ],
-                next: function(choice) {
-                        if (choice.value !== 'state_end_sms_confirm') {
-                            return choice.value;
-                        } else {
-                            return go.utils_project
-                                .update_msg_format_time(
-                                    self.im,
-                                    'text',
-                                    null,
-                                    null
-                                )
-                                .then(function() {
-                                    return 'state_end_sms_confirm';
-                                });
-                        }
-                }
-            });
-        });
-
-        // EndState st-09
-        self.add('state_end_sms_confirm', function(name) {
-            var speech_option = '1';
-
-            return new EndState(name, {
-                text: $('Thank you. You will now receive text messages.'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option),
                 next: 'state_start'
