@@ -288,7 +288,7 @@ describe("Hello Mama app", function() {
                 });
             });
 
-            describe.only("Change states flows - opt-out", function() {
+            describe("Change states flows - opt-out", function() {
                 // to optout reason menu
                 it("to state_optout_reason", function() {
                     return tester
