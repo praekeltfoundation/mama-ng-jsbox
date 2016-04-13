@@ -265,36 +265,36 @@ module.exports = function (grunt) {
             options: {
                 reporter: 'spec'
             },
-            // test_ussd_registration: {
-            //     src: ['<%= paths.test.ussd_registration %>']
-            // },
-            // test_voice_registration: {
-            //     src: ['<%= paths.test.voice_registration %>']
-            // },
-            // test_ussd_public: {
-            //     src: ['<%= paths.test.ussd_public %>']
-            // },
-            // test_voice_public: {
-            //     src: ['<%= paths.test.voice_public %>']
-            // },
-            // test_sms_inbound: {
-            //      src: ['<%= paths.test.sms_inbound %>']
-            // },
-            // test_train_ivr_reg: {
-            //     src: ['<%= paths.test.train_ivr_reg %>']
-            // },
-            // test_train_ivr_public: {
-            //     src: ['<%= paths.test.train_ivr_public %>']
-            // },
+            test_ussd_registration: {
+                src: ['<%= paths.test.ussd_registration %>']
+            },
+            test_voice_registration: {
+                src: ['<%= paths.test.voice_registration %>']
+            },
+            test_ussd_public: {
+                src: ['<%= paths.test.ussd_public %>']
+            },
+            test_voice_public: {
+                src: ['<%= paths.test.voice_public %>']
+            },
+            test_sms_inbound: {
+                 src: ['<%= paths.test.sms_inbound %>']
+            },
+            test_train_ivr_reg: {
+                src: ['<%= paths.test.train_ivr_reg %>']
+            },
+            test_train_ivr_public: {
+                src: ['<%= paths.test.train_ivr_public %>']
+            },
             test_train_ussd_reg_unrecognised: {
                 src: ['<%= paths.test.train_ussd_reg_unrecognised %>']
             },
-            // test_train_ussd_reg_recognised: {
-            //     src: ['<%= paths.test.train_ussd_reg_recognised %>']
-            // },
-            // test_train_ussd_public: {
-            //     src: ['<%= paths.test.train_ussd_public %>']
-            // },
+            test_train_ussd_reg_recognised: {
+                src: ['<%= paths.test.train_ussd_reg_recognised %>']
+            },
+            test_train_ussd_public: {
+                src: ['<%= paths.test.train_ussd_public %>']
+            },
         }
     });
 
