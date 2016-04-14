@@ -45,7 +45,8 @@ go.app = function() {
             "state_voice_times":
                 $("Thank you. At what time would they like to receive these calls?"),
             "state_end_voice_confirm":
-                $("Thank you. You will now start receiving voice calls between {{times}} on {{days}}."),  // not currently in use
+                null,  // not currently in use
+                // ("Thank you. You will now start receiving voice calls between {{times}} on {{days}}."),
             "state_change_menu_voice":
                 $("Please select what you would like to do:"),
             "state_end_sms_confirm":
