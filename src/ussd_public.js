@@ -46,7 +46,7 @@ go.app = function() {
             "state_voice_times":
                 $("Thank you. At what time would they like to receive these calls?"),
             "state_end_voice_confirm":
-                $("Thank you. You will now start receiving voice calls between [time] on [days]."),
+                $("Thank you. You will now start receiving voice calls between {{times}} on {{days}}."),
             "state_change_menu_voice":
                 $("Please select what you would like to do:"),
             "state_end_sms_confirm":
@@ -475,8 +475,17 @@ go.app = function() {
 
         // EndState st-06
         self.add('state_end_voice_confirm', function(name) {
+            var voice_schedule = {
+                "mon_wed": "Monday and Wednesday",
+                "tue_thu": "Tuesday and Thursday",
+                "9_11": "9am - 11am",
+                "2_5": "2pm - 5pm"
+            };
             return new EndState(name, {
-                text: questions[name],
+                text: questions[name].context({
+                    days: voice_schedule[self.im.user.answers.state_voice_days],
+                    times: voice_schedule[self.im.user.answers.state_voice_times]
+                }),
                 next: 'state_start'
             });
         });

@@ -185,7 +185,7 @@ describe("Hello Mama app", function() {
                         )
                         .check.interaction({
                             state: 'state_end_voice_confirm',
-                            reply: "Thank you. You will now start receiving voice calls between [time] on [days]."
+                            reply: "Thank you. You will now start receiving voice calls between 9am - 11am on Tuesday and Thursday."
                         })
                         .check.reply.ends_session()
                         .run();

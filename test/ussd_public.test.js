@@ -487,7 +487,7 @@ describe("Hello Mama app", function() {
                             )
                             .check.interaction({
                                 state: 'state_end_voice_confirm',
-                                reply: "Thank you. You will now start receiving voice calls between [time] on [days]."
+                                reply: "Thank you. You will now start receiving voice calls between 9am - 11am on Tuesday and Thursday."
                             })
                             .check(function(api) {
                                 var expected_used = [2, 9, 16, 17, 18, 26];
@@ -583,7 +583,7 @@ describe("Hello Mama app", function() {
                             )
                             .check.interaction({
                                 state: 'state_end_voice_confirm',
-                                reply: "Thank you. You will now start receiving voice calls between [time] on [days]."
+                                reply: "Thank you. You will now start receiving voice calls between 2pm - 5pm on Monday and Wednesday."
                             })
                             .check(function(api) {
                                 var expected_used = [4, 5, 19, 20, 21, 28, 30];
