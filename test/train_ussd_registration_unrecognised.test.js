@@ -16,7 +16,7 @@ describe("Mama Nigeria App", function() {
             tester
                 .setup.char_limit(182)
                 .setup.config.app({
-                    name: 'train-ussd-reg-recognised-test',
+                    name: 'train-ussd-registration-unrecognised-test',
                     country_code: '234',  // nigeria
                     channel: '*120*8864*0000#',
                     testing_today: '2015-04-03 06:07:08.999',
@@ -40,6 +40,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
                         , {session_event: 'close'}
                         , {session_event: 'new'}
                     )
@@ -58,6 +59,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
                         , {session_event: 'close'}
                         , {session_event: 'new'}
                         , '1'  // state_timed_out - continue
@@ -72,12 +74,13 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
                         , {session_event: 'close'}
                         , {session_event: 'new'}
                         , '2'  // state_timed_out - restart
                     )
                     .check.interaction({
-                        state: 'state_msg_receiver'
+                        state: 'state_auth_code'
                     })
                     .run();
             });
@@ -86,6 +89,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
                         , {session_event: 'close'}
                     )
                     .run();
@@ -95,6 +99,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080040004')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
                         , {session_event: 'close'}
                     )
                     .run();
@@ -107,7 +112,7 @@ describe("Mama Nigeria App", function() {
                 return tester
                     .setup.user.addr('08080020002')
                     .setup.user.answers({       // set up answers to be reset
-                        state_msg_receiver: 'mother_only',
+                        state_auth_code: '12345',
                         state_msisdn: '08033046899'
                     })
                     .inputs(
@@ -121,11 +126,24 @@ describe("Mama Nigeria App", function() {
         // TEST REGISTRATION
 
         describe("Flow testing - registration", function() {
+            it("to state_auth_code", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                    )
+                    .check.interaction({
+                        state: 'state_auth_code',
+                        reply: "Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345"
+                    })
+                    .run();
+            });
             it("to state_msg_receiver", function() {
                 return tester
                     .setup.user.addr('08080070007')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
                     )
                     .check.interaction({
                         state: 'state_msg_receiver',
@@ -147,6 +165,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
                         , '7'  // state_msg_receiver - family_only
                     )
                     .check.interaction({
@@ -160,6 +179,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
                         , '1'  // state_msg_receiver - mother_father
                     )
                     .check.interaction({
@@ -173,6 +193,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
                         , '1'       // state_msg_receiver - mother_father
                         , '08033048990' // state_msisdn_mother
                     )
@@ -188,6 +209,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
                         , '2' // state_msg_receiver - mother_only
                         , '09091111111'  // state_msisdn
                     )
@@ -207,6 +229,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
                         , '6' // state_msg_receiver - friend_only
                         , '09092222222'  // state_msisdn
                         //, '1'  // state_msg_pregnancy_status - pregnant  // bypass postbirth flow
@@ -233,6 +256,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
                         , '6' // state_msg_receiver - friend_only
                         , '09092222222'  // state_msisdn
                         //, '1'  // state_msg_pregnancy_status - pregnant  // bypass postbirth flow
@@ -253,6 +277,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
                         , '6' // state_msg_receiver - friend_only
                         , '09092222222'  // state_msisdn
                         //, '1'  // state_msg_pregnancy_status - pregnant  // bypass postbirth flow
@@ -281,6 +306,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
                         , '6' // state_msg_receiver - friend_only
                         , '09092222222'  // state_msisdn
                         //, '1'  // state_msg_pregnant - mother
@@ -297,6 +323,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                       {session_event: 'new'}  // dial in
+                      , '12345'   // state_auth_code - personnel code
                       , '6' // state_msg_receiver - friend_only
                       , '09092222222'  // state_msisdn
                       //, '1'  // state_msg_pregnant - mother
@@ -314,6 +341,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                       {session_event: 'new'}  // dial in
+                      , '12345'   // state_auth_code - personnel code
                       , '1' // state_msg_receiver - mother and father
                       , '09092222222'  // state_msisdn_mother
                       , '09091111111'  // state_msisdn_household
@@ -342,6 +370,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
                         , '6' // state_msg_receiver - friend_only
                         , '09092222222'  // state_msisdn
                         , '2'  // state_msg_pregnancy_status - baby
@@ -370,6 +399,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
                         , '6' // state_msg_receiver - friend_only
                         , '09092222222'  // state_msisdn
                         , '2'  // state_msg_pregnancy_status - baby
@@ -393,6 +423,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
                         , '6' // state_msg_receiver - friend_only
                         , '09092222222'  // state_msisdn
                         , '2'  // state_msg_pregnancy_status - baby
@@ -410,6 +441,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                       {session_event: 'new'}  // dial in
+                      , '12345'   // state_auth_code - personnel code
                       , '6' // state_msg_receiver - friend_only
                       , '09092222222'  // state_msisdn
                       , '2'  // state_msg_pregnancy_status - baby
@@ -427,6 +459,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
                         , '6' // state_msg_receiver - friend_only
                         , '09092222222'  // state_msisdn
                         //, '1'  // state_msg_pregnant - mother
@@ -451,6 +484,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
                         , '6' // state_msg_receiver - friend_only
                         , '09092222222'  // state_msisdn
                         //, '1'  // state_msg_pregnant - mother
@@ -475,6 +509,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
                         , '6' // state_msg_receiver - friend_only
                         , '09092222222'  // state_msisdn
                         //, '1'  // state_msg_pregnant - mother
@@ -500,6 +535,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
                         , '6' // state_msg_receiver - friend_only
                         , '09092222222'  // state_msisdn
                         //, '1'  // state_msg_pregnant - mother
@@ -524,6 +560,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
                         , '6' // state_msg_receiver - friend_only
                         , '09092222222'  // state_msisdn
                         //, '1'  // state_msg_pregnant - mother
@@ -548,6 +585,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
                         , '6' // state_msg_receiver - friend_only
                         , '09092222222'  // state_msisdn
                         //, '1'  // state_msg_pregnant - mother
@@ -569,6 +607,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
                         , '1' // state_msg_receiver - mother_father
                         , '09094444444'  // state_msiddn_mother
                         , '09095555555'  // state_msisdn_household
@@ -593,6 +632,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
                         , '3' // state_msg_receiver - father only
                         , '09093333333'  // state_msisdn
                         , '2'  // state_msg_pregnant - baby
@@ -612,6 +652,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
                         , '1' // state_msg_receiver - mother_father
                         , '09093333333'  // state_msisdn_household
                         , '09093333333'  // state_msiddn_mother
@@ -634,6 +675,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
                         , '2' // state_msg_receiver - mother_only
                         , '09096666666'  // state_msiddn
                         //, '1'  // state_msg_pregnant - mother
@@ -655,11 +697,25 @@ describe("Mama Nigeria App", function() {
         // TEST VALIDATION
 
         describe("Validation testing", function() {
+            it("validate state_auth_code", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , 'aaaaa'  // state_auth_code - invalid personnel code
+                    )
+                    .check.interaction({
+                        state: 'state_auth_code',
+                        reply: "Sorry, that is not a valid number. Please enter your unique personnel code. For example, 12345"
+                    })
+                    .run();
+            });
             it("validate state_msisdn", function() {
                 return tester
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
                         , '2'       // state_msg_receiver - mother only
                         , 'aaaaaa'  // state_msisdn - mobile number
                     )
@@ -674,6 +730,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
                         , '1'       // state_msg_receiver - mother & father
                         , 'aaaaaa'  // state_msisdn - mobile number
                     )
@@ -688,6 +745,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
                         , '1'       // state_msg_receiver - mother & father
                         , '08033048990' // state_msisdn_mother
                         , 'aaaaaa'  // state_msisdn_household - mobile number
@@ -703,6 +761,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
                         , '7'  // state_msg_receiver - family_only
                         , '09092222222' // state_msisdn - mobile number
                         //, '1'  // state_msg_pregnant - mother
@@ -721,6 +780,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
                         , '7'  // state_msg_receiver - friend_only
                         , '09092222222' // state_msisdn - mobile number
                         , '2'  // state_msg_pregnancy_status - baby
@@ -739,6 +799,7 @@ describe("Mama Nigeria App", function() {
                         .setup.user.addr('08080020002')
                         .inputs(
                             {session_event: 'new'}  // dial in
+                            , '12345'   // state_auth_code - personnel code
                             , '2'  // state_msg_receiver - mother
                             , '09091111111' // state_msisdn - mobile number
                             //, '1'  // state_msg_pregnancy_status - pregnant   // bypass postbirth flow
@@ -759,6 +820,7 @@ describe("Mama Nigeria App", function() {
                         .setup.user.addr('08080020002')
                         .inputs(
                             {session_event: 'new'}  // dial in
+                            , '12345'   // state_auth_code - personnel code
                             , '2'  // state_msg_receiver - mother
                             , '09091111111' // state_msisdn - mobile number
                             //, '1'  // state_msg_pregnancy_status - pregnant  // bypass postbirth flow
@@ -777,6 +839,7 @@ describe("Mama Nigeria App", function() {
                         .setup.user.addr('08080020002')
                         .inputs(
                             {session_event: 'new'}  // dial in
+                            , '12345'   // state_auth_code - personnel code
                             , '2'  // state_msg_receiver - mother
                             , '09091111111' // state_msisdn - mobile number
                             , '2'  // state_msg_pregnancy_status - baby
@@ -798,6 +861,7 @@ describe("Mama Nigeria App", function() {
                         .setup.user.addr('08080020002')
                         .inputs(
                             {session_event: 'new'}  // dial in
+                            , '12345'   // state_auth_code - personnel code
                             , '2'  // state_msg_receiver - mother
                             , '09091111111' // state_msisdn - mobile number
                             , '2'  // state_msg_pregnancy_status - baby

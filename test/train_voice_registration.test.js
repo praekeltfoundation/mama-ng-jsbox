@@ -17,7 +17,7 @@ describe("Mama Nigeria App", function() {
             tester
                 .setup.config.app({
                     testing_today: '2017-07-22',
-                    name: 'train-voice-reg-test',
+                    name: 'train-voice-registration-test',
                     country_code: '234',  // nigeria
                     services: {
                         voice_content: {
