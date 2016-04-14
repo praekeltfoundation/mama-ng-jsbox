@@ -16,8 +16,8 @@ module.exports = function (grunt) {
                     train_ussd_reg_unrecognised: 'src/train_ussd_reg_unrecognised.js',
                     train_ussd_reg_recognised: 'src/train_ussd_reg_recognised.js',
                     train_ussd_public: 'src/train_ussd_public.js',
-                    train_ivr_reg: 'src/train_ivr_reg.js',
-                    train_ivr_public: 'src/train_ivr_public.js',
+                    train_voice_reg: 'src/train_voice_reg.js',
+                    train_voice_public: 'src/train_voice_public.js',
                 },
                 ussd_registration: [
                     'src/index.js',
@@ -54,18 +54,18 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.sms_inbound %>',
                     'src/init.js'
                 ],
-                train_ivr_reg: [
+                train_voice_reg: [
                     'src/index.js',
                     'src/utils.js',
                     'src/utils_project.js',
-                    '<%= paths.src.app.train_ivr_reg %>',
+                    '<%= paths.src.app.train_voice_reg %>',
                     'src/init.js'
                 ],
-                train_ivr_public: [
+                train_voice_public: [
                     'src/index.js',
                     'src/utils.js',
                     'src/utils_project.js',
-                    '<%= paths.src.app.train_ivr_public %>',
+                    '<%= paths.src.app.train_voice_public %>',
                     'src/init.js'
                 ],
                 train_ussd_reg_unrecognised: [
@@ -99,8 +99,8 @@ module.exports = function (grunt) {
                 ussd_public: 'go-ussd_public.js',
                 voice_public: 'go-voice_public.js',
                 sms_inbound: 'go-sms_inbound.js',
-                train_ivr_reg: 'go-train_ivr_reg.js',
-                train_ivr_public: 'go-train_ivr_public.js',
+                train_voice_reg: 'go-train_voice_reg.js',
+                train_voice_public: 'go-train_voice_public.js',
                 train_ussd_reg_unrecognised: 'go-train_ussd_reg_unrecognised.js',
                 train_ussd_reg_recognised: 'go-train_ussd_reg_recognised.js',
                 train_ussd_public: 'go-train_ussd_public.js',
@@ -141,19 +141,19 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.sms_inbound %>',
                     'test/sms_inbound.test.js'
                 ],
-                train_ivr_reg: [
+                train_voice_reg: [
                     'test/setup.js',
                     'src/utils.js',
                     'src/utils_project.js',
-                    '<%= paths.src.app.train_ivr_reg %>',
-                    'test/train_ivr_reg.test.js'
+                    '<%= paths.src.app.train_voice_reg %>',
+                    'test/train_voice_reg.test.js'
                 ],
-                train_ivr_public: [
+                train_voice_public: [
                     'test/setup.js',
                     'src/utils.js',
                     'src/utils_project.js',
-                    '<%= paths.src.app.train_ivr_public %>',
-                    'test/train_ivr_public.test.js'
+                    '<%= paths.src.app.train_voice_public %>',
+                    'test/train_voice_public.test.js'
                 ],
                 train_ussd_reg_unrecognised: [
                     'test/setup.js',
@@ -228,13 +228,13 @@ module.exports = function (grunt) {
                 src: ['<%= paths.src.sms_inbound %>'],
                 dest: '<%= paths.dest.sms_inbound %>'
             },
-            train_ivr_reg: {
-                src: ['<%= paths.src.train_ivr_reg %>'],
-                dest: '<%= paths.dest.train_ivr_reg %>'
+            train_voice_reg: {
+                src: ['<%= paths.src.train_voice_reg %>'],
+                dest: '<%= paths.dest.train_voice_reg %>'
             },
-            train_ivr_public: {
-                src: ['<%= paths.src.train_ivr_public %>'],
-                dest: '<%= paths.dest.train_ivr_public %>'
+            train_voice_public: {
+                src: ['<%= paths.src.train_voice_public %>'],
+                dest: '<%= paths.dest.train_voice_public %>'
             },
             train_ussd_reg_unrecognised: {
                 src: ['<%= paths.src.train_ussd_reg_unrecognised %>'],
@@ -270,11 +270,11 @@ module.exports = function (grunt) {
             test_sms_inbound: {
                  src: ['<%= paths.test.sms_inbound %>']
             },
-            test_train_ivr_reg: {
-                src: ['<%= paths.test.train_ivr_reg %>']
+            test_train_voice_reg: {
+                src: ['<%= paths.test.train_voice_reg %>']
             },
-            test_train_ivr_public: {
-                src: ['<%= paths.test.train_ivr_public %>']
+            test_train_voice_public: {
+                src: ['<%= paths.test.train_voice_public %>']
             },
             test_train_ussd_reg_unrecognised: {
                 src: ['<%= paths.test.train_ussd_reg_unrecognised %>']
