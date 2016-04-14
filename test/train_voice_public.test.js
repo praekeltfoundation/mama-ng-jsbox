@@ -1,6 +1,5 @@
 var vumigo = require('vumigo_v02');
 // TR02 var fixtures = require('./fixtures_public');
-var assert = require('assert');
 var AppTester = vumigo.AppTester;
 
 
@@ -19,6 +18,7 @@ describe("Mama Nigeria App", function() {
                     testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',  // testing only
                     name: 'train-voice-public-test',
                     country_code: '234',  // nigeria
+                    default_language: 'eng_NG',
                     services: {
                         voice_content: {
                             api_token: "test_token_voice_content",
@@ -115,6 +115,7 @@ describe("Mama Nigeria App", function() {
                             }
                         }
                     })
+                    .check.user.properties({lang: 'eng_NG'})
                     .check(function(api) {
                         go.utils.check_fixtures_used(api, [0]);
                     })
@@ -495,6 +496,7 @@ describe("Mama Nigeria App", function() {
                         }
                     }
                 })
+                .check.user.properties({lang: 'eng_NG'})
                 .run();
             });
             it("to state_end_msg_language", function() {
@@ -513,12 +515,13 @@ describe("Mama Nigeria App", function() {
                 .check.reply.properties({
                     helper_metadata: {
                         voice: {
-                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_msg_language_confirm_1.mp3',
+                            speech_url: 'http://localhost:8004/api/v1/pcm_NG/state_end_msg_language_confirm_1.mp3',
                             wait_for: '#',
                             barge_in: false
                         }
                     }
                 })
+                .check.user.properties({lang: 'pcm_NG'})
                 .run();
             });
         });
