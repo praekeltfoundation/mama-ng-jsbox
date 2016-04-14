@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2016-04-12 02:54:+0000\n"
+"POT-Creation-Date: 2016-04-14 01:31:+0000\n"
 "Project-Id-Version: PACKAGE VERSION\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -147,7 +147,7 @@ msgstr ""
 msgid "Thank you. You will now receive messages about caring for baby"
 msgstr ""
 
-#: go-ussd_public.js:1351 go-ussd_public.js:1359
+#: go-ussd_public.js:1351 go-ussd_public.js:1360
 msgid "Please select what you would like to do:"
 msgstr ""
 
@@ -161,275 +161,293 @@ msgstr ""
 msgid "Thank you. At what time would they like to receive these calls?"
 msgstr ""
 
-#: go-ussd_public.js:1357
-msgid ""
-"Thank you. You will now start receiving voice calls between [time] on "
-"[days]."
-msgstr ""
-
-#: go-ussd_public.js:1361
+#: go-ussd_public.js:1362
 msgid "Thank you. You will now receive text messages."
 msgstr ""
 
-#: go-ussd_public.js:1363
+#: go-ussd_public.js:1364
 msgid ""
 "Please enter the new mobile number you would like to receive weekly "
 "messages on. For example, 0803304899"
 msgstr ""
 
-#: go-ussd_public.js:1365
+#: go-ussd_public.js:1366
 msgid ""
 "Sorry, this number is already registered. They must opt-out before they can "
 "register again."
 msgstr ""
 
-#: go-ussd_public.js:1367
+#: go-ussd_public.js:1368
 msgid "Who will receive these messages?"
 msgstr ""
 
-#: go-ussd_public.js:1369
+#: go-ussd_public.js:1370
 msgid "Thank you. The number which receives messages has been updated."
 msgstr ""
 
-#: go-ussd_public.js:1371
+#: go-ussd_public.js:1372
 msgid "What language would this person like to receive these messages in?"
 msgstr ""
 
-#: go-ussd_public.js:1373
+#: go-ussd_public.js:1374
 msgid ""
 "Thank you. You language preference has been updated and you will start to "
 "receive messages in this language."
 msgstr ""
 
-#: go-ussd_public.js:1375
+#: go-ussd_public.js:1376
 msgid ""
 "Please tell us why you no longer want to receive messages so we can help "
 "you further."
 msgstr ""
 
-#: go-ussd_public.js:1377
+#: go-ussd_public.js:1378
 msgid ""
 "We are sorry for your loss. Would you like to receive a small set of free "
 "messages from Hello Mama that could help you in this difficult time?"
 msgstr ""
 
-#: go-ussd_public.js:1379
+#: go-ussd_public.js:1380
 msgid ""
 "Thank you. You will now receive messages to support you during this "
 "difficult time."
 msgstr ""
 
-#: go-ussd_public.js:1381
+#: go-ussd_public.js:1382
 msgid "Who would you like to stop receiving messages?"
 msgstr ""
 
-#: go-ussd_public.js:1383
+#: go-ussd_public.js:1384
 msgid "Thank you. You will no longer receive messages"
 msgstr ""
 
-#: go-ussd_public.js:1385
+#: go-ussd_public.js:1386
 msgid ""
 "We are sorry for your loss. You will no longer receive messages. Should you "
 "need support during this difficult time, please contact your local CHEW"
 msgstr ""
 
-#: go-ussd_public.js:1387
+#: go-ussd_public.js:1388
 msgid "Thank you for using the Hello Mama service"
 msgstr ""
 
-#: go-ussd_public.js:1392
+#: go-ussd_public.js:1393
 msgid "Mobile number not registered."
 msgstr ""
 
-#: go-ussd_public.js:1394
+#: go-ussd_public.js:1395
 msgid ""
 "Sorry not a valid input. Welcome to Hello Mama. Do you have permission to "
 "manage the number {{msisdn}}?"
 msgstr ""
 
-#: go-ussd_public.js:1396
+#: go-ussd_public.js:1397
 msgid "Sorry not a valid input. Welcome to Hello Mama. Please choose your language"
 msgstr ""
 
-#: go-ussd_public.js:1398 go-ussd_public.js:1400
+#: go-ussd_public.js:1399 go-ussd_public.js:1401
 msgid "Sorry not a valid input. Select:"
 msgstr ""
 
-#: go-ussd_public.js:1402
+#: go-ussd_public.js:1403
 msgid "Sorry not a valid input. You are already registered for baby messages."
 msgstr ""
 
-#: go-ussd_public.js:1404 go-ussd_public.js:1410
+#: go-ussd_public.js:1405 go-ussd_public.js:1411
 msgid "Sorry not a valid input. Please select what you would like to do:"
 msgstr ""
 
-#: go-ussd_public.js:1406
+#: go-ussd_public.js:1407
 msgid ""
 "Sorry not a valid input. We will call twice a week. On what days would the "
 "person like to receive messages?"
 msgstr ""
 
-#: go-ussd_public.js:1408
+#: go-ussd_public.js:1409
 msgid ""
 "Sorry not a valid input. Thank you. At what time would they like to receive "
 "these calls?"
 msgstr ""
 
-#: go-ussd_public.js:1412
+#: go-ussd_public.js:1413
 msgid ""
 "Sorry not a valid input. Please enter the new mobile number you would like "
 "to receive weekly messages on. For example, 0803304899"
 msgstr ""
 
-#: go-ussd_public.js:1414
+#: go-ussd_public.js:1415
 msgid ""
 "Sorry not a valid input. Sorry, this number is already registered. They "
 "must opt-out before they can register again."
 msgstr ""
 
-#: go-ussd_public.js:1416
+#: go-ussd_public.js:1417
 msgid ""
 "Sorry not a valid input. What language would this person like to receive "
 "these messages in?"
 msgstr ""
 
-#: go-ussd_public.js:1418
+#: go-ussd_public.js:1419
 msgid ""
 "Sorry not a valid input. Please tell us why you no longer want to receive "
 "messages so we can help you further."
 msgstr ""
 
-#: go-ussd_public.js:1420
+#: go-ussd_public.js:1421
 msgid ""
 "Sorry not a valid input. We are sorry for your loss. Would you like to "
 "receive a small set of free messages from Hello Mama that could help you in "
 "this difficult time?"
 msgstr ""
 
-#: go-ussd_public.js:1422
+#: go-ussd_public.js:1423
 msgid "Sorry not a valid input. Who would you like to stop receiving messages?"
 msgstr ""
 
-#: go-ussd_public.js:1473 go-ussd_public.js:1991
+#: go-ussd_public.js:1478 go-ussd_public.js:2021
 msgid "Yes"
 msgstr ""
 
-#: go-ussd_public.js:1474 go-ussd_public.js:1992
+#: go-ussd_public.js:1479 go-ussd_public.js:2022
 msgid "No"
 msgstr ""
 
-#: go-ussd_public.js:1475
+#: go-ussd_public.js:1480
 msgid "Change the number I'd like to manage"
 msgstr ""
 
-#: go-ussd_public.js:1500 go-ussd_public.js:1901
+#: go-ussd_public.js:1505 go-ussd_public.js:1925
 msgid "English"
 msgstr ""
 
-#: go-ussd_public.js:1501 go-ussd_public.js:1902
+#: go-ussd_public.js:1506 go-ussd_public.js:1926
 msgid "Hausa"
 msgstr ""
 
-#: go-ussd_public.js:1502 go-ussd_public.js:1903
+#: go-ussd_public.js:1507 go-ussd_public.js:1927
 msgid "Igbo"
 msgstr ""
 
-#: go-ussd_public.js:1503 go-ussd_public.js:1904
+#: go-ussd_public.js:1508 go-ussd_public.js:1928
 msgid "Pidgin"
 msgstr ""
 
-#: go-ussd_public.js:1504 go-ussd_public.js:1905
+#: go-ussd_public.js:1509 go-ussd_public.js:1929
 msgid "Yoruba"
 msgstr ""
 
-#: go-ussd_public.js:1623 go-ussd_public.js:1641
+#: go-ussd_public.js:1634 go-ussd_public.js:1652
 msgid "Start Baby messages"
 msgstr ""
 
-#: go-ussd_public.js:1624
+#: go-ussd_public.js:1635
 msgid "Change message preferences"
 msgstr ""
 
-#: go-ussd_public.js:1625 go-ussd_public.js:1642
+#: go-ussd_public.js:1636 go-ussd_public.js:1653
 msgid "Change my number"
 msgstr ""
 
-#: go-ussd_public.js:1626 go-ussd_public.js:1643
+#: go-ussd_public.js:1637 go-ussd_public.js:1654
 msgid "Change language"
 msgstr ""
 
-#: go-ussd_public.js:1627 go-ussd_public.js:1644
+#: go-ussd_public.js:1638 go-ussd_public.js:1655
 msgid "Stop receiving messages"
 msgstr ""
 
-#: go-ussd_public.js:1677 go-ussd_public.js:1727 go-ussd_public.js:1790
+#: go-ussd_public.js:1688 go-ussd_public.js:1738 go-ussd_public.js:1814
 msgid "Back to main menu"
 msgstr ""
 
-#: go-ussd_public.js:1678 go-ussd_public.js:1859
+#: go-ussd_public.js:1689 go-ussd_public.js:1883
 msgid "Exit"
 msgstr ""
 
-#: go-ussd_public.js:1726
+#: go-ussd_public.js:1737
 msgid "Change from text to voice messages"
 msgstr ""
 
-#: go-ussd_public.js:1743
+#: go-ussd_public.js:1754
 msgid "Monday and Wednesday"
 msgstr ""
 
-#: go-ussd_public.js:1744
+#: go-ussd_public.js:1755
 msgid "Tuesday and Thursday"
 msgstr ""
 
-#: go-ussd_public.js:1756
+#: go-ussd_public.js:1767
 msgid "Between 9-11am"
 msgstr ""
 
-#: go-ussd_public.js:1757
+#: go-ussd_public.js:1768
 msgid "Between 2-5pm"
 msgstr ""
 
-#: go-ussd_public.js:1788
+#: go-ussd_public.js:1793
+msgid ""
+"Thank you. You will now start receiving voice calls between 9am - 11am on "
+"Monday and Wednesday."
+msgstr ""
+
+#: go-ussd_public.js:1794
+msgid ""
+"Thank you. You will now start receiving voice calls between 2pm - 5pm on "
+"Monday and Wednesday."
+msgstr ""
+
+#: go-ussd_public.js:1797
+msgid ""
+"Thank you. You will now start receiving voice calls between 9am - 11am on "
+"Tuesday and Thursday."
+msgstr ""
+
+#: go-ussd_public.js:1798
+msgid ""
+"Thank you. You will now start receiving voice calls between 2pm - 5pm on "
+"Tuesday and Thursday."
+msgstr ""
+
+#: go-ussd_public.js:1812
 msgid "Change the day and time I receive messages"
 msgstr ""
 
-#: go-ussd_public.js:1789
+#: go-ussd_public.js:1813
 msgid "Change from voice to text messages"
 msgstr ""
 
-#: go-ussd_public.js:1858
+#: go-ussd_public.js:1882
 msgid "Try a different number"
 msgstr ""
 
-#: go-ussd_public.js:1941
+#: go-ussd_public.js:1971
 msgid "Mother miscarried"
 msgstr ""
 
-#: go-ussd_public.js:1942
+#: go-ussd_public.js:1972
 msgid "Baby stillborn"
 msgstr ""
 
-#: go-ussd_public.js:1943
+#: go-ussd_public.js:1973
 msgid "Baby passed away"
 msgstr ""
 
-#: go-ussd_public.js:1944
+#: go-ussd_public.js:1974
 msgid "Messages not useful"
 msgstr ""
 
-#: go-ussd_public.js:1945
+#: go-ussd_public.js:1975
 msgid "Other"
 msgstr ""
 
-#: go-ussd_public.js:2081
+#: go-ussd_public.js:2111
 msgid "Mother messages"
 msgstr ""
 
-#: go-ussd_public.js:2082
+#: go-ussd_public.js:2112
 msgid "Household messages"
 msgstr ""
 
-#: go-ussd_public.js:2083
+#: go-ussd_public.js:2113
 msgid "All messages"
 msgstr ""
