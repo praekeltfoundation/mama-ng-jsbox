@@ -145,7 +145,11 @@ go.app = function() {
                     if (user.details.receiver_role) {
                         self.im.user.set_answer('role_player', user.details.receiver_role);
                         self.im.user.set_answer('contact_msisdn', self.im.user.addr);
-                        return self.states.create('state_msisdn_permission');
+                        return self.im.user
+                            .set_lang(user.details.preferred_language)
+                            .then(function() {
+                                return self.states.create('state_msisdn_permission');
+                            });
                     } else {
                         self.im.user.set_answer('role_player', 'guest');
                         return self.states.create('state_language');
@@ -196,7 +200,13 @@ go.app = function() {
                     new Choice('yor_NG', $('Yoruba'))
                 ],
                 error: errors[name],
-                next: 'state_registered_msisdn'
+                next: function(choice) {
+                    return self.im.user
+                        .set_lang(choice.value)
+                        .then(function() {
+                            return 'state_registered_msisdn';
+                        });
+                }
             });
         });
 
@@ -596,7 +606,13 @@ go.app = function() {
                     new Choice('pcm_NG', $('Pidgin')),
                     new Choice('yor_NG', $('Yoruba'))
                 ],
-                next: 'state_change_language'
+                next: function(choice) {
+                    return self.im.user
+                        .set_lang(choice.value)
+                        .then(function() {
+                            return 'state_change_language';
+                        });
+                }
             });
         });
 

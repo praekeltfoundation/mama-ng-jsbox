@@ -52,6 +52,7 @@ describe("Hello Mama app", function() {
                                 "5. Yoruba"
                             ].join('\n')
                         })
+                        .check.user.properties({lang: null})
                         .run();
                 });
                 it("to state_registered_msisdn", function() { //st-C
@@ -65,6 +66,7 @@ describe("Hello Mama app", function() {
                             state: 'state_registered_msisdn',
                             reply: "Please enter the number which is registered to receive messages. For example, 0803304899"
                         })
+                        .check.user.properties({lang: 'yor_NG'})
                         .run();
                 });
                 it("to state_main_menu", function() {
@@ -268,6 +270,7 @@ describe("Hello Mama app", function() {
                                 "5. Yoruba"
                             ].join('\n')
                         })
+                        .check.user.properties({lang: 'pcm_NG'})
                         .run();
                 });
                 it("to state_msg_language_confirm", function() {
@@ -284,6 +287,7 @@ describe("Hello Mama app", function() {
                             state: 'state_msg_language_confirm',
                             reply: "Thank you. You language preference has been updated and you will start to receive messages in this language."
                         })
+                        .check.user.properties({lang: 'yor_NG'})
                         .run();
                 });
             });

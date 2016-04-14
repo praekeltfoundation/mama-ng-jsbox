@@ -75,6 +75,7 @@ describe("Hello Mama app", function() {
                                 "5. Yoruba"
                             ].join('\n')
                         })
+                        .check.user.properties({lang: null})
                         .check(function(api) {
                             var expected_used = [0, 1];
                             var fixts = api.http.fixtures.fixtures;
@@ -97,6 +98,7 @@ describe("Hello Mama app", function() {
                             state: 'state_registered_msisdn',
                             reply: "Please enter the number which is registered to receive messages. For example, 0803304899"
                         })
+                        .check.user.properties({lang: 'yor_NG'})
                         .check(function(api) {
                             var expected_used = [0, 1];
                             var fixts = api.http.fixtures.fixtures;
@@ -123,6 +125,7 @@ describe("Hello Mama app", function() {
                                 "3. Change the number I'd like to manage"
                             ].join('\n')
                         })
+                        .check.user.properties({lang: 'ibo_NG'})
                         .check(function(api) {
                             var expected_used = [2];
                             var fixts = api.http.fixtures.fixtures;
@@ -871,6 +874,7 @@ describe("Hello Mama app", function() {
                                 "5. Yoruba"
                             ].join('\n')
                         })
+                        .check.user.properties({lang: 'ibo_NG'})
                         .run();
                 });
                 it("case 1 > to state_msg_language_confirm", function() {
@@ -886,6 +890,7 @@ describe("Hello Mama app", function() {
                             state: 'state_msg_language_confirm',
                             reply: "Thank you. You language preference has been updated and you will start to receive messages in this language."
                         })
+                        .check.user.properties({lang: 'pcm_NG'})
                         .check(function(api) {
                             var expected_used = [2,9,62,63];
                             var fixts = api.http.fixtures.fixtures;

@@ -1463,7 +1463,13 @@ go.app = function() {
                     new Choice('yor_NG', $('Yoruba'))
                 ],
                 error: errors[name],
-                next: 'state_registered_msisdn'
+                next: function(choice) {
+                    return self.im.user
+                        .set_lang(choice.value)
+                        .then(function() {
+                            return 'state_registered_msisdn';
+                        });
+                }
             });
         });
 
@@ -1607,7 +1613,13 @@ go.app = function() {
                     new Choice('pcm_NG', $('Pidgin')),
                     new Choice('yor_NG', $('Yoruba'))
                 ],
-                next: 'state_msg_language_confirm'
+                next: function(choice) {
+                    return self.im.user
+                        .set_lang(choice.value)
+                        .then(function() {
+                            return 'state_msg_language_confirm';
+                        });
+                }
             });
         });
 
