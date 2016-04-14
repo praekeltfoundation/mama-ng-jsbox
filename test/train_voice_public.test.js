@@ -17,7 +17,7 @@ describe("Mama Nigeria App", function() {
                 .setup.config.app({
                     testing_today: '2015-07-22',
                     testing_message_id: '0170b7bb-978e-4b8a-35d2-662af5b6daee',  // testing only
-                    name: 'train-ivr-public-test',
+                    name: 'train-voice-public-test',
                     country_code: '234',  // nigeria
                     services: {
                         voice_content: {
