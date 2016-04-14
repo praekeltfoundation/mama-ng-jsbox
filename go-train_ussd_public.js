@@ -1353,7 +1353,7 @@ go.app = function() {
             "state_voice_times":
                 $("Thank you. At what time would they like to receive these calls?"),
             "state_end_voice_confirm":
-                $("Thank you. You will now start receiving voice calls between {{times}} on {{days}}."),
+                $("Thank you. You will now start receiving voice calls between {{times}} on {{days}}."),  // not currently in use
             "state_change_menu_voice":
                 $("Please select what you would like to do:"),
             "state_end_sms_confirm":
@@ -1567,17 +1567,21 @@ go.app = function() {
 
         // EndState st-06
         self.add('state_end_voice_confirm', function(name) {
-            var voice_schedule = {
-                "mon_wed": "Monday and Wednesday",
-                "tue_thu": "Tuesday and Thursday",
-                "9_11": "9am - 11am",
-                "2_5": "2pm - 5pm"
-            };
+            var days = self.im.user.answers.state_voice_days;
+            var times = self.im.user.answers.state_voice_times;
+            var text;
+
+            if (days === 'mon_wed') {
+                text = times === '9_11'
+                    ? $("Thank you. You will now start receiving voice calls between 9am - 11am on Monday and Wednesday.")
+                    : $("Thank you. You will now start receiving voice calls between 2pm - 5pm on Monday and Wednesday.");
+            } else {  // days === tue_thu
+                text = times === '9_11'
+                    ? $("Thank you. You will now start receiving voice calls between 9am - 11am on Tuesday and Thursday.")
+                    : $("Thank you. You will now start receiving voice calls between 2pm - 5pm on Tuesday and Thursday.");
+            }
             return new EndState(name, {
-                text: questions[name].context({
-                    days: voice_schedule[self.im.user.answers.state_voice_days],
-                    times: voice_schedule[self.im.user.answers.state_voice_times]
-                }),
+                text: text,
                 next: 'state_start'
             });
         });
