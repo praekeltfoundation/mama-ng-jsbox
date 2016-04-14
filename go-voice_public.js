@@ -1319,7 +1319,6 @@ go.app = function() {
     var GoApp = App.extend(function(self) {
         App.call(self, 'state_start');
         var $ = self.$;
-        var lang = 'eng_NG';
 
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
@@ -1353,7 +1352,11 @@ go.app = function() {
         self.states.add('state_start', function() {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
-            return self.states.create("state_msg_receiver_msisdn");
+            return self.im.user
+                .set_lang(self.im.config.default_language)
+                .then(function() {
+                    return self.states.create("state_msg_receiver_msisdn");
+                });
         });
 
         // A loopback state that is required since you can't pass opts back
@@ -1373,7 +1376,7 @@ go.app = function() {
             return new FreeText(name, {
                 question: $(use_text),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option, creator_opts.retry),
+                    self.im, name, self.im.user.lang, speech_option, creator_opts.retry),
                 next: function(content) {
                     if (go.utils.is_valid_msisdn(content)) {
                         return 'state_check_registered';
@@ -1402,7 +1405,11 @@ go.app = function() {
                             if (contact && contact.details.receiver_role) {
                                 self.im.user.set_answer('role_player', contact.details.receiver_role);
                                 self.im.user.set_answer('contact_id', contact.id);
-                                return self.states.create('state_check_receiver_role');
+                                return self.im.user
+                                    .set_lang(contact.details.preferred_language)
+                                    .then(function() {
+                                        return self.states.create('state_check_receiver_role');
+                                    });
                             } else {
                                 return self.states.create('state_msisdn_not_recognised');
                             }
@@ -1479,7 +1486,7 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $('Number not recognised.'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, self.im.user.lang, speech_option),
                 choices: [
                     new Choice('state_msg_receiver_msisdn', $('If you entered the incorrect number, press 1')),
                     new Choice('state_end_exit', $('to exit, press 2'))
@@ -1496,7 +1503,7 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $('Choose:'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, self.im.user.lang, speech_option),
                 choices: [
                     new Choice('state_check_baby_subscription', $('baby')),
                     new Choice('state_check_msg_type', $('preferences')),
@@ -1516,7 +1523,7 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $('Choose:'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, self.im.user.lang, speech_option),
                 choices: [
                     new Choice('state_check_baby_subscription', $('baby')),
                     new Choice('state_new_msisdn', $('number')),
@@ -1552,7 +1559,7 @@ go.app = function() {
             return new FreeText(name, {
                 question: $('You are already subscribed. To go back to main menu, 0 then #'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, self.im.user.lang, speech_option),
                 next: function(choice) {
                     return 'state_already_registered_baby';
                 }
@@ -1565,7 +1572,7 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $('Confirm baby?'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, self.im.user.lang, speech_option),
                 choices: [
                     new Choice('confirm', $('To confirm press 1. To go back to main menu, 0 then #'))
                 ],
@@ -1590,7 +1597,7 @@ go.app = function() {
             return new EndState(name, {
                 text: $('Thank you - baby'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, self.im.user.lang, speech_option),
                 next: 'state_start'
             });
         });
@@ -1619,7 +1626,7 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $('Please select what you would like to do:'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, self.im.user.lang, speech_option),
                 choices: [
                     new Choice('change', $('Change from text to voice'))
                 ],
@@ -1633,7 +1640,7 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $('Message days?'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, self.im.user.lang, speech_option),
                 choices: [
                     new Choice('mon_wed', $('Monday and Wednesday')),
                     new Choice('tue_thu', $('Tuesday and Thursday'))
@@ -1650,7 +1657,7 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $('Message times?'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, self.im.user.lang, speech_option),
                 choices: [
                     new Choice('9_11', $('9-11am')),
                     new Choice('2_5', $('2-5pm'))
@@ -1680,7 +1687,7 @@ go.app = function() {
                 text: $('Thank you! Time: {{ time }}. Days: {{ days }}.'
                     ).context({ time: time, days: days }),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, self.im.user.lang, speech_option),
                 next: 'state_start'
             });
         });
@@ -1691,7 +1698,7 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $('Please select what you would like to do:'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, self.im.user.lang, speech_option),
                 choices: [
                     new Choice('state_voice_days', $('Change times')),
                     new Choice('state_end_sms_confirm', $('Change mother message from voice to text'))
@@ -1722,7 +1729,7 @@ go.app = function() {
             return new EndState(name, {
                 text: $('Thank you. You will now receive text messages.'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, self.im.user.lang, speech_option),
                 next: 'state_start'
             });
         });
@@ -1738,7 +1745,7 @@ go.app = function() {
             return new FreeText(name, {
                 question: $(use_text),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option, creator_opts.retry),
+                    self.im, name, self.im.user.lang, speech_option, creator_opts.retry),
                 next: function(content) {
                     if (!go.utils.is_valid_msisdn(content)) {
                         return {
@@ -1775,7 +1782,7 @@ go.app = function() {
                     new Choice('state_end_exit', $("To exit, press 2"))
                 ],
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, self.im.user.lang, speech_option),
                 next: function(choice) {
                     return choice.value;
                 }
@@ -1805,7 +1812,7 @@ go.app = function() {
             return new EndState(name, {
                 text: $('Thank you. Mobile number changed.'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, self.im.user.lang, speech_option),
                 next: 'state_start'
             });
         });
@@ -1818,7 +1825,7 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $('Language?'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, self.im.user.lang, speech_option),
                 choices: [
                     new Choice('eng_NG', $('English')),
                     new Choice('hau_NG', $('Hausa')),
@@ -1826,7 +1833,13 @@ go.app = function() {
                     new Choice('pcm_NG', $('Pidgin')),
                     new Choice('yor_NG', $('Yoruba'))
                 ],
-                next: 'state_change_language'
+                next: function(choice) {
+                    return self.im.user
+                        .set_lang(choice.value)
+                        .then(function() {
+                            return self.states.create('state_change_language');
+                        });
+                }
             });
         });
 
@@ -1849,7 +1862,7 @@ go.app = function() {
             return new EndState(name, {
                 text: $('Thank you. Language preference updated.'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, self.im.user.lang, speech_option),
                 next: 'state_start'
             });
         });
@@ -1863,7 +1876,7 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $('Optout reason?'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, self.im.user.lang, speech_option),
                 choices: [
                     new Choice('miscarriage', $("Mother miscarried")),
                     new Choice('stillborn', $("Baby stillborn")),
@@ -1889,7 +1902,7 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: $('Receive loss messages?'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, self.im.user.lang, speech_option),
                 choices: [
                     new Choice('state_switch_loss', $("Yes")),
                     new Choice('state_optout_all', $("No"))
@@ -1999,7 +2012,7 @@ go.app = function() {
             return new EndState(name, {
                 text: $('Thank you. You will now receive messages to support you during this difficult time.'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, self.im.user.lang, speech_option),
                 next: 'state_start'
             });
         });
@@ -2011,7 +2024,7 @@ go.app = function() {
                 question: $('Which messages to opt-out on?'),
                 error: $("Invalid input. Which message to opt-out on?"),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, self.im.user.lang, speech_option),
                 choices: [
                     new Choice('mother', $("Mother messages")),
                     new Choice('household', $("Household messages")),
@@ -2090,7 +2103,7 @@ go.app = function() {
             return new EndState(name, {
                 text: $('Thank you - optout'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, self.im.user.lang, speech_option),
                 next: 'state_start'
             });
         });
@@ -2101,7 +2114,7 @@ go.app = function() {
             return new EndState(name, {
                 text: $('We are sorry for your loss. You will no longer receive messages.'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, self.im.user.lang, speech_option),
                 next: 'state_start'
             });
         });
@@ -2114,7 +2127,7 @@ go.app = function() {
             return new EndState(name, {
                 text: $('Thank you for using the Hello Mama service. Goodbye.'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, lang, speech_option),
+                    self.im, name, self.im.user.lang, speech_option),
                 next: 'state_start'
             });
         });

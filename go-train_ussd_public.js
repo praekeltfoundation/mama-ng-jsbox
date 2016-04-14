@@ -1353,7 +1353,8 @@ go.app = function() {
             "state_voice_times":
                 $("Thank you. At what time would they like to receive these calls?"),
             "state_end_voice_confirm":
-                $("Thank you. You will now start receiving voice calls between [time] on [days]."),
+                null,  // not currently in use
+                // $("Thank you. You will now start receiving voice calls between {{times}} on {{days}}."),
             "state_change_menu_voice":
                 $("Please select what you would like to do:"),
             "state_end_sms_confirm":
@@ -1463,7 +1464,13 @@ go.app = function() {
                     new Choice('yor_NG', $('Yoruba'))
                 ],
                 error: errors[name],
-                next: 'state_registered_msisdn'
+                next: function(choice) {
+                    return self.im.user
+                        .set_lang(choice.value)
+                        .then(function() {
+                            return 'state_registered_msisdn';
+                        });
+                }
             });
         });
 
@@ -1561,8 +1568,21 @@ go.app = function() {
 
         // EndState st-06
         self.add('state_end_voice_confirm', function(name) {
+            var days = self.im.user.answers.state_voice_days;
+            var times = self.im.user.answers.state_voice_times;
+            var text;
+
+            if (days === 'mon_wed') {
+                text = times === '9_11'
+                    ? $("Thank you. You will now start receiving voice calls between 9am - 11am on Monday and Wednesday.")
+                    : $("Thank you. You will now start receiving voice calls between 2pm - 5pm on Monday and Wednesday.");
+            } else {  // days === tue_thu
+                text = times === '9_11'
+                    ? $("Thank you. You will now start receiving voice calls between 9am - 11am on Tuesday and Thursday.")
+                    : $("Thank you. You will now start receiving voice calls between 2pm - 5pm on Tuesday and Thursday.");
+            }
             return new EndState(name, {
-                text: questions[name],
+                text: text,
                 next: 'state_start'
             });
         });
@@ -1607,7 +1627,13 @@ go.app = function() {
                     new Choice('pcm_NG', $('Pidgin')),
                     new Choice('yor_NG', $('Yoruba'))
                 ],
-                next: 'state_msg_language_confirm'
+                next: function(choice) {
+                    return self.im.user
+                        .set_lang(choice.value)
+                        .then(function() {
+                            return 'state_msg_language_confirm';
+                        });
+                }
             });
         });
 
