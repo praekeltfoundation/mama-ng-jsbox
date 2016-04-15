@@ -511,10 +511,10 @@ go.app = function() {
         self.add('state_validate_date', function(name) {
             var monthAndYear = self.im.user.answers.state_last_period_month ||  // flow via st-05 & st-06
                                 self.im.user.answers.state_baby_birth_month_year;
-            var day = self.im.user.answers.state_last_period_day ||
-                        self.im.user.answers.state_baby_birth_day;          // flow via st-12 & st-13
+            var day = self.im.user.answers.state_last_period_day
+                   || self.im.user.answers.state_baby_birth_day;  // flow via st-12 & st-13
 
-            var dateToValidate = monthAndYear+day;
+            var dateToValidate = monthAndYear + go.utils.double_digit_number(day);
 
             if (go.utils.is_valid_date(dateToValidate, 'YYYYMMDD')) {
                 self.im.user.set_answer('working_date', dateToValidate);

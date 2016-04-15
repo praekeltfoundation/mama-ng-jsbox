@@ -336,6 +336,24 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
+            it("to state_gravida - day < 10", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .inputs(
+                      {session_event: 'new'}  // dial in
+                      , '12345'   // state_auth_code - personnel code
+                      , '6' // state_msg_receiver - friend_only
+                      , '09092222222'  // state_msisdn
+                      //, '1'  // state_msg_pregnant - mother
+                      , '3'  // state_last_period_month - May 15
+                      , '4'  // state_last_period_day
+                    )
+                    .check.interaction({
+                        state: 'state_gravida',
+                        reply: "Please enter the number of times the woman has been pregnant before. This includes any pregnancies she may not have carried to term."
+                    })
+                    .run();
+            });
             it("to state_msg_language", function() {
                 return tester
                     .setup.user.addr('08080020002')

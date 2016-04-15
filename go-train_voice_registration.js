@@ -1586,7 +1586,8 @@ go.app = function() {
                             'creator_opts': {'retry_state': name}
                         };
                     } else {
-                        self.im.user.set_answer('working_date', year + month + content);
+                        self.im.user.set_answer('working_date',
+                            year + month + go.utils.double_digit_number(content));
                         return 'state_validate_date';
                     }
                 }
@@ -1665,7 +1666,7 @@ go.app = function() {
                         };
                     } else {
                         self.im.user.set_answer('working_date',
-                            year + month + content);
+                            year + month + go.utils.double_digit_number(content));
                         return 'state_validate_date';
                     }
                 }
