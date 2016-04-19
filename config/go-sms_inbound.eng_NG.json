@@ -1,0 +1,123 @@
+{
+    "": {
+        "pot-creation-date": "2016-04-14 01:31:+0000",
+        "project-id-version": "Hello Mama",
+        "language-team": "WCL <george@westerncapelabs.com>",
+        "language": "eng_NG",
+        "mime-version": "1.0",
+        "content-type": "text/plain; charset=utf-8",
+        "content-transfer-encoding": "8bit",
+        "po-revision-date": "2016-04-19 11:00+0200",
+        "last-translator": "George",
+        "x-generator": "Poedit 1.6.4"
+    },
+    "msgid": [
+        null,
+        "msgstr"
+    ],
+
+    "{{pre}}January{{post}}": [
+        null,
+        "{{pre}}January{{post}}"
+    ],
+    "{{pre}}February{{post}}": [
+        null,
+        "{{pre}}February{{post}}"
+    ],
+    "{{pre}}March{{post}}": [
+        null,
+        "{{pre}}March{{post}}"
+    ],
+    "{{pre}}April{{post}}": [
+        null,
+        "{{pre}}April{{post}}"
+    ],
+    "{{pre}}May{{post}}": [
+        null,
+        "{{pre}}May{{post}}"
+    ],
+    "{{pre}}June{{post}}": [
+        null,
+        "{{pre}}June{{post}}"
+    ],
+    "{{pre}}July{{post}}": [
+        null,
+        "{{pre}}July{{post}}"
+    ],
+    "{{pre}}August{{post}}": [
+        null,
+        "{{pre}}August{{post}}"
+    ],
+    "{{pre}}September{{post}}": [
+        null,
+        "{{pre}}September{{post}}"
+    ],
+    "{{pre}}October{{post}}": [
+        null,
+        "{{pre}}October{{post}}"
+    ],
+    "{{pre}}November{{post}}": [
+        null,
+        "{{pre}}November{{post}}"
+    ],
+    "{{pre}}December{{post}}": [
+        null,
+        "{{pre}}December{{post}}"
+    ],
+    "{{pre}}Jan{{post}}": [
+        null,
+        "{{pre}}Jan{{post}}"
+    ],
+    "{{pre}}Feb{{post}}": [
+        null,
+        "{{pre}}Feb{{post}}"
+    ],
+    "{{pre}}Mar{{post}}": [
+        null,
+        "{{pre}}Mar{{post}}"
+    ],
+    "{{pre}}Apr{{post}}": [
+        null,
+        "{{pre}}Apr{{post}}"
+    ],
+    "{{pre}}Jun{{post}}": [
+        null,
+        "{{pre}}Jun{{post}}"
+    ],
+    "{{pre}}Jul{{post}}": [
+        null,
+        "{{pre}}Jul{{post}}"
+    ],
+    "{{pre}}Aug{{post}}": [
+        null,
+        "{{pre}}Aug{{post}}"
+    ],
+    "{{pre}}Sep{{post}}": [
+        null,
+        "{{pre}}Sep{{post}}"
+    ],
+    "{{pre}}Oct{{post}}": [
+        null,
+        "{{pre}}Oct{{post}}"
+    ],
+    "{{pre}}Nov{{post}}": [
+        null,
+        "{{pre}}Nov{{post}}"
+    ],
+    "{{pre}}Dec{{post}}": [
+        null,
+        "{{pre}}Dec{{post}}"
+    ],
+    "You will no longer receive messages from Hello Mama. Should you ever want to re-subscribe, contact your local community health extension worker": [
+        null,
+        "You will no longer receive messages from Hello Mama. Should you ever want to re-subscribe, contact your local community health extension worker"
+    ],
+    "We do not recognise your number and can therefore not opt you out.": [
+        null,
+        "We do not recognise your number and can therefore not opt you out."
+    ],
+    "Currently no helpdesk functionality is active. Reply STOP to unsubscribe.": [
+        null,
+        "Currently no helpdesk functionality is active. Reply STOP to unsubscribe."
+    ],
+}
