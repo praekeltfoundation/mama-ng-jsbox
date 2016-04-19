@@ -1,0 +1,406 @@
+{
+    "": {
+        "pot-creation-date": "2016-04-14 01:31:+0000",
+        "project-id-version": "Hello Mama",
+        "language-team": "WCL <george@westerncapelabs.com>",
+        "language": "eng_NG",
+        "mime-version": "1.0",
+        "content-type": "text/plain; charset=utf-8",
+        "content-transfer-encoding": "8bit",
+        "po-revision-date": "2016-04-19 10:00+0200",
+        "last-translator": "George",
+        "x-generator": "Poedit 1.6.4"
+    },
+    "{{pre}}January{{post}}": [
+        null,
+        "{{pre}}January{{post}}"
+    ],
+    "{{pre}}February{{post}}": [
+        null,
+        "{{pre}}February{{post}}"
+    ],
+    "{{pre}}March{{post}}": [
+        null,
+        "{{pre}}March{{post}}"
+    ],
+    "{{pre}}April{{post}}": [
+        null,
+        "{{pre}}April{{post}}"
+    ],
+    "{{pre}}May{{post}}": [
+        null,
+        "{{pre}}May{{post}}"
+    ],
+    "{{pre}}June{{post}}": [
+        null,
+        "{{pre}}June{{post}}"
+    ],
+    "{{pre}}July{{post}}": [
+        null,
+        "{{pre}}July{{post}}"
+    ],
+    "{{pre}}August{{post}}": [
+        null,
+        "{{pre}}August{{post}}"
+    ],
+    "{{pre}}September{{post}}": [
+        null,
+        "{{pre}}September{{post}}"
+    ],
+    "{{pre}}October{{post}}": [
+        null,
+        "{{pre}}October{{post}}"
+    ],
+    "{{pre}}November{{post}}": [
+        null,
+        "{{pre}}November{{post}}"
+    ],
+    "{{pre}}December{{post}}": [
+        null,
+        "{{pre}}December{{post}}"
+    ],
+    "{{pre}}Jan{{post}}": [
+        null,
+        "{{pre}}Jan{{post}}"
+    ],
+    "{{pre}}Feb{{post}}": [
+        null,
+        "{{pre}}Feb{{post}}"
+    ],
+    "{{pre}}Mar{{post}}": [
+        null,
+        "{{pre}}Mar{{post}}"
+    ],
+    "{{pre}}Apr{{post}}": [
+        null,
+        "{{pre}}Apr{{post}}"
+    ],
+    "{{pre}}Jun{{post}}": [
+        null,
+        "{{pre}}Jun{{post}}"
+    ],
+    "{{pre}}Jul{{post}}": [
+        null,
+        "{{pre}}Jul{{post}}"
+    ],
+    "{{pre}}Aug{{post}}": [
+        null,
+        "{{pre}}Aug{{post}}"
+    ],
+    "{{pre}}Sep{{post}}": [
+        null,
+        "{{pre}}Sep{{post}}"
+    ],
+    "{{pre}}Oct{{post}}": [
+        null,
+        "{{pre}}Oct{{post}}"
+    ],
+    "{{pre}}Nov{{post}}": [
+        null,
+        "{{pre}}Nov{{post}}"
+    ],
+    "{{pre}}Dec{{post}}": [
+        null,
+        "{{pre}}Dec{{post}}"
+    ],
+    "You have an incomplete registration. Would you like to continue with this registration?": [
+        null,
+        "You have an incomplete registration. Would you like to continue with this registration?"
+    ],
+    "Welcome to Hello Mama. Do you have permission to manage the number {{msisdn}}?": [
+        null,
+        "Welcome to Hello Mama. Do you have permission to manage the number {{msisdn}}?"
+    ],
+    "We're sorry, you do not have permission to update the preferences for this subscriber.": [
+        null,
+        "We're sorry, you do not have permission to update the preferences for this subscriber."
+    ],
+    "Welcome to Hello Mama. Please choose your language": [
+        null,
+        "Welcome to Hello Mama. Please choose your language"
+    ],
+    "Please enter the number which is registered to receive messages. For example, 0803304899": [
+        null,
+        "Please enter the number which is registered to receive messages. For example, 0803304899"
+    ],
+    "Select:": [
+        null,
+        "Select:"
+    ],
+    "We do not recognise this number. Please dial from the registered number or sign up with your local Community Health Extension worker.": [
+        null,
+        "We do not recognise this number. Please dial from the registered number or sign up with your local Community Health Extension worker."
+    ],
+    "You are already registered for baby messages.": [
+        null,
+        "You are already registered for baby messages."
+    ],
+    "Thank you. You will now receive messages about caring for baby": [
+        null,
+        "Thank you. You will now receive messages about caring for baby"
+    ],
+    "Please select what you would like to do:": [
+        null,
+        "Please select what you would like to do:"
+    ],
+    "We will call twice a week. On what days would the person like to receive messages?": [
+        null,
+        "We will call twice a week. On what days would the person like to receive messages?"
+    ],
+    "Thank you. At what time would they like to receive these calls?": [
+        null,
+        "Thank you. At what time would they like to receive these calls?"
+    ],
+    "Thank you. You will now receive text messages.": [
+        null,
+        "Thank you. You will now receive text messages."
+    ],
+    "Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899": [
+        null,
+        "Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899"
+    ],
+    "Sorry, this number is already registered. They must opt-out before they can register again.": [
+        null,
+        "Sorry, this number is already registered. They must opt-out before they can register again."
+    ],
+    "Who will receive these messages?": [
+        null,
+        "Who will receive these messages?"
+    ],
+    "Thank you. The number which receives messages has been updated.": [
+        null,
+        "Thank you. The number which receives messages has been updated."
+    ],
+    "What language would this person like to receive these messages in?": [
+        null,
+        "What language would this person like to receive these messages in?"
+    ],
+    "Thank you. You language preference has been updated and you will start to receive messages in this language.": [
+        null,
+        "Thank you. You language preference has been updated and you will start to receive messages in this language."
+    ],
+    "Please tell us why you no longer want to receive messages so we can help you further.": [
+        null,
+        "Please tell us why you no longer want to receive messages so we can help you further."
+    ],
+    "We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?": [
+        null,
+        "We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?"
+    ],
+    "Thank you. You will now receive messages to support you during this difficult time.": [
+        null,
+        "Thank you. You will now receive messages to support you during this difficult time."
+    ],
+    "Who would you like to stop receiving messages?": [
+        null,
+        "Who would you like to stop receiving messages?"
+    ],
+    "Thank you. You will no longer receive messages": [
+        null,
+        "Thank you. You will no longer receive messages"
+    ],
+    "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW": [
+        null,
+        "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
+    ],
+    "Thank you for using the Hello Mama service": [
+        null,
+        "Thank you for using the Hello Mama service"
+    ],
+    "Mobile number not registered.": [
+        null,
+        "Mobile number not registered."
+    ],
+    "Sorry not a valid input. Welcome to Hello Mama. Do you have permission to manage the number {{msisdn}}?": [
+        null,
+        "Sorry not a valid input. Welcome to Hello Mama. Do you have permission to manage the number {{msisdn}}?"
+    ],
+    "Sorry not a valid input. Welcome to Hello Mama. Please choose your language": [
+        null,
+        "Sorry not a valid input. Welcome to Hello Mama. Please choose your language"
+    ],
+    "Sorry not a valid input. Select:": [
+        null,
+        "Sorry not a valid input. Select:"
+    ],
+    "Sorry not a valid input. You are already registered for baby messages.": [
+        null,
+        "Sorry not a valid input. You are already registered for baby messages."
+    ],
+    "Sorry not a valid input. Please select what you would like to do:": [
+        null,
+        "Sorry not a valid input. Please select what you would like to do:"
+    ],
+    "Sorry not a valid input. We will call twice a week. On what days would the person like to receive messages?": [
+        null,
+        "Sorry not a valid input. We will call twice a week. On what days would the person like to receive messages?"
+    ],
+    "Sorry not a valid input. Thank you. At what time would they like to receive these calls?": [
+        null,
+        "Sorry not a valid input. Thank you. At what time would they like to receive these calls?"
+    ],
+    "Sorry not a valid input. Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899": [
+        null,
+        "Sorry not a valid input. Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899"
+    ],
+    "Sorry not a valid input. Sorry, this number is already registered. They must opt-out before they can register again.": [
+        null,
+        "Sorry not a valid input. Sorry, this number is already registered. They must opt-out before they can register again."
+    ],
+    "Sorry not a valid input. What language would this person like to receive these messages in?": [
+        null,
+        "Sorry not a valid input. What language would this person like to receive these messages in?"
+    ],
+    "Sorry not a valid input. Please tell us why you no longer want to receive messages so we can help you further.": [
+        null,
+        "Sorry not a valid input. Please tell us why you no longer want to receive messages so we can help you further."
+    ],
+    "Sorry not a valid input. We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?": [
+        null,
+        "Sorry not a valid input. We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?"
+    ],
+    "Sorry not a valid input. Who would you like to stop receiving messages?": [
+        null,
+        "Sorry not a valid input. Who would you like to stop receiving messages?"
+    ],
+    "Yes": [
+        null,
+        "Yes"
+    ],
+    "No": [
+        null,
+        "No"
+    ],
+    "Change the number I'd like to manage": [
+        null,
+        "Change the number I'd like to manage"
+    ],
+    "English": [
+        null,
+        "English"
+    ],
+    "Hausa": [
+        null,
+        "Hausa"
+    ],
+    "Igbo": [
+        null,
+        "Igbo"
+    ],
+    "Pidgin": [
+        null,
+        "Pidgin"
+    ],
+    "Yoruba": [
+        null,
+        "Yoruba"
+    ],
+    "Start Baby messages": [
+        null,
+        "Start Baby messages"
+    ],
+    "Change message preferences": [
+        null,
+        "Change message preferences"
+    ],
+    "Change my number": [
+        null,
+        "Change my number"
+    ],
+    "Change language": [
+        null,
+        "Change language"
+    ],
+    "Stop receiving messages": [
+        null,
+        "Stop receiving messages"
+    ],
+    "Back to main menu": [
+        null,
+        "Back to main menu"
+    ],
+    "Exit": [
+        null,
+        "Exit"
+    ],
+    "Change from text to voice messages": [
+        null,
+        "Change from text to voice messages"
+    ],
+    "Monday and Wednesday": [
+        null,
+        "Monday and Wednesday"
+    ],
+    "Tuesday and Thursday": [
+        null,
+        "Tuesday and Thursday"
+    ],
+    "Between 9-11am": [
+        null,
+        "Between 9-11am"
+    ],
+    "Between 2-5pm": [
+        null,
+        "Between 2-5pm"
+    ],
+    "Thank you. You will now start receiving voice calls between 9am - 11am on Monday and Wednesday.": [
+        null,
+        "Thank you. You will now start receiving voice calls between 9am - 11am on Monday and Wednesday."
+    ],
+    "Thank you. You will now start receiving voice calls between 2pm - 5pm on Monday and Wednesday.": [
+        null,
+        "Thank you. You will now start receiving voice calls between 2pm - 5pm on Monday and Wednesday."
+    ],
+    "Thank you. You will now start receiving voice calls between 9am - 11am on Tuesday and Thursday.": [
+        null,
+        "Thank you. You will now start receiving voice calls between 9am - 11am on Tuesday and Thursday."
+    ],
+    "Thank you. You will now start receiving voice calls between 2pm - 5pm on Tuesday and Thursday.": [
+        null,
+        "Thank you. You will now start receiving voice calls between 2pm - 5pm on Tuesday and Thursday."
+    ],
+    "Change the day and time I receive messages": [
+        null,
+        "Change the day and time I receive messages"
+    ],
+    "Change from voice to text messages": [
+        null,
+        "Change from voice to text messages"
+    ],
+    "Try a different number": [
+        null,
+        "Try a different number"
+    ],
+    "Mother miscarried": [
+        null,
+        "Mother miscarried"
+    ],
+    "Baby stillborn": [
+        null,
+        "Baby stillborn"
+    ],
+    "Baby passed away": [
+        null,
+        "Baby passed away"
+    ],
+    "Messages not useful": [
+        null,
+        "Messages not useful"
+    ],
+    "Other": [
+        null,
+        "Other"
+    ],
+    "Mother messages": [
+        null,
+        "Mother messages"
+    ],
+    "Household messages": [
+        null,
+        "Household messages"
+    ],
+    "All messages": [
+        null,
+        "All messages"
+    ]
+}
