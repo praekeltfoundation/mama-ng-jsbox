@@ -10,7 +10,7 @@
         "x-generator": "Poedit 1.8.7",
         "last-translator": "",
         "plural-forms": "nplurals=2; plural=(n != 1);",
-        "language": "ig"
+        "language": "ibo_NG"
     },
     "{{pre}}January{{post}}": [
         null,
@@ -174,7 +174,7 @@
     ],
     "Thank you. The number which receives messages has been updated.": [
         null,
-        "Imela. E melitela noma kne na-anata ozi."
+        "Imela. E melitela noma nke na-anata ozi."
     ],
     "What language would this person like to receive these messages in?": [
         null,
