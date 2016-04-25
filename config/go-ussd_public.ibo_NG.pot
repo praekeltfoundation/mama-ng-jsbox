@@ -200,7 +200,7 @@ msgstr "Onye ga-enweta ozi ndi a?"
 
 #: go-ussd_public.js:1369
 msgid "Thank you. The number which receives messages has been updated."
-msgstr "Imela. E melitela noma kne na-anata ozi."
+msgstr "Imela. E melitela noma nke na-anata ozi."
 
 #: go-ussd_public.js:1371
 msgid "What language would this person like to receive these messages in?"
