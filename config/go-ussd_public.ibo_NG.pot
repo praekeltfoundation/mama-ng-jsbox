@@ -108,32 +108,32 @@ msgstr "{{pre}}Dec{{post}}"
 msgid ""
 "You have an incomplete registration. Would you like to continue with this "
 "registration?"
-msgstr "I nwere na-ezughị ezu ndebanye. I ga-acho ịnogide na a ndebanye?"
+msgstr "I nwere na-ezughi ezu ndebanye. I ga-acho inogide na a ndebanye?"
 
 #: go-ussd_public.js:1333
 msgid ""
 "Welcome to Hello Mama. Do you have permission to manage the number "
 "{{msisdn}}?"
 msgstr ""
-"Ndo bughị a nti oso oso. Mmadu Bịa ka Hello Mama. I nwere ikike jikwaa onu "
+"Ndo bughi a nti oso oso. Mmadu Bia ka Hello Mama. I nwere ikike jikwaa onu "
 "ogugu {{msisdn}}?"
 
 #: go-ussd_public.js:1335
 msgid ""
 "We're sorry, you do not have permission to update the preferences for this "
 "subscriber."
-msgstr "Anyị nwute, ị na-adịghị ikike iji melite mmasị maka nke a utu magazin."
+msgstr "Anyi nwute, i na-adighi ikike iji melite mmasi maka nke a utu magazin."
 
 #: go-ussd_public.js:1337
 msgid "Welcome to Hello Mama. Please choose your language"
-msgstr "Anyi na anabata gi na Hello Mama. Biko horo asusu gị"
+msgstr "Anyi na anabata gi na Hello Mama. Biko horo asusu gi"
 
 #: go-ussd_public.js:1339
 msgid ""
 "Please enter the number which is registered to receive messages. For "
 "example, 0803304899"
 msgstr ""
-"Biko tinye nomba ekwenti ohuru ị ga-acho iji na enweta ozi kwa izuka. Dịka "
+"Biko tinye nomba ekwenti ohuru i ga-acho iji na enweta ozi kwa izuka. Dika "
 "ihe imatu 08033048990 "
 
 #: go-ussd_public.js:1341 go-ussd_public.js:1343
@@ -145,12 +145,12 @@ msgid ""
 "We do not recognise this number. Please dial from the registered number or "
 "sign up with your local Community Health Extension worker."
 msgstr ""
-"Anyị na-adịghị aghota a onu ogugu. Biko osịso si ughalaahia onu ogugu ma o "
-"bu banye na gị na mpaghara Community Health Extension oru."
+"Anyi na-adighi aghota a onu ogugu. Biko osiso si ughalaahia onu ogugu ma o "
+"bu banye na gi na mpaghara Community Health Extension oru."
 
 #: go-ussd_public.js:1347
 msgid "You are already registered for baby messages."
-msgstr "Na ị na-Edebanyelarị n'ihi na nwa messages."
+msgstr "Na i na-Edebanyelari n'ihi na nwa messages."
 
 #: go-ussd_public.js:1349
 msgid "Thank you. You will now receive messages about caring for baby"
@@ -196,7 +196,7 @@ msgstr "Ndo, a onu ogugu a na-ama aha. Ha ga-apu na iso ha puru aha ozo. "
 
 #: go-ussd_public.js:1367
 msgid "Who will receive these messages?"
-msgstr "Onye ga-enweta ozi ndị a?"
+msgstr "Onye ga-enweta ozi ndi a?"
 
 #: go-ussd_public.js:1369
 msgid "Thank you. The number which receives messages has been updated."
@@ -204,14 +204,14 @@ msgstr "Imela. E melitela nomba nke na-anata ozi. "
 
 #: go-ussd_public.js:1371
 msgid "What language would this person like to receive these messages in?"
-msgstr "Kedu asusu onye a choro iji na anata ozi ndị a?"
+msgstr "Kedu asusu onye a choro iji na anata ozi ndi a?"
 
 #: go-ussd_public.js:1373
 msgid ""
 "Thank you. You language preference has been updated and you will start to "
 "receive messages in this language."
 msgstr ""
-"Daalu. Asusu gị mmasị e emelitere na ị ga-amalite na-enweta ozi na asusu a."
+"Daalu. Asusu gi mmasi e emelitere na i ga-amalite na-enweta ozi na asusu a."
 
 #: go-ussd_public.js:1375
 msgid ""
@@ -233,11 +233,11 @@ msgstr ""
 msgid ""
 "Thank you. You will now receive messages to support you during this "
 "difficult time."
-msgstr "Daalu. I ga-now-enweta ozi na-akwado gị aka n'oge nsogbu a."
+msgstr "Daalu. I ga-now-enweta ozi na-akwado gi aka n'oge nsogbu a."
 
 #: go-ussd_public.js:1381
 msgid "Who would you like to stop receiving messages?"
-msgstr "Onye ga-amasị gị ka ha kwusị anata ozi?"
+msgstr "Onye ga-amasi gi ka ha kwusi anata ozi?"
 
 #: go-ussd_public.js:1383
 msgid "Thank you. You will no longer receive messages"
@@ -248,8 +248,8 @@ msgid ""
 "We are sorry for your loss. You will no longer receive messages. Should you "
 "need support during this difficult time, please contact your local CHEW"
 msgstr ""
-"Odi anyi nwute n'ihe nfunari mere gi. ị ga-acho i nweta obere ozi ndi si na "
-"Hello Mama nwere ike inyere gị aka n'oge nsogbu a?"
+"Odi anyi nwute n'ihe nfunari mere gi. i ga-acho i nweta obere ozi ndi si na "
+"Hello Mama nwere ike inyere gi aka n'oge nsogbu a?"
 
 #: go-ussd_public.js:1387
 msgid "Thank you for using the Hello Mama service"
@@ -257,28 +257,28 @@ msgstr "Imela maka iji oru ozi ndi Hello Mama."
 
 #: go-ussd_public.js:1392
 msgid "Mobile number not registered."
-msgstr "Mobile nomba adịghị aha"
+msgstr "Mobile nomba adighi aha"
 
 #: go-ussd_public.js:1394
 msgid ""
 "Sorry not a valid input. Welcome to Hello Mama. Do you have permission to "
 "manage the number {{msisdn}}?"
 msgstr ""
-"Ndo bughị a nti oso oso. Mmadu Bịa ka Hello Mama. I nwere ikike jikwaa onu "
+"Ndo bughi a nti oso oso. Mmadu Bia ka Hello Mama. I nwere ikike jikwaa onu "
 "ogugu {{msisdn}}?"
 
 #: go-ussd_public.js:1396
 msgid ""
 "Sorry not a valid input. Welcome to Hello Mama. Please choose your language"
-msgstr "Ndo bughị a nti oso oso. Mmadu Bịa ka Hello Mama. Biko horo asusu gị"
+msgstr "Ndo bughi a nti oso oso. Mmadu Bia ka Hello Mama. Biko horo asusu gi"
 
 #: go-ussd_public.js:1398 go-ussd_public.js:1400
 msgid "Sorry not a valid input. Select:"
-msgstr "Ndo bughị a nti oso oso. Horo: "
+msgstr "Ndo bughi a nti oso oso. Horo: "
 
 #: go-ussd_public.js:1402
 msgid "Sorry not a valid input. You are already registered for baby messages."
-msgstr "Ndo bughị a nti oso oso. Na ị na-Edebanyelarị n'ihi na nwa messages."
+msgstr "Ndo bughi a nti oso oso. Na i na-Edebanyelari n'ihi na nwa messages."
 
 #: go-ussd_public.js:1404 go-ussd_public.js:1410
 msgid "Sorry not a valid input. Please select what you would like to do:"
