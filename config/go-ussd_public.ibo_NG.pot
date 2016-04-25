@@ -134,7 +134,7 @@ msgid ""
 "example, 0803304899"
 msgstr ""
 "Biko tinye nomba ekwenti ohuru i ga-acho iji na enweta ozi kwa izuka. Dika "
-"ihe imatu 08033048990 "
+"ihe imatu 08033048990"
 
 #: go-ussd_public.js:1341 go-ussd_public.js:1343
 msgid "Select:"
@@ -165,7 +165,7 @@ msgid ""
 "We will call twice a week. On what days would the person like to receive "
 "messages?"
 msgstr ""
-"Anyi ga-akpo ugboro abuo n’izu. Na ihe ubochi ga-onye-amasi na-enweta ozi?"
+"Anyi ga-akpo ugboro abuo n'izu. Na ihe ubochi ga-onye-amasi na-enweta ozi?"
 
 #: go-ussd_public.js:1355
 msgid "Thank you. At what time would they like to receive these calls?"
@@ -192,7 +192,7 @@ msgstr ""
 msgid ""
 "Sorry, this number is already registered. They must opt-out before they can "
 "register again."
-msgstr "Ndo, a onu ogugu a na-ama aha. Ha ga-apu na iso ha puru aha ozo. "
+msgstr "Ndo, a onu ogugu a na-ama aha. Ha ga-apu na iso ha puru aha ozo."
 
 #: go-ussd_public.js:1367
 msgid "Who will receive these messages?"
@@ -200,7 +200,7 @@ msgstr "Onye ga-enweta ozi ndi a?"
 
 #: go-ussd_public.js:1369
 msgid "Thank you. The number which receives messages has been updated."
-msgstr "Imela. E melitela nomba nke na-anata ozi. "
+msgstr "Imela. E melitela noma kne na-anata ozi."
 
 #: go-ussd_public.js:1371
 msgid "What language would this person like to receive these messages in?"
@@ -218,7 +218,7 @@ msgid ""
 "Please tell us why you no longer want to receive messages so we can help you "
 "further."
 msgstr ""
-"Biko gwa anyi ihe mere i na-adikwaghi choro enweta ozi otú anyi nwere ike "
+"Biko gwa anyi ihe mere i na-adikwaghi choro enweta ozi otu anyi nwere ike "
 "inyere gi n'ihu."
 
 #: go-ussd_public.js:1377
@@ -274,7 +274,7 @@ msgstr "Ndo bughi a nti oso oso. Mmadu Bia ka Hello Mama. Biko horo asusu gi"
 
 #: go-ussd_public.js:1398 go-ussd_public.js:1400
 msgid "Sorry not a valid input. Select:"
-msgstr "Ndo bughi a nti oso oso. Horo: "
+msgstr "Ndo bughi a nti oso oso. Horo:"
 
 #: go-ussd_public.js:1402
 msgid "Sorry not a valid input. You are already registered for baby messages."
@@ -327,7 +327,7 @@ msgid ""
 "messages so we can help you further."
 msgstr ""
 "Ndo bughi a nti oso oso. Biko gwa anyi ihe mere i na-adikwaghi choro enweta "
-"ozi otú anyi nwere ike inyere gi n'ihu."
+"ozi otu anyi nwere ike inyere gi n'ihu."
 
 #: go-ussd_public.js:1420
 msgid ""
