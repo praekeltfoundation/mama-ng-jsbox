@@ -1,0 +1,395 @@
+{
+    "": {
+        "pot-creation-date": "2016-04-25 07:28+0200",
+        "project-id-version": "",
+        "language-team": "",
+        "mime-version": "1.0",
+        "content-type": "text/plain; charset=UTF-8",
+        "content-transfer-encoding": "8bit",
+        "po-revision-date": "2016-04-25 07:59+0200",
+        "x-generator": "Poedit 1.8.7",
+        "last-translator": "",
+        "plural-forms": "nplurals=2; plural=(n != 1);",
+        "language": "ig"
+    },
+    "{{pre}}January{{post}}": [
+        null,
+        "{{pre}}January{{post}}"
+    ],
+    "{{pre}}February{{post}}": [
+        null,
+        "{{pre}}February{{post}}"
+    ],
+    "{{pre}}March{{post}}": [
+        null,
+        "{{pre}}March{{post}}"
+    ],
+    "{{pre}}April{{post}}": [
+        null,
+        "{{pre}}April{{post}}"
+    ],
+    "{{pre}}May{{post}}": [
+        null,
+        "{{pre}}May{{post}}"
+    ],
+    "{{pre}}June{{post}}": [
+        null,
+        "{{pre}}June{{post}}"
+    ],
+    "{{pre}}July{{post}}": [
+        null,
+        "{{pre}}July{{post}}"
+    ],
+    "{{pre}}August{{post}}": [
+        null,
+        "{{pre}}August{{post}}"
+    ],
+    "{{pre}}September{{post}}": [
+        null,
+        "{{pre}}September{{post}}"
+    ],
+    "{{pre}}October{{post}}": [
+        null,
+        "{{pre}}October{{post}}"
+    ],
+    "{{pre}}November{{post}}": [
+        null,
+        "{{pre}}November{{post}}"
+    ],
+    "{{pre}}December{{post}}": [
+        null,
+        "{{pre}}Deceber{{post}}"
+    ],
+    "{{pre}}Jan{{post}}": [
+        null,
+        "{{pre}}Jan{{post}}"
+    ],
+    "{{pre}}Feb{{post}}": [
+        null,
+        "{{pre}}Feb{{post}}"
+    ],
+    "{{pre}}Mar{{post}}": [
+        null,
+        "{{pre}}Mar{{post}}"
+    ],
+    "{{pre}}Apr{{post}}": [
+        null,
+        "{{pre}}Apr{{post}}"
+    ],
+    "{{pre}}Jun{{post}}": [
+        null,
+        "{{pre}}Jun{{post}}"
+    ],
+    "{{pre}}Jul{{post}}": [
+        null,
+        "{{pre}}Jul{{post}}"
+    ],
+    "{{pre}}Aug{{post}}": [
+        null,
+        "{{pre}}Aug{{post}}"
+    ],
+    "{{pre}}Sep{{post}}": [
+        null,
+        "{{pre}}Sep{{post}}"
+    ],
+    "{{pre}}Oct{{post}}": [
+        null,
+        "{{pre}}Oct{{post}}"
+    ],
+    "{{pre}}Nov{{post}}": [
+        null,
+        "{{pre}}Nov{{post}}"
+    ],
+    "{{pre}}Dec{{post}}": [
+        null,
+        "{{pre}}Dec{{post}}"
+    ],
+    "You have an incomplete registration. Would you like to continue with this registration?": [
+        null,
+        "I nwere na-ezughị ezu ndebanye. I ga-acho ịnogide na a ndebanye?"
+    ],
+    "Welcome to Hello Mama. Do you have permission to manage the number {{msisdn}}?": [
+        null,
+        "Ndo bughị a nti oso oso. Mmadu Bịa ka Hello Mama. I nwere ikike jikwaa onu ogugu {{msisdn}}?"
+    ],
+    "We're sorry, you do not have permission to update the preferences for this subscriber.": [
+        null,
+        "Anyị nwute, ị na-adịghị ikike iji melite mmasị maka nke a utu magazin."
+    ],
+    "Welcome to Hello Mama. Please choose your language": [
+        null,
+        "Anyi na anabata gi na Hello Mama. Biko horo asusu gị"
+    ],
+    "Please enter the number which is registered to receive messages. For example, 0803304899": [
+        null,
+        "Biko tinye nomba ekwenti ohuru ị ga-acho iji na enweta ozi kwa izuka. Dịka ihe imatu 08033048990 "
+    ],
+    "Select:": [
+        null,
+        "Horo:"
+    ],
+    "We do not recognise this number. Please dial from the registered number or sign up with your local Community Health Extension worker.": [
+        null,
+        "Anyị na-adịghị aghota a onu ogugu. Biko osịso si ughalaahia onu ogugu ma o bu banye na gị na mpaghara Community Health Extension oru."
+    ],
+    "You are already registered for baby messages.": [
+        null,
+        "Na ị na-Edebanyelarị n'ihi na nwa messages."
+    ],
+    "Thank you. You will now receive messages about caring for baby": [
+        null,
+        "Daalu. I ga-now-enweta ozi banyere ilekota nwa"
+    ],
+    "Please select what you would like to do:": [
+        null,
+        "Biko horo ihe i ga-acho ime"
+    ],
+    "We will call twice a week. On what days would the person like to receive messages?": [
+        null,
+        "Anyi ga-akpo ugboro abuo n’izu. Na ihe ubochi ga-onye-amasi na-enweta ozi?"
+    ],
+    "Thank you. At what time would they like to receive these calls?": [
+        null,
+        "Daalu. Olee mgbe ha ga-acho inweta ihe ndi a oku?"
+    ],
+    "Thank you. You will now start receiving voice calls between [time] on [days].": [
+        null,
+        "Daalu. I ga-now-amalite na-anata olu oku n'etiti [time] on [days]."
+    ],
+    "Thank you. You will now receive text messages.": [
+        null,
+        "Daalu. I ga-now-enweta ozi ederede."
+    ],
+    "Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899": [
+        null,
+        "Biko tinye ohuru mobile nomba i ga-acho nweta kwa izu messages on. Di ka ihe atu, 0803304899"
+    ],
+    "Sorry, this number is already registered. They must opt-out before they can register again.": [
+        null,
+        "Ndo, a onu ogugu a na-ama aha. Ha ga-apu na iso ha puru aha ozo. "
+    ],
+    "Who will receive these messages?": [
+        null,
+        "Onye ga-enweta ozi ndị a?"
+    ],
+    "Thank you. The number which receives messages has been updated.": [
+        null,
+        "Imela. E melitela nomba nke na-anata ozi. "
+    ],
+    "What language would this person like to receive these messages in?": [
+        null,
+        "Kedu asusu onye a choro iji na anata ozi ndị a?"
+    ],
+    "Thank you. You language preference has been updated and you will start to receive messages in this language.": [
+        null,
+        "Daalu. Asusu gị mmasị e emelitere na ị ga-amalite na-enweta ozi na asusu a."
+    ],
+    "Please tell us why you no longer want to receive messages so we can help you further.": [
+        null,
+        "Biko gwa anyi ihe mere i na-adikwaghi choro enweta ozi otú anyi nwere ike inyere gi n'ihu."
+    ],
+    "We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?": [
+        null,
+        "Anyi bu ndi nwute n'ihi na gi onwu. I ga-acho na-enweta a obere set nke free ozi site na Hello Mama nwere ike inyere gi aka na nsogbu a?"
+    ],
+    "Thank you. You will now receive messages to support you during this difficult time.": [
+        null,
+        "Daalu. I ga-now-enweta ozi na-akwado gị aka n'oge nsogbu a."
+    ],
+    "Who would you like to stop receiving messages?": [
+        null,
+        "Onye ga-amasị gị ka ha kwusị anata ozi?"
+    ],
+    "Thank you. You will no longer receive messages": [
+        null,
+        "Daalu. I ga-now-enweta ozi ederede."
+    ],
+    "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW": [
+        null,
+        "Odi anyi nwute n'ihe nfunari mere gi. ị ga-acho i nweta obere ozi ndi si na Hello Mama nwere ike inyere gị aka n'oge nsogbu a?"
+    ],
+    "Thank you for using the Hello Mama service": [
+        null,
+        "Imela maka iji oru ozi ndi Hello Mama."
+    ],
+    "Mobile number not registered.": [
+        null,
+        "Mobile nomba adịghị aha"
+    ],
+    "Sorry not a valid input. Welcome to Hello Mama. Do you have permission to manage the number {{msisdn}}?": [
+        null,
+        "Ndo bughị a nti oso oso. Mmadu Bịa ka Hello Mama. I nwere ikike jikwaa onu ogugu {{msisdn}}?"
+    ],
+    "Sorry not a valid input. Welcome to Hello Mama. Please choose your language": [
+        null,
+        "Ndo bughị a nti oso oso. Mmadu Bịa ka Hello Mama. Biko horo asusu gị"
+    ],
+    "Sorry not a valid input. Select:": [
+        null,
+        "Ndo bughị a nti oso oso. Horo: "
+    ],
+    "Sorry not a valid input. You are already registered for baby messages.": [
+        null,
+        "Ndo bughị a nti oso oso. Na ị na-Edebanyelarị n'ihi na nwa messages."
+    ],
+    "Sorry not a valid input. Please select what you would like to do:": [
+        null,
+        "Ndo bughi a nti oso oso. Biko horo ihe i ga-acho ime:"
+    ],
+    "Sorry not a valid input. We will call twice a week. On what days would the person like to receive messages?": [
+        null,
+        "Ndo bughi a nti oso oso. Anyi ga-akpo ugboro abuo n'izu. Na ihe ubochi ga-onye-amasi na-enweta ozi?"
+    ],
+    "Sorry not a valid input. Thank you. At what time would they like to receive these calls?": [
+        null,
+        "Ndo bughi a nti oso oso. Daalu. Olee mgbe ha ga-acho inweta ihe ndi a oku?"
+    ],
+    "Sorry not a valid input. Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899": [
+        null,
+        "Ndo bughi a nti oso oso. Biko tinye ohuru mobile nomba i ga-acho nweta kwa izu messages on. Di ka ihe atu, 0803304899"
+    ],
+    "Sorry not a valid input. Sorry, this number is already registered. They must opt-out before they can register again.": [
+        null,
+        "Ndo bughi a nti oso oso. Ndo, a onu ogugu a na-ama aha. Ha ga-apu na iso ha puru aha ozo."
+    ],
+    "Sorry not a valid input. What language would this person like to receive these messages in?": [
+        null,
+        "Ndo bughi a nti oso oso. Gini asusu ga-a onye acho inweta ozi ndi a na"
+    ],
+    "Sorry not a valid input. Please tell us why you no longer want to receive messages so we can help you further.": [
+        null,
+        "Ndo bughi a nti oso oso. Biko gwa anyi ihe mere i na-adikwaghi choro enweta ozi otú anyi nwere ike inyere gi n'ihu."
+    ],
+    "Sorry not a valid input. We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?": [
+        null,
+        "Ndo bughi a nti oso oso. Anyi bu ndi nwute n'ihi na gi onwu. I ga-acho na-enweta a obere set nke free ozi site na Hello Mama nwere ike inyere gi aka na nsogbu a?"
+    ],
+    "Sorry not a valid input. Who would you like to stop receiving messages?": [
+        null,
+        "Ndo bughi a nti oso oso. Onye ga-amasi gi ka ha kwusi anata ozi?"
+    ],
+    "Yes": [
+        null,
+        "Ee"
+    ],
+    "No": [
+        null,
+        "No"
+    ],
+    "Change the number I'd like to manage": [
+        null,
+        "Agbanwe nomba amasi m jikwaa"
+    ],
+    "English": [
+        null,
+        "English"
+    ],
+    "Hausa": [
+        null,
+        "Hausa"
+    ],
+    "Igbo": [
+        null,
+        "Igbo"
+    ],
+    "Pidgin": [
+        null,
+        "Pidgin"
+    ],
+    "Yoruba": [
+        null,
+        "Yoruba"
+    ],
+    "Start Baby messages": [
+        null,
+        "Malite Baby messages"
+    ],
+    "Change message preferences": [
+        null,
+        "Change ozi preferences"
+    ],
+    "Change my number": [
+        null,
+        "M gbanwee otutu"
+    ],
+    "Change language": [
+        null,
+        "gbanwee asusu"
+    ],
+    "Stop receiving messages": [
+        null,
+        "Kwusi na-anata ozi"
+    ],
+    "Back to main menu": [
+        null,
+        "Back to isi menu"
+    ],
+    "Exit": [
+        null,
+        "ipu apu"
+    ],
+    "Change from text to voice messages": [
+        null,
+        "M gbanwee otutu"
+    ],
+    "Monday and Wednesday": [
+        null,
+        "Monday na Wednesday"
+    ],
+    "Tuesday and Thursday": [
+        null,
+        "Tuesday na Thursday"
+    ],
+    "Between 9-11am": [
+        null,
+        "n'etiti 9-11am"
+    ],
+    "Between 2-5pm": [
+        null,
+        "n'etiti 2-5pm"
+    ],
+    "Change the day and time I receive messages": [
+        null,
+        "Igbanwe ubochi na oge m na-enweta ozi"
+    ],
+    "Change from voice to text messages": [
+        null,
+        "-Agbanwe site olu na-ozi ederede"
+    ],
+    "Try a different number": [
+        null,
+        "Gbalia a di iche iche onu ogugu"
+    ],
+    "Mother miscarried": [
+        null,
+        "nne miscarried"
+    ],
+    "Baby stillborn": [
+        null,
+        "Bebi stillborn"
+    ],
+    "Baby passed away": [
+        null,
+        "Bebi agabigawo"
+    ],
+    "Messages not useful": [
+        null,
+        "Ozi bughi bara uru"
+    ],
+    "Other": [
+        null,
+        "Ozo"
+    ],
+    "Mother messages": [
+        null,
+        "nne messages"
+    ],
+    "Household messages": [
+        null,
+        "ezinulo messages"
+    ],
+    "All messages": [
+        null,
+        "All ozi"
+    ]
+}
