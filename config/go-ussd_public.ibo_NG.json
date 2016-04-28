@@ -1,16 +1,17 @@
 {
     "": {
-        "pot-creation-date": "2016-04-25 07:28+0200",
-        "project-id-version": "",
-        "language-team": "",
+        "project-id-version": "PACKAGE VERSION",
+        "report-msgid-bugs-to": "",
+        "pot-creation-date": "2016-04-26 15:11+0000",
+        "po-revision-date": "2016-04-28 07:35+0000",
+        "last-translator": "Janie <janie@praekelt.com>",
+        "language-team": "LANGUAGE <LL@li.org>",
+        "language": "ibo_NG",
         "mime-version": "1.0",
         "content-type": "text/plain; charset=UTF-8",
         "content-transfer-encoding": "8bit",
-        "po-revision-date": "2016-04-25 07:59+0200",
-        "x-generator": "Poedit 1.8.7",
-        "last-translator": "",
-        "plural-forms": "nplurals=2; plural=(n != 1);",
-        "language": "ibo_NG"
+        "x-generator": "Pootle 2.5.1.1",
+        "x-pootle-mtime": "1461828936.073135"
     },
     "{{pre}}January{{post}}": [
         null,
@@ -118,7 +119,7 @@
     ],
     "Welcome to Hello Mama. Please choose your language": [
         null,
-        "Anyi na anabata gi na Hello Mama. Biko horo asusu gi"
+        "Anyi na anabata gi na Hello Mama. Biko horo asusu gi."
     ],
     "Please enter the number which is registered to receive messages. For example, 0803304899": [
         null,
@@ -134,31 +135,31 @@
     ],
     "You are already registered for baby messages.": [
         null,
-        "Na i na-Edebanyelari n'ihi na nwa messages."
+        "E debanyelari aha gi maka ozi nwa."
     ],
     "Thank you. You will now receive messages about caring for baby": [
         null,
-        "Daalu. I ga-now-enweta ozi banyere ilekota nwa"
+        "Imela. Ugbua I ga-na anatazi ozi banyere ilekota nwa."
     ],
     "Please select what you would like to do:": [
         null,
-        "Biko horo ihe i ga-acho ime"
+        "Biko horo otu nhoro"
     ],
     "We will call twice a week. On what days would the person like to receive messages?": [
         null,
-        "Anyi ga-akpo ugboro abuo n'izu. Na ihe ubochi ga-onye-amasi na-enweta ozi?"
+        "Anyi ga-akpo ha ugboro abuo kwa izuka. Kedu ubochi onye a ga-acho iji we nata ozi okpukpo ndi a?"
     ],
     "Thank you. At what time would they like to receive these calls?": [
         null,
-        "Daalu. Olee mgbe ha ga-acho inweta ihe ndi a oku?"
+        "Imela. Kedu oge ha ga-acho iji we nata ozi okpukpo ndi a? "
     ],
     "Thank you. You will now start receiving voice calls between [time] on [days].": [
         null,
-        "Daalu. I ga-now-amalite na-anata olu oku n'etiti [time] on [days]."
+        "Imela. I ga-amalite i na anata ozi okpukpo ndi a [time] on [days]."
     ],
     "Thank you. You will now receive text messages.": [
         null,
-        "Daalu. I ga-now-enweta ozi ederede."
+        "Imela. Ugbua I ga na-anata oz iodide ndi a."
     ],
     "Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899": [
         null,
@@ -174,7 +175,7 @@
     ],
     "Thank you. The number which receives messages has been updated.": [
         null,
-        "Imela. E melitela noma nke na-anata ozi."
+        "Imela E melitela nomba nke na-anata ozi."
     ],
     "What language would this person like to receive these messages in?": [
         null,
@@ -182,31 +183,31 @@
     ],
     "Thank you. You language preference has been updated and you will start to receive messages in this language.": [
         null,
-        "Daalu. Asusu gi mmasi e emelitere na i ga-amalite na-enweta ozi na asusu a."
+        "Imela. E melitela asusu nke masiri gi, I ga ebido na anata ozi n'asusu a."
     ],
     "Please tell us why you no longer want to receive messages so we can help you further.": [
         null,
-        "Biko gwa anyi ihe mere i na-adikwaghi choro enweta ozi otu anyi nwere ike inyere gi n'ihu."
+        "Biko gwanyi ihe mere i na achozighi i na anata ozi ka anyi nwe ike inyere gi aka ga kwuo ihu."
     ],
     "We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?": [
         null,
-        "Anyi bu ndi nwute n'ihi na gi onwu. I ga-acho na-enweta a obere set nke free ozi site na Hello Mama nwere ike inyere gi aka na nsogbu a?"
+        "Odi anyi nwute n'ihe nfunari mere gi. i ga-acho i nweta obere ozi ndi si na Hello Mama nwere ike inyere gi aka n'oge nsogbu a?"
     ],
     "Thank you. You will now receive messages to support you during this difficult time.": [
         null,
-        "Daalu. I ga-now-enweta ozi na-akwado gi aka n'oge nsogbu a."
+        "Imela. Ugbu a i ga n'enweta ozi ndi ga enyere gi aka n'oge nsogbu a."
     ],
     "Who would you like to stop receiving messages?": [
         null,
-        "Onye ga-amasi gi ka ha kwusi anata ozi?"
+        "Nke ozi ndi nke ga-amasi gi ikwusi inata?"
     ],
     "Thank you. You will no longer receive messages": [
         null,
-        "Daalu. I ga-now-enweta ozi ederede."
+        "Imela. I gaghi na anata kwa ozi ozo."
     ],
     "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW": [
         null,
-        "Odi anyi nwute n'ihe nfunari mere gi. i ga-acho i nweta obere ozi ndi si na Hello Mama nwere ike inyere gi aka n'oge nsogbu a?"
+        "Odi anyi nwute n'ihe nfunari mere gi. I gaghi na anata kwa ozi ozo. O buru na icho enyemaka n'oge nsogbu a biko kpoturu ndi oru ulo ahuike di ne ebe ibi. "
     ],
     "Thank you for using the Hello Mama service": [
         null,
@@ -214,59 +215,59 @@
     ],
     "Mobile number not registered.": [
         null,
-        "Mobile nomba adighi aha"
+        "Mobile nomba adighi aha."
     ],
     "Sorry not a valid input. Welcome to Hello Mama. Do you have permission to manage the number {{msisdn}}?": [
         null,
-        "Ndo bughi a nti oso oso. Mmadu Bia ka Hello Mama. I nwere ikike jikwaa onu ogugu {{msisdn}}?"
+        "Ndo, obughi ntiye ziri ezi. Mmadu Bia ka Hello Mama. I nwere ikike jikwaa onu ogugu {{msisdn}}?"
     ],
     "Sorry not a valid input. Welcome to Hello Mama. Please choose your language": [
         null,
-        "Ndo bughi a nti oso oso. Mmadu Bia ka Hello Mama. Biko horo asusu gi"
+        "Ndo, obughi ntiye ziri ezi. Anyi na anabata gi na Hello Mama. Biko horo asusu gi"
     ],
     "Sorry not a valid input. Select:": [
         null,
-        "Ndo bughi a nti oso oso. Horo:"
+        "Ndo, obughi ntiye ziri ezi. Horo:"
     ],
     "Sorry not a valid input. You are already registered for baby messages.": [
         null,
-        "Ndo bughi a nti oso oso. Na i na-Edebanyelari n'ihi na nwa messages."
+        "Ndo, obughi ntiye ziri ezi.  E debanyelari aha gi maka ozi nwa."
     ],
     "Sorry not a valid input. Please select what you would like to do:": [
         null,
-        "Ndo bughi a nti oso oso. Biko horo ihe i ga-acho ime:"
+        "Ndo, obughi ntiye ziri ezi. Biko horo otu nhoro:"
     ],
     "Sorry not a valid input. We will call twice a week. On what days would the person like to receive messages?": [
         null,
-        "Ndo bughi a nti oso oso. Anyi ga-akpo ugboro abuo n'izu. Na ihe ubochi ga-onye-amasi na-enweta ozi?"
+        "Ndo, obughi ntiye ziri ezi. Anyi ga-akpo ha ugboro abuo kwa izuka. Kedu ubochi onye a ga-acho iji we nata ozi okpukpo ndi a? "
     ],
     "Sorry not a valid input. Thank you. At what time would they like to receive these calls?": [
         null,
-        "Ndo bughi a nti oso oso. Daalu. Olee mgbe ha ga-acho inweta ihe ndi a oku?"
+        "Ndo, obughi ntiye ziri ezi. Imela. Kedu oge ha ga-acho iji we nata ozi okpukpo ndi a?"
     ],
     "Sorry not a valid input. Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899": [
         null,
-        "Ndo bughi a nti oso oso. Biko tinye ohuru mobile nomba i ga-acho nweta kwa izu messages on. Di ka ihe atu, 0803304899"
+        "Ndo, obughi ntiye ziri ezi. Imela. Biko tinye noma ekwenti ohuru i ga-acho iji na enweta ozi kwa izuka. Dika ihe imatu 08033048990"
     ],
     "Sorry not a valid input. Sorry, this number is already registered. They must opt-out before they can register again.": [
         null,
-        "Ndo bughi a nti oso oso. Ndo, a onu ogugu a na-ama aha. Ha ga-apu na iso ha puru aha ozo."
+        "Ndo, obughi ntiye ziri ezi. Ndo, a onu ogugu a na-ama aha. Ha ga-apu na iso ha puru aha ozo."
     ],
     "Sorry not a valid input. What language would this person like to receive these messages in?": [
         null,
-        "Ndo bughi a nti oso oso. Gini asusu ga-a onye acho inweta ozi ndi a na"
+        "Ndo, obughi ntiye ziri ezi. Kedu asusu onye a choro iju na anata ozi ndi a?"
     ],
     "Sorry not a valid input. Please tell us why you no longer want to receive messages so we can help you further.": [
         null,
-        "Ndo bughi a nti oso oso. Biko gwa anyi ihe mere i na-adikwaghi choro enweta ozi otu anyi nwere ike inyere gi n'ihu."
+        "Ndo obughi ntiye ziri ezi. Biko gwanyi ihe mere i na achozighi i na anata ozi ka anyi nwe ike inyere gi aka ga kwuo ihu. "
     ],
     "Sorry not a valid input. We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?": [
         null,
-        "Ndo bughi a nti oso oso. Anyi bu ndi nwute n'ihi na gi onwu. I ga-acho na-enweta a obere set nke free ozi site na Hello Mama nwere ike inyere gi aka na nsogbu a?"
+        "Ndo obughi ntiye ziri ezi. Odi anyi nwute n'ihe nfunari mere gi. i ga-acho i nweta obere ozi ndi si na Hello Mama nwere ike inyere gi aka n'oge nsogbu a?"
     ],
     "Sorry not a valid input. Who would you like to stop receiving messages?": [
         null,
-        "Ndo bughi a nti oso oso. Onye ga-amasi gi ka ha kwusi anata ozi?"
+        "Ndo obughi ntiye ziri ezi. Nke ozi ndi nke ga-amasi gi ikwusi inata?"
     ],
     "Yes": [
         null,
@@ -274,7 +275,7 @@
     ],
     "No": [
         null,
-        "No"
+        "O dighi"
     ],
     "Change the number I'd like to manage": [
         null,
@@ -302,27 +303,27 @@
     ],
     "Start Baby messages": [
         null,
-        "Malite Baby messages"
+        "Bido ozi nwa"
     ],
     "Change message preferences": [
         null,
-        "Change ozi preferences"
+        "Gbanwe uzo ozi mmasi "
     ],
     "Change my number": [
         null,
-        "M gbanwee otutu"
+        "Gbanwe noma m"
     ],
     "Change language": [
         null,
-        "gbanwee asusu"
+        "Gbanwe asusu"
     ],
     "Stop receiving messages": [
         null,
-        "Kwusi na-anata ozi"
+        "Kwusi inata ozi"
     ],
     "Back to main menu": [
         null,
-        "Back to isi menu"
+        "Laghachi n' isi"
     ],
     "Exit": [
         null,
@@ -330,7 +331,7 @@
     ],
     "Change from text to voice messages": [
         null,
-        "M gbanwee otutu"
+        "Gbanwe ozi onye nne site na ozi odide gafe na ozi olu"
     ],
     "Monday and Wednesday": [
         null,
@@ -354,7 +355,7 @@
     ],
     "Change from voice to text messages": [
         null,
-        "-Agbanwe site olu na-ozi ederede"
+        "Agbanwe site olu na-ozi ederede"
     ],
     "Try a different number": [
         null,
@@ -362,34 +363,34 @@
     ],
     "Mother miscarried": [
         null,
-        "nne miscarried"
+        "O buru na ime puru onye nne"
     ],
     "Baby stillborn": [
         null,
-        "Bebi stillborn"
+        "O buru na nwa nwuru na afo"
     ],
     "Baby passed away": [
         null,
-        "Bebi agabigawo"
+        "O buru na nwa nwuru"
     ],
     "Messages not useful": [
         null,
-        "Ozi bughi bara uru"
+        "O buru na ozi di abagi uru"
     ],
     "Other": [
         null,
-        "Ozo"
+        "O buru na e nwere ihe ozo mere"
     ],
     "Mother messages": [
         null,
-        "nne messages"
+        "Ozi maka onye nne?"
     ],
     "Household messages": [
         null,
-        "ezinulo messages"
+        "Ozi maka ezinulo?"
     ],
     "All messages": [
         null,
-        "All ozi"
+        "Ozi nile?"
     ]
 }
