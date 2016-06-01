@@ -245,16 +245,14 @@ go.app = function() {
                 });
         });
 
-        // FreeText st-01
+        // EndState st-01
         self.add('state_already_registered_baby', function(name) {
             var speech_option = 1;
-            return new FreeText(name, {
-                question: $('You are already subscribed. To go back to main menu, 0 then #'),
+            return new EndState(name, {
+                text: $('You are already subscribed. To go back to main menu, 0 then #'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, self.im.user.lang, speech_option),
-                next: function(choice) {
-                    return 'state_already_registered_baby';
-                }
+                next: 'state_start'
             });
         });
 
