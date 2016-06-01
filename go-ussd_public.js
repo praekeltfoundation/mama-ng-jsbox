@@ -1399,8 +1399,6 @@ go.app = function() {
                 $("Sorry not a valid input. Select:"),
             "state_main_menu_household":
                 $("Sorry not a valid input. Select:"),
-            "state_already_registered_baby":
-                $("Sorry not a valid input. You are already registered for baby messages."),
             "state_change_menu_sms":
                 $("Sorry not a valid input. Please select what you would like to do:"),
             "state_voice_days":
@@ -1679,18 +1677,11 @@ go.app = function() {
                 });
         });
 
-        // ChoiceState st-01
+        // EndState st-01
         self.add('state_already_registered_baby', function(name) {
-            return new ChoiceState(name, {
-                question: questions[name],
-                error: errors[name],
-                choices: [
-                    new Choice('state_check_receiver_role', $("Back to main menu")),
-                    new Choice('state_end_exit', $("Exit"))
-                ],
-                next: function(choice) {
-                    return choice.value;
-                }
+            return new EndState(name, {
+                text: questions[name],
+                next: 'start_start'
             });
         });
 
