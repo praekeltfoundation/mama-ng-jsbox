@@ -69,10 +69,8 @@ describe("Hello Mama app", function() {
                             reply: [
                                 "Welcome to Hello Mama. Please choose your language",
                                 "1. English",
-                                "2. Hausa",
-                                "3. Igbo",
-                                "4. Pidgin",
-                                "5. Yoruba"
+                                "2. Igbo",
+                                "3. Pidgin"
                             ].join('\n')
                         })
                         .check.user.properties({lang: null})
@@ -92,13 +90,13 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  //dial in
-                            , '5'   // state_language - yoruba
+                            , '2'   // state_language - igbo
                         )
                         .check.interaction({
                             state: 'state_registered_msisdn',
                             reply: "Please enter the number which is registered to receive messages. For example, 0803304899"
                         })
-                        .check.user.properties({lang: 'yor_NG'})
+                        .check.user.properties({lang: 'ibo_NG'})
                         .check(function(api) {
                             var expected_used = [0, 1];
                             var fixts = api.http.fixtures.fixtures;
@@ -187,7 +185,7 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'   // state_language - pidgin
+                            , '3'   // state_language - pidgin
                             , '05059993333'  // state_registered_msisdn
                         )
                         .check.interaction({
@@ -868,10 +866,8 @@ describe("Hello Mama app", function() {
                             reply: [
                                 "What language would this person like to receive these messages in?",
                                 "1. English",
-                                "2. Hausa",
-                                "3. Igbo",
-                                "4. Pidgin",
-                                "5. Yoruba"
+                                "2. Igbo",
+                                "3. Pidgin"
                             ].join('\n')
                         })
                         .check.user.properties({lang: 'ibo_NG'})
@@ -884,7 +880,7 @@ describe("Hello Mama app", function() {
                             {session_event: 'new'}  // dial in
                             , '1'  // state_msisdn_permission - yes
                             , '4'  // state_main_menu - change language
-                            , '4'  // state_msg_language - pidgin
+                            , '3'  // state_msg_language - pidgin
                         )
                         .check.interaction({
                             state: 'state_msg_language_confirm',
@@ -909,7 +905,7 @@ describe("Hello Mama app", function() {
                             {session_event: 'new'}  // dial in
                             , '1'  // state_msisdn_permission - yes
                             , '4'  // state_main_menu - change language
-                            , '4'  // state_msg_language - pidgin
+                            , '3'  // state_msg_language - pidgin
                         )
                         .check.interaction({
                             state: 'state_msg_language_confirm',
@@ -933,7 +929,7 @@ describe("Hello Mama app", function() {
                             {session_event: 'new'}  // dial in
                             , '1'  // state_msisdn_permission - yes
                             , '4'  // state_main_menu - change language
-                            , '4'  // state_msg_language - pidgin
+                            , '3'  // state_msg_language - pidgin
                         )
                         .check.interaction({
                             state: 'state_msg_language_confirm',
@@ -957,7 +953,7 @@ describe("Hello Mama app", function() {
                             {session_event: 'new'}  // dial in
                             , '1'  // state_msisdn_permission - yes
                             , '3'  // state_main_menu_household - change language
-                            , '4'  // state_msg_language - pidgin
+                            , '3'  // state_msg_language - pidgin
                         )
                         .check.interaction({
                             state: 'state_msg_language_confirm',

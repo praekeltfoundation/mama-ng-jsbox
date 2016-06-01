@@ -1503,10 +1503,8 @@ go.app = function() {
                 question: questions[name],
                 choices: [
                     new Choice('eng_NG', $("English")),
-                    new Choice('hau_NG', $("Hausa")),
                     new Choice('ibo_NG', $("Igbo")),
-                    new Choice('pcm_NG', $('Pidgin')),
-                    new Choice('yor_NG', $('Yoruba'))
+                    new Choice('pcm_NG', $('Pidgin'))
                 ],
                 error: errors[name],
                 next: function(choice) {
@@ -1923,10 +1921,8 @@ go.app = function() {
                 error: errors[name],
                 choices: [
                     new Choice('eng_NG', $("English")),
-                    new Choice('hau_NG', $("Hausa")),
                     new Choice('ibo_NG', $("Igbo")),
-                    new Choice('pcm_NG', $('Pidgin')),
-                    new Choice('yor_NG', $('Yoruba'))
+                    new Choice('pcm_NG', $('Pidgin'))
                 ],
                 next: function(choice) {
                     return self.im.user
