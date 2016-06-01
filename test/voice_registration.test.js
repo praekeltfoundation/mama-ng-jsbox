@@ -1756,10 +1756,8 @@ describe("Mama Nigeria App", function() {
                             reply: [
                                 'Language?',
                                 '1. english',
-                                '2. hausa',
-                                '3. igbo',
-                                '4. pidgin',
-                                '5. yoruba'
+                                '2. igbo',
+                                '3. pidgin'
                             ].join('\n')
                         })
                         .check.reply.properties({
@@ -1826,10 +1824,8 @@ describe("Mama Nigeria App", function() {
                         reply: [
                             'Language?',
                             '1. english',
-                            '2. hausa',
-                            '3. igbo',
-                            '4. pidgin',
-                            '5. yoruba'
+                            '2. igbo',
+                            '3. pidgin'
                         ].join('\n')
                     })
                     .check.reply.properties({
@@ -1862,10 +1858,8 @@ describe("Mama Nigeria App", function() {
                         reply: [
                             'Language?',
                             '1. english',
-                            '2. hausa',
-                            '3. igbo',
-                            '4. pidgin',
-                            '5. yoruba'
+                            '2. igbo',
+                            '3. pidgin'
                         ].join('\n')
                     })
                     .check.reply.properties({
@@ -1895,7 +1889,7 @@ describe("Mama Nigeria App", function() {
                         , '11'          // state_baby_birth_month - nov
                         , '13'          // state_baby_birth_day
                         , '2'           // state_gravida
-                        , '5'           // state_msg-language - yoruba
+                        , '1'           // state_msg-language - english
                     )
                     .check.interaction({
                         state: 'state_msg_type',
@@ -1937,7 +1931,7 @@ describe("Mama Nigeria App", function() {
                             , '13'          // state_last_period_day
 
                             , '2'           // state_gravida
-                            , '3'           // state_msg_language - igbo
+                            , '2'           // state_msg_language - igbo
                             , '2'           // state_msg_type - sms
                         )
                         .check.interaction({
@@ -1986,7 +1980,7 @@ describe("Mama Nigeria App", function() {
                             , '13'          // state_last_period_day
 
                             , '2'           // state_gravida
-                            , '3'           // state_msg_language - igbo
+                            , '2'           // state_msg_language - igbo
                             , '1'           // state_msg_type - voice
                         )
                         .check.interaction({
@@ -2029,7 +2023,7 @@ describe("Mama Nigeria App", function() {
                         , '13'          // state_last_period_day
 
                         , '2'           // state_gravida
-                        , '4'           // state_msg-language - pidgin
+                        , '3'           // state_msg-language - pidgin
                         , '1'           // state_msg_type - voice
                         , '1'           // state_voice_days - monday and wednesday
                     )
@@ -2072,7 +2066,7 @@ describe("Mama Nigeria App", function() {
                         , '13'          // state_last_period_day
 
                         , '2'           // state_gravida
-                        , '3'           // state_msg_language - igbo
+                        , '2'           // state_msg_language - igbo
                         , '1'           // state_msg_type - voice
                         , '1'           // state_voice_days - mon_wed
                         , '2'           // state_voice_times - 2_5
