@@ -1839,7 +1839,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            it("0 - should navigate to state_msg_language (not restart)", function() {
+            it("0 - should navigate to state_personnel_auth (restart)", function() {
                 return tester
                     .setup.user.addr('07030010001')
                     .inputs(
@@ -1854,18 +1854,13 @@ describe("Mama Nigeria App", function() {
                         , '0'           // state_gravida
                     )
                     .check.interaction({
-                        state: 'state_msg_language',
-                        reply: [
-                            'Language?',
-                            '1. english',
-                            '2. igbo',
-                            '3. pidgin'
-                        ].join('\n')
+                        state: 'state_personnel_auth',
+                        reply: 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
                     })
                     .check.reply.properties({
                         helper_metadata: {
                             voice: {
-                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_language_1.mp3',
+                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1.mp3',
                                 wait_for: '#',
                                 barge_in: true
                             }
