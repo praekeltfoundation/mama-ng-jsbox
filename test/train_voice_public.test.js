@@ -481,10 +481,8 @@ describe("Mama Nigeria App", function() {
                     reply: [
                         'Language?',
                         '1. English',
-                        '2. Hausa',
-                        '3. Igbo',
-                        '4. Pidgin',
-                        '5. Yoruba'
+                        '2. Igbo',
+                        '3. Pidgin'
                     ].join('\n')
                 })
                 .check.reply.properties({
@@ -506,7 +504,7 @@ describe("Mama Nigeria App", function() {
                     {session_event: 'new'}
                     , '05059992222' // state_msg_receiver_msisdn
                     , '4'           // state_main_menu - language
-                    , '4'   // state_msg_language - pidgin
+                    , '3'   // state_msg_language - pidgin
                 )
                 .check.interaction({
                     state: 'state_end_msg_language_confirm',
