@@ -420,10 +420,8 @@ go.utils_project = {
     get_lang: function(im) {
         lang_map = {
             'english': 'eng_NG',
-            'hausa': 'hau_NG',
             'igbo': 'ibo_NG',
-            'pidgin': 'pcm_NG',
-            'yoruba': 'yor_NG'
+            'pidgin': 'pcm_NG'
         };
         return lang_map[im.user.answers.state_r09_language];
     },

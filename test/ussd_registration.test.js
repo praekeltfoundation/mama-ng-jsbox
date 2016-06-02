@@ -532,10 +532,8 @@ describe("Mama Nigeria App", function() {
                         reply: [
                             "Which language would this person like to receive these messages in?",
                             "1. English",
-                            "2. Hausa",
-                            "3. Igbo",
-                            "4. Pidgin",
-                            "5. Yoruba"
+                            "2. Igbo",
+                            "3. Pidgin"
                         ].join('\n')
                     })
                     .run();
@@ -693,7 +691,7 @@ describe("Mama Nigeria App", function() {
                         , '3'  // state_last_period_month - May 15
                         , '12' // state_last_period_day - 12
                         , '3'  // state_gravida
-                        , '4'  // state_msg_language - pidgin
+                        , '3'  // state_msg_language - pidgin
                         , '1'   // state_msg_type - voice calls
                         , '2'   // state_voice_days - tuesdays and thursdays
                     )
@@ -719,7 +717,7 @@ describe("Mama Nigeria App", function() {
                         , '3'  // state_last_period_month - May 15
                         , '12' // state_last_period_day - 12
                         , '3'  // state_gravida
-                        , '1'  // state_msg_language - yoruba
+                        , '1'  // state_msg_language - english
                         , '1'   // state_msg_type - voice calls
                         , '2'   // state_voice_days - tuesdays and thursdays
                         , '2'   // state_voice_times - between 2-5pm
@@ -753,7 +751,7 @@ describe("Mama Nigeria App", function() {
                         , '3'  // state_last_period_month - May 15
                         , '12' // state_last_period_day - 12
                         , '3' // state_gravida
-                        , '2'  // state_msg_language - hausa
+                        , '2'  // state_msg_language - igbo
                         , '2'   // state_msg_type - text smss
                     )
                     .check.interaction({
@@ -761,7 +759,7 @@ describe("Mama Nigeria App", function() {
                         reply: "Thank you. The person will now start receiving messages three times a week."
                     })
                     .check(function(api) {
-                        var expected_used = [1,6,36,37,38,46,54,59,60,61];
+                        var expected_used = [1,6,36,37,38,46,54,59,60,69];
                         var fixts = api.http.fixtures.fixtures;
                         var fixts_used = [];
                         fixts.forEach(function(f, i) {
@@ -852,7 +850,7 @@ describe("Mama Nigeria App", function() {
                         , '4'  // state_baby_birth_month_year - May 15
                         , '12' // state_baby_birth_day - 12
                         , '2'  // state_gravida
-                        , '3'  // state_msg_language - igbo
+                        , '2'  // state_msg_language - igbo
                         , '2'   // state_msg_type - sms
                     )
                     .check.interaction({

@@ -974,10 +974,8 @@ go.utils_project = {
     get_lang: function(im) {
         lang_map = {
             'english': 'eng_NG',
-            'hausa': 'hau_NG',
             'igbo': 'ibo_NG',
-            'pidgin': 'pcm_NG',
-            'yoruba': 'yor_NG'
+            'pidgin': 'pcm_NG'
         };
         return lang_map[im.user.answers.state_r09_language];
     },
@@ -1775,10 +1773,8 @@ go.app = function() {
                     self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
                     new Choice('eng_NG', $('english')),
-                    new Choice('hau_NG', $('hausa')),
                     new Choice('ibo_NG', $('igbo')),
-                    new Choice('pcm_NG', $('pidgin')),
-                    new Choice('yor_NG', $('yoruba'))
+                    new Choice('pcm_NG', $('pidgin'))
                 ],
                 next: 'state_msg_type'
             });

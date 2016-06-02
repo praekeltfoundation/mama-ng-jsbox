@@ -1939,7 +1939,7 @@ module.exports = function() {
                         "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "gravida": "3",
-                        "language": "hau_NG",
+                        "language": "ibo_NG",
                         "msg_type": "text",
                         "last_period_date": "20150212",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
@@ -1956,7 +1956,7 @@ module.exports = function() {
                         "msg_receiver": "friend_only",
                         "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
-                        "language": "hau_NG",
+                        "language": "ibo_NG",
                         "msg_type": "text",
                         "last_period_date": "20150212",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
@@ -2572,7 +2572,7 @@ module.exports = function() {
                         "receiver_role": "mother",
                         "linked_to": "cb245673-aa41-4302-ac47-9092222222",
                         "gravida": "3",
-                        "preferred_language": "hau_NG"
+                        "preferred_language": "ibo_NG"
                     },
                 }
             },
@@ -2590,7 +2590,7 @@ module.exports = function() {
                         "receiver_role": "mother",
                         "linked_to": "cb245673-aa41-4302-ac47-9092222222",
                         "gravida": "3",
-                        "preferred_language": "hau_NG"
+                        "preferred_language": "ibo_NG"
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at":"2015-07-10T06:13:29.693298Z"

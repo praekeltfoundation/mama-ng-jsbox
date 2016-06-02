@@ -46,10 +46,8 @@ describe("Hello Mama app", function() {
                             reply: [
                                 "Welcome to Hello Mama. Please choose your language",
                                 "1. English",
-                                "2. Hausa",
-                                "3. Igbo",
-                                "4. Pidgin",
-                                "5. Yoruba"
+                                "2. Igbo",
+                                "3. Pidgin"
                             ].join('\n')
                         })
                         .check.user.properties({lang: null})
@@ -60,13 +58,13 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  //dial in
-                            , '5'   // state_language - yoruba
+                            , '2'   // state_language - ibo_NG
                         )
                         .check.interaction({
                             state: 'state_registered_msisdn',
                             reply: "Please enter the number which is registered to receive messages. For example, 0803304899"
                         })
-                        .check.user.properties({lang: 'yor_NG'})
+                        .check.user.properties({lang: 'ibo_NG'})
                         .run();
                 });
                 it("to state_main_menu", function() {
@@ -74,7 +72,7 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'   // state_language - pidgin
+                            , '3'   // state_language - pidgin
                             , '05059993333'  // state_registered_msisdn
                         )
                         .check.interaction({
@@ -98,7 +96,7 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'   // state_language - pidgin
+                            , '3'   // state_language - pidgin
                             , '05059993333'  // state_registered_msisdn
                             , '1'  // state_main_menu - start baby messages
                         )
@@ -116,7 +114,7 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'   // state_language - pidgin
+                            , '3'   // state_language - pidgin
                             , '05059993333'  // state_registered_msisdn
                             , '2'  // state_main_menu - change message preferences
                         )
@@ -135,7 +133,7 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'   // state_language - pidgin
+                            , '3'   // state_language - pidgin
                             , '05059993333'  // state_registered_msisdn
                             , '2'  // state_main_menu - change message preferences
                             , '1'  // state_change_menu_sms - change from text to voice
@@ -155,7 +153,7 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059992222')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'   // state_language - pidgin
+                            , '3'   // state_language - pidgin
                             , '05059993333'  // state_registered_msisdn
                             , '2'  // state_main_menu - change message preferences
                             , '1'  // state_change_menu_sms - change from text to voice
@@ -176,7 +174,7 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059992222')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'   // state_language - pidgin
+                            , '3'   // state_language - pidgin
                             , '05059993333'  // state_registered_msisdn
                             , '2'  // state_main_menu - change message preferences
                             , '1'  // state_change_menu_sms - change from text to voice
@@ -195,7 +193,7 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'   // state_language - pidgin
+                            , '3'   // state_language - pidgin
                             , '05059993333'  // state_registered_msisdn
                             , '2'  // state_main_menu - change message preferences
                             , '2'  // state_change_menu_sms - back to main menu
@@ -221,7 +219,7 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'   // state_language - pidgin
+                            , '3'   // state_language - pidgin
                             , '05059993333'  // state_registered_msisdn
                             , '3'  // state_main_menu - change number
                         )
@@ -236,7 +234,7 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'   // state_language - pidgin
+                            , '3'   // state_language - pidgin
                             , '05059993333'  // state_registered_msisdn
                             , '3'  // state_main_menu - change number
                             , '05059998888' // state_new_msisdn
@@ -255,7 +253,7 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'   // state_language - pidgin
+                            , '3'   // state_language - pidgin
                             , '05059993333'  // state_registered_msisdn
                             , '4'  // state_main_menu - change language
                         )
@@ -264,10 +262,8 @@ describe("Hello Mama app", function() {
                             reply: [
                                 "What language would this person like to receive these messages in?",
                                 "1. English",
-                                "2. Hausa",
-                                "3. Igbo",
-                                "4. Pidgin",
-                                "5. Yoruba"
+                                "2. Igbo",
+                                "3. Pidgin"
                             ].join('\n')
                         })
                         .check.user.properties({lang: 'pcm_NG'})
@@ -278,16 +274,16 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'   // state_language - pidgin
+                            , '3'   // state_language - pidgin
                             , '05059993333'  // state_registered_msisdn
                             , '4'  // state_main_menu - change language
-                            , '5'  // state_msg_language - yoruba
+                            , '2'  // state_msg_language - igbo
                         )
                         .check.interaction({
                             state: 'state_msg_language_confirm',
                             reply: "Thank you. You language preference has been updated and you will start to receive messages in this language."
                         })
-                        .check.user.properties({lang: 'yor_NG'})
+                        .check.user.properties({lang: 'ibo_NG'})
                         .run();
                 });
             });
@@ -299,7 +295,7 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'   // state_language - pidgin
+                            , '3'   // state_language - pidgin
                             , '05059993333'  // state_registered_msisdn
                             , '5'  // state_main_menu - optout
                         )
@@ -322,7 +318,7 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'   // state_language - pidgin
+                            , '3'   // state_language - pidgin
                             , '05059993333'  // state_registered_msisdn
                             , '5'  // state_main_menu - optout
                             , '1'  // state_optout_reason - mother miscarried
@@ -343,7 +339,7 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'   // state_language - pidgin
+                            , '3'   // state_language - pidgin
                             , '05059993333'  // state_registered_msisdn
                             , '5'  // state_main_menu - optout
                             , '1'  // state_optout_reason - mother miscarried
@@ -361,7 +357,7 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'   // state_language - pidgin
+                            , '3'   // state_language - pidgin
                             , '05059993333'  // state_registered_msisdn
                             , '5'  // state_main_menu - optout
                             , '1'  // state_optout_reason - mother miscarried
@@ -379,7 +375,7 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'   // state_language - pidgin
+                            , '3'   // state_language - pidgin
                             , '05059993333'  // state_registered_msisdn
                             , '5'  // state_main_menu - optout
                             , '2'  // state_optout_reason - baby stillborn
@@ -396,7 +392,7 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'   // state_language - pidgin
+                            , '3'   // state_language - pidgin
                             , '05059993333'  // state_registered_msisdn
                             , '5'  // state_main_menu - optout
                             , '3'  // state_optout_reason - baby death
@@ -413,7 +409,7 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'   // state_language - pidgin
+                            , '3'   // state_language - pidgin
                             , '05059993333'  // state_registered_msisdn
                             , '5'  // state_main_menu - optout
                             , '4'  // state_optout_reason - not_useful
@@ -436,7 +432,7 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'   // state_language - pidgin
+                            , '3'   // state_language - pidgin
                             , '05059993333'  // state_registered_msisdn
                             , '5'  // state_main_menu - optout
                             , '4'  // state_optout_reason - not_useful
@@ -454,7 +450,7 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'   // state_language - pidgin
+                            , '3'   // state_language - pidgin
                             , '05059993333'  // state_registered_msisdn
                             , '5'  // state_main_menu - optout
                             , '5'  // state_optout_reason - other
@@ -477,7 +473,7 @@ describe("Hello Mama app", function() {
                         .setup.user.addr('05059991111')
                         .inputs(
                             {session_event: 'new'}  // dial in
-                            , '4'   // state_language - pidgin
+                            , '3'   // state_language - pidgin
                             , '05059993333'  // state_registered_msisdn
                             , '5'  // state_main_menu - optout
                             , '5'  // state_optout_reason - other

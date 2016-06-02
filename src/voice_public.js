@@ -502,10 +502,8 @@ go.app = function() {
                     self.im, name, self.im.user.lang, speech_option),
                 choices: [
                     new Choice('eng_NG', $('English')),
-                    new Choice('hau_NG', $('Hausa')),
                     new Choice('ibo_NG', $('Igbo')),
-                    new Choice('pcm_NG', $('Pidgin')),
-                    new Choice('yor_NG', $('Yoruba'))
+                    new Choice('pcm_NG', $('Pidgin'))
                 ],
                 next: function(choice) {
                     return self.im.user
