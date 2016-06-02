@@ -1313,7 +1313,7 @@ go.app = function() {
                 if (go.utils_project.should_restart(self.im)) {
                     // Prevent previous content being passed to next state
                     self.im.msg.content = null;
-                    return self.states.create('state_start', pass_opts);
+                    return self.states.create('state_msg_receiver', pass_opts);
                 }
 
                 return creator(name, pass_opts);

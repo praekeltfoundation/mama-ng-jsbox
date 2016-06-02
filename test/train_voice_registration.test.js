@@ -60,10 +60,21 @@ describe("Mama Nigeria App", function() {
                         , '0'  // restart
                     )
                     .check.interaction({
-                        state: 'state_personnel_auth',
-                        reply: 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
+                        state: 'state_msg_receiver',
+                        reply: [
+                            'Choose message receiver',
+                            "1. Mother & Father",
+                            "2. Mother",
+                            "3. Father",
+                            "4. Mother & family member",
+                            "5. Mother & friend",
+                            "6. Friend",
+                            "7. Family member"
+                        ].join('\n')
                     })
-                    .check.user.answers({})
+                    .check.user.answers({
+                        "state_personnel_auth": "12345"
+                    })
                     .run();
             });
         });
@@ -524,7 +535,17 @@ describe("Mama Nigeria App", function() {
                             , '0' // restart
                         )
                         .check.interaction({
-                            state: 'state_personnel_auth'
+                            state: 'state_msg_receiver',
+                            reply: [
+                                'Choose message receiver',
+                                "1. Mother & Father",
+                                "2. Mother",
+                                "3. Father",
+                                "4. Mother & family member",
+                                "5. Mother & friend",
+                                "6. Friend",
+                                "7. Family member"
+                            ].join('\n')
                         })
                         .run();
                 });
@@ -613,13 +634,22 @@ describe("Mama Nigeria App", function() {
                             , '0'    // state_msg_receiver - restart
                         )
                         .check.interaction({
-                            state: 'state_personnel_auth',
-                            reply: 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
+                            state: 'state_msg_receiver',
+                            reply: [
+                                'Choose message receiver',
+                                "1. Mother & Father",
+                                "2. Mother",
+                                "3. Father",
+                                "4. Mother & family member",
+                                "5. Mother & friend",
+                                "6. Friend",
+                                "7. Family member"
+                            ].join('\n')
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1.mp3',
+                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_1.mp3',
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -1635,7 +1665,17 @@ describe("Mama Nigeria App", function() {
                             , '0'           // state_baby_birth_day
                         )
                         .check.interaction({
-                            state: 'state_personnel_auth'
+                            state: 'state_msg_receiver',
+                            reply: [
+                                'Choose message receiver',
+                                "1. Mother & Father",
+                                "2. Mother",
+                                "3. Father",
+                                "4. Mother & family member",
+                                "5. Mother & friend",
+                                "6. Friend",
+                                "7. Family member"
+                            ].join('\n')
                         })
                         .check.reply.properties({
                             helper_metadata: {
