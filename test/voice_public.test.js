@@ -62,7 +62,7 @@ describe("Mama Nigeria App", function() {
                         {session_event: 'new'}
                         , '05059992222' // state_msg_receiver_msisdn
                         , '1'  // state_main_menu - baby
-                        , '0'  // state_baby_confirm_subscription - restart
+                        , '0'  // state_end_baby - restart
                     )
                     .check.interaction({
                         state: 'state_main_menu',
@@ -83,15 +83,12 @@ describe("Mama Nigeria App", function() {
                     .inputs(
                         {session_event: 'new'}
                         , '05059992222' // state_msg_receiver_msisdn
-                        , '1'  // state_main_menu - baby
-                        , '*'  // state_baby_confirm_subscription - repeat
+                        , '3'  // state_main_menu - number
+                        , '*'  // state_end_baby - repeat
                     )
                     .check.interaction({
-                        state: 'state_baby_confirm_subscription',
-                        reply: [
-                            'Confirm baby?',
-                            '1. To confirm press 1. To go back to main menu, 0 then #'
-                        ].join('\n')
+                        state: 'state_new_msisdn',
+                        reply: 'Please enter new mobile number'
                     })
                     .run();
             });
@@ -408,49 +405,13 @@ describe("Mama Nigeria App", function() {
                 })
                 .run();
             });
-            it("case 1 > state_baby_confirm_subscription", function() {
+            it("case 1 > state_end_baby", function() {
                 return tester
                 .setup.user.addr('+07070050005')
                 .inputs(
                     {session_event: 'new'}
                     , '05059992222'  // msg_receiver_msisdn
                     , '1'  // main_menu - baby
-                )
-                .check.interaction({
-                    state: 'state_baby_confirm_subscription',
-                    reply: [
-                        'Confirm baby?',
-                        '1. To confirm press 1. To go back to main menu, 0 then #'
-                    ].join('\n')
-                })
-                .check.reply.properties({
-                    helper_metadata: {
-                        voice: {
-                            speech_url: 'http://localhost:8004/api/v1/ibo_NG/state_baby_confirm_subscription_1.mp3',
-                            wait_for: '#',
-                            barge_in: true
-                        }
-                    }
-                })
-                .check(function(api) {
-                    var expected_used = [2,9,16,17,25];
-                    var fixts = api.http.fixtures.fixtures;
-                    var fixts_used = [];
-                    fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                    });
-                    assert.deepEqual(fixts_used, expected_used);
-                })
-                .run();
-            });
-            it("case 1 > to state_end_baby", function() {
-                return tester
-                .setup.user.addr('+07070050005')
-                .inputs(
-                    {session_event: 'new'}
-                    , '05059992222'  // msg_receiver_msisdn
-                    , '1'  // main_menu - baby
-                    , '1'  // state_baby_confirm_subscription
                 )
                 .check.interaction({
                     state: 'state_end_baby',
@@ -466,7 +427,7 @@ describe("Mama Nigeria App", function() {
                     }
                 })
                 .check(function(api) {
-                    var expected_used = [2,9,16,17,25,74];
+                    var expected_used = [2,9,16,17,25];
                     var fixts = api.http.fixtures.fixtures;
                     var fixts_used = [];
                     fixts.forEach(function(f, i) {
@@ -476,49 +437,14 @@ describe("Mama Nigeria App", function() {
                 })
                 .run();
             });
-            it("case 2 > state_baby_confirm_subscription", function() {
+
+            it("case 2 > state_end_baby", function() {
                 return tester
                 .setup.user.addr('+07070050005')
                 .inputs(
                     {session_event: 'new'}
                     , '05059993333'  // msg_receiver_msisdn
                     , '1'  // main_menu - baby
-                )
-                .check.interaction({
-                    state: 'state_baby_confirm_subscription',
-                    reply: [
-                        'Confirm baby?',
-                        '1. To confirm press 1. To go back to main menu, 0 then #'
-                    ].join('\n')
-                })
-                .check.reply.properties({
-                    helper_metadata: {
-                        voice: {
-                            speech_url: 'http://localhost:8004/api/v1/hau_NG/state_baby_confirm_subscription_1.mp3',
-                            wait_for: '#',
-                            barge_in: true
-                        }
-                    }
-                })
-                .check(function(api) {
-                    var expected_used = [4,5,19,20,25];
-                    var fixts = api.http.fixtures.fixtures;
-                    var fixts_used = [];
-                    fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                    });
-                    assert.deepEqual(fixts_used, expected_used);
-                })
-                .run();
-            });
-            it("case 2 > to state_end_baby", function() {
-                return tester
-                .setup.user.addr('+07070050005')
-                .inputs(
-                    {session_event: 'new'}
-                    , '05059993333'  // msg_receiver_msisdn
-                    , '1'  // main_menu - baby
-                    , '1'  // state_baby_confirm_subscription
                 )
                 .check.interaction({
                     state: 'state_end_baby',
@@ -534,7 +460,7 @@ describe("Mama Nigeria App", function() {
                     }
                 })
                 .check(function(api) {
-                    var expected_used = [4,5,19,20,25,75];
+                    var expected_used = [4,5,19,20,25];
                     var fixts = api.http.fixtures.fixtures;
                     var fixts_used = [];
                     fixts.forEach(function(f, i) {
@@ -544,49 +470,13 @@ describe("Mama Nigeria App", function() {
                 })
                 .run();
             });
-            it("case 3 > state_baby_confirm_subscription", function() {
+            it("case 3 > state_end_baby", function() {
                 return tester
                 .setup.user.addr('+07070050005')
                 .inputs(
                     {session_event: 'new'}
                     , '05059996666'  // msg_receiver_msisdn
                     , '1'  // main_menu - baby
-                )
-                .check.interaction({
-                    state: 'state_baby_confirm_subscription',
-                    reply: [
-                        'Confirm baby?',
-                        '1. To confirm press 1. To go back to main menu, 0 then #'
-                    ].join('\n')
-                })
-                .check.reply.properties({
-                    helper_metadata: {
-                        voice: {
-                            speech_url: 'http://localhost:8004/api/v1/pcm_NG/state_baby_confirm_subscription_1.mp3',
-                            wait_for: '#',
-                            barge_in: true
-                        }
-                    }
-                })
-                .check(function(api) {
-                    var expected_used = [7,12,13,22,23,25];
-                    var fixts = api.http.fixtures.fixtures;
-                    var fixts_used = [];
-                    fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                    });
-                    assert.deepEqual(fixts_used, expected_used);
-                })
-                .run();
-            });
-            it("case 3 > to state_end_baby", function() {
-                return tester
-                .setup.user.addr('+07070050005')
-                .inputs(
-                    {session_event: 'new'}
-                    , '05059996666'  // msg_receiver_msisdn
-                    , '1'  // main_menu - baby
-                    , '1'  // state_baby_confirm_subscription
                 )
                 .check.interaction({
                     state: 'state_end_baby',
@@ -602,7 +492,7 @@ describe("Mama Nigeria App", function() {
                     }
                 })
                 .check(function(api) {
-                    var expected_used = [7,12,13,22,23,25,76];
+                    var expected_used = [7,12,13,22,23,25];
                     var fixts = api.http.fixtures.fixtures;
                     var fixts_used = [];
                     fixts.forEach(function(f, i) {
@@ -612,49 +502,13 @@ describe("Mama Nigeria App", function() {
                 })
                 .run();
             });
-            it("case 4 > state_baby_confirm_subscription", function() {
+            it("case 4 > state_end_baby", function() {
                 return tester
                 .setup.user.addr('+07070050005')
                 .inputs(
                     {session_event: 'new'}
                     , '05059997777'  // msg_receiver_msisdn
                     , '1'  // main_menu - baby
-                )
-                .check.interaction({
-                    state: 'state_baby_confirm_subscription',
-                    reply: [
-                        'Confirm baby?',
-                        '1. To confirm press 1. To go back to main menu, 0 then #'
-                    ].join('\n')
-                })
-                .check.reply.properties({
-                    helper_metadata: {
-                        voice: {
-                            speech_url: 'http://localhost:8004/api/v1/hau_NG/state_baby_confirm_subscription_1.mp3',
-                            wait_for: '#',
-                            barge_in: true
-                        }
-                    }
-                })
-                .check(function(api) {
-                    var expected_used = [6,7,13,22,23,25];
-                    var fixts = api.http.fixtures.fixtures;
-                    var fixts_used = [];
-                    fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                    });
-                    assert.deepEqual(fixts_used, expected_used);
-                })
-                .run();
-            });
-            it("case 4 > to state_end_baby", function() {
-                return tester
-                .setup.user.addr('+07070050005')
-                .inputs(
-                    {session_event: 'new'}
-                    , '05059997777'  // msg_receiver_msisdn
-                    , '1'  // main_menu - baby
-                    , '1'  // state_baby_confirm_subscription
                 )
                 .check.interaction({
                     state: 'state_end_baby',
@@ -670,7 +524,7 @@ describe("Mama Nigeria App", function() {
                     }
                 })
                 .check(function(api) {
-                    var expected_used = [6,7,13,22,23,25,76];
+                    var expected_used = [6,7,13,22,23,25];
                     var fixts = api.http.fixtures.fixtures;
                     var fixts_used = [];
                     fixts.forEach(function(f, i) {

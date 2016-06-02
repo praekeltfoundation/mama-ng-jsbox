@@ -1543,7 +1543,7 @@ go.app = function() {
                     } else if (postbirth_sub === 'no_active_subs_found') {
                         return self.states.create('state_baby_switch_broken');  // TODO #101
                     } else {
-                        return self.states.create('state_baby_confirm_subscription');
+                        return self.states.create('state_end_baby');
                     }
                 });
         });
@@ -1556,22 +1556,6 @@ go.app = function() {
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, self.im.user.lang, speech_option),
                 next: 'state_start'
-            });
-        });
-
-        // ChoiceState st-1A
-        self.add('state_baby_confirm_subscription', function(name) {
-            var speech_option = '1';
-            return new ChoiceState(name, {
-                question: $('Confirm baby?'),
-                helper_metadata: go.utils_project.make_voice_helper_data(
-                    self.im, name, self.im.user.lang, speech_option),
-                choices: [
-                    new Choice('confirm', $('To confirm press 1. To go back to main menu, 0 then #'))
-                ],
-                next: function(choice) {
-                    return 'state_change_baby';
-                }
             });
         });
 
