@@ -238,15 +238,14 @@ describe("Mama Nigeria App", function() {
                         state: 'state_last_period_month',
                         reply: [
                             "Please select the month the woman had her last period:",
-                            "1. April 15",
-                            "2. March 15",
-                            "3. February 15",
-                            "4. January 15",
-                            "5. December 14",
-                            "6. November 14",
-                            "7. October 14",
-                            "8. September 14",
-                            "9. More"
+                            "1. April 2015",
+                            "2. March 2015",
+                            "3. February 2015",
+                            "4. January 2015",
+                            "5. December 2014",
+                            "6. November 2014",
+                            "7. October 2014",
+                            "8. More"
                         ].join('\n')
                     })
                     .run();
@@ -260,14 +259,15 @@ describe("Mama Nigeria App", function() {
                         , '6' // state_msg_receiver - friend_only
                         , '09092222222'  // state_msisdn
                         //, '1'  // state_msg_pregnancy_status - pregnant  // bypass postbirth flow
-                        , '9'   // state_last_period_month - More
+                        , '8'   // state_last_period_month - More
                     )
                     .check.interaction({
                         state: 'state_last_period_month',
                         reply: [
                             "Please select the month the woman had her last period:",
-                            "1. August 14",
-                            "2. Back"
+                            "1. September 2014",
+                            "2. August 2014",
+                            "3. Back"
                         ].join('\n')
                     })
                     .run();
@@ -281,22 +281,21 @@ describe("Mama Nigeria App", function() {
                         , '6' // state_msg_receiver - friend_only
                         , '09092222222'  // state_msisdn
                         //, '1'  // state_msg_pregnancy_status - pregnant  // bypass postbirth flow
-                        , '9'   // state_last_period_month - More
-                        , '2'   // state_last_period_month - Back
+                        , '8'   // state_last_period_month - More
+                        , '3'   // state_last_period_month - Back
                     )
                     .check.interaction({
                         state: 'state_last_period_month',
                         reply: [
                             "Please select the month the woman had her last period:",
-                            "1. April 15",
-                            "2. March 15",
-                            "3. February 15",
-                            "4. January 15",
-                            "5. December 14",
-                            "6. November 14",
-                            "7. October 14",
-                            "8. September 14",
-                            "9. More"
+                            "1. April 2015",
+                            "2. March 2015",
+                            "3. February 2015",
+                            "4. January 2015",
+                            "5. December 2014",
+                            "6. November 2014",
+                            "7. October 2014",
+                            "8. More"
                         ].join('\n')
                     })
                     .run();
@@ -395,15 +394,15 @@ describe("Mama Nigeria App", function() {
                         state: 'state_baby_birth_month_year',
                         reply: [
                             "Select the month & year the baby was born:",
-                            "1. April 15",
-                            "2. March 15",
-                            "3. February 15",
-                            "4. January 15",
-                            "5. December 14",
-                            "6. November 14",
-                            "7. October 14",
-                            "8. September 14",
-                            "9. August 14",
+                            "1. April 2015",
+                            "2. March 2015",
+                            "3. February 2015",
+                            "4. January 2015",
+                            "5. December 2014",
+                            "6. November 2014",
+                            "7. October 2014",
+                            "8. September 2014",
+                            "9. August 2014",
                             "10. More"
                         ].join('\n')
                     })
@@ -425,9 +424,9 @@ describe("Mama Nigeria App", function() {
                         state: 'state_baby_birth_month_year',
                         reply: [
                             "Select the month & year the baby was born:",
-                            "1. July 14",
-                            "2. June 14",
-                            "3. May 14",
+                            "1. July 2014",
+                            "2. June 2014",
+                            "3. May 2014",
                             "4. Back"
                         ].join('\n')
                     })
