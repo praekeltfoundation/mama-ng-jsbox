@@ -272,7 +272,7 @@ go.utils = {
                 // assume numbers don't need translation
                 translated_label = raw_label;
             }
-            
+
             choices.push(new Choice(monthIterator.format(valueFormat),
                                     translated_label));
             monthIterator.add(increment, 'months');
@@ -1537,11 +1537,11 @@ go.app = function() {
             return new PaginatedChoiceState(name, {
                 question: questions[name],
                 characters_per_page: 182,
-                //options_per_page: null,
+                options_per_page: null,
                 more: $('More'),
                 back: $('Back'),
                 choices: go.utils.make_month_choices($, today, 9, -1,
-                                                     "YYYYMM", "MMMM YY"),
+                                                     "YYYYMM", "MMMM YYYY"),
                 next: 'state_last_period_day'
             });
         });
@@ -1659,7 +1659,7 @@ go.app = function() {
                 more: $('More'),
                 back: $('Back'),
                 choices: go.utils.make_month_choices($, today, 12, -1,
-                                                     "YYYYMM", "MMMM YY"),
+                                                     "YYYYMM", "MMMM YYYY"),
                 next: 'state_baby_birth_day'
             });
         });
