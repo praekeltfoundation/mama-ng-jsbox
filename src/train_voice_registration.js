@@ -264,8 +264,7 @@ go.app = function() {
             var use_text = creator_opts.retry === true ? retry_text : question_text;
             var month = self.im.user.answers.working_month;
             var year = self.im.user.answers.working_year;
-            var speech_option = go.utils_project.get_speech_option_pregnancy_status_day(
-                self.im, month);
+            var speech_option = parseInt(month, 10);
 
             return new FreeText(name, {
                 question: $(use_text).context({ month: month, year: year }),
@@ -343,8 +342,7 @@ go.app = function() {
             var use_text = creator_opts.retry === true ? retry_text : question_text;
             var month = self.im.user.answers.working_month;
             var year = self.im.user.answers.working_year;
-            var speech_option = go.utils_project.get_speech_option_pregnancy_status_day(
-                self.im, month);
+            var speech_option = parseInt(month, 10);
 
             return new FreeText(name, {
                 question: $(use_text).context({ month: month, year: year }),
