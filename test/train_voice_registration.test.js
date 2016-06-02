@@ -143,7 +143,7 @@ describe("Mama Nigeria App", function() {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_1.mp3',
                                     wait_for: '#',
-                                    barge_in: false
+                                    barge_in: true
                                 }
                             }
                         })
@@ -255,7 +255,7 @@ describe("Mama Nigeria App", function() {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_1.mp3',
                                     wait_for: '#',
-                                    barge_in: false
+                                    barge_in: true
                                 }
                             }
                         })
@@ -656,7 +656,7 @@ describe("Mama Nigeria App", function() {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_1.mp3',
                                     wait_for: '#',
-                                    barge_in: false
+                                    barge_in: true
                                 }
                             }
                         })
@@ -1510,7 +1510,7 @@ describe("Mama Nigeria App", function() {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_gravida_1.mp3',
                                     wait_for: '#',
-                                    barge_in: false
+                                    barge_in: true
                                 }
                             }
                         })
@@ -1541,7 +1541,7 @@ describe("Mama Nigeria App", function() {
                                 voice: {
                                     speech_url: 'http://localhost:8004/api/v1/eng_NG/state_gravida_1.mp3',
                                     wait_for: '#',
-                                    barge_in: false
+                                    barge_in: true
                                 }
                             }
                         })
