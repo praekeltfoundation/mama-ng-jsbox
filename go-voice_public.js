@@ -272,7 +272,7 @@ go.utils = {
                 // assume numbers don't need translation
                 translated_label = raw_label;
             }
-
+            
             choices.push(new Choice(monthIterator.format(valueFormat),
                                     translated_label));
             monthIterator.add(increment, 'months');
