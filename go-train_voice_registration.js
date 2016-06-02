@@ -771,7 +771,6 @@ go.utils_project = {
         var no_restart_states = [
             // voice registration states
             'state_personnel_auth',
-            'state_gravida',
             // voice change states
             'state_msg_receiver_msisdn',
             'state_main_menu',
