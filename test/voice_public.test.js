@@ -386,7 +386,7 @@ describe("Mama Nigeria App", function() {
                 )
                 .check.interaction({
                     state: 'state_already_registered_baby',
-                    reply: 'You are already subscribed. To go back to main menu, 0 then #'
+                    reply: 'You are already subscribed.'
                 })
                 .check.reply.properties({
                     helper_metadata: {

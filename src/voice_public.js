@@ -249,7 +249,7 @@ go.app = function() {
         self.add('state_already_registered_baby', function(name) {
             var speech_option = 1;
             return new EndState(name, {
-                text: $('You are already subscribed. To go back to main menu, 0 then #'),
+                text: $('You are already subscribed.'),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, self.im.user.lang, speech_option),
                 next: 'state_start'
