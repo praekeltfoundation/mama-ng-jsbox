@@ -43,10 +43,11 @@ go.app = function() {
         self.states.add('state_start', function() {
             // Reset user answers when restarting the app
             self.im.user.answers = {};
+
             return self.im.user
                 .set_lang(self.im.config.default_language)
                 .then(function() {
-                    return self.states.create("state_msg_receiver_msisdn");
+                    return self.states.create('state_set_language');
                 });
         });
 
@@ -57,6 +58,27 @@ go.app = function() {
         });
 
     // INITIAL STATES
+
+        self.add('state_set_language', function(name) {
+            var speech_option = '1';
+            return new ChoiceState(name, {
+                question: $('Language?'),
+                helper_metadata: go.utils_project.make_voice_helper_data(
+                    self.im, name, self.im.user.lang, speech_option),
+                choices: [
+                    new Choice('eng_NG', $('English')),
+                    new Choice('ibo_NG', $('Igbo')),
+                    new Choice('pcm_NG', $('Pidgin'))
+                ],
+                next: function(choice) {
+                    return self.im.user
+                        .set_lang(choice.value)
+                        .then(function() {
+                            return 'state_msg_receiver_msisdn';
+                        });
+                }
+            });
+        });
 
         // FreeText st-B
         self.add('state_msg_receiver_msisdn', function(name, creator_opts) {
