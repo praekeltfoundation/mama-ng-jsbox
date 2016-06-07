@@ -191,7 +191,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_auth_code',
-                        reply: "Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345"
+                        reply: "Please enter your Hello Mama code."
                     })
                     .run();
             });
@@ -205,7 +205,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_msg_receiver',
                         reply: [
-                            "Please select who will receive the messages on their phone:",
+                            "Please select who will receive the messages on their phone?",
                             "1. Mother, Father",
                             "2. Mother",
                             "3. Father",
@@ -227,7 +227,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_msisdn',
-                        reply: "Please enter the mobile number of the person who will receive the weekly messages. For example, 08033048990"
+                        reply: "Please enter the mobile number of the family member. They must consent to receiving messages."
                     })
                     .run();
             });
@@ -241,7 +241,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_msisdn_mother',
-                        reply: "Please enter the mother's mobile number. She must consent to receiving messages."
+                        reply: "Please enter the mobile number of the mother. They must consent to receiving messages."
                     })
                     .run();
             });
@@ -256,7 +256,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_msisdn_household',
-                        reply: "Please enter the father's number. They will receive a weekly SMS and must consent to receiving messages."
+                        reply: "Please enter the mobile number of the father. They must consent to receiving messages."
                     })
                     .run();
             });
@@ -272,7 +272,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_msisdn_already_registered',
                         reply: [
-                            "Sorry, this number is already registered. They must opt-out before registering again.",
+                            "Sorry, this number is already registered. They must opt-out before they can register again.",
                             "1. Try a different number",
                             "2. Choose a different receiver",
                             "3. Exit"
@@ -289,6 +289,36 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
+            /*it("to state_msisdn_already_registered (invalid option selected)", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '2' // state_msg_receiver - mother_only
+                        , '09097777777'  // state_msisdn
+                        , '4' // state_msisdn_already_registered - invalid option
+                    )
+                    .check.interaction({
+                        state: 'state_msisdn_already_registered',
+                        reply: [
+                            "Invalid selection. Sorry, this number is already registered. They must opt-out before they can register again.",
+                            "1. Try a different number",
+                            "2. Choose a different receiver",
+                            "3. Exit"
+                        ].join('\n')
+                    })
+                    .check(function(api) {
+                        var expected_used = [1,6,78];
+                        var fixts = api.http.fixtures.fixtures;
+                        var fixts_used = [];
+                        fixts.forEach(function(f, i) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
+                    })
+                    .run();
+            });*/
             it("to state_end_msisdn", function() {
                 return tester
                     .setup.user.addr('08080020002')
@@ -327,7 +357,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_msisdn',
-                        reply: "Please enter the mobile number of the person who will receive the weekly messages. For example, 08033048990"
+                        reply: "Please enter the mobile number of the mother. They must consent to receiving messages."
                     })
                     .run();
             });
@@ -344,7 +374,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_msg_receiver',
                         reply: [
-                            "Please select who will receive the messages on their phone:",
+                            "Please select who will receive the messages on their phone?",
                             "1. Mother, Father",
                             "2. Mother",
                             "3. Father",
@@ -390,7 +420,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_last_period_month',
                         reply: [
-                            "Please select the month the woman had her last period:",
+                            "Please select the month the woman started her last period:",
                             "1. April 2015",
                             "2. March 2015",
                             "3. February 2015",
@@ -423,7 +453,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_last_period_month',
                         reply: [
-                            "Please select the month the woman had her last period:",
+                            "Please select the month the woman started her last period:",
                             "1. September 2014",
                             "2. August 2014",
                             "3. Back"
@@ -446,7 +476,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_last_period_month',
                         reply: [
-                            "Please select the month the woman had her last period:",
+                            "Please select the month the woman started her last period:",
                             "1. April 2015",
                             "2. March 2015",
                             "3. February 2015",
@@ -472,7 +502,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_last_period_day',
-                        reply: "What day of the month did the woman start her last period? For example, 12."
+                        reply: "What day of the month did the woman start her last period?"
                     })
                     .run();
             });
@@ -490,7 +520,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_gravida',
-                        reply: "Please enter the number of times the woman has been pregnant before. This includes any pregnancies she may not have carried to term."
+                        reply: "Please enter the total number of times the woman has been pregnant. This includes any pregnancies she may not have carried to term."
                     })
                     .run();
             });
@@ -508,7 +538,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_gravida',
-                        reply: "Please enter the number of times the woman has been pregnant before. This includes any pregnancies she may not have carried to term."
+                        reply: "Please enter the total number of times the woman has been pregnant. This includes any pregnancies she may not have carried to term."
                     })
                     .run();
             });
@@ -529,7 +559,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_msg_language',
                         reply: [
-                            "Which language would this person like to receive these messages in?",
+                            "Which language would they like to receive these messages in?",
                             "1. English",
                             "2. Igbo",
                             "3. Pidgin"
@@ -552,7 +582,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_baby_birth_month_year',
                         reply: [
-                            "Select the month & year the baby was born:",
+                            "Select the month and year the baby was born:",
                             "1. April 2015",
                             "2. March 2015",
                             "3. February 2015",
@@ -582,7 +612,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_baby_birth_month_year',
                         reply: [
-                            "Select the month & year the baby was born:",
+                            "Select the month and year the baby was born:",
                             "1. July 2014",
                             "2. June 2014",
                             "3. May 2014",
@@ -605,7 +635,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_baby_birth_day',
-                        reply: "What day of the month was the baby born? For example, 12."
+                        reply: "What day of the month was the baby born?"
                     })
                     .run();
             });
@@ -624,7 +654,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_gravida',
-                        reply: "Please enter the number of times the woman has been pregnant before. This includes any pregnancies she may not have carried to term."
+                        reply: "Please enter the total number of times the woman has been pregnant. This includes any pregnancies she may not have carried to term."
                     })
                     .run();
             });
@@ -645,7 +675,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_msg_type',
                         reply: [
-                            "How would this person like to get messages?",
+                            "How would they like to get messages?",
                             "1. Voice calls",
                             "2. Text SMSs"
                         ].join('\n')
@@ -671,7 +701,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_voice_days',
                         reply: [
-                            "We will call them twice a week. On what days would the person like to receive these calls?",
+                            "On what days would they like to receive these calls?",
                             "1. Monday and Wednesday",
                             "2. Tuesday and Thursday"
                         ].join('\n')
@@ -697,7 +727,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_voice_times',
                         reply: [
-                            "Thank you. At what time would they like to receive these calls?",
+                            "At what time would they like to receive these calls on Tuesdays and Thursdays?",
                             "1. Between 9-11am",
                             "2. Between 2-5pm"
                         ].join('\n')
@@ -723,7 +753,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_end_voice',
-                        reply: "Thank you. The person will now start receiving calls on Tuesday and Thursday between 2pm - 5pm."
+                        reply: "Thank you. They will now start receiving calls on Tuesday and Thursday between 2pm-5pm."
                     })
                     .check(function(api) {
                         var expected_used = [1,6,36,37,38,48,54,59,62,63];
@@ -755,7 +785,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_end_sms',
-                        reply: "Thank you. The person will now start receiving messages three times a week."
+                        reply: "Thank you. They will now start receiving text messages three times a week on Monday, Wednesday and Friday."
                     })
                     .check(function(api) {
                         var expected_used = [1,6,36,37,38,46,54,59,60,69];
@@ -943,7 +973,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_auth_code',
-                        reply: "Sorry, that is not a valid number. Please enter your unique personnel code. For example, 12345"
+                        reply: "Sorry, invalid number. Please enter your Hello Mama code."
                     })
                     .run();
             });
@@ -958,7 +988,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_msisdn',
-                        reply: "Sorry, that is not a valid number. Please enter the mobile number of the person who will receive the weekly messages. For example, 08033048990"
+                        reply: "Sorry, invalid number. Please enter the mobile number of the mother. They must consent to receiving messages."
                     })
                     .run();
             });
@@ -973,7 +1003,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_msisdn_mother',
-                        reply: "Sorry, that is not a valid number. Please enter the mother's mobile number. She must consent to receiving messages."
+                        reply: "Sorry, invalid number. Please enter the mobile number of the mother. They must consent to receiving messages."
                     })
                     .run();
             });
@@ -989,7 +1019,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_msisdn_household',
-                        reply: "Sorry, that is not a valid number. Please enter the father's number. They will receive a weekly SMS and must consent to receiving messages."
+                        reply: "Sorry, invalid number. Please enter the mobile number of the father. They must consent to receiving messages."
                     })
                     .run();
             });
@@ -1007,7 +1037,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_last_period_day',
-                        reply: "Sorry, that is not a valid number. What day of the month did the woman start her last period? For example, 12."
+                        reply: "Sorry, invalid date. What day of the month did the woman start her last period?"
                     })
                     .run();
             });
@@ -1026,7 +1056,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_baby_birth_day',
-                        reply: "Sorry, that is not a valid number. What day of the month was the baby born? For example, 12."
+                        reply: "Sorry, invalid number. What day of the month was the baby born? For example, 12."
                     })
                     .run();
             });
@@ -1046,7 +1076,7 @@ describe("Mama Nigeria App", function() {
                         .check.interaction({
                             state: 'state_invalid_date',
                             reply: [
-                                "The date you entered (20150231) is not a real date. Please try again.",
+                                "The date you entered (20150231) is incorrect. Please try again.",
                                 "1. Continue"
                             ].join('\n')
                         })
@@ -1086,7 +1116,7 @@ describe("Mama Nigeria App", function() {
                         .check.interaction({
                             state: 'state_invalid_date',
                             reply: [
-                                "The date you entered (20150231) is not a real date. Please try again.",
+                                "The date you entered (20150231) is incorrect. Please try again.",
                                 "1. Continue"
                             ].join('\n')
                         })
@@ -1111,6 +1141,34 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
+            });
+            it("validate state_gravida", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '2' // state_msg_receiver - mother_only
+                        , '09096666666'  // state_msiddn
+                        //, '1'  // state_msg_pregnant - mother
+                        , '3'  // state_last_period_month - May 15
+                        , '12' // state_last_period_day - 12
+                        , 'a'  // state_gravida
+                    )
+                    .check.interaction({
+                        state: 'state_gravida',
+                        reply: 'Sorry, invalid number. Please enter the total number of times the woman has been pregnant. This includes any pregnancies she may not have carried to term.'
+                    })
+                    .check(function(api) {
+                        var expected_used = [1,6,71,72];
+                        var fixts = api.http.fixtures.fixtures;
+                        var fixts_used = [];
+                        fixts.forEach(function(f, i) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
+                    })
+                    .run();
             });
         });
 
