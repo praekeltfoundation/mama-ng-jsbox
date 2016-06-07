@@ -56,6 +56,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('+2345059991111')
                     .inputs(
                         {session_event: 'new'}
+                        , '1'  // state_set_language - english
                         , '05059992222' // state_msg_receiver_msisdn
                         , '1'  // state_main_menu - baby
                         , '0'  // state_baby_confirm_subscription - restart
@@ -78,6 +79,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('+2345059991111')
                     .inputs(
                         {session_event: 'new'}
+                        , '1'  // state_set_language - english
                         , '05059992222' // state_msg_receiver_msisdn
                         , '1'  // state_main_menu - baby
                         , '*'  // state_baby_confirm_subscription - repeat
@@ -96,20 +98,25 @@ describe("Mama Nigeria App", function() {
         // TEST START ROUTING
 
         describe("Start of session", function() {
-            it("to state_msg_receiver_msisdn", function() {
+            it("to state_set_language", function() {
                 return tester
                     .setup.user.addr('+2345059991111')
                     .inputs(
                         {session_event: 'new'}
                     )
                     .check.interaction({
-                        state: 'state_msg_receiver_msisdn',
-                        reply: 'Welcome, Number'
+                        state: 'state_set_language',
+                        reply: [
+                            'Language?',
+                            '1. English',
+                            '2. Igbo',
+                            '3. Pidgin'
+                        ].join('\n')
                     })
                     .check.reply.properties({
                         helper_metadata: {
                             voice: {
-                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_msisdn_1.mp3',
+                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_set_language_1.mp3',
                                 wait_for: '#',
                                 barge_in: true
                             }
@@ -132,6 +139,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('+2345059992222')
                     .inputs(
                         {session_event: 'new'}
+                        , '2'  // state_set_language - igbo
                         , '5551234'  // msg_receiver_msisdn
                     )
                     .check.interaction({
@@ -141,7 +149,7 @@ describe("Mama Nigeria App", function() {
                     .check.reply.properties({
                         helper_metadata: {
                             voice: {
-                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_msisdn_1_retry.mp3',
+                                speech_url: 'http://localhost:8004/api/v1/ibo_NG/state_msg_receiver_msisdn_1_retry.mp3',
                                 wait_for: '#',
                                 barge_in: true
                             }
@@ -156,6 +164,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('+2345059992222')
                     .inputs(
                         {session_event: 'new'}
+                        , '2'  // state_set_language - igbo
                         , '5551234'  // state_msg_receiver_msisdn
                         , '0'  // state_msg_receiver_msisdn - restart
                     )
@@ -166,7 +175,7 @@ describe("Mama Nigeria App", function() {
                     .check.reply.properties({
                         helper_metadata: {
                             voice: {
-                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_msisdn_1_retry.mp3',
+                                speech_url: 'http://localhost:8004/api/v1/ibo_NG/state_msg_receiver_msisdn_1_retry.mp3',
                                 wait_for: '#',
                                 barge_in: true
                             }
@@ -179,6 +188,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('+2345059992222')
                     .inputs(
                         {session_event: 'new'}
+                        , '2'  // state_set_language - igbo
                         , '5551234'  // state_msg_receiver_msisdn
                         , '*'   // state_msg_receiver_msisdn - repeat
                     )
@@ -189,7 +199,7 @@ describe("Mama Nigeria App", function() {
                     .check.reply.properties({
                         helper_metadata: {
                             voice: {
-                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_msisdn_1_retry.mp3',
+                                speech_url: 'http://localhost:8004/api/v1/ibo_NG/state_msg_receiver_msisdn_1_retry.mp3',
                                 wait_for: '#',
                                 barge_in: true
                             }
@@ -202,6 +212,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('+2345059991111')
                     .inputs(
                         {session_event: 'new'}
+                        , '2'  // state_set_language - igbo
                         , '05059992222'  // msg_receiver_msisdn
                     )
                     .check.interaction({
@@ -218,7 +229,7 @@ describe("Mama Nigeria App", function() {
                     .check.reply.properties({
                         helper_metadata: {
                             voice: {
-                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_main_menu_1.mp3',
+                                speech_url: 'http://localhost:8004/api/v1/ibo_NG/state_main_menu_1.mp3',
                                 wait_for: '#',
                                 barge_in: true
                             }
@@ -234,6 +245,7 @@ describe("Mama Nigeria App", function() {
                 .setup.user.addr('+07070050005')
                 .inputs(
                     {session_event: 'new'}
+                    , '3'  // state_set_language - pidgin
                     , '05059992222'  // msg_receiver_msisdn
                     , '1'  // main_menu - baby
                 )
@@ -247,7 +259,7 @@ describe("Mama Nigeria App", function() {
                 .check.reply.properties({
                     helper_metadata: {
                         voice: {
-                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_confirm_subscription_1.mp3',
+                            speech_url: 'http://localhost:8004/api/v1/pcm_NG/state_baby_confirm_subscription_1.mp3',
                             wait_for: '#',
                             barge_in: true
                         }
@@ -260,6 +272,7 @@ describe("Mama Nigeria App", function() {
                 .setup.user.addr('+07070050005')
                 .inputs(
                     {session_event: 'new'}
+                    , '3'  // state_set_language - pidgin
                     , '05059992222'  // msg_receiver_msisdn
                     , '1'  // main_menu - baby
                     , '1'  // state_baby_confirm_subscription
@@ -271,7 +284,7 @@ describe("Mama Nigeria App", function() {
                 .check.reply.properties({
                     helper_metadata: {
                         voice: {
-                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_baby_1.mp3',
+                            speech_url: 'http://localhost:8004/api/v1/pcm_NG/state_end_baby_1.mp3',
                             wait_for: '#',
                             barge_in: false
                         }
@@ -287,6 +300,7 @@ describe("Mama Nigeria App", function() {
                     .setup.user.addr('+07070050005')
                     .inputs(
                         {session_event: 'new'}
+                        , '3'  // state_set_language - pidgin
                         , '05059992222'  // msg_receiver_msisdn
                         , '2'  // main_menu - msg_pref
                     )
@@ -300,7 +314,7 @@ describe("Mama Nigeria App", function() {
                     .check.reply.properties({
                         helper_metadata: {
                             voice: {
-                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_change_menu_sms_1.mp3',
+                                speech_url: 'http://localhost:8004/api/v1/pcm_NG/state_change_menu_sms_1.mp3',
                                 wait_for: '#',
                                 barge_in: true
                             }
@@ -313,6 +327,7 @@ describe("Mama Nigeria App", function() {
                 .setup.user.addr('+07070050005')
                 .inputs(
                     {session_event: 'new'}
+                    , '3'  // state_set_language - pidgin
                     , '05059992222'  // msg_receiver_msisdn
                     , '2'  // main_menu - msg_pref
                     , '1'  // state_change_menu_sms - change text to voice
@@ -328,7 +343,7 @@ describe("Mama Nigeria App", function() {
                 .check.reply.properties({
                     helper_metadata: {
                         voice: {
-                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_voice_days_1.mp3',
+                            speech_url: 'http://localhost:8004/api/v1/pcm_NG/state_voice_days_1.mp3',
                             wait_for: '#',
                             barge_in: true
                         }
@@ -341,6 +356,7 @@ describe("Mama Nigeria App", function() {
                 .setup.user.addr('+07070050005')
                 .inputs(
                     {session_event: 'new'}
+                    , '3'  // state_set_language - pidgin
                     , '05059992222'  // msg_receiver_msisdn
                     , '2'  // main_menu - msg_pref
                     , '1'  // state_change_menu_sms - change text to voice
@@ -357,7 +373,7 @@ describe("Mama Nigeria App", function() {
                 .check.reply.properties({
                     helper_metadata: {
                         voice: {
-                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_voice_times_1.mp3',
+                            speech_url: 'http://localhost:8004/api/v1/pcm_NG/state_voice_times_1.mp3',
                             wait_for: '#',
                             barge_in: true
                         }
@@ -370,6 +386,7 @@ describe("Mama Nigeria App", function() {
                 .setup.user.addr('+07070050005')
                 .inputs(
                     {session_event: 'new'}
+                    , '3'  // state_set_language - pidgin
                     , '05059992222'  // msg_receiver_msisdn
                     , '2'  // main_menu - msg_pref
                     , '1'  // state_change_menu_sms - change text to voice
@@ -383,7 +400,7 @@ describe("Mama Nigeria App", function() {
                 .check.reply.properties({
                     helper_metadata: {
                         voice: {
-                            speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_voice_confirm_2.mp3',
+                            speech_url: 'http://localhost:8004/api/v1/pcm_NG/state_end_voice_confirm_2.mp3',
                             wait_for: '#',
                             barge_in: false
                         }
@@ -399,6 +416,7 @@ describe("Mama Nigeria App", function() {
                 .setup.user.addr('+2345059992222')
                 .inputs(
                     {session_event: 'new'}
+                    , '1'  // state_set_language - english
                     , '05059992222' // state_msg_receiver_msisdn
                     , '3'           // state_main_menu - number
                 )
@@ -422,6 +440,7 @@ describe("Mama Nigeria App", function() {
                 .setup.user.addr('+2345059992222')
                 .inputs(
                     {session_event: 'new'}
+                    , '1'  // state_set_language - english
                     , '05059992222' // state_msg_receiver_msisdn
                     , '3'           // state_main_menu - number
                     , '54321'       // state_new_msisdn
@@ -446,6 +465,7 @@ describe("Mama Nigeria App", function() {
                 .setup.user.addr('+2345059992222')
                 .inputs(
                     {session_event: 'new'}
+                    , '1'  // state_set_language - english
                     , '05059992222' // state_msg_receiver_msisdn
                     , '3'           // state_main_menu - number
                     , '05059998888'  // state_new_msisdn
@@ -473,6 +493,7 @@ describe("Mama Nigeria App", function() {
                 .setup.user.addr('+07070050005')
                 .inputs(
                     {session_event: 'new'}
+                    , '1'  // state_set_language - english
                     , '05059992222' // state_msg_receiver_msisdn
                     , '4'           // state_main_menu - language
                 )
@@ -502,6 +523,7 @@ describe("Mama Nigeria App", function() {
                 .setup.user.addr('+07070050005')
                 .inputs(
                     {session_event: 'new'}
+                    , '1'  // state_set_language - english
                     , '05059992222' // state_msg_receiver_msisdn
                     , '4'           // state_main_menu - language
                     , '3'   // state_msg_language - pidgin
@@ -531,6 +553,7 @@ describe("Mama Nigeria App", function() {
                 .setup.user.addr('+2345059992222')
                 .inputs(
                     {session_event: 'new'}
+                    , '1'  // state_set_language - english
                     , '05059992222'  // msg_receiver_msisdn
                     , '5'  // state_main_menu - optout
                 )
@@ -562,6 +585,7 @@ describe("Mama Nigeria App", function() {
                 .setup.user.addr('+2345059992222')
                 .inputs(
                     {session_event: 'new'}
+                    , '1'  // state_set_language - english
                     , '05059992222'  // msg_receiver_msisdn
                     , '5'  // main_menu - optout
                     , '1'  // optout_reason - miscarriage
@@ -591,6 +615,7 @@ describe("Mama Nigeria App", function() {
                 .setup.user.addr('+2345059992222')
                 .inputs(
                     {session_event: 'new'}
+                    , '1'  // state_set_language - english
                     , '05059992222'  // msg_receiver_msisdn
                     , '5'  // main_menu - optout
                     , '1'  // optout_reason - miscarriage
@@ -618,6 +643,7 @@ describe("Mama Nigeria App", function() {
                 .setup.user.addr('+2345059992222')
                 .inputs(
                     {session_event: 'new'}
+                    , '1'  // state_set_language - english
                     , '05059992222'  // msg_receiver_msisdn
                     , '5'  // main_menu - optout
                     , '1'  // optout_reason - miscarriage
@@ -645,6 +671,7 @@ describe("Mama Nigeria App", function() {
                 .setup.user.addr('+2345059992222')
                 .inputs(
                     {session_event: 'new'}
+                    , '1'  // state_set_language - english
                     , '05059992222'  // msg_receiver_msisdn
                     , '5'  // main_menu - optout
                     , '2'  // optout_reason - stillborn
@@ -670,6 +697,7 @@ describe("Mama Nigeria App", function() {
                 .setup.user.addr('+2345059992222')
                 .inputs(
                     {session_event: 'new'}
+                    , '1'  // state_set_language - english
                     , '05059992222'  // msg_receiver_msisdn
                     , '5'  // main_menu - optout
                     , '3'  // optout_reason - baby_died
@@ -695,6 +723,7 @@ describe("Mama Nigeria App", function() {
                 .setup.user.addr('+2345059992222')
                 .inputs(
                     {session_event: 'new'}
+                    , '1'  // state_set_language - english
                     , '05059992222'  // msg_receiver_msisdn
                     , '5'  // main_menu - optout
                     , '4'  // optout_reason - not_useful
@@ -725,6 +754,7 @@ describe("Mama Nigeria App", function() {
                 .setup.user.addr('+2345059992222')
                 .inputs(
                     {session_event: 'new'}
+                    , '1'  // state_set_language - english
                     , '05059992222'  // msg_receiver_msisdn
                     , '5'  // main_menu - optout
                     , '4'  // optout_reason - not_useful
@@ -751,6 +781,7 @@ describe("Mama Nigeria App", function() {
                 .setup.user.addr('+2345059992222')
                 .inputs(
                     {session_event: 'new'}
+                    , '1'  // state_set_language - english
                     , '05059992222'  // msg_receiver_msisdn
                     , '5'  // main_menu - optout
                     , '1'  // optout_reason - miscarriage
