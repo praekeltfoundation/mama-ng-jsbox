@@ -42,7 +42,7 @@ go.app = function() {
             "state_msisdn_mother":
                 $("Please enter the mother's mobile number. She must consent to receiving messages."),
             "state_msisdn_household":
-                $("Please enter the {{roleplayer}}'s number. They will receive a weekly SMS and must consent to receiving messages."),
+                $("Please enter the mobile number of the {{roleplayer}}. They must consent to receiving messages."),
             "state_pregnancy_status":
                 $("Please select one of the following:"),
             "state_last_period_month":
@@ -79,7 +79,7 @@ go.app = function() {
             "state_msisdn_mother":
                 $("Sorry, that is not a valid number. Please enter the mother's mobile number. She must consent to receiving messages."),
             "state_msisdn_household":
-                $("Sorry, that is not a valid number. Please enter the {{roleplayer}}'s number. They will receive a weekly SMS and must consent to receiving messages."),
+                $("Sorry, that is not a valid number. Please enter the mobile number of the {{roleplayer}}. They must consent to receiving messages."),
             "state_last_period_day":
                 $("Sorry, that is not a valid number. What day of the month did the woman start her last period? For example, 12."),
             "state_gravida":
