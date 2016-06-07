@@ -116,7 +116,7 @@ describe("Mama Nigeria App", function() {
                     .check.reply.properties({
                         helper_metadata: {
                             voice: {
-                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_set_language_1.mp3', // ?? or should it be state_msg_language to re-use existing voice recordings..?
+                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_set_language_1.mp3',
                                 wait_for: '#',
                                 barge_in: true
                             }
