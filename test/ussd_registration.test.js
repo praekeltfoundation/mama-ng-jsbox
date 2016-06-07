@@ -256,7 +256,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_msisdn_household',
-                        reply: "Please enter the father's number. They will receive a weekly call and must consent to receiving messages."
+                        reply: "Please enter the mobile number of the father. They must consent to receiving messages."
                     })
                     .run();
             });
@@ -989,7 +989,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_msisdn_household',
-                        reply: "Sorry, that is not a valid number. Please enter the father's number. They will receive a weekly call and must consent to receiving messages."
+                        reply: "Sorry, that is not a valid number. Please enter the mobile number of the father. They must consent to receiving messages."
                     })
                     .run();
             });
