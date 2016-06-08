@@ -264,22 +264,13 @@ go.app = function() {
                     new Choice('state_msg_receiver', $("Choose a different receiver")),
                     new Choice('exit', $("Exit"))
                 ],
-                /*check: function(content) {
-                    console.log(content);
-                    var valid_options = ['1','2','3'];
-                    if (valid_options.indexOf(content) !== -1) {
-                        return null;
-                    } else {
-                        return errors[name];
-                    }
-                },*/
+                error: errors[name],
                 next: function(choice) {
                     if (choice.value != 'exit') {
                         return choice.value;
                     } else {
                         return 'state_end_msisdn';
                     }
-
                 }
             });
         });
@@ -391,17 +382,11 @@ go.app = function() {
             var today = go.utils.get_today(self.im.config);
             return new PaginatedChoiceState(name, {
                 question: questions[name],
+                //error: errors[name], //? increases required characters_per_page
                 characters_per_page: 182,
                 options_per_page: null,
                 more: $('More'),
                 back: $('Back'),
-                /*check: function(choice) {
-                    if (choice.value <= 8) {  //? option_per_page..?
-                        return null;
-                    } else {
-                        return errors[name];
-                    }
-                },*/
                 choices: go.utils.make_month_choices($, today, 9, -1,
                                                      "YYYYMM", "MMMM YYYY"),
                 next: 'state_last_period_day'

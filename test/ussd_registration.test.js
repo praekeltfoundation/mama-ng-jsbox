@@ -289,36 +289,6 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            /*it("to state_msisdn_already_registered (invalid option selected)", function() {
-                return tester
-                    .setup.user.addr('08080020002')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '12345'   // state_auth_code - personnel code
-                        , '2' // state_msg_receiver - mother_only
-                        , '09097777777'  // state_msisdn
-                        , '4' // state_msisdn_already_registered - invalid option
-                    )
-                    .check.interaction({
-                        state: 'state_msisdn_already_registered',
-                        reply: [
-                            "Invalid selection. Sorry, this number is already registered. They must opt-out before they can register again.",
-                            "1. Try a different number",
-                            "2. Choose a different receiver",
-                            "3. Exit"
-                        ].join('\n')
-                    })
-                    .check(function(api) {
-                        var expected_used = [1,6,78];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
-                    })
-                    .run();
-            });*/
             it("to state_end_msisdn", function() {
                 return tester
                     .setup.user.addr('08080020002')
@@ -992,6 +962,36 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
+            it("to state_msisdn_already_registered (invalid option selected)", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '2' // state_msg_receiver - mother_only
+                        , '09097777777'  // state_msisdn
+                        , '4' // state_msisdn_already_registered - invalid option
+                    )
+                    .check.interaction({
+                        state: 'state_msisdn_already_registered',
+                        reply: [
+                            "Sorry, invalid option. Sorry, this number is already registered. They must opt-out before they can register again.",
+                            "1. Try a different number",
+                            "2. Choose a different receiver",
+                            "3. Exit"
+                        ].join('\n')
+                    })
+                    .check(function(api) {
+                        var expected_used = [1,6,78];
+                        var fixts = api.http.fixtures.fixtures;
+                        var fixts_used = [];
+                        fixts.forEach(function(f, i) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
+                    })
+                    .run();
+            });
             it("validate state_msisdn_mother", function() {
                 return tester
                     .setup.user.addr('08080020002')
@@ -1020,6 +1020,33 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_msisdn_household',
                         reply: "Sorry, invalid number. Please enter the mobile number of the father. They must consent to receiving messages."
+                    })
+                    .run();
+            });
+            it.skip("validate state_last_period_month", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '7'  // state_msg_receiver - family_only
+                        , '09092222222' // state_msisdn - mobile number
+                        //, '1'  // state_msg_pregnant - mother
+                        , '10'  // state_last_period_month - May 15
+                    )
+                    .check.interaction({
+                        state: 'state_last_period_month',
+                        reply: [
+                            'Sorry, invalid date. Please select the month the woman started her last period:',
+                            '1. April 2015',
+                            '2. March 2015',
+                            '3. February 2015',
+                            '4. January 2015',
+                            '5. December 2014',
+                            '6. November 2014',
+                            '7. October 2014',
+                            '8. More'
+                        ].join('\n')
                     })
                     .run();
             });
