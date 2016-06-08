@@ -32,21 +32,21 @@ go.app = function() {
             "state_timed_out":
                 $("You have an incomplete registration. Would you like to continue with this registration?"),
             "state_auth_code":
-                $("Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345"),
+                $("Please enter your Hello Mama code."),
             "state_msg_receiver":
-                $("Please select who will receive the messages on their phone:"),
+                $("Welcome to the Hello Mama training line. Who will receive the messages?"),
             "state_msisdn":
-                $("Please enter the mobile number of the person who will receive the weekly messages. For example, 08033048990"),
+                $("Please enter the mobile number of the {{roleplayer}}. They must consent to receiving messages."),
             "state_msisdn_already_registered":
-                $("Sorry, this number is already registered. They must opt-out before registering again."),
+                $("Sorry, this number is already registered. They must opt-out before they can register again."),
             "state_msisdn_mother":
-                $("Please enter the mother's mobile number. She must consent to receiving messages."),
+                $("Please enter the mobile number of the mother. They must consent to receiving messages."),
             "state_msisdn_household":
-                $("Please enter the {{roleplayer}}'s number. They will receive a weekly SMS and must consent to receiving messages."),
+                $("Please enter the mobile number of the {{roleplayer}}. They must consent to receiving messages."),
             "state_pregnancy_status":
                 $("Please select one of the following:"),
             "state_last_period_month":
-                $("Please select the month the woman had her last period:"),
+                $("Please select the month the woman started her last period:"),
             "state_last_period_day":
                 $("What day of the month did the woman start her last period? For example, 12."),
             "state_baby_birth_month_year":
@@ -54,38 +54,57 @@ go.app = function() {
             "state_baby_birth_day":
                 $("What day of the month was the baby born? For example, 12."),
             "state_gravida":
-                $("Please enter the number of times the woman has been pregnant before. This includes any pregnancies she may not have carried to term."),
+                $("Please enter the total number of times the woman has been pregnant. This includes any pregnancies she may not have carried to term."),
             "state_msg_language":
-                $("Which language would this person like to receive these messages in?"),
+                $("What language would they like to receive the messages in?"),
             "state_msg_type":
-                $("How would this person like to get messages?"),
+                $("How would they like to receive the messages?"),
             "state_voice_days":
-                $("We will call them twice a week. On what days would the person like to receive these calls?"),
+                $("On what days would they like to receive these calls?"),
             "state_voice_times":
-                $("Thank you. At what time would they like to receive these calls?"),
+                $("At what time would they like to receive these calls?"),
             "state_end_voice":
-                $("Thank you. The person will now start receiving calls on {{days}} between {{times}}."),
+                $("Thank you. They will now start receiving calls on {{days}} between {{times}}."),
             "state_end_sms":
-                $("Thank you. The person will now start receiving messages three times a week."),
+                $("Thank you. They will now start receiving messages three times a week on Monday, Wednesday and Friday."),
             "state_end_msisdn":
                 $("Thank you for using the Hello Mama service.")
         };
 
+        var state_error_types = {
+            "invalid_date": "Sorry, invalid date.",
+            "invalid_selection": "Sorry, invalid option.",
+            "invalid_number": "Sorry, invalid number."
+        };
+
         var errors = {
             "state_auth_code":
-                $("Sorry, that is not a valid number. Please enter your unique personnel code. For example, 12345"),
+                $("{{error}} Please enter your Hello Mama code.")
+                    .context({error: state_error_types.invalid_number}),
+            "state_msg_receiver":
+                $("{{error}} Welcome to the Hello Mama training line. Who will receive the messages?")
+                    .context({error: state_error_types.invalid_selection}),
             "state_msisdn":
-                $("Sorry, that is not a valid number. Please enter the mobile number of the person who will receive the weekly messages. For example, 08033048990"),
+                $("{{error}} Please enter the mobile number of the {{roleplayer}}. They must consent to receiving messages."),
             "state_msisdn_mother":
-                $("Sorry, that is not a valid number. Please enter the mother's mobile number. She must consent to receiving messages."),
+                $("{{error}} Please enter the mobile number of the mother. They must consent to receiving messages.")
+                    .context({error: state_error_types.invalid_number}),
+            "state_msisdn_already_registered":
+                $("{{error}} Sorry, this number is already registered. They must opt-out before they can register again.")
+                    .context({error: state_error_types.invalid_selection}),
             "state_msisdn_household":
-                $("Sorry, that is not a valid number. Please enter the {{roleplayer}}'s number. They will receive a weekly SMS and must consent to receiving messages."),
+                $("{{error}} Please enter the mobile number of the {{roleplayer}}. They must consent to receiving messages."),
+            "state_last_period_month":
+                $("{{error}} Please select the month the woman started her last period:")
+                    .context({error: state_error_types.invalid_date}),
             "state_last_period_day":
-                $("Sorry, that is not a valid number. What day of the month did the woman start her last period? For example, 12."),
+                $("{{error}} What day of the month did the woman start her last period?")
+                    .context({error: state_error_types.invalid_date}),
             "state_gravida":
-                $("Sorry, that is not a valid number. Please enter the number of times the woman has been pregnant before. This includes any pregnancies she may not have carried to term."),
+                $("{{error}} Please enter the total number of times the woman has been pregnant. This includes any pregnancies she may not have carried to term.")
+                    .context({error: state_error_types.invalid_number}),
             "state_baby_birth_day":
-                $("Sorry, that is not a valid number. What day of the month was the baby born? For example, 12."),
+                $("Sorry, invalid number. What day of the month was the baby born? For example, 12."),
         };
 
 
@@ -163,12 +182,27 @@ go.app = function() {
         // FreeText st-03
         self.add('state_msisdn', function(name) {
             return new FreeText(name, {
-                question: questions[name],
+                question: questions[name].context({
+                    roleplayer: self.im.user.answers.state_msg_receiver
+                        // change the state_msg_receiver answer to display correctly
+                        // in the ussd text
+                        .replace('mother_only', 'mother')
+                        .replace('father_only', 'father')
+                        .replace('friend_only', 'friend')
+                        .replace('family_only', 'family member')
+                }),
                 check: function(content) {
                     if (go.utils.is_valid_msisdn(content)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
-                        return errors[name];
+                        return errors[name].context({
+                            error: state_error_types.invalid_number,
+                            roleplayer: self.im.user.answers.state_msg_receiver
+                                .replace('mother_only', 'mother')
+                                .replace('father_only', 'father')
+                                .replace('friend_only', 'friend')
+                                .replace('family_only', 'family member')
+                        });
                     }
                 },
                 next: function(content) {
@@ -207,6 +241,7 @@ go.app = function() {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return errors[name].context({
+                            error: state_error_types.invalid_number,
                             roleplayer: self.im.user.answers.state_msg_receiver
                                 // change the state_msg_receiver answer to display correctly
                                 // in the ussd text
@@ -423,8 +458,8 @@ go.app = function() {
         self.add('state_invalid_date', function(name, opts) {
             return new ChoiceState(name, {
                 question:
-                    $('The date you entered ({{ date }}) is not a ' +
-                        'real date. Please try again.'
+                    $('The date you entered ({{ date }}) is incorrect. ' +
+                    'Please try again.'
                     ).context({date: opts.date}),
 
                 choices: [
