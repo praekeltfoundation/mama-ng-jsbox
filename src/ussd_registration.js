@@ -72,7 +72,7 @@ go.app = function() {
 
         var state_error_types = {
             "invalid_date": "Sorry, invalid date.",
-            "invalid_selection": "Sorry, invalid selection.",
+            "invalid_selection": "Sorry, invalid option.",
             "invalid_number": "Sorry, invalid number."
         };
 
