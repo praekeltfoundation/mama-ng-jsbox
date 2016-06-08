@@ -94,7 +94,7 @@ describe("Hello Mama app", function() {
                         )
                         .check.interaction({
                             state: 'state_registered_msisdn',
-                            reply: "Please enter the number which is registered to receive messages. For example, 0803304899"
+                            reply: "Please enter the number which is registered to receive messages."
                         })
                         .check.user.properties({lang: 'ibo_NG'})
                         .check(function(api) {
@@ -144,7 +144,7 @@ describe("Hello Mama app", function() {
                         )
                         .check.interaction({
                             state: 'state_registered_msisdn',
-                            reply: "Please enter the number which is registered to receive messages. For example, 0803304899"
+                            reply: "Please enter the number which is registered to receive messages."
                         })
                         .check(function(api) {
                             var expected_used = [2];
@@ -167,7 +167,7 @@ describe("Hello Mama app", function() {
                         )
                         .check.interaction({
                             state: 'state_msisdn_not_recognised',
-                            reply: "We do not recognise this number. Please dial from the registered number or sign up with your local Community Health Extension worker."
+                            reply: "We do not recognise this number. Please dial from the registered number or sign up with the Local Community Health Extension Worker."
                         })
                         .check(function(api) {
                             var expected_used = [0, 1, 3];
@@ -316,7 +316,7 @@ describe("Hello Mama app", function() {
                         )
                         .check.interaction({
                             state: 'state_new_registration_baby',
-                            reply: "Thank you. You will now receive messages about caring for baby"
+                            reply: "Thank you. You will now receive messages about caring for the baby"
                         })
                         .check(function(api) {
                             var expected_used = [2,9,16,17,74];
@@ -339,7 +339,7 @@ describe("Hello Mama app", function() {
                         )
                         .check.interaction({
                             state: 'state_new_registration_baby',
-                            reply: "Thank you. You will now receive messages about caring for baby"
+                            reply: "Thank you. You will now receive messages about caring for the baby"
                         })
                         .check(function(api) {
                             var expected_used = [4,5,19,20,75];
@@ -362,7 +362,7 @@ describe("Hello Mama app", function() {
                         )
                         .check.interaction({
                             state: 'state_new_registration_baby',
-                            reply: "Thank you. You will now receive messages about caring for baby"
+                            reply: "Thank you. You will now receive messages about caring for the baby"
                         })
                         .check(function(api) {
                             var expected_used = [7,12,13,22,23,76];
@@ -385,7 +385,7 @@ describe("Hello Mama app", function() {
                         )
                         .check.interaction({
                             state: 'state_new_registration_baby',
-                            reply: "Thank you. You will now receive messages about caring for baby"
+                            reply: "Thank you. You will now receive messages about caring for the baby"
                         })
                         .check(function(api) {
                             var expected_used = [6,7,13,22,23,76];
@@ -413,7 +413,7 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_change_menu_sms',
                                 reply: [
-                                    "Please select what you would like to do:",
+                                    "Please select an option:",
                                     "1. Change from text to voice messages",
                                     "2. Back to main menu"
                                 ].join('\n')
@@ -441,7 +441,7 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_voice_days',
                                 reply: [
-                                    "We will call twice a week. On what days would the person like to receive messages?",
+                                    "We will call twice a week. On what days would you like to receive messages?",
                                     "1. Monday and Wednesday",
                                     "2. Tuesday and Thursday"
                                 ].join('\n')
@@ -461,7 +461,7 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_voice_times',
                                 reply: [
-                                    "Thank you. At what time would they like to receive these calls?",
+                                    "At what time would you like to receive these calls?",
                                     "1. Between 9-11am",
                                     "2. Between 2-5pm"
                                 ].join('\n')
@@ -508,7 +508,7 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_change_menu_voice',
                                 reply: [
-                                    "Please select what you would like to do:",
+                                    "Please select an option:",
                                     "1. Change the day and time I receive messages",
                                     "2. Change from voice to text messages",
                                     "3. Back to main menu"
@@ -537,7 +537,7 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_voice_days',
                                 reply: [
-                                    "We will call twice a week. On what days would the person like to receive messages?",
+                                    "We will call twice a week. On what days would you like to receive messages?",
                                     "1. Monday and Wednesday",
                                     "2. Tuesday and Thursday"
                                 ].join('\n')
@@ -557,7 +557,7 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_voice_times',
                                 reply: [
-                                    "Thank you. At what time would they like to receive these calls?",
+                                    "At what time would you like to receive these calls?",
                                     "1. Between 9-11am",
                                     "2. Between 2-5pm"
                                 ].join('\n')
@@ -604,7 +604,7 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_change_menu_voice',
                                 reply: [
-                                    "Please select what you would like to do:",
+                                    "Please select an option:",
                                     "1. Change the day and time I receive messages",
                                     "2. Change from voice to text messages",
                                     "3. Back to main menu"
@@ -632,7 +632,7 @@ describe("Hello Mama app", function() {
                             )
                             .check.interaction({
                                 state: 'state_end_sms_confirm',
-                                reply: "Thank you. You will now receive text messages."
+                                reply: "Thank you. You will now receive text messages"
                             })
                             .check(function(api) {
                                 var expected_used = [7,12,13,22,23,24,29];
@@ -659,7 +659,7 @@ describe("Hello Mama app", function() {
                         )
                         .check.interaction({
                             state: 'state_new_msisdn',
-                            reply: "Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899"
+                            reply: "Please enter the new mobile number you would like to receive messages on."
                         })
                         .check(function(api) {
                             var expected_used = [2,9];
@@ -684,7 +684,7 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_number_in_use',
                             reply: [
-                                "Sorry, this number is already registered. They must opt-out before they can register again.",
+                                "Sorry this number is already registered. You must opt-out before registering again.",
                                 "1. Try a different number",
                                 "2. Exit"
                             ].join('\n')
@@ -712,7 +712,7 @@ describe("Hello Mama app", function() {
                         )
                         .check.interaction({
                             state: 'state_new_msisdn',
-                            reply: "Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899"
+                            reply: "Please enter the new mobile number you would like to receive messages on."
                         })
                         .check(function(api) {
                             var expected_used = [2,4,9];
@@ -860,7 +860,7 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_msg_language',
                             reply: [
-                                "What language would this person like to receive these messages in?",
+                                "What language would you like to receive these messages in?",
                                 "1. English",
                                 "2. Igbo",
                                 "3. Pidgin"
@@ -880,7 +880,7 @@ describe("Hello Mama app", function() {
                         )
                         .check.interaction({
                             state: 'state_msg_language_confirm',
-                            reply: "Thank you. You language preference has been updated and you will start to receive messages in this language."
+                            reply: "Thank you. Your language has been updated and you will start to receive messages in this language."
                         })
                         .check.user.properties({lang: 'pcm_NG'})
                         .check(function(api) {
@@ -905,7 +905,7 @@ describe("Hello Mama app", function() {
                         )
                         .check.interaction({
                             state: 'state_msg_language_confirm',
-                            reply: "Thank you. You language preference has been updated and you will start to receive messages in this language."
+                            reply: "Thank you. Your language has been updated and you will start to receive messages in this language."
                         })
                         .check(function(api) {
                             var expected_used = [4,5,30,64,65,66];
@@ -929,7 +929,7 @@ describe("Hello Mama app", function() {
                         )
                         .check.interaction({
                             state: 'state_msg_language_confirm',
-                            reply: "Thank you. You language preference has been updated and you will start to receive messages in this language."
+                            reply: "Thank you. Your language has been updated and you will start to receive messages in this language."
                         })
                         .check(function(api) {
                             var expected_used = [7,12,13,67,68,69];
@@ -953,7 +953,7 @@ describe("Hello Mama app", function() {
                         )
                         .check.interaction({
                             state: 'state_msg_language_confirm',
-                            reply: "Thank you. You language preference has been updated and you will start to receive messages in this language."
+                            reply: "Thank you. Your language has been updated and you will start to receive messages in this language."
                         })
                         .check(function(api) {
                             var expected_used = [6,7,13,67,68,69];
@@ -982,7 +982,7 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_optout_reason',
                                 reply: [
-                                    "Please tell us why you no longer want to receive messages so we can help you further.",
+                                    "Please tell us why you no longer want to receive messages so we can help you further",
                                     "1. Mother miscarried",
                                     "2. Baby stillborn",
                                     "3. Baby passed away",
@@ -1014,7 +1014,7 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_loss_subscription',
                                 reply: [
-                                    "We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?",
+                                    "We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help during this difficult time?",
                                     "1. Yes",
                                     "2. No"
                                 ].join('\n')
@@ -1069,7 +1069,7 @@ describe("Hello Mama app", function() {
                             )
                             .check.interaction({
                                 state: 'state_end_loss',
-                                reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
+                                reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
                                 var expected_used = [2,9,36];
@@ -1094,7 +1094,7 @@ describe("Hello Mama app", function() {
                             )
                             .check.interaction({
                                 state: 'state_end_loss',
-                                reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
+                                reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
                                 var expected_used = [2,9,41];
@@ -1119,7 +1119,7 @@ describe("Hello Mama app", function() {
                             )
                             .check.interaction({
                                 state: 'state_end_loss',
-                                reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
+                                reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
                                 var expected_used = [2,9,46];
@@ -1197,7 +1197,7 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_optout_reason',
                                 reply: [
-                                    "Please tell us why you no longer want to receive messages so we can help you further.",
+                                    "Please tell us why you no longer want to receive messages so we can help you further",
                                     "1. Mother miscarried",
                                     "2. Baby stillborn",
                                     "3. Baby passed away",
@@ -1229,7 +1229,7 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_loss_subscription',
                                 reply: [
-                                    "We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?",
+                                    "We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help during this difficult time?",
                                     "1. Yes",
                                     "2. No"
                                 ].join('\n')
@@ -1284,7 +1284,7 @@ describe("Hello Mama app", function() {
                             )
                             .check.interaction({
                                 state: 'state_end_loss',
-                                reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
+                                reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
                                 var expected_used = [4,5,38];
@@ -1309,7 +1309,7 @@ describe("Hello Mama app", function() {
                             )
                             .check.interaction({
                                 state: 'state_end_loss',
-                                reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
+                                reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
                                 var expected_used = [4,5,43];
@@ -1334,7 +1334,7 @@ describe("Hello Mama app", function() {
                             )
                             .check.interaction({
                                 state: 'state_end_loss',
-                                reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
+                                reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
                                 var expected_used = [4,5,48];
@@ -1360,7 +1360,7 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_optout_receiver',
                                 reply: [
-                                    "Who would you like to stop receiving messages?",
+                                    "Which messages would you like to stop receiving?",
                                     "1. Mother messages",
                                     "2. Household messages",
                                     "3. All messages"
@@ -1468,7 +1468,7 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_optout_receiver',
                                 reply: [
-                                    "Who would you like to stop receiving messages?",
+                                    "Which messages would you like to stop receiving?",
                                     "1. Mother messages",
                                     "2. Household messages",
                                     "3. All messages"
@@ -1578,7 +1578,7 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_optout_reason',
                                 reply: [
-                                    "Please tell us why you no longer want to receive messages so we can help you further.",
+                                    "Please tell us why you no longer want to receive messages so we can help you further",
                                     "1. Mother miscarried",
                                     "2. Baby stillborn",
                                     "3. Baby passed away",
@@ -1610,7 +1610,7 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_loss_subscription',
                                 reply: [
-                                    "We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?",
+                                    "We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help during this difficult time?",
                                     "1. Yes",
                                     "2. No"
                                 ].join('\n')
@@ -1665,7 +1665,7 @@ describe("Hello Mama app", function() {
                             )
                             .check.interaction({
                                 state: 'state_end_loss',
-                                reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
+                                reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
                                 var expected_used = [7,12,13,35,39];
@@ -1690,7 +1690,7 @@ describe("Hello Mama app", function() {
                             )
                             .check.interaction({
                                 state: 'state_end_loss',
-                                reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
+                                reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
                                 var expected_used = [7,12,13,40,44];
@@ -1715,7 +1715,7 @@ describe("Hello Mama app", function() {
                             )
                             .check.interaction({
                                 state: 'state_end_loss',
-                                reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
+                                reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
                                 var expected_used = [7,12,13,45,49];
@@ -1741,7 +1741,7 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_optout_receiver',
                                 reply: [
-                                    "Who would you like to stop receiving messages?",
+                                    "Which messages would you like to stop receiving?",
                                     "1. Mother messages",
                                     "2. Household messages",
                                     "3. All messages"
@@ -1849,7 +1849,7 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_optout_receiver',
                                 reply: [
-                                    "Who would you like to stop receiving messages?",
+                                    "Which messages would you like to stop receiving?",
                                     "1. Mother messages",
                                     "2. Household messages",
                                     "3. All messages"
@@ -1959,7 +1959,7 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_optout_reason',
                                 reply: [
-                                    "Please tell us why you no longer want to receive messages so we can help you further.",
+                                    "Please tell us why you no longer want to receive messages so we can help you further",
                                     "1. Mother miscarried",
                                     "2. Baby stillborn",
                                     "3. Baby passed away",
@@ -1991,7 +1991,7 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_loss_subscription',
                                 reply: [
-                                    "We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?",
+                                    "We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help during this difficult time?",
                                     "1. Yes",
                                     "2. No"
                                 ].join('\n')
@@ -2046,7 +2046,7 @@ describe("Hello Mama app", function() {
                             )
                             .check.interaction({
                                 state: 'state_end_loss',
-                                reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
+                                reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
                                 var expected_used = [6,7,13,35,39];
@@ -2071,7 +2071,7 @@ describe("Hello Mama app", function() {
                             )
                             .check.interaction({
                                 state: 'state_end_loss',
-                                reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
+                                reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
                                 var expected_used = [6,7,13,40,44];
@@ -2096,7 +2096,7 @@ describe("Hello Mama app", function() {
                             )
                             .check.interaction({
                                 state: 'state_end_loss',
-                                reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
+                                reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
                                 var expected_used = [6,7,13,45,49];
@@ -2207,6 +2207,241 @@ describe("Hello Mama app", function() {
                 });
             });
 
+            describe.only("Validation testing", function() {
+                it("validate state_msisdn_permission", function() {
+                    return tester
+                        .setup.user.addr('05059992222')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '4'  // state_msisdn_permission - invalid option
+                        )
+                        .check.interaction({
+                            state: 'state_msisdn_permission',
+                            reply: [
+                                "Sorry, invalid option. Welcome to Hello Mama. Do you have permission to manage the number 05059992222?",
+                                "1. Yes",
+                                "2. No",
+                                "3. Change the number I'd like to manage"
+                            ].join('\n')
+                        })
+                        .run();
+                });
+                it("validate state_language", function() {
+                    return tester
+                        .setup.user.addr('05059991111')
+                        .setup.user.state('state_language')
+                        .input('5')  // state_language - invalid option
+                        .check.interaction({
+                            state: 'state_language',
+                            reply: [
+                                "Sorry, invalid option. Welcome to Hello Mama. Please choose your language",
+                                "1. English",
+                                "2. Igbo",
+                                "3. Pidgin"
+                            ].join('\n')
+                        })
+                        .run();
+                });
+                it("validate state_registered_msisdn", function() {
+                    return tester
+                        .setup.user.addr('05059992222')
+                        .setup.user.state('state_registered_msisdn')
+                        .input('abc$g')  // state_registered_msisdn
+                        .check.interaction({
+                            state: 'state_registered_msisdn',
+                            reply: "Sorry, invalid number. Please enter the number which is registered to receive messages."
+                        })
+                        .run();
+                });
+                it("validate state_main_menu", function() {
+                    return tester
+                        .setup.user.addr('05059991111')
+                        .setup.user.state('state_main_menu')
+                        .input('8') // state_main_menu - invalid option
+                        .check.interaction({
+                            state: 'state_main_menu',
+                            reply: [
+                                "Sorry, invalid option. Select:",
+                                "1. Start Baby messages",
+                                "2. Change message preferences",
+                                "3. Change my number",
+                                "4. Change language",
+                                "5. Stop receiving messages"
+                            ].join('\n')
+                        })
+                        .run();
+                });
+                it("validate state_main_menu_household", function() {
+                    return tester
+                        .setup.user.addr('05059997777')
+                        .setup.user.state('state_main_menu_household')
+                        .input('6') // state_main_menu_household - invalid option
+                        .check.interaction({
+                            state: 'state_main_menu_household',
+                            reply: [
+                                "Sorry, invalid option. Select:",
+                                "1. Start Baby messages",
+                                "2. Change my number",
+                                "3. Change language",
+                                "4. Stop receiving messages"
+                            ].join('\n')
+                        })
+                        .run();
+                });
+                it("validate state_change_menu_sms", function() {
+                    return tester
+                        .setup.user.addr('05059992222')
+                        .setup.user.state('state_change_menu_sms')
+                        .input('3') // state_change_menu_sms - invalid option
+                        .check.interaction({
+                            state: 'state_change_menu_sms',
+                            reply: [
+                                "Sorry, invalid option. Please select an option:",
+                                "1. Change from text to voice messages",
+                                "2. Back to main menu"
+                            ].join('\n')
+                        })
+                        .run();
+                });
+                it("validate state_voice_days", function() {
+                    return tester
+                        .setup.user.addr('05059992222')
+                        .setup.user.state('state_voice_days')
+                        .input('4') // state_voice_days - invalid option
+                        .check.interaction({
+                            state: 'state_voice_days',
+                            reply: [
+                                "Sorry, invalid option. We will call twice a week. On what days would you like to receive messages?",
+                                "1. Monday and Wednesday",
+                                "2. Tuesday and Thursday"
+                            ].join('\n')
+                        })
+                        .run();
+                });
+                it("validate state_voice_times", function() {
+                    return tester
+                        .setup.user.addr('05059992222')
+                        .setup.user.state('state_voice_times')
+                        .input('3') // state_voice_times - invalid option
+                        .check.interaction({
+                            state: 'state_voice_times',
+                            reply: [
+                                "Sorry, invalid option. At what time would you like to receive these calls?",
+                                "1. Between 9-11am",
+                                "2. Between 2-5pm"
+                            ].join('\n')
+                        })
+                        .run();
+                });
+                it("validate state_change_menu_voice", function() {
+                    return tester
+                        .setup.user.addr('05059993333')
+                        .setup.user.state('state_change_menu_voice')
+                        .input('4') // state_change_menu_voice - invalid option
+                        .check.interaction({
+                            state: 'state_change_menu_voice',
+                            reply: [
+                                "Sorry, invalid option. Please select an option:",
+                                "1. Change the day and time I receive messages",
+                                "2. Change from voice to text messages",
+                                "3. Back to main menu"
+                            ].join('\n')
+                        })
+                        .run();
+                });
+                it("validate state_new_msisdn", function() {
+                    return tester
+                        .setup.user.addr('05059992222')
+                        .setup.user.state('state_new_msisdn')
+                        .input('abc') // state_new_msisdn - invalid option
+                        .check.interaction({
+                            state: 'state_new_msisdn',
+                            reply: "Sorry, invalid number. Please enter the new mobile number you would like to receive messages on."
+                        })
+                        .run();
+                });
+                it("validate state_number_in_use", function() {
+                    return tester
+                        .setup.user.addr('05059992222')
+                        .setup.user.state('state_number_in_use')
+                        .input('3') // state_number_in_use - invalid option
+                        .check.interaction({
+                            state: 'state_number_in_use',
+                            reply: [
+                                "Sorry, invalid option. Sorry this number is already registered. You must opt-out before registering again.",
+                                "1. Try a different number",
+                                "2. Exit"
+                            ].join('\n')
+                        })
+                        .run();
+                });
+                it("validate state_msg_language", function() {
+                    return tester
+                        .setup.user.addr('05059992222')
+                        .setup.user.state('state_msg_language')
+                        .input('4') // state_msg_language - invalid option
+                        .check.interaction({
+                            state: 'state_msg_language',
+                            reply: [
+                                "Sorry, invalid option. What language would you like to receive these messages in?",
+                                "1. English",
+                                "2. Igbo",
+                                "3. Pidgin"
+                            ].join('\n')
+                        })
+                        .run();
+                });
+                it.skip("validate state_optout_reason", function() {
+                    return tester
+                        .setup.user.addr('05059992222')
+                        .setup.user.state('state_optout_reason')
+                        .input('6') // state_optout_reason - invalid option
+                        .check.interaction({
+                            state: 'state_optout_reason',
+                            reply: [
+                                "Sorry, invalid option. Please tell us why you no longer want to receive messages so we can help you further",
+                                "1. Mother miscarried",
+                                "2. Baby stillborn",
+                                "3. Baby passed away",
+                                "4. Messages not useful",
+                                "5. Other"
+                            ].join('\n')
+                        })
+                        .run();
+                });
+                it("validate state_loss_subscription", function() {
+                    return tester
+                        .setup.user.addr('05059992222')
+                        .setup.user.state('state_loss_subscription')
+                        .input('3') // state_loss_subscription - invalid option
+                        .check.interaction({
+                            state: 'state_loss_subscription',
+                            reply: [
+                                "Sorry, invalid option. We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help during this difficult time?",
+                                "1. Yes",
+                                "2. No"
+                            ].join('\n')
+                        })
+                        .run();
+                });
+                it("validate state_optout_receiver", function() {
+                    return tester
+                        .setup.user.addr('05059993333')
+                        .setup.user.state('state_optout_receiver')
+                        .input('4') // state_optout_receiver - invalid option
+                        .check.interaction({
+                            state: 'state_optout_receiver',
+                            reply: [
+                                "Sorry, invalid option. Which messages would you like to stop receiving?",
+                                "1. Mother messages",
+                                "2. Household messages",
+                                "3. All messages"
+                            ].join('\n')
+                        })
+                        .run();
+                });
+            });
+
             describe("Complete flows", function() {
                 it.skip(" - via baby messages to state_already_registered_baby", function() {
                     return tester
@@ -2256,45 +2491,5 @@ describe("Hello Mama app", function() {
                 });
             });
         });
-
-        // TEST VALIDATION
-
-        /*describe("Validation testing", function() {
-            it("validate state_auth_code", function() {
-                return tester
-                    .setup.user.addr('082111')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , 'aaaaa'  // state_auth_code - invalid personnel code
-                    )
-                    .check.interaction({
-                        state: 'state_auth_code',
-                        reply: "That code is not recognised. Please enter your 5 digit personnel code."
-                    })
-                    .run();
-            });
-            it("validate state_msg_receiver", function() {
-                return tester
-                    .setup.user.addr('082111')
-                    .inputs(
-                        {session_event: 'new'}  // dial in
-                        , '12345'  // state_auth_code - personnel code
-                        , '5'  // state_msg_receiver - invalid choice
-                    )
-                    .check.interaction({
-                        state: 'state_msg_receiver',
-                        reply: [
-                            "Sorry not a valid input. Please select who will receive the messages on their phone:",
-                            "1. Head of the Household",
-                            "2. Mother to be",
-                            "3. Family member",
-                            "4. Trusted friend"
-                        ].join('\n')
-                    })
-                    .run();
-            });
-
-        });*/
     });
-
 });
