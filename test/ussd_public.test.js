@@ -2207,7 +2207,7 @@ describe("Hello Mama app", function() {
                 });
             });
 
-            describe.only("Validation testing", function() {
+            describe("Validation testing", function() {
                 it("validate state_msisdn_permission", function() {
                     return tester
                         .setup.user.addr('05059992222')
