@@ -1341,7 +1341,7 @@ go.app = function() {
                 case "state_msg_language":
                     return $("{{error}}Which language would they like to receive these messages in?");
                 case "state_msg_type":
-                    return $("How would they like to get messages?");
+                    return $("{{error}}How would they like to get messages?");
                 case "state_voice_days":
                     return $("{{error}}On what days would they like to receive these calls?");
                 case "state_voice_times":
