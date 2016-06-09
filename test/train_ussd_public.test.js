@@ -44,7 +44,7 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_language',
                             reply: [
-                                "Welcome to Hello Mama. Please choose your language",
+                                "Welcome to Hello Mama training line. Please choose your language.",
                                 "1. English",
                                 "2. Igbo",
                                 "3. Pidgin"
@@ -102,7 +102,7 @@ describe("Hello Mama app", function() {
                         )
                         .check.interaction({
                             state: 'state_new_registration_baby',
-                            reply: "Thank you. You will now receive messages about caring for baby"
+                            reply: "Thank you. You will now receive messages about caring for the baby"
                         })
                         .run();
                 });
@@ -121,7 +121,7 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_change_menu_sms',
                             reply: [
-                                "Please select what you would like to do:",
+                                "Please select an option:",
                                 "1. Change from text to voice messages",
                                 "2. Back to main menu"
                             ].join('\n')
@@ -141,7 +141,7 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_voice_days',
                             reply: [
-                                "We will call twice a week. On what days would the person like to receive messages?",
+                                "We will call twice a week. On what days would you like to receive messages?",
                                 "1. Monday and Wednesday",
                                 "2. Tuesday and Thursday"
                             ].join('\n')
@@ -162,7 +162,7 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_voice_times',
                             reply: [
-                                "Thank you. At what time would they like to receive these calls?",
+                                "At what time would you like to receive these calls?",
                                 "1. Between 9-11am",
                                 "2. Between 2-5pm"
                             ].join('\n')
@@ -183,7 +183,7 @@ describe("Hello Mama app", function() {
                         )
                         .check.interaction({
                             state: 'state_end_voice_confirm',
-                            reply: "Thank you. You will now start receiving voice calls between 9am - 11am on Tuesday and Thursday."
+                            reply: "Thank you. You will now start receiving voice calls on Tuesday and Thursday between 9 and 11am"
                         })
                         .check.reply.ends_session()
                         .run();
@@ -225,7 +225,7 @@ describe("Hello Mama app", function() {
                         )
                         .check.interaction({
                             state: 'state_new_msisdn',
-                            reply: "Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899"
+                            reply: "Please enter the new mobile number you would like to receive messages on."
                         })
                         .run();
                 });
@@ -260,7 +260,7 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_msg_language',
                             reply: [
-                                "What language would this person like to receive these messages in?",
+                                "What language would you like to receive these messages in?",
                                 "1. English",
                                 "2. Igbo",
                                 "3. Pidgin"
@@ -281,7 +281,7 @@ describe("Hello Mama app", function() {
                         )
                         .check.interaction({
                             state: 'state_msg_language_confirm',
-                            reply: "Thank you. You language preference has been updated and you will start to receive messages in this language."
+                            reply: "Thank you. You language has been updated and you will start to receive messages in this language."
                         })
                         .check.user.properties({lang: 'ibo_NG'})
                         .run();
@@ -302,7 +302,7 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_optout_reason',
                             reply: [
-                                "Please tell us why you no longer want to receive messages so we can help you further.",
+                                "Please tell us why you no longer want to receive messages so we can help you further",
                                 "1. Mother miscarried",
                                 "2. Baby stillborn",
                                 "3. Baby passed away",
@@ -326,7 +326,7 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_loss_subscription',
                             reply: [
-                                "We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?",
+                                "We are sorry for your loss. Would the mother like to receive a small set of free messages from Hello Mama that could help during this difficult time?",
                                 "1. Yes",
                                 "2. No"
                             ].join('\n')
@@ -365,7 +365,7 @@ describe("Hello Mama app", function() {
                         )
                         .check.interaction({
                             state: 'state_end_loss',
-                            reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
+                            reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                         })
                         .run();
                 });
@@ -382,7 +382,7 @@ describe("Hello Mama app", function() {
                         )
                         .check.interaction({
                             state: 'state_end_loss',
-                            reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
+                            reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                         })
                         .run();
                 });
@@ -399,7 +399,7 @@ describe("Hello Mama app", function() {
                         )
                         .check.interaction({
                             state: 'state_end_loss',
-                            reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"
+                            reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                         })
                         .run();
                 });
@@ -417,7 +417,7 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_optout_receiver',
                             reply: [
-                                "Who would you like to stop receiving messages?",
+                                "Which messages would you like to stop receiving?",
                                 "1. Mother messages",
                                 "2. Household messages",
                                 "3. All messages"
@@ -458,7 +458,7 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_optout_receiver',
                             reply: [
-                                "Who would you like to stop receiving messages?",
+                                "Which messages would you like to stop receiving?",
                                 "1. Mother messages",
                                 "2. Household messages",
                                 "3. All messages"

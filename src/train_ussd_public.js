@@ -21,11 +21,11 @@ go.app = function() {
             "state_timed_out":
                 $("You have an incomplete registration. Would you like to continue with this registration?"),
             "state_msisdn_permission":
-                $("Welcome to Hello Mama. Do you have permission to manage the number {{msisdn}}?"),
+                $("Do you have permission to manage the number {{msisdn}}?"),
             "state_msisdn_no_permission":  // unnamed state on flow diagram
-                $("We're sorry, you do not have permission to update the preferences for this subscriber."),
+                $("We're sorry, you do not have permission to update the preferences for this number."),
             "state_language":
-                $("Welcome to Hello Mama. Please choose your language"),
+                $("Welcome to Hello Mama training line. Please choose your language."),
             "state_registered_msisdn":
                 $("Please enter the number which is registered to receive messages. For example, 0803304899"),
             "state_main_menu":
@@ -37,81 +37,98 @@ go.app = function() {
             "state_already_registered_baby":
                 $("You are already registered for baby messages."),
             "state_new_registration_baby":
-                $("Thank you. You will now receive messages about caring for baby"),
+                $("Thank you. You will now receive messages about caring for the baby"),
             "state_change_menu_sms":
-                $("Please select what you would like to do:"),
+                $("Please select an option:"),
             "state_voice_days":
-                $("We will call twice a week. On what days would the person like to receive messages?"),
+                $("We will call twice a week. On what days would you like to receive messages?"),
             "state_voice_times":
-                $("Thank you. At what time would they like to receive these calls?"),
+                $("At what time would you like to receive these calls?"),
             "state_end_voice_confirm":
                 null,  // not currently in use
-                // ("Thank you. You will now start receiving voice calls between {{times}} on {{days}}."),
+                // ("Thank you. You will now start receiving voice calls on {{days}} between {{times}}"),
             "state_change_menu_voice":
-                $("Please select what you would like to do:"),
+                $("Please select an option:"),
             "state_end_sms_confirm":
                 $("Thank you. You will now receive text messages."),
             "state_new_msisdn":
-                $("Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899"),
+                $("Please enter the new mobile number you would like to receive messages on."),
             "state_number_in_use":
-                $("Sorry, this number is already registered. They must opt-out before they can register again."),
+                $("Sorry, this number is already registered. They must opt-out before registering again."),
             "state_msg_receiver":
                 $("Who will receive these messages?"),
             "state_end_number_change":
                 $("Thank you. The number which receives messages has been updated."),
             "state_msg_language":
-                $("What language would this person like to receive these messages in?"),
+                $("What language would you like to receive these messages in?"),
             "state_msg_language_confirm":
-                $("Thank you. You language preference has been updated and you will start to receive messages in this language."),
+                $("Thank you. You language has been updated and you will start to receive messages in this language."),
             "state_optout_reason":
-                $("Please tell us why you no longer want to receive messages so we can help you further."),
+                $("Please tell us why you no longer want to receive messages so we can help you further"),
             "state_loss_subscription":
-                $("We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?"),
+                $("We are sorry for your loss. Would the mother like to receive a small set of free messages from Hello Mama that could help during this difficult time?"),
             "state_end_loss_subscription_confirm":
                 $("Thank you. You will now receive messages to support you during this difficult time."),
             "state_optout_receiver":
-                $("Who would you like to stop receiving messages?"),
+                $("Which messages would you like to stop receiving?"),
             "state_end_optout":
                 $("Thank you. You will no longer receive messages"),
             "state_end_loss":
-                $("We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW"),
+                $("We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."),
             "state_end_exit":
                 $("Thank you for using the Hello Mama service")
         };
 
+        var state_error_types = {
+            "invalid_selection": "Sorry, invalid option.",
+            "invalid_number": "Sorry, invalid number."
+        };
+
         var errors = {
             "state_registered_msisdn":
-                $("Mobile number not registered."),
+                $("{{error}} Please enter the number which is registered to receive messages.")
+                    .context({error: state_error_types.invalid_number}),
             "state_msisdn_permission":
-                $("Sorry not a valid input. Welcome to Hello Mama. Do you have permission to manage the number {{msisdn}}?"),
+                $("{{error}} Do you have permission to manage the number {{msisdn}}?"),
             "state_language":
-                $("Sorry not a valid input. Welcome to Hello Mama. Please choose your language"),
+                $("{{error}} Welcome to Hello Mama training line. Please choose your language")
+                    .context({error: state_error_types.invalid_selection}),
             "state_main_menu":
-                $("Sorry not a valid input. Select:"),
+                $("{{error}} Select:")
+                    .context({error: state_error_types.invalid_selection}),
             "state_main_menu_household":
-                $("Sorry not a valid input. Select:"),
-            "state_already_registered_baby":
-                $("Sorry not a valid input. You are already registered for baby messages."),
+                $("{{error}} Select:")
+                    .context({error: state_error_types.invalid_selection}),
             "state_change_menu_sms":
-                $("Sorry not a valid input. Please select what you would like to do:"),
+                $("{{error}} Please select an option:")
+                    .context({error: state_error_types.invalid_selection}),
             "state_voice_days":
-                $("Sorry not a valid input. We will call twice a week. On what days would the person like to receive messages?"),
+                $("{{error}} We will call twice a week. On what days would you like to receive messages?")
+                    .context({error: state_error_types.invalid_selection}),
             "state_voice_times":
-                $("Sorry not a valid input. Thank you. At what time would they like to receive these calls?"),
+                $("{{error}} At what time would you like to receive these calls?")
+                    .context({error: state_error_types.invalid_selection}),
             "state_change_menu_voice":
-                $("Sorry not a valid input. Please select what you would like to do:"),
+                $("{{error}} Please select an option:")
+                    .context({error: state_error_types.invalid_selection}),
             "state_new_msisdn":
-                $("Sorry not a valid input. Please enter the new mobile number you would like to receive weekly messages on. For example, 0803304899"),
+                $("{{error}} Please enter the new mobile number you would like to receive messages on.")
+                    .context({error: state_error_types.invalid_number}),
             "state_number_in_use":
-                $("Sorry not a valid input. Sorry, this number is already registered. They must opt-out before they can register again."),
+                $("{{error}} Sorry this number is already registered. You must opt-out before registering again.")
+                    .context({error: state_error_types.invalid_selection}),
             "state_msg_language":
-                $("Sorry not a valid input. What language would this person like to receive these messages in?"),
+                $("{{error}} What language would you like to receive these messages in?")
+                    .context({error: state_error_types.invalid_selection}),
             "state_optout_reason":
-                $("Sorry not a valid input. Please tell us why you no longer want to receive messages so we can help you further."),
+                $("{{error}} Please tell us why you no longer want to receive messages so we can help you further")
+                    .context({error: state_error_types.invalid_selection}),
             "state_loss_subscription":
-                $("Sorry not a valid input. We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help you in this difficult time?"),
+                $("{{error}} We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help during this difficult time?")
+                    .context({error: state_error_types.invalid_selection}),
             "state_optout_receiver":
-                $("Sorry not a valid input. Who would you like to stop receiving messages?"),
+                $("{{error}} Which messages would you like to stop receiving?")
+                    .context({error: state_error_types.invalid_selection}),
         };
 
 
@@ -264,12 +281,12 @@ go.app = function() {
 
             if (days === 'mon_wed') {
                 text = times === '9_11'
-                    ? $("Thank you. You will now start receiving voice calls between 9am - 11am on Monday and Wednesday.")
-                    : $("Thank you. You will now start receiving voice calls between 2pm - 5pm on Monday and Wednesday.");
+                    ? $("Thank you. You will now start receiving voice calls on Monday and Wednesday between 9 and 11am")
+                    : $("Thank you. You will now start receiving voice calls on Monday and Wednesday between 2 and 5pm");
             } else {  // days === tue_thu
                 text = times === '9_11'
-                    ? $("Thank you. You will now start receiving voice calls between 9am - 11am on Tuesday and Thursday.")
-                    : $("Thank you. You will now start receiving voice calls between 2pm - 5pm on Tuesday and Thursday.");
+                    ? $("Thank you. You will now start receiving voice calls on Tuesday and Thursday between 9 and 11am")
+                    : $("Thank you. You will now start receiving voice calls on Tuesday and Thursday between 2 and 5pm");
             }
             return new EndState(name, {
                 text: text,

@@ -492,12 +492,12 @@ go.app = function() {
 
             if (days === 'mon_wed') {
                 text = times === '9_11'
-                    ? $("Thank you. You will now start receiving voice calls between 9am - 11am on Monday and Wednesday.")
-                    : $("Thank you. You will now start receiving voice calls between 2pm - 5pm on Monday and Wednesday.");
-            } else {  // days === tue_thu
-                text = times === '9_11'
-                    ? $("Thank you. You will now start receiving voice calls between 9am - 11am on Tuesday and Thursday.")
-                    : $("Thank you. You will now start receiving voice calls between 2pm - 5pm on Tuesday and Thursday.");
+                    ? $("Thank you. You will now start receiving voice calls on Monday and Wednesday between 9 and 11am")
+                    : $("Thank you. You will now start receiving voice calls on Monday and Wednesday between 2 and 5pm");
+        } else {  // days === tue_thu
+            text = times === '9_11'
+                    ? $("Thank you. You will now start receiving voice calls on Tuesday and Thursday between 9 and 11am")
+                    : $("Thank you. You will now start receiving voice calls on Tuesday and Thursday between 2 and 5pm");
             }
             return new EndState(name, {
                 text: text,
