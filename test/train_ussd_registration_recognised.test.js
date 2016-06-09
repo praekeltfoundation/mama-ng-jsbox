@@ -287,7 +287,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_last_period_day',
-                        reply: "What day of the month did the woman start her last period? For example, 12."
+                        reply: "What date of the month did the woman start her last period?"
                     })
                     .run();
             });
@@ -363,7 +363,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_baby_birth_month_year',
                         reply: [
-                            "Select the month & year the baby was born:",
+                            "Select the month and year the baby was born:",
                             "1. April 2015",
                             "2. March 2015",
                             "3. February 2015",
@@ -392,7 +392,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_baby_birth_month_year',
                         reply: [
-                            "Select the month & year the baby was born:",
+                            "Select the month and year the baby was born:",
                             "1. July 2014",
                             "2. June 2014",
                             "3. May 2014",
@@ -414,7 +414,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_baby_birth_day',
-                        reply: "What day of the month was the baby born? For example, 12."
+                        reply: "On what date of the month was the baby born?"
                     })
                     .run();
             });
@@ -502,7 +502,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_voice_times',
                         reply: [
-                            "At what time would they like to receive these calls?",
+                            "At what time would they like to receive these calls on Tuesdays and Thursdays?",
                             "1. Between 9-11am",
                             "2. Between 2-5pm"
                         ].join('\n')
@@ -725,7 +725,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_last_period_day',
-                        reply: "Sorry, invalid date. What day of the month did the woman start her last period?"
+                        reply: "Sorry, invalid date. What date of the month did the woman start her last period?"
                     })
                     .run();
             });
@@ -743,7 +743,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_baby_birth_day',
-                        reply: "Sorry, invalid number. What day of the month was the baby born? For example, 12."
+                        reply: "Sorry, invalid date. On what date of the month was the baby born?"
                     })
                     .run();
             });

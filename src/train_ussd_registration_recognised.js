@@ -48,11 +48,11 @@ go.app = function() {
             "state_last_period_month":
                 $("Please select the month the woman started her last period:"),
             "state_last_period_day":
-                $("What day of the month did the woman start her last period? For example, 12."),
+                $("What date of the month did the woman start her last period?"),
             "state_baby_birth_month_year":
-                $("Select the month & year the baby was born:"),
+                $("Select the month and year the baby was born:"),
             "state_baby_birth_day":
-                $("What day of the month was the baby born? For example, 12."),
+                $("On what date of the month was the baby born?"),
             "state_gravida":
                 $("Please enter the total number of times the woman has been pregnant. This includes any pregnancies she may not have carried to term."),
             "state_msg_language":
@@ -62,7 +62,7 @@ go.app = function() {
             "state_voice_days":
                 $("On what days would they like to receive these calls?"),
             "state_voice_times":
-                $("At what time would they like to receive these calls?"),
+                $("At what time would they like to receive these calls on {{days}}?"),
             "state_end_voice":
                 $("Thank you. They will now start receiving calls on {{days}} between {{times}}."),
             "state_end_sms":
@@ -98,7 +98,7 @@ go.app = function() {
                 $("{{error}} Please select the month the woman started her last period:")
                     .context({error: state_error_types.invalid_date}),
             "state_last_period_day":
-                $("{{error}} What day of the month did the woman start her last period?")
+                $("{{error}} What date of the month did the woman start her last period?")
                     .context({error: state_error_types.invalid_date}),
             "state_gravida":
                 $("{{error}} Please enter the total number of times the woman has been pregnant. This includes any pregnancies she may not have carried to term.")
@@ -372,7 +372,10 @@ go.app = function() {
         // ChoiceState st-10
         self.add('state_voice_times', function(name) {
             return new ChoiceState(name, {
-                question: questions[name],
+                question: questions[name]
+                    .context({days: self.im.user.answers.state_voice_days
+                    .replace('mon_wed', 'Mondays and Wednesdays')
+                    .replace('tue_thu', 'Tuesdays and Thursdays')}),
                 choices: [
                     new Choice('9_11', $('Between 9-11am')),
                     new Choice('2_5', $('Between 2-5pm'))
