@@ -75,13 +75,7 @@ describe("Hello Mama app", function() {
                         })
                         .check.user.properties({lang: null})
                         .check(function(api) {
-                            var expected_used = [0, 1];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
+                            go.utils.check_fixtures_used(api, [0,1]);
                         })
                         .run();
                 });
@@ -98,13 +92,7 @@ describe("Hello Mama app", function() {
                         })
                         .check.user.properties({lang: 'ibo_NG'})
                         .check(function(api) {
-                            var expected_used = [0, 1];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
+                            go.utils.check_fixtures_used(api, [0,1]);
                         })
                         .run();
                 });
@@ -124,15 +112,6 @@ describe("Hello Mama app", function() {
                             ].join('\n')
                         })
                         .check.user.properties({lang: 'ibo_NG'})
-                        .check(function(api) {
-                            var expected_used = [2];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
-                        })
                         .run();
                 });
                 it("to state_registered_msisdn via state_msisdn_permission", function() {  //st-C
@@ -145,15 +124,6 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_registered_msisdn',
                             reply: "Please enter the number which is registered to receive messages."
-                        })
-                        .check(function(api) {
-                            var expected_used = [2];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
@@ -168,15 +138,6 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_msisdn_not_recognised',
                             reply: "We do not recognise this number. Please dial from the registered number or sign up with the Local Community Health Extension Worker."
-                        })
-                        .check(function(api) {
-                            var expected_used = [0, 1, 3];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
@@ -199,15 +160,6 @@ describe("Hello Mama app", function() {
                                 "5. Stop receiving messages"
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            var expected_used = [0, 1, 4, 5];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
-                        })
                         .run();
                 });
                 it("to state_main_menu (mother)", function() {
@@ -228,15 +180,6 @@ describe("Hello Mama app", function() {
                                 "5. Stop receiving messages"
                             ].join('\n')
                         })
-                        .check(function(api) {
-                            var expected_used = [2,9];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
-                        })
                         .run();
                 });
                 it("to state_main_menu_household", function() {
@@ -255,15 +198,6 @@ describe("Hello Mama app", function() {
                                 "3. Change language",
                                 "4. Stop receiving messages"
                             ].join('\n')
-                        })
-                        .check(function(api) {
-                            var expected_used = [6,7,13];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
                         })
                         .run();
                 });
@@ -296,13 +230,7 @@ describe("Hello Mama app", function() {
                             reply: "You are already registered for baby messages."
                         })
                         .check(function(api) {
-                            var expected_used = [70,71,72,73];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
+                            go.utils.check_fixtures_used(api, [70,71,72,73]);
                         })
                         .run();
                 });
@@ -319,13 +247,7 @@ describe("Hello Mama app", function() {
                             reply: "Thank you. You will now receive messages about caring for the baby"
                         })
                         .check(function(api) {
-                            var expected_used = [2,9,16,17,74];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
+                            go.utils.check_fixtures_used(api, [2,9,16,17,74]);
                         })
                         .run();
                 });
@@ -342,13 +264,7 @@ describe("Hello Mama app", function() {
                             reply: "Thank you. You will now receive messages about caring for the baby"
                         })
                         .check(function(api) {
-                            var expected_used = [4,5,19,20,75];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
+                            go.utils.check_fixtures_used(api, [4,5,19,20,75]);
                         })
                         .run();
                 });
@@ -365,13 +281,7 @@ describe("Hello Mama app", function() {
                             reply: "Thank you. You will now receive messages about caring for the baby"
                         })
                         .check(function(api) {
-                            var expected_used = [7,12,13,22,23,76];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
+                            go.utils.check_fixtures_used(api, [7,12,13,22,23,76]);
                         })
                         .run();
                 });
@@ -388,13 +298,7 @@ describe("Hello Mama app", function() {
                             reply: "Thank you. You will now receive messages about caring for the baby"
                         })
                         .check(function(api) {
-                            var expected_used = [6,7,13,22,23,76];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
+                            go.utils.check_fixtures_used(api, [6,7,13,22,23,76]);
                         })
                         .run();
                 });
@@ -419,13 +323,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [2,9,16,17];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [2,9,16,17]);
                             })
                             .run();
                     });
@@ -484,13 +382,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will now start receiving voice calls on Tuesday and Thursday between 9 and 11am"
                             })
                             .check(function(api) {
-                                var expected_used = [2, 9, 16, 17, 18, 26];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [2,9,16,17,18,26]);
                             })
                             .check.reply.ends_session()
                             .run();
@@ -580,13 +472,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will now start receiving voice calls on Monday and Wednesday between 2 and 5pm"
                             })
                             .check(function(api) {
-                                var expected_used = [4, 5, 19, 20, 21, 28, 30];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [4,5,19,20,21,28,30]);
                             })
                             .check.reply.ends_session()
                             .run();
@@ -610,15 +496,6 @@ describe("Hello Mama app", function() {
                                     "3. Back to main menu"
                                 ].join('\n')
                             })
-                            .check(function(api) {
-                                var expected_used = [7,12,13,22,23];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
-                            })
                             .run();
                     });
                     it("case 3 > to state_end_sms_confirm", function() {
@@ -635,13 +512,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will now receive text messages"
                             })
                             .check(function(api) {
-                                var expected_used = [7,12,13,22,23,24,29];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [7,12,13,22,23,24,29]);
                             })
                             .run();
                     });
@@ -740,13 +611,7 @@ describe("Hello Mama app", function() {
                             reply: "Thank you for using the Hello Mama service"
                         })
                         .check(function(api) {
-                            var expected_used = [2,4,9];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
+                            go.utils.check_fixtures_used(api, [2,4,9]);
                         })
                         .run();
                 });
@@ -764,13 +629,7 @@ describe("Hello Mama app", function() {
                             reply: "Thank you. The number which receives messages has been updated."
                         })
                         .check(function(api) {
-                            var expected_used = [2, 8, 9, 10];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
+                            go.utils.check_fixtures_used(api, [2,8,9,10]);
                         })
                         .run();
                 });
@@ -788,13 +647,7 @@ describe("Hello Mama app", function() {
                             reply: "Thank you. The number which receives messages has been updated."
                         })
                         .check(function(api) {
-                            var expected_used = [4, 5, 8, 11];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
+                            go.utils.check_fixtures_used(api, [4,5,8,11]);
                         })
                         .run();
                 });
@@ -812,13 +665,7 @@ describe("Hello Mama app", function() {
                             reply: "Thank you. The number which receives messages has been updated."
                         })
                         .check(function(api) {
-                            var expected_used = [7,8,12,13,14];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
+                            go.utils.check_fixtures_used(api, [7,8,12,13,14]);
                         })
                         .run();
                 });
@@ -836,13 +683,7 @@ describe("Hello Mama app", function() {
                             reply: "Thank you. The number which receives messages has been updated."
                         })
                         .check(function(api) {
-                            var expected_used = [6,7,8,13,15];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
+                            go.utils.check_fixtures_used(api, [6,7,8,13,15]);
                         })
                         .run();
                 });
@@ -866,6 +707,9 @@ describe("Hello Mama app", function() {
                                 "3. Pidgin"
                             ].join('\n')
                         })
+                        .check(function(api) {
+                            go.utils.check_fixtures_used(api, [2,9]);
+                        })
                         .check.user.properties({lang: 'ibo_NG'})
                         .run();
                 });
@@ -884,13 +728,7 @@ describe("Hello Mama app", function() {
                         })
                         .check.user.properties({lang: 'pcm_NG'})
                         .check(function(api) {
-                            var expected_used = [2,9,62,63];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
+                            go.utils.check_fixtures_used(api, [2,9,62,63]);
                         })
                         .run();
                 });
@@ -908,13 +746,7 @@ describe("Hello Mama app", function() {
                             reply: "Thank you. Your language has been updated and you will start to receive messages in this language."
                         })
                         .check(function(api) {
-                            var expected_used = [4,5,30,64,65,66];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
+                            go.utils.check_fixtures_used(api, [4,5,30,64,65,66]);
                         })
                         .run();
                 });
@@ -932,13 +764,7 @@ describe("Hello Mama app", function() {
                             reply: "Thank you. Your language has been updated and you will start to receive messages in this language."
                         })
                         .check(function(api) {
-                            var expected_used = [7,12,13,67,68,69];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
+                            go.utils.check_fixtures_used(api, [7,12,13,67,68,69]);
                         })
                         .run();
                 });
@@ -956,13 +782,7 @@ describe("Hello Mama app", function() {
                             reply: "Thank you. Your language has been updated and you will start to receive messages in this language."
                         })
                         .check(function(api) {
-                            var expected_used = [6,7,13,67,68,69];
-                            var fixts = api.http.fixtures.fixtures;
-                            var fixts_used = [];
-                            fixts.forEach(function(f, i) {
-                                f.uses > 0 ? fixts_used.push(i) : null;
-                            });
-                            assert.deepEqual(fixts_used, expected_used);
+                            go.utils.check_fixtures_used(api, [6,7,13,67,68,69]);
                         })
                         .run();
                 });
@@ -991,13 +811,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [2,9];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [2,9]);
                             })
                             .run();
                     });
@@ -1020,13 +834,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [2,9];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [2,9]);
                             })
                             .run();
                     });
@@ -1046,13 +854,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will now receive messages to support you during this difficult time."
                             })
                             .check(function(api) {
-                                var expected_used = [2,9,31];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [2,9,31]);
                             })
                             .run();
                     });
@@ -1072,13 +874,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
-                                var expected_used = [2,9,36];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [2,9,36]);
                             })
                             .run();
                     });
@@ -1097,13 +893,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
-                                var expected_used = [2,9,41];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [2,9,41]);
                             })
                             .run();
                     });
@@ -1122,13 +912,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
-                                var expected_used = [2,9,46];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [2,9,46]);
                             })
                             .run();
                     });
@@ -1147,13 +931,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [2,9,51];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [2,9,51]);
                             })
                             .run();
                     });
@@ -1172,13 +950,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [2,9,56];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [2,9,56]);
                             })
                             .run();
                     });
@@ -1206,13 +978,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [4,5];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [4,5]);
                             })
                             .run();
                     });
@@ -1235,13 +1001,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [4,5];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [4,5]);
                             })
                             .run();
                     });
@@ -1261,13 +1021,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will now receive messages to support you during this difficult time."
                             })
                             .check(function(api) {
-                                var expected_used = [4,5,32,33];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [4,5,32,33]);
                             })
                             .run();
                     });
@@ -1287,13 +1041,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
-                                var expected_used = [4,5,38];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [4,5,38]);
                             })
                             .run();
                     });
@@ -1312,13 +1060,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
-                                var expected_used = [4,5,43];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [4,5,43]);
                             })
                             .run();
                     });
@@ -1337,13 +1079,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
-                                var expected_used = [4,5,48];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [4,5,48]);
                             })
                             .run();
                     });
@@ -1367,13 +1103,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [4,5];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [4,5]);
                             })
                             .run();
                     });
@@ -1393,13 +1123,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [4,5,52];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [4,5,52]);
                             })
                             .run();
                     });
@@ -1419,13 +1143,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [4,5,60];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [4,5,60]);
                             })
                             .run();
                     });
@@ -1445,13 +1163,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [4,5,52,53];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [4,5,52,53]);
                             })
                             .run();
                     });
@@ -1475,13 +1187,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [4,5];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [4,5]);
                             })
                             .run();
                     });
@@ -1501,13 +1207,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [4,5,57];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [4,5,57]);
                             })
                             .run();
                     });
@@ -1527,13 +1227,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [4,5,61];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [4,5,61]);
                             })
                             .run();
                     });
@@ -1553,13 +1247,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [4,5,57,58];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [4,5,57,58]);
                             })
                             .run();
                     });
@@ -1587,13 +1275,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [7,12,13];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [7,12,13]);
                             })
                             .run();
                     });
@@ -1616,13 +1298,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [7,12,13];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [7,12,13]);
                             })
                             .run();
                     });
@@ -1642,13 +1318,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will now receive messages to support you during this difficult time."
                             })
                             .check(function(api) {
-                                var expected_used = [7,12,13,34,35];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [7,12,13,34,35]);
                             })
                             .run();
                     });
@@ -1668,13 +1338,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
-                                var expected_used = [7,12,13,35,39];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [7,12,13,35,39]);
                             })
                             .run();
                     });
@@ -1693,13 +1357,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
-                                var expected_used = [7,12,13,40,44];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [7,12,13,40,44]);
                             })
                             .run();
                     });
@@ -1718,13 +1376,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
-                                var expected_used = [7,12,13,45,49];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [7,12,13,45,49]);
                             })
                             .run();
                     });
@@ -1748,13 +1400,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [7,12,13];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [7,12,13]);
                             })
                             .run();
                     });
@@ -1774,13 +1420,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [7,12,13,54];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [7,12,13,54]);
                             })
                             .run();
                     });
@@ -1800,13 +1440,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [7,12,13,50];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [7,12,13,50]);
                             })
                             .run();
                     });
@@ -1826,13 +1460,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [7,12,13,50,54];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [7,12,13,50,54]);
                             })
                             .run();
                     });
@@ -1856,13 +1484,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [7,12,13];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [7,12,13]);
                             })
                             .run();
                     });
@@ -1882,13 +1504,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [7,12,13,59];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [7,12,13,59]);
                             })
                             .run();
                     });
@@ -1908,13 +1524,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [7,12,13,55];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [7,12,13,55]);
                             })
                             .run();
                     });
@@ -1934,13 +1544,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [7,12,13,55,59];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [7,12,13,55,59]);
                             })
                             .run();
                     });
@@ -1968,13 +1572,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [6,7,13];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [6,7,13]);
                             })
                             .run();
                     });
@@ -1997,13 +1595,7 @@ describe("Hello Mama app", function() {
                                 ].join('\n')
                             })
                             .check(function(api) {
-                                var expected_used = [6,7,13];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [6,7,13]);
                             })
                             .run();
                     });
@@ -2023,13 +1615,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will now receive messages to support you during this difficult time."
                             })
                             .check(function(api) {
-                                var expected_used = [6,7,13,34,35];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [6,7,13,34,35]);
                             })
                             .run();
                     });
@@ -2049,13 +1635,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
-                                var expected_used = [6,7,13,35,39];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [6,7,13,35,39]);
                             })
                             .run();
                     });
@@ -2074,13 +1654,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
-                                var expected_used = [6,7,13,40,44];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [6,7,13,40,44]);
                             })
                             .run();
                     });
@@ -2099,13 +1673,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
-                                var expected_used = [6,7,13,45,49];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [6,7,13,45,49]);
                             })
                             .run();
                     });
@@ -2124,13 +1692,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [6,7,13,50];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [6,7,13,50]);
                             })
                             .run();
                     });
@@ -2149,13 +1711,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                var expected_used = [6,7,13,55];
-                                var fixts = api.http.fixtures.fixtures;
-                                var fixts_used = [];
-                                fixts.forEach(function(f, i) {
-                                    f.uses > 0 ? fixts_used.push(i) : null;
-                                });
-                                assert.deepEqual(fixts_used, expected_used);
+                                go.utils.check_fixtures_used(api, [6,7,13,55]);
                             })
                             .run();
                     });
@@ -2455,6 +2011,9 @@ describe("Hello Mama app", function() {
                             state: 'state_already_registered_baby',
                             reply: "You are already registered for baby messages."
                         })
+                        .check(function(api) {
+                            go.utils.check_fixtures_used(api, [1,6]);
+                        })
                         .run();
                 });
                 it.skip(" - via opt-out, loss-subscription, to end of the line", function() {
@@ -2471,6 +2030,9 @@ describe("Hello Mama app", function() {
                             state: 'state_end_optout',
                             reply: "Thank you. You will no longer receive messages"
                         })
+                        .check(function(api) {
+                            go.utils.check_fixtures_used(api, [1,6]);
+                        })
                         .run();
                 });
                 it.skip(" - via opt-out, state_optout_receiver, to end of the line", function() {
@@ -2486,6 +2048,9 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_end_optout',
                             reply: "Thank you. You will no longer receive messages"
+                        })
+                        .check(function(api) {
+                            go.utils.check_fixtures_used(api, [1,6]);
                         })
                         .run();
                 });

@@ -77,9 +77,6 @@ describe("Mama Nigeria App", function() {
                             "2. No, start new registration"
                         ].join('\n')
                     })
-                    .check(function(api) {
-                        go.utils.check_fixtures_used(api, [1,6,11,30,33]);
-                    })
                     .run();
             });
             it("should continue", function() {
@@ -278,15 +275,6 @@ describe("Mama Nigeria App", function() {
                             "3. Exit"
                         ].join('\n')
                     })
-                    .check(function(api) {
-                        var expected_used = [1,6,78];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
-                    })
                     .run();
             });
             it("to state_end_msisdn", function() {
@@ -302,15 +290,6 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_end_msisdn',
                         reply: "Thank you for using the Hello Mama service."
-                    })
-                    .check(function(api) {
-                        var expected_used = [1,6,78];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -725,15 +704,6 @@ describe("Mama Nigeria App", function() {
                         state: 'state_end_voice',
                         reply: "Thank you. They will now start receiving calls on Tuesday and Thursday between 2pm-5pm."
                     })
-                    .check(function(api) {
-                        var expected_used = [1,6,36,37,38,48,54,59,62,63];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
-                    })
                     .check.reply.ends_session()
                     .run();
             });
@@ -756,15 +726,6 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_end_sms',
                         reply: "Thank you. They will now start receiving text messages three times a week on Monday, Wednesday and Friday."
-                    })
-                    .check(function(api) {
-                        var expected_used = [1,6,36,37,38,46,54,59,60,69];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -793,13 +754,7 @@ describe("Mama Nigeria App", function() {
                         state: 'state_end_voice',
                     })
                     .check(function(api) {
-                        var expected_used = [1,6,36,37,38,48,54,59,62,63];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [1,6,36,37,38,48,54,59,62,63]);
                     })
                     .run();
             });
@@ -825,13 +780,7 @@ describe("Mama Nigeria App", function() {
                         state: 'state_end_voice',
                     })
                     .check(function(api) {
-                        var expected_used = [1,6,42,43,44,45,49,64,65,66,67];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [1,6,42,43,44,45,49,64,65,66,67]);
                     })
                     .run();
             });
@@ -856,13 +805,7 @@ describe("Mama Nigeria App", function() {
                         state: 'state_end_sms',
                     })
                     .check(function(api) {
-                        var expected_used = [1,6,39,40,41,47,54,56,57,58];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [1,6,39,40,41,47,54,56,57,58]);
                     })
                     .run();
             });
@@ -888,13 +831,7 @@ describe("Mama Nigeria App", function() {
                         state: 'state_end_voice',
                     })
                     .check(function(api) {
-                        var expected_used = [1,6,39,40,41,50,54,56,68,76];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [1,6,39,40,41,50,54,56,68,76]);
                     })
                     .run();
             });
@@ -919,13 +856,7 @@ describe("Mama Nigeria App", function() {
                         state: 'state_end_voice',
                     })
                     .check(function(api) {
-                        var expected_used = [1,6,71,72,73,74,75];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [1,6,71,72,73,74,75]);
                     })
                     .run();
             });
