@@ -1301,118 +1301,71 @@ go.app = function() {
 
     // TEXT CONTENT
 
-        var questions = {
-            "state_timed_out":
-                $("You have an incomplete registration. Would you like to continue with this registration?"),
-            "state_msisdn_permission":
-                $("Welcome to Hello Mama. Do you have permission to manage the number {{msisdn}}?"),
-            "state_msisdn_no_permission":  // unnamed state on flow diagram
-                $("We're sorry, you do not have permission to update the preferences for this subscriber."),
-            "state_language":
-                $("Welcome to Hello Mama. Please choose your language"),
-            "state_registered_msisdn":
-                $("Please enter the number which is registered to receive messages."),
-            "state_main_menu":
-                $("Select:"),
-            "state_main_menu_household":
-                $("Select:"),
-            "state_msisdn_not_recognised":  // st-F
-                $("We do not recognise this number. Please dial from the registered number or sign up with the Local Community Health Extension Worker."),
-            "state_already_registered_baby":
-                $("You are already registered for baby messages."),
-            "state_new_registration_baby":
-                $("Thank you. You will now receive messages about caring for the baby"),
-            "state_change_menu_sms":
-                $("Please select an option:"),
-            "state_voice_days":
-                $("We will call twice a week. On what days would you like to receive messages?"),
-            "state_voice_times":
-                $("At what time would you like to receive these calls?"),
-            "state_end_voice_confirm":
-                null,  // not currently in use
-                // ("Thank you. You will now start receiving voice calls on {{days}} between {{times}}"),
-            "state_change_menu_voice":
-                $("Please select an option:"),
-            "state_end_sms_confirm":
-                $("Thank you. You will now receive text messages"),
-            "state_new_msisdn":
-                $("Please enter the new mobile number you would like to receive messages on."),
-            "state_number_in_use":
-                $("Sorry this number is already registered. You must opt-out before registering again."),
-            "state_msg_receiver":
-                $("Who will receive these messages?"),
-            "state_end_number_change":
-                $("Thank you. The number which receives messages has been updated."),
-            "state_msg_language":
-                $("What language would you like to receive these messages in?"),
-            "state_msg_language_confirm":
-                $("Thank you. Your language has been updated and you will start to receive messages in this language."),
-            "state_optout_reason":
-                $("Please tell us why you no longer want to receive messages so we can help you further"),
-            "state_loss_subscription":
-                $("We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help during this difficult time?"),
-            "state_end_loss_subscription_confirm":
-                $("Thank you. You will now receive messages to support you during this difficult time."),
-            "state_optout_receiver":
-                $("Which messages would you like to stop receiving?"),
-            "state_end_optout":
-                $("Thank you. You will no longer receive messages"),
-            "state_end_loss":
-                $("We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."),
-            "state_end_exit":
-                $("Thank you for using the Hello Mama service")
+        var get_content = function(state_name) {
+            switch (state_name) {
+                case "state_msisdn_permission":
+                    return $("{{error}}Welcome to Hello Mama. Do you have permission to manage the number {{msisdn}}?");
+                case "state_msisdn_no_permission":  // unnamed state on flow diagram
+                    return $("{{error}}We're sorry, you do not have permission to update the preferences for this subscriber.");
+                case "state_language":
+                    return $("{{error}}Welcome to Hello Mama. Please choose your language");
+                case "state_registered_msisdn":
+                    return $("{{error}}Please enter the number which is registered to receive messages.");
+                case "state_main_menu":
+                    return $("{{error}}Select:");
+                case "state_main_menu_household":
+                    return $("{{error}}Select:");
+                case "state_msisdn_not_recognised":  // st-F
+                    return $("{{error}}We do not recognise this number. Please dial from the registered number or sign up with the Local Community Health Extension Worker.");
+                case "state_already_registered_baby":
+                    return $("You are already registered for baby messages.");
+                case "state_new_registration_baby":
+                    return $("{{error}}Thank you. You will now receive messages about caring for the baby");
+                case "state_change_menu_sms":
+                    return $("{{error}}Please select an option:");
+                case "state_voice_days":
+                    return $("{{error}}We will call twice a week. On what days would you like to receive messages?");
+                case "state_voice_times":
+                    return $("{{error}}At what time would you like to receive these calls?");
+                case "state_end_voice_confirm":
+                    return null;  // not currently in use
+                    // ("Thank you. You will now start receiving voice calls on {{days}} between {{times}}");
+                case "state_change_menu_voice":
+                    return $("{{error}}Please select an option:");
+                case "state_end_sms_confirm":
+                    return $("Thank you. You will now receive text messages");
+                case "state_new_msisdn":
+                    return $("{{error}}Please enter the new mobile number you would like to receive messages on.");
+                case "state_number_in_use":
+                    return $("{{error}}Sorry this number is already registered. You must opt-out before registering again.");
+                case "state_msg_receiver":
+                    return $("{{error}}Who will receive these messages?");
+                case "state_end_number_change":
+                    return $("Thank you. The number which receives messages has been updated.");
+                case "state_msg_language":
+                    return $("{{error}}What language would you like to receive these messages in?");
+                case "state_msg_language_confirm":
+                    return $("Thank you. Your language has been updated and you will start to receive messages in this language.");
+                case "state_optout_reason":
+                    return $("{{error}}Please tell us why you no longer want to receive messages so we can help you further");
+                case "state_loss_subscription":
+                    return $("{{error}}We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help during this difficult time?");
+                case "state_end_loss_subscription_confirm":
+                    return $("Thank you. You will now receive messages to support you during this difficult time.");
+                case "state_optout_receiver":
+                    return $("{{error}}Which messages would you like to stop receiving?");
+                case "state_end_optout":
+                    return $("Thank you. You will no longer receive messages");
+                case "state_end_loss":
+                    return $("We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW.");
+                case "state_end_exit":
+                    return $("Thank you for using the Hello Mama service");
+            }
         };
 
         var state_error_types = {
-            "invalid_selection": "Sorry, invalid option.",
-            "invalid_number": "Sorry, invalid number."
-        };
-
-        var errors = {
-            "state_registered_msisdn":
-                $("{{error}} Please enter the number which is registered to receive messages.")
-                    .context({error: state_error_types.invalid_number}),
-            "state_msisdn_permission":
-                $("{{error}} Welcome to Hello Mama. Do you have permission to manage the number {{msisdn}}?"),
-            "state_language":
-                $("{{error}} Welcome to Hello Mama. Please choose your language")
-                    .context({error: state_error_types.invalid_selection}),
-            "state_main_menu":
-                $("{{error}} Select:")
-                    .context({error: state_error_types.invalid_selection}),
-            "state_main_menu_household":
-                $("{{error}} Select:")
-                    .context({error: state_error_types.invalid_selection}),
-            "state_change_menu_sms":
-                $("{{error}} Please select an option:")
-                    .context({error: state_error_types.invalid_selection}),
-            "state_voice_days":
-                $("{{error}} We will call twice a week. On what days would you like to receive messages?")
-                    .context({error: state_error_types.invalid_selection}),
-            "state_voice_times":
-                $("{{error}} At what time would you like to receive these calls?")
-                    .context({error: state_error_types.invalid_selection}),
-            "state_change_menu_voice":
-                $("{{error}} Please select an option:")
-                    .context({error: state_error_types.invalid_selection}),
-            "state_new_msisdn":
-                $("{{error}} Please enter the new mobile number you would like to receive messages on.")
-                    .context({error: state_error_types.invalid_number}),
-            "state_number_in_use":
-                $("{{error}} Sorry this number is already registered. You must opt-out before registering again.")
-                    .context({error: state_error_types.invalid_selection}),
-            "state_msg_language":
-                $("{{error}} What language would you like to receive these messages in?")
-                    .context({error: state_error_types.invalid_selection}),
-            "state_optout_reason":
-                $("{{error}} Please tell us why you no longer want to receive messages so we can help you further")
-                    .context({error: state_error_types.invalid_selection}),
-            "state_loss_subscription":
-                $("{{error}} We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help during this difficult time?")
-                    .context({error: state_error_types.invalid_selection}),
-            "state_optout_receiver":
-                $("{{error}} Which messages would you like to stop receiving?")
-                    .context({error: state_error_types.invalid_selection}),
+            "invalid_selection": "Sorry, invalid option. ",
+            "invalid_number": "Sorry, invalid number. "
         };
 
 
@@ -1464,14 +1417,15 @@ go.app = function() {
         // ChoiceState st-B
         self.add('state_msisdn_permission', function(name) {
             return new ChoiceState(name, {
-                question: questions[name].context({
+                question: get_content(name).context({
+                    error: "",
                     msisdn: self.im.user.answers.contact_msisdn}),
                 choices: [
                     new Choice('state_check_receiver_role', $("Yes")),
                     new Choice('state_msisdn_no_permission', $("No")),
                     new Choice('state_registered_msisdn', $("Change the number I'd like to manage"))
                 ],
-                error: errors[name].context({
+                error: get_content(name).context({
                     error: state_error_types.invalid_selection,
                     msisdn: self.im.user.answers.contact_msisdn}),
                 next: function(choice) {
@@ -1486,7 +1440,7 @@ go.app = function() {
         // unnamed on flow diagram
         self.add('state_msisdn_no_permission', function(name) {
             return new EndState(name, {
-                text: questions[name],
+                text: get_content(name).context({error:""}),
                 next: 'state_start'
             });
         });
@@ -1494,13 +1448,14 @@ go.app = function() {
         // ChoiceState st-D
         self.add('state_language', function(name) {
             return new ChoiceState(name, {
-                question: questions[name],
+                question: get_content(name).context({error:""}),
+                error: get_content(name)
+                    .context({error: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('eng_NG', $("English")),
                     new Choice('ibo_NG', $("Igbo")),
                     new Choice('pcm_NG', $('Pidgin'))
                 ],
-                error: errors[name],
                 next: function(choice) {
                     return self.im.user
                         .set_lang(choice.value)
@@ -1514,12 +1469,13 @@ go.app = function() {
         // FreeText st-C
         self.add('state_registered_msisdn', function(name) {
             return new FreeText(name, {
-                question: questions[name],
+                question: get_content(name).context({error:""}),
                 check: function(content) {
                     if (go.utils.is_valid_msisdn(content)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
-                        return errors[name];
+                        return get_content(name)
+                            .context({error: state_error_types.invalid_number});
                     }
                 },
                 next: 'state_check_registered'
@@ -1549,7 +1505,7 @@ go.app = function() {
         // EndState st-F
         self.add('state_msisdn_not_recognised', function(name) {
             return new EndState(name, {
-                text: questions[name],
+                text: get_content(name).context({error:""}),
                 next: 'state_start'
             });
         });
@@ -1621,7 +1577,9 @@ go.app = function() {
         // ChoiceState st-A
         self.add('state_main_menu', function(name) {
             return new ChoiceState(name, {
-                question: questions[name],
+                question: get_content(name).context({error:""}),
+                error: get_content(name)
+                    .context({error: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('state_check_baby_subscription', $("Start Baby messages")),
                     new Choice('state_check_msg_type', $("Change message preferences")),
@@ -1629,7 +1587,6 @@ go.app = function() {
                     new Choice('state_msg_language', $("Change language")),
                     new Choice('state_optout_reason', $("Stop receiving messages"))
                 ],
-                error: errors[name],
                 next: function(choice) {
                     return choice.value;
                 }
@@ -1639,14 +1596,15 @@ go.app = function() {
         // ChoiceState st-A1
         self.add('state_main_menu_household', function(name) {
             return new ChoiceState(name, {
-                question: questions[name],
+                question: get_content(name).context({error:""}),
+                error: get_content(name)
+                    .context({error: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('state_check_baby_subscription', $("Start Baby messages")),
                     new Choice('state_new_msisdn', $("Change my number")),
                     new Choice('state_msg_language', $("Change language")),
                     new Choice('state_optout_reason', $("Stop receiving messages"))
                 ],
-                error: errors[name],
                 next: function(choice) {
                     return choice.value;
                 }
@@ -1674,7 +1632,7 @@ go.app = function() {
         // EndState st-01
         self.add('state_already_registered_baby', function(name) {
             return new EndState(name, {
-                text: questions[name],
+                text: get_content(name),
                 next: 'start_start'
             });
         });
@@ -1690,7 +1648,7 @@ go.app = function() {
         // EndState st-02
         self.add('state_new_registration_baby', function(name) {
             return new EndState(name, {
-                text: questions[name],
+                text: get_content(name).context({error:""}),
                 next: 'state_start'
             });
         });
@@ -1716,8 +1674,9 @@ go.app = function() {
         // ChoiceState st-03
         self.add('state_change_menu_sms', function(name) {
             return new ChoiceState(name, {
-                question: questions[name],
-                error: errors[name],
+                question: get_content(name).context({error:""}),
+                error: get_content(name)
+                    .context({error: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('to_voice', $("Change from text to voice messages")),
                     new Choice('back', $("Back to main menu"))
@@ -1733,8 +1692,9 @@ go.app = function() {
         // ChoiceState st-04
         self.add('state_voice_days', function(name) {
             return new ChoiceState(name, {
-                question: questions[name],
-                error: errors[name],
+                question: get_content(name).context({error:""}),
+                error: get_content(name)
+                    .context({error: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('mon_wed', $("Monday and Wednesday")),
                     new Choice('tue_thu', $("Tuesday and Thursday"))
@@ -1746,8 +1706,9 @@ go.app = function() {
         // ChoiceState st-05
         self.add('state_voice_times', function(name) {
             return new ChoiceState(name, {
-                question: questions[name],
-                error: errors[name],
+                question: get_content(name).context({error:""}),
+                error: get_content(name)
+                    .context({error: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('9_11', $("Between 9-11am")),
                     new Choice('2_5', $("Between 2-5pm"))
@@ -1791,8 +1752,9 @@ go.app = function() {
         // ChoiceState st-07
         self.add('state_change_menu_voice', function(name) {
             return new ChoiceState(name, {
-                question: questions[name],
-                error: errors[name],
+                question: get_content(name).context({error:""}),
+                error: get_content(name)
+                    .context({error: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('state_voice_days', $("Change the day and time I receive messages")),
                     new Choice('state_end_sms_confirm', $("Change from voice to text messages")),
@@ -1820,7 +1782,7 @@ go.app = function() {
         // EndState st-08
         self.add('state_end_sms_confirm', function(name) {
             return new EndState(name, {
-                text: questions[name],
+                text: get_content(name).context({error:""}),
                 next: 'state_start'
             });
         });
@@ -1831,12 +1793,13 @@ go.app = function() {
         // FreeText st-09
         self.add('state_new_msisdn', function(name) {
             return new FreeText(name, {
-                question: questions[name],
+                question: get_content(name).context({error:""}),
                 check: function(content) {
                     if (go.utils.is_valid_msisdn(content)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
-                        return errors[name];
+                        return get_content(name)
+                            .context({error: state_error_types.invalid_number});
                     }
                 },
                 next: function(content) {
@@ -1861,8 +1824,9 @@ go.app = function() {
         // ChoiceState
         self.add('state_number_in_use', function(name) {
             return new ChoiceState(name, {
-                question: questions[name],
-                error: errors[name],
+                question: get_content(name).context({error:""}),
+                error: get_content(name)
+                    .context({error: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('state_new_msisdn', $("Try a different number")),
                     new Choice('state_end_exit', $("Exit"))
@@ -1893,7 +1857,7 @@ go.app = function() {
         // EndState st-10
         self.add('state_end_number_change', function(name) {
             return new EndState(name, {
-                text: questions[name],
+                text: get_content(name),
                 next: 'state_start'
             });
         });
@@ -1904,8 +1868,9 @@ go.app = function() {
         // ChoiceState st-11
         self.add('state_msg_language', function(name) {
             return new ChoiceState(name, {
-                question: questions[name],
-                error: errors[name],
+                question: get_content(name).context({error:""}),
+                error: get_content(name)
+                    .context({error: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('eng_NG', $("English")),
                     new Choice('ibo_NG', $("Igbo")),
@@ -1937,7 +1902,7 @@ go.app = function() {
         // EndState st-12
         self.add('state_msg_language_confirm', function(name) {
             return new EndState(name, {
-                text: questions[name],
+                text: get_content(name),
                 next: 'state_start'
             });
         });
@@ -1948,8 +1913,9 @@ go.app = function() {
         // ChoiceState st-13
         self.add('state_optout_reason', function(name) {
             return new ChoiceState(name, {
-                question: questions[name],
-                error: errors[name],
+                question: get_content(name).context({error:""}),
+                error: get_content(name)
+                    .context({error: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('miscarriage', $("Mother miscarried")),
                     new Choice('stillborn', $("Baby stillborn")),
@@ -1998,8 +1964,9 @@ go.app = function() {
         // ChoiceState st-14
         self.add('state_loss_subscription', function(name) {
             return new ChoiceState(name, {
-                question: questions[name],
-                error: errors[name],
+                question: get_content(name).context({error:""}),
+                error: get_content(name)
+                    .context({error: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('state_switch_loss', $("Yes")),
                     new Choice('state_optout_all', $("No"))
@@ -2080,7 +2047,7 @@ go.app = function() {
         // EndState st-15
         self.add('state_end_loss_subscription_confirm', function(name) {
             return new EndState(name, {
-                text: questions[name],
+                text: get_content(name),
                 next: 'state_start'
             });
         });
@@ -2088,8 +2055,9 @@ go.app = function() {
         // ChoiceState st-16
         self.add('state_optout_receiver', function(name) {
             return new ChoiceState(name, {
-                question: questions[name],
-                error: errors[name],
+                question: get_content(name).context({error:""}),
+                error: get_content(name)
+                    .context({error: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('mother', $("Mother messages")),
                     new Choice('household', $("Household messages")),
@@ -2165,7 +2133,7 @@ go.app = function() {
         // EndState st-17
         self.add('state_end_optout', function(name) {
             return new EndState(name, {
-                text: questions[name],
+                text: get_content(name),
                 next: 'state_start'
             });
         });
@@ -2173,7 +2141,7 @@ go.app = function() {
         // EndState st-21
         self.add('state_end_loss', function(name) {
             return new EndState(name, {
-                text: questions[name],
+                text: get_content(name),
                 next: 'state_start'
             });
         });
@@ -2184,7 +2152,7 @@ go.app = function() {
         // EndState st-18
         self.add('state_end_exit', function(name) {
             return new EndState(name, {
-                text: questions[name],
+                text: get_content(name),
                 next: 'state_start'
             });
         });
