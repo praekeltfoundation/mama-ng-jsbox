@@ -195,7 +195,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            it("to state_msg_receiver", function() {
+            it.skip("to state_msg_receiver", function() {
                 return tester
                     .setup.user.addr('08080070007')
                     .inputs(
@@ -947,6 +947,26 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
+            it.skip("validate state_msg_receiver", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .setup.user.state('state_msg_receiver')
+                    .input('8')
+                    .check.interaction({
+                        state: 'state_msg_receiver',
+                        reply: [
+                            "Sorry, invalid option. Please select who will receive the messages on their phone?",
+                            "1. Mother, Father",
+                            "2. Mother",
+                            "3. Father",
+                            "4. Mother, family member",
+                            "5. Mother, friend",
+                            "6. Friend",
+                            "7. Family member"
+                        ].join('\n')
+                    })
+                    .run();
+            });
             it("validate state_msisdn", function() {
                 return tester
                     .setup.user.addr('08080020002')
@@ -1104,7 +1124,8 @@ describe("Mama Nigeria App", function() {
                             state: 'state_invalid_date',
                             reply: [
                                 "The date you entered (20150231) is incorrect. Please try again.",
-                                "1. Continue"
+                                "1. Continue",
+                                "2. Exit"
                             ].join('\n')
                         })
                         .run();
@@ -1144,7 +1165,8 @@ describe("Mama Nigeria App", function() {
                             state: 'state_invalid_date',
                             reply: [
                                 "The date you entered (20150231) is incorrect. Please try again.",
-                                "1. Continue"
+                                "1. Continue",
+                                "2. Exit"
                             ].join('\n')
                         })
                         .run();
@@ -1168,6 +1190,20 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
+            });
+            it("validate state_invalid_date", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .setup.user.state('state_invalid_date')
+                    .input('3')
+                    .check.interaction({
+                        reply: [
+                            "Sorry, invalid option. The date you entered (20150231) is incorrect. Please try again.",
+                            "1. Continue",
+                            "2. Exit"
+                        ].join('\n')
+                    })
+
             });
             it("validate state_gravida", function() {
                 return tester
