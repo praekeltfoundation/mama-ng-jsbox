@@ -134,7 +134,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_auth_code',
-                        reply: "Please enter you Hello Mama code."
+                        reply: "Please enter your Hello Mama code."
                     })
                     .run();
             });
