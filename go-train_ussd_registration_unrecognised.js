@@ -1321,8 +1321,6 @@ go.app = function() {
                     return $("{{error}}Welcome to the Hello Mama training line. Who will receive the messages?");
                 case "state_msisdn":
                     return $("{{error}}Please enter the mobile number of the {{roleplayer}}. They must consent to receiving messages.");
-                case "state_msisdn_already_registered":
-                    return $("{{error}}Sorry, this number is already registered. They must opt-out before they can register again.");
                 case "state_msisdn_mother":
                     return $("{{error}}Please enter the mobile number of the mother. They must consent to receiving messages.");
                 case "state_msisdn_household":
@@ -1770,7 +1768,8 @@ go.app = function() {
                             date: opts.date}),
 
                 choices: [
-                    new Choice('continue', $('Continue'))
+                    new Choice('continue', $('Continue')),
+                    new Choice('exit', $('Exit'))
                 ],
                 next: function() {
                     if (self.im.user.answers.state_last_period_day) {  // flow via st-05 & st-06
