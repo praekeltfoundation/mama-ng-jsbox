@@ -566,13 +566,18 @@ go.app = function() {
                     new Choice('continue', $('Continue')),
                     new Choice('exit', $('Exit'))
                 ],
-                next: function() {
-                    if (self.im.user.answers.state_last_period_day) {  // flow via st-05 & st-06
-                        return self.states.create('state_last_period_month');
+                next: function(choice) {
+                    if (choice.value !== 'exit') {
+                        if (self.im.user.answers.state_last_period_day) {  // flow via st-05 & st-06
+                            return 'state_last_period_month';
+                        }
+                        else if (self.im.user.answers.state_baby_birth_day) { // flow via st-12 & st-13
+                            return 'state_baby_birth_month_year';
+                        }
+                    } else {
+                        return 'state_end_msisdn';
                     }
-                    else if (self.im.user.answers.state_baby_birth_day) { // flow via st-12 & st-13
-                        return self.states.create('state_baby_birth_month_year');
-                    }
+
                 }
             });
         });
