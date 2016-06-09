@@ -472,7 +472,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_last_period_day',
-                        reply: "What day of the month did the woman start her last period?"
+                        reply: "What date of the month did the woman start her last period?"
                     })
                     .run();
             });
@@ -529,7 +529,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_msg_language',
                         reply: [
-                            "Which language would they like to receive these messages in?",
+                            "What language would they like to receive the messages in?",
                             "1. English",
                             "2. Igbo",
                             "3. Pidgin"
@@ -605,7 +605,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_baby_birth_day',
-                        reply: "What day of the month was the baby born?"
+                        reply: "What date of the month was the baby born?"
                     })
                     .run();
             });
@@ -645,7 +645,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_msg_type',
                         reply: [
-                            "How would they like to get messages?",
+                            "How would they like to receive the messages?",
                             "1. Voice calls",
                             "2. Text SMSs"
                         ].join('\n')
@@ -1062,7 +1062,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_last_period_day',
-                        reply: "Sorry, invalid date. What day of the month did the woman start her last period?"
+                        reply: "Sorry, invalid date. What date of the month did the woman start her last period?"
                     })
                     .run();
             });
@@ -1076,7 +1076,7 @@ describe("Mama Nigeria App", function() {
                     )
                     .check.interaction({
                         state: 'state_baby_birth_day',
-                        reply: "Sorry, invalid number. What day of the month was the baby born? For example, 12."
+                        reply: "Sorry, invalid number. What date of the month was the baby born? For example, 12."
                     })
                     .run();
             });
@@ -1185,7 +1185,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_msg_language',
                         reply: [
-                            "Sorry, invalid option. Which language would they like to receive these messages in?",
+                            "Sorry, invalid option. What language would they like to receive the messages in?",
                             "1. English",
                             "2. Igbo",
                             "3. Pidgin"
@@ -1203,7 +1203,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_msg_type',
                         reply: [
-                            "Sorry, invalid option. How would they like to get messages?",
+                            "Sorry, invalid option. How would they like to receive the messages?",
                             "1. Voice calls",
                             "2. Text SMSs"
                         ].join('\n')

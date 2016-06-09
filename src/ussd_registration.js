@@ -48,7 +48,7 @@ go.app = function() {
                 case "state_last_period_month":
                     return $("{{error}}Please select the month the woman started her last period:");
                 case "state_last_period_day":
-                    return $("{{error}}What day of the month did the woman start her last period?");
+                    return $("{{error}}What date of the month did the woman start her last period?");
                 case "state_baby_birth_month_year":
                     return $("{{error}}Select the month and year the baby was born:");
                 case "state_baby_birth_day":
@@ -56,9 +56,9 @@ go.app = function() {
                 case "state_gravida":
                     return $("{{error}}Please enter the total number of times the woman has been pregnant. This includes any pregnancies she may not have carried to term.");
                 case "state_msg_language":
-                    return $("{{error}}Which language would they like to receive these messages in?");
+                    return $("{{error}}What language would they like to receive the messages in?");
                 case "state_msg_type":
-                    return $("{{error}}How would they like to get messages?");
+                    return $("{{error}}How would they like to receive the messages?");
                 case "state_voice_days":
                     return $("{{error}}On what days would they like to receive these calls?");
                 case "state_voice_times":
