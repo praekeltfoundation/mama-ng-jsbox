@@ -31,37 +31,37 @@ go.app = function() {
         var get_content = function(state_name) {
             switch (state_name) {
                 case "state_timed_out":
-                    return $("{{error}}You have an incomplete registration. Would you like to continue with this registration?");
+                    return $("{{prefix}}You have an incomplete registration. Would you like to continue with this registration?");
                 case "state_auth_code":
-                    return $("{{error}}Please enter your Hello Mama code.");
+                    return $("{{prefix}}Please enter your Hello Mama code.");
                 case "state_msg_receiver":
-                    return $("{{error}}Welcome to the Hello Mama training line. Who will receive the messages?");
+                    return $("{{prefix}}Welcome to the Hello Mama training line. Who will receive the messages?");
                 case "state_msisdn":
-                    return $("{{error}}Please enter the mobile number of the {{roleplayer}}. They must consent to receiving messages.");
+                    return $("{{prefix}}Please enter the mobile number of the {{roleplayer}}. They must consent to receiving messages.");
                 case "state_msisdn_mother":
-                    return $("{{error}}Please enter the mobile number of the mother. They must consent to receiving messages.");
+                    return $("{{prefix}}Please enter the mobile number of the mother. They must consent to receiving messages.");
                 case "state_msisdn_household":
-                    return $("{{error}}Please enter the mobile number of the {{roleplayer}}. They must consent to receiving messages.");
+                    return $("{{prefix}}Please enter the mobile number of the {{roleplayer}}. They must consent to receiving messages.");
                 case "state_pregnancy_status":
-                    return $("{{error}}Please select one of the following:");
+                    return $("{{prefix}}Please select one of the following:");
                 case "state_last_period_month":
-                    return $("{{error}}Please select the month the woman started her last period:");
+                    return $("{{prefix}}Please select the month the woman started her last period:");
                 case "state_last_period_day":
-                    return $("{{error}}What date of the month did the woman start her last period?");
+                    return $("{{prefix}}What date of the month did the woman start her last period?");
                 case "state_baby_birth_month_year":
-                    return $("{{error}}Select the month and year the baby was born:");
+                    return $("{{prefix}}Select the month and year the baby was born:");
                 case "state_baby_birth_day":
-                    return $("{{error}}On what date of the month was the baby born?");
+                    return $("{{prefix}}On what date of the month was the baby born?");
                 case "state_gravida":
-                    return $("{{error}}Please enter the total number of times the woman has been pregnant. This includes any pregnancies she may not have carried to term.");
+                    return $("{{prefix}}Please enter the total number of times the woman has been pregnant. This includes any pregnancies she may not have carried to term.");
                 case "state_msg_language":
-                    return $("{{error}}What language would they like to receive the messages in?");
+                    return $("{{prefix}}What language would they like to receive the messages in?");
                 case "state_msg_type":
-                    return $("{{error}}How would they like to receive the messages?");
+                    return $("{{prefix}}How would they like to receive the messages?");
                 case "state_voice_days":
-                    return $("{{error}}On what days would they like to receive these calls?");
+                    return $("{{prefix}}On what days would they like to receive these calls?");
                 case "state_voice_times":
-                    return $("{{error}}At what time would they like to receive these calls on {{days}}?");
+                    return $("{{prefix}}At what time would they like to receive these calls on {{days}}?");
                 case "state_end_voice":
                     return $("Thank you. They will now start receiving calls on {{days}} between {{times}}.");
                 case "state_end_sms":
@@ -95,7 +95,7 @@ go.app = function() {
         // timeout 01
         self.states.add('state_timed_out', function(name, creator_opts) {
             return new ChoiceState(name, {
-                question: get_content(name).context({error:""}),
+                question: get_content(name).context({prefix:""}),
                 choices: [
                     new Choice('continue', $("Yes")),
                     new Choice('restart', $("No, start a new registration"))
@@ -127,13 +127,13 @@ go.app = function() {
         // FreeText st-1
         self.add('state_auth_code', function(name) {
             return new FreeText(name, {
-                question: get_content(name).context({error:""}),
+                question: get_content(name).context({prefix:""}),
                 check: function(content) {
                     if (go.utils.check_valid_number(content) && content.length === 5) {
                         return null;
                     } else {
                         return get_content(name)
-                            .context({error: state_error_types.invalid_number});
+                            .context({prefix: state_error_types.invalid_number});
                     }
                 },
                 next: 'state_msg_receiver'
@@ -143,9 +143,9 @@ go.app = function() {
         // ChoiceState st-02
         self.add('state_msg_receiver', function(name) {
             return new ChoiceState(name, {
-                question: get_content(name).context({error:""}),
+                question: get_content(name).context({prefix:""}),
                 error: get_content(name)
-                    .context({error: state_error_types.invalid_selection}),
+                    .context({prefix: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('mother_father', $("Mother, Father")),
                     new Choice('mother_only', $("Mother")),
@@ -170,7 +170,7 @@ go.app = function() {
         self.add('state_msisdn', function(name) {
             return new FreeText(name, {
                 question: get_content(name).context({
-                    error: "",
+                    prefix: "",
                     roleplayer: self.im.user.answers.state_msg_receiver
                         // change the state_msg_receiver answer to display correctly
                         // in the ussd text
@@ -184,7 +184,7 @@ go.app = function() {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return get_content(name).context({
-                            error: state_error_types.invalid_number,
+                            prefix: state_error_types.invalid_number,
                             roleplayer: self.im.user.answers.state_msg_receiver
                                 // change the state_msg_receiver answer to display correctly
                                 // in the ussd text
@@ -204,13 +204,13 @@ go.app = function() {
         // FreeText st-3A
         self.add('state_msisdn_mother', function(name) {
             return new FreeText(name, {
-                question: get_content(name).context({error:""}),
+                question: get_content(name).context({prefix:""}),
                 check: function(content) {
                     if (go.utils.is_valid_msisdn(content)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return get_content(name)
-                            .context({error: state_error_types.invalid_number});
+                            .context({prefix: state_error_types.invalid_number});
                     }
                 },
                 next: 'state_msisdn_household'
@@ -221,7 +221,7 @@ go.app = function() {
         self.add('state_msisdn_household', function(name) {
             return new FreeText(name, {
                 question: get_content(name).context({
-                    error: "",
+                    prefix: "",
                     roleplayer: self.im.user.answers.state_msg_receiver
                         // change the state_msg_receiver answer to display correctly
                         // in the ussd text
@@ -233,7 +233,7 @@ go.app = function() {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return get_content(name).context({
-                            error: state_error_types.invalid_number,
+                            prefix: state_error_types.invalid_number,
                             roleplayer: self.im.user.answers.state_msg_receiver
                                 // change the state_msg_receiver answer to display correctly
                                 // in the ussd text
@@ -261,9 +261,9 @@ go.app = function() {
         // ChoiceState st-04
         self.add('state_pregnancy_status', function(name) {
             return new ChoiceState(name, {
-                question: get_content(name).context({error:""}),
+                question: get_content(name).context({prefix:""}),
                 error: get_content(name)
-                    .context({error: state_error_types.invalid_selection}),
+                    .context({prefix: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('prebirth', $("The mother is pregnant")),
                     new Choice('postbirth', $("The mother has a baby under 1 year old"))
@@ -280,9 +280,9 @@ go.app = function() {
         self.add('state_last_period_month', function(name) {
             var today = go.utils.get_today(self.im.config);
             return new PaginatedChoiceState(name, {
-                question: get_content(name).context({error:""}),
+                question: get_content(name).context({prefix:""}),
                 error: get_content(name)
-                    .context({error: state_error_types.invalid_selection}),
+                    .context({prefix: state_error_types.invalid_selection}),
                 characters_per_page: 182,
                 options_per_page: null,
                 more: $('More'),
@@ -296,13 +296,13 @@ go.app = function() {
         // FreeText st-06
         self.add('state_last_period_day', function(name) {
             return new FreeText(name, {
-                question: get_content(name).context({error:""}),
+                question: get_content(name).context({prefix:""}),
                 check: function(content) {
                     if (go.utils.is_valid_day_of_month(content)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return get_content(name)
-                            .context({error: state_error_types.invalid_date});
+                            .context({prefix: state_error_types.invalid_date});
                     }
                 },
                 next: 'state_validate_date'
@@ -311,13 +311,13 @@ go.app = function() {
 
         self.add('state_gravida', function(name) {
             return new FreeText(name, {
-                question: get_content(name).context({error:""}),
+                question: get_content(name).context({prefix:""}),
                 check: function(content) {
                     if (go.utils.check_valid_number(content)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return get_content(name)
-                            .context({error: state_error_types.invalid_number});
+                            .context({prefix: state_error_types.invalid_number});
                     }
                 },
                 next: 'state_msg_language'
@@ -327,9 +327,9 @@ go.app = function() {
         // ChoiceState st-07
         self.add('state_msg_language', function(name) {
             return new ChoiceState(name, {
-                question: get_content(name).context({error:""}),
+                question: get_content(name).context({prefix:""}),
                 error: get_content(name)
-                    .context({error: state_error_types.invalid_selection}),
+                    .context({prefix: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('eng_NG', $('English')),
                     new Choice('ibo_NG', $('Igbo')),
@@ -342,9 +342,9 @@ go.app = function() {
         // ChoiceState st-08
         self.add('state_msg_type', function(name) {
             return new ChoiceState(name, {
-                question: get_content(name).context({error:""}),
+                question: get_content(name).context({prefix:""}),
                 error: get_content(name)
-                    .context({error: state_error_types.invalid_selection}),
+                    .context({prefix: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('audio', $('Voice calls')),
                     new Choice('text', $('Text SMSs'))
@@ -362,9 +362,9 @@ go.app = function() {
         // ChoiceState st-09
         self.add('state_voice_days', function(name) {
             return new ChoiceState(name, {
-                question: get_content(name).context({error:""}),
+                question: get_content(name).context({prefix:""}),
                 error: get_content(name)
-                    .context({error: state_error_types.invalid_selection}),
+                    .context({prefix: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('mon_wed', $('Monday and Wednesday')),
                     new Choice('tue_thu', $('Tuesday and Thursday'))
@@ -378,13 +378,13 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: get_content(name)
                     .context({
-                        error: "",
+                        prefix: "",
                         days: self.im.user.answers.state_voice_days
                         .replace('mon_wed', 'Mondays and Wednesdays')
                         .replace('tue_thu', 'Tuesdays and Thursdays')}),
                 error: get_content(name)
                     .context({
-                        error: state_error_types.invalid_selection,
+                        prefix: state_error_types.invalid_selection,
                         days: self.im.user.answers.state_voice_days
                         .replace('mon_wed', 'Mondays and Wednesdays')
                         .replace('tue_thu', 'Tuesdays and Thursdays')}),
@@ -419,9 +419,9 @@ go.app = function() {
         self.add('state_baby_birth_month_year', function(name) {
             var today = go.utils.get_today(self.im.config);
             return new PaginatedChoiceState(name, {
-                question: get_content(name).context({error:""}),
+                question: get_content(name).context({prefix:""}),
                 error: get_content(name)
-                    .context({error: state_error_types.invalid_selection}),
+                    .context({prefix: state_error_types.invalid_selection}),
                 characters_per_page: 182,
                 options_per_page: null,
                 more: $('More'),
@@ -435,13 +435,13 @@ go.app = function() {
         // FreeText st-14
         self.add('state_baby_birth_day', function(name) {
             return new FreeText(name, {
-                question: get_content(name).context({error:""}),
+                question: get_content(name).context({prefix:""}),
                 check: function(content) {
                     if (go.utils.is_valid_day_of_month(content)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return get_content(name)
-                            .context({error: state_error_types.invalid_date});
+                            .context({prefix: state_error_types.invalid_date});
                     }
                 },
                 next: 'state_validate_date'
@@ -451,7 +451,7 @@ go.app = function() {
         // EndState st-15
         self.add('state_end_sms', function(name) {
             return new EndState(name, {
-                text: get_content(name).context({error:""}),
+                text: get_content(name).context({prefix:""}),
                 next: 'state_start'
             });
         });
@@ -479,9 +479,9 @@ go.app = function() {
                     $('The date you entered ({{ date }}) is incorrect. ' +
                         'Please try again.').context({date: opts.date}),
                 error:
-                    $('{{error}}The date you entered ({{ date }}) is incorrect. ' +
+                    $('{{prefix}}The date you entered ({{ date }}) is incorrect. ' +
                         'Please try again.')
-                        .context({error: state_error_types.invalid_selection,
+                        .context({prefix: state_error_types.invalid_selection,
                             date: opts.date}),
                 choices: [
                     new Choice('continue', $('Continue')),
