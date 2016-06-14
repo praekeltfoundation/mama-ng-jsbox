@@ -34,7 +34,7 @@ go.app = function() {
                 case "state_auth_code":
                     return $("{{prefix}}Please enter your Hello Mama code.");
                 case "state_msg_receiver":
-                    return $("{{prefix}}Welcome to Hello Mama. Who will receive the messages on their phone?");
+                    return $("{{prefix}}Who will receive the messages on their phone?");
                 case "state_msisdn":
                     return $("{{prefix}}Please enter the mobile number of the {{roleplayer}}. They must consent to receiving messages.");
                 case "state_msisdn_already_registered":
@@ -160,7 +160,7 @@ go.app = function() {
         // ChoiceState st-02
         self.add('state_msg_receiver', function(name) {
             return new ChoiceState(name, {
-                question: get_content(name).context({prefix:""}),
+                question: get_content(name).context({prefix:"Welcome to Hello Mama. "}),
                 error: get_content(name).context({prefix: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('mother_father', $("Mother, Father")),

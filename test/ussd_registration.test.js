@@ -878,7 +878,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            it.skip("validate state_msg_receiver", function() {
+            it("validate state_msg_receiver", function() {
                 return tester
                     .setup.user.addr('08080020002')
                     .setup.user.state('state_msg_receiver')
@@ -886,7 +886,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_msg_receiver',
                         reply: [
-                            "Sorry, invalid option. Welcome to Hello Mama. Who will receive the messages on their phone?",
+                            "Sorry, invalid option. Who will receive the messages on their phone?",
                             "1. Mother, Father",
                             "2. Mother",
                             "3. Father",
