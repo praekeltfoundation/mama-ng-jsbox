@@ -302,7 +302,7 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_optout_reason',
                             reply: [
-                                "Please tell us why you no longer want to receive messages so we can help you further",
+                                "Why do you no longer want to receive messages?",
                                 "1. Mother miscarried",
                                 "2. Baby stillborn",
                                 "3. Baby passed away",
@@ -326,7 +326,7 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_loss_subscription',
                             reply: [
-                                "We are sorry for your loss. Would the mother like to receive a small set of free messages from Hello Mama that could help during this difficult time?",
+                                "We are sorry for your loss. Would the mother like to receive a small set of free messages that could help during this difficult time?",
                                 "1. Yes",
                                 "2. No"
                             ].join('\n')
@@ -605,7 +605,7 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
-                it.skip("validate state_optout_reason", function() {
+                it("validate state_optout_reason", function() {
                     return tester
                         .setup.user.addr('05059992222')
                         .setup.user.state('state_optout_reason')
@@ -613,7 +613,7 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_optout_reason',
                             reply: [
-                                "Sorry, invalid option. Please tell us why you no longer want to receive messages so we can help you further",
+                                "Sorry, invalid option. Why do you no longer want to receive messages?",
                                 "1. Mother miscarried",
                                 "2. Baby stillborn",
                                 "3. Baby passed away",
@@ -623,7 +623,7 @@ describe("Hello Mama app", function() {
                         })
                         .run();
                 });
-                it.skip("validate state_loss_subscription", function() {
+                it("validate state_loss_subscription", function() {
                     return tester
                         .setup.user.addr('05059992222')
                         .setup.user.state('state_loss_subscription')
@@ -631,7 +631,7 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_loss_subscription',
                             reply: [
-                                "Sorry, invalid option. We are sorry for your loss. Would you like to receive a small set of free messages from Hello Mama that could help during this difficult time?",
+                                "Sorry, invalid option. We are sorry for your loss. Would the mother like to receive a small set of free messages that could help during this difficult time?",
                                 "1. Yes",
                                 "2. No"
                             ].join('\n')

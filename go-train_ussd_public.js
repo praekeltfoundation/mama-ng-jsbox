@@ -1346,9 +1346,9 @@ go.app = function() {
                 case "state_msg_language_confirm":
                     return $("Thank you. Your language has been updated and you will start to receive messages in this language.");
                 case "state_optout_reason":
-                    return $("{{error}}Please tell us why you no longer want to receive messages so we can help you further");
+                    return $("{{error}}Why do you no longer want to receive messages?");
                 case "state_loss_subscription":
-                    return $("{{error}}We are sorry for your loss. Would the mother like to receive a small set of free messages from Hello Mama that could help during this difficult time?");
+                    return $("{{error}}We are sorry for your loss. Would the mother like to receive a small set of free messages that could help during this difficult time?");
                 case "state_end_loss_subscription_confirm":
                     return $("Thank you. You will now receive messages to support you during this difficult time.");
                 case "state_optout_receiver":
