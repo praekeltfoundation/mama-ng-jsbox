@@ -74,7 +74,7 @@ describe("Mama Nigeria App", function() {
                         reply: [
                             "You have an incomplete registration. Would you like to continue with this registration?",
                             "1. Yes",
-                            "2. No, start new registration"
+                            "2. No, start a new registration"
                         ].join('\n')
                     })
                     .run();
@@ -192,9 +192,9 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            it.skip("to state_msg_receiver", function() {
+            it("to state_msg_receiver", function() {
                 return tester
-                    .setup.user.addr('08080070007')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'  // state_auth_code - personnel code
@@ -202,7 +202,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_msg_receiver',
                         reply: [
-                            "Please select who will receive the messages on their phone?",
+                            "Welcome to Hello Mama. Who will receive the messages on their phone?",
                             "1. Mother, Father",
                             "2. Mother",
                             "3. Father",
@@ -269,7 +269,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_msisdn_already_registered',
                         reply: [
-                            "Sorry, this number is already registered. They must opt-out before they can register again.",
+                            "Sorry, this number is already registered. They must opt-out before continuing.",
                             "1. Try a different number",
                             "2. Choose a different receiver",
                             "3. Exit"
@@ -323,7 +323,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_msg_receiver',
                         reply: [
-                            "Please select who will receive the messages on their phone?",
+                            "Welcome to Hello Mama. Who will receive the messages on their phone?",
                             "1. Mother, Father",
                             "2. Mother",
                             "3. Father",
@@ -886,7 +886,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_msg_receiver',
                         reply: [
-                            "Sorry, invalid option. Please select who will receive the messages on their phone?",
+                            "Sorry, invalid option. Welcome to Hello Mama. Who will receive the messages on their phone?",
                             "1. Mother, Father",
                             "2. Mother",
                             "3. Father",
@@ -924,7 +924,7 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_msisdn_already_registered',
                         reply: [
-                            "Sorry, invalid option. Sorry, this number is already registered. They must opt-out before they can register again.",
+                            "Sorry, invalid option. Sorry, this number is already registered. They must opt-out before continuing.",
                             "1. Try a different number",
                             "2. Choose a different receiver",
                             "3. Exit"

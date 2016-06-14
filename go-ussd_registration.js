@@ -1317,11 +1317,11 @@ go.app = function() {
                 case "state_auth_code":
                     return $("{{error}}Please enter your Hello Mama code.");
                 case "state_msg_receiver":
-                    return $("{{error}}Please select who will receive the messages on their phone?");
+                    return $("{{error}}Welcome to Hello Mama. Who will receive the messages on their phone?");
                 case "state_msisdn":
                     return $("{{error}}Please enter the mobile number of the {{roleplayer}}. They must consent to receiving messages.");
                 case "state_msisdn_already_registered":
-                    return $("{{error}}Sorry, this number is already registered. They must opt-out before they can register again.");
+                    return $("{{error}}Sorry, this number is already registered. They must opt-out before continuing.");
                 case "state_msisdn_mother":
                     return $("{{error}}Please enter the mobile number of the mother. They must consent to receiving messages.");
                 case "state_msisdn_household":
@@ -1382,7 +1382,7 @@ go.app = function() {
                 question: get_content(name),
                 choices: [
                     new Choice('continue', $("Yes")),
-                    new Choice('restart', $("No, start new registration"))
+                    new Choice('restart', $("No, start a new registration"))
                 ],
                 next: function(choice) {
                     if (choice.value === 'continue') {
