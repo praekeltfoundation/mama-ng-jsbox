@@ -282,9 +282,9 @@ go.app = function() {
             return new PaginatedChoiceState(name, {
                 question: get_content(name).context({prefix:""}),
                 error: get_content(name)
-                    .context({prefix: state_error_types.invalid_selection}),
+                    .context({prefix: state_error_types.invalid_date}),
                 characters_per_page: 182,
-                options_per_page: null,
+                options_per_page: 5,
                 more: $('More'),
                 back: $('Back'),
                 choices: go.utils.make_month_choices($, today, 9, -1,

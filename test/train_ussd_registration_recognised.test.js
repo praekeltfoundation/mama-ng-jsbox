@@ -220,9 +220,7 @@ describe("Mama Nigeria App", function() {
                             "3. February 2015",
                             "4. January 2015",
                             "5. December 2014",
-                            "6. November 2014",
-                            "7. October 2014",
-                            "8. More"
+                            "6. More"
                         ].join('\n')
                     })
                     .run();
@@ -235,15 +233,17 @@ describe("Mama Nigeria App", function() {
                         , '6' // state_msg_receiver - friend_only
                         , '09092222222'  // state_msisdn
                         //, '1'  // state_msg_pregnancy_status - pregnant  // bypass postbirth flow
-                        , '8'   // state_last_period_month - More
+                        , '6'   // state_last_period_month - More
                     )
                     .check.interaction({
                         state: 'state_last_period_month',
                         reply: [
                             "Please select the month the woman started her last period:",
-                            "1. September 2014",
-                            "2. August 2014",
-                            "3. Back"
+                            "1. November 2014",
+                            "2. October 2014",
+                            "3. September 2014",
+                            "4. August 2014",
+                            "5. Back"
                         ].join('\n')
                     })
                     .run();
@@ -256,8 +256,8 @@ describe("Mama Nigeria App", function() {
                         , '6' // state_msg_receiver - friend_only
                         , '09092222222'  // state_msisdn
                         //, '1'  // state_msg_pregnancy_status - pregnant  // bypass postbirth flow
-                        , '8'   // state_last_period_month - More
-                        , '3'   // state_last_period_month - Back
+                        , '6'   // state_last_period_month - More
+                        , '5'   // state_last_period_month - Back
                     )
                     .check.interaction({
                         state: 'state_last_period_month',
@@ -268,9 +268,7 @@ describe("Mama Nigeria App", function() {
                             "3. February 2015",
                             "4. January 2015",
                             "5. December 2014",
-                            "6. November 2014",
-                            "7. October 2014",
-                            "8. More"
+                            "6. More"
                         ].join('\n')
                     })
                     .run();
@@ -734,7 +732,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            it.skip("validate state_last_period_month", function() {
+            it("validate state_last_period_month", function() {
                 return tester
                     .setup.user.addr('08080020002')
                     .setup.user.state('state_last_period_month')
@@ -750,9 +748,7 @@ describe("Mama Nigeria App", function() {
                             '3. February 2015',
                             '4. January 2015',
                             '5. December 2014',
-                            '6. November 2014',
-                            '7. October 2014',
-                            '8. More'
+                            '6. More'
                         ].join('\n')
                     })
                     .run();
