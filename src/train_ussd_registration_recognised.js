@@ -98,7 +98,7 @@ go.app = function() {
                 question: get_content(name),
                 choices: [
                     new Choice('continue', $("Yes")),
-                    new Choice('restart', $("No, start new registration"))
+                    new Choice('restart', $("No, start a new registration"))
                 ],
                 next: function(choice) {
                     if (choice.value === 'continue') {

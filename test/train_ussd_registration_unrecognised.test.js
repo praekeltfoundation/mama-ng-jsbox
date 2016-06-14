@@ -49,7 +49,7 @@ describe("Mama Nigeria App", function() {
                         reply: [
                             "You have an incomplete registration. Would you like to continue with this registration?",
                             "1. Yes",
-                            "2. No, start new registration"
+                            "2. No, start a new registration"
                         ].join('\n')
                     })
                     .run();
@@ -224,7 +224,7 @@ describe("Mama Nigeria App", function() {
                     .run();
             });
             // mother is pregnant
-            it("to state_last_period_month", function() {
+            it.skip("to state_last_period_month", function() {
                 return tester
                     .setup.user.addr('08080020002')
                     .inputs(

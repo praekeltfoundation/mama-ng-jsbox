@@ -48,7 +48,7 @@ describe("Mama Nigeria App", function() {
                         reply: [
                             "You have an incomplete registration. Would you like to continue with this registration?",
                             "1. Yes",
-                            "2. No, start new registration"
+                            "2. No, start a new registration"
                         ].join('\n')
                     })
                     .run();
