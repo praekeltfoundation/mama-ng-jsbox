@@ -241,12 +241,19 @@ go.utils_project = {
 
     // Construct url string
     make_speech_url: function(im, name, lang, num, retry) {
+        var url_array = [];
+
         var url_start = im.config.services.voice_content.url + lang + '/' + name + '_' + num;
-        if (retry) {
-            url_start += '_retry';
-        }
         var extension = '.mp3';
-        return url_start + extension;
+
+        if (retry) {
+            var error_url = go.utils_project.get_voice_error_url(im, name, lang);
+            url_array.push(error_url);
+        }
+
+        url_array.push(url_start + extension);
+
+        return url_array;
     },
 
     // Construct helper_data object
@@ -271,7 +278,7 @@ go.utils_project = {
 
         return im
             .log([
-                'Voice URL is: ' + voice_url,
+                'Voice URL is: ' + voice_url[0],
                 'Constructed from:',
                 '   Name: ' + name,
                 '   Lang: ' + lang,
@@ -284,8 +291,9 @@ go.utils_project = {
                         'Connection': ['close']
                     }
                 });
+
                 return http
-                    .head(voice_url)
+                    .head(voice_url[0])
                     .then(function (response) {
                         return {
                             voice: {
@@ -296,7 +304,7 @@ go.utils_project = {
                         };
                     }, function (error) {
                         return im
-                            .log('Unable to find voice file: ' + voice_url + '. Error: ' + error)
+                            .log('Unable to find voice file: ' + voice_url[0] + '. Error: ' + error)
                             .then(function () {
                                 return {
                                     voice: {
@@ -306,6 +314,30 @@ go.utils_project = {
                             });
                     });
             });
+    },
+
+    get_voice_error_url: function(im, name, lang) {
+        var states_to_error_map = {
+            "state_personnel_auth": "state_error_invalid_number",
+            "state_msg_receiver": "state_error_invalid_selection",
+            "state_msisdn": "state_error_invalid_number",
+            "state_msisdn_mother": "state_error_invalid_number",
+            "state_msisdn_household": "state_error_invalid_number",
+            "state_msisdn_already_registered": "state_error_invalid_selection",
+            "state_pregnancy_status": "state_error_invalid_selection",
+            "state_last_period_year": "state_error_invalid_date",
+            "state_last_period_month": "state_error_invalid_date",
+            "state_last_period_day": "state_error_invalid_date",
+            "state_gravida": "state_error_invalid_number",
+            "state_msg_language": "state_error_invalid_selection",
+            "state_msg_type": "state_error_invalid_selection",
+            "state_voice_days": "state_error_invalid_selection",
+            "state_voice_times": "state_error_invalid_selection"
+        };
+
+        var error_url = im.config.services.voice_content.url + lang + '/' + states_to_error_map[name] + '.mp3';
+
+        return error_url;
     },
 
 

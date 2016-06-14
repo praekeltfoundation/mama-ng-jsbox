@@ -255,13 +255,13 @@ module.exports = function (grunt) {
             options: {
                 reporter: 'spec'
             },
-            test_ussd_registration: {
+            /* test_ussd_registration: {
                 src: ['<%= paths.test.ussd_registration %>']
-            },
+            },*/
             test_voice_registration: {
                 src: ['<%= paths.test.voice_registration %>']
             },
-            test_ussd_public: {
+            /*test_ussd_public: {
                 src: ['<%= paths.test.ussd_public %>']
             },
             test_voice_public: {
@@ -284,7 +284,7 @@ module.exports = function (grunt) {
             },
             test_train_ussd_public: {
                 src: ['<%= paths.test.train_ussd_public %>']
-            },
+            },*/
         }
     });
 
