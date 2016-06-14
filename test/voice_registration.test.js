@@ -40,11 +40,6 @@ describe("Mama Nigeria App", function() {
                             api_token: 'test_token_message_sender',
                             url: "http://localhost:8006/api/v1/"
                         }
-                    },
-                    state_errors: {
-                        invalid_date: "Sorry, the date you entered is not valid.",
-                        invalid_selection: "Sorry, the option you selected is not valid.",
-                        invalid_number: "Sorry, the number you entered is not valid."
                     }
                 })
                 .setup(function(api) {
