@@ -28,66 +28,54 @@ go.app = function() {
 
     // TEXT CONTENT
 
-        var questions = {
-            "state_timed_out":
-                $("You have an incomplete registration. Would you like to continue with this registration?"),
-            "state_auth_code":
-                $("Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345"),
-            "state_msg_receiver":
-                $("Please select who will receive the messages on their phone:"),
-            "state_msisdn":
-                $("Please enter the mobile number of the person who will receive the weekly messages. For example, 08033048990"),
-            "state_msisdn_already_registered":
-                $("Sorry, this number is already registered. They must opt-out before registering again."),
-            "state_msisdn_mother":
-                $("Please enter the mother's mobile number. She must consent to receiving messages."),
-            "state_msisdn_household":
-                $("Please enter the mobile number of the {{roleplayer}}. They must consent to receiving messages."),
-            "state_pregnancy_status":
-                $("Please select one of the following:"),
-            "state_last_period_month":
-                $("Please select the month the woman had her last period:"),
-            "state_last_period_day":
-                $("What day of the month did the woman start her last period? For example, 12."),
-            "state_baby_birth_month_year":
-                $("Select the month & year the baby was born:"),
-            "state_baby_birth_day":
-                $("What day of the month was the baby born? For example, 12."),
-            "state_gravida":
-                $("Please enter the number of times the woman has been pregnant before. This includes any pregnancies she may not have carried to term."),
-            "state_msg_language":
-                $("Which language would this person like to receive these messages in?"),
-            "state_msg_type":
-                $("How would this person like to get messages?"),
-            "state_voice_days":
-                $("We will call them twice a week. On what days would the person like to receive these calls?"),
-            "state_voice_times":
-                $("Thank you. At what time would they like to receive these calls?"),
-            "state_end_voice":
-                $("Thank you. The person will now start receiving calls on {{days}} between {{times}}."),
-            "state_end_sms":
-                $("Thank you. The person will now start receiving messages three times a week."),
-            "state_end_msisdn":
-                $("Thank you for using the Hello Mama service.")
+        var get_content = function(state_name) {
+            switch (state_name) {
+                case "state_timed_out":
+                    return $("You have an incomplete registration. Would you like to continue with this registration?");
+                case "state_auth_code":
+                    return $("{{prefix}}Please enter your Hello Mama code.");
+                case "state_msg_receiver":
+                    return $("{{prefix}}Who will receive messages?");
+                case "state_msisdn":
+                    return $("{{prefix}}Please enter the mobile number of the {{roleplayer}}. They must consent to receiving messages.");
+                case "state_msisdn_mother":
+                    return $("{{prefix}}Please enter the mobile number of the mother. They must consent to receiving messages.");
+                case "state_msisdn_household":
+                    return $("{{prefix}}Please enter the mobile number of the {{roleplayer}}. They must consent to receiving messages.");
+                case "state_pregnancy_status":
+                    return $("{{prefix}}Please select one of the following:");
+                case "state_last_period_month":
+                    return $("{{prefix}}Please select the month the woman started her last period:");
+                case "state_last_period_day":
+                    return $("{{prefix}}What date of the month did the woman start her last period?");
+                case "state_baby_birth_month_year":
+                    return $("{{prefix}}Select the month and year the baby was born:");
+                case "state_baby_birth_day":
+                    return $("{{prefix}}On what date of the month was the baby born?");
+                case "state_gravida":
+                    return $("{{prefix}}Please enter the total number of times the woman has been pregnant. This includes any pregnancies she may not have carried to term.");
+                case "state_msg_language":
+                    return $("{{prefix}}What language would they like to receive the messages in?");
+                case "state_msg_type":
+                    return $("{{prefix}}How would they like to receive the messages?");
+                case "state_voice_days":
+                    return $("{{prefix}}On what days would they like to receive these calls?");
+                case "state_voice_times":
+                    return $("{{prefix}}At what time would they like to receive these calls on {{days}}?");
+                case "state_end_voice":
+                    return $("Thank you. They will now start receiving calls on {{days}} between {{times}}.");
+                case "state_end_sms":
+                    return $("Thank you. They will now start receiving messages three times a week on Monday, Wednesday and Friday.");
+                case "state_end_msisdn":
+                    return $("Thank you for using the Hello Mama service.");
+            }
         };
 
-        var errors = {
-            "state_auth_code":
-                $("Sorry, that is not a valid number. Please enter your unique personnel code. For example, 12345"),
-            "state_msisdn":
-                $("Sorry, that is not a valid number. Please enter the mobile number of the person who will receive the weekly messages. For example, 08033048990"),
-            "state_msisdn_mother":
-                $("Sorry, that is not a valid number. Please enter the mother's mobile number. She must consent to receiving messages."),
-            "state_msisdn_household":
-                $("Sorry, that is not a valid number. Please enter the mobile number of the {{roleplayer}}. They must consent to receiving messages."),
-            "state_last_period_day":
-                $("Sorry, that is not a valid number. What day of the month did the woman start her last period? For example, 12."),
-            "state_gravida":
-                $("Sorry, that is not a valid number. Please enter the number of times the woman has been pregnant before. This includes any pregnancies she may not have carried to term."),
-            "state_baby_birth_day":
-                $("Sorry, that is not a valid number. What day of the month was the baby born? For example, 12."),
+        var state_error_types = {
+            "invalid_date": "Sorry, invalid date. ",
+            "invalid_selection": "Sorry, invalid option. ",
+            "invalid_number": "Sorry, invalid number. "
         };
-
 
     // TIMEOUT HANDLING
 
@@ -107,10 +95,10 @@ go.app = function() {
         // timeout 01
         self.states.add('state_timed_out', function(name, creator_opts) {
             return new ChoiceState(name, {
-                question: questions[name],
+                question: get_content(name),
                 choices: [
                     new Choice('continue', $("Yes")),
-                    new Choice('restart', $("No, start new registration"))
+                    new Choice('restart', $("No, start a new registration"))
                 ],
                 next: function(choice) {
                     if (choice.value === 'continue') {
@@ -139,7 +127,9 @@ go.app = function() {
         // ChoiceState st-02
         self.add('state_msg_receiver', function(name) {
             return new ChoiceState(name, {
-                question: questions[name],
+                question: get_content(name).context({prefix:"Welcome to the Hello Mama training line. "}),
+                error: get_content(name)
+                    .context({prefix: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('mother_father', $("Mother, Father")),
                     new Choice('mother_only', $("Mother")),
@@ -163,12 +153,28 @@ go.app = function() {
         // FreeText st-03
         self.add('state_msisdn', function(name) {
             return new FreeText(name, {
-                question: questions[name],
+                question: get_content(name).context({
+                    prefix: "",
+                    roleplayer: self.im.user.answers.state_msg_receiver
+                        // change the state_msg_receiver answer to display correctly
+                        // in the ussd text
+                        .replace('mother_only', 'mother')
+                        .replace('father_only', 'father')
+                        .replace('friend_only', 'friend')
+                        .replace('family_only', 'family member')
+                }),
                 check: function(content) {
                     if (go.utils.is_valid_msisdn(content)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
-                        return errors[name];
+                        return get_content(name).context({
+                            prefix: state_error_types.invalid_number,
+                            roleplayer: self.im.user.answers.state_msg_receiver
+                                .replace('mother_only', 'mother')
+                                .replace('father_only', 'father')
+                                .replace('friend_only', 'friend')
+                                .replace('family_only', 'family member')
+                        });
                     }
                 },
                 next: function(content) {
@@ -180,12 +186,13 @@ go.app = function() {
         // FreeText st-3A
         self.add('state_msisdn_mother', function(name) {
             return new FreeText(name, {
-                question: questions[name],
+                question: get_content(name).context({prefix:""}),
                 check: function(content) {
                     if (go.utils.is_valid_msisdn(content)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
-                        return errors[name];
+                        return get_content(name)
+                            .context({prefix: state_error_types.invalid_number});
                     }
                 },
                 next: 'state_msisdn_household'
@@ -195,7 +202,8 @@ go.app = function() {
         // FreeText st-3B
         self.add('state_msisdn_household', function(name) {
             return new FreeText(name, {
-                question: questions[name].context({
+                question: get_content(name).context({
+                    prefix: "",
                     roleplayer: self.im.user.answers.state_msg_receiver
                         // change the state_msg_receiver answer to display correctly
                         // in the ussd text
@@ -206,7 +214,8 @@ go.app = function() {
                     if (go.utils.is_valid_msisdn(content)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
-                        return errors[name].context({
+                        return get_content(name).context({
+                            prefix: state_error_types.invalid_number,
                             roleplayer: self.im.user.answers.state_msg_receiver
                                 // change the state_msg_receiver answer to display correctly
                                 // in the ussd text
@@ -234,7 +243,9 @@ go.app = function() {
         // ChoiceState st-04
         self.add('state_pregnancy_status', function(name) {
             return new ChoiceState(name, {
-                question: questions[name],
+                question: get_content(name).context({prefix:""}),
+                error: get_content(name)
+                    .context({prefix: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('prebirth', $("The mother is pregnant")),
                     new Choice('postbirth', $("The mother has a baby under 1 year old"))
@@ -251,9 +262,11 @@ go.app = function() {
         self.add('state_last_period_month', function(name) {
             var today = go.utils.get_today(self.im.config);
             return new PaginatedChoiceState(name, {
-                question: questions[name],
+                question: get_content(name).context({prefix:""}),
+                error: get_content(name)
+                    .context({prefix: state_error_types.invalid_date}),
                 characters_per_page: 182,
-                options_per_page: null,
+                options_per_page: 5,
                 more: $('More'),
                 back: $('Back'),
                 choices: go.utils.make_month_choices($, today, 9, -1,
@@ -265,12 +278,13 @@ go.app = function() {
         // FreeText st-06
         self.add('state_last_period_day', function(name) {
             return new FreeText(name, {
-                question: questions[name],
+                question: get_content(name).context({prefix:""}),
                 check: function(content) {
                     if (go.utils.is_valid_day_of_month(content)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
-                        return errors[name];
+                        return get_content(name)
+                            .context({prefix: state_error_types.invalid_date});
                     }
                 },
                 next: 'state_validate_date'
@@ -279,12 +293,13 @@ go.app = function() {
 
         self.add('state_gravida', function(name) {
             return new FreeText(name, {
-                question: questions[name],
+                question: get_content(name).context({prefix:""}),
                 check: function(content) {
                     if (go.utils.check_valid_number(content)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
-                        return errors[name];
+                        return get_content(name)
+                            .context({prefix: state_error_types.invalid_number});
                     }
                 },
                 next: 'state_msg_language'
@@ -294,7 +309,9 @@ go.app = function() {
         // ChoiceState st-07
         self.add('state_msg_language', function(name) {
             return new ChoiceState(name, {
-                question: questions[name],
+                question: get_content(name).context({prefix:""}),
+                error: get_content(name)
+                    .context({prefix: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('eng_NG', $('English')),
                     new Choice('ibo_NG', $('Igbo')),
@@ -307,7 +324,9 @@ go.app = function() {
         // ChoiceState st-08
         self.add('state_msg_type', function(name) {
             return new ChoiceState(name, {
-                question: questions[name],
+                question: get_content(name).context({prefix:""}),
+                error: get_content(name)
+                    .context({prefix: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('audio', $('Voice calls')),
                     new Choice('text', $('Text SMSs'))
@@ -325,7 +344,9 @@ go.app = function() {
         // ChoiceState st-09
         self.add('state_voice_days', function(name) {
             return new ChoiceState(name, {
-                question: questions[name],
+                question: get_content(name).context({prefix:""}),
+                error: get_content(name)
+                    .context({prefix: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('mon_wed', $('Monday and Wednesday')),
                     new Choice('tue_thu', $('Tuesday and Thursday'))
@@ -337,7 +358,16 @@ go.app = function() {
         // ChoiceState st-10
         self.add('state_voice_times', function(name) {
             return new ChoiceState(name, {
-                question: questions[name],
+                question: get_content(name)
+                    .context({prefix: "",
+                        days: self.im.user.answers.state_voice_days
+                        .replace('mon_wed', 'Mondays and Wednesdays')
+                        .replace('tue_thu', 'Tuesdays and Thursdays')}),
+                error: get_content(name)
+                    .context({prefix: state_error_types.invalid_selection,
+                        days: self.im.user.answers.state_voice_days
+                        .replace('mon_wed', 'Mondays and Wednesdays')
+                        .replace('tue_thu', 'Tuesdays and Thursdays')}),
                 choices: [
                     new Choice('9_11', $('Between 9-11am')),
                     new Choice('2_5', $('Between 2-5pm'))
@@ -357,7 +387,7 @@ go.app = function() {
                 "2_5": "2pm - 5pm"
             };
             return new EndState(name, {
-                text: questions[name].context({
+                text: get_content(name).context({
                     days: voice_schedule[self.im.user.answers.state_voice_days],
                     times: voice_schedule[self.im.user.answers.state_voice_times]
                 }),
@@ -369,7 +399,9 @@ go.app = function() {
         self.add('state_baby_birth_month_year', function(name) {
             var today = go.utils.get_today(self.im.config);
             return new PaginatedChoiceState(name, {
-                question: questions[name],
+                question: get_content(name).context({prefix:""}),
+                error: get_content(name)
+                    .context({prefix: state_error_types.invalid_selection}),
                 characters_per_page: 182,
                 options_per_page: null,
                 more: $('More'),
@@ -383,12 +415,13 @@ go.app = function() {
         // FreeText st-14
         self.add('state_baby_birth_day', function(name) {
             return new FreeText(name, {
-                question: questions[name],
+                question: get_content(name).context({prefix:""}),
                 check: function(content) {
                     if (go.utils.is_valid_day_of_month(content)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
-                        return errors[name];
+                        return get_content(name)
+                            .context({prefix: state_error_types.invalid_selection});
                     }
                 },
                 next: 'state_validate_date'
@@ -398,7 +431,7 @@ go.app = function() {
         // EndState st-15
         self.add('state_end_sms', function(name) {
             return new EndState(name, {
-                text: questions[name],
+                text: get_content(name),
                 next: 'state_start'
             });
         });
@@ -423,20 +456,29 @@ go.app = function() {
         self.add('state_invalid_date', function(name, opts) {
             return new ChoiceState(name, {
                 question:
-                    $('The date you entered ({{ date }}) is not a ' +
-                        'real date. Please try again.'
-                    ).context({date: opts.date}),
-
+                    $('The date you entered ({{ date }}) is incorrect. ' +
+                        'Please try again.').context({date: opts.date}),
+                error:
+                    $('{{prefix}}The date you entered ({{ date }}) is incorrect. ' +
+                        'Please try again.')
+                        .context({prefix: state_error_types.invalid_selection,
+                            date: opts.date}),
                 choices: [
-                    new Choice('continue', $('Continue'))
+                    new Choice('continue', $('Continue')),
+                    new Choice('exit', $('Exit'))
                 ],
-                next: function() {
-                    if (self.im.user.answers.state_last_period_day) {  // flow via st-05 & st-06
-                        return self.states.create('state_last_period_month');
+                next: function(choice) {
+                    if (choice.value !== 'exit') {
+                        if (self.im.user.answers.state_last_period_day) {  // flow via st-05 & st-06
+                            return 'state_last_period_month';
+                        }
+                        else if (self.im.user.answers.state_baby_birth_day) { // flow via st-12 & st-13
+                            return 'state_baby_birth_month_year';
+                        }
+                    } else {
+                        return 'state_end_msisdn';
                     }
-                    else if (self.im.user.answers.state_baby_birth_day) { // flow via st-12 & st-13
-                        return self.states.create('state_baby_birth_month_year');
-                    }
+
                 }
             });
         });

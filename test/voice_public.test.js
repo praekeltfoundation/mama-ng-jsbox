@@ -118,13 +118,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .check.user.properties({lang: 'eng_NG'})
                     .check(function(api) {
-                        var expected_used = [25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [25]);
                     })
                     .run();
             });
@@ -155,13 +149,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [25]);
                     })
                     .run();
             });
@@ -189,13 +177,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [25]);
                     })
                     .run();
             });
@@ -221,13 +203,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [25]);
                     })
                     .run();
             });
@@ -260,13 +236,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .check.user.properties({lang: 'ibo_NG'})
                     .check(function(api) {
-                        var expected_used = [2,9,25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [2,9,25]);
                     })
                     .run();
             });
@@ -296,13 +266,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [0,25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [0,25]);
                     })
                     .run();
             });
@@ -328,13 +292,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [0,25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [0,25]);
                     })
                     .run();
             });
@@ -360,13 +318,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [0,25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [0,25]);
                     })
                     .run();
             });
@@ -395,13 +347,7 @@ describe("Mama Nigeria App", function() {
                     }
                 })
                 .check(function(api) {
-                    var expected_used = [25,70,71,72,73];
-                    var fixts = api.http.fixtures.fixtures;
-                    var fixts_used = [];
-                    fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                    });
-                    assert.deepEqual(fixts_used, expected_used);
+                    go.utils.check_fixtures_used(api, [25,70,71,72,73]);
                 })
                 .run();
             });
@@ -427,13 +373,7 @@ describe("Mama Nigeria App", function() {
                     }
                 })
                 .check(function(api) {
-                    var expected_used = [2,9,16,17,25];
-                    var fixts = api.http.fixtures.fixtures;
-                    var fixts_used = [];
-                    fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                    });
-                    assert.deepEqual(fixts_used, expected_used);
+                    go.utils.check_fixtures_used(api, [2,9,16,17,25]);
                 })
                 .run();
             });
@@ -460,13 +400,7 @@ describe("Mama Nigeria App", function() {
                     }
                 })
                 .check(function(api) {
-                    var expected_used = [4,5,19,20,25];
-                    var fixts = api.http.fixtures.fixtures;
-                    var fixts_used = [];
-                    fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                    });
-                    assert.deepEqual(fixts_used, expected_used);
+                    go.utils.check_fixtures_used(api, [4,5,19,20,25]);
                 })
                 .run();
             });
@@ -492,13 +426,7 @@ describe("Mama Nigeria App", function() {
                     }
                 })
                 .check(function(api) {
-                    var expected_used = [7,12,13,22,23,25];
-                    var fixts = api.http.fixtures.fixtures;
-                    var fixts_used = [];
-                    fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                    });
-                    assert.deepEqual(fixts_used, expected_used);
+                    go.utils.check_fixtures_used(api, [7,12,13,22,23,25]);
                 })
                 .run();
             });
@@ -524,13 +452,7 @@ describe("Mama Nigeria App", function() {
                     }
                 })
                 .check(function(api) {
-                    var expected_used = [6,7,13,22,23,25];
-                    var fixts = api.http.fixtures.fixtures;
-                    var fixts_used = [];
-                    fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                    });
-                    assert.deepEqual(fixts_used, expected_used);
+                    go.utils.check_fixtures_used(api, [6,7,13,22,23,25]);
                 })
                 .run();
             });
@@ -563,13 +485,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [2,9,16,17,25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [2,9,16,17,25]);
                     })
                     .run();
                 });
@@ -600,13 +516,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [2,9,16,17,25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [2,9,16,17,25]);
                     })
                     .run();
                 });
@@ -638,13 +548,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [2,9,16,17,25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [2,9,16,17,25]);
                     })
                     .run();
                 });
@@ -673,13 +577,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [2,9,16,17,18,25,26];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [2,9,16,17,18,25,26]);
                     })
                     .run();
                 });
@@ -712,13 +610,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [4,5,19,20,25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [4,5,19,20,25]);
                     })
                     .run();
                 });
@@ -749,13 +641,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [4,5,19,20,25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [4,5,19,20,25]);
                     })
                     .run();
                 });
@@ -787,13 +673,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [4,5,19,20,25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [4,5,19,20,25]);
                     })
                     .run();
                 });
@@ -822,13 +702,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [4,5,19,20,21,25,28,30];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [4,5,19,20,21,25,28,30]);
                     })
                     .run();
                 });
@@ -860,13 +734,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [7,12,13,22,23,25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [7,12,13,22,23,25]);
                     })
                     .run();
                 });
@@ -893,13 +761,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [7,12,13,22,23,24,25,29];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [7,12,13,22,23,24,25,29]);
                     })
                     .run();
                 });
@@ -1222,13 +1084,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [2,9,25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [2,9,25]);
                     })
                     .run();
                 });
@@ -1259,13 +1115,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [2,9,25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [2,9,25]);
                     })
                     .run();
                 });
@@ -1294,13 +1144,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [2,9,25,31];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [2,9,25,31]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -1330,13 +1174,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [2,9,25,77];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [2,9,25,77]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -1365,13 +1203,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [2,9,25,78];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [2,9,25,78]);
                     })
                     .run();
                 });
@@ -1399,13 +1231,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [2,9,25,79];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [2,9,25,79]);
                     })
                     .run();
                 });
@@ -1433,13 +1259,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [2,9,25,80];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [2,9,25,80]);
                     })
                     .run();
                 });
@@ -1467,13 +1287,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [2,9,25,81];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [2,9,25,81]);
                     })
                     .run();
                 });
@@ -1534,13 +1348,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [4,5,25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [4,5,25]);
                     })
                     .run();
                 });
@@ -1571,13 +1379,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [4,5,25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [4,5,25]);
                     })
                     .run();
                 });
@@ -1606,13 +1408,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [4,5,25,32,33];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [4,5,25,32,33]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -1642,13 +1438,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [4,5,25,82];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [4,5,25,82]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -1677,13 +1467,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [4,5,25,83];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [4,5,25,83]);
                     })
                     .run();
                 });
@@ -1711,13 +1495,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [4,5,25,84];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [4,5,25,84]);
                     })
                     .run();
                 });
@@ -1750,13 +1528,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [4,5,25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [4,5,25]);
                     })
                     .run();
                 });
@@ -1785,13 +1557,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [4,5,25,52];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [4,5,25,52]);
                     })
                     .run();
                 });
@@ -1820,13 +1586,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [4,5,25,60];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [4,5,25,60]);
                     })
                     .run();
                 });
@@ -1855,13 +1615,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [4,5,25,52,85];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [4,5,25,52,85]);
                     })
                     .run();
                 });
@@ -1894,13 +1648,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [4,5,25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [4,5,25]);
                     })
                     .run();
                 });
@@ -1929,13 +1677,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [4,5,25,57];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [4,5,25,57]);
                     })
                     .run();
                 });
@@ -1964,13 +1706,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [4,5,25,61];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [4,5,25,61]);
                     })
                     .run();
                 });
@@ -1999,13 +1735,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [4,5,25,57,86];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [4,5,25,57,86]);
                     })
                     .run();
                 });
@@ -2041,13 +1771,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [7,12,13,25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [7,12,13,25]);
                     })
                     .run();
                 });
@@ -2078,13 +1802,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [7,12,13,25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [7,12,13,25]);
                     })
                     .run();
                 });
@@ -2113,13 +1831,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [7,12,13,25,34,92];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [7,12,13,25,34,92]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -2149,13 +1861,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [7,12,13,25,87,92];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [7,12,13,25,87,92]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -2184,13 +1890,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [7,12,13,25,88,93];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [7,12,13,25,88,93]);
                     })
                     .run();
                 });
@@ -2218,13 +1918,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [7,12,13,25,89,94];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [7,12,13,25,89,94]);
                     })
                     .run();
                 });
@@ -2257,13 +1951,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [7,12,13,25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [7,12,13,25]);
                     })
                     .run();
                 });
@@ -2292,13 +1980,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [7,12,13,25,90];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [7,12,13,25,90]);
                     })
                     .run();
                 });
@@ -2327,13 +2009,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [7,12,13,25,95];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [7,12,13,25,95]);
                     })
                     .run();
                 });
@@ -2362,13 +2038,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [7,12,13,25,90,95];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [7,12,13,25,90,95]);
                     })
                     .run();
                 });
@@ -2401,13 +2071,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [7,12,13,25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [7,12,13,25]);
                     })
                     .run();
                 });
@@ -2436,13 +2100,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [7,12,13,25,91];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [7,12,13,25,91]);
                     })
                     .run();
                 });
@@ -2471,13 +2129,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [7,12,13,25,96];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [7,12,13,25,96]);
                     })
                     .run();
                 });
@@ -2506,13 +2158,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [7,12,13,25,91,96];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [7,12,13,25,91,96]);
                     })
                     .run();
                 });
@@ -2548,13 +2194,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [6,7,13,25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [6,7,13,25]);
                     })
                     .run();
                 });
@@ -2585,13 +2225,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [6,7,13,25];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [6,7,13,25]);
                     })
                     .run();
                 });
@@ -2620,13 +2254,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [6,7,13,25,34,92];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [6,7,13,25,34,92]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -2656,13 +2284,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [6,7,13,25,87,92];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [6,7,13,25,87,92]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -2691,13 +2313,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [6,7,13,25,88,93];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                            f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [6,7,13,25,88,93]);
                     })
                     .run();
                 });
@@ -2725,13 +2341,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [6,7,13,25,89,94];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [6,7,13,25,89,94]);
                     })
                     .run();
                 });
@@ -2759,13 +2369,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [6,7,13,25,95];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [6,7,13,25,95]);
                     })
                     .run();
                 });
@@ -2793,13 +2397,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        var expected_used = [6,7,13,25,96];
-                        var fixts = api.http.fixtures.fixtures;
-                        var fixts_used = [];
-                        fixts.forEach(function(f, i) {
-                        f.uses > 0 ? fixts_used.push(i) : null;
-                        });
-                        assert.deepEqual(fixts_used, expected_used);
+                        go.utils.check_fixtures_used(api, [6,7,13,25,96]);
                     })
                     .run();
                 });
