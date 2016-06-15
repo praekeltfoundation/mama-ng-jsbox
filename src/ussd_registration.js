@@ -73,9 +73,9 @@ go.app = function() {
         };
 
         var state_error_types = {
-            "invalid_date": $("Sorry, invalid date. "),
-            "invalid_selection": $("Sorry, invalid option. "),
-            "invalid_number": $("Sorry, invalid number. ")
+            "invalid_date": "Sorry, invalid date. ",
+            "invalid_selection": "Sorry, invalid option. ",
+            "invalid_number": "Sorry, invalid number. "
         };
 
     // TIMEOUT HANDLING
@@ -149,7 +149,7 @@ go.app = function() {
                                 return null;  // vumi expects null or undefined if check passes
                             } else {
                                 return get_content(name)
-                                    .context({prefix: state_error_types.invalid_number.args[0]});
+                                    .context({prefix: state_error_types.invalid_number});
                             }
                         });
                 },
@@ -161,7 +161,7 @@ go.app = function() {
         self.add('state_msg_receiver', function(name) {
             return new ChoiceState(name, {
                 question: get_content(name).context({prefix:"Welcome to Hello Mama. "}),
-                error: get_content(name).context({prefix: state_error_types.invalid_selection.args[0]}),
+                error: get_content(name).context({prefix: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('mother_father', $("Mother, Father")),
                     new Choice('mother_only', $("Mother")),
@@ -200,7 +200,7 @@ go.app = function() {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return get_content(name).context({
-                            prefix: state_error_types.invalid_number.args[0],
+                            prefix: state_error_types.invalid_number,
                             roleplayer: self.im.user.answers.state_msg_receiver
                                 // change the state_msg_receiver answer to display correctly
                                 // in the ussd text
@@ -234,7 +234,7 @@ go.app = function() {
             return new ChoiceState(name, {
                 question: get_content(name).context({prefix:""}),
                 error: get_content(name)
-                    .context({prefix: state_error_types.invalid_selection.args[0]}),
+                    .context({prefix: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('state_msisdn', $("Try a different number")),
                     new Choice('state_msg_receiver', $("Choose a different receiver")),
@@ -266,7 +266,7 @@ go.app = function() {
                     if (go.utils.is_valid_msisdn(content)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
-                        return get_content(name).context({prefix: state_error_types.invalid_number.args[0]});
+                        return get_content(name).context({prefix: state_error_types.invalid_number});
                     }
                 },
                 next: 'state_msisdn_household'
@@ -289,7 +289,7 @@ go.app = function() {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return get_content(name).context({
-                            prefix: state_error_types.invalid_number.args[0],
+                            prefix: state_error_types.invalid_number,
                             roleplayer: self.im.user.answers.state_msg_receiver
                                 // change the state_msg_receiver answer to display correctly
                                 // in the ussd text
@@ -341,7 +341,7 @@ go.app = function() {
         self.add('state_pregnancy_status', function(name) {
             return new ChoiceState(name, {
                 question: get_content(name).context({prefix:""}),
-                error: get_content(name).context({prefix: state_error_types.invalid_date.args[0]}),
+                error: get_content(name).context({prefix: state_error_types.invalid_date}),
                 choices: [
                     new Choice('prebirth', $("The mother is pregnant")),
                     new Choice('postbirth', $("The mother has a baby under 1 year old"))
@@ -359,7 +359,7 @@ go.app = function() {
             var today = go.utils.get_today(self.im.config);
             return new PaginatedChoiceState(name, {
                 question: get_content(name).context({prefix:""}),
-                error: get_content(name).context({prefix: state_error_types.invalid_date.args[0]}),
+                error: get_content(name).context({prefix: state_error_types.invalid_date}),
                 characters_per_page: 182,
                 options_per_page: 5,
                 more: $('More'),
@@ -378,7 +378,7 @@ go.app = function() {
                     if (go.utils.is_valid_day_of_month(content)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
-                        return get_content(name).context({prefix: state_error_types.invalid_date.args[0]});
+                        return get_content(name).context({prefix: state_error_types.invalid_date});
                     }
                 },
                 next: 'state_validate_date'
@@ -393,7 +393,7 @@ go.app = function() {
                     if (go.utils.check_valid_number(content)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
-                        return get_content(name).context({prefix: state_error_types.invalid_number.args[0]});
+                        return get_content(name).context({prefix: state_error_types.invalid_number});
                     }
                 },
                 next: 'state_msg_language'
@@ -404,7 +404,7 @@ go.app = function() {
         self.add('state_msg_language', function(name) {
             return new ChoiceState(name, {
                 question: get_content(name).context({prefix:""}),
-                error: get_content(name).context({prefix: state_error_types.invalid_selection.args[0]}),
+                error: get_content(name).context({prefix: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('eng_NG', $('English')),
                     new Choice('ibo_NG', $('Igbo')),
@@ -418,7 +418,7 @@ go.app = function() {
         self.add('state_msg_type', function(name) {
             return new ChoiceState(name, {
                 question: get_content(name).context({prefix:""}),
-                error: get_content(name).context({prefix: state_error_types.invalid_selection.args[0]}),
+                error: get_content(name).context({prefix: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('audio', $('Voice calls')),
                     new Choice('text', $('Text SMSs'))
@@ -441,7 +441,7 @@ go.app = function() {
         self.add('state_voice_days', function(name) {
             return new ChoiceState(name, {
                 question: get_content(name).context({prefix:""}),
-                error: get_content(name).context({prefix: state_error_types.invalid_selection.args[0]}),
+                error: get_content(name).context({prefix: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('mon_wed', $('Monday and Wednesday')),
                     new Choice('tue_thu', $('Tuesday and Thursday'))
@@ -460,7 +460,7 @@ go.app = function() {
                         .replace('tue_thu', 'Tuesdays and Thursdays')
                 }),
                 error: get_content(name).context({
-                    prefix: state_error_types.invalid_selection.args[0],
+                    prefix: state_error_types.invalid_selection,
                     days: self.im.user.answers.state_voice_days
                         .replace('mon_wed', 'Mondays and Wednesdays')
                         .replace('tue_thu', 'Tuesdays and Thursdays')
@@ -501,7 +501,7 @@ go.app = function() {
             var today = go.utils.get_today(self.im.config);
             return new PaginatedChoiceState(name, {
                 question: get_content(name).context({prefix:""}),
-                error: get_content(name).context({prefix: state_error_types.invalid_date.args[0]}),
+                error: get_content(name).context({prefix: state_error_types.invalid_date}),
                 characters_per_page: 182,
                 options_per_page: null,
                 more: $('More'),
@@ -560,7 +560,7 @@ go.app = function() {
                 error:
                     $('{{prefix}}The date you entered ({{ date }}) is incorrect. ' +
                         'Please try again.')
-                        .context({prefix: state_error_types.invalid_selection.args[0],
+                        .context({prefix: state_error_types.invalid_selection,
                             date: opts.date}),
                 choices: [
                     new Choice('continue', $('Continue')),
