@@ -76,7 +76,7 @@ describe("Mama Nigeria App", function() {
                         {session_event: 'new'}
                         , '05059992222' // state_msg_receiver_msisdn
                         , '3'  // state_main_menu - number
-                        , '*'  // state_end_baby - repeat
+                        , '*'  // state_new_msisdn - repeat
                     )
                     .check.interaction({
                         state: 'state_new_msisdn'

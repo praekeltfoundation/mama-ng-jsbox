@@ -1356,6 +1356,7 @@ go.app = function() {
                     // Prevent previous content being passed to next state
                     // thus preventing infinite repeat loop
                     self.im.msg.content = null;
+                    console.log("***" + name);
                     return self.states.create(name, pass_opts);
                 }
 
