@@ -65,15 +65,7 @@ describe("Mama Nigeria App", function() {
                         , '0'  // state_end_baby - restart
                     )
                     .check.interaction({
-                        state: 'state_main_menu',
-                        reply: [
-                            'Choose:',
-                            '1. baby',
-                            '2. preferences',
-                            '3. number',
-                            '4. language',
-                            '5. optout'
-                        ].join('\n')
+                        state: 'state_main_menu'
                     })
                     .run();
             });
@@ -87,8 +79,7 @@ describe("Mama Nigeria App", function() {
                         , '*'  // state_end_baby - repeat
                     )
                     .check.interaction({
-                        state: 'state_new_msisdn',
-                        reply: 'Please enter new mobile number'
+                        state: 'state_new_msisdn'
                     })
                     .run();
             });
@@ -104,8 +95,7 @@ describe("Mama Nigeria App", function() {
                         {session_event: 'new'}
                     )
                     .check.interaction({
-                        state: 'state_msg_receiver_msisdn',
-                        reply: 'Welcome, Number'
+                        state: 'state_msg_receiver_msisdn'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -136,8 +126,7 @@ describe("Mama Nigeria App", function() {
                         , '5551234'  // msg_receiver_msisdn
                     )
                     .check.interaction({
-                        state: 'state_msg_receiver_msisdn',
-                        reply: "Retry. Welcome, Number"
+                        state: 'state_msg_receiver_msisdn'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -167,8 +156,7 @@ describe("Mama Nigeria App", function() {
                         , '0'  // state_msg_receiver_msisdn - restart
                     )
                     .check.interaction({
-                        state: 'state_msg_receiver_msisdn',
-                        reply: "Retry. Welcome, Number"
+                        state: 'state_msg_receiver_msisdn'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -196,8 +184,7 @@ describe("Mama Nigeria App", function() {
                         , '*'   // state_msg_receiver_msisdn - repeat
                     )
                     .check.interaction({
-                        state: 'state_msg_receiver_msisdn',
-                        reply: "Retry. Welcome, Number"
+                        state: 'state_msg_receiver_msisdn'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -224,15 +211,7 @@ describe("Mama Nigeria App", function() {
                         , '05059992222'  // msg_receiver_msisdn
                     )
                     .check.interaction({
-                        state: 'state_main_menu',
-                        reply: [
-                        'Choose:',
-                        '1. baby',
-                        '2. preferences',
-                        '3. number',
-                        '4. language',
-                        '5. optout'
-                        ].join('\n')
+                        state: 'state_main_menu'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -258,12 +237,7 @@ describe("Mama Nigeria App", function() {
                         , '05059991111'  // msg_receiver_msisdn
                     )
                     .check.interaction({
-                        state: 'state_msisdn_not_recognised',
-                        reply: [
-                        'Number not recognised.',
-                        '1. If you entered the incorrect number, press 1',
-                        '2. to exit, press 2'
-                        ].join('\n')
+                        state: 'state_msisdn_not_recognised'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -288,8 +262,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_msisdn_not_recognised - incorrect number
                     )
                     .check.interaction({
-                        state: 'state_msg_receiver_msisdn',
-                        reply: 'Welcome, Number'
+                        state: 'state_msg_receiver_msisdn'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -314,8 +287,7 @@ describe("Mama Nigeria App", function() {
                         , '2'  // state_msisdn_not_recognised - exit
                     )
                     .check.interaction({
-                        state: 'state_end_exit',
-                        reply: 'Thank you for using the Hello Mama service. Goodbye.'
+                        state: 'state_end_exit'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -343,8 +315,7 @@ describe("Mama Nigeria App", function() {
                     , '1'  // main_menu - baby
                 )
                 .check.interaction({
-                    state: 'state_already_registered_baby',
-                    reply: 'You are already subscribed.'
+                    state: 'state_already_registered_baby'
                 })
                 .check.reply.properties({
                     helper_metadata: {
@@ -369,8 +340,7 @@ describe("Mama Nigeria App", function() {
                     , '1'  // main_menu - baby
                 )
                 .check.interaction({
-                    state: 'state_end_baby',
-                    reply: 'Thank you - baby'
+                    state: 'state_end_baby'
                 })
                 .check.reply.properties({
                     helper_metadata: {
@@ -396,8 +366,7 @@ describe("Mama Nigeria App", function() {
                     , '1'  // main_menu - baby
                 )
                 .check.interaction({
-                    state: 'state_end_baby',
-                    reply: 'Thank you - baby'
+                    state: 'state_end_baby'
                 })
                 .check.reply.properties({
                     helper_metadata: {
@@ -422,8 +391,7 @@ describe("Mama Nigeria App", function() {
                     , '1'  // main_menu - baby
                 )
                 .check.interaction({
-                    state: 'state_end_baby',
-                    reply: 'Thank you - baby'
+                    state: 'state_end_baby'
                 })
                 .check.reply.properties({
                     helper_metadata: {
@@ -448,8 +416,7 @@ describe("Mama Nigeria App", function() {
                     , '1'  // main_menu - baby
                 )
                 .check.interaction({
-                    state: 'state_end_baby',
-                    reply: 'Thank you - baby'
+                    state: 'state_end_baby'
                 })
                 .check.reply.properties({
                     helper_metadata: {
@@ -478,11 +445,7 @@ describe("Mama Nigeria App", function() {
                         , '2'  // main_menu - msg_pref
                     )
                     .check.interaction({
-                        state: 'state_change_menu_sms',
-                        reply: [
-                            'Please select what you would like to do:',
-                            '1. Change from text to voice'
-                        ].join('\n')
+                        state: 'state_change_menu_sms'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -508,12 +471,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_change_menu_sms - change text to voice
                     )
                     .check.interaction({
-                        state: 'state_voice_days',
-                        reply: [
-                            'Message days?',
-                            '1. Monday and Wednesday',
-                            '2. Tuesday and Thursday'
-                        ].join('\n')
+                        state: 'state_voice_days'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -540,12 +498,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_voice_days - Mon & Wed
                     )
                     .check.interaction({
-                        state: 'state_voice_times',
-                        reply: [
-                            'Message times?',
-                            '1. 9-11am',
-                            '2. 2-5pm'
-                        ].join('\n')
+                        state: 'state_voice_times'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -573,8 +526,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_voice_times - 9-11am
                     )
                     .check.interaction({
-                        state: 'state_end_voice_confirm',
-                        reply: 'Thank you! Time: 9_11. Days: tue_thu.'
+                        state: 'state_end_voice_confirm'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -602,12 +554,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_change_menu_voice - change times
                     )
                     .check.interaction({
-                        state: 'state_voice_days',
-                        reply: [
-                            'Message days?',
-                            '1. Monday and Wednesday',
-                            '2. Tuesday and Thursday'
-                        ].join('\n')
+                        state: 'state_voice_days'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -633,12 +580,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_change_menu_sms - change text to voice
                     )
                     .check.interaction({
-                        state: 'state_voice_days',
-                        reply: [
-                            'Message days?',
-                            '1. Monday and Wednesday',
-                            '2. Tuesday and Thursday'
-                        ].join('\n')
+                        state: 'state_voice_days'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -665,12 +607,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_voice_days - Mon & Wed
                     )
                     .check.interaction({
-                        state: 'state_voice_times',
-                        reply: [
-                            'Message times?',
-                            '1. 9-11am',
-                            '2. 2-5pm'
-                        ].join('\n')
+                        state: 'state_voice_times'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -698,8 +635,7 @@ describe("Mama Nigeria App", function() {
                         , '2'  // state_voice_times - 2-5pm
                     )
                     .check.interaction({
-                        state: 'state_end_voice_confirm',
-                        reply: 'Thank you! Time: 2_5. Days: mon_wed.'
+                        state: 'state_end_voice_confirm'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -726,12 +662,7 @@ describe("Mama Nigeria App", function() {
                         , '2'  // main_menu - msg_pref
                     )
                     .check.interaction({
-                        state: 'state_change_menu_voice',
-                        reply: [
-                            'Please select what you would like to do:',
-                            '1. Change times',
-                            '2. Change mother message from voice to text'
-                        ].join('\n')
+                        state: 'state_change_menu_voice'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -757,8 +688,7 @@ describe("Mama Nigeria App", function() {
                         , '2'  // state_change_menu_voice - voice to text
                     )
                     .check.interaction({
-                        state: 'state_end_sms_confirm',
-                        reply: 'Thank you. You will now receive text messages.'
+                        state: 'state_end_sms_confirm'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -787,8 +717,7 @@ describe("Mama Nigeria App", function() {
                     , '3'           // state_main_menu - number
                 )
                 .check.interaction({
-                    state: 'state_new_msisdn',
-                    reply: 'Please enter new mobile number'
+                    state: 'state_new_msisdn'
                 })
                 .check.reply.properties({
                     helper_metadata: {
@@ -811,8 +740,7 @@ describe("Mama Nigeria App", function() {
                     , '54321'       // state_new_msisdn
                 )
                 .check.interaction({
-                    state: 'state_new_msisdn',
-                    reply: 'Invalid number. Try again. Please enter new mobile number'
+                    state: 'state_new_msisdn'
                 })
                 .check.reply.properties({
                     helper_metadata: {
@@ -838,12 +766,7 @@ describe("Mama Nigeria App", function() {
                     , '05059993333'  // state_new_msisdn
                 )
                 .check.interaction({
-                    state: 'state_number_in_use',
-                    reply: [
-                        'Sorry, this number is already registered',
-                        '1. To try a different number, press 1',
-                        '2. To exit, press 2'
-                    ].join('\n')
+                    state: 'state_number_in_use'
                 })
                 .check.reply.properties({
                     helper_metadata: {
@@ -867,8 +790,7 @@ describe("Mama Nigeria App", function() {
                     , '1'  // state_number_in_use - try a different number
                 )
                 .check.interaction({
-                    state: 'state_new_msisdn',
-                    reply: 'Please enter new mobile number'
+                    state: 'state_new_msisdn'
                 })
                 .check.reply.properties({
                     helper_metadata: {
@@ -893,8 +815,7 @@ describe("Mama Nigeria App", function() {
 
                 )
                 .check.interaction({
-                    state: 'state_end_exit',
-                    reply: 'Thank you for using the Hello Mama service. Goodbye.'
+                    state: 'state_end_exit'
                 })
                 .check.reply.properties({
                     helper_metadata: {
@@ -918,8 +839,7 @@ describe("Mama Nigeria App", function() {
 
                 )
                 .check.interaction({
-                    state: 'state_end_new_msisdn',
-                    reply: 'Thank you. Mobile number changed.'
+                    state: 'state_end_new_msisdn'
                 })
                 .check.reply.properties({
                     helper_metadata: {
@@ -944,13 +864,7 @@ describe("Mama Nigeria App", function() {
                     , '4'           // state_main_menu - language
                 )
                 .check.interaction({
-                    state: 'state_msg_language',
-                    reply: [
-                        'Language?',
-                        '1. English',
-                        '2. Igbo',
-                        '3. Pidgin'
-                    ].join('\n')
+                    state: 'state_msg_language'
                 })
                 .check.reply.properties({
                     helper_metadata: {
@@ -975,8 +889,7 @@ describe("Mama Nigeria App", function() {
                     , '3'   // state_msg_language - pidgin
                 )
                 .check.interaction({
-                    state: 'state_end_msg_language_confirm',
-                    reply: 'Thank you. Language preference updated.'
+                    state: 'state_end_msg_language_confirm'
                 })
                 .check.reply.properties({
                     helper_metadata: {
@@ -1000,8 +913,7 @@ describe("Mama Nigeria App", function() {
                     , '3'   // state_msg_language - pidgin
                 )
                 .check.interaction({
-                    state: 'state_end_msg_language_confirm',
-                    reply: 'Thank you. Language preference updated.'
+                    state: 'state_end_msg_language_confirm'
                 })
                 .check.reply.properties({
                     helper_metadata: {
@@ -1024,8 +936,7 @@ describe("Mama Nigeria App", function() {
                     , '3'   // state_msg_language - pidgin
                 )
                 .check.interaction({
-                    state: 'state_end_msg_language_confirm',
-                    reply: 'Thank you. Language preference updated.'
+                    state: 'state_end_msg_language_confirm'
                 })
                 .check.reply.properties({
                     helper_metadata: {
@@ -1048,8 +959,7 @@ describe("Mama Nigeria App", function() {
                     , '3'   // state_msg_language - pidgin
                 )
                 .check.interaction({
-                    state: 'state_end_msg_language_confirm',
-                    reply: 'Thank you. Language preference updated.'
+                    state: 'state_end_msg_language_confirm'
                 })
                 .check.reply.properties({
                     helper_metadata: {
@@ -1076,15 +986,7 @@ describe("Mama Nigeria App", function() {
                         , '5'  // state_main_menu - optout
                     )
                     .check.interaction({
-                        state: 'state_optout_reason',
-                        reply: [
-                            'Optout reason?',
-                            '1. Mother miscarried',
-                            '2. Baby stillborn',
-                            '3. Baby passed away',
-                            '4. Messages not useful',
-                            '5. Other'
-                        ].join('\n')
+                        state: 'state_optout_reason'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1110,12 +1012,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // optout_reason - miscarriage
                     )
                     .check.interaction({
-                        state: 'state_loss_subscription',
-                        reply: [
-                        'Receive loss messages?',
-                        '1. Yes',
-                        '2. No'
-                        ].join('\n')
+                        state: 'state_loss_subscription'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1143,8 +1040,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // loss_opt_in - confirm opt in
                     )
                     .check.interaction({
-                        state: 'state_end_loss_subscription_confirm',
-                        reply: 'Thank you. You will now receive messages to support you during this difficult time.'
+                        state: 'state_end_loss_subscription_confirm'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1173,8 +1069,7 @@ describe("Mama Nigeria App", function() {
                         , '2'  // state_loss_subscription - no
                     )
                     .check.interaction({
-                        state: 'state_end_loss',
-                        reply: 'We are sorry for your loss. You will no longer receive messages.'
+                        state: 'state_end_loss'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1202,8 +1097,7 @@ describe("Mama Nigeria App", function() {
                         , '2'  // optout_reason - stillborn
                     )
                     .check.interaction({
-                        state: 'state_end_loss',
-                        reply: 'We are sorry for your loss. You will no longer receive messages.'
+                        state: 'state_end_loss'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1230,8 +1124,7 @@ describe("Mama Nigeria App", function() {
                         , '3'  // optout_reason - baby_died
                     )
                     .check.interaction({
-                        state: 'state_end_loss',
-                        reply: 'We are sorry for your loss. You will no longer receive messages.'
+                        state: 'state_end_loss'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1258,8 +1151,7 @@ describe("Mama Nigeria App", function() {
                         , '4'  // optout_reason - not_useful
                     )
                     .check.interaction({
-                        state: 'state_end_optout',
-                        reply: 'Thank you - optout'
+                        state: 'state_end_optout'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1286,8 +1178,7 @@ describe("Mama Nigeria App", function() {
                         , '5'  // optout_reason - other
                     )
                     .check.interaction({
-                        state: 'state_end_optout',
-                        reply: 'Thank you - optout'
+                        state: 'state_end_optout'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1340,15 +1231,7 @@ describe("Mama Nigeria App", function() {
                         , '5'  // state_main_menu - optout
                     )
                     .check.interaction({
-                        state: 'state_optout_reason',
-                        reply: [
-                            'Optout reason?',
-                            '1. Mother miscarried',
-                            '2. Baby stillborn',
-                            '3. Baby passed away',
-                            '4. Messages not useful',
-                            '5. Other'
-                        ].join('\n')
+                        state: 'state_optout_reason'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1374,12 +1257,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // optout_reason - miscarriage
                     )
                     .check.interaction({
-                        state: 'state_loss_subscription',
-                        reply: [
-                        'Receive loss messages?',
-                        '1. Yes',
-                        '2. No'
-                        ].join('\n')
+                        state: 'state_loss_subscription'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1407,8 +1285,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_end_loss_subscription_confirm - confirm opt in
                     )
                     .check.interaction({
-                        state: 'state_end_loss_subscription_confirm',
-                        reply: 'Thank you. You will now receive messages to support you during this difficult time.'
+                        state: 'state_end_loss_subscription_confirm'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1437,8 +1314,7 @@ describe("Mama Nigeria App", function() {
                         , '2'  // state_loss_subscription - no
                     )
                     .check.interaction({
-                        state: 'state_end_loss',
-                        reply: 'We are sorry for your loss. You will no longer receive messages.'
+                        state: 'state_end_loss'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1466,8 +1342,7 @@ describe("Mama Nigeria App", function() {
                         , '2'  // optout_reason - stillborn
                     )
                     .check.interaction({
-                        state: 'state_end_loss',
-                        reply: 'We are sorry for your loss. You will no longer receive messages.'
+                        state: 'state_end_loss'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1494,8 +1369,7 @@ describe("Mama Nigeria App", function() {
                         , '3'  // optout_reason - baby_died
                     )
                     .check.interaction({
-                        state: 'state_end_loss',
-                        reply: 'We are sorry for your loss. You will no longer receive messages.'
+                        state: 'state_end_loss'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1522,13 +1396,7 @@ describe("Mama Nigeria App", function() {
                         , '4'  // optout_reason - not_useful
                     )
                     .check.interaction({
-                        state: 'state_optout_receiver',
-                        reply: [
-                            'Which messages to opt-out on?',
-                            '1. Mother messages',
-                            '2. Household messages',
-                            '3. All messages'
-                        ].join('\n')
+                        state: 'state_optout_receiver'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1556,8 +1424,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_optout_receiver - mother messages
                     )
                     .check.interaction({
-                        state: 'state_end_optout',
-                        reply: "Thank you - optout"
+                        state: 'state_end_optout'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1585,8 +1452,7 @@ describe("Mama Nigeria App", function() {
                         , '2'  // state_optout_receiver - household messages
                     )
                     .check.interaction({
-                        state: 'state_end_optout',
-                        reply: "Thank you - optout"
+                        state: 'state_end_optout'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1614,8 +1480,7 @@ describe("Mama Nigeria App", function() {
                         , '3'  // state_optout_receiver - all messages
                     )
                     .check.interaction({
-                        state: 'state_end_optout',
-                        reply: "Thank you - optout"
+                        state: 'state_end_optout'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1642,13 +1507,7 @@ describe("Mama Nigeria App", function() {
                         , '5'  // optout_reason - other
                     )
                     .check.interaction({
-                        state: 'state_optout_receiver',
-                        reply: [
-                            'Which messages to opt-out on?',
-                            '1. Mother messages',
-                            '2. Household messages',
-                            '3. All messages'
-                        ].join('\n')
+                        state: 'state_optout_receiver'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1676,8 +1535,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_optout_receiver - mother messages
                     )
                     .check.interaction({
-                        state: 'state_end_optout',
-                        reply: "Thank you - optout"
+                        state: 'state_end_optout'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1705,8 +1563,7 @@ describe("Mama Nigeria App", function() {
                         , '2'  // state_optout_receiver - household messages
                     )
                     .check.interaction({
-                        state: 'state_end_optout',
-                        reply: "Thank you - optout"
+                        state: 'state_end_optout'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1734,8 +1591,7 @@ describe("Mama Nigeria App", function() {
                         , '3'  // state_optout_receiver - all messages
                     )
                     .check.interaction({
-                        state: 'state_end_optout',
-                        reply: "Thank you - optout"
+                        state: 'state_end_optout'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1763,15 +1619,7 @@ describe("Mama Nigeria App", function() {
                         , '5'  // state_main_menu - optout
                     )
                     .check.interaction({
-                        state: 'state_optout_reason',
-                        reply: [
-                            'Optout reason?',
-                            '1. Mother miscarried',
-                            '2. Baby stillborn',
-                            '3. Baby passed away',
-                            '4. Messages not useful',
-                            '5. Other'
-                        ].join('\n')
+                        state: 'state_optout_reason'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1797,12 +1645,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // optout_reason - miscarriage
                     )
                     .check.interaction({
-                        state: 'state_loss_subscription',
-                        reply: [
-                        'Receive loss messages?',
-                        '1. Yes',
-                        '2. No'
-                        ].join('\n')
+                        state: 'state_loss_subscription'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1830,8 +1673,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_end_loss_subscription_confirm - confirm opt in
                     )
                     .check.interaction({
-                        state: 'state_end_loss_subscription_confirm',
-                        reply: 'Thank you. You will now receive messages to support you during this difficult time.'
+                        state: 'state_end_loss_subscription_confirm'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1860,8 +1702,7 @@ describe("Mama Nigeria App", function() {
                         , '2'  // state_loss_subscription - no
                     )
                     .check.interaction({
-                        state: 'state_end_loss',
-                        reply: 'We are sorry for your loss. You will no longer receive messages.'
+                        state: 'state_end_loss'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1889,8 +1730,7 @@ describe("Mama Nigeria App", function() {
                         , '2'  // optout_reason - stillborn
                     )
                     .check.interaction({
-                        state: 'state_end_loss',
-                        reply: 'We are sorry for your loss. You will no longer receive messages.'
+                        state: 'state_end_loss'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1917,8 +1757,7 @@ describe("Mama Nigeria App", function() {
                         , '3'  // optout_reason - baby_died
                     )
                     .check.interaction({
-                        state: 'state_end_loss',
-                        reply: 'We are sorry for your loss. You will no longer receive messages.'
+                        state: 'state_end_loss'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1945,13 +1784,7 @@ describe("Mama Nigeria App", function() {
                         , '4'  // optout_reason - not_useful
                     )
                     .check.interaction({
-                        state: 'state_optout_receiver',
-                        reply: [
-                            'Which messages to opt-out on?',
-                            '1. Mother messages',
-                            '2. Household messages',
-                            '3. All messages'
-                        ].join('\n')
+                        state: 'state_optout_receiver'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -1979,8 +1812,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_optout_receiver - mother messages
                     )
                     .check.interaction({
-                        state: 'state_end_optout',
-                        reply: "Thank you - optout"
+                        state: 'state_end_optout'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -2008,8 +1840,7 @@ describe("Mama Nigeria App", function() {
                         , '2'  // state_optout_receiver - household messages
                     )
                     .check.interaction({
-                        state: 'state_end_optout',
-                        reply: "Thank you - optout"
+                        state: 'state_end_optout'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -2037,8 +1868,7 @@ describe("Mama Nigeria App", function() {
                         , '3'  // state_optout_receiver - all messages
                     )
                     .check.interaction({
-                        state: 'state_end_optout',
-                        reply: "Thank you - optout"
+                        state: 'state_end_optout'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -2065,13 +1895,7 @@ describe("Mama Nigeria App", function() {
                         , '5'  // optout_reason - other
                     )
                     .check.interaction({
-                        state: 'state_optout_receiver',
-                        reply: [
-                            'Which messages to opt-out on?',
-                            '1. Mother messages',
-                            '2. Household messages',
-                            '3. All messages'
-                        ].join('\n')
+                        state: 'state_optout_receiver'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -2099,8 +1923,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // state_optout_receiver - mother messages
                     )
                     .check.interaction({
-                        state: 'state_end_optout',
-                        reply: "Thank you - optout"
+                        state: 'state_end_optout'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -2128,8 +1951,7 @@ describe("Mama Nigeria App", function() {
                         , '2'  // state_optout_receiver - household messages
                     )
                     .check.interaction({
-                        state: 'state_end_optout',
-                        reply: "Thank you - optout"
+                        state: 'state_end_optout'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -2157,8 +1979,7 @@ describe("Mama Nigeria App", function() {
                         , '3'  // state_optout_receiver - all messages
                     )
                     .check.interaction({
-                        state: 'state_end_optout',
-                        reply: "Thank you - optout"
+                        state: 'state_end_optout'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -2186,15 +2007,7 @@ describe("Mama Nigeria App", function() {
                         , '4'  // state_main_menu_household - optout
                     )
                     .check.interaction({
-                        state: 'state_optout_reason',
-                        reply: [
-                            'Optout reason?',
-                            '1. Mother miscarried',
-                            '2. Baby stillborn',
-                            '3. Baby passed away',
-                            '4. Messages not useful',
-                            '5. Other'
-                        ].join('\n')
+                        state: 'state_optout_reason'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -2220,12 +2033,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // optout_reason - miscarriage
                     )
                     .check.interaction({
-                        state: 'state_loss_subscription',
-                        reply: [
-                        'Receive loss messages?',
-                        '1. Yes',
-                        '2. No'
-                        ].join('\n')
+                        state: 'state_loss_subscription'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -2253,8 +2061,7 @@ describe("Mama Nigeria App", function() {
                         , '1'  // loss_opt_in - confirm opt in
                     )
                     .check.interaction({
-                        state: 'state_end_loss_subscription_confirm',
-                        reply: 'Thank you. You will now receive messages to support you during this difficult time.'
+                        state: 'state_end_loss_subscription_confirm'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -2283,8 +2090,7 @@ describe("Mama Nigeria App", function() {
                         , '2'  // state_loss_subscription - no
                     )
                     .check.interaction({
-                        state: 'state_end_loss',
-                        reply: 'We are sorry for your loss. You will no longer receive messages.'
+                        state: 'state_end_loss'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -2312,8 +2118,7 @@ describe("Mama Nigeria App", function() {
                         , '2'  // optout_reason - stillborn
                     )
                     .check.interaction({
-                        state: 'state_end_loss',
-                        reply: 'We are sorry for your loss. You will no longer receive messages.'
+                        state: 'state_end_loss'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -2340,8 +2145,7 @@ describe("Mama Nigeria App", function() {
                         , '3'  // optout_reason - baby_died
                     )
                     .check.interaction({
-                        state: 'state_end_loss',
-                        reply: 'We are sorry for your loss. You will no longer receive messages.'
+                        state: 'state_end_loss'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -2368,8 +2172,7 @@ describe("Mama Nigeria App", function() {
                         , '4'  // optout_reason - not_useful
                     )
                     .check.interaction({
-                        state: 'state_end_optout',
-                        reply: 'Thank you - optout'
+                        state: 'state_end_optout'
                     })
                     .check.reply.properties({
                         helper_metadata: {
@@ -2396,8 +2199,7 @@ describe("Mama Nigeria App", function() {
                         , '5'  // optout_reason - other
                     )
                     .check.interaction({
-                        state: 'state_end_optout',
-                        reply: 'Thank you - optout'
+                        state: 'state_end_optout'
                     })
                     .check.reply.properties({
                         helper_metadata: {

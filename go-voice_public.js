@@ -1392,10 +1392,8 @@ go.app = function() {
         self.add('state_msg_receiver_msisdn', function(name, creator_opts) {
             var speech_option = '1';
             var question_text = 'Welcome, Number';
-            var retry_text = 'Retry. Welcome, Number';
-            var use_text = creator_opts.retry === true ? retry_text : question_text;
             return new FreeText(name, {
-                question: $(use_text),
+                question: $(question_text),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, self.im.user.lang, speech_option, creator_opts.retry),
                 next: function(content) {
@@ -1743,10 +1741,8 @@ go.app = function() {
         self.add('state_new_msisdn', function(name, creator_opts) {
             var speech_option = 1;
             var question_text = 'Please enter new mobile number';
-            var retry_text = 'Invalid number. Try again. Please enter new mobile number';
-            var use_text = creator_opts.retry === true ? retry_text : question_text;
             return new FreeText(name, {
-                question: $(use_text),
+                question: $(question_text),
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, self.im.user.lang, speech_option, creator_opts.retry),
                 next: function(content) {
