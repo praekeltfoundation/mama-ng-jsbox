@@ -276,9 +276,15 @@ go.utils_project = {
             'state_end_optout'
         ];
 
+        var voice_url_check = voice_url.length === 1
+            // if length is 1, check the only url in array
+            ? voice_url[0]
+            // else in error case, length > 1, check second url in array
+            : voice_url[1];
+
         return im
             .log([
-                'Voice URL is: ' + voice_url[0],
+                'Voice URL is: ' + voice_url_check,
                 'Constructed from:',
                 '   Name: ' + name,
                 '   Lang: ' + lang,
@@ -293,7 +299,7 @@ go.utils_project = {
                 });
 
                 return http
-                    .head(voice_url[0])
+                    .head(voice_url_check)
                     .then(function (response) {
                         return {
                             voice: {
@@ -304,7 +310,7 @@ go.utils_project = {
                         };
                     }, function (error) {
                         return im
-                            .log('Unable to find voice file: ' + voice_url[0] + '. Error: ' + error)
+                            .log('Unable to find voice file: ' + voice_url_check + '. Error: ' + error)
                             .then(function () {
                                 return {
                                     voice: {
