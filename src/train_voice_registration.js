@@ -56,11 +56,9 @@ go.app = function() {
         // FreeText st-01
         self.add('state_personnel_auth', function(name, creator_opts) {
             var question_text = 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345';
-            var retry_text = 'Sorry, that is not a valid number. Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345';
-            var use_text = creator_opts.retry === true ? retry_text : question_text;
             var speech_option = '1';
             return new FreeText(name, {
-                question: $(use_text),
+                question: question_text,
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
@@ -80,7 +78,7 @@ go.app = function() {
         self.add('state_msg_receiver', function(name, creator_opts) {
             var speech_option = '1';
             return new ChoiceState(name, {
-                question: $('Choose message receiver'),
+                question: 'Choose message receiver',
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
@@ -106,11 +104,9 @@ go.app = function() {
         // FreeText st-03
         self.add('state_msisdn', function(name, creator_opts) {
             var question_text = 'Please enter number';
-            var retry_text = 'Sorry, invalid input. Please enter number';
-            var use_text = creator_opts.retry === true ? retry_text : question_text;
             var speech_option = '1';
             return new FreeText(name, {
-                question: $(use_text),
+                question: question_text,
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
@@ -129,11 +125,9 @@ go.app = function() {
         // FreeText st-3A
         self.add('state_msisdn_mother', function(name, creator_opts) {
             var question_text = 'Please enter number (Mother)';
-            var retry_text = 'Sorry, invalid input. Please enter number (Mother)';
-            var use_text = creator_opts.retry === true ? retry_text : question_text;
             var speech_option = '1';
             return new FreeText(name, {
-                question: $(use_text),
+                question: question_text,
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
@@ -155,12 +149,10 @@ go.app = function() {
             rolePlayer = rolePlayer.replace('family', 'family member');  // append ' member' to family rolePlayer string to make output clearer
 
             var question_text = "Please enter the {{role_player}}'s number";
-            var retry_text = "Sorry, invalid input. Please enter the {{role_player}}'s number";
-            var use_text = creator_opts.retry === true ? retry_text : question_text;
             var speech_option = go.utils_project.get_speech_option_household(rolePlayer);
 
             return new FreeText(name, {
-                question: $(use_text).context({role_player: rolePlayer}),
+                question: question_text,
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
@@ -194,7 +186,7 @@ go.app = function() {
                 'postbirth': 'state_baby_birth_year'
             };
             return new ChoiceState(name, {
-                question: $('Pregnant or baby'),
+                question: 'Pregnant or baby',
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
@@ -212,7 +204,7 @@ go.app = function() {
         self.add('state_last_period_year', function(name, creator_opts) {
             var speech_option = '1';
             return new ChoiceState(name, {
-                question: $('Last period?'),
+                question: 'Last period?',
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
@@ -231,12 +223,10 @@ go.app = function() {
         // ChoiceState st-5
         self.add('state_last_period_month', function(name, creator_opts) {
             var question_text = 'Period month this/last year?';
-            var retry_text = 'Retry. Period month this/last year?';
-            var use_text = creator_opts.retry === true ? retry_text : question_text;
             var speech_option = go.utils_project.get_speech_option_year(
                 self.im.user.answers.state_last_period_year);
             return new ChoiceState(name, {
-                question: $(use_text),
+                question: question_text,
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 choices: go.utils.make_month_choices(
@@ -260,14 +250,13 @@ go.app = function() {
         // FreeText st-06
         self.add('state_last_period_day', function(name, creator_opts) {
             var question_text = 'Last period day {{ month }} {{ year }}';
-            var retry_text = 'Retry last period day {{ month }} {{ year }}';
-            var use_text = creator_opts.retry === true ? retry_text : question_text;
+
             var month = self.im.user.answers.working_month;
             var year = self.im.user.answers.working_year;
             var speech_option = parseInt(month, 10);
 
             return new FreeText(name, {
-                question: $(use_text).context({ month: month, year: year }),
+                question: question_text,
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
@@ -290,7 +279,7 @@ go.app = function() {
         self.add('state_baby_birth_year', function(name, creator_opts) {
             var speech_option = '1';
             return new ChoiceState(name, {
-                question: $('Baby born?'),
+                question: 'Baby born?',
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
@@ -309,12 +298,10 @@ go.app = function() {
         // ChoiceState st-12
         self.add('state_baby_birth_month', function(name, creator_opts) {
             var question_text = 'Birth month this/last year?';
-            var retry_text = 'Retry. Birth month this/last year?';
-            var use_text = creator_opts.retry === true ? retry_text : question_text;
             var speech_option = go.utils_project.get_speech_option_year(
                 self.im.user.answers.state_baby_birth_year);
             return new ChoiceState(name, {
-                question: $(use_text),
+                question: question_text,
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 choices: go.utils.make_month_choices(
@@ -338,14 +325,12 @@ go.app = function() {
         // FreeText st-13
         self.add('state_baby_birth_day', function(name, creator_opts) {
             var question_text = 'Birth day in {{ month }} {{ year }}';
-            var retry_text = 'Retry birth day {{ month }} {{ year }}';
-            var use_text = creator_opts.retry === true ? retry_text : question_text;
             var month = self.im.user.answers.working_month;
             var year = self.im.user.answers.working_year;
             var speech_option = parseInt(month, 10);
 
             return new FreeText(name, {
-                question: $(use_text).context({ month: month, year: year }),
+                question: question_text,
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 next: function(content) {
@@ -378,7 +363,7 @@ go.app = function() {
             var speech_option = '1';
             return new ChoiceState(name, {
                 question:
-                    $('The date you entered is not a real date. Please try again.'),
+                    'The date you entered is not a real date. Please try again.',
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
@@ -398,7 +383,7 @@ go.app = function() {
         self.add('state_gravida', function(name, creator_opts) {
             var speech_option = '1';
             return new FreeText(name, {
-                question: $('Please enter the number of times the woman has been pregnant before. This includes any pregnancies she may not have carried to term.'),
+                question: 'Please enter the number of times the woman has been pregnant before. This includes any pregnancies she may not have carried to term.',
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 next: 'state_msg_language'
@@ -409,7 +394,7 @@ go.app = function() {
         self.add('state_msg_language', function(name, creator_opts) {
             var speech_option = '1';
             return new ChoiceState(name, {
-                question: $('Language?'),
+                question: 'Language?',
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
@@ -425,7 +410,7 @@ go.app = function() {
         self.add('state_msg_type', function(name, creator_opts) {
             var speech_option = '1';
             return new ChoiceState(name, {
-                question: $('Channel?'),
+                question: 'Channel?',
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
@@ -458,7 +443,7 @@ go.app = function() {
         self.add('state_voice_days', function(name, creator_opts) {
             var speech_option = '1';
             return new ChoiceState(name, {
-                question: $('Message days?'),
+                question: 'Message days?',
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
@@ -474,7 +459,7 @@ go.app = function() {
             var days = self.im.user.answers.state_voice_days;
             var speech_option = go.utils_project.get_speech_option_days(days);
             return new ChoiceState(name, {
-                question: $('Message time?'),
+                question: 'Message time?',
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
@@ -492,10 +477,8 @@ go.app = function() {
             var time = self.im.user.answers.state_voice_times;
             var days = self.im.user.answers.state_voice_days;
             var speech_option = go.utils_project.get_speech_option_days_time(days, time);
-            var text = $('Thank you! Time: {{ time }}. Days: {{ days }}.'
-                         ).context({ time: time, days: days });
             return new EndState(name, {
-                text: text,
+                text: 'Thank you! Time: {{ time }}. Days: {{ days }}.',
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 next: 'state_start'

@@ -559,8 +559,7 @@ go.app = function() {
             var time = self.im.user.answers.state_voice_times;
             var days = self.im.user.answers.state_voice_days;
             var speech_option = go.utils_project.get_speech_option_days_time(days, time);
-            var text = $('Thank you! Time: {{ time }}. Days: {{ days }}.'
-                         ).context({ time: time, days: days });
+            var text = 'Thank you! Time: {{ time }}. Days: {{ days }}.';
             return new EndState(name, {
                 text: text,
                 helper_metadata: go.utils_project.make_voice_helper_data(

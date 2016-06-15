@@ -269,10 +269,10 @@ module.exports = function (grunt) {
             },
             test_sms_inbound: {
                  src: ['<%= paths.test.sms_inbound %>']
-            },
+            },*/
             test_train_voice_registration: {
                 src: ['<%= paths.test.train_voice_registration %>']
-            },
+            },/*
             test_train_voice_public: {
                 src: ['<%= paths.test.train_voice_public %>']
             },
