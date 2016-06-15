@@ -872,6 +872,7 @@ go.utils_project = {
 
     get_voice_error_url: function(im, name, lang) {
         var states_to_error_map = {
+            // ussd states
             "state_personnel_auth": "state_error_invalid_number",
             "state_msg_receiver": "state_error_invalid_selection",
             "state_msisdn": "state_error_invalid_number",
@@ -883,10 +884,23 @@ go.utils_project = {
             "state_last_period_month": "state_error_invalid_date",
             "state_last_period_day": "state_error_invalid_date",
             "state_gravida": "state_error_invalid_number",
-            "state_msg_language": "state_error_invalid_selection",
             "state_msg_type": "state_error_invalid_selection",
+            // ussd/voice states
             "state_voice_days": "state_error_invalid_selection",
-            "state_voice_times": "state_error_invalid_selection"
+            "state_voice_times": "state_error_invalid_selection",
+            "state_msg_language": "state_error_invalid_selection",
+            // voice states
+            "state_main_menu": "state_error_invalid_selection",
+            "state_main_menu_household": "state_error_invalid_selection",
+            "state_msg_receiver_msisdn": "state_error_invalid_number",
+            "state_msisdn_not_recognised": "state_error_invalid_selection",
+            "state_change_menu_sms": "state_error_invalid_selection",
+            "state_change_menu_voice": "state_error_invalid_selection",
+            "state_new_msisdn": "state_error_invalid_number",
+            "state_number_in_use": "state_error_invalid_selection",
+            "state_optout_reason": "state_error_invalid_selection",
+            "state_loss_subscription": "state_error_invalid_selection",
+            "state_optout_receiver": "state_error_invalid_selection"
         };
 
         var error_url = im.config.services.voice_content.url + lang + '/' + states_to_error_map[name] + '.mp3';
