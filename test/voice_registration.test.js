@@ -63,17 +63,7 @@ describe("Mama Nigeria App", function() {
                         , '0'  // restart
                     )
                     .check.interaction({
-                        state: 'state_msg_receiver',
-                        reply: [
-                            'Choose message receiver',
-                            "1. Mother & Father",
-                            "2. Mother",
-                            "3. Father",
-                            "4. Mother & family member",
-                            "5. Mother & friend",
-                            "6. Friend",
-                            "7. Family member"
-                        ].join('\n')
+                        state: 'state_msg_receiver'
                     })
                     .check.user.answers({
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
@@ -96,13 +86,12 @@ describe("Mama Nigeria App", function() {
                             {session_event: 'new'}
                         )
                         .check.interaction({
-                            state: 'state_personnel_auth',
-                            reply: 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
+                            state: 'state_personnel_auth'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -128,13 +117,12 @@ describe("Mama Nigeria App", function() {
                             {session_event: 'new'}
                         )
                         .check.interaction({
-                            state: 'state_personnel_auth',
-                            reply: 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
+                            state: 'state_personnel_auth'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -150,13 +138,12 @@ describe("Mama Nigeria App", function() {
                             '*' // state_personnel_auth
                         )
                         .check.interaction({
-                            state: 'state_personnel_auth',
-                            reply: 'Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
+                            state: 'state_personnel_auth'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -177,22 +164,12 @@ describe("Mama Nigeria App", function() {
                             '12345'  // state_personnel_auth
                         )
                         .check.interaction({
-                            state: 'state_msg_receiver',
-                            reply: [
-                                'Choose message receiver',
-                                "1. Mother & Father",
-                                "2. Mother",
-                                "3. Father",
-                                "4. Mother & family member",
-                                "5. Mother & friend",
-                                "6. Friend",
-                                "7. Family member"
-                            ].join('\n')
+                            state: 'state_msg_receiver'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msg_receiver_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -211,13 +188,15 @@ describe("Mama Nigeria App", function() {
                             , 'aaaaa'  // state_personnel_auth
                         )
                         .check.interaction({
-                            state: 'state_personnel_auth',
-                            reply: 'Sorry, that is not a valid number. Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
+                            state: 'state_personnel_auth'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1_retry.mp3',
+                                    speech_url: [
+                                        'http://localhost:8004/api/v1/eng_NG/state_error_invalid_number.mp3',
+                                        'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1.mp3'
+                                    ],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -237,13 +216,15 @@ describe("Mama Nigeria App", function() {
                             ,'aaaaa'  // state_personnel_auth
                         )
                         .check.interaction({
-                            state: 'state_personnel_auth',
-                            reply: 'Sorry, that is not a valid number. Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
+                            state: 'state_personnel_auth'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1_retry.mp3',
+                                    speech_url: [
+                                        'http://localhost:8004/api/v1/eng_NG/state_error_invalid_number.mp3',
+                                        'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1.mp3'
+                                    ],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -263,13 +244,15 @@ describe("Mama Nigeria App", function() {
                             , '0'      // state_personnel_auth
                         )
                         .check.interaction({
-                            state: 'state_personnel_auth',
-                            reply: 'Sorry, that is not a valid number. Welcome to Hello Mama! Please enter your unique personnel code. For example, 12345'
+                            state: 'state_personnel_auth'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1_retry.mp3',
+                                    speech_url: [
+                                        'http://localhost:8004/api/v1/eng_NG/state_error_invalid_number.mp3',
+                                        'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1.mp3'
+                                    ],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -289,22 +272,12 @@ describe("Mama Nigeria App", function() {
                             ,'12345'  // state_personnel_auth
                         )
                         .check.interaction({
-                            state: 'state_msg_receiver',
-                            reply: [
-                                'Choose message receiver',
-                                "1. Mother & Father",
-                                "2. Mother",
-                                "3. Father",
-                                "4. Mother & family member",
-                                "5. Mother & friend",
-                                "6. Friend",
-                                "7. Family member"
-                            ].join('\n')
+                            state: 'state_msg_receiver'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msg_receiver_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -326,13 +299,12 @@ describe("Mama Nigeria App", function() {
                             , '1'      // state_msg_receiver - mother & father
                         )
                         .check.interaction({
-                            state: 'state_msisdn_mother',
-                            reply: 'Please enter number (Mother)'
+                            state: 'state_msisdn_mother'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msisdn_mother_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msisdn_mother_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -350,13 +322,15 @@ describe("Mama Nigeria App", function() {
                             , '12345'   // state_msisdn_mother
                         )
                         .check.interaction({
-                            state: 'state_msisdn_mother',
-                            reply: 'Sorry, invalid input. Please enter number (Mother)'
+                            state: 'state_msisdn_mother'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msisdn_mother_1_retry.mp3',
+                                    speech_url: [
+                                        'http://localhost:8004/api/v1/eng_NG/state_error_invalid_number.mp3',
+                                        'http://localhost:8004/api/v1/eng_NG/state_msisdn_mother_1.mp3'
+                                    ],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -374,13 +348,12 @@ describe("Mama Nigeria App", function() {
                             , '09094444444'  // state_msisdn_mother
                         )
                         .check.interaction({
-                            state: 'state_msisdn_household',
-                            reply: "Please enter the father's number"
+                            state: 'state_msisdn_household'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msisdn_household_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msisdn_household_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -398,13 +371,12 @@ describe("Mama Nigeria App", function() {
                             , '09094444444'  // state_msisdn_mother
                         )
                         .check.interaction({
-                            state: 'state_msisdn_household',
-                            reply: "Please enter the family member's number"
+                            state: 'state_msisdn_household'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msisdn_household_2.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msisdn_household_2.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -422,13 +394,12 @@ describe("Mama Nigeria App", function() {
                             , '09094444444'  // state_msisdn_mother
                         )
                         .check.interaction({
-                            state: 'state_msisdn_household',
-                            reply: "Please enter the friend's number"
+                            state: 'state_msisdn_household'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msisdn_household_3.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msisdn_household_3.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -447,13 +418,15 @@ describe("Mama Nigeria App", function() {
                             , '08020002'     // state_msisdn_household
                         )
                         .check.interaction({
-                            state: 'state_msisdn_household',
-                            reply: "Sorry, invalid input. Please enter the father's number"
+                            state: 'state_msisdn_household'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msisdn_household_1_retry.mp3',
+                                    speech_url: [
+                                        'http://localhost:8004/api/v1/eng_NG/state_error_invalid_number.mp3',
+                                        'http://localhost:8004/api/v1/eng_NG/state_msisdn_household_1.mp3'
+                                    ],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -472,17 +445,12 @@ describe("Mama Nigeria App", function() {
                             , '09095555555'  // state_msisdn_household
                         )
                         .check.interaction({
-                            state: 'state_last_period_year',
-                            reply: [
-                                'Last period?',
-                                '1. This year',
-                                '2. Last year'
-                            ].join('\n')
+                            state: 'state_last_period_year'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_last_period_year_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_last_period_year_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -501,13 +469,12 @@ describe("Mama Nigeria App", function() {
                             , '7'      // state_msg_receiver - family member
                         )
                         .check.interaction({
-                            state: 'state_msisdn',
-                            reply: 'Please enter number'
+                            state: 'state_msisdn'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msisdn_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msisdn_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -525,13 +492,15 @@ describe("Mama Nigeria App", function() {
                             , '08567898'  // state_msisdn
                         )
                         .check.interaction({
-                            state: 'state_msisdn',
-                            reply: 'Sorry, invalid input. Please enter number'
+                            state: 'state_msisdn'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msisdn_1_retry.mp3',
+                                    speech_url: [
+                                        'http://localhost:8004/api/v1/eng_NG/state_error_invalid_number.mp3',
+                                        'http://localhost:8004/api/v1/eng_NG/state_msisdn_1.mp3'
+                                    ],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -550,13 +519,15 @@ describe("Mama Nigeria App", function() {
                             , '*'  // repeat
                         )
                         .check.interaction({
-                            state: 'state_msisdn',
-                            reply: 'Sorry, invalid input. Please enter number'
+                            state: 'state_msisdn'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msisdn_1_retry.mp3',
+                                    speech_url: [
+                                        'http://localhost:8004/api/v1/eng_NG/state_error_invalid_number.mp3',
+                                        'http://localhost:8004/api/v1/eng_NG/state_msisdn_1.mp3'
+                                    ],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -575,17 +546,7 @@ describe("Mama Nigeria App", function() {
                             , '0' // restart
                         )
                         .check.interaction({
-                            state: 'state_msg_receiver',
-                            reply: [
-                                'Choose message receiver',
-                                "1. Mother & Father",
-                                "2. Mother",
-                                "3. Father",
-                                "4. Mother & family member",
-                                "5. Mother & friend",
-                                "6. Friend",
-                                "7. Family member"
-                            ].join('\n')
+                            state: 'state_msg_receiver'
                         })
                         .run();
                 });
@@ -599,12 +560,7 @@ describe("Mama Nigeria App", function() {
                             , '09092222222'  // state_msisdn
                         )
                         .check.interaction({
-                            state: 'state_last_period_year',
-                            reply: [
-                                'Last period?',
-                                '1. This year',
-                                '2. Last year'
-                            ].join('\n')
+                            state: 'state_last_period_year'
                         })
                         .run();
                 });
@@ -619,12 +575,7 @@ describe("Mama Nigeria App", function() {
                             , '09092222222'  // state_msisdn
                         )
                         .check.interaction({
-                            state: 'state_last_period_year',
-                            reply: [
-                                'Last period?',
-                                '1. This year',
-                                '2. Last year'
-                            ].join('\n')
+                            state: 'state_last_period_year'
                         })
                         .run();
                 });
@@ -638,18 +589,12 @@ describe("Mama Nigeria App", function() {
                             , '09097777777'  // state_msisdn
                         )
                         .check.interaction({
-                            state: 'state_msisdn_already_registered',
-                            reply: [
-                                'Sorry, this number is already registered.',
-                                '1. Register a different number',
-                                '2. Choose a different receiver',
-                                '3. Exit'
-                            ].join('\n')
+                            state: 'state_msisdn_already_registered'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msisdn_already_registered_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msisdn_already_registered_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -668,13 +613,12 @@ describe("Mama Nigeria App", function() {
                             , '1'  // state_msisdn_already_registered - register a diff num
                         )
                         .check.interaction({
-                            state: 'state_msisdn',
-                            reply: 'Please enter number'
+                            state: 'state_msisdn'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msisdn_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msisdn_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -693,22 +637,12 @@ describe("Mama Nigeria App", function() {
                             , '2'  // state_msisdn_already_registered - choose diff receiver
                         )
                         .check.interaction({
-                            state: 'state_msg_receiver',
-                            reply: [
-                                'Choose message receiver',
-                                "1. Mother & Father",
-                                "2. Mother",
-                                "3. Father",
-                                "4. Mother & family member",
-                                "5. Mother & friend",
-                                "6. Friend",
-                                "7. Family member"
-                            ].join('\n')
+                            state: 'state_msg_receiver'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msg_receiver_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -727,13 +661,12 @@ describe("Mama Nigeria App", function() {
                             , '3'  // state_msisdn_already_registered - exit
                         )
                         .check.interaction({
-                            state: 'state_end_msisdn',
-                            reply: 'Thank you for using the Hello Mama service.'
+                            state: 'state_end_msisdn'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_msisdn_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_end_msisdn_1.mp3'],
                                     wait_for: '#',
                                     barge_in: false
                                 }
@@ -758,17 +691,12 @@ describe("Mama Nigeria App", function() {
                             , '09095555555'  // state_msisdn_household
                         )
                         .check.interaction({
-                            state: 'state_last_period_year',
-                            reply: [
-                                'Last period?',
-                                '1. This year',
-                                '2. Last year'
-                            ].join('\n')
+                            state: 'state_last_period_year'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_last_period_year_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_last_period_year_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -788,22 +716,12 @@ describe("Mama Nigeria App", function() {
                             , '0'    // state_msg_receiver - restart
                         )
                         .check.interaction({
-                            state: 'state_msg_receiver',
-                            reply: [
-                                'Choose message receiver',
-                                "1. Mother & Father",
-                                "2. Mother",
-                                "3. Father",
-                                "4. Mother & family member",
-                                "5. Mother & friend",
-                                "6. Friend",
-                                "7. Family member"
-                            ].join('\n')
+                            state: 'state_msg_receiver'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msg_receiver_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -823,22 +741,12 @@ describe("Mama Nigeria App", function() {
                             , '8'  // state_msg_receiver - invalid choice
                         )
                         .check.interaction({
-                            state: 'state_msg_receiver',
-                            reply: [
-                                'Choose message receiver',
-                                "1. Mother & Father",
-                                "2. Mother",
-                                "3. Father",
-                                "4. Mother & family member",
-                                "5. Mother & friend",
-                                "6. Friend",
-                                "7. Family member"
-                            ].join('\n')
+                            state: 'state_msg_receiver'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msg_receiver_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -863,17 +771,12 @@ describe("Mama Nigeria App", function() {
                             // , '1'            // state_pregnancy_status
                         )
                         .check.interaction({
-                            state: 'state_last_period_year',
-                            reply: [
-                                'Last period?',
-                                '1. This year',
-                                '2. Last year'
-                            ].join('\n')
+                            state: 'state_last_period_year'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_last_period_year_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_last_period_year_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -896,17 +799,12 @@ describe("Mama Nigeria App", function() {
                             // , '2'            // state_pregnancy_status - baby
                         )
                         .check.interaction({
-                            state: 'state_baby_birth_year',
-                            reply: [
-                                'Baby born?',
-                                '1. this year',
-                                '2. last year'
-                            ].join('\n')
+                            state: 'state_baby_birth_year'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_birth_year_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_baby_birth_year_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -933,27 +831,12 @@ describe("Mama Nigeria App", function() {
                             , '1'            // state_last_period_year
                         )
                         .check.interaction({
-                            state: 'state_last_period_month',
-                            reply: [
-                                'Period month this/last year?',
-                                '1. January',
-                                '2. February',
-                                '3. March',
-                                '4. April',
-                                '5. May',
-                                '6. June',
-                                '7. July',
-                                '8. August',
-                                '9. September',
-                                '10. October',
-                                '11. November',
-                                '12. December'
-                            ].join('\n')
+                            state: 'state_last_period_month'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_last_period_month_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_last_period_month_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -976,27 +859,15 @@ describe("Mama Nigeria App", function() {
                                 , '12'              // state_last_period_month
                             )
                             .check.interaction({
-                                state: 'state_last_period_month',
-                                reply: [
-                                    'Retry. Period month this/last year?',
-                                    '1. January',
-                                    '2. February',
-                                    '3. March',
-                                    '4. April',
-                                    '5. May',
-                                    '6. June',
-                                    '7. July',
-                                    '8. August',
-                                    '9. September',
-                                    '10. October',
-                                    '11. November',
-                                    '12. December'
-                                ].join('\n')
+                                state: 'state_last_period_month'
                             })
                             .check.reply.properties({
                                 helper_metadata: {
                                     voice: {
-                                        speech_url: 'http://localhost:8004/api/v1/eng_NG/state_last_period_month_1_retry.mp3',
+                                        speech_url: [
+                                            'http://localhost:8004/api/v1/eng_NG/state_error_invalid_date.mp3',
+                                            'http://localhost:8004/api/v1/eng_NG/state_last_period_month_1.mp3'
+                                        ],
                                         wait_for: '#',
                                         barge_in: true
                                     }
@@ -1020,27 +891,12 @@ describe("Mama Nigeria App", function() {
                             , '2'            // state_last_period_year - last year
                         )
                         .check.interaction({
-                            state: 'state_last_period_month',
-                            reply: [
-                                'Period month this/last year?',
-                                '1. January',
-                                '2. February',
-                                '3. March',
-                                '4. April',
-                                '5. May',
-                                '6. June',
-                                '7. July',
-                                '8. August',
-                                '9. September',
-                                '10. October',
-                                '11. November',
-                                '12. December'
-                            ].join('\n')
+                            state: 'state_last_period_month'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_last_period_month_2.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_last_period_month_2.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -1062,27 +918,15 @@ describe("Mama Nigeria App", function() {
                             , '1'               // state_last_period_month - jan
                         )
                         .check.interaction({
-                            state: 'state_last_period_month',
-                            reply: [
-                                'Retry. Period month this/last year?',
-                                '1. January',
-                                '2. February',
-                                '3. March',
-                                '4. April',
-                                '5. May',
-                                '6. June',
-                                '7. July',
-                                '8. August',
-                                '9. September',
-                                '10. October',
-                                '11. November',
-                                '12. December'
-                            ].join('\n')
+                            state: 'state_last_period_month'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_last_period_month_2_retry.mp3',
+                                    speech_url: [
+                                        'http://localhost:8004/api/v1/eng_NG/state_error_invalid_date.mp3',
+                                        'http://localhost:8004/api/v1/eng_NG/state_last_period_month_2.mp3'
+                                    ],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -1110,27 +954,12 @@ describe("Mama Nigeria App", function() {
                             , '1'            // state_baby_birth_year - this year
                         )
                         .check.interaction({
-                            state: 'state_baby_birth_month',
-                            reply: [
-                                'Birth month this/last year?',
-                                '1. January',
-                                '2. February',
-                                '3. March',
-                                '4. April',
-                                '5. May',
-                                '6. June',
-                                '7. July',
-                                '8. August',
-                                '9. September',
-                                '10. October',
-                                '11. November',
-                                '12. December'
-                            ].join('\n')
+                            state: 'state_baby_birth_month'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_birth_month_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_baby_birth_month_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -1152,27 +981,12 @@ describe("Mama Nigeria App", function() {
                             , '11'           // state_baby_birth_month - nov
                         )
                         .check.interaction({
-                            state: 'state_baby_birth_month',
-                            reply: [
-                                'Retry. Birth month this/last year?',
-                                '1. January',
-                                '2. February',
-                                '3. March',
-                                '4. April',
-                                '5. May',
-                                '6. June',
-                                '7. July',
-                                '8. August',
-                                '9. September',
-                                '10. October',
-                                '11. November',
-                                '12. December'
-                            ].join('\n')
+                            state: 'state_baby_birth_month'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_birth_month_1_retry.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_baby_birth_month_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -1196,27 +1010,12 @@ describe("Mama Nigeria App", function() {
                             , '2'            // state_baby_birth_year
                         )
                         .check.interaction({
-                            state: 'state_baby_birth_month',
-                            reply: [
-                                'Birth month this/last year?',
-                                '1. January',
-                                '2. February',
-                                '3. March',
-                                '4. April',
-                                '5. May',
-                                '6. June',
-                                '7. July',
-                                '8. August',
-                                '9. September',
-                                '10. October',
-                                '11. November',
-                                '12. December'
-                            ].join('\n')
+                            state: 'state_baby_birth_month'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_birth_month_2.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_baby_birth_month_2.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -1238,27 +1037,12 @@ describe("Mama Nigeria App", function() {
                             , '1'            // state_baby_birth_month
                         )
                         .check.interaction({
-                            state: 'state_baby_birth_month',
-                            reply: [
-                                'Retry. Birth month this/last year?',
-                                '1. January',
-                                '2. February',
-                                '3. March',
-                                '4. April',
-                                '5. May',
-                                '6. June',
-                                '7. July',
-                                '8. August',
-                                '9. September',
-                                '10. October',
-                                '11. November',
-                                '12. December'
-                            ].join('\n')
+                            state: 'state_baby_birth_month'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_birth_month_2_retry.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_baby_birth_month_2.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -1286,27 +1070,15 @@ describe("Mama Nigeria App", function() {
                             , '9'            // state_last_period_month - sep
                         )
                         .check.interaction({
-                            state: 'state_last_period_month',
-                            reply: [
-                                'Retry. Period month this/last year?',
-                                '1. January',
-                                '2. February',
-                                '3. March',
-                                '4. April',
-                                '5. May',
-                                '6. June',
-                                '7. July',
-                                '8. August',
-                                '9. September',
-                                '10. October',
-                                '11. November',
-                                '12. December'
-                            ].join('\n')
+                            state: 'state_last_period_month'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_last_period_month_1_retry.mp3',
+                                    speech_url: [
+                                        'http://localhost:8004/api/v1/eng_NG/state_error_invalid_date.mp3',
+                                        'http://localhost:8004/api/v1/eng_NG/state_last_period_month_1.mp3'
+                                    ],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -1330,27 +1102,15 @@ describe("Mama Nigeria App", function() {
                             , '3'            // state_last_period_month - mar
                         )
                         .check.interaction({
-                            state: 'state_last_period_month',
-                            reply: [
-                                'Retry. Period month this/last year?',
-                                '1. January',
-                                '2. February',
-                                '3. March',
-                                '4. April',
-                                '5. May',
-                                '6. June',
-                                '7. July',
-                                '8. August',
-                                '9. September',
-                                '10. October',
-                                '11. November',
-                                '12. December'
-                            ].join('\n')
+                            state: 'state_last_period_month'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_last_period_month_2_retry.mp3',
+                                    speech_url: [
+                                        'http://localhost:8004/api/v1/eng_NG/state_error_invalid_date.mp3',
+                                        'http://localhost:8004/api/v1/eng_NG/state_last_period_month_2.mp3'
+                                    ],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -1375,13 +1135,12 @@ describe("Mama Nigeria App", function() {
                             , '12'          // state_last_period_month - dec
                         )
                         .check.interaction({
-                            state: 'state_last_period_day',
-                            reply: 'Last period day 12 2016'
+                            state: 'state_last_period_day'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_last_period_day_12.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_last_period_day_12.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -1404,13 +1163,15 @@ describe("Mama Nigeria App", function() {
                             , '32'          // state_last_period_day
                         )
                         .check.interaction({
-                            state: 'state_last_period_day',
-                            reply: 'Retry last period day 10 2016'
+                            state: 'state_last_period_day'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_last_period_day_10_retry.mp3',
+                                    speech_url: [
+                                        'http://localhost:8004/api/v1/eng_NG/state_error_invalid_date.mp3',
+                                        'http://localhost:8004/api/v1/eng_NG/state_last_period_day_10.mp3'
+                                    ],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -1434,16 +1195,12 @@ describe("Mama Nigeria App", function() {
                             , '31'          // state_last_period_day
                         )
                         .check.interaction({
-                            state: 'state_invalid_date',
-                            reply: [
-                                'The date you entered is not a real date. Please try again.',
-                                '1. Continue'
-                            ].join('\n')
+                            state: 'state_invalid_date'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_invalid_date_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_invalid_date_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -1472,27 +1229,12 @@ describe("Mama Nigeria App", function() {
                             , '8'               // state_baby_birth_month - aug
                         )
                         .check.interaction({
-                            state: 'state_baby_birth_month',
-                            reply: [
-                                'Retry. Birth month this/last year?',
-                                '1. January',
-                                '2. February',
-                                '3. March',
-                                '4. April',
-                                '5. May',
-                                '6. June',
-                                '7. July',
-                                '8. August',
-                                '9. September',
-                                '10. October',
-                                '11. November',
-                                '12. December'
-                            ].join('\n')
+                            state: 'state_baby_birth_month'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_birth_month_1_retry.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_baby_birth_month_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -1517,27 +1259,12 @@ describe("Mama Nigeria App", function() {
                             , '3'               // state_baby_birth_month - mar
                         )
                         .check.interaction({
-                            state: 'state_baby_birth_month',
-                            reply: [
-                                'Retry. Birth month this/last year?',
-                                '1. January',
-                                '2. February',
-                                '3. March',
-                                '4. April',
-                                '5. May',
-                                '6. June',
-                                '7. July',
-                                '8. August',
-                                '9. September',
-                                '10. October',
-                                '11. November',
-                                '12. December'
-                            ].join('\n')
+                            state: 'state_baby_birth_month'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_birth_month_2_retry.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_baby_birth_month_2.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -1561,13 +1288,12 @@ describe("Mama Nigeria App", function() {
                             , '9'           // state_baby_birth_month - sep
                         )
                         .check.interaction({
-                            state: 'state_baby_birth_day',
-                            reply: 'Birth day in 09 2016'
+                            state: 'state_baby_birth_day'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_birth_day_9.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_baby_birth_day_9.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -1589,13 +1315,15 @@ describe("Mama Nigeria App", function() {
                             , '35'          // state_baby_birth_day
                         )
                         .check.interaction({
-                            state: 'state_baby_birth_day',
-                            reply: 'Retry birth day 09 2016'
+                            state: 'state_baby_birth_day'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_birth_day_9_retry.mp3',
+                                    speech_url: [
+                                        'http://localhost:8004/api/v1/eng_NG/state_error_invalid_date.mp3',
+                                        'http://localhost:8004/api/v1/eng_NG/state_baby_birth_day_9.mp3'
+                                    ],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -1618,16 +1346,12 @@ describe("Mama Nigeria App", function() {
                             , '31'          // state_baby_birth_day
                         )
                         .check.interaction({
-                            state: 'state_invalid_date',
-                            reply: [
-                                'The date you entered is not a real date. Please try again.',
-                                '1. Continue'
-                            ].join('\n')
+                            state: 'state_invalid_date'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_invalid_date_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_invalid_date_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -1655,13 +1379,15 @@ describe("Mama Nigeria App", function() {
                             , '32'          // state_last_period_day
                         )
                         .check.interaction({
-                            state: 'state_last_period_day',
-                            reply: 'Retry last period day 10 2016'
+                            state: 'state_last_period_day'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_last_period_day_10_retry.mp3',
+                                    speech_url: [
+                                        'http://localhost:8004/api/v1/eng_NG/state_error_invalid_date.mp3',
+                                        'http://localhost:8004/api/v1/eng_NG/state_last_period_day_10.mp3'
+                                    ],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -1686,13 +1412,12 @@ describe("Mama Nigeria App", function() {
                             , '22'          // state_last_period_day
                         )
                         .check.interaction({
-                            state: 'state_gravida',
-                            reply: "Please enter the number of times the woman has been pregnant before. This includes any pregnancies she may not have carried to term."
+                            state: 'state_gravida'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_gravida_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_gravida_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -1717,13 +1442,12 @@ describe("Mama Nigeria App", function() {
                             , '2'           // state_last_period_day
                         )
                         .check.interaction({
-                            state: 'state_gravida',
-                            reply: "Please enter the number of times the woman has been pregnant before. This includes any pregnancies she may not have carried to term."
+                            state: 'state_gravida'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_gravida_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_gravida_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -1751,13 +1475,12 @@ describe("Mama Nigeria App", function() {
                             , '32'          // state_baby_birth_day
                         )
                         .check.interaction({
-                            state: 'state_baby_birth_day',
-                            reply: 'Retry birth day 11 2016'
+                            state: 'state_baby_birth_day'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_baby_birth_day_11_retry.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_baby_birth_day_11.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -1783,18 +1506,12 @@ describe("Mama Nigeria App", function() {
                             , '3'           // state_gravida
                         )
                         .check.interaction({
-                            state: 'state_msg_language',
-                            reply: [
-                                'Language?',
-                                '1. english',
-                                '2. igbo',
-                                '3. pidgin'
-                            ].join('\n')
+                            state: 'state_msg_language'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_language_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msg_language_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -1824,7 +1541,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_personnel_auth_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -1851,18 +1568,12 @@ describe("Mama Nigeria App", function() {
                         , '3'           // state_gravida
                     )
                     .check.interaction({
-                        state: 'state_msg_language',
-                        reply: [
-                            'Language?',
-                            '1. english',
-                            '2. igbo',
-                            '3. pidgin'
-                        ].join('\n')
+                        state: 'state_msg_language'
                     })
                     .check.reply.properties({
                         helper_metadata: {
                             voice: {
-                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_language_1.mp3',
+                                speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msg_language_1.mp3'],
                                 wait_for: '#',
                                 barge_in: true
                             }
@@ -1885,22 +1596,12 @@ describe("Mama Nigeria App", function() {
                         , '0'           // state_gravida
                     )
                     .check.interaction({
-                        state: 'state_msg_receiver',
-                        reply: [
-                            'Choose message receiver',
-                            "1. Mother & Father",
-                            "2. Mother",
-                            "3. Father",
-                            "4. Mother & family member",
-                            "5. Mother & friend",
-                            "6. Friend",
-                            "7. Family member"
-                        ].join('\n')
+                        state: 'state_msg_receiver'
                     })
                     .check.reply.properties({
                         helper_metadata: {
                             voice: {
-                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_receiver_1.mp3',
+                                speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msg_receiver_1.mp3'],
                                 wait_for: '#',
                                 barge_in: true
                             }
@@ -1927,17 +1628,12 @@ describe("Mama Nigeria App", function() {
                         , '1'           // state_msg-language - english
                     )
                     .check.interaction({
-                        state: 'state_msg_type',
-                        reply: [
-                            'Channel?',
-                            '1. voice',
-                            '2. sms'
-                        ].join('\n')
+                        state: 'state_msg_type'
                     })
                     .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_msg_type_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msg_type_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -1970,13 +1666,12 @@ describe("Mama Nigeria App", function() {
                             , '2'           // state_msg_type - sms
                         )
                         .check.interaction({
-                            state: 'state_end_sms',
-                            reply: 'Thank you! three times a week.'
+                            state: 'state_end_sms'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_sms_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_end_sms_1.mp3'],
                                     wait_for: '#',
                                     barge_in: false
                                 }
@@ -2019,17 +1714,12 @@ describe("Mama Nigeria App", function() {
                             , '1'           // state_msg_type - voice
                         )
                         .check.interaction({
-                            state: 'state_voice_days',
-                            reply: [
-                                'Message days?',
-                                '1. mon_wed',
-                                '2. tue_thu'
-                            ].join('\n')
+                            state: 'state_voice_days'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_voice_days_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_voice_days_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -2063,17 +1753,12 @@ describe("Mama Nigeria App", function() {
                         , '1'           // state_voice_days - monday and wednesday
                     )
                     .check.interaction({
-                        state: 'state_voice_times',
-                        reply: [
-                            'Message time?',
-                            '1. 9_11',
-                            '2. 2_5'
-                        ].join('\n')
+                        state: 'state_voice_times'
                     })
                     .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: 'http://localhost:8004/api/v1/eng_NG/state_voice_times_1.mp3',
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_voice_times_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -2107,13 +1792,12 @@ describe("Mama Nigeria App", function() {
                         , '2'           // state_voice_times - 2_5
                     )
                     .check.interaction({
-                        state: 'state_end_voice',
-                        reply: 'Thank you! Time: 2_5. Days: mon_wed.'
+                        state: 'state_end_voice'
                     })
                     .check.reply.properties({
                         helper_metadata: {
                             voice: {
-                                speech_url: 'http://localhost:8004/api/v1/eng_NG/state_end_voice_3.mp3',
+                                speech_url: ['http://localhost:8004/api/v1/eng_NG/state_end_voice_3.mp3'],
                                 wait_for: '#',
                                 barge_in: false
                             }
