@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2016-04-14 01:31:+0000\n"
+"POT-Creation-Date: 2016-06-20 05:32:+0000\n"
 "Project-Id-Version: PACKAGE VERSION\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -101,16 +101,16 @@ msgstr ""
 msgid "{{pre}}Dec{{post}}"
 msgstr ""
 
-#: go-sms_inbound.js:1369
+#: go-sms_inbound.js:1396
 msgid ""
 "You will no longer receive messages from Hello Mama. Should you ever want "
 "to re-subscribe, contact your local community health extension worker"
 msgstr ""
 
-#: go-sms_inbound.js:1376
+#: go-sms_inbound.js:1403
 msgid "We do not recognise your number and can therefore not opt you out."
 msgstr ""
 
-#: go-sms_inbound.js:1392
+#: go-sms_inbound.js:1419
 msgid "Currently no helpdesk functionality is active. Reply STOP to unsubscribe."
 msgstr ""
