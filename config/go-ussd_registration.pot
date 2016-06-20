@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2016-04-14 01:31:+0000\n"
+"POT-Creation-Date: 2016-06-20 05:40:+0000\n"
 "Project-Id-Version: PACKAGE VERSION\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -101,260 +101,204 @@ msgstr ""
 msgid "{{pre}}Dec{{post}}"
 msgstr ""
 
-#: go-ussd_registration.js:1340
+#: go-ussd_registration.js:1368
 msgid ""
 "You have an incomplete registration. Would you like to continue with this "
 "registration?"
 msgstr ""
 
-#: go-ussd_registration.js:1342
-msgid ""
-"Welcome to Hello Mama! Please enter your unique personnel code. For "
-"example, 12345"
-msgstr ""
-
-#: go-ussd_registration.js:1344
-msgid "Please select who will receive the messages on their phone:"
-msgstr ""
-
-#: go-ussd_registration.js:1346
-msgid ""
-"Please enter the mobile number of the person who will receive the weekly "
-"messages. For example, 08033048990"
-msgstr ""
-
-#: go-ussd_registration.js:1348
-msgid ""
-"Sorry, this number is already registered. They must opt-out before "
-"registering again."
-msgstr ""
-
-#: go-ussd_registration.js:1350
-msgid ""
-"Please enter the mother's mobile number. She must consent to receiving "
-"messages."
-msgstr ""
-
-#: go-ussd_registration.js:1352
-msgid ""
-"Please enter the {{roleplayer}}'s number. They will receive a weekly SMS "
-"and must consent to receiving messages."
-msgstr ""
-
-#: go-ussd_registration.js:1354
-msgid "Please select one of the following:"
-msgstr ""
-
-#: go-ussd_registration.js:1356
-msgid "Please select the month the woman had her last period:"
-msgstr ""
-
-#: go-ussd_registration.js:1358
-msgid "What day of the month did the woman start her last period? For example, 12."
-msgstr ""
-
-#: go-ussd_registration.js:1360
-msgid "Select the month & year the baby was born:"
-msgstr ""
-
-#: go-ussd_registration.js:1362
-msgid "What day of the month was the baby born? For example, 12."
-msgstr ""
-
-#: go-ussd_registration.js:1364
-msgid ""
-"Please enter the number of times the woman has been pregnant before. This "
-"includes any pregnancies she may not have carried to term."
-msgstr ""
-
-#: go-ussd_registration.js:1366
-msgid "Which language would this person like to receive these messages in?"
-msgstr ""
-
-#: go-ussd_registration.js:1368
-msgid "How would this person like to get messages?"
-msgstr ""
-
 #: go-ussd_registration.js:1370
-msgid ""
-"We will call them twice a week. On what days would the person like to "
-"receive these calls?"
+msgid "{{prefix}}Please enter your Hello Mama code."
 msgstr ""
 
 #: go-ussd_registration.js:1372
-msgid "Thank you. At what time would they like to receive these calls?"
+msgid "{{prefix}}Who will receive the messages on their phone?"
 msgstr ""
 
-#: go-ussd_registration.js:1374
+#: go-ussd_registration.js:1374 go-ussd_registration.js:1380
 msgid ""
-"Thank you. The person will now start receiving calls on {{days}} between "
-"{{times}}."
+"{{prefix}}Please enter the mobile number of the {{roleplayer}}. They must "
+"consent to receiving messages."
 msgstr ""
 
 #: go-ussd_registration.js:1376
-msgid "Thank you. The person will now start receiving messages three times a week."
+msgid ""
+"{{prefix}}Sorry, this number is already registered. They must opt-out "
+"before continuing."
 msgstr ""
 
 #: go-ussd_registration.js:1378
+msgid ""
+"{{prefix}}Please enter the mobile number of the mother. They must consent "
+"to receiving messages."
+msgstr ""
+
+#: go-ussd_registration.js:1382
+msgid "{{prefix}}Please select one of the following:"
+msgstr ""
+
+#: go-ussd_registration.js:1384
+msgid "{{prefix}}Please select the month the woman started her last period:"
+msgstr ""
+
+#: go-ussd_registration.js:1386
+msgid "{{prefix}}What date of the month did the woman start her last period?"
+msgstr ""
+
+#: go-ussd_registration.js:1388
+msgid "{{prefix}}Select the month and year the baby was born:"
+msgstr ""
+
+#: go-ussd_registration.js:1390
+msgid "{{prefix}}What date of the month was the baby born?"
+msgstr ""
+
+#: go-ussd_registration.js:1392
+msgid ""
+"{{prefix}}Please enter the total number of times the woman has been "
+"pregnant. This includes any pregnancies she may not have carried to term."
+msgstr ""
+
+#: go-ussd_registration.js:1394
+msgid "{{prefix}}What language would they like to receive the messages in?"
+msgstr ""
+
+#: go-ussd_registration.js:1396
+msgid "{{prefix}}How would they like to receive the messages?"
+msgstr ""
+
+#: go-ussd_registration.js:1398
+msgid "{{prefix}}On what days would they like to receive these calls?"
+msgstr ""
+
+#: go-ussd_registration.js:1400
+msgid "{{prefix}}At what time would they like to receive these calls on {{days}}?"
+msgstr ""
+
+#: go-ussd_registration.js:1402
+msgid ""
+"Thank you. They will now start receiving calls on {{days}} between "
+"{{times}}."
+msgstr ""
+
+#: go-ussd_registration.js:1404
+msgid ""
+"Thank you. They will now start receiving text messages three times a week "
+"on Monday, Wednesday and Friday."
+msgstr ""
+
+#: go-ussd_registration.js:1406
 msgid "Thank you for using the Hello Mama service."
 msgstr ""
 
-#: go-ussd_registration.js:1383
-msgid ""
-"Sorry, that is not a valid number. Please enter your unique personnel code. "
-"For example, 12345"
-msgstr ""
-
-#: go-ussd_registration.js:1385
-msgid ""
-"Sorry, that is not a valid number. Please enter the mobile number of the "
-"person who will receive the weekly messages. For example, 08033048990"
-msgstr ""
-
-#: go-ussd_registration.js:1387
-msgid ""
-"Sorry, that is not a valid number. Please enter the mother's mobile number. "
-"She must consent to receiving messages."
-msgstr ""
-
-#: go-ussd_registration.js:1389
-msgid ""
-"Sorry, that is not a valid number. Please enter the {{roleplayer}}'s "
-"number. They will receive a weekly SMS and must consent to receiving "
-"messages."
-msgstr ""
-
-#: go-ussd_registration.js:1391
-msgid ""
-"Sorry, that is not a valid number. What day of the month did the woman "
-"start her last period? For example, 12."
-msgstr ""
-
-#: go-ussd_registration.js:1393
-msgid ""
-"Sorry, that is not a valid number. Please enter the number of times the "
-"woman has been pregnant before. This includes any pregnancies she may not "
-"have carried to term."
-msgstr ""
-
-#: go-ussd_registration.js:1395
-msgid ""
-"Sorry, that is not a valid number. What day of the month was the baby born? "
-"For example, 12."
-msgstr ""
-
-#: go-ussd_registration.js:1419
+#: go-ussd_registration.js:1436
 msgid "Yes"
 msgstr ""
 
-#: go-ussd_registration.js:1420
-msgid "No, start new registration"
+#: go-ussd_registration.js:1437
+msgid "No, start a new registration"
 msgstr ""
 
-#: go-ussd_registration.js:1482
+#: go-ussd_registration.js:1501
 msgid "Mother, Father"
 msgstr ""
 
-#: go-ussd_registration.js:1483
+#: go-ussd_registration.js:1502
 msgid "Mother"
 msgstr ""
 
-#: go-ussd_registration.js:1484
+#: go-ussd_registration.js:1503
 msgid "Father"
 msgstr ""
 
-#: go-ussd_registration.js:1485
+#: go-ussd_registration.js:1504
 msgid "Mother, family member"
 msgstr ""
 
-#: go-ussd_registration.js:1486
+#: go-ussd_registration.js:1505
 msgid "Mother, friend"
 msgstr ""
 
-#: go-ussd_registration.js:1487
+#: go-ussd_registration.js:1506
 msgid "Friend"
 msgstr ""
 
-#: go-ussd_registration.js:1488
+#: go-ussd_registration.js:1507
 msgid "Family member"
 msgstr ""
 
-#: go-ussd_registration.js:1535
+#: go-ussd_registration.js:1574
 msgid "Try a different number"
 msgstr ""
 
-#: go-ussd_registration.js:1536
+#: go-ussd_registration.js:1575
 msgid "Choose a different receiver"
 msgstr ""
 
-#: go-ussd_registration.js:1537
+#: go-ussd_registration.js:1576 go-ussd_registration.js:1902
 msgid "Exit"
 msgstr ""
 
-#: go-ussd_registration.js:1640
+#: go-ussd_registration.js:1681
 msgid "The mother is pregnant"
 msgstr ""
 
-#: go-ussd_registration.js:1641
+#: go-ussd_registration.js:1682
 msgid "The mother has a baby under 1 year old"
 msgstr ""
 
-#: go-ussd_registration.js:1658 go-ussd_registration.js:1787
+#: go-ussd_registration.js:1700 go-ussd_registration.js:1842
 msgid "More"
 msgstr ""
 
-#: go-ussd_registration.js:1659 go-ussd_registration.js:1788
+#: go-ussd_registration.js:1701 go-ussd_registration.js:1843
 msgid "Back"
 msgstr ""
 
-#: go-ussd_registration.js:1701
+#: go-ussd_registration.js:1744
 msgid "English"
 msgstr ""
 
-#: go-ussd_registration.js:1702
-msgid "Hausa"
-msgstr ""
-
-#: go-ussd_registration.js:1703
+#: go-ussd_registration.js:1745
 msgid "Igbo"
 msgstr ""
 
-#: go-ussd_registration.js:1704
+#: go-ussd_registration.js:1746
 msgid "Pidgin"
 msgstr ""
 
-#: go-ussd_registration.js:1705
-msgid "Yoruba"
-msgstr ""
-
-#: go-ussd_registration.js:1716
+#: go-ussd_registration.js:1758
 msgid "Voice calls"
 msgstr ""
 
-#: go-ussd_registration.js:1717
+#: go-ussd_registration.js:1759
 msgid "Text SMSs"
 msgstr ""
 
-#: go-ussd_registration.js:1738
+#: go-ussd_registration.js:1781
 msgid "Monday and Wednesday"
 msgstr ""
 
-#: go-ussd_registration.js:1739
+#: go-ussd_registration.js:1782
 msgid "Tuesday and Thursday"
 msgstr ""
 
-#: go-ussd_registration.js:1750
+#: go-ussd_registration.js:1804
 msgid "Between 9-11am"
 msgstr ""
 
-#: go-ussd_registration.js:1751
+#: go-ussd_registration.js:1805
 msgid "Between 2-5pm"
 msgstr ""
 
-#: go-ussd_registration.js:1838
-msgid "The date you entered ({{ date }}) is not a real date. Please try again."
+#: go-ussd_registration.js:1893
+msgid "The date you entered ({{ date }}) is incorrect. Please try again."
 msgstr ""
 
-#: go-ussd_registration.js:1843
+#: go-ussd_registration.js:1896
+msgid "{{prefix}}The date you entered ({{ date }}) is incorrect. Please try again."
+msgstr ""
+
+#: go-ussd_registration.js:1901
 msgid "Continue"
 msgstr ""
