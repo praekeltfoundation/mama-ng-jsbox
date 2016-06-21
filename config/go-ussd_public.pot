@@ -221,6 +221,14 @@ msgstr ""
 msgid "Thank you for using the Hello Mama service"
 msgstr ""
 
+#: go-ussd_public.js:1419
+msgid "Sorry, invalid option. "
+msgstr ""
+
+#: go-ussd_public.js:1420
+msgid "Sorry, invalid number. "
+msgstr ""
+
 #: go-ussd_public.js:1476 go-ussd_public.js:2023
 msgid "Yes"
 msgstr ""
