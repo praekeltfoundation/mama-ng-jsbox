@@ -1407,9 +1407,9 @@ go.app = function() {
         };
 
         var state_error_types = {
-            "invalid_date": "Sorry, invalid date. ",
-            "invalid_selection": "Sorry, invalid option. ",
-            "invalid_number": "Sorry, invalid number. "
+            "invalid_date": $("Sorry, invalid date. "),
+            "invalid_selection": $("Sorry, invalid option. "),
+            "invalid_number": $("Sorry, invalid number. ")
         };
 
     // TIMEOUT HANDLING

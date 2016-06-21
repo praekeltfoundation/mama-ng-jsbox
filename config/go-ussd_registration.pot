@@ -191,6 +191,18 @@ msgstr ""
 msgid "Thank you for using the Hello Mama service."
 msgstr ""
 
+#: go-ussd_registration.js:1411
+msgid "Sorry, invalid date. "
+msgstr ""
+
+#: go-ussd_registration.js:1412
+msgid "Sorry, invalid option. "
+msgstr ""
+
+#: go-ussd_registration.js:1413
+msgid "Sorry, invalid number. "
+msgstr ""
+
 #: go-ussd_registration.js:1436
 msgid "Yes"
 msgstr ""

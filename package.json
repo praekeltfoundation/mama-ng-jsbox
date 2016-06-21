@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/praekelt/mama-ng-jsbox",
   "dependencies": {
-    "vumigo_v02": "~0.2",
+    "vumigo_v02": "~0.2.18",
     "q": "~0.9",
     "lodash": "~2.4.1",
     "moment": "~2.6.0",
