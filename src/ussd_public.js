@@ -23,7 +23,7 @@ go.app = function() {
                 case "state_msisdn_permission":
                     return $("{{prefix}}Welcome to Hello Mama. Do you have permission to manage the number {{msisdn}}?");
                 case "state_msisdn_no_permission":  // unnamed state on flow diagram
-                    return $("{{prefix}}We're sorry, you do not have permission to update the preferences for this subscriber.");
+                    return $("{{prefix}}We're sorry, you do not have permission to update the preferences for this number.");
                 case "state_language":
                     return $("{{prefix}}Welcome to Hello Mama. Please choose your language");
                 case "state_registered_msisdn":
@@ -64,7 +64,7 @@ go.app = function() {
                 case "state_msg_language_confirm":
                     return $("Thank you. Your language has been updated and you will start to receive messages in this language.");
                 case "state_optout_reason":
-                    return $("{{prefix}}Why do you no longer want to receive messages?");
+                    return $("{{prefix}}Please tell us why you no longer want to receive messages so we can help you further");
                 case "state_loss_subscription":
                     return $("{{prefix}}We are sorry for your loss. Would the mother like to receive a small set of free messages that could help during this difficult time?");
                 case "state_end_loss_subscription_confirm":
@@ -298,11 +298,11 @@ go.app = function() {
                 error: get_content(name)
                     .context({prefix: state_error_types.invalid_selection}),
                 choices: [
-                    new Choice('state_check_baby_subscription', $("Start Baby messages")),
-                    new Choice('state_check_msg_type', $("Change message preferences")),
+                    new Choice('state_check_baby_subscription', $("Start baby messages")),
+                    new Choice('state_check_msg_type', $("Change text or voice message options")),
                     new Choice('state_new_msisdn', $("Change my number")),
                     new Choice('state_msg_language', $("Change language")),
-                    new Choice('state_optout_reason', $("Stop receiving messages"))
+                    new Choice('state_optout_reason', $("Stop messages"))
                 ],
                 next: function(choice) {
                     return choice.value;
@@ -317,10 +317,10 @@ go.app = function() {
                 error: get_content(name)
                     .context({prefix: state_error_types.invalid_selection}),
                 choices: [
-                    new Choice('state_check_baby_subscription', $("Start Baby messages")),
+                    new Choice('state_check_baby_subscription', $("Start baby messages")),
                     new Choice('state_new_msisdn', $("Change my number")),
                     new Choice('state_msg_language', $("Change language")),
-                    new Choice('state_optout_reason', $("Stop receiving messages"))
+                    new Choice('state_optout_reason', $("Stop messages"))
                 ],
                 next: function(choice) {
                     return choice.value;
@@ -474,7 +474,7 @@ go.app = function() {
                     .context({prefix: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('state_voice_days', $("Change the day and time I receive messages")),
-                    new Choice('state_end_sms_confirm', $("Change from voice to text messages")),
+                    new Choice('state_end_sms_confirm', $("Change the mother messages from voice to text messages")),
                     new Choice('state_check_receiver_role', $("Back to main menu"))
                 ],
                 next: function(choice) {

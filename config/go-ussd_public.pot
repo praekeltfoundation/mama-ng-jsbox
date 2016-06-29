@@ -110,7 +110,7 @@ msgstr ""
 #: go-ussd_public.js:1361
 msgid ""
 "{{prefix}}We're sorry, you do not have permission to update the preferences "
-"for this subscriber."
+"for this number."
 msgstr ""
 
 #: go-ussd_public.js:1363
@@ -188,7 +188,7 @@ msgid ""
 msgstr ""
 
 #: go-ussd_public.js:1402
-msgid "{{prefix}}Why do you no longer want to receive messages?"
+msgid "{{prefix}}Please tell us why you no longer want to receive messages so we can help you further"
 msgstr ""
 
 #: go-ussd_public.js:1404
@@ -254,11 +254,11 @@ msgid "Pidgin"
 msgstr ""
 
 #: go-ussd_public.js:1636 go-ussd_public.js:1655
-msgid "Start Baby messages"
+msgid "Start baby messages"
 msgstr ""
 
 #: go-ussd_public.js:1637
-msgid "Change message preferences"
+msgid "Change text or voice message options"
 msgstr ""
 
 #: go-ussd_public.js:1638 go-ussd_public.js:1656
@@ -270,7 +270,7 @@ msgid "Change language"
 msgstr ""
 
 #: go-ussd_public.js:1640 go-ussd_public.js:1658
-msgid "Stop receiving messages"
+msgid "Stop messages"
 msgstr ""
 
 #: go-ussd_public.js:1733
@@ -326,7 +326,7 @@ msgid "Change the day and time I receive messages"
 msgstr ""
 
 #: go-ussd_public.js:1812
-msgid "Change from voice to text messages"
+msgid "Change the mother messages from voice to text messages"
 msgstr ""
 
 #: go-ussd_public.js:1883

@@ -153,11 +153,11 @@ describe("Hello Mama app", function() {
                             state: 'state_main_menu',
                             reply: [
                                 "Select:",
-                                "1. Start Baby messages",
-                                "2. Change message preferences",
+                                "1. Start baby messages",
+                                "2. Change text or voice message options",
                                 "3. Change my number",
                                 "4. Change language",
-                                "5. Stop receiving messages"
+                                "5. Stop messages"
                             ].join('\n')
                         })
                         .run();
@@ -173,11 +173,11 @@ describe("Hello Mama app", function() {
                             state: 'state_main_menu',
                             reply: [
                                 "Select:",
-                                "1. Start Baby messages",
-                                "2. Change message preferences",
+                                "1. Start baby messages",
+                                "2. Change text or voice message options",
                                 "3. Change my number",
                                 "4. Change language",
-                                "5. Stop receiving messages"
+                                "5. Stop messages"
                             ].join('\n')
                         })
                         .run();
@@ -193,10 +193,10 @@ describe("Hello Mama app", function() {
                             state: 'state_main_menu_household',
                             reply: [
                                 "Select:",
-                                "1. Start Baby messages",
+                                "1. Start baby messages",
                                 "2. Change my number",
                                 "3. Change language",
-                                "4. Stop receiving messages"
+                                "4. Stop messages"
                             ].join('\n')
                         })
                         .run();
@@ -210,7 +210,7 @@ describe("Hello Mama app", function() {
                         )
                         .check.interaction({
                             state: 'state_msisdn_no_permission',
-                            reply: "We're sorry, you do not have permission to update the preferences for this subscriber."
+                            reply: "We're sorry, you do not have permission to update the preferences for this number."
                         })
                         .run();
                 });
@@ -402,7 +402,7 @@ describe("Hello Mama app", function() {
                                 reply: [
                                     "Please select an option:",
                                     "1. Change the day and time I receive messages",
-                                    "2. Change from voice to text messages",
+                                    "2. Change the mother messages from voice to text messages",
                                     "3. Back to main menu"
                                 ].join('\n')
                             })
@@ -492,7 +492,7 @@ describe("Hello Mama app", function() {
                                 reply: [
                                     "Please select an option:",
                                     "1. Change the day and time I receive messages",
-                                    "2. Change from voice to text messages",
+                                    "2. Change the mother messages from voice to text messages",
                                     "3. Back to main menu"
                                 ].join('\n')
                             })
@@ -802,7 +802,7 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_optout_reason',
                                 reply: [
-                                    "Why do you no longer want to receive messages?",
+                                    "Please tell us why you no longer want to receive messages so we can help you further",
                                     "1. Mother miscarried",
                                     "2. Baby stillborn",
                                     "3. Baby passed away",
@@ -969,7 +969,7 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_optout_reason',
                                 reply: [
-                                    "Why do you no longer want to receive messages?",
+                                    "Please tell us why you no longer want to receive messages so we can help you further",
                                     "1. Mother miscarried",
                                     "2. Baby stillborn",
                                     "3. Baby passed away",
@@ -1266,7 +1266,7 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_optout_reason',
                                 reply: [
-                                    "Why do you no longer want to receive messages?",
+                                    "Please tell us why you no longer want to receive messages so we can help you further",
                                     "1. Mother miscarried",
                                     "2. Baby stillborn",
                                     "3. Baby passed away",
@@ -1563,7 +1563,7 @@ describe("Hello Mama app", function() {
                             .check.interaction({
                                 state: 'state_optout_reason',
                                 reply: [
-                                    "Why do you no longer want to receive messages?",
+                                    "Please tell us why you no longer want to receive messages so we can help you further",
                                     "1. Mother miscarried",
                                     "2. Baby stillborn",
                                     "3. Baby passed away",
@@ -1818,11 +1818,11 @@ describe("Hello Mama app", function() {
                             state: 'state_main_menu',
                             reply: [
                                 "Sorry, invalid option. Select:",
-                                "1. Start Baby messages",
-                                "2. Change message preferences",
+                                "1. Start baby messages",
+                                "2. Change text or voice message options",
                                 "3. Change my number",
                                 "4. Change language",
-                                "5. Stop receiving messages"
+                                "5. Stop messages"
                             ].join('\n')
                         })
                         .run();
@@ -1836,10 +1836,10 @@ describe("Hello Mama app", function() {
                             state: 'state_main_menu_household',
                             reply: [
                                 "Sorry, invalid option. Select:",
-                                "1. Start Baby messages",
+                                "1. Start baby messages",
                                 "2. Change my number",
                                 "3. Change language",
-                                "4. Stop receiving messages"
+                                "4. Stop messages"
                             ].join('\n')
                         })
                         .run();
@@ -1899,7 +1899,7 @@ describe("Hello Mama app", function() {
                             reply: [
                                 "Sorry, invalid option. Please select an option:",
                                 "1. Change the day and time I receive messages",
-                                "2. Change from voice to text messages",
+                                "2. Change the mother messages from voice to text messages",
                                 "3. Back to main menu"
                             ].join('\n')
                         })
@@ -1955,7 +1955,7 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_optout_reason',
                             reply: [
-                                "Sorry, invalid option. Why do you no longer want to receive messages?",
+                                "Sorry, invalid option. Please tell us why you no longer want to receive messages so we can help you further",
                                 "1. Mother miscarried",
                                 "2. Baby stillborn",
                                 "3. Baby passed away",
