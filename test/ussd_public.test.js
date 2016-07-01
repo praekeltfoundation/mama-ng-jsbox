@@ -555,7 +555,7 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_number_in_use',
                             reply: [
-                                "Sorry this number is already registered. You must opt-out before registering again.",
+                                "Sorry this number is already registered. They must opt-out before registering again.",
                                 "1. Try a different number",
                                 "2. Exit"
                             ].join('\n')
@@ -1924,7 +1924,7 @@ describe("Hello Mama app", function() {
                         .check.interaction({
                             state: 'state_number_in_use',
                             reply: [
-                                "Sorry, invalid option. Sorry this number is already registered. You must opt-out before registering again.",
+                                "Sorry, invalid option. Sorry this number is already registered. They must opt-out before registering again.",
                                 "1. Try a different number",
                                 "2. Exit"
                             ].join('\n')

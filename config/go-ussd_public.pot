@@ -165,7 +165,7 @@ msgstr ""
 
 #: go-ussd_public.js:1392
 msgid ""
-"{{prefix}}Sorry this number is already registered. You must opt-out before "
+"{{prefix}}Sorry this number is already registered. They must opt-out before "
 "registering again."
 msgstr ""
 

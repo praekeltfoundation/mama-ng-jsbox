@@ -54,7 +54,7 @@ go.app = function() {
                 case "state_new_msisdn":
                     return $("{{prefix}}Please enter the new mobile number you would like to receive messages on.");
                 case "state_number_in_use":
-                    return $("{{prefix}}Sorry this number is already registered. You must opt-out before registering again.");
+                    return $("{{prefix}}Sorry this number is already registered. They must opt-out before registering again.");
                 case "state_msg_receiver":
                     return $("{{prefix}}Who will receive these messages?");
                 case "state_end_number_change":
