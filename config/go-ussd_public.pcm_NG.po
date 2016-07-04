@@ -1,0 +1,370 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2016-06-20 05:40:+0000\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: pcm_NG\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+
+#: go-ussd_public.js:232
+msgid "{{pre}}January{{post}}"
+msgstr ""
+
+#: go-ussd_public.js:233
+msgid "{{pre}}February{{post}}"
+msgstr ""
+
+#: go-ussd_public.js:234
+msgid "{{pre}}March{{post}}"
+msgstr ""
+
+#: go-ussd_public.js:235
+msgid "{{pre}}April{{post}}"
+msgstr ""
+
+#: go-ussd_public.js:236 go-ussd_public.js:258
+msgid "{{pre}}May{{post}}"
+msgstr ""
+
+#: go-ussd_public.js:237
+msgid "{{pre}}June{{post}}"
+msgstr ""
+
+#: go-ussd_public.js:238
+msgid "{{pre}}July{{post}}"
+msgstr ""
+
+#: go-ussd_public.js:239
+msgid "{{pre}}August{{post}}"
+msgstr ""
+
+#: go-ussd_public.js:240
+msgid "{{pre}}September{{post}}"
+msgstr ""
+
+#: go-ussd_public.js:241
+msgid "{{pre}}October{{post}}"
+msgstr ""
+
+#: go-ussd_public.js:242
+msgid "{{pre}}November{{post}}"
+msgstr ""
+
+#: go-ussd_public.js:243
+msgid "{{pre}}December{{post}}"
+msgstr ""
+
+#: go-ussd_public.js:254
+msgid "{{pre}}Jan{{post}}"
+msgstr ""
+
+#: go-ussd_public.js:255
+msgid "{{pre}}Feb{{post}}"
+msgstr ""
+
+#: go-ussd_public.js:256
+msgid "{{pre}}Mar{{post}}"
+msgstr ""
+
+#: go-ussd_public.js:257
+msgid "{{pre}}Apr{{post}}"
+msgstr ""
+
+#: go-ussd_public.js:259
+msgid "{{pre}}Jun{{post}}"
+msgstr ""
+
+#: go-ussd_public.js:260
+msgid "{{pre}}Jul{{post}}"
+msgstr ""
+
+#: go-ussd_public.js:261
+msgid "{{pre}}Aug{{post}}"
+msgstr ""
+
+#: go-ussd_public.js:262
+msgid "{{pre}}Sep{{post}}"
+msgstr ""
+
+#: go-ussd_public.js:263
+msgid "{{pre}}Oct{{post}}"
+msgstr ""
+
+#: go-ussd_public.js:264
+msgid "{{pre}}Nov{{post}}"
+msgstr ""
+
+#: go-ussd_public.js:265
+msgid "{{pre}}Dec{{post}}"
+msgstr ""
+
+#: go-ussd_public.js:1359
+msgid ""
+"{{prefix}}Welcome to Hello Mama. Do you have permission to manage the "
+"number {{msisdn}}?"
+msgstr ""
+
+#: go-ussd_public.js:1361
+msgid ""
+"{{prefix}}We're sorry, you do not have permission to update the preferences "
+"for this number."
+msgstr ""
+
+#: go-ussd_public.js:1363
+msgid "{{prefix}}Welcome to Hello Mama. Please choose your language"
+msgstr ""
+
+#: go-ussd_public.js:1365
+msgid "{{prefix}}Please enter the number which is registered to receive messages."
+msgstr ""
+
+#: go-ussd_public.js:1367 go-ussd_public.js:1369
+msgid "{{prefix}}Select:"
+msgstr ""
+
+#: go-ussd_public.js:1371
+msgid ""
+"{{prefix}}We do not recognise this number. Please dial from the registered "
+"number or sign up with the Local Community Health Extension Worker."
+msgstr ""
+
+#: go-ussd_public.js:1373
+msgid "You are already registered for baby messages."
+msgstr ""
+
+#: go-ussd_public.js:1375
+msgid "{{prefix}}Thank you. You will now receive messages about caring for the baby"
+msgstr ""
+
+#: go-ussd_public.js:1377 go-ussd_public.js:1386
+msgid "{{prefix}}Please select an option:"
+msgstr ""
+
+#: go-ussd_public.js:1379
+msgid ""
+"{{prefix}}We will call twice a week. On what days would you like to receive "
+"messages?"
+msgstr ""
+
+#: go-ussd_public.js:1381
+msgid "{{prefix}}At what time would you like to receive these calls?"
+msgstr ""
+
+#: go-ussd_public.js:1388
+msgid "Thank you. You will now receive text messages"
+msgstr ""
+
+#: go-ussd_public.js:1390
+msgid ""
+"{{prefix}}Please enter the new mobile number you would like to receive "
+"messages on."
+msgstr ""
+
+#: go-ussd_public.js:1392
+msgid ""
+"{{prefix}}Sorry this number is already registered. You must opt-out before "
+"registering again."
+msgstr ""
+
+#: go-ussd_public.js:1394
+msgid "{{prefix}}Who will receive these messages?"
+msgstr ""
+
+#: go-ussd_public.js:1396
+msgid "Thank you. The number which receives messages has been updated."
+msgstr ""
+
+#: go-ussd_public.js:1398
+msgid "{{prefix}}What language would you like to receive these messages in?"
+msgstr ""
+
+#: go-ussd_public.js:1400
+msgid ""
+"Thank you. Your language has been updated and you will start to receive "
+"messages in this language."
+msgstr ""
+
+#: go-ussd_public.js:1402
+msgid "{{prefix}}Please tell us why you no longer want to receive messages so we can help you further"
+msgstr ""
+
+#: go-ussd_public.js:1404
+msgid ""
+"{{prefix}}We are sorry for your loss. Would the mother like to receive a "
+"small set of free messages that could help during this difficult time?"
+msgstr ""
+
+#: go-ussd_public.js:1406
+msgid ""
+"Thank you. You will now receive messages to support you during this "
+"difficult time."
+msgstr ""
+
+#: go-ussd_public.js:1408
+msgid "{{prefix}}Which messages would you like to stop receiving?"
+msgstr ""
+
+#: go-ussd_public.js:1410
+msgid "Thank you. You will no longer receive messages"
+msgstr ""
+
+#: go-ussd_public.js:1412
+msgid ""
+"We are sorry for your loss. You will no longer receive messages. Should you "
+"need support during this difficult time, please contact your local CHEW."
+msgstr ""
+
+#: go-ussd_public.js:1414
+msgid "Thank you for using the Hello Mama service"
+msgstr ""
+
+#: go-ussd_public.js:1419
+msgid "Sorry, invalid option. "
+msgstr ""
+
+#: go-ussd_public.js:1420
+msgid "Sorry, invalid number. "
+msgstr ""
+
+#: go-ussd_public.js:1476 go-ussd_public.js:2023
+msgid "Yes"
+msgstr ""
+
+#: go-ussd_public.js:1477 go-ussd_public.js:2024
+msgid "No"
+msgstr ""
+
+#: go-ussd_public.js:1478
+msgid "Change the number I'd like to manage"
+msgstr ""
+
+#: go-ussd_public.js:1507 go-ussd_public.js:1927
+msgid "English"
+msgstr ""
+
+#: go-ussd_public.js:1508 go-ussd_public.js:1928
+msgid "Igbo"
+msgstr ""
+
+#: go-ussd_public.js:1509 go-ussd_public.js:1929
+msgid "Pidgin"
+msgstr ""
+
+#: go-ussd_public.js:1636 go-ussd_public.js:1655
+msgid "Start baby messages"
+msgstr ""
+
+#: go-ussd_public.js:1637
+msgid "Change text or voice message options"
+msgstr ""
+
+#: go-ussd_public.js:1638 go-ussd_public.js:1656
+msgid "Change my number"
+msgstr ""
+
+#: go-ussd_public.js:1639 go-ussd_public.js:1657
+msgid "Change language"
+msgstr ""
+
+#: go-ussd_public.js:1640 go-ussd_public.js:1658
+msgid "Stop messages"
+msgstr ""
+
+#: go-ussd_public.js:1733
+msgid "Change from text to voice messages"
+msgstr ""
+
+#: go-ussd_public.js:1734 go-ussd_public.js:1813
+msgid "Back to main menu"
+msgstr ""
+
+#: go-ussd_public.js:1751
+msgid "Monday and Wednesday"
+msgstr ""
+
+#: go-ussd_public.js:1752
+msgid "Tuesday and Thursday"
+msgstr ""
+
+#: go-ussd_public.js:1765
+msgid "Between 9-11am"
+msgstr ""
+
+#: go-ussd_public.js:1766
+msgid "Between 2-5pm"
+msgstr ""
+
+#: go-ussd_public.js:1791
+msgid ""
+"Thank you. You will now start receiving voice calls on Monday and Wednesday "
+"between 9 and 11am"
+msgstr ""
+
+#: go-ussd_public.js:1792
+msgid ""
+"Thank you. You will now start receiving voice calls on Monday and Wednesday "
+"between 2 and 5pm"
+msgstr ""
+
+#: go-ussd_public.js:1795
+msgid ""
+"Thank you. You will now start receiving voice calls on Tuesday and Thursday "
+"between 9 and 11am"
+msgstr ""
+
+#: go-ussd_public.js:1796
+msgid ""
+"Thank you. You will now start receiving voice calls on Tuesday and Thursday "
+"between 2 and 5pm"
+msgstr ""
+
+#: go-ussd_public.js:1811
+msgid "Change the day and time I receive messages"
+msgstr ""
+
+#: go-ussd_public.js:1812
+msgid "Change the mother messages from voice to text messages"
+msgstr ""
+
+#: go-ussd_public.js:1883
+msgid "Try a different number"
+msgstr ""
+
+#: go-ussd_public.js:1884
+msgid "Exit"
+msgstr ""
+
+#: go-ussd_public.js:1972
+msgid "Mother miscarried"
+msgstr ""
+
+#: go-ussd_public.js:1973
+msgid "Baby stillborn"
+msgstr ""
+
+#: go-ussd_public.js:1974
+msgid "Baby passed away"
+msgstr ""
+
+#: go-ussd_public.js:1975
+msgid "Messages not useful"
+msgstr ""
+
+#: go-ussd_public.js:1976
+msgid "Other"
+msgstr ""
+
+#: go-ussd_public.js:2114
+msgid "Mother messages"
+msgstr ""
+
+#: go-ussd_public.js:2115
+msgid "Household messages"
+msgstr ""
+
+#: go-ussd_public.js:2116
+msgid "All messages"
+msgstr ""
