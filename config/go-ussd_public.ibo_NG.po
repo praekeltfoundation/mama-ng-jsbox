@@ -1,173 +1,169 @@
 msgid ""
 msgstr ""
 "POT-Creation-Date: 2016-06-20 05:40:+0000\n"
-"Project-Id-Version: PACKAGE VERSION\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: eng_NG\n"
+"Project-Id-Version: \n"
+"Language: ibo_NG\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2016-07-01 10:20+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"X-Generator: Poedit 1.8.8\n"
 
 #: go-ussd_public.js:232
 msgid "{{pre}}January{{post}}"
-msgstr ""
+msgstr "{{pre}}January{{post}}"
 
 #: go-ussd_public.js:233
 msgid "{{pre}}February{{post}}"
-msgstr ""
+msgstr "{{pre}}February{{post}}"
 
 #: go-ussd_public.js:234
 msgid "{{pre}}March{{post}}"
-msgstr ""
+msgstr "{{pre}}March{{post}}"
 
 #: go-ussd_public.js:235
 msgid "{{pre}}April{{post}}"
-msgstr ""
+msgstr "{{pre}}April{{post}}"
 
 #: go-ussd_public.js:236 go-ussd_public.js:258
 msgid "{{pre}}May{{post}}"
-msgstr ""
+msgstr "{{pre}}May{{post}}"
 
 #: go-ussd_public.js:237
 msgid "{{pre}}June{{post}}"
-msgstr ""
+msgstr "{{pre}}June{{post}}"
 
 #: go-ussd_public.js:238
 msgid "{{pre}}July{{post}}"
-msgstr ""
+msgstr "{{pre}}July{{post}}"
 
 #: go-ussd_public.js:239
 msgid "{{pre}}August{{post}}"
-msgstr ""
+msgstr "{{pre}}August{{post}}"
 
 #: go-ussd_public.js:240
 msgid "{{pre}}September{{post}}"
-msgstr ""
+msgstr "{{pre}}September{{post}}"
 
 #: go-ussd_public.js:241
 msgid "{{pre}}October{{post}}"
-msgstr ""
+msgstr "{{pre}}October{{post}}"
 
 #: go-ussd_public.js:242
 msgid "{{pre}}November{{post}}"
-msgstr ""
+msgstr "{{pre}}November{{post}}"
 
 #: go-ussd_public.js:243
 msgid "{{pre}}December{{post}}"
-msgstr ""
+msgstr "{{pre}}December{{post}}"
 
 #: go-ussd_public.js:254
 msgid "{{pre}}Jan{{post}}"
-msgstr ""
+msgstr "{{pre}}Jan{{post}}"
 
 #: go-ussd_public.js:255
 msgid "{{pre}}Feb{{post}}"
-msgstr ""
+msgstr "{{pre}}Feb{{post}}"
 
 #: go-ussd_public.js:256
 msgid "{{pre}}Mar{{post}}"
-msgstr ""
+msgstr "{{pre}}Mar{{post}}"
 
 #: go-ussd_public.js:257
 msgid "{{pre}}Apr{{post}}"
-msgstr ""
+msgstr "{{pre}}Apr{{post}}"
 
 #: go-ussd_public.js:259
 msgid "{{pre}}Jun{{post}}"
-msgstr ""
+msgstr "{{pre}}Jun{{post}}"
 
 #: go-ussd_public.js:260
 msgid "{{pre}}Jul{{post}}"
-msgstr ""
+msgstr "{{pre}}Jul{{post}}"
 
 #: go-ussd_public.js:261
 msgid "{{pre}}Aug{{post}}"
-msgstr ""
+msgstr "{{pre}}Aug{{post}}"
 
 #: go-ussd_public.js:262
 msgid "{{pre}}Sep{{post}}"
-msgstr ""
+msgstr "{{pre}}Sep{{post}}"
 
 #: go-ussd_public.js:263
 msgid "{{pre}}Oct{{post}}"
-msgstr ""
+msgstr "{{pre}}Oct{{post}}"
 
 #: go-ussd_public.js:264
 msgid "{{pre}}Nov{{post}}"
-msgstr ""
+msgstr "{{pre}}Nov{{post}}"
 
 #: go-ussd_public.js:265
 msgid "{{pre}}Dec{{post}}"
-msgstr ""
+msgstr "{{pre}}Dec{{post}}"
 
 #: go-ussd_public.js:1359
-msgid ""
-"{{prefix}}Welcome to Hello Mama. Do you have permission to manage the "
-"number {{msisdn}}?"
-msgstr ""
+msgid "{{prefix}}Welcome to Hello Mama. Do you have permission to manage the number {{msisdn}}?"
+msgstr "{{prefix}}Ndewo na Hello Mama. I natara ikike iji jikwaa nomba a {{msisdn}}?"
 
 #: go-ussd_public.js:1361
-msgid ""
-"{{prefix}}We're sorry, you do not have permission to update the preferences "
-"for this number."
-msgstr ""
+msgid "{{prefix}}We're sorry, you do not have permission to update the preferences for this number."
+msgstr "{{prefix}}Anyi si gi ewela iwe inweghi ikike i kwalite ihe mmasi nomba a. "
 
 #: go-ussd_public.js:1363
 msgid "{{prefix}}Welcome to Hello Mama. Please choose your language"
-msgstr ""
+msgstr "{{prefix}}Ndewo na Hello Mama. Biko horo asusu gi "
 
 #: go-ussd_public.js:1365
 msgid "{{prefix}}Please enter the number which is registered to receive messages."
-msgstr ""
+msgstr "{{prefix}}Biko tinye nomba e denyere n’akwukwo iji anata ozi."
 
 #: go-ussd_public.js:1367 go-ussd_public.js:1369
 msgid "{{prefix}}Select:"
-msgstr ""
+msgstr "{{prefix}}Horo:"
 
 #: go-ussd_public.js:1371
 msgid ""
-"{{prefix}}We do not recognise this number. Please dial from the registered "
-"number or sign up with the Local Community Health Extension Worker."
+"{{prefix}}We do not recognise this number. Please dial from the registered number or sign up with "
+"the Local Community Health Extension Worker."
 msgstr ""
+"{{prefix}}Anyi amaghi nomba nke a. Biko were nomba edenyere n’akwukwo kpo ma o bu tinye aha gi "
+"n’aka onye oru ahuike di gi nso."
 
 #: go-ussd_public.js:1373
 msgid "You are already registered for baby messages."
-msgstr ""
+msgstr "E tinyelari aha gi n’akwukwo maka ozi nwa.  "
 
 #: go-ussd_public.js:1375
 msgid "{{prefix}}Thank you. You will now receive messages about caring for the baby"
-msgstr ""
+msgstr "{{prefix}}Daalu. Ugbu a i ga anata maka ilekota nwa anya.   "
 
 #: go-ussd_public.js:1377 go-ussd_public.js:1386
 msgid "{{prefix}}Please select an option:"
-msgstr ""
+msgstr "{{prefix}}Biko horo otu nhoro:"
 
 #: go-ussd_public.js:1379
-msgid ""
-"{{prefix}}We will call twice a week. On what days would you like to receive "
-"messages?"
-msgstr ""
+msgid "{{prefix}}We will call twice a week. On what days would you like to receive messages?"
+msgstr "{{prefix}}Anyi ga akpo ugboro abuo n’izuka. Kedu ubochi ndi i ga acho i nata ozi?"
 
 #: go-ussd_public.js:1381
 msgid "{{prefix}}At what time would you like to receive these calls?"
-msgstr ""
+msgstr "{{prefix}}Kedu oge i ga acho iji nata ozi olu ndi a? "
 
 #: go-ussd_public.js:1388
 msgid "Thank you. You will now receive text messages"
-msgstr ""
+msgstr "Daalu. I ga anata oz iodide ugbu a "
 
 #: go-ussd_public.js:1390
-msgid ""
-"{{prefix}}Please enter the new mobile number you would like to receive "
-"messages on."
-msgstr ""
+msgid "{{prefix}}Please enter the new mobile number you would like to receive messages on."
+msgstr "{{prefix}}Biko tinye nomba ekwenti ọhụrụ ị ga-achọ iji na enweta ozi"
 
 #: go-ussd_public.js:1392
-msgid ""
-"{{prefix}}Sorry this number is already registered. You must opt-out before "
-"registering again."
+msgid "{{prefix}}Sorry this number is already registered. You must opt-out before registering again."
 msgstr ""
+"{{prefix}}Ewela iwe, e denyelari nomba nkea n’akwukwo. Ha ga ewepuriri aka tupu ha e tinye aka ọzọ "
+"n’akwukwo"
 
 #: go-ussd_public.js:1394
 msgid "{{prefix}}Who will receive these messages?"
@@ -175,51 +171,53 @@ msgstr ""
 
 #: go-ussd_public.js:1396
 msgid "Thank you. The number which receives messages has been updated."
-msgstr ""
+msgstr "Daalu.  E melitela nombe nke n’anata ozi "
 
 #: go-ussd_public.js:1398
 msgid "{{prefix}}What language would you like to receive these messages in?"
-msgstr ""
+msgstr "{{prefix}}Kedu asusu nke i ga acho iji anata ozi?"
 
 #: go-ussd_public.js:1400
 msgid ""
-"Thank you. Your language has been updated and you will start to receive "
-"messages in this language."
-msgstr ""
+"Thank you. Your language has been updated and you will start to receive messages in this language."
+msgstr "Daalu. E melitela asusu gi ma i ga ebido inata ozi n’asusu a."
 
 #: go-ussd_public.js:1402
 msgid "{{prefix}}Please tell us why you no longer want to receive messages so we can help you further"
 msgstr ""
+"{{prefix}}Biko gwa anyi ihe mere i na achoghi kwa i na anata ozi ka anyi nwe ike inyekwuru gi aka."
 
 #: go-ussd_public.js:1404
 msgid ""
-"{{prefix}}We are sorry for your loss. Would the mother like to receive a "
-"small set of free messages that could help during this difficult time?"
+"{{prefix}}We are sorry for your loss. Would the mother like to receive a small set of free messages "
+"that could help during this difficult time?"
 msgstr ""
+"{{prefix}}Odi anyi nwute n’ihe nfunari mere gi. Onye nne o ga acho inata obere ndi di n’efu n’aka "
+"ndi Hello Mama ga enye aka n'oge nsogbu a?"
 
 #: go-ussd_public.js:1406
-msgid ""
-"Thank you. You will now receive messages to support you during this "
-"difficult time."
-msgstr ""
+msgid "Thank you. You will now receive messages to support you during this difficult time."
+msgstr "Daalu. Ugbu a i ga anata ozi ndi ga adunyere gi ukwu n’oge nsogbu a. "
 
 #: go-ussd_public.js:1408
 msgid "{{prefix}}Which messages would you like to stop receiving?"
-msgstr ""
+msgstr "{{prefix}}Kedu ozi ndi i ga acho ikwusi inata? "
 
 #: go-ussd_public.js:1410
 msgid "Thank you. You will no longer receive messages"
-msgstr ""
+msgstr "Daalu. i gaghi n’anatakwa ozi"
 
 #: go-ussd_public.js:1412
 msgid ""
-"We are sorry for your loss. You will no longer receive messages. Should you "
-"need support during this difficult time, please contact your local CHEW."
+"We are sorry for your loss. You will no longer receive messages. Should you need support during "
+"this difficult time, please contact your local CHEW."
 msgstr ""
+"Odi anyi nwute n’ihe nfunari mere gi. I gaghi na anata kwa ozi ozo. O buru na icho enyemaka n'oge "
+"nsogbu a, biko kpọtụrụ ndi oru ulo ahuike di ne ebe ibi."
 
 #: go-ussd_public.js:1414
 msgid "Thank you for using the Hello Mama service"
-msgstr ""
+msgstr "Daalu maka i were nyemaka Hello mama."
 
 #: go-ussd_public.js:1419
 msgid "Sorry, invalid option. "
@@ -231,47 +229,47 @@ msgstr ""
 
 #: go-ussd_public.js:1476 go-ussd_public.js:2023
 msgid "Yes"
-msgstr ""
+msgstr "Ee"
 
 #: go-ussd_public.js:1477 go-ussd_public.js:2024
 msgid "No"
-msgstr ""
+msgstr "Mba"
 
 #: go-ussd_public.js:1478
 msgid "Change the number I'd like to manage"
-msgstr ""
+msgstr "Gbanwe nomba nke m ga acho ijikwaa"
 
 #: go-ussd_public.js:1507 go-ussd_public.js:1927
 msgid "English"
-msgstr ""
+msgstr "Otu. Bekee"
 
 #: go-ussd_public.js:1508 go-ussd_public.js:1928
 msgid "Igbo"
-msgstr ""
+msgstr "Abuo. Igbo"
 
 #: go-ussd_public.js:1509 go-ussd_public.js:1929
 msgid "Pidgin"
-msgstr ""
+msgstr "Ato. Pidgin"
 
 #: go-ussd_public.js:1636 go-ussd_public.js:1655
 msgid "Start baby messages"
-msgstr ""
+msgstr "Bido ozi nwa"
 
 #: go-ussd_public.js:1637
 msgid "Change text or voice message options"
-msgstr ""
+msgstr "Gbanwe ihe ndi nhoro ozi odide ma o bu ozi olu"
 
 #: go-ussd_public.js:1638 go-ussd_public.js:1656
 msgid "Change my number"
-msgstr ""
+msgstr "Gbanwe nomba mu"
 
 #: go-ussd_public.js:1639 go-ussd_public.js:1657
 msgid "Change language"
-msgstr ""
+msgstr "Gbanwe asusu"
 
 #: go-ussd_public.js:1640 go-ussd_public.js:1658
 msgid "Stop messages"
-msgstr ""
+msgstr "Kwusi ozi"
 
 #: go-ussd_public.js:1733
 msgid "Change from text to voice messages"
@@ -279,92 +277,92 @@ msgstr ""
 
 #: go-ussd_public.js:1734 go-ussd_public.js:1813
 msgid "Back to main menu"
-msgstr ""
+msgstr "Nlaghachi n’isi mbido"
 
 #: go-ussd_public.js:1751
 msgid "Monday and Wednesday"
-msgstr ""
+msgstr "Mondau na Wednesday"
 
 #: go-ussd_public.js:1752
 msgid "Tuesday and Thursday"
-msgstr ""
+msgstr "Tuesday na Thursday"
 
 #: go-ussd_public.js:1765
 msgid "Between 9-11am"
-msgstr ""
+msgstr "N’etiti elekere itolu na elekere iri na otu nke ututu"
 
 #: go-ussd_public.js:1766
 msgid "Between 2-5pm"
-msgstr ""
+msgstr "N’etiti elekere abuo na elekere ise nke ehihie"
 
 #: go-ussd_public.js:1791
-msgid ""
-"Thank you. You will now start receiving voice calls on Monday and Wednesday "
-"between 9 and 11am"
+msgid "Thank you. You will now start receiving voice calls on Monday and Wednesday between 9 and 11am"
 msgstr ""
+"Daalu. I ga-amalite i na anata ozi okpukpo ndi a n’ubochi  Monday na Wednesday.n'etiti elekere "
+"itolu na elekere iri n’otu nke ututu "
 
 #: go-ussd_public.js:1792
-msgid ""
-"Thank you. You will now start receiving voice calls on Monday and Wednesday "
-"between 2 and 5pm"
+msgid "Thank you. You will now start receiving voice calls on Monday and Wednesday between 2 and 5pm"
 msgstr ""
+"Daalu. I ga-amalite i na anata ozi okpukpo ndi a n’ubochi  Monday na kwa Wednesday n’etiti elekere "
+"abuo na elekere ise nke ehihie "
 
 #: go-ussd_public.js:1795
-msgid ""
-"Thank you. You will now start receiving voice calls on Tuesday and Thursday "
-"between 9 and 11am"
+msgid "Thank you. You will now start receiving voice calls on Tuesday and Thursday between 9 and 11am"
 msgstr ""
+"Daalu. I ga-amalite i na anata ozi okpukpo ndi a n’ubochi  Tuesday na Thursday.n'etiti elekere "
+"itolu na elekere iri n’otu nke ututu"
 
 #: go-ussd_public.js:1796
-msgid ""
-"Thank you. You will now start receiving voice calls on Tuesday and Thursday "
-"between 2 and 5pm"
+msgid "Thank you. You will now start receiving voice calls on Tuesday and Thursday between 2 and 5pm"
 msgstr ""
+"Daalu. I ga-amalite i na anata ozi okpukpo ndi a n’ubochi  Tuesday na Thursday n’etiti elekere abuo "
+"na elekere ise nke ehihie "
 
 #: go-ussd_public.js:1811
 msgid "Change the day and time I receive messages"
-msgstr ""
+msgstr "Gbanwe ubochi na oge m ji anata ozi"
 
 #: go-ussd_public.js:1812
 msgid "Change the mother messages from voice to text messages"
-msgstr ""
+msgstr "Gbanwe ozi onye nne site na ozi olu gafe na nke odide"
 
 #: go-ussd_public.js:1883
 msgid "Try a different number"
-msgstr ""
+msgstr "Were nomba ozo"
 
 #: go-ussd_public.js:1884
 msgid "Exit"
-msgstr ""
+msgstr "Opupu "
 
 #: go-ussd_public.js:1972
 msgid "Mother miscarried"
-msgstr ""
+msgstr "Ime puru onye nne"
 
 #: go-ussd_public.js:1973
 msgid "Baby stillborn"
-msgstr ""
+msgstr "Nwa nwuru n’ime afo"
 
 #: go-ussd_public.js:1974
 msgid "Baby passed away"
-msgstr ""
+msgstr "Nwa nwuru anwu"
 
 #: go-ussd_public.js:1975
 msgid "Messages not useful"
-msgstr ""
+msgstr "Ozi abaghi uru"
 
 #: go-ussd_public.js:1976
 msgid "Other"
-msgstr ""
+msgstr "Ihe ozo"
 
 #: go-ussd_public.js:2114
 msgid "Mother messages"
-msgstr ""
+msgstr "Otu. Ozi onye nne"
 
 #: go-ussd_public.js:2115
 msgid "Household messages"
-msgstr ""
+msgstr "Abuo. Ozi ezinulo"
 
 #: go-ussd_public.js:2116
 msgid "All messages"
-msgstr ""
+msgstr "Ato. Ozi nile"
