@@ -73,62 +73,62 @@ go.app = function() {
                     return $("Thank you for using the Hello Mama service.");
 
                 // CHANGE
-                case "state_public_msisdn_permission":
+                case "state_msisdn_permission":
                     return $("{{prefix}}Do you have permission to manage the number {{msisdn}}?");
-                case "state_public_msisdn_no_permission":  // unnamed state on flow diagram
+                case "state_msisdn_no_permission":  // unnamed state on flow diagram
                     return $("{{prefix}}We're sorry, you do not have permission to update the preferences for this subscriber.");
-                case "state_public_language":
+                case "state_language":
                     return $("{{prefix}}Welcome to the Hello Mama training line. Please choose your language.");
-                case "state_public_registered_msisdn":
+                case "state_registered_msisdn":
                     return $("{{prefix}}Please enter the number which is registered to receive messages.");
-                case "state_public_main_menu":
+                case "state_main_menu":
                     return $("{{prefix}}Select:");
-                case "state_public_main_menu_household":
+                case "state_main_menu_household":
                     return $("{{prefix}}Select:");
-                case "state_public_msisdn_not_recognised":  // st-F
+                case "state_msisdn_not_recognised":  // st-F
                     return $("{{prefix}}We do not recognise this number. Please dial from the registered number or sign up with the Local Community Health Extension Worker.");
-                case "state_public_already_registered_baby":
+                case "state_already_registered_baby":
                     return $("You are already registered for baby messages.");
-                case "state_public_new_registration_baby":
+                case "state_new_registration_baby":
                     return $("Thank you. You will now receive messages about caring for the baby");
-                case "state_public_change_menu_sms":
+                case "state_change_menu_sms":
                     return $("{{prefix}}Please select an option:");
-                case "state_public_voice_days":
+                case "state_change_voice_days":
                     return $("{{prefix}}We will call twice a week. On what days would you like to receive messages?");
-                case "state_public_voice_times":
+                case "state_change_voice_times":
                     return $("{{prefix}}At what time would you like to receive these calls?");
-                case "state_public_end_voice_confirm":
+                case "state_end_voice_confirm":
                     return null;  // not currently in use
                     // ("Thank you. You will now start receiving voice calls on {{days}} between {{times}}");
-                case "state_public_change_menu_voice":
+                case "state_change_menu_voice":
                     return $("{{prefix}}Please select an option:");
-                case "state_public_end_sms_confirm":
+                case "state_end_sms_confirm":
                     return $("Thank you. You will now receive text messages");
-                case "state_public_new_msisdn":
+                case "state_new_msisdn":
                     return $("{{prefix}}Please enter the new mobile number you would like to receive messages on.");
-                case "state_public_number_in_use":
+                case "state_number_in_use":
                     return $("{{prefix}}Sorry this number is already registered. You must opt-out before registering again.");
-                case "state_public_msg_receiver":
+                case "state_msg_receiver":
                     return $("{{prefix}}Who will receive these messages?");
-                case "state_public_end_number_change":
+                case "state_end_number_change":
                     return $("Thank you. The number which receives messages has been updated.");
-                case "state_public_msg_language":
+                case "state_change_msg_language":
                     return $("{{prefix}}What language would you like to receive these messages in?");
-                case "state_public_msg_language_confirm":
+                case "state_change_msg_language_confirm":
                     return $("Thank you. Your language has been updated and you will start to receive messages in this language.");
-                case "state_public_optout_reason":
+                case "state_optout_reason":
                     return $("{{prefix}}Why do you no longer want to receive messages?");
-                case "state_public_loss_subscription":
+                case "state_loss_subscription":
                     return $("{{prefix}}We are sorry for your loss. Would the mother like to receive a small set of free messages that could help during this difficult time?");
-                case "state_public_end_loss_subscription_confirm":
+                case "state_end_loss_subscription_confirm":
                     return $("Thank you. You will now receive messages to support you during this difficult time.");
-                case "state_public_optout_receiver":
+                case "state_optout_receiver":
                     return $("{{prefix}}Which messages would you like to stop receiving?");
-                case "state_public_end_optout":
+                case "state_end_optout":
                     return $("Thank you. You will no longer receive messages");
-                case "state_public_end_loss":
+                case "state_end_loss":
                     return $("We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW.");
-                case "state_public_end_exit":
+                case "state_end_exit":
                     return $("Thank you for using the Hello Mama service");
             }
         };
@@ -203,7 +203,7 @@ go.app = function() {
                         case "register_with_code":
                             return "state_personnel_auth";
                         case "change":
-                            return "state_public_language";
+                            return "state_language";
                         default:
                             return "state_start";
                     }
@@ -588,7 +588,7 @@ go.app = function() {
     // CHANGE - INITIAL STATES
 
         // ChoiceState st-D
-        self.add('state_public_language', function(name) {
+        self.add('state_language', function(name) {
             return new ChoiceState(name, {
                 question: get_content(name).context({prefix:""}),
                 choices: [
@@ -602,14 +602,14 @@ go.app = function() {
                     return self.im.user
                         .set_lang(choice.value)
                         .then(function() {
-                            return 'state_public_registered_msisdn';
+                            return 'state_registered_msisdn';
                         });
                 }
             });
         });
 
         // FreeText st-C
-        self.add('state_public_registered_msisdn', function(name) {
+        self.add('state_registered_msisdn', function(name) {
             return new FreeText(name, {
                 question: get_content(name).context({prefix:""}),
                 check: function(content) {
@@ -620,20 +620,20 @@ go.app = function() {
                             .context({prefix: state_error_types.invalid_number});
                     }
                 },
-                next: 'state_public_main_menu'
+                next: 'state_main_menu'
             });
         });
 
         // ChoiceState st-A
-        self.add('state_public_main_menu', function(name) {
+        self.add('state_main_menu', function(name) {
             return new ChoiceState(name, {
                 question: get_content(name).context({prefix:""}),
                 choices: [
-                    new Choice('state_public_new_registration_baby', $("Start Baby messages")),
-                    new Choice('state_public_change_menu_sms', $("Change message preferences")),
-                    new Choice('state_public_new_msisdn', $("Change my number")),
-                    new Choice('state_public_msg_language', $("Change language")),
-                    new Choice('state_public_optout_reason', $("Stop receiving messages"))
+                    new Choice('state_new_registration_baby', $("Start Baby messages")),
+                    new Choice('state_change_menu_sms', $("Change message preferences")),
+                    new Choice('state_new_msisdn', $("Change my number")),
+                    new Choice('state_change_msg_language', $("Change language")),
+                    new Choice('state_optout_reason', $("Stop receiving messages"))
                 ],
                 error: get_content(name)
                     .context({prefix: state_error_types.invalid_selection}),
@@ -647,10 +647,10 @@ go.app = function() {
     // BABY CHANGE STATES
 
         // EndState st-02
-        self.add('state_public_new_registration_baby', function(name) {
+        self.add('state_new_registration_baby', function(name) {
             return new EndState(name, {
                 text: get_content(name),
-                next: 'state_public_start'
+                next: 'state_start'
             });
         });
 
@@ -658,7 +658,7 @@ go.app = function() {
     // MSG CHANGE STATES
 
         // ChoiceState st-03
-        self.add('state_public_change_menu_sms', function(name) {
+        self.add('state_change_menu_sms', function(name) {
             return new ChoiceState(name, {
                 question: get_content(name).context({prefix:""}),
                 error: get_content(name)
@@ -669,14 +669,14 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     return choice.value === 'to_voice'
-                        ? 'state_public_voice_days'
-                        : 'state_public_main_menu';
+                        ? 'state_change_voice_days'
+                        : 'state_main_menu';
                 }
             });
         });
 
         // ChoiceState st-04
-        self.add('state_public_voice_days', function(name) {
+        self.add('state_change_voice_days', function(name) {
             return new ChoiceState(name, {
                 question: get_content(name).context({prefix:""}),
                 error: get_content(name)
@@ -685,12 +685,12 @@ go.app = function() {
                     new Choice('mon_wed', $("Monday and Wednesday")),
                     new Choice('tue_thu', $("Tuesday and Thursday"))
                 ],
-                next: 'state_public_voice_times'
+                next: 'state_change_voice_times'
             });
         });
 
         // ChoiceState st-05
-        self.add('state_public_voice_times', function(name) {
+        self.add('state_change_voice_times', function(name) {
             return new ChoiceState(name, {
                 question: get_content(name).context({prefix:""}),
                 error: get_content(name)
@@ -700,15 +700,15 @@ go.app = function() {
                     new Choice('2_5', $("Between 2-5pm"))
                 ],
                 next: function(choice) {
-                    return 'state_public_end_voice_confirm';
+                    return 'state_end_voice_confirm';
                 }
             });
         });
 
         // EndState st-06
-        self.add('state_public_end_voice_confirm', function(name) {
-            var days = self.im.user.answers.state_public_voice_days;
-            var times = self.im.user.answers.state_public_voice_times;
+        self.add('state_end_voice_confirm', function(name) {
+            var days = self.im.user.answers.state_change_voice_days;
+            var times = self.im.user.answers.state_change_voice_times;
             var text;
 
             if (days === 'mon_wed') {
@@ -722,14 +722,14 @@ go.app = function() {
             }
             return new EndState(name, {
                 text: text,
-                next: 'state_public_start'
+                next: 'state_start'
             });
         });
 
     // NUMBER CHANGE STATES
 
         // FreeText st-09
-        self.add('state_public_new_msisdn', function(name) {
+        self.add('state_new_msisdn', function(name) {
             return new FreeText(name, {
                 question: get_content(name).context({prefix:""}),
                 check: function(content) {
@@ -740,15 +740,15 @@ go.app = function() {
                             .context({prefix: state_error_types.invalid_number});
                     }
                 },
-                next: 'state_public_end_number_change'
+                next: 'state_end_number_change'
             });
         });
 
         // EndState st-10
-        self.add('state_public_end_number_change', function(name) {
+        self.add('state_end_number_change', function(name) {
             return new EndState(name, {
                 text: get_content(name),
-                next: 'state_public_start'
+                next: 'state_start'
             });
         });
 
@@ -756,7 +756,7 @@ go.app = function() {
     // LANGUAGE CHANGE STATES
 
         // ChoiceState st-11
-        self.add('state_public_msg_language', function(name) {
+        self.add('state_change_msg_language', function(name) {
             return new ChoiceState(name, {
                 question: get_content(name).context({prefix:""}),
                 error: get_content(name)
@@ -770,17 +770,17 @@ go.app = function() {
                     return self.im.user
                         .set_lang(choice.value)
                         .then(function() {
-                            return 'state_public_msg_language_confirm';
+                            return 'state_change_msg_language_confirm';
                         });
                 }
             });
         });
 
         // EndState st-12
-        self.add('state_public_msg_language_confirm', function(name) {
+        self.add('state_change_msg_language_confirm', function(name) {
             return new EndState(name, {
                 text: get_content(name),
-                next: 'state_public_start'
+                next: 'state_start'
             });
         });
 
@@ -788,7 +788,7 @@ go.app = function() {
     // OPTOUT STATES
 
         // ChoiceState st-13
-        self.add('state_public_optout_reason', function(name) {
+        self.add('state_optout_reason', function(name) {
             return new ChoiceState(name, {
                 question: get_content(name).context({prefix:""}),
                 error: get_content(name)
@@ -802,25 +802,25 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     switch (choice.value) {
-                        case 'miscarriage': return 'state_public_loss_subscription';
-                        case 'stillborn': return 'state_public_end_loss';
-                        case 'baby_death': return 'state_public_end_loss';
-                        case 'not_useful': return 'state_public_optout_receiver';
-                        case 'other': return 'state_public_optout_receiver';
+                        case 'miscarriage': return 'state_loss_subscription';
+                        case 'stillborn': return 'state_end_loss';
+                        case 'baby_death': return 'state_end_loss';
+                        case 'not_useful': return 'state_optout_receiver';
+                        case 'other': return 'state_optout_receiver';
                     }
                 }
             });
         });
 
         // ChoiceState st-14
-        self.add('state_public_loss_subscription', function(name) {
+        self.add('state_loss_subscription', function(name) {
             return new ChoiceState(name, {
                 question: get_content(name).context({prefix:""}),
                 error: get_content(name)
                     .context({prefix: state_error_types.invalid_selection}),
                 choices: [
-                    new Choice('state_public_end_loss_subscription_confirm', $("Yes")),
-                    new Choice('state_public_end_loss', $("No"))
+                    new Choice('state_end_loss_subscription_confirm', $("Yes")),
+                    new Choice('state_end_loss', $("No"))
                 ],
                 next: function(choice) {
                     return choice.value;
@@ -829,15 +829,15 @@ go.app = function() {
         });
 
         // EndState st-15
-        self.add('state_public_end_loss_subscription_confirm', function(name) {
+        self.add('state_end_loss_subscription_confirm', function(name) {
             return new EndState(name, {
                 text: get_content(name),
-                next: 'state_public_start'
+                next: 'state_start'
             });
         });
 
         // ChoiceState st-16
-        self.add('state_public_optout_receiver', function(name) {
+        self.add('state_optout_receiver', function(name) {
             return new ChoiceState(name, {
                 question: get_content(name).context({prefix:""}),
                 error: get_content(name)
@@ -847,23 +847,23 @@ go.app = function() {
                     new Choice('household', $("Household messages")),
                     new Choice('all', $("All messages"))
                 ],
-                next: 'state_public_end_optout'
+                next: 'state_end_optout'
             });
         });
 
         // EndState st-17
-        self.add('state_public_end_optout', function(name) {
+        self.add('state_end_optout', function(name) {
             return new EndState(name, {
                 text: get_content(name),
-                next: 'state_public_start'
+                next: 'state_start'
             });
         });
 
         // EndState st-21
-        self.add('state_public_end_loss', function(name) {
+        self.add('state_end_loss', function(name) {
             return new EndState(name, {
                 text: get_content(name),
-                next: 'state_public_start'
+                next: 'state_start'
             });
         });
 
@@ -871,10 +871,10 @@ go.app = function() {
     // GENERAL END STATE
 
         // EndState st-18
-        self.add('state_public_end_exit', function(name) {
+        self.add('state_end_exit', function(name) {
             return new EndState(name, {
                 text: get_content(name),
-                next: 'state_public_start'
+                next: 'state_start'
             });
         });
     });

@@ -23,10 +23,7 @@ describe("Mama Nigeria App", function() {
                     no_timeout_redirects: [
                         'state_start',
                         'state_end_voice',
-                        'state_end_sms',
-                        'state_public_start',
-                        'state_public_end_voice',
-                        'state_public_end_sms'
+                        'state_end_sms'
                     ]
                 })
                 .setup(function(api) {
@@ -2003,7 +2000,7 @@ describe("Mama Nigeria App", function() {
         describe("CHANGE", function() {
             describe("Flow testing - ", function() {
                 describe("Initial states enroute to st-A (state_main_menu)", function() {
-                    it("to state_public_language", function() {
+                    it("to state_language", function() {
                         return tester
                             .setup.user.addr('05059991111')
                             .inputs(
@@ -2011,7 +2008,7 @@ describe("Mama Nigeria App", function() {
                                 , '3'  // state_training_intro - change
                             )
                             .check.interaction({
-                                state: 'state_public_language',
+                                state: 'state_language',
                                 reply: [
                                     "Welcome to the Hello Mama training line. Please choose your language.",
                                     "1. English",
@@ -2022,32 +2019,32 @@ describe("Mama Nigeria App", function() {
                             .check.user.properties({lang: null})
                             .run();
                     });
-                    it("to state_public_registered_msisdn", function() { //st-C
+                    it("to state_registered_msisdn", function() { //st-C
                         return tester
                             .setup.user.addr('05059991111')
                             .inputs(
                                 {session_event: 'new'}  //dial in
                                 , '3'  // state_training_intro - change
-                                , '2'   // state_public_language - ibo_NG
+                                , '2'   // state_language - ibo_NG
                             )
                             .check.interaction({
-                                state: 'state_public_registered_msisdn',
+                                state: 'state_registered_msisdn',
                                 reply: "Please enter the number which is registered to receive messages."
                             })
                             .check.user.properties({lang: 'ibo_NG'})
                             .run();
                     });
-                    it("to state_public_main_menu", function() {
+                    it("to state_main_menu", function() {
                         return tester
                             .setup.user.addr('05059991111')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '3'  // state_training_intro - change
-                                , '3'   // state_public_language - pidgin
-                                , '05059993333'  // state_public_registered_msisdn
+                                , '3'   // state_language - pidgin
+                                , '05059993333'  // state_registered_msisdn
                             )
                             .check.interaction({
-                                state: 'state_public_main_menu',
+                                state: 'state_main_menu',
                                 reply: [
                                     "Select:",
                                     "1. Start Baby messages",
@@ -2062,18 +2059,18 @@ describe("Mama Nigeria App", function() {
                 });
 
                 describe("Change to baby messages", function() {
-                    it("to state_public_new_registration_baby", function() {
+                    it("to state_new_registration_baby", function() {
                         return tester
                             .setup.user.addr('05059991111')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '3'  // state_training_intro - change
-                                , '3'   // state_public_language - pidgin
-                                , '05059993333'  // state_public_registered_msisdn
-                                , '1'  // state_public_main_menu - start baby messages
+                                , '3'   // state_language - pidgin
+                                , '05059993333'  // state_registered_msisdn
+                                , '1'  // state_main_menu - start baby messages
                             )
                             .check.interaction({
-                                state: 'state_public_new_registration_baby',
+                                state: 'state_new_registration_baby',
                                 reply: "Thank you. You will now receive messages about caring for the baby"
                             })
                             .run();
@@ -2081,18 +2078,18 @@ describe("Mama Nigeria App", function() {
                 });
 
                 describe("Change message format and time", function() {
-                    it("to state_public_change_menu_sms", function() {
+                    it("to state_change_menu_sms", function() {
                         return tester
                             .setup.user.addr('05059991111')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '3'  // state_training_intro - change
-                                , '3'   // state_public_language - pidgin
-                                , '05059993333'  // state_public_registered_msisdn
-                                , '2'  // state_public_main_menu - change message preferences
+                                , '3'   // state_language - pidgin
+                                , '05059993333'  // state_registered_msisdn
+                                , '2'  // state_main_menu - change message preferences
                             )
                             .check.interaction({
-                                state: 'state_public_change_menu_sms',
+                                state: 'state_change_menu_sms',
                                 reply: [
                                     "Please select an option:",
                                     "1. Change from text to voice messages",
@@ -2101,19 +2098,19 @@ describe("Mama Nigeria App", function() {
                             })
                             .run();
                     });
-                    it("to state_public_voice_days", function() {
+                    it("to state_change_voice_days", function() {
                         return tester
                             .setup.user.addr('05059991111')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '3'  // state_training_intro - change
-                                , '3'   // state_public_language - pidgin
-                                , '05059993333'  // state_public_registered_msisdn
-                                , '2'  // state_public_main_menu - change message preferences
-                                , '1'  // state_public_change_menu_sms - change from text to voice
+                                , '3'   // state_language - pidgin
+                                , '05059993333'  // state_registered_msisdn
+                                , '2'  // state_main_menu - change message preferences
+                                , '1'  // state_change_menu_sms - change from text to voice
                             )
                             .check.interaction({
-                                state: 'state_public_voice_days',
+                                state: 'state_change_voice_days',
                                 reply: [
                                     "We will call twice a week. On what days would you like to receive messages?",
                                     "1. Monday and Wednesday",
@@ -2122,20 +2119,20 @@ describe("Mama Nigeria App", function() {
                             })
                             .run();
                     });
-                    it("to state_public_voice_times", function() {
+                    it("to state_change_voice_times", function() {
                         return tester
                             .setup.user.addr('05059992222')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '3'  // state_training_intro - change
-                                , '3'   // state_public_language - pidgin
-                                , '05059993333'  // state_public_registered_msisdn
-                                , '2'  // state_public_main_menu - change message preferences
-                                , '1'  // state_public_change_menu_sms - change from text to voice
-                                , '2'  // state_public_voice_days - tuesday and thursday
+                                , '3'   // state_language - pidgin
+                                , '05059993333'  // state_registered_msisdn
+                                , '2'  // state_main_menu - change message preferences
+                                , '1'  // state_change_menu_sms - change from text to voice
+                                , '2'  // state_change_voice_days - tuesday and thursday
                             )
                             .check.interaction({
-                                state: 'state_public_voice_times',
+                                state: 'state_change_voice_times',
                                 reply: [
                                     "At what time would you like to receive these calls?",
                                     "1. Between 9-11am",
@@ -2144,39 +2141,39 @@ describe("Mama Nigeria App", function() {
                             })
                             .run();
                     });
-                    it("to state_public_end_voice_confirm", function() {
+                    it("to state_end_voice_confirm", function() {
                         return tester
                             .setup.user.addr('05059992222')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '3'  // state_training_intro - change
-                                , '3'   // state_public_language - pidgin
-                                , '05059993333'  // state_public_registered_msisdn
-                                , '2'  // state_public_main_menu - change message preferences
-                                , '1'  // state_public_change_menu_sms - change from text to voice
-                                , '2'  // state_public_voice_days - tuesday and thursday
-                                , '1'  // state_public_voice_times - 9-11am
+                                , '3'   // state_language - pidgin
+                                , '05059993333'  // state_registered_msisdn
+                                , '2'  // state_main_menu - change message preferences
+                                , '1'  // state_change_menu_sms - change from text to voice
+                                , '2'  // state_change_voice_days - tuesday and thursday
+                                , '1'  // state_change_voice_times - 9-11am
                             )
                             .check.interaction({
-                                state: 'state_public_end_voice_confirm',
+                                state: 'state_end_voice_confirm',
                                 reply: "Thank you. You will now start receiving voice calls on Tuesday and Thursday between 9 and 11am"
                             })
                             .check.reply.ends_session()
                             .run();
                     });
-                    it("back to state_public_main_menu", function() {
+                    it("back to state_main_menu", function() {
                         return tester
                             .setup.user.addr('05059991111')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '3'  // state_training_intro - change
-                                , '3'   // state_public_language - pidgin
-                                , '05059993333'  // state_public_registered_msisdn
-                                , '2'  // state_public_main_menu - change message preferences
-                                , '2'  // state_public_change_menu_sms - back to main menu
+                                , '3'   // state_language - pidgin
+                                , '05059993333'  // state_registered_msisdn
+                                , '2'  // state_main_menu - change message preferences
+                                , '2'  // state_change_menu_sms - back to main menu
                             )
                             .check.interaction({
-                                state: 'state_public_main_menu',
+                                state: 'state_main_menu',
                                 reply: [
                                     "Select:",
                                     "1. Start Baby messages",
@@ -2191,35 +2188,35 @@ describe("Mama Nigeria App", function() {
                 });
 
                 describe("Change number", function() {
-                    it("to state_public_new_msisdn", function() {
+                    it("to state_new_msisdn", function() {
                         return tester
                             .setup.user.addr('05059991111')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '3'  // state_training_intro - change
-                                , '3'   // state_public_language - pidgin
-                                , '05059993333'  // state_public_registered_msisdn
-                                , '3'  // state_public_main_menu - change number
+                                , '3'   // state_language - pidgin
+                                , '05059993333'  // state_registered_msisdn
+                                , '3'  // state_main_menu - change number
                             )
                             .check.interaction({
-                                state: 'state_public_new_msisdn',
+                                state: 'state_new_msisdn',
                                 reply: "Please enter the new mobile number you would like to receive messages on."
                             })
                             .run();
                     });
-                    it("to state_public_end_number_change", function() {
+                    it("to state_end_number_change", function() {
                         return tester
                             .setup.user.addr('05059991111')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '3'  // state_training_intro - change
-                                , '3'   // state_public_language - pidgin
-                                , '05059993333'  // state_public_registered_msisdn
-                                , '3'  // state_public_main_menu - change number
-                                , '05059998888' // state_public_new_msisdn
+                                , '3'   // state_language - pidgin
+                                , '05059993333'  // state_registered_msisdn
+                                , '3'  // state_main_menu - change number
+                                , '05059998888' // state_new_msisdn
                             )
                             .check.interaction({
-                                state: 'state_public_end_number_change',
+                                state: 'state_end_number_change',
                                 reply: "Thank you. The number which receives messages has been updated."
                             })
                             .run();
@@ -2227,18 +2224,18 @@ describe("Mama Nigeria App", function() {
                 });
 
                 describe("Change language", function() {
-                    it("to state_public_msg_language", function() {
+                    it("to state_change_msg_language", function() {
                         return tester
                             .setup.user.addr('05059991111')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '3'  // state_training_intro - change
-                                , '3'   // state_public_language - pidgin
-                                , '05059993333'  // state_public_registered_msisdn
-                                , '4'  // state_public_main_menu - change language
+                                , '3'   // state_language - pidgin
+                                , '05059993333'  // state_registered_msisdn
+                                , '4'  // state_main_menu - change language
                             )
                             .check.interaction({
-                                state: 'state_public_msg_language',
+                                state: 'state_change_msg_language',
                                 reply: [
                                     "What language would you like to receive these messages in?",
                                     "1. English",
@@ -2249,19 +2246,19 @@ describe("Mama Nigeria App", function() {
                             .check.user.properties({lang: 'pcm_NG'})
                             .run();
                     });
-                    it("to state_public_msg_language_confirm", function() {
+                    it("to state_change_msg_language_confirm", function() {
                         return tester
                             .setup.user.addr('05059991111')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '3'  // state_training_intro - change
-                                , '3'   // state_public_language - pidgin
-                                , '05059993333'  // state_public_registered_msisdn
-                                , '4'  // state_public_main_menu - change language
-                                , '2'  // state_public_msg_language - igbo
+                                , '3'   // state_language - pidgin
+                                , '05059993333'  // state_registered_msisdn
+                                , '4'  // state_main_menu - change language
+                                , '2'  // state_change_msg_language - igbo
                             )
                             .check.interaction({
-                                state: 'state_public_msg_language_confirm',
+                                state: 'state_change_msg_language_confirm',
                                 reply: "Thank you. Your language has been updated and you will start to receive messages in this language."
                             })
                             .check.user.properties({lang: 'ibo_NG'})
@@ -2271,18 +2268,18 @@ describe("Mama Nigeria App", function() {
 
                 describe("Change states flows - opt-out", function() {
                     // to optout reason menu
-                    it("to state_public_optout_reason", function() {
+                    it("to state_optout_reason", function() {
                         return tester
                             .setup.user.addr('05059991111')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '3'  // state_training_intro - change
-                                , '3'   // state_public_language - pidgin
-                                , '05059993333'  // state_public_registered_msisdn
-                                , '5'  // state_public_main_menu - optout
+                                , '3'   // state_language - pidgin
+                                , '05059993333'  // state_registered_msisdn
+                                , '5'  // state_main_menu - optout
                             )
                             .check.interaction({
-                                state: 'state_public_optout_reason',
+                                state: 'state_optout_reason',
                                 reply: [
                                     "Why do you no longer want to receive messages?",
                                     "1. Mother miscarried",
@@ -2295,19 +2292,19 @@ describe("Mama Nigeria App", function() {
                             .run();
                     });
                     // 1 - miscarriage
-                    it("to state_public_loss_subscription", function() {
+                    it("to state_loss_subscription", function() {
                         return tester
                             .setup.user.addr('05059991111')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '3'  // state_training_intro - change
-                                , '3'   // state_public_language - pidgin
-                                , '05059993333'  // state_public_registered_msisdn
-                                , '5'  // state_public_main_menu - optout
-                                , '1'  // state_public_optout_reason - mother miscarried
+                                , '3'   // state_language - pidgin
+                                , '05059993333'  // state_registered_msisdn
+                                , '5'  // state_main_menu - optout
+                                , '1'  // state_optout_reason - mother miscarried
                             )
                             .check.interaction({
-                                state: 'state_public_loss_subscription',
+                                state: 'state_loss_subscription',
                                 reply: [
                                     "We are sorry for your loss. Would the mother like to receive a small set of free messages that could help during this difficult time?",
                                     "1. Yes",
@@ -2317,93 +2314,93 @@ describe("Mama Nigeria App", function() {
                             .run();
                     });
                     // 1, 1 - miscarriage, yes
-                    it("to state_public_loss_subscription_confirm", function() {
+                    it("to state_loss_subscription_confirm", function() {
                         return tester
                             .setup.user.addr('05059991111')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '3'  // state_training_intro - change
-                                , '3'   // state_public_language - pidgin
-                                , '05059993333'  // state_public_registered_msisdn
-                                , '5'  // state_public_main_menu - optout
-                                , '1'  // state_public_optout_reason - mother miscarried
-                                , '1'  // state_public_loss_subscription - yes
+                                , '3'   // state_language - pidgin
+                                , '05059993333'  // state_registered_msisdn
+                                , '5'  // state_main_menu - optout
+                                , '1'  // state_optout_reason - mother miscarried
+                                , '1'  // state_loss_subscription - yes
                             )
                             .check.interaction({
-                                state: 'state_public_end_loss_subscription_confirm',
+                                state: 'state_end_loss_subscription_confirm',
                                 reply: "Thank you. You will now receive messages to support you during this difficult time."
                             })
                             .run();
                     });
                     // 1, 2 - miscarriage, no
-                    it("to state_public_end_loss (miscarriage)", function() {
+                    it("to state_end_loss (miscarriage)", function() {
                         return tester
                             .setup.user.addr('05059991111')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '3'  // state_training_intro - change
-                                , '3'   // state_public_language - pidgin
-                                , '05059993333'  // state_public_registered_msisdn
-                                , '5'  // state_public_main_menu - optout
-                                , '1'  // state_public_optout_reason - mother miscarried
-                                , '2'  // state_public_loss_subscription - no
+                                , '3'   // state_language - pidgin
+                                , '05059993333'  // state_registered_msisdn
+                                , '5'  // state_main_menu - optout
+                                , '1'  // state_optout_reason - mother miscarried
+                                , '2'  // state_loss_subscription - no
                             )
                             .check.interaction({
-                                state: 'state_public_end_loss',
+                                state: 'state_end_loss',
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .run();
                     });
                     // 2 - stillborn
-                    it("to state_public_end_loss (stillborn)", function() {
+                    it("to state_end_loss (stillborn)", function() {
                         return tester
                             .setup.user.addr('05059991111')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '3'  // state_training_intro - change
-                                , '3'   // state_public_language - pidgin
-                                , '05059993333'  // state_public_registered_msisdn
-                                , '5'  // state_public_main_menu - optout
-                                , '2'  // state_public_optout_reason - baby stillborn
+                                , '3'   // state_language - pidgin
+                                , '05059993333'  // state_registered_msisdn
+                                , '5'  // state_main_menu - optout
+                                , '2'  // state_optout_reason - baby stillborn
                             )
                             .check.interaction({
-                                state: 'state_public_end_loss',
+                                state: 'state_end_loss',
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .run();
                     });
                     // 3 - baby death
-                    it("to state_public_end_loss (baby death)", function() {
+                    it("to state_end_loss (baby death)", function() {
                         return tester
                             .setup.user.addr('05059991111')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '3'  // state_training_intro - change
-                                , '3'   // state_public_language - pidgin
-                                , '05059993333'  // state_public_registered_msisdn
-                                , '5'  // state_public_main_menu - optout
-                                , '3'  // state_public_optout_reason - baby death
+                                , '3'   // state_language - pidgin
+                                , '05059993333'  // state_registered_msisdn
+                                , '5'  // state_main_menu - optout
+                                , '3'  // state_optout_reason - baby death
                             )
                             .check.interaction({
-                                state: 'state_public_end_loss',
+                                state: 'state_end_loss',
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .run();
                     });
                     // 4 - not useful
-                    it("to state_public_optout_receiver", function() {
+                    it("to state_optout_receiver", function() {
                         return tester
                             .setup.user.addr('05059991111')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '3'  // state_training_intro - change
-                                , '3'   // state_public_language - pidgin
-                                , '05059993333'  // state_public_registered_msisdn
-                                , '5'  // state_public_main_menu - optout
-                                , '4'  // state_public_optout_reason - not_useful
+                                , '3'   // state_language - pidgin
+                                , '05059993333'  // state_registered_msisdn
+                                , '5'  // state_main_menu - optout
+                                , '4'  // state_optout_reason - not_useful
                             )
                             .check.interaction({
-                                state: 'state_public_optout_receiver',
+                                state: 'state_optout_receiver',
                                 reply: [
                                     "Which messages would you like to stop receiving?",
                                     "1. Mother messages",
@@ -2415,38 +2412,38 @@ describe("Mama Nigeria App", function() {
                             .run();
                     });
                     // 4, 1 - not useful, mother
-                    it("to state_public_end_optout", function() {
+                    it("to state_end_optout", function() {
                         return tester
                             .setup.user.addr('05059991111')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '3'  // state_training_intro - change
-                                , '3'   // state_public_language - pidgin
-                                , '05059993333'  // state_public_registered_msisdn
-                                , '5'  // state_public_main_menu - optout
-                                , '4'  // state_public_optout_reason - not_useful
-                                , '1'  // state_public_optout_receiver - mother
+                                , '3'   // state_language - pidgin
+                                , '05059993333'  // state_registered_msisdn
+                                , '5'  // state_main_menu - optout
+                                , '4'  // state_optout_reason - not_useful
+                                , '1'  // state_optout_receiver - mother
                             )
                             .check.interaction({
-                                state: 'state_public_end_optout',
+                                state: 'state_end_optout',
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .run();
                     });
                     // 5 - other
-                    it("to state_public_optout_receiver", function() {
+                    it("to state_optout_receiver", function() {
                         return tester
                             .setup.user.addr('05059991111')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '3'  // state_training_intro - change
-                                , '3'   // state_public_language - pidgin
-                                , '05059993333'  // state_public_registered_msisdn
-                                , '5'  // state_public_main_menu - optout
-                                , '5'  // state_public_optout_reason - other
+                                , '3'   // state_language - pidgin
+                                , '05059993333'  // state_registered_msisdn
+                                , '5'  // state_main_menu - optout
+                                , '5'  // state_optout_reason - other
                             )
                             .check.interaction({
-                                state: 'state_public_optout_receiver',
+                                state: 'state_optout_receiver',
                                 reply: [
                                     "Which messages would you like to stop receiving?",
                                     "1. Mother messages",
@@ -2458,20 +2455,20 @@ describe("Mama Nigeria App", function() {
                             .run();
                     });
                     // 5, 1 - other, all
-                    it("to state_public_end_optout", function() {
+                    it("to state_end_optout", function() {
                         return tester
                             .setup.user.addr('05059991111')
                             .inputs(
                                 {session_event: 'new'}  // dial in
                                 , '3'  // state_training_intro - change
-                                , '3'   // state_public_language - pidgin
-                                , '05059993333'  // state_public_registered_msisdn
-                                , '5'  // state_public_main_menu - optout
-                                , '5'  // state_public_optout_reason - other
-                                , '3'  // state_public_optout_receiver - all
+                                , '3'   // state_language - pidgin
+                                , '05059993333'  // state_registered_msisdn
+                                , '5'  // state_main_menu - optout
+                                , '5'  // state_optout_reason - other
+                                , '3'  // state_optout_receiver - all
                             )
                             .check.interaction({
-                                state: 'state_public_end_optout',
+                                state: 'state_end_optout',
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .run();
@@ -2479,13 +2476,13 @@ describe("Mama Nigeria App", function() {
                 });
 
                 describe("Validation testing", function() {
-                    it("validate state_public_language", function() {
+                    it("validate state_language", function() {
                         return tester
                             .setup.user.addr('05059991111')
-                            .setup.user.state('state_public_language')
-                            .input('5')  // state_public_language - invalid option
+                            .setup.user.state('state_language')
+                            .input('5')  // state_language - invalid option
                             .check.interaction({
-                                state: 'state_public_language',
+                                state: 'state_language',
                                 reply: [
                                     "Sorry, invalid option. Welcome to the Hello Mama training line. Please choose your language.",
                                     "1. English",
@@ -2495,24 +2492,24 @@ describe("Mama Nigeria App", function() {
                             })
                             .run();
                     });
-                    it("validate state_public_registered_msisdn", function() {
+                    it("validate state_registered_msisdn", function() {
                         return tester
                             .setup.user.addr('05059992222')
-                            .setup.user.state('state_public_registered_msisdn')
-                            .input('abc$g')  // state_public_registered_msisdn
+                            .setup.user.state('state_registered_msisdn')
+                            .input('abc$g')  // state_registered_msisdn
                             .check.interaction({
-                                state: 'state_public_registered_msisdn',
+                                state: 'state_registered_msisdn',
                                 reply: "Sorry, invalid number. Please enter the number which is registered to receive messages."
                             })
                             .run();
                     });
-                    it("validate state_public_main_menu", function() {
+                    it("validate state_main_menu", function() {
                         return tester
                             .setup.user.addr('05059991111')
-                            .setup.user.state('state_public_main_menu')
-                            .input('8') // state_public_main_menu - invalid option
+                            .setup.user.state('state_main_menu')
+                            .input('8') // state_main_menu - invalid option
                             .check.interaction({
-                                state: 'state_public_main_menu',
+                                state: 'state_main_menu',
                                 reply: [
                                     "Sorry, invalid option. Select:",
                                     "1. Start Baby messages",
@@ -2524,13 +2521,13 @@ describe("Mama Nigeria App", function() {
                             })
                             .run();
                     });
-                    it("validate state_public_change_menu_sms", function() {
+                    it("validate state_change_menu_sms", function() {
                         return tester
                             .setup.user.addr('05059992222')
-                            .setup.user.state('state_public_change_menu_sms')
-                            .input('3') // state_public_change_menu_sms - invalid option
+                            .setup.user.state('state_change_menu_sms')
+                            .input('3') // state_change_menu_sms - invalid option
                             .check.interaction({
-                                state: 'state_public_change_menu_sms',
+                                state: 'state_change_menu_sms',
                                 reply: [
                                     "Sorry, invalid option. Please select an option:",
                                     "1. Change from text to voice messages",
@@ -2539,13 +2536,13 @@ describe("Mama Nigeria App", function() {
                             })
                             .run();
                     });
-                    it("validate state_public_voice_days", function() {
+                    it("validate state_change_voice_days", function() {
                         return tester
                             .setup.user.addr('05059992222')
-                            .setup.user.state('state_public_voice_days')
-                            .input('4') // state_public_voice_days - invalid option
+                            .setup.user.state('state_change_voice_days')
+                            .input('4') // state_change_voice_days - invalid option
                             .check.interaction({
-                                state: 'state_public_voice_days',
+                                state: 'state_change_voice_days',
                                 reply: [
                                     "Sorry, invalid option. We will call twice a week. On what days would you like to receive messages?",
                                     "1. Monday and Wednesday",
@@ -2554,13 +2551,13 @@ describe("Mama Nigeria App", function() {
                             })
                             .run();
                     });
-                    it("validate state_public_voice_times", function() {
+                    it("validate state_change_voice_times", function() {
                         return tester
                             .setup.user.addr('05059992222')
-                            .setup.user.state('state_public_voice_times')
-                            .input('3') // state_public_voice_times - invalid option
+                            .setup.user.state('state_change_voice_times')
+                            .input('3') // state_change_ voice_times - invalid option
                             .check.interaction({
-                                state: 'state_public_voice_times',
+                                state: 'state_change_voice_times',
                                 reply: [
                                     "Sorry, invalid option. At what time would you like to receive these calls?",
                                     "1. Between 9-11am",
@@ -2569,24 +2566,24 @@ describe("Mama Nigeria App", function() {
                             })
                             .run();
                     });
-                    it("validate state_public_new_msisdn", function() {
+                    it("validate state_new_msisdn", function() {
                         return tester
                             .setup.user.addr('05059992222')
-                            .setup.user.state('state_public_new_msisdn')
-                            .input('abc') // state_public_new_msisdn - invalid option
+                            .setup.user.state('state_new_msisdn')
+                            .input('abc') // state_new_msisdn - invalid option
                             .check.interaction({
-                                state: 'state_public_new_msisdn',
+                                state: 'state_new_msisdn',
                                 reply: "Sorry, invalid number. Please enter the new mobile number you would like to receive messages on."
                             })
                             .run();
                     });
-                    it("validate state_public_msg_language", function() {
+                    it("validate state_change_msg_language", function() {
                         return tester
                             .setup.user.addr('05059992222')
-                            .setup.user.state('state_public_msg_language')
-                            .input('4') // state_public_msg_language - invalid option
+                            .setup.user.state('state_change_msg_language')
+                            .input('4') // state_change_msg_language - invalid option
                             .check.interaction({
-                                state: 'state_public_msg_language',
+                                state: 'state_change_msg_language',
                                 reply: [
                                     "Sorry, invalid option. What language would you like to receive these messages in?",
                                     "1. English",
@@ -2596,13 +2593,13 @@ describe("Mama Nigeria App", function() {
                             })
                             .run();
                     });
-                    it("validate state_public_optout_reason", function() {
+                    it("validate state_optout_reason", function() {
                         return tester
                             .setup.user.addr('05059992222')
-                            .setup.user.state('state_public_optout_reason')
-                            .input('6') // state_public_optout_reason - invalid option
+                            .setup.user.state('state_optout_reason')
+                            .input('6') // state_optout_reason - invalid option
                             .check.interaction({
-                                state: 'state_public_optout_reason',
+                                state: 'state_optout_reason',
                                 reply: [
                                     "Sorry, invalid option. Why do you no longer want to receive messages?",
                                     "1. Mother miscarried",
@@ -2614,13 +2611,13 @@ describe("Mama Nigeria App", function() {
                             })
                             .run();
                     });
-                    it("validate state_public_loss_subscription", function() {
+                    it("validate state_loss_subscription", function() {
                         return tester
                             .setup.user.addr('05059992222')
-                            .setup.user.state('state_public_loss_subscription')
-                            .input('3') // state_public_loss_subscription - invalid option
+                            .setup.user.state('state_loss_subscription')
+                            .input('3') // state_loss_subscription - invalid option
                             .check.interaction({
-                                state: 'state_public_loss_subscription',
+                                state: 'state_loss_subscription',
                                 reply: [
                                     "Sorry, invalid option. We are sorry for your loss. Would the mother like to receive a small set of free messages that could help during this difficult time?",
                                     "1. Yes",
@@ -2629,13 +2626,13 @@ describe("Mama Nigeria App", function() {
                             })
                             .run();
                     });
-                    it("validate state_public_optout_receiver", function() {
+                    it("validate state_optout_receiver", function() {
                         return tester
                             .setup.user.addr('05059993333')
-                            .setup.user.state('state_public_optout_receiver')
-                            .input('4') // state_public_optout_receiver - invalid option
+                            .setup.user.state('state_optout_receiver')
+                            .input('4') // state_optout_receiver - invalid option
                             .check.interaction({
-                                state: 'state_public_optout_receiver',
+                                state: 'state_optout_receiver',
                                 reply: [
                                     "Sorry, invalid option. Which messages would you like to stop receiving?",
                                     "1. Mother messages",
