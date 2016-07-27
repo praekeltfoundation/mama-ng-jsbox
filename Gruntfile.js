@@ -17,8 +17,9 @@ module.exports = function (grunt) {
                     // train_ussd_registration_recognised: 'src/train_ussd_registration_recognised.js',
                     train_ussd: 'src/train_ussd.js',
                     train_ussd_public: 'src/train_ussd_public.js',
-                    train_voice_registration: 'src/train_voice_registration.js',
-                    train_voice_public: 'src/train_voice_public.js',
+                    // train_voice_registration: 'src/train_voice_registration.js',
+                    // train_voice_public: 'src/train_voice_public.js',
+                    train_voice: 'src/train_voice.js'
                 },
                 ussd_registration: [
                     'src/index.js',
@@ -55,7 +56,7 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.sms_inbound %>',
                     'src/init.js'
                 ],
-                train_voice_registration: [
+                /*train_voice_registration: [
                     'src/index.js',
                     'src/utils.js',
                     'src/utils_project.js',
@@ -67,6 +68,13 @@ module.exports = function (grunt) {
                     'src/utils.js',
                     'src/utils_project.js',
                     '<%= paths.src.app.train_voice_public %>',
+                    'src/init.js'
+                ],*/
+                train_voice: [
+                    'src/index.js',
+                    'src/utils.js',
+                    'src/utils_project.js',
+                    '<%= paths.src.app.train_voice %>',
                     'src/init.js'
                 ],
                 /*train_ussd_registration_unrecognised: [
@@ -90,13 +98,13 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.train_ussd %>',
                     'src/init.js'
                 ],
-                train_ussd_public: [
+                /*train_ussd_public: [
                     'src/index.js',
                     'src/utils.js',
                     'src/utils_project.js',
                     '<%= paths.src.app.train_ussd_public %>',
                     'src/init.js'
-                ],
+                ],*/
                 all: [
                     'src/**/*.js'
                 ]
@@ -107,12 +115,13 @@ module.exports = function (grunt) {
                 ussd_public: 'go-ussd_public.js',
                 voice_public: 'go-voice_public.js',
                 sms_inbound: 'go-sms_inbound.js',
-                train_voice_registration: 'go-train_voice_registration.js',
-                train_voice_public: 'go-train_voice_public.js',
+                // train_voice_registration: 'go-train_voice_registration.js',
+                // train_voice_public: 'go-train_voice_public.js',
+                train_voice: 'go-train_voice.js',
                 // train_ussd_registration_unrecognised: 'go-train_ussd_registration_unrecognised.js',
                 // train_ussd_registration_recognised: 'go-train_ussd_registration_recognised.js',
-                train_ussd: 'go-train-ussd.js',
-                train_ussd_public: 'go-train_ussd_public.js',
+                train_ussd: 'go-train_ussd.js',
+                // train_ussd_public: 'go-train_ussd_public.js',
             },
             test: {
                 ussd_registration: [
@@ -150,7 +159,7 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.sms_inbound %>',
                     'test/sms_inbound.test.js'
                 ],
-                train_voice_registration: [
+                /*train_voice_registration: [
                     'test/setup.js',
                     'src/utils.js',
                     'src/utils_project.js',
@@ -163,6 +172,13 @@ module.exports = function (grunt) {
                     'src/utils_project.js',
                     '<%= paths.src.app.train_voice_public %>',
                     'test/train_voice_public.test.js'
+                ],*/
+                train_voice: [
+                    'test/setup.js',
+                    'src/utils.js',
+                    'src/utils_project.js',
+                    '<%= paths.src.app.train_voice %>',
+                    'test/train_voice.test.js'
                 ],
                 /*train_ussd_registration_unrecognised: [
                     'test/setup.js',
@@ -185,13 +201,13 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.train_ussd %>',
                     'test/train_ussd.test.js'
                 ],
-                train_ussd_public: [
+                /*train_ussd_public: [
                     'test/setup.js',
                     'src/utils.js',
                     'src/utils_project.js',
                     '<%= paths.src.app.train_ussd_public %>',
                     'test/train_ussd_public.test.js'
-                ],
+                ],*/
             }
         },
 
@@ -244,13 +260,17 @@ module.exports = function (grunt) {
                 src: ['<%= paths.src.sms_inbound %>'],
                 dest: '<%= paths.dest.sms_inbound %>'
             },
-            train_voice_registration: {
+            /*train_voice_registration: {
                 src: ['<%= paths.src.train_voice_registration %>'],
                 dest: '<%= paths.dest.train_voice_registration %>'
             },
             train_voice_public: {
                 src: ['<%= paths.src.train_voice_public %>'],
                 dest: '<%= paths.dest.train_voice_public %>'
+            },*/
+            train_voice: {
+                src: ['<%= paths.src.train_voice %>'],
+                dest: '<%= paths.dest.train_voice %>'
             },
             /*train_ussd_registration_unrecognised: {
                 src: ['<%= paths.src.train_ussd_registration_unrecognised %>'],
@@ -264,10 +284,10 @@ module.exports = function (grunt) {
                 src: ['<%= paths.src.train_ussd %>'],
                 dest: '<%= paths.dest.train_ussd %>'
             },
-            train_ussd_public: {
+            /*train_ussd_public: {
                 src: ['<%= paths.src.train_ussd_public %>'],
                 dest: '<%= paths.dest.train_ussd_public %>'
-            },
+            },*/
 
         },
 
@@ -290,24 +310,27 @@ module.exports = function (grunt) {
             // test_sms_inbound: {
             //      src: ['<%= paths.test.sms_inbound %>']
             // },
-            // test_train_voice_registration: {
-            //     src: ['<%= paths.test.train_voice_registration %>']
-            // },
-            // test_train_voice_public: {
-            //     src: ['<%= paths.test.train_voice_public %>']
-            // },
+            /*test_train_voice_registration: {
+                src: ['<%= paths.test.train_voice_registration %>']
+            },
+            test_train_voice_public: {
+                src: ['<%= paths.test.train_voice_public %>']
+            },*/
+            test_train_voice: {
+                src: ['<%= paths.test.train_voice %>']
+            },
             /*test_train_ussd_registration_unrecognised: {
                 src: ['<%= paths.test.train_ussd_registration_unrecognised %>']
             },
             test_train_ussd_registration_recognised: {
                 src: ['<%= paths.test.train_ussd_registration_recognised %>']
             },*/
-            test_train_ussd: {
-                src: ['<%= paths.test.train_ussd %>']
-            },
-            // test_train_ussd_public: {
-            //     src: ['<%= paths.test.train_ussd_public %>']
+            // test_train_ussd: {
+            //     src: ['<%= paths.test.train_ussd %>']
             // },
+            /*test_train_ussd_public: {
+                src: ['<%= paths.test.train_ussd_public %>']
+            },*/
         }
     });
 
