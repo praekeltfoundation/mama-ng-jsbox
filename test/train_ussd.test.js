@@ -84,24 +84,6 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                it("should send a dialback sms on first timeout", function() {
-                    return tester
-                        .setup.user.addr('08080020002')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , {session_event: 'close'}
-                        )
-                        .run();
-                });
-                it("should not send a dialback sms on second timeout", function() {
-                    return tester
-                        .setup.user.addr('08080040004')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , {session_event: 'close'}
-                        )
-                        .run();
-                });
             });
 
             // TEST START OF SESSION ACTIONS
@@ -1047,28 +1029,6 @@ describe("Mama Nigeria App", function() {
                         .check.interaction({
                             state: 'state_training_intro'
                         })
-                        .run();
-                });
-                it("should send a dialback sms on first timeout", function() {
-                    return tester
-                        .setup.user.addr('08080020002')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '2'  // state_training_intro - register with code
-                            , '12345'  // state_personnel_auth - personnel code
-                            , {session_event: 'close'}
-                        )
-                        .run();
-                });
-                it("should not send a dialback sms on second timeout", function() {
-                    return tester
-                        .setup.user.addr('08080040004')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '2'  // state_training_intro - register with code
-                            , '12345'  // state_personnel_auth - personnel code
-                            , {session_event: 'close'}
-                        )
                         .run();
                 });
             });
