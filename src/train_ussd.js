@@ -523,7 +523,7 @@ go.app = function() {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return get_content(name)
-                            .context({prefix: state_error_types.invalid_selection});
+                            .context({prefix: state_error_types.invalid_date});
                     }
                 },
                 next: 'state_validate_date'
