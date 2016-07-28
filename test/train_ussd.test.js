@@ -32,79 +32,93 @@ describe("Mama Nigeria App", function() {
                 ;
         });
 
+        // TEST TIMEOUTS
+        describe("Timeout testing", function() {
+            it("should ask about continuing", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , {session_event: 'close'}
+                        , {session_event: 'new'}
+                    )
+                    .check.interaction({
+                        state: 'state_timed_out',
+                        reply: [
+                            "You have an incomplete registration. Would you like to continue with this registration?",
+                            "1. Yes",
+                            "2. No, start a new registration"
+                        ].join('\n')
+                    })
+                    .run();
+            });
+            it("should continue (register)", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '1'  // state_training_intro - register
+                        , {session_event: 'close'}
+                        , {session_event: 'new'}
+                        , '1'  // state_timed_out - continue
+                    )
+                    .check.interaction({
+                        state: 'state_msg_receiver'
+                    })
+                    .run();
+            });
+            it("should continue (register with code)", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '2'  // state_training_intro - register
+                        , {session_event: 'close'}
+                        , {session_event: 'new'}
+                        , '1'  // state_timed_out - continue
+                    )
+                    .check.interaction({
+                        state: 'state_personnel_auth'
+                    })
+                    .run();
+            });
+            it("should restart", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '1'  // state_training_intro - register
+                        , {session_event: 'close'}
+                        , {session_event: 'new'}
+                        , '2'  // state_timed_out - restart
+                    )
+                    .check.interaction({
+                        state: 'state_training_intro'
+                    })
+                    .run();
+            });
+        });
+
+        // TEST START OF SESSION ACTIONS
+        describe("Start of session", function() {
+            it("should reset user answers", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .setup.user.answers({       // set up answers to be reset
+                        state_personnel_auth: '12345',
+                        state_msg_receiver: 'mother_only',
+                        state_msisdn: '08033046899'
+                    })
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                    )
+                    .check.user.answers({})
+                    .run();
+            });
+        });
 
         describe("RECOGNISED - Registering a pregnancy", function() {
-            // TEST TIMEOUTS
-
-            describe("Timeout testing", function() {
-                it("should ask about continuing", function() {
-                    return tester
-                        .setup.user.addr('08080020002')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , {session_event: 'close'}
-                            , {session_event: 'new'}
-                        )
-                        .check.interaction({
-                            state: 'state_timed_out',
-                            reply: [
-                                "You have an incomplete registration. Would you like to continue with this registration?",
-                                "1. Yes",
-                                "2. No, start a new registration"
-                            ].join('\n')
-                        })
-                        .run();
-                });
-                it("should continue", function() {
-                    return tester
-                        .setup.user.addr('08080020002')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '1'  // state_training_intro - register
-                            , {session_event: 'close'}
-                            , {session_event: 'new'}
-                            , '1'  // state_timed_out - continue
-                        )
-                        .check.interaction({
-                            state: 'state_msg_receiver'
-                        })
-                        .run();
-                });
-                it("should restart", function() {
-                    return tester
-                        .setup.user.addr('08080020002')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , {session_event: 'close'}
-                            , {session_event: 'new'}
-                            , '2'  // state_timed_out - restart
-                        )
-                        .check.interaction({
-                            state: 'state_training_intro'
-                        })
-                        .run();
-                });
-            });
-
-            // TEST START OF SESSION ACTIONS
-            describe("Start of session", function() {
-                it("should reset user answers", function() {
-                    return tester
-                        .setup.user.addr('08080020002')
-                        .setup.user.answers({       // set up answers to be reset
-                            state_msg_receiver: 'mother_only',
-                            state_msisdn: '08033046899'
-                        })
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                        )
-                        .check.user.answers({})
-                        .run();
-                });
-            });
-
             // TEST REGISTRATION
-
             describe("Flow testing - registration", function() {
                 it("to state_training_intro", function() {
                     return tester
@@ -976,82 +990,7 @@ describe("Mama Nigeria App", function() {
         });
 
         describe("UNRECOGNISED - Registering a pregnancy with Hello Mama code", function() {
-            // TEST TIMEOUTS
-
-            describe("Timeout testing", function() {
-                it("should ask about continuing", function() {
-                    return tester
-                        .setup.user.addr('08080020002')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '2'  // state_training_intro - register with code
-                            , '12345'  // state_personnel_auth - personnel code
-                            , {session_event: 'close'}
-                            , {session_event: 'new'}
-                        )
-                        .check.interaction({
-                            state: 'state_timed_out',
-                            reply: [
-                                "You have an incomplete registration. Would you like to continue with this registration?",
-                                "1. Yes",
-                                "2. No, start a new registration"
-                            ].join('\n')
-                        })
-                        .run();
-                });
-                it("should continue", function() {
-                    return tester
-                        .setup.user.addr('08080020002')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '2'  // state_training_intro - register with code
-                            , '12345'  // state_personnel_auth - personnel code
-                            , {session_event: 'close'}
-                            , {session_event: 'new'}
-                            , '1'  // state_timed_out - continue
-                        )
-                        .check.interaction({
-                            state: 'state_msg_receiver'
-                        })
-                        .run();
-                });
-                it("should restart", function() {
-                    return tester
-                        .setup.user.addr('08080020002')
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                            , '2'  // state_training_intro - register with code
-                            , '12345'  // state_personnel_auth - personnel code
-                            , {session_event: 'close'}
-                            , {session_event: 'new'}
-                            , '2'  // state_timed_out - restart
-                        )
-                        .check.interaction({
-                            state: 'state_training_intro'
-                        })
-                        .run();
-                });
-            });
-
-            // TEST START OF SESSION ACTIONS
-            describe("Start of session", function() {
-                it("should reset user answers", function() {
-                    return tester
-                        .setup.user.addr('08080020002')
-                        .setup.user.answers({       // set up answers to be reset
-                            state_personnel_auth: '12345',
-                            state_msisdn: '08033046899'
-                        })
-                        .inputs(
-                            {session_event: 'new'}  // dial in
-                        )
-                        .check.user.answers({})
-                        .run();
-                });
-            });
-
             // TEST REGISTRATION
-
             describe("Flow testing - registration", function() {
                 it("to state_personnel_auth", function() {
                     return tester
