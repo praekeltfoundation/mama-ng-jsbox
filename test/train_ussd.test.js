@@ -5,7 +5,7 @@ var App = vumigo.App;
 App.call(App);
 
 describe("Mama Nigeria App", function() {
-    describe("USSD Registration", function() {
+    describe("USSD Registration / Change", function() {
         var app;
         var tester;
 

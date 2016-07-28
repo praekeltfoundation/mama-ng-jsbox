@@ -6,7 +6,7 @@ var AppTester = vumigo.AppTester;
 
 
 describe("Mama Nigeria App", function() {
-    describe("Voice Registration", function() {
+    describe("Voice Registration / Change", function() {
         var app;
         var tester;
 
