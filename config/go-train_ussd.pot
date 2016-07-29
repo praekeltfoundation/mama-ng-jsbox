@@ -1,0 +1,514 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2016-07-29 08:11:+0000\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+
+#: go-train_ussd.js:232
+msgid "{{pre}}January{{post}}"
+msgstr ""
+
+#: go-train_ussd.js:233
+msgid "{{pre}}February{{post}}"
+msgstr ""
+
+#: go-train_ussd.js:234
+msgid "{{pre}}March{{post}}"
+msgstr ""
+
+#: go-train_ussd.js:235
+msgid "{{pre}}April{{post}}"
+msgstr ""
+
+#: go-train_ussd.js:236 go-train_ussd.js:258
+msgid "{{pre}}May{{post}}"
+msgstr ""
+
+#: go-train_ussd.js:237
+msgid "{{pre}}June{{post}}"
+msgstr ""
+
+#: go-train_ussd.js:238
+msgid "{{pre}}July{{post}}"
+msgstr ""
+
+#: go-train_ussd.js:239
+msgid "{{pre}}August{{post}}"
+msgstr ""
+
+#: go-train_ussd.js:240
+msgid "{{pre}}September{{post}}"
+msgstr ""
+
+#: go-train_ussd.js:241
+msgid "{{pre}}October{{post}}"
+msgstr ""
+
+#: go-train_ussd.js:242
+msgid "{{pre}}November{{post}}"
+msgstr ""
+
+#: go-train_ussd.js:243
+msgid "{{pre}}December{{post}}"
+msgstr ""
+
+#: go-train_ussd.js:254
+msgid "{{pre}}Jan{{post}}"
+msgstr ""
+
+#: go-train_ussd.js:255
+msgid "{{pre}}Feb{{post}}"
+msgstr ""
+
+#: go-train_ussd.js:256
+msgid "{{pre}}Mar{{post}}"
+msgstr ""
+
+#: go-train_ussd.js:257
+msgid "{{pre}}Apr{{post}}"
+msgstr ""
+
+#: go-train_ussd.js:259
+msgid "{{pre}}Jun{{post}}"
+msgstr ""
+
+#: go-train_ussd.js:260
+msgid "{{pre}}Jul{{post}}"
+msgstr ""
+
+#: go-train_ussd.js:261
+msgid "{{pre}}Aug{{post}}"
+msgstr ""
+
+#: go-train_ussd.js:262
+msgid "{{pre}}Sep{{post}}"
+msgstr ""
+
+#: go-train_ussd.js:263
+msgid "{{pre}}Oct{{post}}"
+msgstr ""
+
+#: go-train_ussd.js:264
+msgid "{{pre}}Nov{{post}}"
+msgstr ""
+
+#: go-train_ussd.js:265
+msgid "{{pre}}Dec{{post}}"
+msgstr ""
+
+#: go-train_ussd.js:1370
+msgid ""
+"You have an incomplete registration. Would you like to continue with this "
+"registration?"
+msgstr ""
+
+#: go-train_ussd.js:1372
+msgid "{{prefix}}Please enter your Hello Mama code."
+msgstr ""
+
+#: go-train_ussd.js:1374
+msgid "Select an option to practise:"
+msgstr ""
+
+#: go-train_ussd.js:1376
+msgid "{{prefix}}Who will receive messages?"
+msgstr ""
+
+#: go-train_ussd.js:1378 go-train_ussd.js:1382
+msgid ""
+"{{prefix}}Please enter the mobile number of the {{roleplayer}}. They must "
+"consent to receiving messages."
+msgstr ""
+
+#: go-train_ussd.js:1380
+msgid ""
+"{{prefix}}Please enter the mobile number of the mother. They must consent "
+"to receiving messages."
+msgstr ""
+
+#: go-train_ussd.js:1384
+msgid "{{prefix}}Please select one of the following:"
+msgstr ""
+
+#: go-train_ussd.js:1386
+msgid "{{prefix}}Please select the month the woman started her last period:"
+msgstr ""
+
+#: go-train_ussd.js:1388
+msgid "{{prefix}}What date of the month did the woman start her last period?"
+msgstr ""
+
+#: go-train_ussd.js:1390
+msgid "{{prefix}}Select the month and year the baby was born:"
+msgstr ""
+
+#: go-train_ussd.js:1392
+msgid "{{prefix}}On what date of the month was the baby born?"
+msgstr ""
+
+#: go-train_ussd.js:1394
+msgid ""
+"{{prefix}}Please enter the total number of times the woman has been "
+"pregnant. This includes any pregnancies she may not have carried to term."
+msgstr ""
+
+#: go-train_ussd.js:1396
+msgid "{{prefix}}What language would they like to receive the messages in?"
+msgstr ""
+
+#: go-train_ussd.js:1398
+msgid "{{prefix}}How would they like to receive the messages?"
+msgstr ""
+
+#: go-train_ussd.js:1400
+msgid "{{prefix}}On what days would they like to receive these calls?"
+msgstr ""
+
+#: go-train_ussd.js:1402
+msgid "{{prefix}}At what time would they like to receive these calls on {{days}}?"
+msgstr ""
+
+#: go-train_ussd.js:1404
+msgid ""
+"Thank you. They will now start receiving calls on {{days}} between "
+"{{times}}."
+msgstr ""
+
+#: go-train_ussd.js:1406
+msgid ""
+"Thank you. They will now start receiving messages three times a week on "
+"Monday, Wednesday and Friday."
+msgstr ""
+
+#: go-train_ussd.js:1408
+msgid "Thank you for using the Hello Mama service."
+msgstr ""
+
+#: go-train_ussd.js:1412
+msgid "{{prefix}}Do you have permission to manage the number {{msisdn}}?"
+msgstr ""
+
+#: go-train_ussd.js:1414
+msgid ""
+"{{prefix}}We're sorry, you do not have permission to update the preferences "
+"for this subscriber."
+msgstr ""
+
+#: go-train_ussd.js:1416
+msgid ""
+"{{prefix}}Welcome to the Hello Mama training line. Please choose your "
+"language."
+msgstr ""
+
+#: go-train_ussd.js:1418
+msgid "{{prefix}}Please enter the number which is registered to receive messages."
+msgstr ""
+
+#: go-train_ussd.js:1420 go-train_ussd.js:1422
+msgid "{{prefix}}Select:"
+msgstr ""
+
+#: go-train_ussd.js:1424
+msgid ""
+"{{prefix}}We do not recognise this number. Please dial from the registered "
+"number or sign up with the Local Community Health Extension Worker."
+msgstr ""
+
+#: go-train_ussd.js:1426
+msgid "You are already registered for baby messages."
+msgstr ""
+
+#: go-train_ussd.js:1428
+msgid "Thank you. You will now receive messages about caring for the baby"
+msgstr ""
+
+#: go-train_ussd.js:1430 go-train_ussd.js:1439
+msgid "{{prefix}}Please select an option:"
+msgstr ""
+
+#: go-train_ussd.js:1432
+msgid ""
+"{{prefix}}We will call twice a week. On what days would you like to receive "
+"messages?"
+msgstr ""
+
+#: go-train_ussd.js:1434
+msgid "{{prefix}}At what time would you like to receive these calls?"
+msgstr ""
+
+#: go-train_ussd.js:1441
+msgid "Thank you. You will now receive text messages"
+msgstr ""
+
+#: go-train_ussd.js:1443
+msgid ""
+"{{prefix}}Please enter the new mobile number you would like to receive "
+"messages on."
+msgstr ""
+
+#: go-train_ussd.js:1445
+msgid ""
+"{{prefix}}Sorry this number is already registered. You must opt-out before "
+"registering again."
+msgstr ""
+
+#: go-train_ussd.js:1447
+msgid "{{prefix}}Who will receive these messages?"
+msgstr ""
+
+#: go-train_ussd.js:1449
+msgid "Thank you. The number which receives messages has been updated."
+msgstr ""
+
+#: go-train_ussd.js:1451
+msgid "{{prefix}}What language would you like to receive these messages in?"
+msgstr ""
+
+#: go-train_ussd.js:1453
+msgid ""
+"Thank you. Your language has been updated and you will start to receive "
+"messages in this language."
+msgstr ""
+
+#: go-train_ussd.js:1455
+msgid "{{prefix}}Why do you no longer want to receive messages?"
+msgstr ""
+
+#: go-train_ussd.js:1457
+msgid ""
+"{{prefix}}We are sorry for your loss. Would the mother like to receive a "
+"small set of free messages that could help during this difficult time?"
+msgstr ""
+
+#: go-train_ussd.js:1459
+msgid ""
+"Thank you. You will now receive messages to support you during this "
+"difficult time."
+msgstr ""
+
+#: go-train_ussd.js:1461
+msgid "{{prefix}}Which messages would you like to stop receiving?"
+msgstr ""
+
+#: go-train_ussd.js:1463
+msgid "Thank you. You will no longer receive messages"
+msgstr ""
+
+#: go-train_ussd.js:1465
+msgid ""
+"We are sorry for your loss. You will no longer receive messages. Should you "
+"need support during this difficult time, please contact your local CHEW."
+msgstr ""
+
+#: go-train_ussd.js:1467
+msgid "Thank you for using the Hello Mama service"
+msgstr ""
+
+#: go-train_ussd.js:1472
+msgid "Sorry, invalid date. "
+msgstr ""
+
+#: go-train_ussd.js:1473
+msgid "Sorry, invalid option. "
+msgstr ""
+
+#: go-train_ussd.js:1474
+msgid "Sorry, invalid number. "
+msgstr ""
+
+#: go-train_ussd.js:1497 go-train_ussd.js:2157
+msgid "Yes"
+msgstr ""
+
+#: go-train_ussd.js:1498
+msgid "No, start a new registration"
+msgstr ""
+
+#: go-train_ussd.js:1571
+msgid "Mother, Father"
+msgstr ""
+
+#: go-train_ussd.js:1572
+msgid "Mother"
+msgstr ""
+
+#: go-train_ussd.js:1573
+msgid "Father"
+msgstr ""
+
+#: go-train_ussd.js:1574
+msgid "Mother, family member"
+msgstr ""
+
+#: go-train_ussd.js:1575
+msgid "Mother, friend"
+msgstr ""
+
+#: go-train_ussd.js:1576
+msgid "Friend"
+msgstr ""
+
+#: go-train_ussd.js:1577
+msgid "Family member"
+msgstr ""
+
+#: go-train_ussd.js:1687
+msgid "The mother is pregnant"
+msgstr ""
+
+#: go-train_ussd.js:1688
+msgid "The mother has a baby under 1 year old"
+msgstr ""
+
+#: go-train_ussd.js:1707 go-train_ussd.js:1844
+msgid "More"
+msgstr ""
+
+#: go-train_ussd.js:1708 go-train_ussd.js:1845
+msgid "Back"
+msgstr ""
+
+#: go-train_ussd.js:1753 go-train_ussd.js:1930 go-train_ussd.js:2100
+msgid "English"
+msgstr ""
+
+#: go-train_ussd.js:1754 go-train_ussd.js:1931 go-train_ussd.js:2101
+msgid "Igbo"
+msgstr ""
+
+#: go-train_ussd.js:1755 go-train_ussd.js:1932 go-train_ussd.js:2102
+msgid "Pidgin"
+msgstr ""
+
+#: go-train_ussd.js:1768
+msgid "Voice calls"
+msgstr ""
+
+#: go-train_ussd.js:1769
+msgid "Text SMSs"
+msgstr ""
+
+#: go-train_ussd.js:1788 go-train_ussd.js:2020
+msgid "Monday and Wednesday"
+msgstr ""
+
+#: go-train_ussd.js:1789 go-train_ussd.js:2021
+msgid "Tuesday and Thursday"
+msgstr ""
+
+#: go-train_ussd.js:1809 go-train_ussd.js:2034
+msgid "Between 9-11am"
+msgstr ""
+
+#: go-train_ussd.js:1810 go-train_ussd.js:2035
+msgid "Between 2-5pm"
+msgstr ""
+
+#: go-train_ussd.js:1896
+msgid "The date you entered ({{ date }}) is incorrect. Please try again."
+msgstr ""
+
+#: go-train_ussd.js:1899
+msgid "{{prefix}}The date you entered ({{ date }}) is incorrect. Please try again."
+msgstr ""
+
+#: go-train_ussd.js:1904
+msgid "Continue"
+msgstr ""
+
+#: go-train_ussd.js:1905
+msgid "Exit"
+msgstr ""
+
+#: go-train_ussd.js:1967
+msgid "Start Baby messages"
+msgstr ""
+
+#: go-train_ussd.js:1968
+msgid "Change message preferences"
+msgstr ""
+
+#: go-train_ussd.js:1969
+msgid "Change my number"
+msgstr ""
+
+#: go-train_ussd.js:1970
+msgid "Change language"
+msgstr ""
+
+#: go-train_ussd.js:1971
+msgid "Stop receiving messages"
+msgstr ""
+
+#: go-train_ussd.js:2002
+msgid "Change from text to voice messages"
+msgstr ""
+
+#: go-train_ussd.js:2003
+msgid "Back to main menu"
+msgstr ""
+
+#: go-train_ussd.js:2051
+msgid ""
+"Thank you. You will now start receiving voice calls on Monday and Wednesday "
+"between 9 and 11am"
+msgstr ""
+
+#: go-train_ussd.js:2052
+msgid ""
+"Thank you. You will now start receiving voice calls on Monday and Wednesday "
+"between 2 and 5pm"
+msgstr ""
+
+#: go-train_ussd.js:2055
+msgid ""
+"Thank you. You will now start receiving voice calls on Tuesday and Thursday "
+"between 9 and 11am"
+msgstr ""
+
+#: go-train_ussd.js:2056
+msgid ""
+"Thank you. You will now start receiving voice calls on Tuesday and Thursday "
+"between 2 and 5pm"
+msgstr ""
+
+#: go-train_ussd.js:2132
+msgid "Mother miscarried"
+msgstr ""
+
+#: go-train_ussd.js:2133
+msgid "Baby stillborn"
+msgstr ""
+
+#: go-train_ussd.js:2134
+msgid "Baby passed away"
+msgstr ""
+
+#: go-train_ussd.js:2135
+msgid "Messages not useful"
+msgstr ""
+
+#: go-train_ussd.js:2136
+msgid "Other"
+msgstr ""
+
+#: go-train_ussd.js:2158
+msgid "No"
+msgstr ""
+
+#: go-train_ussd.js:2181
+msgid "Mother messages"
+msgstr ""
+
+#: go-train_ussd.js:2182
+msgid "Household messages"
+msgstr ""
+
+#: go-train_ussd.js:2183
+msgid "All messages"
+msgstr ""
