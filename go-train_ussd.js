@@ -1518,9 +1518,6 @@ go.app = function() {
             return self.states.create('state_training_intro');
         });
 
-
-    // REGISTRATION STATES
-
         // ChoiceState st-E
         self.add("state_training_intro", function(name) {
             return new ChoiceState(name, {
@@ -1545,6 +1542,9 @@ go.app = function() {
                 }
             });
         });
+
+
+    // REGISTRATION STATES
 
         self.add('state_personnel_auth', function(name) {
             return new FreeText(name, {
@@ -1920,7 +1920,9 @@ go.app = function() {
             });
         });
 
-    // CHANGE - INITIAL STATES
+    // CHANGE STATES
+
+    // initial change states
 
         // ChoiceState st-D
         self.add('state_language', function(name) {
@@ -1978,8 +1980,7 @@ go.app = function() {
             });
         });
 
-
-    // BABY CHANGE STATES
+    // baby change states
 
         // EndState st-02
         self.add('state_new_registration_baby', function(name) {
@@ -1989,8 +1990,7 @@ go.app = function() {
             });
         });
 
-
-    // MSG CHANGE STATES
+    // msg change states
 
         // ChoiceState st-03
         self.add('state_change_menu_sms', function(name) {
@@ -2061,7 +2061,7 @@ go.app = function() {
             });
         });
 
-    // NUMBER CHANGE STATES
+    // number change states
 
         // FreeText st-09
         self.add('state_new_msisdn', function(name) {
@@ -2087,8 +2087,7 @@ go.app = function() {
             });
         });
 
-
-    // LANGUAGE CHANGE STATES
+    // language change states
 
         // ChoiceState st-11
         self.add('state_change_msg_language', function(name) {
@@ -2119,8 +2118,7 @@ go.app = function() {
             });
         });
 
-
-    // OPTOUT STATES
+    // optout states
 
         // ChoiceState st-13
         self.add('state_optout_reason', function(name) {
@@ -2202,8 +2200,7 @@ go.app = function() {
             });
         });
 
-
-    // GENERAL END STATE
+    // general end state
 
         // EndState st-18
         self.add('state_end_exit', function(name) {
