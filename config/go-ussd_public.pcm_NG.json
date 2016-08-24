@@ -1,0 +1,346 @@
+{
+    "": {
+        "pot-creation-date": "2016-06-20 05:40:+0000",
+        "project-id-version": "",
+        "language": "ng",
+        "mime-version": "1.0",
+        "content-type": "text/plain; charset=utf-8",
+        "content-transfer-encoding": "8bit",
+        "po-revision-date": "2016-06-28 11:49+0100",
+        "last-translator": "",
+        "language-team": "",
+        "x-generator": "Poedit 1.8.8"
+    },
+    "{{pre}}January{{post}}": [
+        null,
+        "January"
+    ],
+    "{{pre}}February{{post}}": [
+        null,
+        "February"
+    ],
+    "{{pre}}March{{post}}": [
+        null,
+        "March"
+    ],
+    "{{pre}}April{{post}}": [
+        null,
+        "April"
+    ],
+    "{{pre}}May{{post}}": [
+        null,
+        "May"
+    ],
+    "{{pre}}June{{post}}": [
+        null,
+        "June"
+    ],
+    "{{pre}}July{{post}}": [
+        null,
+        "July"
+    ],
+    "{{pre}}August{{post}}": [
+        null,
+        "August"
+    ],
+    "{{pre}}September{{post}}": [
+        null,
+        "September"
+    ],
+    "{{pre}}October{{post}}": [
+        null,
+        "October"
+    ],
+    "{{pre}}November{{post}}": [
+        null,
+        "November"
+    ],
+    "{{pre}}December{{post}}": [
+        null,
+        "December"
+    ],
+    "{{pre}}Jan{{post}}": [
+        null,
+        "Jan"
+    ],
+    "{{pre}}Feb{{post}}": [
+        null,
+        "Feb"
+    ],
+    "{{pre}}Mar{{post}}": [
+        null,
+        "Mar"
+    ],
+    "{{pre}}Apr{{post}}": [
+        null,
+        "Apr"
+    ],
+    "{{pre}}Jun{{post}}": [
+        null,
+        "Jun"
+    ],
+    "{{pre}}Jul{{post}}": [
+        null,
+        "Jul"
+    ],
+    "{{pre}}Aug{{post}}": [
+        null,
+        "Aug"
+    ],
+    "{{pre}}Sep{{post}}": [
+        null,
+        "Sep"
+    ],
+    "{{pre}}Oct{{post}}": [
+        null,
+        "Oct"
+    ],
+    "{{pre}}Nov{{post}}": [
+        null,
+        "Nov"
+    ],
+    "{{pre}}Dec{{post}}": [
+        null,
+        "Dec"
+    ],
+    "{{prefix}}Welcome to Hello Mama. Do you have permission to manage the number {{msisdn}}?": [
+        null,
+        "HelloMAMA dey welcome you. You get authority to manage dis number {{msisdn}}?"
+    ],
+    "{{prefix}}We're sorry, you do not have permission to update the preferences for this subscriber.": [
+        null,
+        "{{prefix}}No vex, but you no go fit change anything wey concern dis number."
+    ],
+    "{{prefix}}Welcome to Hello Mama. Please choose your language": [
+        null,
+        "{{prefix}}HelloMAMA dey welcome you. Abeg choose ya language"
+    ],
+    "{{prefix}}Please enter the number which is registered to receive messages.": [
+        null,
+        "{{prefix}}Abeg enter de number wey you register to dey receive message."
+    ],
+    "{{prefix}}Select:": [
+        null,
+        "{{prefix}}Abeg choose:"
+    ],
+    "{{prefix}}We do not recognise this number. Please dial from the registered number or sign up with the Local Community Health Extension Worker.": [
+        null,
+        "{{prefix}}We no know dis number, abeg dial from number wey you register or make you go local community health worker place go register."
+    ],
+    "You are already registered for baby messages.": [
+        null,
+        "You don already register for pikin message dem."
+    ],
+    "{{prefix}}Thank you. You will now receive messages about caring for the baby": [
+        null,
+        "{{prefix}}Thank you. Message on how to package pikin go begin enter ya phone."
+    ],
+    "{{prefix}}Please select an option:": [
+        null,
+        "{{prefix}}Abeg select option:"
+    ],
+    "{{prefix}}We will call twice a week. On what days would you like to receive messages?": [
+        null,
+        "{{prefix}}We go dey call you two times a week. Which days you go wan make we call you?"
+    ],
+    "{{prefix}}At what time would you like to receive these calls?": [
+        null,
+        "{{prefix}}At what time would they like to receive these calls?"
+    ],
+    "Thank you. You will now receive text messages": [
+        null,
+        "Thank you. You go begin dey get text message."
+    ],
+    "{{prefix}}Please enter the new mobile number you would like to receive messages on.": [
+        null,
+        "{{prefix}}Abeg enter de new phone number wey you wan dey get our message dem."
+    ],
+    "{{prefix}}Sorry this number is already registered. You must opt-out before registering again.": [
+        null,
+        "{{prefix}}Sorry o! Person don already register dis number. Him suppose opt-out before him register again."
+    ],
+    "{{prefix}}Who will receive these messages?": [
+        null,
+        "{{prefix}}Na who go receive de message?"
+    ],
+    "Thank you. The number which receives messages has been updated.": [
+        null,
+        "Thank you. Ya number wey go dey receive message don pure for our system."
+    ],
+    "{{prefix}}What language would you like to receive these messages in?": [
+        null,
+        "{{prefix}}or which language you wan dey get our message?"
+    ],
+    "Thank you. Your language has been updated and you will start to receive messages in this language.": [
+        null,
+        "Thank you. Ya language don pure for our system. You go begin dey get our message for dis language."
+    ],
+    "{{prefix}}Why do you no longer want to receive messages?": [
+        null,
+        "{{prefix}}Abeg, why you no wan dey get our message dem? Make we for fit dey help you."
+    ],
+    "{{prefix}}We are sorry for your loss. Would the mother like to receive a small set of free messages that could help during this difficult time?": [
+        null,
+        "{{prefix}}De thing wey happen to you pain us sha! De mama go like short message from HelloMAMA wey go help her for dis tough time? De message na free of charge o."
+    ],
+    "Thank you. You will now receive messages to support you during this difficult time.": [
+        null,
+        "Thank you. You go begin dey get message wey fit help you for dis tough time."
+    ],
+    "{{prefix}}Which messages would you like to stop receiving?": [
+        null,
+        "{{prefix}}Na which message you no want again?"
+    ],
+    "Thank you. You will no longer receive messages": [
+        null,
+        "Thank you. You no go dey get our message again."
+    ],
+    "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW.": [
+        null,
+        "De thing wey happen to you pain us. You no go dey get our message again. If you need help abeg go see ya CHEW for ya area."
+    ],
+    "Thank you for using the Hello Mama service": [
+        null,
+        "Thank you say you been use HelloMAMA package."
+    ],
+    "Sorry, invalid option. ": [
+        null,
+        "No vex, de option no correct"
+    ],
+    "Sorry, invalid number. ": [
+        null,
+        "No vex, de number no correct"
+    ],
+    "Yes": [
+        null,
+        "Yes"
+    ],
+    "No": [
+        null,
+        "No"
+    ],
+    "Change the number I'd like to manage": [
+        null,
+        "Change go another number wey I wan manage"
+    ],
+    "English": [
+        null,
+        "English"
+    ],
+    "Igbo": [
+        null,
+        "Igbo"
+    ],
+    "Pidgin": [
+        null,
+        "Pidgin"
+    ],
+    "Start Baby messages": [
+        null,
+        "Start pikin message"
+    ],
+    "Change message preferences": [
+        null,
+        "Change to sms abi normal voice message"
+    ],
+    "Change my number": [
+        null,
+        "Change my number"
+    ],
+    "Change language": [
+        null,
+        "Change my language"
+    ],
+    "Stop receiving messages": [
+        null,
+        "Stop de message dem"
+    ],
+    "Change from text to voice messages": [
+        null,
+        "Change to sms abi normal voice message"
+    ],
+    "Back to main menu": [
+        null,
+        "Go back go main menu."
+    ],
+    "Monday and Wednesday": [
+        null,
+        "On Monday and Wednesday"
+    ],
+    "Tuesday and Thursday": [
+        null,
+        "Tuesday and Thursday"
+    ],
+    "Between 9-11am": [
+        null,
+        "Around 9-11 am"
+    ],
+    "Between 2-5pm": [
+        null,
+        "Around 2-5 pm"
+    ],
+    "Thank you. You will now start receiving voice calls on Monday and Wednesday between 9 and 11am": [
+        null,
+        "Thank you. You go begin get our phone call on Monday and Wednesday around 9 and 11 am"
+    ],
+    "Thank you. You will now start receiving voice calls on Monday and Wednesday between 2 and 5pm": [
+        null,
+        "Thank you. You go begin get our phone call on Monday and Wednesday around 2 and 5 pm."
+    ],
+    "Thank you. You will now start receiving voice calls on Tuesday and Thursday between 9 and 11am": [
+        null,
+        "Thank you. You go begin get our phone call on Tuesday and Thursday around 9 and 11 am."
+    ],
+    "Thank you. You will now start receiving voice calls on Tuesday and Thursday between 2 and 5pm": [
+        null,
+        "Thank you. You go begin get our phone call on Tuesday and Thursday around 2 and 5 pm."
+    ],
+    "Change the day and time I receive messages": [
+        null,
+        "Change de time and de day wey i go receive message"
+    ],
+    "Change from voice to text messages": [
+        null,
+        "Change message for mama from normal phonecall go text message."
+    ],
+    "Try a different number": [
+        null,
+        "Make you try another number"
+    ],
+    "Exit": [
+        null,
+        "I wan comot"
+    ],
+    "Mother miscarried": [
+        null,
+        "Mama get miscarriage"
+    ],
+    "Baby stillborn": [
+        null,
+        "She born pikin wey don die"
+    ],
+    "Baby passed away": [
+        null,
+        "De pikin don die"
+    ],
+    "Messages not useful": [
+        null,
+        "De message no help me."
+    ],
+    "Other": [
+        null,
+        "Anoda tin"
+    ],
+    "Mother messages": [
+        null,
+        "Message for mama"
+    ],
+    "Household messages": [
+        null,
+        "People for house message"
+    ],
+    "All messages": [
+        null,
+        "All de message kpa-kpa"
+    ]
+}
