@@ -1706,7 +1706,7 @@ go.app = function() {
                 options_per_page: 5,
                 more: $('More'),
                 back: $('Back'),
-                choices: go.utils.make_month_choices($, today, 9, -1,
+                choices: go.utils.make_month_choices($, today, 10, -1,
                                                      "YYYYMM", "MMMM YYYY"),
                 next: 'state_last_period_day'
             });

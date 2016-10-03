@@ -266,7 +266,8 @@ describe("Mama Nigeria App", function() {
                                 "2. October 2014",
                                 "3. September 2014",
                                 "4. August 2014",
-                                "5. Back"
+                                "5. July 2014",
+                                "6. Back",
                             ].join('\n')
                         })
                         .run();
@@ -281,7 +282,7 @@ describe("Mama Nigeria App", function() {
                             , '09092222222'  // state_msisdn
                             //, '1'  // state_msg_pregnancy_status - pregnant  // bypass postbirth flow
                             , '6'   // state_last_period_month - More
-                            , '5'   // state_last_period_month - Back
+                            , '6'   // state_last_period_month - Back
                         )
                         .check.interaction({
                             state: 'state_last_period_month',
@@ -1143,7 +1144,8 @@ describe("Mama Nigeria App", function() {
                                 "2. October 2014",
                                 "3. September 2014",
                                 "4. August 2014",
-                                "5. Back"
+                                "5. July 2014",
+                                "6. Back"
                             ].join('\n')
                         })
                         .run();
@@ -1159,7 +1161,7 @@ describe("Mama Nigeria App", function() {
                             , '09092222222'  // state_msisdn
                             //, '1'  // state_msg_pregnancy_status - pregnant  // bypass postbirth flow
                             , '6'   // state_last_period_month - More
-                            , '5'   // state_last_period_month - Back
+                            , '6'   // state_last_period_month - Back
                         )
                         .check.interaction({
                             state: 'state_last_period_month',
