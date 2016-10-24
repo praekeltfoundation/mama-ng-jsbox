@@ -242,7 +242,6 @@ go.utils = {
                     November: $("{{pre}}November{{post}}"),
                     December: $("{{pre}}December{{post}}"),
                 };
-                console.log('adding ' + prefix + month + suffix);
                 translated_label = translation[month].context({
                     pre: prefix,
                     post: suffix
@@ -265,7 +264,6 @@ go.utils = {
                     Nov: $("{{pre}}Nov{{post}}"),
                     Dec: $("{{pre}}Dec{{post}}"),
                 };
-                console.log('adding ' + prefix + month + suffix);
                 translated_label = translation[month].context({
                     pre: prefix,
                     post: suffix
@@ -1637,22 +1635,16 @@ go.app = function() {
             var question_text = 'Period month this/last year?';
             var speech_option = go.utils_project.get_speech_option_year(
                 self.im.user.answers.state_last_period_year);
-            var today = go.utils.get_today(self.im.config);
-            var choices = go.utils.make_month_choices(
-                $, today.subtract(11, 'months'), 11, 1, "MM", "MMMM");
-            _ = require('underscore');
-            _.each(choices, function (choice, counter) {
-                console.log((counter + 1) + ': ' + choice.label + ' -> ' + choice.value);
-            });
             return new ChoiceState(name, {
                 question: question_text,
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
-                choices: choices,
+                choices: go.utils.make_month_choices(
+                    $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
                 next: function(choice) {
-                    console.log('choice? --> ' + choice.value);
+                    var today = go.utils.get_today(self.im.config);
                     if (go.utils_project.is_valid_month(today, self.im.user.answers.working_year,
-                                                choice.value, 11)) {
+                                                choice.value, 10)) {
                         self.im.user.set_answer('working_month', choice.value);
                         return 'state_last_period_day';
                     } else {

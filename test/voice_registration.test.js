@@ -834,17 +834,18 @@ describe("Mama Nigeria App", function() {
                             state: 'state_last_period_month',
                             reply: [
                                 "Period month this/last year?",
-                                "1. August",
-                                "2. September",
-                                "3. October",
-                                "4. November",
-                                "5. December",
-                                "6. January",
-                                "7. February",
-                                "8. March",
-                                "9. April",
-                                "10. May",
-                                "11. June",
+                                "1. January",
+                                "2. February",
+                                "3. March",
+                                "4. April",
+                                "5. May",
+                                "6. June",
+                                "7. July",
+                                "8. August",
+                                "9. September",
+                                "10. October",
+                                "11. November",
+                                "12. December",
                             ].join('\n')
                         })
                         .check.reply.properties({
@@ -869,25 +870,25 @@ describe("Mama Nigeria App", function() {
                                 , '09095555555'     // state_msisdn_mother
                                 , '09094444444'     // state_msisdn_household
                                 // , '1'               // state_pregnancy_status - pregnant  // bypass postbirth flow
-
                                 , '1'               // state_last_period_year - this year
-                                , '12'              // state_last_period_month
+                                , '12'              // state_last_period_month - invalid input
                             )
                             .check.interaction({
                                 state: 'state_last_period_month',
                                 reply: [
                                     "Period month this/last year?",
-                                    "1. August",
-                                    "2. September",
-                                    "3. October",
-                                    "4. November",
-                                    "5. December",
-                                    "6. January",
-                                    "7. February",
-                                    "8. March",
-                                    "9. April",
-                                    "10. May",
-                                    "11. June",
+                                    "1. January",
+                                    "2. February",
+                                    "3. March",
+                                    "4. April",
+                                    "5. May",
+                                    "6. June",
+                                    "7. July",
+                                    "8. August",
+                                    "9. September",
+                                    "10. October",
+                                    "11. November",
+                                    "12. December",
                                 ].join('\n')
                             })
                             .check.reply.properties({
