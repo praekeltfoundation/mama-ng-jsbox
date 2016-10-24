@@ -235,6 +235,7 @@ go.utils = {
                     November: $("{{pre}}November{{post}}"),
                     December: $("{{pre}}December{{post}}"),
                 };
+                console.log('adding ' + prefix + month + suffix);
                 translated_label = translation[month].context({
                     pre: prefix,
                     post: suffix
@@ -257,6 +258,7 @@ go.utils = {
                     Nov: $("{{pre}}Nov{{post}}"),
                     Dec: $("{{pre}}Dec{{post}}"),
                 };
+                console.log('adding ' + prefix + month + suffix);
                 translated_label = translation[month].context({
                     pre: prefix,
                     post: suffix

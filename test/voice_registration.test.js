@@ -866,10 +866,11 @@ describe("Mama Nigeria App", function() {
                                 {session_event: 'new'}
                                 , '12345'           // state_personnel_auth
                                 , '1'               // state_msg_receiver - mother&father
-                                , '09095555555'     // state_msisdn_household
-                                , '09094444444'     // state_msisdn_mother
+                                , '09095555555'     // state_msisdn_mother
+                                , '09094444444'     // state_msisdn_household
                                 // , '1'               // state_pregnancy_status - pregnant  // bypass postbirth flow
-                                , '1'               // state_last_period_year
+
+                                , '1'               // state_last_period_year - this year
                                 , '12'              // state_last_period_month
                             )
                             .check.interaction({

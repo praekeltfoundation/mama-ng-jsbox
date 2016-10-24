@@ -303,6 +303,10 @@ go.app = function() {
             var today = go.utils.get_today(self.im.config);
             var choices = go.utils.make_month_choices(
                 $, today.subtract(11, 'months'), 11, 1, "MM", "MMMM");
+            _ = require('underscore');
+            _.each(choices, function (choice, counter) {
+                console.log((counter + 1) + ': ' + choice.label + ' -> ' + choice.value);
+            });
             return new ChoiceState(name, {
                 question: question_text,
                 helper_metadata: go.utils_project.make_voice_helper_data(
