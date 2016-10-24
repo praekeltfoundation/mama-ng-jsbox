@@ -717,10 +717,6 @@ go.utils_project = {
         startDate = startDate.subtract('month', monthsValid - 1);
         startDate.date(1);  // set day of month to 1st
 
-        console.log('startDate: ' + startDate.format());
-        console.log('choiceDate: ' + choiceDate.format());
-        console.log('today: ' + today.format());
-
         // choice >= startDate && <= today/endDate
         if ((choiceDate.isSame(startDate) || choiceDate.isAfter(startDate)) &&
             (choiceDate.isSame(today) || choiceDate.isBefore(today))) {
