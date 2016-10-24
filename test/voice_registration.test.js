@@ -871,7 +871,7 @@ describe("Mama Nigeria App", function() {
                                 , '09094444444'     // state_msisdn_household
                                 // , '1'               // state_pregnancy_status - pregnant  // bypass postbirth flow
                                 , '1'               // state_last_period_year - this year
-                                , '12'              // state_last_period_month - invalid input
+                                , '12'              // state_last_period_month - December, valid but not within allowed 11 months
                             )
                             .check.interaction({
                                 state: 'state_last_period_month',
