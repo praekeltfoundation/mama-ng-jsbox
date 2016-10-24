@@ -1644,7 +1644,7 @@ go.app = function() {
                 next: function(choice) {
                     var today = go.utils.get_today(self.im.config);
                     if (go.utils_project.is_valid_month(today, self.im.user.answers.working_year,
-                                                choice.value, 10)) {
+                                                choice.value, 11)) {
                         self.im.user.set_answer('working_month', choice.value);
                         return 'state_last_period_day';
                     } else {
