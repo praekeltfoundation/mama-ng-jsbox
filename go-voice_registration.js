@@ -1635,16 +1635,16 @@ go.app = function() {
             var question_text = 'Period month this/last year?';
             var speech_option = go.utils_project.get_speech_option_year(
                 self.im.user.answers.state_last_period_year);
+            var today = go.utils.get_today(self.im.config);
             return new ChoiceState(name, {
                 question: question_text,
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 choices: go.utils.make_month_choices(
-                    $, go.utils.get_january(self.im.config), 12, 1, "MM", "MMMM"),
+                    $, today.subtract(11, 'months'), 11, 1, "MM", "MMMM"),
                 next: function(choice) {
-                    var today = go.utils.get_today(self.im.config);
                     if (go.utils_project.is_valid_month(today, self.im.user.answers.working_year,
-                                                choice.value, 10)) {
+                                                choice.value, 11)) {
                         self.im.user.set_answer('working_month', choice.value);
                         return 'state_last_period_day';
                     } else {

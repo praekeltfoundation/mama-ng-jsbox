@@ -66,7 +66,8 @@ module.exports = function (grunt) {
                     'src/init.js'
                 ],
                 all: [
-                    'src/**/*.js'
+                    'src/**/*.js',
+                    'test/**/*.js',
                 ]
             },
             dest: {
@@ -192,7 +193,8 @@ module.exports = function (grunt) {
 
         mochaTest: {
             options: {
-                reporter: 'spec'
+                reporter: 'spec',
+                bail: true,
             },
             test_ussd_registration: {
                 src: ['<%= paths.test.ussd_registration %>']

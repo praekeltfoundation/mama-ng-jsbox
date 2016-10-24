@@ -831,7 +831,21 @@ describe("Mama Nigeria App", function() {
                             , '1'            // state_last_period_year
                         )
                         .check.interaction({
-                            state: 'state_last_period_month'
+                            state: 'state_last_period_month',
+                            reply: [
+                                "Period month this/last year?",
+                                "1. August",
+                                "2. September",
+                                "3. October",
+                                "4. November",
+                                "5. December",
+                                "6. January",
+                                "7. February",
+                                "8. March",
+                                "9. April",
+                                "10. May",
+                                "11. June",
+                            ].join('\n')
                         })
                         .check.reply.properties({
                             helper_metadata: {
@@ -856,10 +870,11 @@ describe("Mama Nigeria App", function() {
                                 , '09094444444'     // state_msisdn_mother
                                 // , '1'               // state_pregnancy_status - pregnant  // bypass postbirth flow
                                 , '1'               // state_last_period_year
-                                , '12'              // state_last_period_month
+                                , '15'              // state_last_period_month
                             )
                             .check.interaction({
-                                state: 'state_last_period_month'
+                                state: 'state_last_period_month',
+                                reply: 'foo',
                             })
                             .check.reply.properties({
                                 helper_metadata: {

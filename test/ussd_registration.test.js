@@ -1087,7 +1087,7 @@ describe("Mama Nigeria App", function() {
                             "1. Continue",
                             "2. Exit"
                         ].join('\n')
-                    })
+                    });
 
             });
             it("validate state_gravida", function() {
