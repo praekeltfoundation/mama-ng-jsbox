@@ -301,13 +301,15 @@ go.app = function() {
             var speech_option = go.utils_project.get_speech_option_year(
                 self.im.user.answers.state_last_period_year);
             var today = go.utils.get_today(self.im.config);
+            var choices = go.utils.make_month_choices(
+                $, today.subtract(11, 'months'), 11, 1, "MM", "MMMM");
             return new ChoiceState(name, {
                 question: question_text,
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
-                choices: go.utils.make_month_choices(
-                    $, today.subtract(11, 'months'), 11, 1, "MM", "MMMM"),
+                choices: choices,
                 next: function(choice) {
+                    console.log('choice? --> ' + choice.value);
                     if (go.utils_project.is_valid_month(today, self.im.user.answers.working_year,
                                                 choice.value, 11)) {
                         self.im.user.set_answer('working_month', choice.value);
