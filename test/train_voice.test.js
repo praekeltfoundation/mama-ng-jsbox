@@ -1278,14 +1278,14 @@ describe("Mama Nigeria App", function() {
                         .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
+                            , '1' // state_training_intro - register
                             , '12345'       // state_personnel_auth
                             , '6'           // state_msg_receiver - friend_only
                             , '09092222222' // state_msisdn
-                            , '2'           // state_pregnancy_status - baby
-                            , '2'           // state_baby_birth_year - last year
-                            , '11'          // state_baby_birth_month - nov
-                            , '12'          // state_baby_birth_day
-                            , 'XX'           // state_gravida, invalid input
+                            , '2'           // state_last_period_year - last year
+                            , '12'           // state_last_period_month - dec
+                            , '13'          // state_last_period_day
+                            , 'XX'           // state_gravida - invalid
                         )
                         .check.interaction({
                             state: 'state_gravida'
