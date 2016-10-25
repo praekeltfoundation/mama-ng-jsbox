@@ -460,7 +460,16 @@ go.app = function() {
                 question: 'Please enter the number of times the woman has been pregnant before. This includes any pregnancies she may not have carried to term.',
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
-                next: 'state_msg_language'
+                next: function (content) {
+                    if (go.utils.check_valid_number(content)) {
+                        return 'state_msg_language';
+                    } else {
+                        return {
+                            'name': 'state_retry',
+                            'creator_opts': {'retry_state': name}
+                        };
+                    }
+                }
             });
         });
 
