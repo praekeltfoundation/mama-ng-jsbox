@@ -1272,6 +1272,40 @@ describe("Mama Nigeria App", function() {
                 });
             });
 
+            describe('capture gravida', function () {
+                it('should be a valid integer', function () {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'       // state_personnel_auth
+                            , '6'           // state_msg_receiver - friend_only
+                            , '09092222222' // state_msisdn
+                            , '2'           // state_pregnancy_status - baby
+                            , '2'           // state_baby_birth_year - last year
+                            , '11'          // state_baby_birth_month - nov
+                            , '12'          // state_baby_birth_day
+                            , 'XX'           // state_gravida, invalid input
+                        )
+                        .check.interaction({
+                            state: 'state_gravida'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: [
+                                        'http://localhost:8004/api/v1/eng_NG/state_error_invalid_number.mp3',
+                                        'http://localhost:8004/api/v1/eng_NG/state_gravida_1.mp3',
+                                    ],
+                                    wait_for: '#',
+                                    barge_in: true
+                                }
+                            }
+                        })
+                        .run();
+                });
+            });
+
             // pregnant
             describe("when you enter a last period day", function() {
                 describe("if it is an invalid day", function() {
