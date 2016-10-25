@@ -193,8 +193,7 @@ module.exports = function (grunt) {
 
         mochaTest: {
             options: {
-                reporter: 'spec',
-                bail: true,
+                reporter: 'spec'
             },
             test_ussd_registration: {
                 src: ['<%= paths.test.ussd_registration %>']
