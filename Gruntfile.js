@@ -128,6 +128,12 @@ module.exports = function (grunt) {
                     'src/utils_project.js',
                     '<%= paths.src.app.train_ussd %>',
                     'test/train_ussd.test.js'
+                ],
+                utils_project: [
+                    'test/setup.js',
+                    'src/utils.js',
+                    'src/utils_project.js',
+                    'test/utils_project.test.js',
                 ]
             }
         },
@@ -215,6 +221,9 @@ module.exports = function (grunt) {
             },
             test_train_ussd: {
                 src: ['<%= paths.test.train_ussd %>']
+            },
+            test_utils_project: {
+                src: ['<%= paths.test.utils_project %>']
             }
         }
     });

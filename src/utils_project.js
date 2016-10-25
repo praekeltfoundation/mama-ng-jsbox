@@ -157,7 +157,9 @@ go.utils_project = {
     is_valid_month: function(today, choiceYear, choiceMonth, monthsValid) {
         // function used to validate months for states 5A/5B & 12A/12B
 
-        var choiceDate = new moment(choiceYear+choiceMonth, "YYYYMM");
+        // NOTE: make sure we cast numbers to strings instead
+        //       of adding up numbers
+        var choiceDate = new moment('' + choiceYear + choiceMonth, "YYYYMM");
         var startDate = today.clone();
         // note: 1 is subtracted as current month is already included
         startDate = startDate.subtract('month', monthsValid - 1);
