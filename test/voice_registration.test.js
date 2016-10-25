@@ -831,7 +831,22 @@ describe("Mama Nigeria App", function() {
                             , '1'            // state_last_period_year
                         )
                         .check.interaction({
-                            state: 'state_last_period_month'
+                            state: 'state_last_period_month',
+                            reply: [
+                                "Period month this/last year?",
+                                "1. January",
+                                "2. February",
+                                "3. March",
+                                "4. April",
+                                "5. May",
+                                "6. June",
+                                "7. July",
+                                "8. August",
+                                "9. September",
+                                "10. October",
+                                "11. November",
+                                "12. December",
+                            ].join('\n')
                         })
                         .check.reply.properties({
                             helper_metadata: {
@@ -859,7 +874,22 @@ describe("Mama Nigeria App", function() {
                                 , '12'              // state_last_period_month
                             )
                             .check.interaction({
-                                state: 'state_last_period_month'
+                                state: 'state_last_period_month',
+                                reply: [
+                                    "Period month this/last year?",
+                                    "1. January",
+                                    "2. February",
+                                    "3. March",
+                                    "4. April",
+                                    "5. May",
+                                    "6. June",
+                                    "7. July",
+                                    "8. August",
+                                    "9. September",
+                                    "10. October",
+                                    "11. November",
+                                    "12. December",
+                                ].join('\n')
                             })
                             .check.reply.properties({
                                 helper_metadata: {
