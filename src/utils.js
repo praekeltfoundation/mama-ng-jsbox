@@ -129,6 +129,14 @@ go.utils = {
             && !Number.isNaN(Number(content));
     },
 
+    check_number_in_range: function(content, lower, upper) {
+      if (go.utils.check_valid_number(content)) {
+        var number = parseInt(content);
+        return (number >= lower && number <= upper);
+      }
+      return false;
+    },
+
     double_digit_number: function(input) {
         input_numeric = parseInt(input, 10);
         if (parseInt(input, 10) < 10) {

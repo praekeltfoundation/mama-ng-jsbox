@@ -1103,7 +1103,19 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            it("validate state_msg_language", function() {
+            it("validate state_gravida limits to 10", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .setup.user.state('state_gravida')
+                    .input(
+                        '11'  // state_gravida
+                    )
+                    .check.interaction({
+                        state: 'state_gravida',
+                        reply: 'Sorry, invalid number. Please enter the total number of times the woman has been pregnant. This includes any pregnancies she may not have carried to term.'
+                    })
+                    .run();
+            });            it("validate state_msg_language", function() {
                 return tester
                     .setup.user.addr('08080020002')
                     .setup.user.state('state_msg_language')

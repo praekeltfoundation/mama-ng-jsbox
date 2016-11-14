@@ -397,7 +397,7 @@ go.app = function() {
             return new FreeText(name, {
                 question: get_content(name).context({prefix:""}),
                 check: function(content) {
-                    if (go.utils.check_valid_number(content)) {
+                    if (go.utils.check_number_in_range(content, 0, 10)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return get_content(name)

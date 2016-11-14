@@ -461,7 +461,7 @@ go.app = function() {
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 next: function (content) {
-                    if (go.utils.check_valid_number(content)) {
+                    if (go.utils.check_number_in_range(content, 0, 10)) {
                         return 'state_msg_language';
                     } else {
                         return {
