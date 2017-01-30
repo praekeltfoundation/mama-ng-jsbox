@@ -85,6 +85,35 @@ describe("Mama Nigeria App", function() {
             });
         });
 
+        describe("when the user sends a BABY message", function() {
+            it("should change them to baby messaging if contact found", function() {
+                return tester
+                    .setup.user.addr('05059992222')
+                    .inputs('baby')
+                    .check.interaction({
+                        state: 'state_new_registration_baby',
+                        reply: 'Thank you. You will now receive messages about caring for the baby'
+                    })
+                    .check(function(api) {
+                        go.utils.check_fixtures_used(api, [0,4]);
+                    })
+                    .run();
+            });
+            it("should report problem if contact not found", function() {
+                return tester
+                    .setup.user.addr('05059991111')
+                    .inputs('baby')
+                    .check.interaction({
+                        state: 'state_end_unrecognised_baby',
+                        reply: "We do not recognise your number and can therefore not change you to the baby messages."
+                    })
+                    .check(function(api) {
+                        go.utils.check_fixtures_used(api, [2]);
+                    })
+                    .run();
+            });
+        });
+
         describe("when the user sends any other message", function() {
             it("should display helpdesk message", function() {
                 return tester
