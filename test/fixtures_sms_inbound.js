@@ -122,6 +122,28 @@ module.exports = function() {
             "data": {}
         }
     },
+    // 4: Change to baby - 2222
+    {
+        'request': {
+            'method': 'POST',
+            'headers': {
+                'Authorization': ['Token test_key'],
+                'Content-Type': ['application/json']
+            },
+            'url': 'http://localhost:8002/api/v1/change/',
+            'data': {
+                "mother_id": "3f7c8851-5204-43f7-af7f-005059992222",
+                "action": "change_baby",
+                "data": {}
+            }
+        },
+        'response': {
+            'code': 201,
+            'data': {
+                'id': 1
+            }
+        }
+    },
 
 ];
 };

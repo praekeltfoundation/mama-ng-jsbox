@@ -1363,6 +1363,8 @@ go.app = function() {
             switch (user_first_word) {
                 case "STOP":
                     return self.states.create("state_find_identity");
+                case "BABY": case "NWA":
+                    return self.states.create("state_change_baby");
                 default:
                     return self.states.create("state_save_inbound");
             }
@@ -1411,6 +1413,37 @@ go.app = function() {
         self.states.add('state_end_unrecognised', function(name) {
             return new EndState(name, {
                 text: $("We do not recognise your number and can therefore not opt you out."),
+                next: 'state_start'
+            });
+        });
+
+        self.states.add('state_change_baby', function(name) {
+            return go.utils
+                .get_identity_by_address(
+                    {'msisdn': self.im.user.answers.contact_msisdn}, self.im)
+                .then(function(identity) {
+                    if (identity) {
+                        return go.utils_project
+                            .switch_to_baby(self.im, identity.id)
+                            .then(function() {
+                                return self.states.create('state_new_registration_baby');
+                        });
+                    } else {
+                        return self.states.create('state_end_unrecognised_baby');
+                    }
+                });
+        });
+
+        self.states.add('state_new_registration_baby', function(name) {
+            return new EndState(name, {
+                text: $("Thank you. You will now receive messages about caring for your baby"),
+                next: 'state_start'
+            });
+        });
+
+        self.states.add('state_end_unrecognised_baby', function(name) {
+            return new EndState(name, {
+                text: $("We do not recognise your number and can therefore not change you to the baby messages."),
                 next: 'state_start'
             });
         });
