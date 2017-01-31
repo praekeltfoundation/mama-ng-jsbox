@@ -92,7 +92,20 @@ describe("Mama Nigeria App", function() {
                     .inputs('baby')
                     .check.interaction({
                         state: 'state_new_registration_baby',
-                        reply: 'Thank you. You will now receive messages about caring for the baby'
+                        reply: 'Thank you. You will now receive messages about caring for your baby'
+                    })
+                    .check(function(api) {
+                        go.utils.check_fixtures_used(api, [0,4]);
+                    })
+                    .run();
+            });
+            it("should change them to baby messaging if contact found - IGBO", function() {
+                return tester
+                    .setup.user.addr('05059992222')
+                    .inputs('nwa')
+                    .check.interaction({
+                        state: 'state_new_registration_baby',
+                        reply: 'Thank you. You will now receive messages about caring for your baby'
                     })
                     .check(function(api) {
                         go.utils.check_fixtures_used(api, [0,4]);

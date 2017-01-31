@@ -18,7 +18,7 @@ go.app = function() {
             switch (user_first_word) {
                 case "STOP":
                     return self.states.create("state_find_identity");
-                case "BABY":
+                case "BABY": case "NWA":
                     return self.states.create("state_change_baby");
                 default:
                     return self.states.create("state_save_inbound");
@@ -78,9 +78,8 @@ go.app = function() {
                     {'msisdn': self.im.user.answers.contact_msisdn}, self.im)
                 .then(function(identity) {
                     if (identity) {
-                        self.im.user.set_answer('mother_id', identity.id);
                         return go.utils_project
-                            .switch_to_baby(self.im, self.im.user.answers.mother_id)
+                            .switch_to_baby(self.im, identity.id)
                             .then(function() {
                                 return self.states.create('state_new_registration_baby');
                         });
@@ -92,7 +91,7 @@ go.app = function() {
 
         self.states.add('state_new_registration_baby', function(name) {
             return new EndState(name, {
-                text: $("{{prefix}}Thank you. You will now receive messages about caring for the baby").context({prefix:""}),
+                text: $("Thank you. You will now receive messages about caring for your baby"),
                 next: 'state_start'
             });
         });
