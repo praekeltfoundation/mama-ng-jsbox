@@ -391,6 +391,19 @@ go.utils = {
             .get_identity_by_address(address, im)
             .then(function(identity) {
                 if (identity !== null) {
+
+                  if (identity.details && identity.details.addresses && identity.details.addresses.msisdn){
+                      if ("optedout" in identity.details.addresses.msisdn[address.msisdn]){
+                          delete identity.details.addresses.msisdn[address.msisdn].optedout;
+
+                          if (identity.details.opted_out){
+                              delete identity.details.opted_out;
+                          }
+
+                          update_identity(im, identity);
+                      }
+                  }
+
                     // If identity exists, return the id
                     return identity;
                 } else {
@@ -1472,7 +1485,24 @@ go.app = function() {
                         return go.utils
                             .get_identity_by_address({'msisdn': msisdn}, self.im)
                             .then(function(contact) {
-                                if (contact && contact.details && contact.details.receiver_role) {
+                                optedout = false;
+                                if (contact && contact.details && contact.details.addresses && contact.details.addresses.msisdn){
+                                    if(contact.details.addresses.msisdn[msisdn].optedout){
+                                        optedout = true;
+                                    }
+                                }
+
+                                if (optedout){
+                                    self.im.user.set_answer('mother_id', contact.id);
+                                    self.im.user.set_answer('receiver_id', contact.id);
+                                    if (bypassPostbirth) {
+                                        self.im.user.set_answer('state_pregnancy_status', 'prebirth');
+                                        return self.states.create('state_last_period_year');
+                                    } else {
+                                        return self.states.create('state_pregnancy_status');
+                                    }
+                                }
+                                else if (contact && contact.details && contact.details.receiver_role) {
                                     self.im.user.set_answer('role_player', contact.details.receiver_role);
                                     self.im.user.set_answer('contact_id', contact.id);
                                     return 'state_msisdn_already_registered';

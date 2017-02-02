@@ -678,6 +678,54 @@ describe("Mama Nigeria App", function() {
             });
         });
 
+        describe("When a msisdn exists but is opted out", function() {
+            it("should navigate to state_last_period_year", function() {
+                return tester
+                    .setup.user.addr('07030010009')
+                    .inputs(
+                        {session_event: 'new'}
+                        , '12345'       // state_personnel_auth
+                        , '2'           // state_msg_receiver - friend_only
+                        , '07030010009' // state_msisdn
+                    )
+                    .check.interaction({
+                        state: 'state_last_period_year'
+                    })
+                    .run();
+            });
+            it("should update to remove the optedout flag", function() {
+                return tester
+                    .setup.user.addr('07030010009')
+                    .inputs(
+                        {session_event: 'new'}
+                        , '12345'       // state_personnel_auth
+                        , '2'           // state_msg_receiver - mother_only
+                        , '07030010009' // state_msisdn
+                        , '2'           // state_last_period_year - last year
+                        , '12'           // state_last_period_month - dec
+                        , '13'          // state_last_period_day
+
+                        , '2'           // state_gravida
+                        , '2'           // state_msg_language - igbo
+                        , '2'           // state_msg_type - sms
+                    )
+                    .check.interaction({
+                        state: 'state_end_sms'
+                    })
+                    .check(function(api) {
+                        var expected_used = [6, 79, 83, 84, 85, 86];
+                        var fixts = api.http.fixtures.fixtures;
+                        var fixts_used = [];
+                        fixts.forEach(function(f, i) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
+                    })
+                    .check.reply.ends_session()
+                    .run();
+            });
+        });
+
         describe("When you enter a choice state_msg_receiver", function() {
             describe("if it is a valid choice", function() {
                 it("should navigate to state_last_period_year", function() {
