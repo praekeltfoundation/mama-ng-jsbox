@@ -3580,5 +3580,176 @@ module.exports = function() {
             }
         },
 
+        // 83: get identity 07030010009 by msisdn
+        {
+            'repeatable': true,  // necessary for timeout restart testing
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'details__addresses__msisdn': '+2347030010009'
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/identities/search/',
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "count": 1,
+                    "next": null,
+                    "previous": null,
+                    "results": [{
+                        "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/",
+                        "id": "cb245673-aa41-4302-ac47-00000000009",
+                        "version": 1,
+                        "details": {
+                            "default_addr_type": "msisdn",
+                            "receiver_role": "mother",
+                            "addresses": {
+                                "msisdn": {
+                                    "+2347030010009": {'optedout': true}
+                                }
+                            }
+                        },
+                        "created_at": "2015-07-10T06:13:29.693272Z",
+                        "updated_at": "2015-07-10T06:13:29.693298Z"
+                    }]
+                }
+            }
+        },
+
+        // 84: create registration 07030010009 - mother_only - voice
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': "http://localhost:8002/api/v1/registration/",
+                'data':  {
+                    "stage": "prebirth",
+                    "mother_id":"cb245673-aa41-4302-ac47-00000000009",
+                    "data": {
+                        "msg_receiver": "mother_only",
+                        "receiver_id":"cb245673-aa41-4302-ac47-00000000009",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
+                        "gravida": "2",
+                        "language": "ibo_NG",
+                        "msg_type": "text",
+                        "last_period_date": "20161213"
+                    }
+                }
+            },
+            'response': {
+                "code": 201,
+                "data": {
+                    "id": "reg_for_07030010009_uuid",
+                    "stage": "prebirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-9094444444",
+                    "data": {
+                        "msg_receiver": "mother_only",
+                        "receiver_id": "cb245673-aa41-4302-ac47-9095555555",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
+                        "language": "eng_NG",
+                        "msg_type": "text",
+                        "voice_times": "2_5",
+                        "voice_days": "tue_thu",
+                        "last_period_date": "20151213",
+                        "user_id": "cb245673-aa41-4302-ac47-00000000002"
+                    },
+                    "validated": false,
+                    "source": "source",
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z",
+                    "created_by": "user",
+                    "updated_by": "user"
+                }
+            }
+        },
+
+        // 85: get identity cb245673-aa41-4302-ac47-00000000009
+        {
+            'repeatable': true,
+            'request': {
+                'method': 'GET',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/',
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/",
+                    "id": "cb245673-aa41-4302-ac47-00000000009",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2347030010009": {}
+                            }
+                        }
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
+
+        // 86: patch identity cb245673-aa41-4302-ac47-00000000009 - text reg mama
+        {
+            'request': {
+                'method': 'PATCH',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/",
+                'data': {
+                    "id": "cb245673-aa41-4302-ac47-00000000009",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type":"msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2347030010009": {}
+                            }
+                        },
+                        "receiver_role": "mother",
+                        "linked_to": null,
+                        "gravida": "2",
+                        "preferred_language": "ibo_NG",
+                        "preferred_msg_type": "text"
+                    }
+                }
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "id": "cb245673-aa41-4302-ac47-00000000009",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type":"msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2347030010009": {}
+                            }
+                        },
+                        "receiver_role": "mother",
+                        "linked_to": null,
+                        "gravida": "2",
+                        "preferred_language": "ibo_NG",
+                        "preferred_msg_type": "text"
+                    }
+                }
+            }
+        },
+
     ];
 };
