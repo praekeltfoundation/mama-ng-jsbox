@@ -861,6 +861,54 @@ describe("Mama Nigeria App", function() {
             });
         });
 
+        describe("When a msisdn exists but is opted out", function() {
+            it("should navigate to state_last_period_year", function() {
+                return tester
+                    .setup.user.addr('07030010009')
+                    .inputs(
+                        {session_event: 'new'}
+                        , '12345'       // state_personnel_auth
+                        , '2'           // state_msg_receiver - friend_only
+                        , '07030010009' // state_msisdn
+                    )
+                    .check.interaction({
+                        state: 'state_last_period_year'
+                    })
+                    .run();
+            });
+            it("should update to remove the optedout flag", function() {
+                return tester
+                    .setup.user.addr('07030010009')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '2' // state_msg_receiver - mother_only
+                        , '07030010009'  // state_msiddn
+                        //, '1'  // state_msg_pregnant - mother
+                        , '3'  // state_last_period_month - May 15
+                        , '12' // state_last_period_day - 12
+                        , '2'  // state_gravida
+                        , '1'  // state_msg_language - english
+                        , '1'   // state_msg_type - voice calls
+                        , '2'   // state_voice_days - tuesdays and thursdays
+                        , '2'   // state_voice_times - between 2-5pm
+                    )
+                    .check.interaction({
+                        state: 'state_end_sms'
+                    })
+                    .check(function(api) {
+                        var expected_used = [6, 79, 83, 84, 85, 86];
+                        var fixts = api.http.fixtures.fixtures;
+                        var fixts_used = [];
+                        fixts.forEach(function(f, i) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
+                    })
+                    .check.reply.ends_session()
+                    .run();
+            });
+        });
         // TEST VALIDATION
 
         describe("Validation testing", function() {
