@@ -391,19 +391,6 @@ go.utils = {
             .get_identity_by_address(address, im)
             .then(function(identity) {
                 if (identity !== null) {
-
-                  if (identity.details && identity.details.addresses && identity.details.addresses.msisdn){
-                      if ("optedout" in identity.details.addresses.msisdn[address.msisdn]){
-                          delete identity.details.addresses.msisdn[address.msisdn].optedout;
-
-                          if (identity.details.opted_out){
-                              delete identity.details.opted_out;
-                          }
-
-                          update_identity(im, identity);
-                      }
-                  }
-
                     // If identity exists, return the id
                     return identity;
                 } else {
