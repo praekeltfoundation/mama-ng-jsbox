@@ -217,7 +217,13 @@ go.app = function() {
                     return go.utils
                         .get_identity_by_address({'msisdn': msisdn}, self.im)
                         .then(function(contact) {
-                            if (contact && contact.details && contact.details.receiver_role) {
+                            // If opted out, opt in again
+                            if (    contact && contact.details && contact.details.addresses &&
+                                    contact.details.addresses.msisdn && contact.details.addresses.msisdn[msisdn] &&
+                                    contact.details.addresses.msisdn[msisdn].optedout) {
+                                return 'state_save_identities';
+                            }
+                            else if (contact && contact.details && contact.details.receiver_role) {
                                 self.im.user.set_answer('role_player', contact.details.receiver_role);
                                 self.im.user.set_answer('contact_id', contact.id);
                                 return 'state_msisdn_already_registered';
