@@ -1294,7 +1294,8 @@ describe("Mama Nigeria App", function() {
                         '08033048990',
                         '080330ab990',
                         '08033048990123',    // 14 chars in length
-                        '0803304899012'      // 13 chars in length
+                        '0803304899012',     // 13 chars in length
+                        '0803304899',        // 10 chars in length
                     ];
 
                     // function call
@@ -1304,7 +1305,7 @@ describe("Mama Nigeria App", function() {
                     }
 
                     // expected results
-                    assert.equal(resultsArray.length, 9);
+                    assert.equal(resultsArray.length, 10);
                     assert.equal(resultsArray[0], false);
                     assert.equal(resultsArray[1], false);
                     assert.equal(resultsArray[2], false);
@@ -1313,7 +1314,8 @@ describe("Mama Nigeria App", function() {
                     assert.equal(resultsArray[5], true);
                     assert.equal(resultsArray[6], false);
                     assert.equal(resultsArray[7], false);
-                    assert.equal(resultsArray[8], true);
+                    assert.equal(resultsArray[8], false);
+                    assert.equal(resultsArray[9], false);
                 });
             });
 

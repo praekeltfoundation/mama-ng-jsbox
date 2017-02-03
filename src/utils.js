@@ -92,8 +92,7 @@ go.utils = {
     is_valid_msisdn: function(content) {
         return go.utils.check_valid_number(content)
             && content[0] === '0'
-            && content.length >= 10
-            && content.length <= 13;
+            && content.length == 11;
     },
 
     normalize_msisdn: function(raw, country_code) {
