@@ -872,7 +872,7 @@ describe("Mama Nigeria App", function() {
                         , '07030010009' // state_msisdn
                     )
                     .check.interaction({
-                        state: 'state_last_period_year'
+                        state: 'state_last_period_month'
                     })
                     .run();
             });
@@ -884,24 +884,24 @@ describe("Mama Nigeria App", function() {
                         , '12345'   // state_auth_code - personnel code
                         , '2' // state_msg_receiver - mother_only
                         , '07030010009'  // state_msiddn
-                        //, '1'  // state_msg_pregnant - mother
-                        , '3'  // state_last_period_month - May 15
-                        , '12' // state_last_period_day - 12
+                        , '5'  // state_last_period_month - dec 2014
+                        , '13' // state_last_period_day - 13
                         , '2'  // state_gravida
-                        , '1'  // state_msg_language - english
-                        , '1'   // state_msg_type - voice calls
-                        , '2'   // state_voice_days - tuesdays and thursdays
-                        , '2'   // state_voice_times - between 2-5pm
+                        , '2'  // state_msg_language - igbo
+                        , '2'   // state_msg_type - sms
                     )
                     .check.interaction({
                         state: 'state_end_sms'
                     })
                     .check(function(api) {
-                        var expected_used = [6, 79, 83, 84, 85, 86];
+                        // Important fixture here is 86, where the identity is
+                        // patched to remove optout
+                        var expected_used = [6, 83, 85, 86, 87];
                         var fixts = api.http.fixtures.fixtures;
                         var fixts_used = [];
                         fixts.forEach(function(f, i) {
                             f.uses > 0 ? fixts_used.push(i) : null;
+                            f.uses > 0 ? console.log(i + f): null;
                         });
                         assert.deepEqual(fixts_used, expected_used);
                     })
