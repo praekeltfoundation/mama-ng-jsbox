@@ -3751,5 +3751,53 @@ module.exports = function() {
             }
         },
 
+        // 87: create registration 07030010009 - mother_only - voice
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': "http://localhost:8002/api/v1/registration/",
+                'data':  {
+                    "stage": "prebirth",
+                    "mother_id":"cb245673-aa41-4302-ac47-00000000009",
+                    "data": {
+                        "msg_receiver": "mother_only",
+                        "receiver_id":"cb245673-aa41-4302-ac47-00000000009",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
+                        "gravida": "2",
+                        "language": "ibo_NG",
+                        "msg_type": "text",
+                        "user_id": "cb245673-aa41-4302-ac47-00000000009",
+                        "last_period_date": "20141213"
+                    }
+                }
+            },
+            'response': {
+                "code": 201,
+                "data": {
+                    "id": "reg_for_07030010009_uuid",
+                    "stage": "prebirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-9094444444",
+                    "data": {
+                        "msg_receiver": "mother_only",
+                        "receiver_id": "cb245673-aa41-4302-ac47-9095555555",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
+                        "language": "eng_NG",
+                        "msg_type": "text",
+                        "last_period_date": "20141213",
+                        "user_id": "cb245673-aa41-4302-ac47-00000000002"
+                    },
+                    "validated": false,
+                    "source": "source",
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z",
+                    "created_by": "user",
+                    "updated_by": "user"
+                }
+            }
+        },
     ];
 };

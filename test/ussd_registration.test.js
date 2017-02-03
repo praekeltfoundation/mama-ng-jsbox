@@ -861,6 +861,54 @@ describe("Mama Nigeria App", function() {
             });
         });
 
+        describe("When a msisdn exists but is opted out", function() {
+            it("should navigate to state_last_period_year", function() {
+                return tester
+                    .setup.user.addr('07030010009')
+                    .inputs(
+                        {session_event: 'new'}
+                        , '12345'       // state_personnel_auth
+                        , '2'           // state_msg_receiver - friend_only
+                        , '07030010009' // state_msisdn
+                    )
+                    .check.interaction({
+                        state: 'state_last_period_month'
+                    })
+                    .run();
+            });
+            it("should update to remove the optedout flag", function() {
+                return tester
+                    .setup.user.addr('07030010009')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '2' // state_msg_receiver - mother_only
+                        , '07030010009'  // state_msiddn
+                        , '5'  // state_last_period_month - dec 2014
+                        , '13' // state_last_period_day - 13
+                        , '2'  // state_gravida
+                        , '2'  // state_msg_language - igbo
+                        , '2'   // state_msg_type - sms
+                    )
+                    .check.interaction({
+                        state: 'state_end_sms'
+                    })
+                    .check(function(api) {
+                        // Important fixture here is 86, where the identity is
+                        // patched to remove optout
+                        var expected_used = [6, 83, 85, 86, 87];
+                        var fixts = api.http.fixtures.fixtures;
+                        var fixts_used = [];
+                        fixts.forEach(function(f, i) {
+                            f.uses > 0 ? fixts_used.push(i) : null;
+                            f.uses > 0 ? console.log(i + f): null;
+                        });
+                        assert.deepEqual(fixts_used, expected_used);
+                    })
+                    .check.reply.ends_session()
+                    .run();
+            });
+        });
         // TEST VALIDATION
 
         describe("Validation testing", function() {
