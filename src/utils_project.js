@@ -212,6 +212,16 @@ go.utils_project = {
         }
     },
 
+    get_weeks_until_today: function(config, day, month) {
+        return (
+            parseInt(
+                moment.duration(
+                    go.utils.get_today(config) - moment(month + day, 'YYYYMMDD')
+                ).asWeeks()
+            )
+        );
+    },
+
 
 // GENERAL HELPERS
 

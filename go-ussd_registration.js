@@ -774,6 +774,16 @@ go.utils_project = {
         }
     },
 
+    get_weeks_until_today: function(config, day, month) {
+        return (
+            parseInt(
+                moment.duration(
+                    go.utils.get_today(config) - moment(month + day, 'YYYYMMDD')
+                ).asWeeks()
+            )
+        );
+    },
+
 
 // GENERAL HELPERS
 
@@ -1732,8 +1742,24 @@ go.app = function() {
                         return get_content(name).context({prefix: state_error_types.invalid_date});
                     }
                 },
-                next: 'state_validate_date'
+                next: 'state_validate_lmp_date'
             });
+        });
+
+        // Error state if date < 11 weeks
+        self.add('state_validate_lmp_date', function(name) {
+            var monthAndYear = self.im.user.get_answer('state_last_period_month');
+            var day = self.im.user.get_answer('state_last_period_day');
+
+            var weeks = go.utils_project.get_weeks_until_today(
+                self.im.config, day, monthAndYear);
+
+            if (weeks < (self.im.config.minimum_weeks || 11)) {
+                var invalidDate = monthAndYear + go.utils.double_digit_number(day);
+                return self.states.create('state_invalid_date', {'date': invalidDate});
+            } else {
+                return self.states.create('state_validate_date');
+            }
         });
 
         //
