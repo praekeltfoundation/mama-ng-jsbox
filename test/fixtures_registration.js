@@ -1941,7 +1941,7 @@ module.exports = function() {
                         "gravida": "3",
                         "language": "ibo_NG",
                         "msg_type": "text",
-                        "last_period_date": "20150212",
+                        "last_period_date": "20150112",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     }
                 }
@@ -1958,7 +1958,7 @@ module.exports = function() {
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "language": "ibo_NG",
                         "msg_type": "text",
-                        "last_period_date": "20150212",
+                        "last_period_date": "20150112",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     },
                     "validated": false,
@@ -2042,7 +2042,7 @@ module.exports = function() {
                         "msg_type": "audio",
                         "voice_times": "2_5",
                         "voice_days": "tue_thu",
-                        "last_period_date": "20150212",
+                        "last_period_date": "20150112",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     }
                 }
@@ -2061,7 +2061,7 @@ module.exports = function() {
                         "msg_type": "audio",
                         "voice_times": "2_5",
                         "voice_days": "tue_thu",
-                        "last_period_date": "20150212",
+                        "last_period_date": "20150112",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     },
                     "validated": false,
@@ -2095,7 +2095,7 @@ module.exports = function() {
                         "msg_type": "audio",
                         "voice_times": "2_5",
                         "voice_days": "tue_thu",
-                        "last_period_date": "20150212",
+                        "last_period_date": "20150112",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     }
                 }
@@ -2114,7 +2114,7 @@ module.exports = function() {
                         "msg_type": "audio",
                         "voice_times": "2_5",
                         "voice_days": "tue_thu",
-                        "last_period_date": "20150212",
+                        "last_period_date": "20150112",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     },
                     "validated": false,
@@ -2148,7 +2148,7 @@ module.exports = function() {
                         "msg_type": "audio",
                         "voice_times": "2_5",
                         "voice_days": "tue_thu",
-                        "last_period_date": "20150212",
+                        "last_period_date": "20150112",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     }
                 }
@@ -2167,7 +2167,7 @@ module.exports = function() {
                         "msg_type": "audio",
                         "voice_times": "2_5",
                         "voice_days": "tue_thu",
-                        "last_period_date": "20150212",
+                        "last_period_date": "20150112",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002"
                     },
                     "validated": false,
@@ -3183,7 +3183,7 @@ module.exports = function() {
                         "voice_times": "2_5",
                         "voice_days": "tue_thu",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002",
-                        "last_period_date":"20150212"
+                        "last_period_date":"20150112"
                     }
                 }
             },
@@ -3202,7 +3202,7 @@ module.exports = function() {
                         "voice_times": "2_5",
                         "voice_days": "tue_thu",
                         "user_id": "cb245673-aa41-4302-ac47-00000000002",
-                        "last_period_date":"20150212"
+                        "last_period_date":"20150112"
                     },
                     "validated": false,
                     "source": "source",

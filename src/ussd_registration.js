@@ -1,4 +1,5 @@
 go.app = function() {
+    var moment = require('moment');
     var vumigo = require('vumigo_v02');
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
@@ -363,6 +364,8 @@ go.app = function() {
         // PaginatedChoiceState st-05
         self.add('state_last_period_month', function(name) {
             var today = go.utils.get_today(self.im.config);
+            var minimum_weeks = (self.im.config.minimum_weeks || 11);
+            var start_date = today.subtract(moment.duration(minimum_weeks, 'weeks'));
             return new PaginatedChoiceState(name, {
                 question: get_content(name).context({prefix:""}),
                 error: get_content(name).context({prefix: state_error_types.invalid_date}),
@@ -370,7 +373,7 @@ go.app = function() {
                 options_per_page: 5,
                 more: $('More'),
                 back: $('Back'),
-                choices: go.utils.make_month_choices($, today, 10, -1,
+                choices: go.utils.make_month_choices($, start_date, 10, -1,
                                                      "YYYYMM", "MMMM YYYY"),
                 next: 'state_last_period_day'
             });
@@ -387,8 +390,24 @@ go.app = function() {
                         return get_content(name).context({prefix: state_error_types.invalid_date});
                     }
                 },
-                next: 'state_validate_date'
+                next: 'state_validate_lmp_date'
             });
+        });
+
+        // Error state if date < 11 weeks
+        self.add('state_validate_lmp_date', function(name) {
+            var monthAndYear = self.im.user.get_answer('state_last_period_month');
+            var day = self.im.user.get_answer('state_last_period_day');
+
+            var weeks = go.utils_project.get_weeks_until_today(
+                self.im.config, day, monthAndYear);
+
+            if (weeks < (self.im.config.minimum_weeks || 11)) {
+                var invalidDate = monthAndYear + go.utils.double_digit_number(day);
+                return self.states.create('state_invalid_date', {'date': invalidDate});
+            } else {
+                return self.states.create('state_validate_date');
+            }
         });
 
         //
