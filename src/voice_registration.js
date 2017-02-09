@@ -372,7 +372,6 @@ go.app = function() {
             var weeks = go.utils_project.get_weeks_until_today(
                 self.im.config, date, 'YYYYMMDD');
 
-            console.log(weeks);
             if (weeks < (self.im.config.minimum_weeks || 11)) {
                 return self.states.create('state_invalid_date');
             } else {
