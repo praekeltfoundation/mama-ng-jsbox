@@ -1475,6 +1475,38 @@ describe("Mama Nigeria App", function() {
                 });
             });
 
+            describe("if it is too soon to current date", function(){
+                it("should give an error have the user retry date entry", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'       // state_personnel_auth
+                            , '6'           // state_msg_receiver - friend_only
+                            , '09092222222' // state_msisdn
+                            // , '1'           // state_pregnancy_status - pregnant  // bypass postbirth flow
+                            , '1'           // state_last_period_year - this year
+                            , '6'          // state_last_period_month - June
+                            , '20'          // state_last_period_day
+                        )
+                        .check.interaction({
+                            state: 'state_invalid_date'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: [
+                                        'http://localhost:8004/api/v1/eng_NG/state_invalid_date_1.mp3'
+                                    ],
+                                    wait_for: '#',
+                                    barge_in: true
+                                }
+                            }
+                        })
+                        .run();
+                });
+            });
+
             describe("if it is a valid day", function() {
                 it("should navigate to state_gravida", function() {
                     return tester
