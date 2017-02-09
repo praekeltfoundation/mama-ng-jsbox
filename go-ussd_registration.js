@@ -773,11 +773,11 @@ go.utils_project = {
         }
     },
 
-    get_weeks_until_today: function(config, day, month) {
+    get_weeks_until_today: function(config, date, format) {
         return (
             parseInt(
                 moment.duration(
-                    go.utils.get_today(config) - moment(month + day, 'YYYYMMDD')
+                    go.utils.get_today(config) - moment(date, format)
                 ).asWeeks()
             )
         );
@@ -1752,13 +1752,13 @@ go.app = function() {
         self.add('state_validate_lmp_date', function(name) {
             var monthAndYear = self.im.user.get_answer('state_last_period_month');
             var day = self.im.user.get_answer('state_last_period_day');
+            var date = monthAndYear + go.utils.double_digit_number(day);
 
             var weeks = go.utils_project.get_weeks_until_today(
-                self.im.config, day, monthAndYear);
+                self.im.config, date, 'YYYYMMDD');
 
             if (weeks < (self.im.config.minimum_weeks || 11)) {
-                var invalidDate = monthAndYear + go.utils.double_digit_number(day);
-                return self.states.create('state_invalid_date', {'date': invalidDate});
+                return self.states.create('state_invalid_date', {'date': date});
             } else {
                 return self.states.create('state_validate_date');
             }

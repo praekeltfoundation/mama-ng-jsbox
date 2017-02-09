@@ -359,10 +359,24 @@ go.app = function() {
                     } else {
                         self.im.user.set_answer('working_date',
                             year + month + go.utils.double_digit_number(content));
-                        return 'state_validate_date';
+                        return 'state_validate_lmp_date';
                     }
                 }
             });
+        });
+
+        // Validation for minimum weeks for pregnancy
+        self.add('state_validate_lmp_date', function(name, creator_opts) {
+            var date = self.im.user.get_answer('working_date');
+
+            var weeks = go.utils_project.get_weeks_until_today(
+                self.im.config, date, 'YYYYMMDD');
+
+            if (weeks < (self.im.config.minimum_weeks || 11)) {
+                return self.states.create('state_invalid_date');
+            } else {
+                return self.states.create('state_validate_date');
+            }
         });
 
     // baby
