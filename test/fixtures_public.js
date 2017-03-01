@@ -3143,5 +3143,109 @@ module.exports = function() {
                 }
             }
         },
+
+        // 97: unsubscribe_mother_only 2222 not usefull
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id":"3f7c8851-5204-43f7-af7f-005059992222",
+                    "action":"unsubscribe_mother_only",
+                    "data":{
+                        "household_id":null,
+                        "reason":"not_useful"
+                    }
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 98: unsubscribe_mother_only 2222 other
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id":"3f7c8851-5204-43f7-af7f-005059992222",
+                    "action":"unsubscribe_mother_only",
+                    "data":{
+                        "household_id":null,
+                        "reason":"other"
+                    }
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 99: unsubscribe_household_only 7777 not usefull
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id":"3f7c8851-5204-43f7-af7f-005059996666",
+                    "action":"unsubscribe_household_only",
+                    "data":{
+                        "household_id":"3f7c8851-5204-43f7-af7f-005059997777",
+                        "reason":"not_useful"
+                    }
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 100: unsubscribe_household_only 7777 other
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id":"3f7c8851-5204-43f7-af7f-005059996666",
+                    "action":"unsubscribe_household_only",
+                    "data":{
+                        "household_id":"3f7c8851-5204-43f7-af7f-005059997777",
+                        "reason":"other"
+                    }
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
     ];
 };

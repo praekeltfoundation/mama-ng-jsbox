@@ -2014,18 +2014,27 @@ go.app = function() {
                 .then(function(contact) {
                     //  and mother_only subscriptions bypass to end state state_end_optout
                     if (self.im.user.answers.reg_type === 'mother_only') {
-                        return go.utils_project
-                            .optout_mother(self.im, 'ussd_public')
-                            .then(function() {
-                                return self.states.create('state_end_optout');
-                            });
+                        return Q.all([
+                            go.utils_project.optout_mother(self.im, 'ussd_public'),
+                            go.utils_project.unsub_mother(
+                                self.im, self.im.user.answers.mother_id,
+                                self.im.user.answers.household_id,
+                                self.im.user.answers.state_optout_reason)
+                        ]).then(function() {
+                            return self.states.create('state_end_optout');
+                        });
+
                     } else if (self.im.user.answers.reg_type === 'mother_and_other' &&
                          self.im.user.answers.role_player !== 'mother') {
-                        return go.utils_project
-                            .optout_household(self.im, 'ussd_public')
-                            .then(function() {
-                                return self.states.create('state_end_optout');
-                            });
+                        return Q.all([
+                            go.utils_project.optout_household(self.im, 'ussd_public'),
+                            go.utils_project.unsub_household(
+                                self.im, self.im.user.answers.mother_id,
+                                self.im.user.answers.household_id,
+                                self.im.user.answers.state_optout_reason)
+                        ]).then(function() {
+                            return self.states.create('state_end_optout');
+                        });
                     } else {
                         return self.states.create("state_optout_receiver");
                     }

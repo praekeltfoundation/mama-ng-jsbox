@@ -931,7 +931,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                go.utils.check_fixtures_used(api, [2,9,51]);
+                                go.utils.check_fixtures_used(api, [2,9,51,97]);
                             })
                             .run();
                     });
@@ -950,7 +950,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                go.utils.check_fixtures_used(api, [2,9,56]);
+                                go.utils.check_fixtures_used(api, [2,9,56,98]);
                             })
                             .run();
                     });
@@ -1692,7 +1692,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                go.utils.check_fixtures_used(api, [6,7,13,50]);
+                                go.utils.check_fixtures_used(api, [6,7,13,50,99]);
                             })
                             .run();
                     });
@@ -1711,7 +1711,7 @@ describe("Hello Mama app", function() {
                                 reply: "Thank you. You will no longer receive messages"
                             })
                             .check(function(api) {
-                                go.utils.check_fixtures_used(api, [6,7,13,55]);
+                                go.utils.check_fixtures_used(api, [6,7,13,55,100]);
                             })
                             .run();
                     });
