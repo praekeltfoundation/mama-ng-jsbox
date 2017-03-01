@@ -1162,7 +1162,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        go.utils.check_fixtures_used(api, [2,9,25,80]);
+                        go.utils.check_fixtures_used(api, [2,9,25,80,97]);
                     })
                     .run();
                 });
@@ -1189,7 +1189,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        go.utils.check_fixtures_used(api, [2,9,25,81]);
+                        go.utils.check_fixtures_used(api, [2,9,25,81,98]);
                     })
                     .run();
                 });
@@ -2183,7 +2183,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        go.utils.check_fixtures_used(api, [6,7,13,25,95]);
+                        go.utils.check_fixtures_used(api, [6,7,13,25,95,99]);
                     })
                     .run();
                 });
@@ -2210,7 +2210,7 @@ describe("Mama Nigeria App", function() {
                         }
                     })
                     .check(function(api) {
-                        go.utils.check_fixtures_used(api, [6,7,13,25,96]);
+                        go.utils.check_fixtures_used(api, [6,7,13,25,96,100]);
                     })
                     .run();
                 });
