@@ -22,6 +22,8 @@ describe("Mama Nigeria App", function() {
                     name: 'ussd-registration-test',
                     country_code: '234',  // nigeria
                     channel: '*120*8864*0000#',
+                    env: 'test',
+                    metric_store: 'test_metric_store',
                     testing_today: '2015-04-03 06:07:08.999',
                     services: {
                         identities: {
@@ -190,6 +192,10 @@ describe("Mama Nigeria App", function() {
                         state: 'state_auth_code',
                         reply: "Please enter your Hello Mama code."
                     })
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_metric_store;
+                        assert.deepEqual(metrics, undefined);
+                    })
                     .run();
             });
             it("to state_msg_receiver", function() {
@@ -211,6 +217,11 @@ describe("Mama Nigeria App", function() {
                             "6. Friend",
                             "7. Family member"
                         ].join('\n')
+                    })
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_metric_store;
+                        assert.deepEqual(metrics['test.ussd_registration_test.registrations_started'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_registration_test.registrations_completed'], undefined);
                     })
                     .run();
             });
@@ -703,6 +714,11 @@ describe("Mama Nigeria App", function() {
                         state: 'state_end_voice',
                         reply: "Thank you. They will now start receiving calls on Tuesday and Thursday between 2pm-5pm."
                     })
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_metric_store;
+                        assert.deepEqual(metrics['test.ussd_registration_test.registrations_started'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_registration_test.registrations_completed'].values, [1]);
+                    })
                     .check.reply.ends_session()
                     .run();
             });
@@ -725,6 +741,11 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_end_sms',
                         reply: "Thank you. They will now start receiving text messages three times a week on Monday, Wednesday and Friday."
+                    })
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_metric_store;
+                        assert.deepEqual(metrics['test.ussd_registration_test.registrations_started'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_registration_test.registrations_completed'].values, [1]);
                     })
                     .check.reply.ends_session()
                     .run();

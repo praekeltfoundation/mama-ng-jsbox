@@ -23,8 +23,11 @@ go.app = function() {
                     "Please dial back into {{channel}} to complete the Hello MAMA registration"
                     );
             });
-        };
 
+            self.env = self.im.config.env;
+            self.metric_prefix = [self.env, self.im.config.name].join('.').replace(/-/g, '_');
+
+        };
 
     // TEXT CONTENT
 
@@ -178,6 +181,13 @@ go.app = function() {
                         return 'state_msisdn_mother';
                     } else {
                         return 'state_msisdn';
+                    }
+                },
+
+                events: {
+                    'state:enter': function() {
+                        return self.im.metrics.fire.inc(
+                                ([self.metric_prefix, "registrations_started"].join('.')));
                     }
                 }
             });
@@ -517,7 +527,13 @@ go.app = function() {
                     days: voice_schedule[self.im.user.answers.state_voice_days],
                     times: voice_schedule[self.im.user.answers.state_voice_times]
                 }),
-                next: 'state_start'
+                next: 'state_start',
+                events: {
+                    'state:enter': function() {
+                        return self.im.metrics.fire.inc(
+                                ([self.metric_prefix, "registrations_completed"].join('.')));
+                    }
+                }
             });
         });
 
@@ -556,7 +572,13 @@ go.app = function() {
         self.add('state_end_sms', function(name) {
             return new EndState(name, {
                 text: get_content(name),
-                next: 'state_start'
+                next: 'state_start',
+                events: {
+                    'state:enter': function() {
+                        return self.im.metrics.fire.inc(
+                                ([self.metric_prefix, "registrations_completed"].join('.')));
+                    }
+                }
             });
         });
 
