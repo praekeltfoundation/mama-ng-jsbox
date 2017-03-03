@@ -31,24 +31,24 @@ go.app = function() {
 
             mh = new MetricsHelper(self.im);
             mh
-                .add.trigger({
-                    action: 'enter',
-                    state: 'state_msg_receiver'
-                }, {
-                    total_state_actions: [self.metric_prefix, "registrations_started"].join('.'),
-                })
-                .add.trigger({
-                    action: 'enter',
-                    state: 'state_end_voice'
-                }, {
-                    total_state_actions: [self.metric_prefix, "registrations_completed"].join('.'),
-                })
-                .add.trigger({
-                    action: 'enter',
-                    state: 'state_end_sms'
-                }, {
-                    total_state_actions: [self.metric_prefix, "registrations_completed"].join('.'),
-                })
+                .add.total_state_actions(
+                    {
+                        state: 'state_msg_receiver',
+                        action: 'enter'
+                    },[self.metric_prefix, "registrations_started"].join('.')
+                )
+                .add.total_state_actions(
+                    {
+                        state: 'state_end_voice',
+                        action: 'enter'
+                    },[self.metric_prefix, "registrations_completed"].join('.')
+                )
+                .add.total_state_actions(
+                    {
+                        state: 'state_end_sms',
+                        action: 'enter'
+                    },[self.metric_prefix, "registrations_completed"].join('.')
+                )
             ;
 
         };
