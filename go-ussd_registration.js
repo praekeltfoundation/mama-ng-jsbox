@@ -1560,14 +1560,7 @@ go.app = function() {
                     } else {
                         return 'state_msisdn';
                     }
-                },
-
-                /*events: {
-                    'state:enter': function() {
-                        return self.im.metrics.fire.inc(
-                                ([self.metric_prefix, "registrations_started"].join('.')));
-                    }
-                }*/
+                }
             });
         });
 
