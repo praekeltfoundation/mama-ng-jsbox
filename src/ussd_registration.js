@@ -1,6 +1,7 @@
 go.app = function() {
     var moment = require('moment');
     var vumigo = require('vumigo_v02');
+    var MetricsHelper = require('go-jsbox-metrics-helper');
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
@@ -26,6 +27,29 @@ go.app = function() {
 
             self.env = self.im.config.env;
             self.metric_prefix = [self.env, self.im.config.name].join('.').replace(/-/g, '_');
+            self.store_name = [self.env, self.im.config.name].join('.');
+
+            mh = new MetricsHelper(self.im);
+            mh
+                .add.trigger({
+                    action: 'enter',
+                    state: 'state_msg_receiver'
+                }, {
+                    total_state_actions: [self.metric_prefix, "registrations_started"].join('.'),
+                })
+                .add.trigger({
+                    action: 'enter',
+                    state: 'state_end_voice'
+                }, {
+                    total_state_actions: [self.metric_prefix, "registrations_completed"].join('.'),
+                })
+                .add.trigger({
+                    action: 'enter',
+                    state: 'state_end_sms'
+                }, {
+                    total_state_actions: [self.metric_prefix, "registrations_completed"].join('.'),
+                })
+            ;
 
         };
 
@@ -184,12 +208,12 @@ go.app = function() {
                     }
                 },
 
-                events: {
+                /*events: {
                     'state:enter': function() {
                         return self.im.metrics.fire.inc(
                                 ([self.metric_prefix, "registrations_started"].join('.')));
                     }
-                }
+                }*/
             });
         });
 
@@ -527,13 +551,7 @@ go.app = function() {
                     days: voice_schedule[self.im.user.answers.state_voice_days],
                     times: voice_schedule[self.im.user.answers.state_voice_times]
                 }),
-                next: 'state_start',
-                events: {
-                    'state:enter': function() {
-                        return self.im.metrics.fire.inc(
-                                ([self.metric_prefix, "registrations_completed"].join('.')));
-                    }
-                }
+                next: 'state_start'
             });
         });
 
@@ -572,13 +590,7 @@ go.app = function() {
         self.add('state_end_sms', function(name) {
             return new EndState(name, {
                 text: get_content(name),
-                next: 'state_start',
-                events: {
-                    'state:enter': function() {
-                        return self.im.metrics.fire.inc(
-                                ([self.metric_prefix, "registrations_completed"].join('.')));
-                    }
-                }
+                next: 'state_start'
             });
         });
 
