@@ -19,6 +19,8 @@ describe("Mama Nigeria App", function() {
                     testing_today: '2017-07-22',
                     name: 'voice-registration-test',
                     country_code: '234',  // nigeria
+                    env: 'test',
+                    metric_store: 'test_metric_store',
                     services: {
                         identities: {
                             api_token: 'test_token_identities',
@@ -106,6 +108,10 @@ describe("Mama Nigeria App", function() {
                             });
                             assert.deepEqual(fixts_used, expected_used);
                         })
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_metric_store;
+                            assert.deepEqual(metrics, undefined);
+                        })
                         .run();
                 });
             });
@@ -174,6 +180,11 @@ describe("Mama Nigeria App", function() {
                                     barge_in: true
                                 }
                             }
+                        })
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_metric_store;
+                            assert.deepEqual(metrics['test.voice_registration_test.registrations_started'].values, [1]);
+                            assert.deepEqual(metrics['test.voice_registration_test.registrations_completed'], undefined);
                         })
                         .run();
                 });
@@ -1831,6 +1842,11 @@ describe("Mama Nigeria App", function() {
                             });
                             assert.deepEqual(fixts_used, expected_used);
                         })
+                        .check(function(api) {
+                            var metrics = api.metrics.stores.test_metric_store;
+                            assert.deepEqual(metrics['test.voice_registration_test.registrations_started'].values, [1]);
+                            assert.deepEqual(metrics['test.voice_registration_test.registrations_completed'].values, [1]);
+                        })
                         .check.reply.ends_session()
                         .run();
                 });
@@ -1956,6 +1972,11 @@ describe("Mama Nigeria App", function() {
                             f.uses > 0 ? fixts_used.push(i) : null;
                         });
                         assert.deepEqual(fixts_used, expected_used);
+                    })
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_metric_store;
+                        assert.deepEqual(metrics['test.voice_registration_test.registrations_started'].values, [1]);
+                        assert.deepEqual(metrics['test.voice_registration_test.registrations_completed'].values, [1]);
                     })
                     .check.reply.ends_session()
                     .run();

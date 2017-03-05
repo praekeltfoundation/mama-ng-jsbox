@@ -1356,6 +1356,7 @@ go.utils_project = {
 
 go.app = function() {
     var vumigo = require('vumigo_v02');
+    var MetricsHelper = require('go-jsbox-metrics-helper');
     var App = vumigo.App;
     var ChoiceState = vumigo.states.ChoiceState;
     var Choice = vumigo.states.Choice;
@@ -1367,6 +1368,35 @@ go.app = function() {
         var $ = self.$;
         var lang = 'eng_NG';
         var bypassPostbirth = true;
+
+        self.init = function() {
+            self.env = self.im.config.env;
+            self.metric_prefix = [self.env, self.im.config.name].join('.').replace(/-/g, '_');
+            self.store_name = [self.env, self.im.config.name].join('.');
+
+            mh = new MetricsHelper(self.im);
+            mh
+                .add.total_state_actions(
+                    {
+                        state: 'state_msg_receiver',
+                        action: 'enter'
+                    },[self.metric_prefix, "registrations_started"].join('.')
+                )
+                .add.total_state_actions(
+                    {
+                        state: 'state_end_voice',
+                        action: 'enter'
+                    },[self.metric_prefix, "registrations_completed"].join('.')
+                )
+                .add.total_state_actions(
+                    {
+                        state: 'state_end_sms',
+                        action: 'enter'
+                    },[self.metric_prefix, "registrations_completed"].join('.')
+                )
+            ;
+
+        };
 
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
