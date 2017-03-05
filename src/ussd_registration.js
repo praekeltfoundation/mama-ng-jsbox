@@ -1,6 +1,7 @@
 go.app = function() {
     var moment = require('moment');
     var vumigo = require('vumigo_v02');
+    var MetricsHelper = require('go-jsbox-metrics-helper');
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
@@ -23,8 +24,34 @@ go.app = function() {
                     "Please dial back into {{channel}} to complete the Hello MAMA registration"
                     );
             });
-        };
 
+            self.env = self.im.config.env;
+            self.metric_prefix = [self.env, self.im.config.name].join('.').replace(/-/g, '_');
+            self.store_name = [self.env, self.im.config.name].join('.');
+
+            mh = new MetricsHelper(self.im);
+            mh
+                .add.total_state_actions(
+                    {
+                        state: 'state_msg_receiver',
+                        action: 'enter'
+                    },[self.metric_prefix, "registrations_started"].join('.')
+                )
+                .add.total_state_actions(
+                    {
+                        state: 'state_end_voice',
+                        action: 'enter'
+                    },[self.metric_prefix, "registrations_completed"].join('.')
+                )
+                .add.total_state_actions(
+                    {
+                        state: 'state_end_sms',
+                        action: 'enter'
+                    },[self.metric_prefix, "registrations_completed"].join('.')
+                )
+            ;
+
+        };
 
     // TEXT CONTENT
 
@@ -179,7 +206,14 @@ go.app = function() {
                     } else {
                         return 'state_msisdn';
                     }
-                }
+                },
+
+                /*events: {
+                    'state:enter': function() {
+                        return self.im.metrics.fire.inc(
+                                ([self.metric_prefix, "registrations_started"].join('.')));
+                    }
+                }*/
             });
         });
 
