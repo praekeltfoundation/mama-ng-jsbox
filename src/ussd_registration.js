@@ -51,6 +51,24 @@ go.app = function() {
                 )
             ;
 
+            // Average sessions to register - manual instead of helper because of two end states
+            var avg_label = [self.metric_prefix, 'avg.sessions_to_register'].join('.');
+            var avg_metadata_label = 'sessions_until_state_metric_' + avg_label;
+            var avg_states = ['state_end_voice', 'state_end_sms'];
+            self.im.on('session:new', function(e) {
+                /* Increment sessions counter */
+                mh._increment_metadata(e.im.user, avg_metadata_label);
+            });
+
+            self.im.on('state:enter', function(e) {
+                /* Reset sessions counter and fire metric */
+                if(avg_states.indexOf(e.state.name) != -1) {
+                    var metadata_value = mh._reset_metadata(
+                        e.state.im.user, avg_metadata_label);
+                    return e.state.im.metrics.fire.avg(avg_label, metadata_value);
+                }
+            });
+
         };
 
     // TEXT CONTENT
@@ -206,14 +224,7 @@ go.app = function() {
                     } else {
                         return 'state_msisdn';
                     }
-                },
-
-                /*events: {
-                    'state:enter': function() {
-                        return self.im.metrics.fire.inc(
-                                ([self.metric_prefix, "registrations_started"].join('.')));
-                    }
-                }*/
+                }
             });
         });
 
