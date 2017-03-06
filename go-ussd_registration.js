@@ -1363,6 +1363,7 @@ go.app = function() {
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
 
+
     var GoApp = App.extend(function(self) {
         App.call(self, 'state_start');
         var $ = self.$;
@@ -1404,6 +1405,7 @@ go.app = function() {
                 )
             ;
 
+            // Average sessions to register - manual instead of helper because of two end states
             var avg_label = [self.metric_prefix, 'avg.sessions_to_register'].join('.');
             var avg_metadata_label = 'sessions_until_state_metric_' + avg_label;
             var avg_states = ['state_end_voice', 'state_end_sms'];
