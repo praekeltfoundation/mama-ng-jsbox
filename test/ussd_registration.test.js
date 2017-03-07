@@ -145,6 +145,38 @@ describe("Mama Nigeria App", function() {
             });
         });
 
+        describe("test avg.sessions_to_register metric", function() {
+            it("should increment metric according to number of sessions", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '6' // state_msg_receiver - friend_only
+                        , '09092222222'  // state_msisdn
+                        , {session_event: 'close'}  // timeout
+                        , {session_event: 'new'}  // dial in
+                        , '1'  // state_timed_out - yes (continue)
+                        //, '1'  // state_msg_pregnant - mother
+                        , '1'  // state_last_period_month - Jan 15
+                        , '12' // state_last_period_day - 12
+                        , '3' // state_gravida
+                        , '2'  // state_msg_language - igbo
+                        , '2'   // state_msg_type - text smss
+                    )
+                    .check.interaction({
+                        state: 'state_end_sms',
+                        reply: "Thank you. They will now start receiving text messages three times a week on Monday, Wednesday and Friday."
+                    })
+                    .check(function(api) {
+                        var metrics = api.metrics.stores.test_metric_store;
+                        assert.deepEqual(metrics['test.ussd_registration_test.avg.sessions_to_register'].values, [2]);
+                    })
+                    .check.reply.ends_session()
+                    .run();
+            });
+        });
+
         // TEST START OF SESSION ACTIONS
         describe("Start of session", function() {
             it("should reset user answers", function() {
@@ -222,6 +254,7 @@ describe("Mama Nigeria App", function() {
                         var metrics = api.metrics.stores.test_metric_store;
                         assert.deepEqual(metrics['test.ussd_registration_test.registrations_started'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_registration_test.registrations_completed'], undefined);
+                        assert.deepEqual(metrics['test.ussd_registration_test.avg.sessions_to_register'], undefined);
                     })
                     .run();
             });
@@ -718,6 +751,7 @@ describe("Mama Nigeria App", function() {
                         var metrics = api.metrics.stores.test_metric_store;
                         assert.deepEqual(metrics['test.ussd_registration_test.registrations_started'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_registration_test.registrations_completed'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_registration_test.avg.sessions_to_register'].values, [1]);
                     })
                     .check.reply.ends_session()
                     .run();
@@ -746,6 +780,7 @@ describe("Mama Nigeria App", function() {
                         var metrics = api.metrics.stores.test_metric_store;
                         assert.deepEqual(metrics['test.ussd_registration_test.registrations_started'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_registration_test.registrations_completed'].values, [1]);
+                        assert.deepEqual(metrics['test.ussd_registration_test.avg.sessions_to_register'].values, [1]);
                     })
                     .check.reply.ends_session()
                     .run();
