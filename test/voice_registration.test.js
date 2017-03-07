@@ -185,6 +185,7 @@ describe("Mama Nigeria App", function() {
                             var metrics = api.metrics.stores.test_metric_store;
                             assert.deepEqual(metrics['test.voice_registration_test.registrations_started'].values, [1]);
                             assert.deepEqual(metrics['test.voice_registration_test.registrations_completed'], undefined);
+                            assert.deepEqual(metrics['test.voice_registration_test.time_to_register'], undefined);
                         })
                         .run();
                 });
@@ -1846,6 +1847,7 @@ describe("Mama Nigeria App", function() {
                             var metrics = api.metrics.stores.test_metric_store;
                             assert.deepEqual(metrics['test.voice_registration_test.registrations_started'].values, [1]);
                             assert.deepEqual(metrics['test.voice_registration_test.registrations_completed'].values, [1]);
+                            assert.deepEqual(metrics['test.voice_registration_test.time_to_register'].values[0] > 0, true);
                         })
                         .check.reply.ends_session()
                         .run();
@@ -1977,6 +1979,7 @@ describe("Mama Nigeria App", function() {
                         var metrics = api.metrics.stores.test_metric_store;
                         assert.deepEqual(metrics['test.voice_registration_test.registrations_started'].values, [1]);
                         assert.deepEqual(metrics['test.voice_registration_test.registrations_completed'].values, [1]);
+                        assert.deepEqual(metrics['test.voice_registration_test.time_to_register'].values[0] > 0, true);
                     })
                     .check.reply.ends_session()
                     .run();
