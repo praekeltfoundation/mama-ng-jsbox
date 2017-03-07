@@ -60,8 +60,6 @@ go.app = function() {
                 if(e.state.name === "state_end_sms") {
                     var time_from = mh._reset_metadata(
                         e.state.im.user, time_metadata_label);
-                    console.log('>>>>>>>>');
-                    console.log(time_from);
                     return e.state.im.metrics.fire.avg(
                         time_label, Date.now() - time_from);
                 }
