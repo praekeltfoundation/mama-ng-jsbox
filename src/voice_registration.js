@@ -47,12 +47,12 @@ go.app = function() {
                     },{
                         state: 'state_end_voice',
                         action: 'enter'
-                    }, [self.metric_prefix, 'time_to_register.avg'].join('.')
+                    }, [self.metric_prefix, 'time_to_register'].join('.')
                 )
             ;
 
             // Average time to register - adding extra end state manually
-            var time_label = [self.metric_prefix, 'time_to_register.avg'].join('.');
+            var time_label = [self.metric_prefix, 'time_to_register'].join('.');
             var time_metadata_label = 'time_between_states_metric_' + time_label;
 
             self.im.on('state:enter', function(e) {
