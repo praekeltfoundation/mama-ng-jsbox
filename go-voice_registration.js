@@ -1394,7 +1394,32 @@ go.app = function() {
                         action: 'enter'
                     },[self.metric_prefix, "registrations_completed"].join('.')
                 )
+                .add.time_between_states(
+                    {
+                        state: 'state_personnel_auth',
+                        action: 'enter'
+                    },{
+                        state: 'state_end_voice',
+                        action: 'enter'
+                    }, [self.metric_prefix, 'time_to_register.avg'].join('.')
+                )
             ;
+
+            // Average time to register - adding extra end state manually
+            var time_label = [self.metric_prefix, 'time_to_register.avg'].join('.');
+            var time_metadata_label = 'time_between_states_metric_' + time_label;
+
+            self.im.on('state:enter', function(e) {
+                // Fire metric with time difference
+                if(e.state.name === "state_end_sms") {
+                    var time_from = mh._reset_metadata(
+                        e.state.im.user, time_metadata_label);
+                    console.log('>>>>>>>>');
+                    console.log(time_from);
+                    return e.state.im.metrics.fire.avg(
+                        time_label, Date.now() - time_from);
+                }
+            });
 
         };
 
