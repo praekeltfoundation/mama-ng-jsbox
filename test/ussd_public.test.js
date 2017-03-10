@@ -874,7 +874,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
-                                go.utils.check_fixtures_used(api, [2,9,36]);
+                                go.utils.check_fixtures_used(api, [2,9,36,101]);
                             })
                             .run();
                     });
@@ -893,7 +893,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
-                                go.utils.check_fixtures_used(api, [2,9,41]);
+                                go.utils.check_fixtures_used(api, [2,9,41,102]);
                             })
                             .run();
                     });
@@ -912,7 +912,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
-                                go.utils.check_fixtures_used(api, [2,9,46]);
+                                go.utils.check_fixtures_used(api, [2,9,46,103]);
                             })
                             .run();
                     });
@@ -1041,7 +1041,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
-                                go.utils.check_fixtures_used(api, [4,5,38]);
+                                go.utils.check_fixtures_used(api, [4,5,33,38]);
                             })
                             .run();
                     });
@@ -1060,7 +1060,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
-                                go.utils.check_fixtures_used(api, [4,5,43]);
+                                go.utils.check_fixtures_used(api, [4,5,43,104]);
                             })
                             .run();
                     });
@@ -1079,7 +1079,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
-                                go.utils.check_fixtures_used(api, [4,5,48]);
+                                go.utils.check_fixtures_used(api, [4,5,48,105]);
                             })
                             .run();
                     });
@@ -1338,7 +1338,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
-                                go.utils.check_fixtures_used(api, [7,12,13,35,39]);
+                                go.utils.check_fixtures_used(api, [7,12,13,35,39,106,107]);
                             })
                             .run();
                     });
@@ -1357,7 +1357,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
-                                go.utils.check_fixtures_used(api, [7,12,13,40,44]);
+                                go.utils.check_fixtures_used(api, [7,12,13,40,44,108,109]);
                             })
                             .run();
                     });
@@ -1376,7 +1376,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
-                                go.utils.check_fixtures_used(api, [7,12,13,45,49]);
+                                go.utils.check_fixtures_used(api, [7,12,13,45,49,110,111]);
                             })
                             .run();
                     });
@@ -1635,7 +1635,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
-                                go.utils.check_fixtures_used(api, [6,7,13,35,39]);
+                                go.utils.check_fixtures_used(api, [6,7,13,35,39,106,107]);
                             })
                             .run();
                     });
@@ -1654,7 +1654,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
-                                go.utils.check_fixtures_used(api, [6,7,13,40,44]);
+                                go.utils.check_fixtures_used(api, [6,7,13,40,44,108,109]);
                             })
                             .run();
                     });
@@ -1673,7 +1673,7 @@ describe("Hello Mama app", function() {
                                 reply: "We are sorry for your loss. You will no longer receive messages. Should you need support during this difficult time, please contact your local CHEW."
                             })
                             .check(function(api) {
-                                go.utils.check_fixtures_used(api, [6,7,13,45,49]);
+                                go.utils.check_fixtures_used(api, [6,7,13,45,49,110,111]);
                             })
                             .run();
                     });
