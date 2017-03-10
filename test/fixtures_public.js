@@ -3247,5 +3247,258 @@ module.exports = function() {
                 }
             }
         },
+
+        // 101: Ubsubscribe mother - 2222: miscarriage
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "action": "unsubscribe_mother_only",
+                    "data": {"household_id":null,"reason":"miscarriage"}
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 102: Ubsubscribe mother - 2222: stillborn
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "action": "unsubscribe_mother_only",
+                    "data": {"household_id":null,"reason":"stillborn"}
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 103: Ubsubscribe mother - 2222: baby_death
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "action": "unsubscribe_mother_only",
+                    "data": {"household_id":null,"reason":"baby_death"}
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 104: Ubsubscribe household - 5555: stillborn
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "action": "unsubscribe_household_only",
+                    "data": {"household_id":"3f7c8851-5204-43f7-af7f-005059993333","reason":"stillborn"}
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 105: Ubsubscribe household - 5555: baby_death
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "action": "unsubscribe_household_only",
+                    "data": {"household_id":"3f7c8851-5204-43f7-af7f-005059993333","reason":"baby_death"}
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 106: Ubsubscribe household - 6666: miscarriage
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "action": "unsubscribe_household_only",
+                    "data": {"household_id":"3f7c8851-5204-43f7-af7f-005059997777","reason":"miscarriage"}
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 107: Ubsubscribe mother - 6666: miscarriage
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "action": "unsubscribe_mother_only",
+                    "data": {"household_id":"3f7c8851-5204-43f7-af7f-005059997777","reason":"miscarriage"}
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 108: Ubsubscribe mother - 6666: stillborn
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "action": "unsubscribe_mother_only",
+                    "data": {"household_id":"3f7c8851-5204-43f7-af7f-005059997777","reason":"stillborn"}
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 109: Ubsubscribe household - 6666: stillborn
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "action": "unsubscribe_household_only",
+                    "data": {"household_id":"3f7c8851-5204-43f7-af7f-005059997777","reason":"stillborn"}
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 110: Ubsubscribe mother - 6666: baby_death
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "action": "unsubscribe_mother_only",
+                    "data": {"household_id":"3f7c8851-5204-43f7-af7f-005059997777","reason":"baby_death"}
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 111: Ubsubscribe household - 6666: baby_death
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059996666",
+                    "action": "unsubscribe_household_only",
+                    "data": {"household_id":"3f7c8851-5204-43f7-af7f-005059997777","reason":"baby_death"}
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
     ];
 };

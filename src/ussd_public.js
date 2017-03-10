@@ -705,8 +705,13 @@ go.app = function() {
 
         self.add('state_optout_all', function(name) {
             if (self.im.user.answers.household_id === null) {
-                return go.utils_project
-                    .optout_mother(self.im, 'ussd_public')
+                return Q
+                    .all([
+                        go.utils_project.optout_mother(self.im, 'ussd_public'),
+                        go.utils_project.unsub_mother(self.im, self.im.user.answers.mother_id,
+                                         self.im.user.answers.household_id,
+                                         self.im.user.answers.state_optout_reason)
+                    ])
                     .then(function() {
                         if (self.im.user.answers.state_optout_reason === 'not_useful' ||
                             self.im.user.answers.state_optout_reason === 'other') {
@@ -716,8 +721,13 @@ go.app = function() {
                         }
                     });
             } else if (self.im.user.answers.reg_type === 'other_only') {
-                return go.utils_project
-                    .optout_household(self.im, 'ussd_public')
+                return Q
+                    .all([
+                        go.utils_project.optout_household(self.im, 'ussd_public'),
+                        go.utils_project.unsub_household(self.im, self.im.user.answers.mother_id,
+                                         self.im.user.answers.household_id,
+                                         self.im.user.answers.state_optout_reason)
+                    ])
                     .then(function() {
                         if (self.im.user.answers.state_optout_reason === 'not_useful' ||
                             self.im.user.answers.state_optout_reason === 'other') {
@@ -730,7 +740,13 @@ go.app = function() {
                 return Q
                     .all([
                         go.utils_project.optout_mother(self.im, 'ussd_public'),
-                        go.utils_project.optout_household(self.im, 'ussd_public')
+                        go.utils_project.unsub_mother(self.im, self.im.user.answers.mother_id,
+                                         self.im.user.answers.household_id,
+                                         self.im.user.answers.state_optout_reason),
+                        go.utils_project.optout_household(self.im, 'ussd_public'),
+                        go.utils_project.unsub_household(self.im, self.im.user.answers.mother_id,
+                                         self.im.user.answers.household_id,
+                                         self.im.user.answers.state_optout_reason)
                     ])
                     .then(function() {
                         if (self.im.user.answers.state_optout_reason === 'not_useful' ||
