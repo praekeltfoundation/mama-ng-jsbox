@@ -311,8 +311,7 @@ go.app = function() {
                     self.im.user.answers.state_msisdn,
                     self.im.user.answers.state_msisdn_household,
                     self.im.user.answers.state_msisdn_mother,
-                    self.im.user.answers.operator_id,
-                    true
+                    self.im.user.answers.operator_id
                 )
                 .then(function() {
                     if (bypassPostbirth) {

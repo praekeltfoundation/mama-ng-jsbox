@@ -3601,7 +3601,7 @@ module.exports = function() {
                     "next": null,
                     "previous": null,
                     "results": [{
-                        "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000001/",
+                        "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/",
                         "id": "cb245673-aa41-4302-ac47-00000000009",
                         "version": 1,
                         "details": {
@@ -3712,40 +3712,40 @@ module.exports = function() {
                 },
                 'url': "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-00000000009/",
                 'data': {
-                    "id": "cb245673-aa41-4302-ac47-00000000009",
-                    "version": 1,
-                    "details": {
+                    "id":"cb245673-aa41-4302-ac47-00000000009",
+                    "version":1,
+                    "details":{
                         "default_addr_type":"msisdn",
-                        "addresses": {
-                            "msisdn": {
-                                "+2347030010009": {}
+                        "receiver_role":"mother",
+                        "addresses":{
+                            "msisdn":{
+                                "+2347030010009":{}
                             }
                         },
-                        "receiver_role": "mother",
-                        "linked_to": null,
-                        "gravida": "2",
-                        "preferred_language": "ibo_NG",
-                        "preferred_msg_type": "text"
+                        "linked_to":null,
+                        "gravida":"2",
+                        "preferred_language":"ibo_NG",
+                        "preferred_msg_type":"text"
                     }
                 }
             },
             'response': {
                 "code": 200,
                 "data": {
-                    "id": "cb245673-aa41-4302-ac47-00000000009",
-                    "version": 1,
-                    "details": {
+                    "id":"cb245673-aa41-4302-ac47-00000000009",
+                    "version":1,
+                    "details":{
                         "default_addr_type":"msisdn",
-                        "addresses": {
-                            "msisdn": {
-                                "+2347030010009": {}
+                        "addresses":{
+                            "msisdn":{
+                                "+2347030010009":{}
                             }
                         },
-                        "receiver_role": "mother",
-                        "linked_to": null,
-                        "gravida": "2",
-                        "preferred_language": "ibo_NG",
-                        "preferred_msg_type": "text"
+                        "receiver_role":"mother",
+                        "linked_to":null,
+                        "gravida":"2",
+                        "preferred_language":"ibo_NG",
+                        "preferred_msg_type":"text"
                     }
                 }
             }
@@ -3760,12 +3760,12 @@ module.exports = function() {
                     'Content-Type': ['application/json']
                 },
                 'url': "http://localhost:8002/api/v1/registration/",
-                'data':  {
+                'data': {
                     "stage": "prebirth",
-                    "mother_id":"cb245673-aa41-4302-ac47-00000000009",
+                    "mother_id": "cb245673-aa41-4302-ac47-00000000009",
                     "data": {
                         "msg_receiver": "mother_only",
-                        "receiver_id":"cb245673-aa41-4302-ac47-00000000009",
+                        "receiver_id": "cb245673-aa41-4302-ac47-00000000009",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
                         "gravida": "2",
                         "language": "ibo_NG",
@@ -3780,15 +3780,16 @@ module.exports = function() {
                 "data": {
                     "id": "reg_for_07030010009_uuid",
                     "stage": "prebirth",
-                    "mother_id": "cb245673-aa41-4302-ac47-9094444444",
+                    "mother_id": "cb245673-aa41-4302-ac47-00000000009",
                     "data": {
                         "msg_receiver": "mother_only",
-                        "receiver_id": "cb245673-aa41-4302-ac47-9095555555",
+                        "receiver_id": "cb245673-aa41-4302-ac47-00000000009",
                         "operator_id": "cb245673-aa41-4302-ac47-00000000007",
-                        "language": "eng_NG",
+                        "gravida": "2",
+                        "language": "ibo_NG",
                         "msg_type": "text",
-                        "last_period_date": "20141213",
-                        "user_id": "cb245673-aa41-4302-ac47-00000000002"
+                        "user_id": "cb245673-aa41-4302-ac47-00000000009",
+                        "last_period_date": "20141213"
                     },
                     "validated": false,
                     "source": "source",

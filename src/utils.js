@@ -371,7 +371,7 @@ go.utils = {
             });
     },
 
-    get_or_create_identity: function(address, im, operator_id, optin) {
+    get_or_create_identity: function(address, im, operator_id) {
       // Gets a identity if it exists, otherwise creates a new one
 
         if (address.msisdn) {
@@ -383,11 +383,6 @@ go.utils = {
             .get_identity_by_address(address, im)
             .then(function(identity) {
                 if (identity !== null) {
-
-                    if (optin) {
-                        identity = go.utils.optin_identity(im, address, identity);
-                    }
-
                     // If identity exists, return the id
                     return identity;
                 } else {
@@ -401,22 +396,7 @@ go.utils = {
         });
     },
 
-    optin_identity: function(im, address, identity) {
-        if (identity.details && identity.details.addresses && identity.details.addresses.msisdn){
-            if ("optedout" in identity.details.addresses.msisdn[address.msisdn]){
-                delete identity.details.addresses.msisdn[address.msisdn].optedout;
-
-                if (identity.details.opted_out){
-                    delete identity.details.opted_out;
-                }
-
-                go.utils.update_identity(im, identity);
-            }
-        }
-        return identity;
-    },
-
-    update_identity: function(im, identity) {
+    update_identity: function(im, identity, optin) {
       // Update an identity by passing in the full updated identity object
       // Removes potentially added fields that auto-complete and should not
       // be submitted
@@ -427,6 +407,20 @@ go.utils = {
             field = auto_fields[i];
             if (field in identity) {
                 delete identity[field];
+            }
+        }
+
+        if (optin) {
+            if (identity.details && identity.details.addresses && identity.details.addresses.msisdn){
+                for (var msisdn in identity.details.addresses.msisdn) {
+                    if ("optedout" in identity.details.addresses.msisdn[msisdn]){
+                        delete identity.details.addresses.msisdn[msisdn].optedout;
+
+                        if (identity.details.opted_out){
+                            delete identity.details.opted_out;
+                        }
+                    }
+                }
             }
         }
 

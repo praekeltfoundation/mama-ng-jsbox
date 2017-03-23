@@ -267,7 +267,15 @@ go.app = function() {
                             if (    contact && contact.details && contact.details.addresses &&
                                     contact.details.addresses.msisdn && contact.details.addresses.msisdn[msisdn] &&
                                     contact.details.addresses.msisdn[msisdn].optedout) {
-                                return 'state_save_identities';
+                                //return 'state_save_identities';
+                                self.im.user.set_answer('mother_id', contact.id);
+                                self.im.user.set_answer('receiver_id', contact.id);
+                                if (bypassPostbirth) {
+                                    self.im.user.set_answer('state_pregnancy_status', 'prebirth');
+                                    return self.states.create('state_last_period_month');
+                                } else {
+                                    return self.states.create('state_pregnancy_status');
+                                }
                             }
                             else if (contact && contact.details && contact.details.receiver_role) {
                                 self.im.user.set_answer('role_player', contact.details.receiver_role);
@@ -377,8 +385,7 @@ go.app = function() {
                     self.im.user.answers.state_msisdn,
                     self.im.user.answers.state_msisdn_household,
                     self.im.user.answers.state_msisdn_mother,
-                    self.im.user.answers.operator_id,
-                    true
+                    self.im.user.answers.operator_id
                 )
                 .then(function() {
                     if (bypassPostbirth) {
