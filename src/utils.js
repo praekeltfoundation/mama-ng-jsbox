@@ -416,10 +416,11 @@ go.utils = {
                     if ("optedout" in identity.details.addresses.msisdn[msisdn]){
                         delete identity.details.addresses.msisdn[msisdn].optedout;
 
-                        if (identity.details.opted_out){
-                            delete identity.details.opted_out;
-                        }
+
                     }
+                }
+                if (identity.details.opted_out){
+                    delete identity.details.opted_out;
                 }
             }
         }
