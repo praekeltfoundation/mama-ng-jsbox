@@ -412,15 +412,14 @@ go.utils = {
 
         if (optin) {
             if (identity.details && identity.details.addresses && identity.details.addresses.msisdn){
+                if (identity.details.opted_out){
+                    delete identity.details.opted_out;
+                }
+
                 for (var msisdn in identity.details.addresses.msisdn) {
                     if ("optedout" in identity.details.addresses.msisdn[msisdn]){
                         delete identity.details.addresses.msisdn[msisdn].optedout;
-
-
                     }
-                }
-                if (identity.details.opted_out){
-                    delete identity.details.opted_out;
                 }
             }
         }
