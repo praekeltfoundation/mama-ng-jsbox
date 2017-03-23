@@ -378,7 +378,7 @@ go.utils = {
             });
     },
 
-    get_or_create_identity: function(address, im, operator_id) {
+    get_or_create_identity: function(address, im, operator_id, optin) {
       // Gets a identity if it exists, otherwise creates a new one
 
         if (address.msisdn) {
@@ -390,6 +390,11 @@ go.utils = {
             .get_identity_by_address(address, im)
             .then(function(identity) {
                 if (identity !== null) {
+
+                    if (optin) {
+                        identity = go.utils.optin_identity(im, address, identity);
+                    }
+
                     // If identity exists, return the id
                     return identity;
                 } else {
@@ -401,6 +406,21 @@ go.utils = {
                     });
                 }
         });
+    },
+
+    optin_identity: function(im, address, identity) {
+        if (identity.details && identity.details.addresses && identity.details.addresses.msisdn){
+            if ("optedout" in identity.details.addresses.msisdn[address.msisdn]){
+                delete identity.details.addresses.msisdn[address.msisdn].optedout;
+
+                if (identity.details.opted_out){
+                    delete identity.details.opted_out;
+                }
+
+                go.utils.update_identity(im, identity);
+            }
+        }
+        return identity;
     },
 
     update_identity: function(im, identity) {
@@ -585,7 +605,7 @@ go.utils_project = {
     },
 
     save_identities: function(im, msg_receiver, receiver_msisdn, household_msisdn,
-                              mother_msisdn, operator_id) {
+                              mother_msisdn, operator_id, optin) {
       // Creates identities for the msisdns entered in various states
       // and sets the identitity id's to user.answers for later use
       // msg_receiver: (str) person who will receive messages eg. 'mother_only'
@@ -595,7 +615,7 @@ go.utils_project = {
         if (msg_receiver === 'mother_only') {
             return go.utils
                 // get or create mother's identity
-                .get_or_create_identity({'msisdn': receiver_msisdn}, im, operator_id)
+                .get_or_create_identity({'msisdn': receiver_msisdn}, im, operator_id, optin)
                 .then(function(mother) {
                     im.user.set_answer('mother_id', mother.id);
                     im.user.set_answer('receiver_id', mother.id);
@@ -604,7 +624,7 @@ go.utils_project = {
         } else if (['friend_only', 'family_only', 'father_only'].indexOf(msg_receiver) !== -1) {
             return go.utils
                 // get or create msg_receiver's identity
-                .get_or_create_identity({'msisdn': receiver_msisdn}, im, operator_id)
+                .get_or_create_identity({'msisdn': receiver_msisdn}, im, operator_id, optin)
                 .then(function(msg_receiver) {
                     im.user.set_answer('receiver_id', msg_receiver.id);
                     return go.utils
@@ -619,9 +639,9 @@ go.utils_project = {
             return Q
                 .all([
                     // create father's identity
-                    go.utils.get_or_create_identity({'msisdn': household_msisdn}, im, operator_id),
+                    go.utils.get_or_create_identity({'msisdn': household_msisdn}, im, operator_id, optin),
                     // create mother's identity
-                    go.utils.get_or_create_identity({'msisdn': mother_msisdn}, im, operator_id),
+                    go.utils.get_or_create_identity({'msisdn': mother_msisdn}, im, operator_id, optin),
                 ])
                 .spread(function(father, mother) {
                     im.user.set_answer('receiver_id', father.id);
@@ -1731,7 +1751,8 @@ go.app = function() {
                     self.im.user.answers.state_msisdn,
                     self.im.user.answers.state_msisdn_household,
                     self.im.user.answers.state_msisdn_mother,
-                    self.im.user.answers.operator_id
+                    self.im.user.answers.operator_id,
+                    true
                 )
                 .then(function() {
                     if (bypassPostbirth) {
