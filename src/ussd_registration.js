@@ -263,11 +263,9 @@ go.app = function() {
                     return go.utils
                         .get_identity_by_address({'msisdn': msisdn}, self.im)
                         .then(function(contact) {
-                            // If opted out, opt in again
                             if (    contact && contact.details && contact.details.addresses &&
                                     contact.details.addresses.msisdn && contact.details.addresses.msisdn[msisdn] &&
                                     contact.details.addresses.msisdn[msisdn].optedout) {
-                                //return 'state_save_identities';
                                 self.im.user.set_answer('mother_id', contact.id);
                                 self.im.user.set_answer('receiver_id', contact.id);
                                 if (bypassPostbirth) {
