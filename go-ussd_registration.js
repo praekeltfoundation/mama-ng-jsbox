@@ -403,7 +403,7 @@ go.utils = {
         });
     },
 
-    update_identity: function(im, identity) {
+    update_identity: function(im, identity, optin) {
       // Update an identity by passing in the full updated identity object
       // Removes potentially added fields that auto-complete and should not
       // be submitted
@@ -414,6 +414,20 @@ go.utils = {
             field = auto_fields[i];
             if (field in identity) {
                 delete identity[field];
+            }
+        }
+
+        if (optin) {
+            if (identity.details && identity.details.addresses && identity.details.addresses.msisdn){
+                if (identity.details.opted_out){
+                    delete identity.details.opted_out;
+                }
+
+                for (var msisdn in identity.details.addresses.msisdn) {
+                    if ("optedout" in identity.details.addresses.msisdn[msisdn]){
+                        delete identity.details.addresses.msisdn[msisdn].optedout;
+                    }
+                }
             }
         }
 
@@ -631,7 +645,7 @@ go.utils_project = {
         }
     },
 
-    update_identities: function(im) {
+    update_identities: function(im, optin) {
       // Saves useful data collected during registration to the relevant identities
         var msg_receiver = im.user.answers.state_msg_receiver;
         if (msg_receiver === 'mother_only') {
@@ -649,7 +663,7 @@ go.utils_project = {
                         mother_identity.details.preferred_msg_times = im.user.answers.state_voice_times;
                     }
 
-                    return go.utils.update_identity(im, mother_identity);
+                    return go.utils.update_identity(im, mother_identity, optin);
                 });
         } else if (['friend_only', 'family_only', 'father_only'].indexOf(msg_receiver) !== -1) {
             return Q
@@ -674,8 +688,8 @@ go.utils_project = {
                     }
 
                     return Q.all([
-                        go.utils.update_identity(im, mother_identity),
-                        go.utils.update_identity(im, receiver_identity)
+                        go.utils.update_identity(im, mother_identity, optin),
+                        go.utils.update_identity(im, receiver_identity, optin)
                     ]);
                 });
         } else if (['mother_friend', 'mother_family', 'mother_father'].indexOf(msg_receiver) !== -1) {
@@ -705,8 +719,8 @@ go.utils_project = {
                     }
 
                     return Q.all([
-                        go.utils.update_identity(im, mother_identity),
-                        go.utils.update_identity(im, receiver_identity)
+                        go.utils.update_identity(im, mother_identity, optin),
+                        go.utils.update_identity(im, receiver_identity, optin)
                     ]);
                 });
         }
@@ -1014,7 +1028,7 @@ go.utils_project = {
         var reg_info = go.utils_project.compile_reg_info(im);
         return Q.all([
             go.utils.create_registration(im, reg_info),
-            go.utils_project.update_identities(im)
+            go.utils_project.update_identities(im, true)
         ]);
     },
 
@@ -1617,11 +1631,17 @@ go.app = function() {
                     return go.utils
                         .get_identity_by_address({'msisdn': msisdn}, self.im)
                         .then(function(contact) {
-                            // If opted out, opt in again
                             if (    contact && contact.details && contact.details.addresses &&
                                     contact.details.addresses.msisdn && contact.details.addresses.msisdn[msisdn] &&
                                     contact.details.addresses.msisdn[msisdn].optedout) {
-                                return 'state_save_identities';
+                                self.im.user.set_answer('mother_id', contact.id);
+                                self.im.user.set_answer('receiver_id', contact.id);
+                                if (bypassPostbirth) {
+                                    self.im.user.set_answer('state_pregnancy_status', 'prebirth');
+                                    return self.states.create('state_last_period_month');
+                                } else {
+                                    return self.states.create('state_pregnancy_status');
+                                }
                             }
                             else if (contact && contact.details && contact.details.receiver_role) {
                                 self.im.user.set_answer('role_player', contact.details.receiver_role);

@@ -396,7 +396,7 @@ go.utils = {
         });
     },
 
-    update_identity: function(im, identity) {
+    update_identity: function(im, identity, optin) {
       // Update an identity by passing in the full updated identity object
       // Removes potentially added fields that auto-complete and should not
       // be submitted
@@ -407,6 +407,20 @@ go.utils = {
             field = auto_fields[i];
             if (field in identity) {
                 delete identity[field];
+            }
+        }
+
+        if (optin) {
+            if (identity.details && identity.details.addresses && identity.details.addresses.msisdn){
+                if (identity.details.opted_out){
+                    delete identity.details.opted_out;
+                }
+
+                for (var msisdn in identity.details.addresses.msisdn) {
+                    if ("optedout" in identity.details.addresses.msisdn[msisdn]){
+                        delete identity.details.addresses.msisdn[msisdn].optedout;
+                    }
+                }
             }
         }
 
