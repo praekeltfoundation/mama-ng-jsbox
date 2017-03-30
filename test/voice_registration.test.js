@@ -486,7 +486,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msisdn_1.mp3'],
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msisdn_2.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -511,7 +511,7 @@ describe("Mama Nigeria App", function() {
                                 voice: {
                                     speech_url: [
                                         'http://localhost:8004/api/v1/eng_NG/state_error_invalid_number.mp3',
-                                        'http://localhost:8004/api/v1/eng_NG/state_msisdn_1.mp3'
+                                        'http://localhost:8004/api/v1/eng_NG/state_msisdn_2.mp3'
                                     ],
                                     wait_for: '#',
                                     barge_in: true
@@ -538,7 +538,7 @@ describe("Mama Nigeria App", function() {
                                 voice: {
                                     speech_url: [
                                         'http://localhost:8004/api/v1/eng_NG/state_error_invalid_number.mp3',
-                                        'http://localhost:8004/api/v1/eng_NG/state_msisdn_1.mp3'
+                                        'http://localhost:8004/api/v1/eng_NG/state_msisdn_2.mp3'
                                     ],
                                     wait_for: '#',
                                     barge_in: true
@@ -630,7 +630,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msisdn_1.mp3'],
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msisdn_2.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -2174,6 +2174,111 @@ describe("Mama Nigeria App", function() {
                 assert.equal(resultsForLastYearBaby[10], false);     // nov
                 assert.equal(resultsForLastYearBaby[11], true);     // dec
 
+            });
+        });
+
+        // TEST CORRECT MSISDN PROMPT
+
+        describe("When you select different receivers *_only", function() {
+
+            describe("when you select mother only", function() {
+                it("should use state_msisdn_1", function() {
+                    return tester
+                        .setup.user.addr('07030010009')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'       // state_personnel_auth
+                            , '2'           // state_msg_receiver - mother_only
+                        )
+                        .check.interaction({
+                            state: 'state_msisdn'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msisdn_1.mp3'],
+                                    wait_for: '#',
+                                    barge_in: true
+                                }
+                            }
+                        })
+                        .run();
+                });
+            });
+
+            describe("when you select family only", function() {
+                it("should use state_msisdn_2", function() {
+                    return tester
+                        .setup.user.addr('07030010009')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'       // state_personnel_auth
+                            , '7'           // state_msg_receiver - family_only
+                        )
+                        .check.interaction({
+                            state: 'state_msisdn'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msisdn_2.mp3'],
+                                    wait_for: '#',
+                                    barge_in: true
+                                }
+                            }
+                        })
+                        .run();
+                });
+            });
+
+            describe("when you select friend only", function() {
+                it("should use state_msisdn_3", function() {
+                    return tester
+                        .setup.user.addr('07030010009')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'       // state_personnel_auth
+                            , '6'           // state_msg_receiver - friend_only
+                        )
+                        .check.interaction({
+                            state: 'state_msisdn'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msisdn_3.mp3'],
+                                    wait_for: '#',
+                                    barge_in: true
+                                }
+                            }
+                        })
+                        .run();
+                });
+            });
+
+            describe("when you select father only", function() {
+                it("should use state_msisdn_4", function() {
+                    return tester
+                        .setup.user.addr('07030010009')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'       // state_personnel_auth
+                            , '3'           // state_msg_receiver - father_only
+                        )
+                        .check.interaction({
+                            state: 'state_msisdn'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msisdn_4.mp3'],
+                                    wait_for: '#',
+                                    barge_in: true
+                                }
+                            }
+                        })
+                        .run();
+                });
             });
         });
     });

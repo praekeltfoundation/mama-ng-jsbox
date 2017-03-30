@@ -959,6 +959,16 @@ go.utils_project = {
         return member_map[member];
     },
 
+    get_speech_option_only: function(role) {
+        role_map = {
+            'mother_only': '1',
+            'family_only': '2',
+            'friend_only': '3',
+            'father_only': '4'
+        };
+        return role_map[role];
+    },
+
     get_speech_option_days: function(days) {
         day_map = {
             'mon_wed': '1',
