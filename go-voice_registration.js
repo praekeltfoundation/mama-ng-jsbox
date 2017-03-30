@@ -959,6 +959,16 @@ go.utils_project = {
         return member_map[member];
     },
 
+    get_speech_option_only: function(role) {
+        role_map = {
+            'mother_only': '1',
+            'family_only': '2',
+            'friend_only': '3',
+            'father_only': '4'
+        };
+        return role_map[role];
+    },
+
     get_speech_option_days: function(days) {
         day_map = {
             'mon_wed': '1',
@@ -1530,7 +1540,8 @@ go.app = function() {
         // FreeText st-03
         self.add('state_msisdn', function(name, creator_opts) {
             var question_text = 'Please enter number';
-            var speech_option = '1';
+            var speech_option = go.utils_project.get_speech_option_only(self.im.user.answers.state_msg_receiver);
+
             return new FreeText(name, {
                 question: question_text,
                 helper_metadata: go.utils_project.make_voice_helper_data(
