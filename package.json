@@ -18,7 +18,7 @@
     "voice"
   ],
   "author": "Praekelt Foundation",
-  "license": "BSD",
+  "license": "BSD-3-Clause",
   "bugs": {
     "url": "https://github.com/praekelt/mama-ng-jsbox/issues"
   },
