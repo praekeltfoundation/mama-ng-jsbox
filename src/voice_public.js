@@ -332,7 +332,8 @@ go.app = function() {
                     self.im, name, self.im.user.lang, speech_option),
                 choices: [
                     new Choice('9_11', $('9-11am')),
-                    new Choice('2_5', $('2-5pm'))
+                    new Choice('2_5', $('2-5pm')),
+                    new Choice('6_8', $('6-8pm'))
                 ],
                 next: function(choice) {
                     return go.utils_project

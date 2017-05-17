@@ -982,19 +982,16 @@ go.utils_project = {
     },
 
     get_speech_option_days_time: function(days, time) {
-        var speech_option;
+        day_time_map = {
+            'mon_wed_9_11': '1',
+            'tue_thu_9_11': '2',
+            'mon_wed_2_5': '3',
+            'tue_thu_2_5': '4',
+            'mon_wed_6_8': '5',
+            'tue_thu_6_8': '6',
+        };
 
-        day_map_9_11 = {
-            'mon_wed': '1',
-            'tue_thu': '2'
-        };
-        day_map_2_5 = {
-            'mon_wed': '3',
-            'tue_thu': '4'
-        };
-        time === '9_11' ? speech_option = day_map_9_11[days]
-                        : speech_option = day_map_2_5[days];
-        return speech_option;
+        return day_time_map[days + '_' + time];
     },
 
 
@@ -1806,7 +1803,8 @@ go.app = function() {
                     .context({prefix: state_error_types.invalid_selection}),
                 choices: [
                     new Choice('9_11', $("Between 9-11am")),
-                    new Choice('2_5', $("Between 2-5pm"))
+                    new Choice('2_5', $("Between 2-5pm")),
+                    new Choice('6_8', $("Between 6-8pm"))
                 ],
                 next: function(choice) {
                     return go.utils_project
@@ -1829,15 +1827,16 @@ go.app = function() {
             var times = self.im.user.answers.state_voice_times;
             var text;
 
-            if (days === 'mon_wed') {
-                text = times === '9_11'
-                    ? $("Thank you. You will now start receiving voice calls on Monday and Wednesday between 9 and 11am")
-                    : $("Thank you. You will now start receiving voice calls on Monday and Wednesday between 2 and 5pm");
-        } else {  // days === tue_thu
-            text = times === '9_11'
-                    ? $("Thank you. You will now start receiving voice calls on Tuesday and Thursday between 9 and 11am")
-                    : $("Thank you. You will now start receiving voice calls on Tuesday and Thursday between 2 and 5pm");
-            }
+            var values = {
+                "mon_wed": "Monday and Wednesday",
+                "tue_thu": "Tuesday and Thursday",
+                "9_11": "9 and 11am",
+                "2_5": "2 and 5pm",
+                "6_8": "6 and 8pm"
+            };
+
+            text = $("Thank you. You will now start receiving voice calls on " + values[days] + " between " + values[times]);
+
             return new EndState(name, {
                 text: text,
                 next: 'state_start'

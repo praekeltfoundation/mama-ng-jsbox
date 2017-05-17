@@ -721,7 +721,8 @@ describe("Mama Nigeria App", function() {
                         reply: [
                             "At what time would they like to receive these calls on Tuesdays and Thursdays?",
                             "1. Between 9-11am",
-                            "2. Between 2-5pm"
+                            "2. Between 2-5pm",
+                            "3. Between 6-8pm"
                         ].join('\n')
                     })
                     .run();
@@ -752,6 +753,30 @@ describe("Mama Nigeria App", function() {
                         assert.deepEqual(metrics['test.ussd_registration_test.registrations_started'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_registration_test.registrations_completed'].values, [1]);
                         assert.deepEqual(metrics['test.ussd_registration_test.avg.sessions_to_register'].values, [1]);
+                    })
+                    .check.reply.ends_session()
+                    .run();
+            });
+            it("to state_end_voice 6-8pm", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'   // state_auth_code - personnel code
+                        , '6' // state_msg_receiver - friend_only
+                        , '09092222222'  // state_msisdn
+                        //, '1'  // state_msg_pregnant - mother
+                        , '1'  // state_last_period_month - Jan 15
+                        , '12' // state_last_period_day - 12
+                        , '3'  // state_gravida
+                        , '1'  // state_msg_language - english
+                        , '1'   // state_msg_type - voice calls
+                        , '2'   // state_voice_days - tuesdays and thursdays
+                        , '3'   // state_voice_times - between 2-5pm
+                    )
+                    .check.interaction({
+                        state: 'state_end_voice',
+                        reply: "Thank you. They will now start receiving calls on Tuesday and Thursday between 6pm-8pm."
                     })
                     .check.reply.ends_session()
                     .run();
@@ -1296,14 +1321,15 @@ describe("Mama Nigeria App", function() {
                         'state_voice_days': 'tue_thu'
                     })
                     .input(
-                        '3'  // state_voice_times
+                        '4'  // state_voice_times
                     )
                     .check.interaction({
                         state: 'state_voice_times',
                         reply: [
                             "Sorry, invalid option. At what time would they like to receive these calls on Tuesdays and Thursdays?",
                             "1. Between 9-11am",
-                            "2. Between 2-5pm"
+                            "2. Between 2-5pm",
+                            "3. Between 6-8pm"
                         ].join('\n')
                     })
                     .run();

@@ -3500,5 +3500,161 @@ module.exports = function() {
                 }
             }
         },
+
+        // 112: Change messaging 1 - 6 - 8 pm
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "action": "change_messaging",
+                    "data": {
+                        "msg_type": "audio",
+                        "voice_days": "tue_thu",
+                        "voice_times": "6_8"
+                    }
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 113: patch identity 3f7c8851-5204-43f7-af7f-005059992222
+        {
+            'request': {
+                'method': 'PATCH',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059992222/',
+                'data': {
+                    "id": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2345059992222": {}
+                            }
+                        },
+                        "receiver_role": "mother",
+                        "linked_to": null,
+                        "preferred_msg_type": "audio",
+                        "preferred_language": "ibo_NG",
+                        "preferred_msg_days": "tue_thu",
+                        "preferred_msg_times": "6_8"
+                    },
+                }
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059992222/",
+                    "id": "3f7c8851-5204-43f7-af7f-005059992222",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2345059992222": {}
+                            }
+                        },
+                        "receiver_role": "mother",
+                        "linked_to": null,
+                        "preferred_msg_type": "audio",
+                        "preferred_language": "ibo_NG",
+                        "preferred_msg_days": "tue_thu",
+                        "preferred_msg_times": "6_8"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
+
+        // 114: Change messaging 2 - voice to voice 6-8pm
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8002/api/v1/change/',
+                'data': {
+                    "mother_id": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "action": "change_messaging",
+                    "data": {
+                        "msg_type": "audio",
+                        "voice_days": "mon_wed",
+                        "voice_times": "6_8"
+                    }
+                }
+            },
+            'response': {
+                'code': 201,
+                'data': {
+                    'id': 1
+                }
+            }
+        },
+
+        // 115: patch identity 3f7c8851-5204-43f7-af7f-005059995555
+        {
+            'request': {
+                'method': 'PATCH',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059995555/',
+                'data': {
+                    "id": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "version": 1,
+                    "communicate_through": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "operator": null,
+                    "details": {
+                        "receiver_role": "mother",
+                        "preferred_language": "hau_NG",
+                        "linked_to": "cb245673-aa41-4302-ac47-9093333333",
+                        "preferred_msg_type": "audio",
+                        "preferred_msg_days": "mon_wed",
+                        "preferred_msg_times": "6_8"
+                    },
+                }
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-005059995555/",
+                    "id": "3f7c8851-5204-43f7-af7f-005059995555",
+                    "version": 1,
+                    "communicate_through": "3f7c8851-5204-43f7-af7f-005059993333",
+                    "operator": null,
+                    "details": {
+                        "receiver_role": "mother",
+                        "preferred_language": "hau_NG",
+                        "linked_to": "cb245673-aa41-4302-ac47-9093333333",
+                        "preferred_msg_type": "audio",
+                        "preferred_msg_days": "mon_wed",
+                        "preferred_msg_times": "6_8"
+                    },
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
     ];
 };

@@ -636,7 +636,8 @@ go.app = function() {
                     self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
                     new Choice('9_11', $('9_11')),
-                    new Choice('2_5', $('2_5'))
+                    new Choice('2_5', $('2_5')),
+                    new Choice('6_8', $('6_8'))
                 ],
                 next: function() {
                     return go.utils_project

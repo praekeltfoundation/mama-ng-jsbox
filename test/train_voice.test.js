@@ -1753,6 +1753,45 @@ describe("Mama Nigeria App", function() {
                         .check.reply.ends_session()
                         .run();
                 });
+
+                it("should navigate to state_end_voice", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '1' // state_training_intro - register
+                            , '12345'       // state_personnel_auth
+                            , '6'           // state_msg_receiver - friend_only
+                            , '09092222222' // state_msisdn
+                            // , '2'           // state_pregnancy_status - baby
+                            // , '2'           // state_baby_birth_year - last year
+                            // , '9'           // state_baby_birth_month - sep
+                            // , '13'          // state_baby_birth_day
+                            , '2'           // state_last_period_year - last year
+                            , '12'           // state_last_period_month - dec
+                            , '13'          // state_last_period_day
+
+                            , '2'           // state_gravida
+                            , '3'           // state_msg_language - igbo
+                            , '1'           // state_msg_type - voice
+                            , '1'           // state_voice_days - mon_wed
+                            , '3'           // state_voice_times - 2_5
+                        )
+                        .check.interaction({
+                            state: 'state_end_voice'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_end_voice_5.mp3'],
+                                    wait_for: '#',
+                                    barge_in: false
+                                }
+                            }
+                        })
+                        .check.reply.ends_session()
+                        .run();
+                });
             });
 
             describe("Testing month validation function (is_valid_month)", function() {
