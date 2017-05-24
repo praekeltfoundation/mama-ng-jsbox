@@ -534,7 +534,8 @@ describe("Mama Nigeria App", function() {
                             reply: [
                                 "At what time would they like to receive these calls on Tuesdays and Thursdays?",
                                 "1. Between 9-11am",
-                                "2. Between 2-5pm"
+                                "2. Between 2-5pm",
+                                "3. Between 6-8pm"
                             ].join('\n')
                         })
                         .run();
@@ -974,14 +975,15 @@ describe("Mama Nigeria App", function() {
                             'state_voice_days': 'tue_thu'
                         })
                         .input(
-                            '3'  // state_voice_times
+                            '4'  // state_voice_times
                         )
                         .check.interaction({
                             state: 'state_voice_times',
                             reply: [
                                 "Sorry, invalid option. At what time would they like to receive these calls on Tuesdays and Thursdays?",
                                 "1. Between 9-11am",
-                                "2. Between 2-5pm"
+                                "2. Between 2-5pm",
+                                "3. Between 6-8pm"
                             ].join('\n')
                         })
                         .run();
@@ -1424,7 +1426,8 @@ describe("Mama Nigeria App", function() {
                             reply: [
                                 "At what time would they like to receive these calls on Tuesdays and Thursdays?",
                                 "1. Between 9-11am",
-                                "2. Between 2-5pm"
+                                "2. Between 2-5pm",
+                                "3. Between 6-8pm"
                             ].join('\n')
                         })
                         .run();
@@ -1883,14 +1886,15 @@ describe("Mama Nigeria App", function() {
                             'state_voice_days': 'tue_thu'
                         })
                         .input(
-                            '3'  // state_voice_times
+                            '4'  // state_voice_times
                         )
                         .check.interaction({
                             state: 'state_voice_times',
                             reply: [
                                 "Sorry, invalid option. At what time would they like to receive these calls on Tuesdays and Thursdays?",
                                 "1. Between 9-11am",
-                                "2. Between 2-5pm"
+                                "2. Between 2-5pm",
+                                "3. Between 6-8pm"
                             ].join('\n')
                         })
                         .run();
@@ -2037,7 +2041,8 @@ describe("Mama Nigeria App", function() {
                                 reply: [
                                     "At what time would you like to receive these calls?",
                                     "1. Between 9-11am",
-                                    "2. Between 2-5pm"
+                                    "2. Between 2-5pm",
+                                    "3. Between 6-8pm"
                                 ].join('\n')
                             })
                             .run();
@@ -2058,6 +2063,26 @@ describe("Mama Nigeria App", function() {
                             .check.interaction({
                                 state: 'state_end_voice_confirm',
                                 reply: "Thank you. You will now start receiving voice calls on Tuesday and Thursday between 9 and 11am"
+                            })
+                            .check.reply.ends_session()
+                            .run();
+                    });
+                    it("to state_end_voice_confirm 6-8pm", function() {
+                        return tester
+                            .setup.user.addr('05059992222')
+                            .inputs(
+                                {session_event: 'new'}  // dial in
+                                , '3'  // state_training_intro - change
+                                , '3'   // state_language - pidgin
+                                , '05059993333'  // state_registered_msisdn
+                                , '2'  // state_main_menu - change message preferences
+                                , '1'  // state_change_menu_sms - change from text to voice
+                                , '2'  // state_change_voice_days - tuesday and thursday
+                                , '3'  // state_change_voice_times - 6-8pm
+                            )
+                            .check.interaction({
+                                state: 'state_end_voice_confirm',
+                                reply: "Thank you. You will now start receiving voice calls on Tuesday and Thursday between 6 and 8pm"
                             })
                             .check.reply.ends_session()
                             .run();
@@ -2456,13 +2481,14 @@ describe("Mama Nigeria App", function() {
                         return tester
                             .setup.user.addr('05059992222')
                             .setup.user.state('state_change_voice_times')
-                            .input('3') // state_change_ voice_times - invalid option
+                            .input('4') // state_change_ voice_times - invalid option
                             .check.interaction({
                                 state: 'state_change_voice_times',
                                 reply: [
                                     "Sorry, invalid option. At what time would you like to receive these calls?",
                                     "1. Between 9-11am",
-                                    "2. Between 2-5pm"
+                                    "2. Between 2-5pm",
+                                    "3. Between 6-8pm"
                                 ].join('\n')
                             })
                             .run();

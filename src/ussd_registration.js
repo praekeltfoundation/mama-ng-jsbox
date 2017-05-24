@@ -543,7 +543,8 @@ go.app = function() {
                 }),
                 choices: [
                     new Choice('9_11', $('Between 9-11am')),
-                    new Choice('2_5', $('Between 2-5pm'))
+                    new Choice('2_5', $('Between 2-5pm')),
+                    new Choice('6_8', $('Between 6-8pm'))
                 ],
                 next: function() {
                     return go.utils_project
@@ -561,7 +562,8 @@ go.app = function() {
                 "mon_wed": "Monday and Wednesday",
                 "tue_thu": "Tuesday and Thursday",
                 "9_11": "9am-11am",
-                "2_5": "2pm-5pm"
+                "2_5": "2pm-5pm",
+                "6_8": "6pm-8pm"
             };
             return new EndState(name, {
                 text: get_content(name).context({

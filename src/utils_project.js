@@ -407,19 +407,16 @@ go.utils_project = {
     },
 
     get_speech_option_days_time: function(days, time) {
-        var speech_option;
+        day_time_map = {
+            'mon_wed_9_11': '1',
+            'tue_thu_9_11': '2',
+            'mon_wed_2_5': '3',
+            'tue_thu_2_5': '4',
+            'mon_wed_6_8': '5',
+            'tue_thu_6_8': '6',
+        };
 
-        day_map_9_11 = {
-            'mon_wed': '1',
-            'tue_thu': '2'
-        };
-        day_map_2_5 = {
-            'mon_wed': '3',
-            'tue_thu': '4'
-        };
-        time === '9_11' ? speech_option = day_map_9_11[days]
-                        : speech_option = day_map_2_5[days];
-        return speech_option;
+        return day_time_map[days + '_' + time];
     },
 
 

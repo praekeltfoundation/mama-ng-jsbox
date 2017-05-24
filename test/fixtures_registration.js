@@ -3800,5 +3800,221 @@ module.exports = function() {
                 }
             }
         },
+
+        // 88: create registration 09092222222 - friend_only / family_member - voice 6-8pm
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': "http://localhost:8002/api/v1/registration/",
+                'data':  {
+                    "stage": "prebirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-1234567890",
+                    "data": {
+                        "msg_receiver": "friend_only",
+                        "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
+                        "gravida": "3",
+                        "language": "eng_NG",
+                        "msg_type": "audio",
+                        "voice_times": "6_8",
+                        "voice_days": "tue_thu",
+                        "last_period_date": "20150112",
+                        "user_id": "cb245673-aa41-4302-ac47-00000000002"
+                    }
+                }
+            },
+            'response': {
+                "code": 201,
+                "data": {
+                    "id": "reg_for_09092222222_uuid",
+                    "stage": "prebirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-1234567890",
+                    "data": {
+                        "msg_receiver": "friend_only",
+                        "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
+                        "language": "eng_NG",
+                        "msg_type": "audio",
+                        "voice_times": "6_8",
+                        "voice_days": "tue_thu",
+                        "last_period_date": "20150112",
+                        "user_id": "cb245673-aa41-4302-ac47-00000000002"
+                    },
+                    "validated": false,
+                    "source": "source",
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z",
+                    "created_by": "user",
+                    "updated_by": "user"
+                }
+            }
+        },
+
+        // 89: patch identity cb245673-aa41-4302-ac47-9092222222
+        {
+            'request': {
+                'method': 'PATCH',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-9092222222/",
+                'data': {
+                    "id":"cb245673-aa41-4302-ac47-9092222222",
+                    "version":1,
+                    "details": {
+                        "default_addr_type":"msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2349092222222": {}
+                            }
+                        },
+                        "receiver_role":"friend",
+                        "linked_to": "cb245673-aa41-4302-ac47-1234567890",
+                        "preferred_msg_type": "audio",
+                        "preferred_language":"eng_NG",
+                        "preferred_msg_days":"tue_thu",
+                        "preferred_msg_times":"6_8"
+                    },
+                    "operator":"cb245673-aa41-4302-ac47-00000000007",
+                }
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url":"http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-9092222222/",
+                    "id":"cb245673-aa41-4302-ac47-9092222222",
+                    "version":1,
+                    "details": {
+                        "default_addr_type":"msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2349092222222": {}
+                            }
+                        },
+                        "receiver_role":"friend",
+                        "linked_to": "cb245673-aa41-4302-ac47-1234567890",
+                        "preferred_msg_type": "audio",
+                        "preferred_language":"eng_NG",
+                        "preferred_msg_days":"tue_thu",
+                        "preferred_msg_times":"6_8"
+                    },
+                    "operator":"cb245673-aa41-4302-ac47-00000000007",
+                    "created_at":"2015-07-10T06:13:29.693272Z",
+                    "updated_at":"2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
+
+        // 90: create registration 09092222222 - friend_only / family_member - voice 6-8pm
+        // unused if bypassPostbirth = false - from 53
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': "http://localhost:8002/api/v1/registration/",
+                'data':  {
+                    "stage": "prebirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-1234567890",
+                    "data": {
+                        "msg_receiver": "friend_only",
+                        "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
+                        "gravida": "2",
+                        "language": "ibo_NG",
+                        "msg_type": "audio",
+                        "voice_times": "6_8",
+                        "voice_days": "mon_wed",
+                        "last_period_date":"20161213"
+                    }
+                }
+            },
+            'response': {
+                "code": 201,
+                "data": {
+                    "id": "reg_for_09092222222_uuid",
+                    "stage": "prebirth",
+                    "mother_id": "cb245673-aa41-4302-ac47-1234567890",
+                    "data": {
+                        "msg_receiver": "friend_only",
+                        "receiver_id": "cb245673-aa41-4302-ac47-9092222222",
+                        "operator_id": "cb245673-aa41-4302-ac47-00000000007",
+                        "gravida": "2",
+                        "language": "ibo_NG",
+                        "msg_type": "audio",
+                        "last_period_date":"20161213"
+                    },
+                    "validated": false,
+                    "source": "source",
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z",
+                    "created_by": "user",
+                    "updated_by": "user"
+                }
+            }
+        },
+
+        // 91: patch identity cb245673-aa41-4302-ac47-9092222222
+        {
+            'request': {
+                'method': 'PATCH',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-9092222222/",
+                'data': {
+                    "id": "cb245673-aa41-4302-ac47-9092222222",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2349092222222": {}
+                            }
+                        },
+                        "receiver_role": "friend",
+                        "linked_to": "cb245673-aa41-4302-ac47-1234567890",
+                        "preferred_msg_type": "audio",
+                        "preferred_language": "ibo_NG",
+                        "preferred_msg_days": "mon_wed",
+                        "preferred_msg_times": "6_8"
+                    },
+                    "operator": "cb245673-aa41-4302-ac47-00000000007",
+                }
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-9092222222/",
+                    "id": "cb245673-aa41-4302-ac47-9092222222",
+                    "version": 1,
+                    "details": {
+                        "default_addr_type": "msisdn",
+                        "addresses": {
+                            "msisdn": {
+                                "+2349092222222": {}
+                            }
+                        },
+                        "receiver_role": "friend",
+                        "linked_to": "cb245673-aa41-4302-ac47-1234567890",
+                        "preferred_msg_type": "audio",
+                        "preferred_language": "ibo_NG",
+                        "preferred_msg_days": "mon_wed",
+                        "preferred_msg_times": "6_8"
+                    },
+                    "operator": "cb245673-aa41-4302-ac47-00000000007",
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at":"2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
     ];
 };

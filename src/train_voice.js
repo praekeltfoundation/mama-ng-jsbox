@@ -509,7 +509,8 @@ go.app = function() {
                     self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
                     new Choice('9_11', $('9_11')),
-                    new Choice('2_5', $('2_5'))
+                    new Choice('2_5', $('2_5')),
+                    new Choice('6_8', $('6_8'))
                 ],
                 next: function() {
                     return 'state_end_voice';
@@ -668,7 +669,8 @@ go.app = function() {
                     self.im, name, self.im.user.lang, speech_option),
                 choices: [
                     new Choice('9_11', $('9-11am')),
-                    new Choice('2_5', $('2-5pm'))
+                    new Choice('2_5', $('2-5pm')),
+                    new Choice('6_8', $('6-8pm'))
                 ],
                 next: function(choice) {
                     return 'state_end_voice_confirm';

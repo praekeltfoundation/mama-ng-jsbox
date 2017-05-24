@@ -361,7 +361,8 @@ describe("Hello Mama app", function() {
                                 reply: [
                                     "At what time would you like to receive these calls?",
                                     "1. Between 9-11am",
-                                    "2. Between 2-5pm"
+                                    "2. Between 2-5pm",
+                                    "3. Between 6-8pm"
                                 ].join('\n')
                             })
                             .run();
@@ -383,6 +384,27 @@ describe("Hello Mama app", function() {
                             })
                             .check(function(api) {
                                 go.utils.check_fixtures_used(api, [2,9,16,17,18,26]);
+                            })
+                            .check.reply.ends_session()
+                            .run();
+                    });
+                    it("case 1 > to state_end_voice_confirm 6-8pm", function() {
+                        return tester
+                            .setup.user.addr('05059992222')
+                            .inputs(
+                                {session_event: 'new'}  // dial in
+                                , '1'  // state_msisdn_permission - yes
+                                , '2'  // state_main_menu - change message preferences - registered for text
+                                , '1'  // state_change_menu_sms - change from text to voice
+                                , '2'  // state_voice_days - tuesday and thursday
+                                , '3'  // state_voice_times - 6-8pm
+                            )
+                            .check.interaction({
+                                state: 'state_end_voice_confirm',
+                                reply: "Thank you. You will now start receiving voice calls on Tuesday and Thursday between 6 and 8pm"
+                            })
+                            .check(function(api) {
+                                go.utils.check_fixtures_used(api, [2,9,16,17,112,113]);
                             })
                             .check.reply.ends_session()
                             .run();
@@ -451,7 +473,8 @@ describe("Hello Mama app", function() {
                                 reply: [
                                     "At what time would you like to receive these calls?",
                                     "1. Between 9-11am",
-                                    "2. Between 2-5pm"
+                                    "2. Between 2-5pm",
+                                    "3. Between 6-8pm"
                                 ].join('\n')
                             })
                             .run();
@@ -1878,13 +1901,14 @@ describe("Hello Mama app", function() {
                     return tester
                         .setup.user.addr('05059992222')
                         .setup.user.state('state_voice_times')
-                        .input('3') // state_voice_times - invalid option
+                        .input('4') // state_voice_times - invalid option
                         .check.interaction({
                             state: 'state_voice_times',
                             reply: [
                                 "Sorry, invalid option. At what time would you like to receive these calls?",
                                 "1. Between 9-11am",
-                                "2. Between 2-5pm"
+                                "2. Between 2-5pm",
+                                "3. Between 6-8pm"
                             ].join('\n')
                         })
                         .run();

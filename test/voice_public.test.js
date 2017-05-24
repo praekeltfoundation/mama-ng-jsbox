@@ -650,6 +650,34 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
                 });
+                it("case 2 > to state_end_voice_confirm 6-8pm", function() {
+                    return tester
+                    .setup.user.addr('+07070050005')
+                    .inputs(
+                        {session_event: 'new'}
+                        , '05059993333'  // msg_receiver_msisdn
+                        , '2'  // main_menu - msg_pref
+                        , '1'  // state_change_menu_sms - change text to voice
+                        , '1'  // state_voice_days - Mon & Wed
+                        , '3'  // state_voice_times - 2-5pm
+                    )
+                    .check.interaction({
+                        state: 'state_end_voice_confirm'
+                    })
+                    .check.reply.properties({
+                        helper_metadata: {
+                            voice: {
+                                speech_url: ['http://localhost:8004/api/v1/hau_NG/state_end_voice_confirm_5.mp3'],
+                                wait_for: '#',
+                                barge_in: false
+                            }
+                        }
+                    })
+                    .check(function(api) {
+                        go.utils.check_fixtures_used(api, [4, 5, 19, 20, 25, 30, 114, 115]);
+                    })
+                    .run();
+                });
             });
             describe("Change from Voice to SMS messages", function() {
                 it("case 3 > to state_change_menu_voice if registered for voice", function() {
