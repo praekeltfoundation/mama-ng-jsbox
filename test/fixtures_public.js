@@ -7,7 +7,7 @@
 // 05059996666: registered user - mother that receives own messages, linked to 05059997777
 // 05059997777: registered user - family member that receives household messages for 05059996666
 // 05059998888: number being changed to
-// 05059999999: registered user - mother only already subscribed to baby
+// 05059999999: registered user - mother only already subscribed to baby, multiple subscriptions
 
 // There are 4 cases to consider when a change is attempted:
 // case 1: mother_only registration - mother dialing in (05059992222)
@@ -35,7 +35,6 @@ module.exports = function() {
             'response': {
                 "code": 200,
                 "data": {
-                    "count": 0,
                     "next": null,
                     "previous": null,
                     "results": []
@@ -102,7 +101,6 @@ module.exports = function() {
             'response': {
                 "code": 200,
                 "data": {
-                    "count": 1,
                     "next": null,
                     "previous": null,
                     "results": [{
@@ -144,7 +142,6 @@ module.exports = function() {
             'response': {
                 "code": 200,
                 "data": {
-                    "count": 1,
                     "next": null,
                     "previous": null,
                     "results": [{
@@ -182,7 +179,6 @@ module.exports = function() {
             'response': {
                 "code": 200,
                 "data": {
-                    "count": 1,
                     "next": null,
                     "previous": null,
                     "results": [{
@@ -264,7 +260,6 @@ module.exports = function() {
             'response': {
                 "code": 200,
                 "data": {
-                    "count": 1,
                     "next": null,
                     "previous": null,
                     "results": [{
@@ -348,7 +343,6 @@ module.exports = function() {
             'response': {
                 "code": 200,
                 "data": {
-                    "count": 0,
                     "next": null,
                     "previous": null,
                     "results": []
@@ -516,7 +510,6 @@ module.exports = function() {
             'response': {
                 "code": 200,
                 "data": {
-                    "count": 1,
                     "next": null,
                     "previous": null,
                     "results": [{
@@ -711,7 +704,6 @@ module.exports = function() {
             'response': {
                 "code": 200,
                 "data": {
-                    "count": 1,
                     "next": null,
                     "previous": null,
                     "results": [
@@ -807,7 +799,6 @@ module.exports = function() {
             'response': {
                 "code": 200,
                 "data": {
-                    "count": 1,
                     "next": null,
                     "previous": null,
                     "results": [
@@ -903,7 +894,6 @@ module.exports = function() {
             'response': {
                 "code": 200,
                 "data": {
-                    "count": 1,
                     "next": null,
                     "previous": null,
                     "results": [
@@ -2403,7 +2393,6 @@ module.exports = function() {
             'response': {
                 "code": 200,
                 "data": {
-                    "count": 1,
                     "next": null,
                     "previous": null,
                     "results": [{
@@ -2465,7 +2454,7 @@ module.exports = function() {
             }
         },
 
-        // 72: get subscription for identity 3f7c8851-5204-43f7-af7f-005059999999
+        // 72: get subscription for identity 3f7c8851-5204-43f7-af7f-005059999999 - first page
         {
             'request': {
                 'method': 'GET',
@@ -2482,8 +2471,7 @@ module.exports = function() {
             'response': {
                 "code": 200,
                 "data": {
-                    "count": 1,
-                    "next": null,
+                    "next": 'http://localhost:8005/api/v1/subscriptions/?identity=3f7c8851-5204-43f7-af7f-005059999999&active=true&cursor=1',
                     "previous": null,
                     "results": [
                         {
@@ -2503,7 +2491,6 @@ module.exports = function() {
                             'updated_at': "2015-07-10T06:13:29.693272Z"
                         }
                     ]
-
                 }
             }
         },
@@ -3653,6 +3640,48 @@ module.exports = function() {
                     },
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at": "2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
+
+        // 116: get subscription for identity 3f7c8851-5204-43f7-af7f-005059999999 - second page
+        {
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'identity': '3f7c8851-5204-43f7-af7f-005059999999',
+                    'active': 'true',
+                    'cursor': '1'
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8005/api/v1/subscriptions/'
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "next": null,
+                    "previous": 'http://localhost:8005/api/v1/subscriptions/?identity=3f7c8851-5204-43f7-af7f-005059999999&active=true&cursor=0',
+                    "results": [
+                        {
+                            'url': 'http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-9999',
+                            'id': '51fcca25-2e85-4c44-subscription-9990',
+                            'version': 1,
+                            'identity': '3f7c8851-5204-43f7-af7f-005059999999',
+                            'messageset': 4,
+                            'next_sequence_number': 12,
+                            'lang': "ibo_NG",
+                            'active': true,
+                            'completed': false,
+                            'schedule': 1,
+                            'process_status': 0,
+                            'metadata': {},
+                            'created_at': "2015-07-10T06:13:29.693272Z",
+                            'updated_at': "2015-07-10T06:13:29.693272Z"
+                        }
+                    ]
                 }
             }
         },
