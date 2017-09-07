@@ -15,9 +15,9 @@ go.utils_project = {
             "details__personnel_code": personnel_code
         };
         return go.utils
-            .service_api_call('identities', 'get', params, null, 'identities/search/', im)
+            .get_paginated_response('identities', 'identities/search/', params, im)
             .then(function(json_get_response) {
-                var healthworkers_found = json_get_response.data.results;
+                var healthworkers_found = json_get_response.results;
                 // Return the first healthworker if found
                 return healthworkers_found[0];
             });

@@ -343,9 +343,9 @@ go.utils = {
             .log('Getting identity for: ' + JSON.stringify(params))
             .then(function() {
                 return go.utils
-                    .service_api_call('identities', 'get', params, null, 'identities/search/', im)
+                    .get_paginated_response('identities', 'identities/search/', params, im)
                     .then(function(json_get_response) {
-                        var identities_found = json_get_response.data.results;
+                        var identities_found = json_get_response.results;
                         // Return the first identity in the list of identities
                         return (identities_found.length > 0)
                         ? identities_found[0]
@@ -489,9 +489,9 @@ go.utils = {
         };
         var endpoint = 'subscriptions/';
         return go.utils
-            .service_api_call('subscriptions', 'get', params, null, endpoint, im)
+            .get_paginated_response('subscriptions', endpoint, params, im)
             .then(function(response) {
-                return response.data.results;
+                return response.results;
             });
     },
 
