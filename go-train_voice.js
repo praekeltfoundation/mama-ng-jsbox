@@ -11,6 +11,7 @@ var moment = require('moment');
 var assert = require('assert');
 var JsonApi = vumigo.http.api.JsonApi;
 var Choice = vumigo.states.Choice;
+var url_utils = require('url');
 
 // GENERIC UTILS
 go.utils = {
@@ -40,6 +41,37 @@ go.utils = {
 
 
 // SERVICE API CALL HELPERS
+
+    /**: get_paginated_response(service, endpoint, params)
+    Gets all pages of a paginated request.
+
+    :param string service: The name of the service being queried.
+    :param string endpoint: The url endpoint to send the request to.
+    :param object params: The query parameters for the request
+    :param object im:
+    */
+    get_paginated_response: function(service, endpoint, params, im) {
+        // Get the current page and log the call
+        return go.utils
+            .service_api_call(service, 'get', params, null, endpoint, im)
+            .then(function(response) {
+                var results = response.data.results;
+                if (response.data.next === null) {
+                    return {results: results, count: results.length};
+                }
+                var next_url = url_utils.parse(response.data.next, true);
+                console.log(next_url);
+                // Recursively get next pages
+                return go.utils.
+                    get_paginated_response(service, endpoint, next_url.query, im)
+                    .then(function(page) {
+                        // Tack subsequent pages onto current page
+                        var combined_results = results.concat(page.results);
+                        return {results: combined_results,
+                                count:combined_results.length};
+                    });
+            });
+    },
 
     service_api_call: function (service, method, params, payload, endpoint, im) {
         var http = new JsonApi(im, {
@@ -318,9 +350,9 @@ go.utils = {
             .log('Getting identity for: ' + JSON.stringify(params))
             .then(function() {
                 return go.utils
-                    .service_api_call('identities', 'get', params, null, 'identities/search/', im)
+                    .get_paginated_response('identities', 'identities/search/', params, im)
                     .then(function(json_get_response) {
-                        var identities_found = json_get_response.data.results;
+                        var identities_found = json_get_response.results;
                         // Return the first identity in the list of identities
                         return (identities_found.length > 0)
                         ? identities_found[0]
@@ -464,9 +496,9 @@ go.utils = {
         };
         var endpoint = 'subscriptions/';
         return go.utils
-            .service_api_call('subscriptions', 'get', params, null, endpoint, im)
+            .get_paginated_response('subscriptions', endpoint, params, im)
             .then(function(response) {
-                return response.data.results;
+                return response.results;
             });
     },
 
@@ -590,9 +622,9 @@ go.utils_project = {
             "details__personnel_code": personnel_code
         };
         return go.utils
-            .service_api_call('identities', 'get', params, null, 'identities/search/', im)
+            .get_paginated_response('identities', 'identities/search/', params, im)
             .then(function(json_get_response) {
-                var healthworkers_found = json_get_response.data.results;
+                var healthworkers_found = json_get_response.results;
                 // Return the first healthworker if found
                 return healthworkers_found[0];
             });
