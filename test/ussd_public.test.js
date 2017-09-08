@@ -230,7 +230,7 @@ describe("Hello Mama app", function() {
                             reply: "You are already registered for baby messages."
                         })
                         .check(function(api) {
-                            go.utils.check_fixtures_used(api, [70,71,72,73]);
+                            go.utils.check_fixtures_used(api, [70,71,72,73,116]);
                         })
                         .run();
                 });
