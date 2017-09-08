@@ -53,7 +53,6 @@ go.utils = {
                     return {results: results, count: results.length};
                 }
                 var next_url = url_utils.parse(response.data.next, true);
-                console.log(next_url);
                 // Recursively get next pages
                 return go.utils.
                     get_paginated_response(service, endpoint, next_url.query, im)
