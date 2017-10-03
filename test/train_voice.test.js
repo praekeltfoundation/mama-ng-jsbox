@@ -1996,10 +1996,9 @@ describe("Mama Nigeria App", function() {
                         .inputs(
                             {session_event: 'new'}
                             , '2'  // state_training_intro - change
-                            , '1'  // state_set_language - english
                             , '05059992222' // state_msg_receiver_msisdn
-                            , '1'  // state_main_menu - baby
-                            , '0'  // state_baby_confirm_subscription - restart
+                            , '2'  // state_main_menu - sms
+                            , '0'  // state_change_menu_sms - restart
                         )
                         .check.interaction({
                             state: 'state_main_menu'
@@ -2012,13 +2011,12 @@ describe("Mama Nigeria App", function() {
                         .inputs(
                             {session_event: 'new'}
                             , '2'  // state_training_intro - change
-                            , '1'  // state_set_language - english
                             , '05059992222' // state_msg_receiver_msisdn
-                            , '1'  // state_main_menu - baby
-                            , '*'  // state_baby_confirm_subscription - repeat
+                            , '2'  // state_main_menu - sms
+                            , '*'  // state_change_menu_sms - repeat
                         )
                         .check.interaction({
-                            state: 'state_baby_confirm_subscription'
+                            state: 'state_change_menu_sms'
                         })
                         .run();
                 });
@@ -2162,29 +2160,6 @@ describe("Mama Nigeria App", function() {
             });
 
             describe("Flow from main menu - baby messages", function() {
-                it("to state_baby_confirm_subscription", function() {
-                    return tester
-                    .setup.user.addr('+07070050005')
-                    .inputs(
-                        {session_event: 'new'}
-                        , '2'  // state_training_intro - change
-                        , '05059992222'  // msg_receiver_msisdn
-                        , '1'  // main_menu - baby
-                    )
-                    .check.interaction({
-                        state: 'state_baby_confirm_subscription'
-                    })
-                    .check.reply.properties({
-                        helper_metadata: {
-                            voice: {
-                                speech_url: ['http://localhost:8004/api/v1/eng_NG/state_baby_confirm_subscription_1.mp3'],
-                                wait_for: '#',
-                                barge_in: true
-                            }
-                        }
-                    })
-                    .run();
-                });
                 it("to state_end_baby", function() {
                     return tester
                     .setup.user.addr('+07070050005')
@@ -2193,7 +2168,6 @@ describe("Mama Nigeria App", function() {
                         , '2'  // state_training_intro - change
                         , '05059992222'  // msg_receiver_msisdn
                         , '1'  // main_menu - baby
-                        , '1'  // state_baby_confirm_subscription
                     )
                     .check.interaction({
                         state: 'state_end_baby'
