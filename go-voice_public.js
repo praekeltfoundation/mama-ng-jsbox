@@ -1644,7 +1644,7 @@ go.app = function() {
                     } else if (postbirth_sub === 'no_active_subs_found') {
                         return self.states.create('state_baby_switch_broken');  // TODO #101
                     } else {
-                        return self.states.create('state_end_baby');
+                        return self.states.create('state_change_baby');
                     }
                 });
         });
