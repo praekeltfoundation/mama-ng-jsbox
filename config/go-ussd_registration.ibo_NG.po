@@ -1,0 +1,316 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2016-06-20 05:40:+0000\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ibo_NG\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+
+#: go-ussd_registration.js:232
+msgid "{{pre}}January{{post}}"
+msgstr ""
+
+#: go-ussd_registration.js:233
+msgid "{{pre}}February{{post}}"
+msgstr ""
+
+#: go-ussd_registration.js:234
+msgid "{{pre}}March{{post}}"
+msgstr ""
+
+#: go-ussd_registration.js:235
+msgid "{{pre}}April{{post}}"
+msgstr ""
+
+#: go-ussd_registration.js:236 go-ussd_registration.js:258
+msgid "{{pre}}May{{post}}"
+msgstr ""
+
+#: go-ussd_registration.js:237
+msgid "{{pre}}June{{post}}"
+msgstr ""
+
+#: go-ussd_registration.js:238
+msgid "{{pre}}July{{post}}"
+msgstr ""
+
+#: go-ussd_registration.js:239
+msgid "{{pre}}August{{post}}"
+msgstr ""
+
+#: go-ussd_registration.js:240
+msgid "{{pre}}September{{post}}"
+msgstr ""
+
+#: go-ussd_registration.js:241
+msgid "{{pre}}October{{post}}"
+msgstr ""
+
+#: go-ussd_registration.js:242
+msgid "{{pre}}November{{post}}"
+msgstr ""
+
+#: go-ussd_registration.js:243
+msgid "{{pre}}December{{post}}"
+msgstr ""
+
+#: go-ussd_registration.js:254
+msgid "{{pre}}Jan{{post}}"
+msgstr ""
+
+#: go-ussd_registration.js:255
+msgid "{{pre}}Feb{{post}}"
+msgstr ""
+
+#: go-ussd_registration.js:256
+msgid "{{pre}}Mar{{post}}"
+msgstr ""
+
+#: go-ussd_registration.js:257
+msgid "{{pre}}Apr{{post}}"
+msgstr ""
+
+#: go-ussd_registration.js:259
+msgid "{{pre}}Jun{{post}}"
+msgstr ""
+
+#: go-ussd_registration.js:260
+msgid "{{pre}}Jul{{post}}"
+msgstr ""
+
+#: go-ussd_registration.js:261
+msgid "{{pre}}Aug{{post}}"
+msgstr ""
+
+#: go-ussd_registration.js:262
+msgid "{{pre}}Sep{{post}}"
+msgstr ""
+
+#: go-ussd_registration.js:263
+msgid "{{pre}}Oct{{post}}"
+msgstr ""
+
+#: go-ussd_registration.js:264
+msgid "{{pre}}Nov{{post}}"
+msgstr ""
+
+#: go-ussd_registration.js:265
+msgid "{{pre}}Dec{{post}}"
+msgstr ""
+
+#: go-ussd_registration.js:1368
+msgid ""
+"You have an incomplete registration. Would you like to continue with this "
+"registration?"
+msgstr ""
+
+#: go-ussd_registration.js:1370
+msgid "{{prefix}}Please enter your Hello Mama code."
+msgstr ""
+
+#: go-ussd_registration.js:1372
+msgid "{{prefix}}Who will receive the messages on their phone?"
+msgstr ""
+
+#: go-ussd_registration.js:1374 go-ussd_registration.js:1380
+msgid ""
+"{{prefix}}Please enter the mobile number of the {{roleplayer}}. They must "
+"consent to receiving messages."
+msgstr ""
+
+#: go-ussd_registration.js:1376
+msgid ""
+"{{prefix}}Sorry, this number is already registered. They must opt-out "
+"before continuing."
+msgstr ""
+
+#: go-ussd_registration.js:1378
+msgid ""
+"{{prefix}}Please enter the mobile number of the mother. They must consent "
+"to receiving messages."
+msgstr ""
+
+#: go-ussd_registration.js:1382
+msgid "{{prefix}}Please select one of the following:"
+msgstr ""
+
+#: go-ussd_registration.js:1384
+msgid "{{prefix}}Please select the month the woman started her last period:"
+msgstr ""
+
+#: go-ussd_registration.js:1386
+msgid "{{prefix}}What date of the month did the woman start her last period?"
+msgstr ""
+
+#: go-ussd_registration.js:1388
+msgid "{{prefix}}Select the month and year the baby was born:"
+msgstr ""
+
+#: go-ussd_registration.js:1390
+msgid "{{prefix}}What date of the month was the baby born?"
+msgstr ""
+
+#: go-ussd_registration.js:1392
+msgid ""
+"{{prefix}}Please enter the total number of times the woman has been "
+"pregnant. This includes any pregnancies she may not have carried to term."
+msgstr ""
+
+#: go-ussd_registration.js:1394
+msgid "{{prefix}}What language would they like to receive the messages in?"
+msgstr ""
+
+#: go-ussd_registration.js:1396
+msgid "{{prefix}}How would they like to receive the messages?"
+msgstr ""
+
+#: go-ussd_registration.js:1398
+msgid "{{prefix}}On what days would they like to receive these calls?"
+msgstr ""
+
+#: go-ussd_registration.js:1400
+msgid "{{prefix}}At what time would they like to receive these calls on {{days}}?"
+msgstr ""
+
+#: go-ussd_registration.js:1402
+msgid ""
+"Thank you. They will now start receiving calls on {{days}} between "
+"{{times}}."
+msgstr ""
+
+#: go-ussd_registration.js:1404
+msgid ""
+"Thank you. They will now start receiving text messages three times a week "
+"on Monday, Wednesday and Friday."
+msgstr ""
+
+#: go-ussd_registration.js:1406
+msgid "Thank you for using the Hello Mama service."
+msgstr ""
+
+#: go-ussd_registration.js:1411
+msgid "Sorry, invalid date. "
+msgstr ""
+
+#: go-ussd_registration.js:1412
+msgid "Sorry, invalid option. "
+msgstr ""
+
+#: go-ussd_registration.js:1413
+msgid "Sorry, invalid number. "
+msgstr ""
+
+#: go-ussd_registration.js:1436
+msgid "Yes"
+msgstr ""
+
+#: go-ussd_registration.js:1437
+msgid "No, start a new registration"
+msgstr ""
+
+#: go-ussd_registration.js:1501
+msgid "Mother, Father"
+msgstr ""
+
+#: go-ussd_registration.js:1502
+msgid "Mother"
+msgstr ""
+
+#: go-ussd_registration.js:1503
+msgid "Father"
+msgstr ""
+
+#: go-ussd_registration.js:1504
+msgid "Mother, family member"
+msgstr ""
+
+#: go-ussd_registration.js:1505
+msgid "Mother, friend"
+msgstr ""
+
+#: go-ussd_registration.js:1506
+msgid "Friend"
+msgstr ""
+
+#: go-ussd_registration.js:1507
+msgid "Family member"
+msgstr ""
+
+#: go-ussd_registration.js:1574
+msgid "Try a different number"
+msgstr ""
+
+#: go-ussd_registration.js:1575
+msgid "Choose a different receiver"
+msgstr ""
+
+#: go-ussd_registration.js:1576 go-ussd_registration.js:1902
+msgid "Exit"
+msgstr ""
+
+#: go-ussd_registration.js:1681
+msgid "The mother is pregnant"
+msgstr ""
+
+#: go-ussd_registration.js:1682
+msgid "The mother has a baby under 1 year old"
+msgstr ""
+
+#: go-ussd_registration.js:1700 go-ussd_registration.js:1842
+msgid "More"
+msgstr ""
+
+#: go-ussd_registration.js:1701 go-ussd_registration.js:1843
+msgid "Back"
+msgstr ""
+
+#: go-ussd_registration.js:1744
+msgid "English"
+msgstr ""
+
+#: go-ussd_registration.js:1745
+msgid "Igbo"
+msgstr ""
+
+#: go-ussd_registration.js:1746
+msgid "Pidgin"
+msgstr ""
+
+#: go-ussd_registration.js:1758
+msgid "Voice calls"
+msgstr ""
+
+#: go-ussd_registration.js:1759
+msgid "Text SMSs"
+msgstr ""
+
+#: go-ussd_registration.js:1781
+msgid "Monday and Wednesday"
+msgstr ""
+
+#: go-ussd_registration.js:1782
+msgid "Tuesday and Thursday"
+msgstr ""
+
+#: go-ussd_registration.js:1804
+msgid "Between 9-11am"
+msgstr ""
+
+#: go-ussd_registration.js:1805
+msgid "Between 2-5pm"
+msgstr ""
+
+#: go-ussd_registration.js:1893
+msgid "The date you entered ({{ date }}) is incorrect. Please try again."
+msgstr ""
+
+#: go-ussd_registration.js:1896
+msgid "{{prefix}}The date you entered ({{ date }}) is incorrect. Please try again."
+msgstr ""
+
+#: go-ussd_registration.js:1901
+msgid "Continue"
+msgstr ""
