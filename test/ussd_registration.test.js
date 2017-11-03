@@ -321,6 +321,22 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
+            it("to state_msisdn_mother (from state_msisdn_already_registered)", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '1' // state_msg_receiver - mother_father
+                        , '07070050005'  // state_msisdn_mother
+                        , '1' // msisdn - try different number
+                    )
+                    .check.interaction({
+                        state: 'state_msisdn_mother',
+                        reply: "Please enter the mobile number of the mother. They must consent to receiving messages."
+                    })
+                    .run();
+            });
             it("to state_msisdn_already_registered", function() {
                 return tester
                     .setup.user.addr('08080020002')
