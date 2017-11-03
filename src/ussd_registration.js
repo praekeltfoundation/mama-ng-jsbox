@@ -329,7 +329,25 @@ go.app = function() {
                         return get_content(name).context({prefix: state_error_types.invalid_number});
                     }
                 },
-                next: 'state_msisdn_household'
+                next: function(content) {
+                    var msisdn = go.utils.normalize_msisdn(
+                        content, self.im.config.country_code);
+                    return go.utils
+                        .get_identity_by_address({'msisdn': msisdn}, self.im)
+                        .then(function(contact) {
+                            if (contact && contact.details && contact.details.addresses &&
+                                    contact.details.addresses.msisdn && contact.details.addresses.msisdn[msisdn] &&
+                                    contact.details.addresses.msisdn[msisdn].optedout) {
+                                return self.states.create('state_msisdn_household');
+                            }
+                            else if (contact && contact.details && contact.details.receiver_role &&
+                                    contact.details.receiver_role == 'mother') {
+                                return 'state_msisdn_already_registered';
+                            } else {
+                                return self.states.create('state_msisdn_household');
+                            }
+                        });
+                }
             });
         });
 
