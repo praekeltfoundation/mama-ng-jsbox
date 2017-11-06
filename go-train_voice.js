@@ -1378,16 +1378,29 @@ go.utils_project = {
             });
     },
 
-    check_postbirth_subscription: function(im, mother_id) {
-      // Look up if the mother is subscribed to postbirth messages
+    check_is_subscribed: function(im, identity, partial_name) {
+      // Look up if the user is subscribed to a messageset containing partial_name
         return go.utils_project
-            .get_subscription_messageset_through_identity(im, mother_id)
+            .get_subscription_messageset_through_identity(im, identity)
             .then(function(messageset) {
                 if (messageset === 'no_active_subs_found') {
                     return 'no_active_subs_found';
                 } else {
-                    return messageset.short_name.substring(0,9) === 'postbirth';
+                    if (messageset.short_name.indexOf(partial_name) == -1) {
+                        return false;
+                    } else {
+                        return true;
+                    }
                 }
+            });
+    },
+
+    check_postbirth_subscription: function(im, mother_id) {
+      // Look up if the mother is subscribed to postbirth messages
+        return go.utils_project
+            .check_is_subscribed(im, mother_id, 'postbirth')
+            .then(function(result) {
+                return result;
             });
     },
 
