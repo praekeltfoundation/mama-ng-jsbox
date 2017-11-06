@@ -1588,30 +1588,30 @@ go.app = function() {
                         return go.utils
                             .get_identity_by_address({'msisdn': msisdn}, self.im)
                             .then(function(contact) {
-                                optedout = false;
-                                if (contact && contact.details && contact.details.addresses && contact.details.addresses.msisdn){
-                                    if(contact.details.addresses.msisdn[msisdn].optedout){
-                                        optedout = true;
-                                    }
-                                }
-
-                                if (optedout){
-                                    self.im.user.set_answer('mother_id', contact.id);
-                                    self.im.user.set_answer('receiver_id', contact.id);
-                                    if (bypassPostbirth) {
-                                        self.im.user.set_answer('state_pregnancy_status', 'prebirth');
-                                        return self.states.create('state_last_period_year');
-                                    } else {
-                                        return self.states.create('state_pregnancy_status');
-                                    }
-                                }
-                                else if (contact && contact.details && contact.details.receiver_role) {
-                                    self.im.user.set_answer('role_player', contact.details.receiver_role);
-                                    self.im.user.set_answer('contact_id', contact.id);
-                                    return 'state_msisdn_already_registered';
-                                } else {
+                                if (contact == undefined) {
                                     return 'state_save_identities';
                                 }
+
+                                return go.utils_project
+                                    .check_is_subscribed(
+                                        self.im, contact.id, 'prebirth.mother')
+                                    .then(function(subscribed) {
+                                        console.log(subscribed);
+                                        if (!subscribed || subscribed == 'no_active_subs_found') {
+                                            self.im.user.set_answer('mother_id', contact.id);
+                                            self.im.user.set_answer('receiver_id', contact.id);
+                                            if (bypassPostbirth) {
+                                                self.im.user.set_answer('state_pregnancy_status', 'prebirth');
+                                                return self.states.create('state_last_period_year');
+                                            } else {
+                                                return self.states.create('state_pregnancy_status');
+                                            }
+                                        } else {
+                                            self.im.user.set_answer('role_player', contact.details.receiver_role);
+                                            self.im.user.set_answer('contact_id', contact.id);
+                                            return 'state_msisdn_already_registered';
+                                        }
+                                    });
                             });
                     }
                 }

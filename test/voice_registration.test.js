@@ -725,7 +725,7 @@ describe("Mama Nigeria App", function() {
                         state: 'state_end_sms'
                     })
                     .check(function(api) {
-                        var expected_used = [6, 79, 83, 84, 85, 86];
+                        var expected_used = [6, 79, 83, 84, 85, 86, 94];
                         var fixts = api.http.fixtures.fixtures;
                         var fixts_used = [];
                         fixts.forEach(function(f, i) {
