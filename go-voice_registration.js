@@ -1675,7 +1675,25 @@ go.app = function() {
                             'creator_opts': {'retry_state': name}
                         };
                     } else {
-                        return 'state_msisdn_household';
+                        var msisdn = go.utils.normalize_msisdn(
+                            content, self.im.config.country_code);
+                        return go.utils
+                            .get_identity_by_address({'msisdn': msisdn}, self.im)
+                            .then(function(contact) {
+                                if (contact == undefined) {
+                                    return 'state_msisdn_household';
+                                }
+                                return go.utils_project
+                                    .check_is_subscribed(
+                                        self.im, contact.id, 'prebirth.mother')
+                                    .then(function(subscribed) {
+                                        if (!subscribed || subscribed == 'no_active_subs_found') {
+                                            return 'state_msisdn_household';
+                                        } else {
+                                            return 'state_msisdn_already_registered';
+                                        }
+                                    });
+                            });
                     }
                 }
             });

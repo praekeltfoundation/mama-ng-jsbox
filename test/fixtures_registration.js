@@ -1811,6 +1811,7 @@ module.exports = function() {
 
         // 43: get identity 09095555555 by msisdn - no results
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
