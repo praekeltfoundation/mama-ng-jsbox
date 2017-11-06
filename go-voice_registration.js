@@ -1555,10 +1555,12 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     var seperate = ["mother_father", "mother_family", "mother_friend"];
-                    if (seperate.indexOf(choice.value) !== -1) {
-                        return 'state_msisdn_mother';
-                    } else {
+                    if (seperate.indexOf(choice.value) == -1) {
+                        // Only one receiver
                         return 'state_msisdn';
+                    } else {
+                        // Mother and another receiver
+                        return 'state_msisdn_mother';
                     }
                 }
             });
