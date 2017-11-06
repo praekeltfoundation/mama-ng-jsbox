@@ -350,6 +350,53 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
+                it("to state_msisdn_already_registered (from state_msisdn_mother)", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'        // state_personnel_auth
+                            , '1'            // state_msg_receiver - mother_father
+                            , '07070050005'  // state_msisdn_mother
+                        )
+                        .check.interaction({
+                            state: 'state_msisdn_already_registered'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msisdn_already_registered_1.mp3'],
+                                    wait_for: '#',
+                                    barge_in: true
+                                }
+                            }
+                        })
+                        .run();
+                });
+                it("to state_msisdn_mother (from state_msisdn_already_registered)", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'        // state_personnel_auth
+                            , '1'            // state_msg_receiver - mother_father
+                            , '07070050005'  // state_msisdn_mother
+                            , '1'            // state_msisdn_already_registered
+                        )
+                        .check.interaction({
+                            state: 'state_msisdn_mother'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msisdn_mother_1.mp3'],
+                                    wait_for: '#',
+                                    barge_in: true
+                                }
+                            }
+                        })
+                        .run();
+                });
                 it("to state_msisdn_household (father message receiver)", function() {
                     return tester
                         .setup.user.addr('07030010001')
