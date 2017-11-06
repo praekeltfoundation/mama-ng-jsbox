@@ -1013,7 +1013,7 @@ describe("Mama Nigeria App", function() {
                     .check(function(api) {
                         // Important fixture here is 86, where the identity is
                         // patched to remove optout
-                        var expected_used = [6, 83, 85, 86, 87];
+                        var expected_used = [6, 83, 85, 86, 87, 94];
                         var fixts = api.http.fixtures.fixtures;
                         var fixts_used = [];
                         fixts.forEach(function(f, i) {
