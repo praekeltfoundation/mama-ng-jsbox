@@ -1596,7 +1596,6 @@ go.app = function() {
                                     .check_is_subscribed(
                                         self.im, contact.id, 'prebirth.mother')
                                     .then(function(subscribed) {
-                                        console.log(subscribed);
                                         if (!subscribed || subscribed == 'no_active_subs_found') {
                                             self.im.user.set_answer('mother_id', contact.id);
                                             self.im.user.set_answer('receiver_id', contact.id);
