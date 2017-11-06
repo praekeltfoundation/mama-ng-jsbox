@@ -221,17 +221,25 @@ go.app = function() {
                 helper_metadata: go.utils_project.make_voice_helper_data(
                     self.im, name, lang, speech_option, creator_opts.retry),
                 choices: [
-                    new Choice('state_msisdn', $("Register a different number")),
+                    new Choice('msisdn', $("Register a different number")),
                     new Choice('state_msg_receiver', $("Choose a different receiver")),
                     new Choice('exit', $("Exit"))
                 ],
                 next: function(choice) {
-                    if (choice.value != 'exit') {
-                        return choice.value;
-                    } else {
+                    if (choice.value == 'msisdn') {
+                      var seperate = ["mother_father", "mother_family", "mother_friend"];
+                      if (seperate.indexOf(self.im.user.answers.state_msg_receiver) == -1) {
+                          // Only one receiver
+                          return 'state_msisdn';
+                      } else {
+                          // Mother and another receiver
+                          return 'state_msisdn_mother';
+                      }
+                    } else if (choice.value == 'exit') {
                         return 'state_end_msisdn';
+                    } else {
+                        return choice.value;
                     }
-
                 }
             });
         });
