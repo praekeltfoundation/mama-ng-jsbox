@@ -1334,7 +1334,7 @@ go.utils_project = {
 
 // SUBSCRIPTION HELPERS
 
-    get_subscription_messageset_through_identity: function(im, mother_id, household_id) {
+    get_subscription_messageset_through_identity: function(im, mother_id) {
       // Return the messageset that an identity is subscribed to
 
         // get subscription
@@ -1342,21 +1342,7 @@ go.utils_project = {
             .get_active_subscription_by_identity(im, mother_id)
             .then(function(subscription) {
                 if (subscription === null) {
-                    // try to look for an active subscription on the household_id
-                    return go.utils
-                        .get_active_subscription_by_identity(im, household_id)
-                        .then(function(subscription) {
-                            if (subscription === null) {
-                                return 'no_active_subs_found';
-                            } else {
-                                // get messageset
-                                return go.utils
-                                    .get_messageset(im, subscription.messageset)
-                                    .then(function(messageset) {
-                                        return messageset;
-                                    });
-                            }
-                        });
+                    return 'no_active_subs_found';
                 } else {
                     // get messageset
                     return go.utils
