@@ -1588,7 +1588,7 @@ go.app = function() {
                         return go.utils
                             .get_identity_by_address({'msisdn': msisdn}, self.im)
                             .then(function(contact) {
-                                if (contact == undefined) {
+                                if (contact === undefined || contact === null) {
                                     return 'state_save_identities';
                                 }
 
@@ -1679,7 +1679,7 @@ go.app = function() {
                         return go.utils
                             .get_identity_by_address({'msisdn': msisdn}, self.im)
                             .then(function(contact) {
-                                if (contact == undefined) {
+                                if (contact === undefined || contact === null) {
                                     return 'state_msisdn_household';
                                 }
                                 return go.utils_project
