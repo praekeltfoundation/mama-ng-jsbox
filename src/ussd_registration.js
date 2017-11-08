@@ -219,10 +219,12 @@ go.app = function() {
                 ],
                 next: function(choice) {
                     var seperate = ["mother_father", "mother_family", "mother_friend"];
-                    if (seperate.indexOf(choice.value) !== -1) {
-                        return 'state_msisdn_mother';
-                    } else {
+                    if (seperate.indexOf(choice.value) == -1) {
+                        // Only one receiver
                         return 'state_msisdn';
+                    } else {
+                        // Mother and another receiver
+                        return 'state_msisdn_mother';
                     }
                 }
             });
@@ -263,25 +265,28 @@ go.app = function() {
                     return go.utils
                         .get_identity_by_address({'msisdn': msisdn}, self.im)
                         .then(function(contact) {
-                            if (    contact && contact.details && contact.details.addresses &&
-                                    contact.details.addresses.msisdn && contact.details.addresses.msisdn[msisdn] &&
-                                    contact.details.addresses.msisdn[msisdn].optedout) {
-                                self.im.user.set_answer('mother_id', contact.id);
-                                self.im.user.set_answer('receiver_id', contact.id);
-                                if (bypassPostbirth) {
-                                    self.im.user.set_answer('state_pregnancy_status', 'prebirth');
-                                    return self.states.create('state_last_period_month');
-                                } else {
-                                    return self.states.create('state_pregnancy_status');
-                                }
-                            }
-                            else if (contact && contact.details && contact.details.receiver_role) {
-                                self.im.user.set_answer('role_player', contact.details.receiver_role);
-                                self.im.user.set_answer('contact_id', contact.id);
-                                return 'state_msisdn_already_registered';
-                            } else {
+                            if (contact === undefined || contact === null) {
                                 return 'state_save_identities';
                             }
+                            return go.utils_project
+                                .check_is_subscribed(
+                                    self.im, contact.id, 'prebirth.mother')
+                                .then(function(subscribed) {
+                                    if (!subscribed || subscribed == 'no_active_subs_found') {
+                                        self.im.user.set_answer('mother_id', contact.id);
+                                        self.im.user.set_answer('receiver_id', contact.id);
+                                        if (bypassPostbirth) {
+                                            self.im.user.set_answer('state_pregnancy_status', 'prebirth');
+                                            return self.states.create('state_last_period_month');
+                                        } else {
+                                            return self.states.create('state_pregnancy_status');
+                                        }
+                                    } else {
+                                        self.im.user.set_answer('role_player', contact.details.receiver_role);
+                                        self.im.user.set_answer('contact_id', contact.id);
+                                        return 'state_msisdn_already_registered';
+                                    }
+                                });
                         });
                 }
             });
@@ -294,15 +299,24 @@ go.app = function() {
                 error: get_content(name)
                     .context({prefix: state_error_types.invalid_selection}),
                 choices: [
-                    new Choice('state_msisdn', $("Try a different number")),
+                    new Choice('msisdn', $("Try a different number")),
                     new Choice('state_msg_receiver', $("Choose a different receiver")),
                     new Choice('exit', $("Exit"))
                 ],
                 next: function(choice) {
-                    if (choice.value != 'exit') {
-                        return choice.value;
-                    } else {
+                    if (choice.value == 'msisdn') {
+                      var seperate = ["mother_father", "mother_family", "mother_friend"];
+                      if (seperate.indexOf(self.im.user.answers.state_msg_receiver) == -1) {
+                          // Only one receiver
+                          return 'state_msisdn';
+                      } else {
+                          // Mother and another receiver
+                          return 'state_msisdn_mother';
+                      }
+                    } else if (choice.value == 'exit') {
                         return 'state_end_msisdn';
+                    } else {
+                        return choice.value;
                     }
                 }
             });
@@ -327,7 +341,27 @@ go.app = function() {
                         return get_content(name).context({prefix: state_error_types.invalid_number});
                     }
                 },
-                next: 'state_msisdn_household'
+                next: function(content) {
+                    var msisdn = go.utils.normalize_msisdn(
+                        content, self.im.config.country_code);
+                    return go.utils
+                        .get_identity_by_address({'msisdn': msisdn}, self.im)
+                        .then(function(contact) {
+                            if (contact === undefined || contact === null) {
+                                return 'state_msisdn_household';
+                            }
+                            return go.utils_project
+                                .check_is_subscribed(
+                                    self.im, contact.id, 'prebirth.mother')
+                                .then(function(subscribed) {
+                                    if (!subscribed || subscribed == 'no_active_subs_found') {
+                                        return 'state_msisdn_household';
+                                    } else {
+                                        return 'state_msisdn_already_registered';
+                                    }
+                                });
+                        });
+                }
             });
         });
 

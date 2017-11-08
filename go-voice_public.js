@@ -1334,7 +1334,7 @@ go.utils_project = {
 
 // SUBSCRIPTION HELPERS
 
-    get_subscription_messageset_through_identity: function(im, mother_id, household_id) {
+    get_subscription_messageset_through_identity: function(im, mother_id) {
       // Return the messageset that an identity is subscribed to
 
         // get subscription
@@ -1342,21 +1342,7 @@ go.utils_project = {
             .get_active_subscription_by_identity(im, mother_id)
             .then(function(subscription) {
                 if (subscription === null) {
-                    // try to look for an active subscription on the household_id
-                    return go.utils
-                        .get_active_subscription_by_identity(im, household_id)
-                        .then(function(subscription) {
-                            if (subscription === null) {
-                                return 'no_active_subs_found';
-                            } else {
-                                // get messageset
-                                return go.utils
-                                    .get_messageset(im, subscription.messageset)
-                                    .then(function(messageset) {
-                                        return messageset;
-                                    });
-                            }
-                        });
+                    return 'no_active_subs_found';
                 } else {
                     // get messageset
                     return go.utils
@@ -1378,16 +1364,29 @@ go.utils_project = {
             });
     },
 
-    check_postbirth_subscription: function(im, mother_id) {
-      // Look up if the mother is subscribed to postbirth messages
+    check_is_subscribed: function(im, identity, partial_name) {
+      // Look up if the user is subscribed to a messageset containing partial_name
         return go.utils_project
-            .get_subscription_messageset_through_identity(im, mother_id)
+            .get_subscription_messageset_through_identity(im, identity)
             .then(function(messageset) {
                 if (messageset === 'no_active_subs_found') {
                     return 'no_active_subs_found';
                 } else {
-                    return messageset.short_name.substring(0,9) === 'postbirth';
+                    if (messageset.short_name.indexOf(partial_name) == -1) {
+                        return false;
+                    } else {
+                        return true;
+                    }
                 }
+            });
+    },
+
+    check_postbirth_subscription: function(im, mother_id) {
+      // Look up if the mother is subscribed to postbirth messages
+        return go.utils_project
+            .check_is_subscribed(im, mother_id, 'postbirth')
+            .then(function(result) {
+                return result;
             });
     },
 

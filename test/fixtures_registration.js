@@ -167,7 +167,7 @@ module.exports = function() {
                             "registered_at": "2015-07-22 00:00:00",
                             "registered_by": "cb245673-aa41-4302-ac47-00000000001",
                             "chew_phone_used": true,
-                            "msg_receiver": "mother",
+                            "receiver_role": "mother",
                             "state_at_registration": "pregnant",
                             "state_current": "pregnant",
                             "lang": "eng_NG",
@@ -218,7 +218,7 @@ module.exports = function() {
                             "registered_at": "2015-07-22 00:00:00",
                             "registered_by": "cb245673-aa41-4302-ac47-00000000001",
                             "chew_phone_used": true,
-                            "msg_receiver": "mother",
+                            "receiver_role": "mother",
                             "state_at_registration": "pregnant",
                             "state_current": "pregnant",
                             "lang": "eng_NG",
@@ -483,7 +483,7 @@ module.exports = function() {
                         "opted_out": false,
                         "has_registered": true,
                         "registered_at": "2015-07-22 00:00:00",
-                        "msg_receiver": "mother",
+                        "receiver_role": "mother",
                         "state_at_registration": "pregnant",
                         "state_current": "pregnant",
                         "lang": "eng_NG",
@@ -526,7 +526,7 @@ module.exports = function() {
                         "opted_out": false,
                         "has_registered": true,
                         "registered_at": "2015-07-22 00:00:00",
-                        "msg_receiver": "mother",
+                        "receiver_role": "mother",
                         "state_at_registration": "pregnant",
                         "state_current": "pregnant",
                         "lang": "eng_NG",
@@ -564,7 +564,7 @@ module.exports = function() {
                         "opted_out": false,
                         "has_registered": true,
                         "registered_at": "2015-07-22 00:00:00",
-                        "msg_receiver": "mother",
+                        "receiver_role": "mother",
                         "state_at_registration": "baby",
                         "state_current": "baby",
                         "lang": "eng_NG",
@@ -591,7 +591,7 @@ module.exports = function() {
                         "opted_out": false,
                         "has_registered": true,
                         "registered_at": "2015-07-22 00:00:00",
-                        "msg_receiver": "mother",
+                        "receiver_role": "mother",
                         "state_at_registration": "baby",
                         "state_current": "baby",
                         "lang": "eng_NG",
@@ -732,7 +732,7 @@ module.exports = function() {
                         "opted_out": false,
                         "has_registered": true,
                         "registered_at": "2015-07-22 00:00:00",
-                        "msg_receiver": "other",
+                        "receiver_role": "other",
                         "state_at_registration": "pregnant",
                         "state_current": "pregnant",
                         "lang": "eng_NG",
@@ -760,7 +760,7 @@ module.exports = function() {
                         "opted_out": false,
                         "has_registered": true,
                         "registered_at": "2015-07-22 00:00:00",
-                        "msg_receiver": "other",
+                        "receiver_role": "other",
                         "state_at_registration": "pregnant",
                         "state_current": "pregnant",
                         "lang": "eng_NG",
@@ -825,13 +825,13 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-00000000005',
-                    'active': 'True'
+                    'active': 'true'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
                     'Content-Type': ['application/json']
                 },
-                'url': "http://localhost:8002/api/v1/subscriptions/"
+                'url': "http://localhost:8005/api/v1/subscriptions/"
             },
             'response': {
                 "code": 200,
@@ -960,7 +960,7 @@ module.exports = function() {
                         "opted_out": false,
                         "has_registered": true,
                         "registered_at": "2015-07-22 00:00:00",
-                        "msg_receiver": "mother",
+                        "receiver_role": "mother",
                         "state_at_registration": "pregnant",
                         "state_current": "baby",
                         "lang": "eng_NG",
@@ -989,7 +989,7 @@ module.exports = function() {
                         "opted_out": false,
                         "has_registered": true,
                         "registered_at": "2015-07-22 00:00:00",
-                        "msg_receiver": "mother",
+                        "receiver_role": "mother",
                         "state_at_registration": "pregnant",
                         "state_current": "baby",
                         "lang": "eng_NG",
@@ -1071,7 +1071,7 @@ module.exports = function() {
                         "opted_out": false,
                         "has_registered": true,
                         "registered_at": "2015-07-22 00:00:00",
-                        "msg_receiver": "mother",
+                        "receiver_role": "mother",
                         "state_at_registration": "pregnant",
                         "state_current": "pregnant",
                         "lang": "eng_NG",
@@ -1102,7 +1102,7 @@ module.exports = function() {
                         "opted_out": false,
                         "has_registered": true,
                         "registered_at": "2015-07-22 00:00:00",
-                        "msg_receiver": "mother",
+                        "receiver_role": "mother",
                         "state_at_registration": "pregnant",
                         "state_current": "pregnant",
                         "lang": "eng_NG",
@@ -1192,7 +1192,7 @@ module.exports = function() {
                         "optout_reason": "miscarriage",
                         "has_registered": true,
                         "registered_at": "2015-07-22 00:00:00",
-                        "msg_receiver": "mother",
+                        "receiver_role": "mother",
                         "state_at_registration": "pregnant",
                         "state_current": "pregnant",
                         "lang": "eng_NG",
@@ -1224,7 +1224,7 @@ module.exports = function() {
                         "optout_reason": "miscarriage",
                         "has_registered": true,
                         "registered_at": "2015-07-22 00:00:00",
-                        "msg_receiver": "mother",
+                        "receiver_role": "mother",
                         "state_at_registration": "pregnant",
                         "state_current": "pregnant",
                         "lang": "eng_NG",
@@ -1263,7 +1263,7 @@ module.exports = function() {
                         "optout_reason": "not_useful",
                         "has_registered": true,
                         "registered_at": "2015-07-22 00:00:00",
-                        "msg_receiver": "mother",
+                        "receiver_role": "mother",
                         "state_at_registration": "pregnant",
                         "state_current": "pregnant",
                         "lang": "eng_NG",
@@ -1295,7 +1295,7 @@ module.exports = function() {
                         "optout_reason": "not_useful",
                         "has_registered": true,
                         "registered_at": "2015-07-22 00:00:00",
-                        "msg_receiver": "mother",
+                        "receiver_role": "mother",
                         "state_at_registration": "pregnant",
                         "state_current": "pregnant",
                         "lang": "eng_NG",
@@ -1334,7 +1334,7 @@ module.exports = function() {
                         "optout_reason": "other",
                         "has_registered": true,
                         "registered_at": "2015-07-22 00:00:00",
-                        "msg_receiver": "mother",
+                        "receiver_role": "mother",
                         "state_at_registration": "pregnant",
                         "state_current": "pregnant",
                         "lang": "eng_NG",
@@ -1366,7 +1366,7 @@ module.exports = function() {
                         "optout_reason": "other",
                         "has_registered": true,
                         "registered_at": "2015-07-22 00:00:00",
-                        "msg_receiver": "mother",
+                        "receiver_role": "mother",
                         "state_at_registration": "pregnant",
                         "state_current": "pregnant",
                         "lang": "eng_NG",
@@ -1792,18 +1792,26 @@ module.exports = function() {
                 },
                 'url': 'http://localhost:8001/api/v1/identities/search/',
             },
-            'response': {
+            'responses': [{
                 "code": 200,
                 "data": {
                     "next": null,
                     "previous": null,
                     "results": []
                 }
-            }
+            }, {
+                "code": 200,
+                "data": {
+                    "next": null,
+                    "previous": null,
+                    "results": []
+                }
+            }]
         },
 
         // 43: get identity 09095555555 by msisdn - no results
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -3992,6 +4000,102 @@ module.exports = function() {
                     "operator": "cb245673-aa41-4302-ac47-00000000007",
                     "created_at": "2015-07-10T06:13:29.693272Z",
                     "updated_at":"2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
+
+        // 92: messageset 1
+        {
+            'repeatable': true,
+            'request': {
+                'method': 'GET',
+                'params': {},
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': 'http://localhost:8005/api/v1/messageset/1/',
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "id": 1,
+                    "short_name": "prebirth.mother.text.10_42",
+                    "content_type": "text",
+                    "notes": "",
+                    "next_set": 2,
+                    "default_schedule": 1,
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at":"2015-07-10T06:13:29.693298Z"
+                }
+            }
+        },
+
+        // 93: get active subscriptions for 7777
+        {
+            'repeatable': true,
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'identity': '3f7c8851-5204-43f7-af7f-009097777777',
+                    'active': 'true'
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': "http://localhost:8005/api/v1/subscriptions/"
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "next": null,
+                    "previous": null,
+                    "results": [
+                        {
+                            "url": "http://localhost:8005/api/v1/subscriptions/1234-77777/",
+                            "id": "1234-77777",
+                            "version": 1,
+                            "identity": "http://localhost:8001/api/v1/identities/3f7c8851-5204-43f7-af7f-009097777777/",
+                            "messageset": 1,
+                            "next_sequence_number": 7,
+                            "lang": "eng_NG",
+                            "active": true,
+                            "completed": false,
+                            "schedule": 1,
+                            "process_status": 0,
+                            "metadata": {
+                                "msg_type": "audio",
+                            },
+                            "created_at": "2015-07-30T15:19:01.734812Z",
+                            "updated_at": "2015-08-05T07:00:00.826924Z"
+                        }
+                    ]
+                }
+            }
+        },
+
+        // 94: get active subscriptions for 00009
+        {
+            'repeatable': true,
+            'request': {
+                'method': 'GET',
+                'params': {
+                    'identity': 'cb245673-aa41-4302-ac47-00000000009',
+                    'active': 'true'
+                },
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': "http://localhost:8005/api/v1/subscriptions/"
+            },
+            'response': {
+                "code": 200,
+                "data": {
+                    "next": null,
+                    "previous": null,
+                    "results": []
                 }
             }
         },

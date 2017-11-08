@@ -293,11 +293,47 @@ describe("Mama Nigeria App", function() {
                         {session_event: 'new'}  // dial in
                         , '12345'  // state_auth_code - personnel code
                         , '1'       // state_msg_receiver - mother_father
-                        , '08033048990' // state_msisdn_mother
+                        , '08080030003' // state_msisdn_mother
                     )
                     .check.interaction({
                         state: 'state_msisdn_household',
                         reply: "Please enter the mobile number of the father. They must consent to receiving messages."
+                    })
+                    .run();
+            });
+            it("to state_msisdn_mother_already_registered", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '1'       // state_msg_receiver - mother_father
+                        , '07070050005' // state_msisdn_mother
+                    )
+                    .check.interaction({
+                        state: 'state_msisdn_already_registered',
+                        reply: [
+                            "Sorry, this number is already registered. They must opt-out before continuing.",
+                            "1. Try a different number",
+                            "2. Choose a different receiver",
+                            "3. Exit"
+                        ].join('\n')
+                    })
+                    .run();
+            });
+            it("to state_msisdn_mother (from state_msisdn_already_registered)", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '1' // state_msg_receiver - mother_father
+                        , '07070050005'  // state_msisdn_mother
+                        , '1' // msisdn - try different number
+                    )
+                    .check.interaction({
+                        state: 'state_msisdn_mother',
+                        reply: "Please enter the mobile number of the mother. They must consent to receiving messages."
                     })
                     .run();
             });
@@ -977,7 +1013,7 @@ describe("Mama Nigeria App", function() {
                     .check(function(api) {
                         // Important fixture here is 86, where the identity is
                         // patched to remove optout
-                        var expected_used = [6, 83, 85, 86, 87];
+                        var expected_used = [6, 83, 85, 86, 87, 94];
                         var fixts = api.http.fixtures.fixtures;
                         var fixts_used = [];
                         fixts.forEach(function(f, i) {
