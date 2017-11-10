@@ -258,7 +258,7 @@ describe("Mama Nigeria App", function() {
                     })
                     .run();
             });
-            it("to state_msisdn (from state_msg_receiverd)", function() {
+            it("to state_msisdn (from state_msg_receiver)", function() {
                 return tester
                     .setup.user.addr('08080020002')
                     .inputs(
@@ -269,6 +269,35 @@ describe("Mama Nigeria App", function() {
                     .check.interaction({
                         state: 'state_msisdn',
                         reply: "Please enter the mobile number of the family member. They must consent to receiving messages."
+                    })
+                    .run();
+            });
+            it("to state_last_period_month (from state_msisdn - if receiver isn't mother_only)", function() {
+                return tester
+                    .setup.user.addr('08080020002')
+                    .inputs(
+                        {session_event: 'new'}  // dial in
+                        , '12345'  // state_auth_code - personnel code
+                        , '7'       // state_msg_receiver - family_only
+                        , '09097777777'  // already registered as mother
+                    )
+                    .check.interaction({
+                        state: 'state_last_period_month',
+                        reply: [
+                            "Please select the month the woman started her last period:",
+                            "1. January 2015",
+                            "2. December 2014",
+                            "3. November 2014",
+                            "4. October 2014",
+                            "5. September 2014",
+                            "6. More"
+                        ].join('\n')
+                    })
+                    .check(function(api) {
+                        var fixt78 = api.http.fixtures.fixtures[78];
+                        assert.equal(fixt78.uses, 2);
+                        var fixt95 = api.http.fixtures.fixtures[95];
+                        assert.equal(fixt95.uses, 1);
                     })
                     .run();
             });
