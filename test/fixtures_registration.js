@@ -3388,6 +3388,7 @@ module.exports = function() {
 
         // 78: get identity 09097777777 by msisdn
         {
+            'repeatable': true,
             'request': {
                 'method': 'GET',
                 'params': {
@@ -4096,6 +4097,42 @@ module.exports = function() {
                     "next": null,
                     "previous": null,
                     "results": []
+                }
+            }
+        },
+
+        // 95: create identity communicate through 09097777777
+        {
+            'request': {
+                'method': 'POST',
+                'headers': {
+                    'Authorization': ['Token test_key'],
+                    'Content-Type': ['application/json']
+                },
+                'url': "http://localhost:8001/api/v1/identities/",
+                'data':  {
+                    "communicate_through": "3f7c8851-5204-43f7-af7f-009097777777",
+                    "operator": "cb245673-aa41-4302-ac47-00000000007",
+                    "details": {
+                        "default_addr_type": null,
+                        "addresses":{}
+                    }
+                },
+            },
+            'response': {
+                "code": 201,
+                "data": {
+                    "url": "http://localhost:8001/api/v1/identities/cb245673-aa41-4302-ac47-1234567890/",
+                    "id": "cb245673-aa41-4302-ac47-1234567890",
+                    "version": 1,
+                    "communicate_through": "3f7c8851-5204-43f7-af7f-009097777777",
+                    "details": {
+                        "default_addr_type": null,
+                        "addresses":{}
+                    },
+                    "operator": "cb245673-aa41-4302-ac47-00000000007",
+                    "created_at": "2015-07-10T06:13:29.693272Z",
+                    "updated_at": "2015-07-10T06:13:29.693298Z"
                 }
             }
         },

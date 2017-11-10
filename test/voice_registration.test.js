@@ -638,13 +638,36 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                it("to state_msisdn_already_registered", function() {
+                it("to state_last_period_year (because it's family_only)", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
                             , '12345'        // state_personnel_auth
                             , '7'            // state_msg_receiver - family member
+                            , '09097777777'  // state_msisdn
+                        )
+                        .check.interaction({
+                            state: 'state_last_period_year'
+                        })
+                        .check.reply.properties({
+                            helper_metadata: {
+                                voice: {
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_last_period_year_1.mp3'],
+                                    wait_for: '#',
+                                    barge_in: true
+                                }
+                            }
+                        })
+                        .run();
+                });
+                it("to state_msisdn_already_registered", function() {
+                    return tester
+                        .setup.user.addr('07030010001')
+                        .inputs(
+                            {session_event: 'new'}
+                            , '12345'        // state_personnel_auth
+                            , '2'            // state_msg_receiver - mother_only
                             , '09097777777'  // state_msisdn
                         )
                         .check.interaction({
@@ -667,7 +690,7 @@ describe("Mama Nigeria App", function() {
                         .inputs(
                             {session_event: 'new'}
                             , '12345'        // state_personnel_auth
-                            , '7'            // state_msg_receiver - family member
+                            , '2'            // state_msg_receiver - mother_only
                             , '09097777777'  // state_msisdn
                             , '1'  // state_msisdn_already_registered - register a diff num
                         )
@@ -677,7 +700,7 @@ describe("Mama Nigeria App", function() {
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msisdn_2.mp3'],
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_msisdn_1.mp3'],
                                     wait_for: '#',
                                     barge_in: true
                                 }
@@ -691,7 +714,7 @@ describe("Mama Nigeria App", function() {
                         .inputs(
                             {session_event: 'new'}
                             , '12345'        // state_personnel_auth
-                            , '7'            // state_msg_receiver - family member
+                            , '2'            // state_msg_receiver - mother_only
                             , '09097777777'  // state_msisdn
                             , '2'  // state_msisdn_already_registered - choose diff receiver
                         )
@@ -709,13 +732,13 @@ describe("Mama Nigeria App", function() {
                         })
                         .run();
                 });
-                it("to state_msg_receiver (from state_msisdn_already_registered)", function() {
+                it("to state_end_msisdn (from state_msisdn_already_registered)", function() {
                     return tester
                         .setup.user.addr('07030010001')
                         .inputs(
                             {session_event: 'new'}
                             , '12345'        // state_personnel_auth
-                            , '7'            // state_msg_receiver - family member
+                            , '2'            // state_msg_receiver - mother_only
                             , '09097777777'  // state_msisdn
                             , '3'  // state_msisdn_already_registered - exit
                         )
