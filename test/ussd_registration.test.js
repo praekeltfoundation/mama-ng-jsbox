@@ -300,7 +300,7 @@ describe("Mama Nigeria App", function() {
                         , '12345'  // state_auth_code - personnel code
                         , '2' // state_msg_receiver - mother_only
                         , '09097777777'  // state_msisdn
-                        , '1' // state_end_msisdn - try different number
+                        , '1' // state_msisdn - try different number
                     )
                     .check.interaction({
                         state: 'state_msisdn',
@@ -333,7 +333,7 @@ describe("Mama Nigeria App", function() {
                         , '12345'  // state_auth_code - personnel code
                         , '2' // state_msg_receiver - mother_only
                         , '09097777777'  // state_msisdn
-                        , '2' // state_end_msisdn - choose different receiver
+                        , '2' // state_msg_receiver - choose different receiver
                     )
                     .check.interaction({
                         state: 'state_msg_receiver',
@@ -392,7 +392,7 @@ describe("Mama Nigeria App", function() {
                         , '12345'  // state_auth_code - personnel code
                         , '1' // state_msg_receiver - mother_father
                         , '07070050005'  // state_msisdn_mother
-                        , '1' // msisdn - try different number
+                        , '1' // state_msisdn_mother - try different number
                     )
                     .check.interaction({
                         state: 'state_msisdn_mother',
