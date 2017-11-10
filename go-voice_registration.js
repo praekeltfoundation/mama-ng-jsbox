@@ -1588,7 +1588,8 @@ go.app = function() {
                         return go.utils
                             .get_identity_by_address({'msisdn': msisdn}, self.im)
                             .then(function(contact) {
-                                if (contact === undefined || contact === null) {
+                                if (contact === undefined || contact === null ||
+                                        self.im.user.answers.state_msg_receiver != 'mother_only') {
                                     return 'state_save_identities';
                                 }
 
