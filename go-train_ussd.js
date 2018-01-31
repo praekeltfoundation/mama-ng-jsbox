@@ -537,6 +537,18 @@ go.utils = {
             });
     },
 
+    resend_all_subscriptions: function(im, identity) {
+        return go.utils
+            .get_active_subscriptions_by_identity(im, identity.id)
+            .then(function(subscriptions){
+                for (var i=0; i<subscriptions.length; i++) {
+                    subscription = subscriptions[i];
+                    var endpoint = 'subscriptions/' + subscription.id + '/resend';
+                    go.utils.service_api_call('subscriptions', 'post', {}, {}, endpoint, im);
+                }
+            });
+    },
+
 
 // MESSAGESET HELPERS
 
