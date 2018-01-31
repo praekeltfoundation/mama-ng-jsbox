@@ -41,7 +41,6 @@ module.exports = function (grunt) {
                 voice_public: [
                     'src/index.js',
                     'src/utils.js',
-                    'src/utils_project.js',
                     '<%= paths.src.app.voice_public %>',
                     'src/init.js'
                 ],
@@ -120,7 +119,6 @@ module.exports = function (grunt) {
                 voice_missed_call_service:[
                     'test/setup.js',
                     'src/utils.js',
-                    'src/utils_project.js',
                     '<%= paths.src.app.voice_missed_call_service %>',
                     'test/voice_missed_call_service.test.js'
                 ],

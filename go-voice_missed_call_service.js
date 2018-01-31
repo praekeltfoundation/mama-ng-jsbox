@@ -1420,15 +1420,11 @@ go.app = function() {
     var App = vumigo.App;
     var EndState = vumigo.states.EndState;
 
-
     var GoApp = App.extend(function(self) {
         App.call(self, 'state_start');
 
         self.add = function(name, creator) {
             self.states.add(name, function(name, opts) {
-                var pass_opts = opts || {};
-                pass_opts.name = name;
-
                 return creator(name, opts);
             });
         };

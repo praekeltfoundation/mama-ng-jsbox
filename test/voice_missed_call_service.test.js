@@ -4,7 +4,7 @@ var AppTester = vumigo.AppTester;
 
 
 describe("Mama Nigeria App", function() {
-    describe("Voice Public", function() {
+    describe("Missed Call Service", function() {
         var app;
         var tester;
 
