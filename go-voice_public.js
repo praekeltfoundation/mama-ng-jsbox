@@ -12,6 +12,7 @@ var assert = require('assert');
 var JsonApi = vumigo.http.api.JsonApi;
 var Choice = vumigo.states.Choice;
 var url_utils = require('url');
+var Q = require('q');
 
 // GENERIC UTILS
 go.utils = {
@@ -541,11 +542,12 @@ go.utils = {
         return go.utils
             .get_active_subscriptions_by_identity(im, identity.id)
             .then(function(subscriptions){
-                for (var i=0; i<subscriptions.length; i++) {
-                    subscription = subscriptions[i];
-                    var endpoint = 'subscriptions/' + subscription.id + '/resend';
-                    go.utils.service_api_call('subscriptions', 'post', {}, {}, endpoint, im);
-                }
+                var promises = [];
+                promises = subscriptions.map(function(result){
+                    var endpoint = 'subscriptions/' + result.id + '/resend1';
+                    return promises.push(go.utils.service_api_call('subscriptions', 'post', {}, {}, endpoint, im));
+                });
+                return Q.all(promises);
             });
     },
 
