@@ -538,7 +538,7 @@ go.utils = {
                 var promises = [];
                 promises = subscriptions.map(function(result){
                     var endpoint = 'subscriptions/' + result.id + '/resend';
-                    return promises.push(go.utils.service_api_call('subscriptions', 'post', {}, {}, endpoint, im));
+                    return go.utils.service_api_call('subscriptions', 'post', {}, {}, endpoint, im);
                 });
                 return Q.all(promises);
             });

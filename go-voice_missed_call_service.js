@@ -544,8 +544,8 @@ go.utils = {
             .then(function(subscriptions){
                 var promises = [];
                 promises = subscriptions.map(function(result){
-                    var endpoint = 'subscriptions/' + result.id + '/resend1';
-                    return promises.push(go.utils.service_api_call('subscriptions', 'post', {}, {}, endpoint, im));
+                    var endpoint = 'subscriptions/' + result.id + '/resend';
+                    return go.utils.service_api_call('subscriptions', 'post', {}, {}, endpoint, im);
                 });
                 return Q.all(promises);
             });
@@ -1442,7 +1442,7 @@ go.app = function() {
                     if (identity) {
                         return go.utils
                             .resend_all_subscriptions(self.im, identity)
-                            .then(function(count){
+                            .then(function(results){
                                 return self.states.create("state_end");
                             });
                     }

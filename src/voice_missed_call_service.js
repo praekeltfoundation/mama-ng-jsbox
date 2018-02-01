@@ -23,7 +23,7 @@ go.app = function() {
                     if (identity) {
                         return go.utils
                             .resend_all_subscriptions(self.im, identity)
-                            .then(function(count){
+                            .then(function(results){
                                 return self.states.create("state_end");
                             });
                     }
