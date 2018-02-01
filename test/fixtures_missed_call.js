@@ -12,7 +12,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'details__addresses__msisdn': '+2345059991111'
+                    'details__addresses__msisdn': IDENTITY_WITH_ACTIVE_SUBSCRIPTION_MSISDN
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -33,7 +33,7 @@ module.exports = function() {
                             "default_addr_type": "msisdn",
                             "addresses": {
                                 "msisdn": {
-                                    "+2345059991111": {}
+                                    IDENTITY_WITH_ACTIVE_SUBSCRIPTION_MSISDN: {}
                                 }
                             },
                             "receiver_role": "mother",
@@ -115,7 +115,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'details__addresses__msisdn': '+2345059992222'
+                    'details__addresses__msisdn': IDENTITY_WITH_NO_SUBSCRIPTION_MSISDN
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -136,7 +136,7 @@ module.exports = function() {
                             "default_addr_type": "msisdn",
                             "addresses": {
                                 "msisdn": {
-                                    "+2345059992222": {}
+                                    IDENTITY_WITH_NO_SUBSCRIPTION_MSISDN: {}
                                 }
                             },
                             "receiver_role": "mother",
@@ -182,7 +182,7 @@ module.exports = function() {
             'request': {
                 'method': 'GET',
                 'params': {
-                    'details__addresses__msisdn': '+2345059993333'
+                    'details__addresses__msisdn': NO_IDENTITY_NO_SUBSCRIPTION_MSISDN
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],

@@ -2,6 +2,10 @@ var vumigo = require('vumigo_v02');
 var fixtures = require('./fixtures_missed_call');
 var AppTester = vumigo.AppTester;
 
+IDENTITY_WITH_ACTIVE_SUBSCRIPTION_MSISDN = '+2345059991111';
+IDENTITY_WITH_NO_SUBSCRIPTION_MSISDN = '+2345059992222';
+NO_IDENTITY_NO_SUBSCRIPTION_MSISDN = '+2345059993333';
+
 
 describe("Mama Nigeria App", function() {
     describe("Missed Call Service", function() {
@@ -40,7 +44,7 @@ describe("Mama Nigeria App", function() {
         describe("Start of session", function() {
             it("Identity and active subscription", function() {
                 return tester
-                    .setup.user.addr('+2345059991111')
+                    .setup.user.addr(IDENTITY_WITH_ACTIVE_SUBSCRIPTION_MSISDN)
                     .inputs(
                         {session_event: 'new'}
                     )
@@ -55,7 +59,7 @@ describe("Mama Nigeria App", function() {
 
             it("Identity and no subscription", function() {
                 return tester
-                    .setup.user.addr('+2345059992222')
+                    .setup.user.addr(IDENTITY_WITH_NO_SUBSCRIPTION_MSISDN)
                     .inputs(
                         {session_event: 'new'}
                     )
@@ -70,7 +74,7 @@ describe("Mama Nigeria App", function() {
 
             it("No identity or subscription", function() {
                 return tester
-                    .setup.user.addr('+2345059993333')
+                    .setup.user.addr(NO_IDENTITY_NO_SUBSCRIPTION_MSISDN)
                     .inputs(
                         {session_event: 'new'}
                     )
