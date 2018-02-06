@@ -825,7 +825,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-00000000005',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -4039,7 +4039,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': '3f7c8851-5204-43f7-af7f-009097777777',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -4083,7 +4083,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': 'cb245673-aa41-4302-ac47-00000000009',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],

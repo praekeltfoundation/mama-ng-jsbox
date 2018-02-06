@@ -492,7 +492,7 @@ go.utils = {
 
         var params = {
             identity: identity_id,
-            active: true
+            active: "True"
         };
         var endpoint = 'subscriptions/';
         return go.utils
