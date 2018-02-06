@@ -54,7 +54,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': '3f7c8851-5204-43f7-af7f-005059991111',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -157,7 +157,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': '3f7c8851-5204-43f7-af7f-005059992222',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],

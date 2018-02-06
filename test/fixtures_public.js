@@ -693,7 +693,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': '3f7c8851-5204-43f7-af7f-005059992222',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -788,7 +788,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': '3f7c8851-5204-43f7-af7f-005059995555',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -883,7 +883,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': '3f7c8851-5204-43f7-af7f-005059996666',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -2460,7 +2460,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': '3f7c8851-5204-43f7-af7f-005059999999',
-                    'active': 'true'
+                    'active': 'True'
                 },
                 'headers': {
                     'Authorization': ['Token test_key'],
@@ -2471,7 +2471,7 @@ module.exports = function() {
             'response': {
                 "code": 200,
                 "data": {
-                    "next": 'http://localhost:8005/api/v1/subscriptions/?identity=3f7c8851-5204-43f7-af7f-005059999999&active=true&cursor=1',
+                    "next": 'http://localhost:8005/api/v1/subscriptions/?identity=3f7c8851-5204-43f7-af7f-005059999999&active=True&cursor=1',
                     "previous": null,
                     "results": [
                         {
@@ -3650,7 +3650,7 @@ module.exports = function() {
                 'method': 'GET',
                 'params': {
                     'identity': '3f7c8851-5204-43f7-af7f-005059999999',
-                    'active': 'true',
+                    'active': 'True',
                     'cursor': '1'
                 },
                 'headers': {
@@ -3663,7 +3663,7 @@ module.exports = function() {
                 "code": 200,
                 "data": {
                     "next": null,
-                    "previous": 'http://localhost:8005/api/v1/subscriptions/?identity=3f7c8851-5204-43f7-af7f-005059999999&active=true&cursor=0',
+                    "previous": 'http://localhost:8005/api/v1/subscriptions/?identity=3f7c8851-5204-43f7-af7f-005059999999&active=True&cursor=0',
                     "results": [
                         {
                             'url': 'http://localhost:8002/api/v1/subscriptions/51fcca25-2e85-4c44-subscription-9999',
