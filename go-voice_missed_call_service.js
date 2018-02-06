@@ -1435,7 +1435,8 @@ go.app = function() {
 
         self.states.add('state_start', function() {
             var msisdn = go.utils.normalize_msisdn(
-                self.im.user.addr, self.im.config.country_code);
+                self.im.msg.helper_metadata.caller_id_number,
+                self.im.config.country_code);
             return go.utils
                 .get_identity_by_address({'msisdn': msisdn}, self.im)
                 .then(function(identity){
@@ -1457,7 +1458,8 @@ go.app = function() {
 
         // EndState
         self.add('state_end', function(name) {
-            return new EndState(name, {text: ''});
+            // freeswitch crashes if the text is empty
+            return new EndState(name, {text: 'Thank you.'});
         });
 
     });
