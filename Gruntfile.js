@@ -241,36 +241,36 @@ module.exports = function (grunt) {
             options: {
                 reporter: 'spec'
             },
-            // test_ussd_registration: {
-            //     src: ['<%= paths.test.ussd_registration %>']
-            // },
-            // test_voice_registration: {
-            //     src: ['<%= paths.test.voice_registration %>']
-            // },
-            // test_ussd_public: {
-            //     src: ['<%= paths.test.ussd_public %>']
-            // },
-            // test_voice_public: {
-            //     src: ['<%= paths.test.voice_public %>']
-            // },
+            test_ussd_registration: {
+                src: ['<%= paths.test.ussd_registration %>']
+            },
+            test_voice_registration: {
+                src: ['<%= paths.test.voice_registration %>']
+            },
+            test_ussd_public: {
+                src: ['<%= paths.test.ussd_public %>']
+            },
+            test_voice_public: {
+                src: ['<%= paths.test.voice_public %>']
+            },
             test_ussd_community: {
                 src: ['<%= paths.test.ussd_community %>']
             },
-            // test_voice_missed_call_service:{
-            //     src: ['<%= paths.test.voice_missed_call_service %>']
-            // },
-            // test_sms_inbound: {
-            //      src: ['<%= paths.test.sms_inbound %>']
-            // },
-            // test_train_voice: {
-            //     src: ['<%= paths.test.train_voice %>']
-            // },
-            // test_train_ussd: {
-            //     src: ['<%= paths.test.train_ussd %>']
-            // },
-            // test_utils_project: {
-            //     src: ['<%= paths.test.utils_project %>']
-            // }
+            test_voice_missed_call_service:{
+                src: ['<%= paths.test.voice_missed_call_service %>']
+            },
+            test_sms_inbound: {
+                 src: ['<%= paths.test.sms_inbound %>']
+            },
+            test_train_voice: {
+                src: ['<%= paths.test.train_voice %>']
+            },
+            test_train_ussd: {
+                src: ['<%= paths.test.train_ussd %>']
+            },
+            test_utils_project: {
+                src: ['<%= paths.test.utils_project %>']
+            }
         }
     });
 
