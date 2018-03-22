@@ -418,8 +418,8 @@ go.app = function() {
                 next: function(choice) {
                     self.im.user.set_answer('state_pregnancy_status', 'public');
                     if (choice.value === 'audio') {
-                        self.im.user.set_answer('state_voice_days', 'tue');
-                        self.im.user.set_answer('state_voice_times', '6_8');
+                        self.im.user.set_answer('state_voice_days', self.im.config.default_day);
+                        self.im.user.set_answer('state_voice_times', self.im.config.default_time);
 
                         return go.utils_project
                             .finish_registration(self.im)

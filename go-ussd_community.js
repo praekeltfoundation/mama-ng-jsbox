@@ -1537,7 +1537,7 @@ go.app = function() {
             "invalid_number": $("Sorry, invalid number. ")
         };
 
-    // TIMEOUT HANDLING
+        // TIMEOUT HANDLING
 
         // override normal state adding
         self.add = function(name, creator) {
@@ -1574,7 +1574,7 @@ go.app = function() {
         });
 
 
-    // START STATE
+        // START STATE
 
         self.add('state_start', function(name) {
             self.im.user.answers = {};  // reset answers
@@ -1850,8 +1850,8 @@ go.app = function() {
                 next: function(choice) {
                     self.im.user.set_answer('state_pregnancy_status', 'public');
                     if (choice.value === 'audio') {
-                        self.im.user.set_answer('state_voice_days', 'tue');
-                        self.im.user.set_answer('state_voice_times', '6_8');
+                        self.im.user.set_answer('state_voice_days', self.im.config.default_day);
+                        self.im.user.set_answer('state_voice_times', self.im.config.default_time);
 
                         return go.utils_project
                             .finish_registration(self.im)

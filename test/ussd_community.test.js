@@ -29,6 +29,8 @@ describe("Mama Nigeria App", function() {
                     env: 'test',
                     metric_store: 'test_metric_store',
                     testing_today: '2015-04-03 06:07:08.999',
+                    default_day: 'tue',
+                    default_time: '6_8',
                     services: {
                         identities: {
                             api_token: 'test_token_identities',
