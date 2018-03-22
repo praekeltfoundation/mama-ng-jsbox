@@ -23,6 +23,19 @@ go.utils_project = {
             });
     },
 
+    find_corp_with_unique_code: function(im, code) {
+        var params = {
+            "details__corp_code": code
+        };
+        return go.utils
+            .get_paginated_response('identities', 'identities/search/', params, im)
+            .then(function(json_get_response) {
+                var corps_found = json_get_response.results;
+                // Return the first corp if found
+                return corps_found[0];
+            });
+    },
+
     save_identities: function(im, msg_receiver, receiver_msisdn, household_msisdn,
                               mother_msisdn, operator_id) {
       // Creates identities for the msisdns entered in various states

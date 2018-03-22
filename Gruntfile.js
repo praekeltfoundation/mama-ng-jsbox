@@ -10,6 +10,7 @@ module.exports = function (grunt) {
                 app: {
                     ussd_registration: 'src/ussd_registration.js',
                     voice_registration: 'src/voice_registration.js',
+                    ussd_community: 'src/ussd_community.js',
                     ussd_public: 'src/ussd_public.js',
                     voice_public: 'src/voice_public.js',
                     voice_missed_call_service: 'src/voice_missed_call_service.js',
@@ -29,6 +30,13 @@ module.exports = function (grunt) {
                     'src/utils.js',
                     'src/utils_project.js',
                     '<%= paths.src.app.voice_registration %>',
+                    'src/init.js'
+                ],
+                ussd_community: [
+                    'src/index.js',
+                    'src/utils.js',
+                    'src/utils_project.js',
+                    '<%= paths.src.app.ussd_community %>',
                     'src/init.js'
                 ],
                 ussd_public: [
@@ -81,6 +89,7 @@ module.exports = function (grunt) {
             dest: {
                 ussd_registration: 'go-ussd_registration.js',
                 voice_registration: 'go-voice_registration.js',
+                ussd_community: 'go-ussd_community.js',
                 ussd_public: 'go-ussd_public.js',
                 voice_public: 'go-voice_public.js',
                 voice_missed_call_service: 'go-voice_missed_call_service.js',
@@ -116,6 +125,13 @@ module.exports = function (grunt) {
                     'src/utils_project.js',
                     '<%= paths.src.app.voice_public %>',
                     'test/voice_public.test.js'
+                ],
+                ussd_community: [
+                    'test/setup.js',
+                    'src/utils.js',
+                    'src/utils_project.js',
+                    '<%= paths.src.app.ussd_community %>',
+                    'test/ussd_community.test.js'
                 ],
                 voice_missed_call_service:[
                     'test/setup.js',
@@ -203,6 +219,10 @@ module.exports = function (grunt) {
                 src: ['<%= paths.src.ussd_public %>'],
                 dest: '<%= paths.dest.ussd_public %>'
             },
+            ussd_community: {
+                src: ['<%= paths.src.ussd_community %>'],
+                dest: '<%= paths.dest.ussd_community %>'
+            },
             sms_inbound: {
                 src: ['<%= paths.src.sms_inbound %>'],
                 dest: '<%= paths.dest.sms_inbound %>'
@@ -232,6 +252,9 @@ module.exports = function (grunt) {
             },
             test_voice_public: {
                 src: ['<%= paths.test.voice_public %>']
+            },
+            test_ussd_community: {
+                src: ['<%= paths.test.ussd_community %>']
             },
             test_voice_missed_call_service:{
                 src: ['<%= paths.test.voice_missed_call_service %>']
