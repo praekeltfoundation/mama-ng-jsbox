@@ -286,21 +286,13 @@ describe("Mama Nigeria App", function() {
                             fixtures_IdentityStoreDynamic().identity_search({
                                 msisdn: '+2348080040004',
                                 identity: 'identity-uuid-1004',
+                                extra_details: {
+                                    "dialback_sent": true
+                                }
                             }));
 
                         api.http.fixtures.add(
                             fixtures_IdentityStoreDynamic().get_identity({
-                                msisdn: '+2348080040004',
-                                identity: 'identity-uuid-1004',
-                            }));
-
-                        api.http.fixtures.add(
-                            fixtures_MessageSenderDynamic().create_outbound({
-                                identity: 'identity-uuid-1004',
-                            }));
-
-                        api.http.fixtures.add(
-                            fixtures_IdentityStoreDynamic().patch_identity({
                                 msisdn: '+2348080040004',
                                 identity: 'identity-uuid-1004',
                                 extra_details: {
@@ -315,7 +307,7 @@ describe("Mama Nigeria App", function() {
                         , {session_event: 'close'}
                     )
                     .check(function(api) {
-                        utils.check_fixtures_used(api, [0, 1, 2, 3, 4]);
+                        utils.check_fixtures_used(api, [0, 1, 2]);
                     })
                     .run();
             });

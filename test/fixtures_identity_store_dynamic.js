@@ -70,6 +70,7 @@ module.exports = function() {
             var identity = params.identity || 'cb245673-aa41-4302-ac47-00000001002';
             var msisdn = params.msisdn || "+2348080020002";
             var opted_out = params.opted_out || false;
+            var extra_details = params.extra_details || {};
 
             var res = {
                 'repeatable': true,
@@ -101,6 +102,10 @@ module.exports = function() {
                     }
                 }
             };
+
+            for (var key in extra_details){
+                res.response.data.details[key] = extra_details[key];
+            }
 
             res.response.data.details.addresses.msisdn[msisdn] = {"default": true};
             if (opted_out){
