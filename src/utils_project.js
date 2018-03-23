@@ -242,6 +242,7 @@ go.utils_project = {
         var no_restart_states = [
             // voice registration states
             'state_personnel_auth',
+            'state_corp_auth',
             // voice change states
             'state_msg_receiver_msisdn',
             'state_main_menu',
@@ -351,6 +352,7 @@ go.utils_project = {
         var states_to_error_map = {
             // ussd states
             "state_personnel_auth": "state_error_invalid_number",
+            "state_corp_auth": "state_error_invalid_number",
             "state_msg_receiver": "state_error_invalid_selection",
             "state_msisdn": "state_error_invalid_number",
             "state_msisdn_mother": "state_error_invalid_number",

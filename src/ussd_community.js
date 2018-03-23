@@ -151,7 +151,7 @@ go.app = function() {
                 .then(function(user) {
                     self.im.user.set_answer('user_id', user.id);
                     if (user.details.corp_code) {
-                        self.im.user.set_answer('corp_id', user.id);
+                        self.im.user.set_answer('operator_id', user.id);
                         return self.states.create('state_msg_receiver');
                     } else {
                         return self.states.create('state_auth_code');
@@ -170,7 +170,7 @@ go.app = function() {
                         .find_corp_with_unique_code(self.im, unique_code)
                         .then(function(corp) {
                             if (corp) {
-                                self.im.user.set_answer('corp_id', corp.id);
+                                self.im.user.set_answer('operator_id', corp.id);
                                 return null;  // vumi expects null or undefined if check passes
                             } else {
                                 return get_content(name)

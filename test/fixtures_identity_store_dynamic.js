@@ -179,6 +179,7 @@ module.exports = function() {
             var communicate_through = params.communicate_through;
             var msisdn = params.msisdn;
             var default_addr_type = params.default_addr_type || null;
+            var operator = params.operator;
 
             var res = {
                 'request': {
@@ -221,6 +222,11 @@ module.exports = function() {
             if (communicate_through){
                 res.request.data.communicate_through = communicate_through;
                 res.response.data.communicate_through = communicate_through;
+            }
+
+            if (operator){
+                res.request.data.operator = operator;
+                res.response.data.operator = operator;
             }
 
             return res;

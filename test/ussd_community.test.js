@@ -346,6 +346,7 @@ describe("Mama Nigeria App", function() {
                         api.http.fixtures.add(
                             fixtures_MessageSenderDynamic().create_outbound({
                                 identity: 'identity-uuid-1002',
+                                communicate_through: "identity-uuid-2222",
                             }));
 
                         api.http.fixtures.add(
@@ -369,6 +370,7 @@ describe("Mama Nigeria App", function() {
                             fixtures_RegistrationDynamic().create_registration({
                                 identity: 'identity-uuid-1003',
                                 operator: 'identity-uuid-1002',
+                                user: 'identity-uuid-1002',
                                 receiver: 'identity-uuid-2222',
                             }));
 
@@ -1068,13 +1070,15 @@ describe("Mama Nigeria App", function() {
                         api.http.fixtures.add(
                             fixtures_IdentityStoreDynamic().create_identity({
                                 msisdn: '+2349091111111',
-                                default_addr_type: 'msisdn'
+                                default_addr_type: 'msisdn',
+                                operator: "cb245673-aa41-4302-ac47-00000000002"
                             }));
 
                         api.http.fixtures.add(
                             fixtures_IdentityStoreDynamic().create_identity({
                                 msisdn: '+2349092222222',
-                                default_addr_type: 'msisdn'
+                                default_addr_type: 'msisdn',
+                                operator: "cb245673-aa41-4302-ac47-00000000002"
                             }));
                     })
                     .setup.user.addr('08080020002')
@@ -1127,7 +1131,7 @@ describe("Mama Nigeria App", function() {
                             fixtures_IdentityStoreDynamic().create_identity({
                                 communicate_through: 'identity-uuid-2222',
                                 identity: 'identity-uuid-1003',
-                                operator: 'identity-uuid-1002',
+                                operator: "cb245673-aa41-4302-ac47-00000000002"
                             }));
                     })
                     .setup.user.addr('08080020002')
@@ -1187,6 +1191,7 @@ describe("Mama Nigeria App", function() {
                             fixtures_RegistrationDynamic().create_registration({
                                 identity: 'identity-uuid-1003',
                                 operator: 'identity-uuid-1002',
+                                user: 'identity-uuid-1002',
                                 receiver: 'identity-uuid-2222',
                                 language: 'eng_NG',
                                 msg_type: 'audio',
@@ -1290,6 +1295,7 @@ describe("Mama Nigeria App", function() {
                             fixtures_RegistrationDynamic().create_registration({
                                 identity: 'identity-uuid-1003',
                                 operator: 'identity-uuid-1002',
+                                user: 'identity-uuid-1002',
                                 receiver: 'identity-uuid-2222',
                                 language: 'ibo_NG',
                                 msg_type: 'text',
@@ -1399,6 +1405,7 @@ describe("Mama Nigeria App", function() {
                             fixtures_RegistrationDynamic().create_registration({
                                 identity: 'identity-uuid-4444',
                                 operator: 'identity-uuid-1002',
+                                user: 'identity-uuid-1002',
                                 receiver: 'identity-uuid-5555',
                                 language: 'eng_NG',
                                 msg_type: 'audio',
@@ -1492,19 +1499,22 @@ describe("Mama Nigeria App", function() {
                             fixtures_IdentityStoreDynamic().create_identity({
                                 identity: 'identity-uuid-3333',
                                 msisdn: '+2349093333333',
-                                default_addr_type: 'msisdn'
+                                default_addr_type: 'msisdn',
+                                operator: "identity-uuid-1002"
                             }));
 
                         api.http.fixtures.add(
                             fixtures_IdentityStoreDynamic().create_identity({
                                 identity: 'identity-uuid-4444',
                                 communicate_through: 'identity-uuid-3333',
+                                operator: "identity-uuid-1002"
                             }));
 
                         api.http.fixtures.add(
                             fixtures_RegistrationDynamic().create_registration({
                                 identity: 'identity-uuid-4444',
                                 operator: 'identity-uuid-1002',
+                                user: 'identity-uuid-1002',
                                 receiver: 'identity-uuid-3333',
                                 language: 'eng_NG',
                                 msg_type: 'audio',
@@ -1594,13 +1604,15 @@ describe("Mama Nigeria App", function() {
                             fixtures_IdentityStoreDynamic().create_identity({
                                 identity: 'identity-uuid-6666',
                                 msisdn: '+2349096666666',
-                                default_addr_type: 'msisdn'
+                                default_addr_type: 'msisdn',
+                                operator: "identity-uuid-1002"
                             }));
 
                         api.http.fixtures.add(
                             fixtures_RegistrationDynamic().create_registration({
                                 identity: 'identity-uuid-6666',
                                 operator: 'identity-uuid-1002',
+                                user: 'identity-uuid-1002',
                                 receiver: 'identity-uuid-6666',
                                 language: 'eng_NG',
                                 msg_type: 'audio',
@@ -1686,19 +1698,21 @@ describe("Mama Nigeria App", function() {
             it("should update to remove the optedout flag", function() {
                 return tester
                     .setup(function(api) {
+
+                        api.http.fixtures.add(
+                            fixtures_IdentityStoreDynamic().identity_search({
+                                msisdn: '+2348080020002',
+                                identity: 'identity-uuid-1002',
+                                extra_details: {
+                                    "corp_code": "12345"
+                                }
+                            }));
+
                         api.http.fixtures.add(
                             fixtures_IdentityStoreDynamic().identity_search({
                                 msisdn: '+2347030010009',
                                 identity: 'identity-uuid-1009',
                                 opted_out: true
-                            }));
-
-                        api.http.fixtures.add(
-                            fixtures_IdentityStoreDynamic().identity_search({
-                                msisdn: '+2348080020002',
-                                search_value: '12345',
-                                identity: 'identity-uuid-1002',
-                                search_param: 'details__corp_code',
                             }));
 
                         api.http.fixtures.add(
@@ -1710,7 +1724,8 @@ describe("Mama Nigeria App", function() {
                         api.http.fixtures.add(
                             fixtures_RegistrationDynamic().create_registration({
                                 identity: 'identity-uuid-1009',
-                                operator: 'identity-uuid-1009',
+                                operator: 'identity-uuid-1002',
+                                user: 'identity-uuid-1002',
                                 receiver: 'identity-uuid-1009',
                                 language: 'ibo_NG',
                                 msg_type: 'text',
@@ -1737,7 +1752,7 @@ describe("Mama Nigeria App", function() {
                                 }
                             }));
                     })
-                    .setup.user.addr('07030010009')
+                    .setup.user.addr('08080020002')
                     .inputs(
                         {session_event: 'new'}  // dial in
                         , '12345'   // state_auth_code - corp code
