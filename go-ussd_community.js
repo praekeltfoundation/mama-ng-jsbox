@@ -862,6 +862,7 @@ go.utils_project = {
         var no_restart_states = [
             // voice registration states
             'state_personnel_auth',
+            'state_corp_auth',
             // voice change states
             'state_msg_receiver_msisdn',
             'state_main_menu',
@@ -909,6 +910,8 @@ go.utils_project = {
             'state_end_msisdn',
             'state_end_sms',
             'state_end_voice',
+            'state_end_sms_corp',
+            'state_end_voice_corp',
             // voice public states
             'state_end_voice_confirm',
             'state_end_sms_confirm',
@@ -971,6 +974,7 @@ go.utils_project = {
         var states_to_error_map = {
             // ussd states
             "state_personnel_auth": "state_error_invalid_number",
+            "state_corp_auth": "state_error_invalid_number",
             "state_msg_receiver": "state_error_invalid_selection",
             "state_msisdn": "state_error_invalid_number",
             "state_msisdn_mother": "state_error_invalid_number",
@@ -1583,7 +1587,7 @@ go.app = function() {
                 .then(function(user) {
                     self.im.user.set_answer('user_id', user.id);
                     if (user.details.corp_code) {
-                        self.im.user.set_answer('corp_id', user.id);
+                        self.im.user.set_answer('operator_id', user.id);
                         return self.states.create('state_msg_receiver');
                     } else {
                         return self.states.create('state_auth_code');
@@ -1602,7 +1606,7 @@ go.app = function() {
                         .find_corp_with_unique_code(self.im, unique_code)
                         .then(function(corp) {
                             if (corp) {
-                                self.im.user.set_answer('corp_id', corp.id);
+                                self.im.user.set_answer('operator_id', corp.id);
                                 return null;  // vumi expects null or undefined if check passes
                             } else {
                                 return get_content(name)

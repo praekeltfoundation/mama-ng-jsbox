@@ -5,6 +5,7 @@ module.exports = function() {
             var identity = params.identity || 'cb245673-aa41-4302-ac47-00000001002';
             var receiver = params.receiver || 'cb245673-aa41-4302-ac47-00000001003';
             var operator = params.operator || 'cb245673-aa41-4302-ac47-00000001004';
+            var user = params.user;
             var stage = params.stage || 'public';
             var msg_receiver = params.msg_receiver || 'friend_only';
             var msg_type = params.msg_type || 'text';
@@ -26,7 +27,7 @@ module.exports = function() {
                             "receiver_id": receiver,
                             "language": language,
                             "msg_type": msg_type,
-                            "user_id": operator
+                            "operator_id": operator,
                         }
                     }
                 },
@@ -41,7 +42,7 @@ module.exports = function() {
                             "receiver_id": receiver,
                             "language": language,
                             "msg_type": msg_type,
-                            "user_id": operator
+                            "operator_id": operator,
                         },
                         "validated": false,
                         "source": "source",
@@ -59,6 +60,32 @@ module.exports = function() {
                 res.response.data.data.voice_times = '6_8';
                 res.response.data.data.voice_days = 'tue';
             }
+
+            if (user){
+                res.request.data.data.user_id = user;
+                res.response.data.data.user_id = user;
+            }
+
+            return res;
+        },
+
+        add_voice_file_check: function() {
+
+            var res = {
+                'repeatable': true,
+                'request': {
+                    'method': 'HEAD',
+                    'params': {},
+                    'headers': {
+                        'Connection': ['close']
+                    },
+                    'url': new RegExp('^http:\/\/localhost:8004\/api\/v1\/.*\.mp3$'),
+                },
+                'response': {
+                    "code": 200,
+                    "data": {}
+                }
+            };
 
             return res;
         },
