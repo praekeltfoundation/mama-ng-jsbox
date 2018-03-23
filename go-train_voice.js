@@ -910,6 +910,8 @@ go.utils_project = {
             'state_end_msisdn',
             'state_end_sms',
             'state_end_voice',
+            'state_end_sms_corp',
+            'state_end_voice_corp',
             // voice public states
             'state_end_voice_confirm',
             'state_end_sms_confirm',

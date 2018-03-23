@@ -28,13 +28,13 @@ go.app = function() {
                 )
                 .add.total_state_actions(
                     {
-                        state: 'state_end_voice',
+                        state: 'state_end_voice_corp',
                         action: 'enter'
                     },[self.metric_prefix, "registrations_completed"].join('.')
                 )
                 .add.total_state_actions(
                     {
-                        state: 'state_end_sms',
+                        state: 'state_end_sms_corp',
                         action: 'enter'
                     },[self.metric_prefix, "registrations_completed"].join('.')
                 )
@@ -43,7 +43,7 @@ go.app = function() {
                         state: 'state_corp_auth',
                         action: 'enter'
                     },{
-                        state: 'state_end_voice',
+                        state: 'state_end_voice_corp',
                         action: 'enter'
                     }, [self.metric_prefix, 'time_to_register'].join('.')
                 )
@@ -55,7 +55,7 @@ go.app = function() {
 
             self.im.on('state:enter', function(e) {
                 // Fire metric with time difference
-                if(e.state.name === "state_end_sms") {
+                if(e.state.name === "state_end_sms_corp") {
                     var time_from = mh._reset_metadata(
                         e.state.im.user, time_metadata_label);
                     return e.state.im.metrics.fire.avg(
@@ -366,22 +366,22 @@ go.app = function() {
                         return go.utils_project
                             .finish_registration(self.im)
                             .then(function() {
-                                return 'state_end_voice';
+                                return 'state_end_voice_corp';
                             });
                     } else {
                         return go.utils_project
                             .finish_registration(self.im)
                             .then(function() {
-                                return 'state_end_sms';
+                                return 'state_end_sms_corp';
                             });
                     }
                 }
             });
         });
 
-        self.add('state_end_voice', function(name, creator_opts) {
+        self.add('state_end_voice_corp', function(name, creator_opts) {
             var speech_option = "1";
-            var text = 'Thank you! Time: {{ time }}. Days: {{ days }}.';
+            var text = 'Thank you! once a week.';
             return new EndState(name, {
                 text: text,
                 helper_metadata: go.utils_project.make_voice_helper_data(
@@ -390,7 +390,7 @@ go.app = function() {
             });
         });
 
-        self.add('state_end_sms', function(name, creator_opts) {
+        self.add('state_end_sms_corp', function(name, creator_opts) {
             var speech_option = '1';
             var text = 'Thank you! once a week.';
             return new EndState(name, {

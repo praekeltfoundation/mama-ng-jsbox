@@ -1373,7 +1373,7 @@ describe("Mama Nigeria App", function() {
                         , '2'           // state_msg_type - sms
                     )
                     .check.interaction({
-                        state: 'state_end_sms'
+                        state: 'state_end_sms_corp'
                     })
                     .check(function(api) {
                         utils.check_fixtures_used(api, [0, 1, 2, 3, 4, 5, 6]);
@@ -1578,7 +1578,7 @@ describe("Mama Nigeria App", function() {
 
         describe("When you choose a channel state_msg_type", function() {
             describe("if you choose sms", function() {
-                it("should navigate to state_end_sms", function() {
+                it("should navigate to state_end_sms_corp", function() {
                     return tester
                         .setup(function(api) {
                             api.http.fixtures.add(
@@ -1675,12 +1675,12 @@ describe("Mama Nigeria App", function() {
                             , '2'           // state_msg_type - sms
                         )
                         .check.interaction({
-                            state: 'state_end_sms'
+                            state: 'state_end_sms_corp'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_end_sms_1.mp3'],
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_end_sms_corp_1.mp3'],
                                     wait_for: '#',
                                     barge_in: false
                                 }
@@ -1701,7 +1701,7 @@ describe("Mama Nigeria App", function() {
             });
 
             describe("if you choose voice", function() {
-                it("should navigate to state_end_voice", function() {
+                it("should navigate to state_end_voice_corp", function() {
                     return tester
                         .setup(function(api) {
                             api.http.fixtures.add(
@@ -1800,12 +1800,12 @@ describe("Mama Nigeria App", function() {
                             , '1'           // state_msg_type - voice
                         )
                         .check.interaction({
-                            state: 'state_end_voice'
+                            state: 'state_end_voice_corp'
                         })
                         .check.reply.properties({
                             helper_metadata: {
                                 voice: {
-                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_end_voice_1.mp3'],
+                                    speech_url: ['http://localhost:8004/api/v1/eng_NG/state_end_voice_corp_1.mp3'],
                                     wait_for: '#',
                                     barge_in: false
                                 }
