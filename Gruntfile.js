@@ -17,7 +17,9 @@ module.exports = function (grunt) {
                     voice_missed_call_service: 'src/voice_missed_call_service.js',
                     sms_inbound: 'src/sms_inbound.js',
                     train_ussd: 'src/train_ussd.js',
-                    train_voice: 'src/train_voice.js'
+                    train_voice: 'src/train_voice.js',
+                    train_ussd_community: 'src/train_ussd_community.js',
+                    train_voice_community: 'src/train_voice_community.js',
                 },
                 ussd_registration: [
                     'src/index.js',
@@ -89,6 +91,20 @@ module.exports = function (grunt) {
                     '<%= paths.src.app.train_ussd %>',
                     'src/init.js'
                 ],
+                train_ussd_community: [
+                    'src/index.js',
+                    'src/utils.js',
+                    'src/utils_project.js',
+                    '<%= paths.src.app.train_ussd_community %>',
+                    'src/init.js'
+                ],
+                train_voice_community: [
+                    'src/index.js',
+                    'src/utils.js',
+                    'src/utils_project.js',
+                    '<%= paths.src.app.train_voice_community %>',
+                    'src/init.js'
+                ],
                 all: [
                     'src/**/*.js',
                     'test/**/*.js',
@@ -104,7 +120,9 @@ module.exports = function (grunt) {
                 voice_missed_call_service: 'go-voice_missed_call_service.js',
                 sms_inbound: 'go-sms_inbound.js',
                 train_voice: 'go-train_voice.js',
-                train_ussd: 'go-train_ussd.js'
+                train_ussd: 'go-train_ussd.js',
+                train_ussd_community: 'go-train_ussd_community.js',
+                train_voice_community: 'go-train_voice_community.js'
             },
             test: {
                 ussd_registration: [
@@ -176,6 +194,20 @@ module.exports = function (grunt) {
                     'src/utils_project.js',
                     '<%= paths.src.app.train_ussd %>',
                     'test/train_ussd.test.js'
+                ],
+                train_ussd_community: [
+                    'test/setup.js',
+                    'src/utils.js',
+                    'src/utils_project.js',
+                    '<%= paths.src.app.train_ussd_community %>',
+                    'test/train_ussd_community.test.js'
+                ],
+                train_voice_community: [
+                    'test/setup.js',
+                    'src/utils.js',
+                    'src/utils_project.js',
+                    '<%= paths.src.app.train_voice_community %>',
+                    'test/train_voice_community.test.js'
                 ],
                 utils_project: [
                     'test/setup.js',
@@ -254,6 +286,14 @@ module.exports = function (grunt) {
             train_ussd: {
                 src: ['<%= paths.src.train_ussd %>'],
                 dest: '<%= paths.dest.train_ussd %>'
+            },
+            train_ussd_community: {
+                src: ['<%= paths.src.train_ussd_community %>'],
+                dest: '<%= paths.dest.train_ussd_community %>'
+            },
+            train_voice_community: {
+                src: ['<%= paths.src.train_voice_community %>'],
+                dest: '<%= paths.dest.train_voice_community %>'
             }
         },
 
@@ -290,6 +330,12 @@ module.exports = function (grunt) {
             },
             test_train_ussd: {
                 src: ['<%= paths.test.train_ussd %>']
+            },
+            test_train_ussd_community: {
+                src: ['<%= paths.test.train_ussd_community %>']
+            },
+            test_train_voice_community: {
+                src: ['<%= paths.test.train_voice_community %>']
             },
             test_utils_project: {
                 src: ['<%= paths.test.utils_project %>']
