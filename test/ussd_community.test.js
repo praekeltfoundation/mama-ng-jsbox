@@ -630,9 +630,8 @@ describe("Mama Nigeria App", function() {
                             }));
 
                         api.http.fixtures.add(
-                            fixtures_StageBasedMessagingDynamic().messageset({
-                                id: 0,
-                                short_name: 'public.mother.1'
+                            fixtures_StageBasedMessagingDynamic().messagesets({
+                                short_names: ['public.mother.1']
                             }));
 
                         api.http.fixtures.add(
@@ -692,9 +691,8 @@ describe("Mama Nigeria App", function() {
                             }));
 
                         api.http.fixtures.add(
-                            fixtures_StageBasedMessagingDynamic().messageset({
-                                id: 0,
-                                short_name: 'public.mother.1'
+                            fixtures_StageBasedMessagingDynamic().messagesets({
+                                short_names: ['public.mother.1']
                             }));
 
                         api.http.fixtures.add(
@@ -750,9 +748,8 @@ describe("Mama Nigeria App", function() {
                             }));
 
                         api.http.fixtures.add(
-                            fixtures_StageBasedMessagingDynamic().messageset({
-                                id: 0,
-                                short_name: 'public.mother.1'
+                            fixtures_StageBasedMessagingDynamic().messagesets({
+                                short_names: ['public.mother.1']
                             }));
 
                         api.http.fixtures.add(
@@ -809,9 +806,8 @@ describe("Mama Nigeria App", function() {
                             }));
 
                         api.http.fixtures.add(
-                            fixtures_StageBasedMessagingDynamic().messageset({
-                                id: 0,
-                                short_name: 'public.mother.1'
+                            fixtures_StageBasedMessagingDynamic().messagesets({
+                                short_names: ['public.mother.1']
                             }));
 
                         api.http.fixtures.add(
@@ -908,15 +904,14 @@ describe("Mama Nigeria App", function() {
                             }));
 
                         api.http.fixtures.add(
-                            fixtures_StageBasedMessagingDynamic().messageset({
-                                id: 0,
-                                short_name: 'public.mother.1'
+                            fixtures_StageBasedMessagingDynamic().messagesets({
+                                short_names: ['public.mother.1', 'prebirth.mother.1', 'postbirth.mother.1']
                             }));
 
                         api.http.fixtures.add(
                             fixtures_StageBasedMessagingDynamic().active_subscriptions({
                                 identity: 'cb245673-aa41-4302-ac47-00000000005',
-                                messagesets: [0]
+                                messagesets: [1]
                             }));
                     })
                     .setup.user.addr('08080020002')
@@ -970,9 +965,8 @@ describe("Mama Nigeria App", function() {
                             }));
 
                         api.http.fixtures.add(
-                            fixtures_StageBasedMessagingDynamic().messageset({
-                                id: 0,
-                                short_name: 'public.mother.1'
+                            fixtures_StageBasedMessagingDynamic().messagesets({
+                                short_names: ['public.mother.1']
                             }));
 
                         api.http.fixtures.add(
