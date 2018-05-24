@@ -259,7 +259,7 @@ go.app = function() {
                                 .is_identity_subscribed(
                                     contact.id, [/public\.mother/, /prebirth\.mother/, /postbirth\.mother/])
                                 .then(function(subscribed) {
-                                    if (!subscribed || subscribed == 'no_active_subs_found') {
+                                    if (!subscribed) {
                                         self.im.user.set_answer('mother_id', contact.id);
                                         self.im.user.set_answer('receiver_id', contact.id);
                                         return self.states.create('state_msg_language');
