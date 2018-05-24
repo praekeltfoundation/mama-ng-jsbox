@@ -1,11 +1,13 @@
 go.app = function() {
     var vumigo = require('vumigo_v02');
+    var SeedJsboxUtils = require('seed-jsbox-utils');
     var MetricsHelper = require('go-jsbox-metrics-helper');
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
     var EndState = vumigo.states.EndState;
     var FreeText = vumigo.states.FreeText;
+    var JsonApi = vumigo.http.api.JsonApi;
 
 
     var GoApp = App.extend(function(self) {
@@ -65,6 +67,12 @@ go.app = function() {
                     return e.state.im.metrics.fire.avg(avg_label, metadata_value);
                 }
             });
+
+            sbm = new SeedJsboxUtils.StageBasedMessaging(
+                new JsonApi(self.im, {}),
+                self.im.config.services.subscriptions.api_token,
+                self.im.config.services.subscriptions.url
+            );
 
         };
 
@@ -247,11 +255,11 @@ go.app = function() {
                                 return 'state_save_identities';
                             }
 
-                            return go.utils_project
-                                .check_is_subscribed(
-                                    self.im, contact.id, 'public.mother')
+                            return sbm
+                                .is_identity_subscribed(
+                                    contact.id, [/public\.mother/, /prebirth\.mother/, /postbirth\.mother/])
                                 .then(function(subscribed) {
-                                    if (!subscribed || subscribed == 'no_active_subs_found') {
+                                    if (!subscribed) {
                                         self.im.user.set_answer('mother_id', contact.id);
                                         self.im.user.set_answer('receiver_id', contact.id);
                                         return self.states.create('state_msg_language');
@@ -321,9 +329,9 @@ go.app = function() {
                             if (contact === undefined || contact === null) {
                                 return 'state_msisdn_household';
                             }
-                            return go.utils_project
-                                .check_is_subscribed(
-                                    self.im, contact.id, 'public.mother')
+                            return sbm
+                                .is_identity_subscribed(
+                                    contact.id, [/public\.mother/, /prebirth\.mother/, /postbirth\.mother/])
                                 .then(function(subscribed) {
                                     if (!subscribed || subscribed == 'no_active_subs_found') {
                                         return 'state_msisdn_household';
