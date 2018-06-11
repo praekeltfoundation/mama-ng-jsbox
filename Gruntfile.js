@@ -335,7 +335,7 @@ module.exports = function (grunt) {
                 src: ['<%= paths.test.train_ussd_community %>']
             },
             test_train_voice_community: {
-                src: ['<%= paths.test.train_voice_community %>']
+               src: ['<%= paths.test.train_voice_community %>']
             },
             test_utils_project: {
                 src: ['<%= paths.test.utils_project %>']

@@ -134,6 +134,23 @@ go.utils = {
             && content.length == 11;
     },
 
+    //Check the validity of a number to ensure that it matches a prefix from Telcos in Nigeria.
+         
+    
+        phoneNumberPrefix: function(msisdn)
+        {
+         
+         if (msisdn.match(/^(0701|0702|0703|0705|0706|0708|0806|0807|0808|0809|0810|0811|0812|0813|0814|0815|0816|0817|0818|0909|0908|0902|0903|0905|0906|0907)/))
+         {
+           return true;
+         }
+         else
+         {
+           return false;
+         }
+        },
+       
+
     normalize_msisdn: function(raw, country_code) {
         // don't touch shortcodes
         if (raw.length <= 5) {
@@ -1457,7 +1474,7 @@ go.app = function() {
                 case "BABY": case "NWA":
                     return self.states.create("state_change_baby");
                 default:
-                    return self.states.create("state_save_inbound");
+                  // return self.states.create("state_save_inbound");
             }
         });
 
