@@ -244,7 +244,7 @@ go.app = function() {
                         .replace('family_only', 'family member')
                 }),
                 check: function(content) {
-                    if (go.utils.is_valid_msisdn(content)) {
+                    if (go.utils.is_valid_msisdn(content) && (go.utils.phoneNumberPrefix(content)== true)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return get_content(name).context({
@@ -337,7 +337,7 @@ go.app = function() {
             return new FreeText(name, {
                 question: get_content(name).context({prefix:""}),
                 check: function(content) {
-                    if (go.utils.is_valid_msisdn(content)) {
+                    if (go.utils.is_valid_msisdn(content) && (go.utils.phoneNumberPrefix(content)== true)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return get_content(name).context({prefix: state_error_types.invalid_number});
@@ -379,7 +379,7 @@ go.app = function() {
                         .replace('mother_', '')
                 }),
                 check: function(content) {
-                    if (go.utils.is_valid_msisdn(content)) {
+                    if (go.utils.is_valid_msisdn(content) && (go.utils.phoneNumberPrefix(content)== true)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return get_content(name).context({

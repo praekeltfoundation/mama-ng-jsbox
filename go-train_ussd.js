@@ -134,6 +134,23 @@ go.utils = {
             && content.length == 11;
     },
 
+    //Check the validity of a number to ensure that it matches a prefix from Telcos in Nigeria.
+         
+    
+        phoneNumberPrefix: function(msisdn)
+        {
+         
+         if (msisdn.match(/^(0701|0702|0703|0705|0706|0708|0806|0807|0808|0809|0810|0811|0812|0813|0814|0815|0816|0817|0818|0909|0908|0902|0903|0905|0906|0907)/))
+         {
+           return true;
+         }
+         else
+         {
+           return false;
+         }
+        },
+       
+
     normalize_msisdn: function(raw, country_code) {
         // don't touch shortcodes
         if (raw.length <= 5) {
@@ -1435,7 +1452,7 @@ go.utils_project = {
 };
 
 go.app = function() {
-    var vumigo = require('vumigo_v02');
+    var vumigo = require('vumigo_v02'); 
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
@@ -1688,6 +1705,8 @@ go.app = function() {
             });
         });
 
+           
+
         // FreeText st-03
         self.add('state_msisdn', function(name) {
             return new FreeText(name, {
@@ -1702,7 +1721,8 @@ go.app = function() {
                         .replace('family_only', 'family member')
                 }),
                 check: function(content) {
-                    if (go.utils.is_valid_msisdn(content)) {
+                    if (go.utils.is_valid_msisdn(content) && (go.utils.phoneNumberPrefix(content)== true)) {
+                    
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return get_content(name).context({
@@ -1726,12 +1746,13 @@ go.app = function() {
             return new FreeText(name, {
                 question: get_content(name).context({prefix:""}),
                 check: function(content) {
-                    if (go.utils.is_valid_msisdn(content)) {
+                    if (go.utils.is_valid_msisdn(content) && (go.utils.phoneNumberPrefix(content)== true)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return get_content(name)
                             .context({prefix: state_error_types.invalid_number});
                     }
+                    
                 },
                 next: 'state_msisdn_household'
             });
@@ -1749,7 +1770,7 @@ go.app = function() {
                         .replace('mother_', '')
                 }),
                 check: function(content) {
-                    if (go.utils.is_valid_msisdn(content)) {
+                    if (go.utils.is_valid_msisdn(content) && (go.utils.phoneNumberPrefix(content)== true)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return get_content(name).context({
@@ -2053,7 +2074,7 @@ go.app = function() {
             return new FreeText(name, {
                 question: get_content(name).context({prefix:""}),
                 check: function(content) {
-                    if (go.utils.is_valid_msisdn(content)) {
+                    if (go.utils.is_valid_msisdn(content) && (go.utils.phoneNumberPrefix(content)== true)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return get_content(name)
@@ -2173,7 +2194,7 @@ go.app = function() {
             return new FreeText(name, {
                 question: get_content(name).context({prefix:""}),
                 check: function(content) {
-                    if (go.utils.is_valid_msisdn(content)) {
+                    if (go.utils.is_valid_msisdn(content) && (go.utils.phoneNumberPrefix(content)== true)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return get_content(name)

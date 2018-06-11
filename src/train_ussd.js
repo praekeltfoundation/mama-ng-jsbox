@@ -1,5 +1,5 @@
 go.app = function() {
-    var vumigo = require('vumigo_v02');
+    var vumigo = require('vumigo_v02'); 
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
@@ -252,6 +252,8 @@ go.app = function() {
             });
         });
 
+           
+
         // FreeText st-03
         self.add('state_msisdn', function(name) {
             return new FreeText(name, {
@@ -266,7 +268,8 @@ go.app = function() {
                         .replace('family_only', 'family member')
                 }),
                 check: function(content) {
-                    if (go.utils.is_valid_msisdn(content)) {
+                    if (go.utils.is_valid_msisdn(content) && (go.utils.phoneNumberPrefix(content)== true)) {
+                    
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return get_content(name).context({
@@ -290,12 +293,13 @@ go.app = function() {
             return new FreeText(name, {
                 question: get_content(name).context({prefix:""}),
                 check: function(content) {
-                    if (go.utils.is_valid_msisdn(content)) {
+                    if (go.utils.is_valid_msisdn(content) && (go.utils.phoneNumberPrefix(content)== true)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return get_content(name)
                             .context({prefix: state_error_types.invalid_number});
                     }
+                    
                 },
                 next: 'state_msisdn_household'
             });
@@ -313,7 +317,7 @@ go.app = function() {
                         .replace('mother_', '')
                 }),
                 check: function(content) {
-                    if (go.utils.is_valid_msisdn(content)) {
+                    if (go.utils.is_valid_msisdn(content) && (go.utils.phoneNumberPrefix(content)== true)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return get_content(name).context({
@@ -617,7 +621,7 @@ go.app = function() {
             return new FreeText(name, {
                 question: get_content(name).context({prefix:""}),
                 check: function(content) {
-                    if (go.utils.is_valid_msisdn(content)) {
+                    if (go.utils.is_valid_msisdn(content) && (go.utils.phoneNumberPrefix(content)== true)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return get_content(name)
@@ -737,7 +741,7 @@ go.app = function() {
             return new FreeText(name, {
                 question: get_content(name).context({prefix:""}),
                 check: function(content) {
-                    if (go.utils.is_valid_msisdn(content)) {
+                    if (go.utils.is_valid_msisdn(content) && (go.utils.phoneNumberPrefix(content)== true)) {
                         return null;  // vumi expects null or undefined if check passes
                     } else {
                         return get_content(name)

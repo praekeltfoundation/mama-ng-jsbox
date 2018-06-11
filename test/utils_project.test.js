@@ -1,6 +1,26 @@
 var assert = require('assert');
 var moment = require('moment');
 
+
+         //Check the validity of a number to ensure that it matches a prefix from Telcos in Nigeria.
+         
+          PrefixFunction = {
+            phoneNumberPrefix: function(msisdn)
+        {
+         
+         if (msisdn.match(/^(0701|0702|0703|0705|0706|0708|0806|0807|0808|0809|0810|0811|0812|0813|0814|0815|0816|0817|0818|0909|0908|0902|0903|0905|0906|0907)/))
+         {
+           return true;
+         }
+         else
+         {
+           return false;
+         }
+        }
+           };
+
+
+
 describe('utils_project module', function() {
     describe('is_valid_month', function () {
 
@@ -35,3 +55,5 @@ describe('utils_project module', function() {
         });
     });
 });
+
+module.exports = PrefixFunction;

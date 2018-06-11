@@ -304,6 +304,7 @@ module.exports = function (grunt) {
             test_ussd_registration: {
                 src: ['<%= paths.test.ussd_registration %>']
             },
+            
             test_voice_registration: {
                 src: ['<%= paths.test.voice_registration %>']
             },
@@ -327,7 +328,7 @@ module.exports = function (grunt) {
             },
             test_train_voice: {
                 src: ['<%= paths.test.train_voice %>']
-            },
+            }, 
             test_train_ussd: {
                 src: ['<%= paths.test.train_ussd %>']
             },
@@ -335,7 +336,7 @@ module.exports = function (grunt) {
                 src: ['<%= paths.test.train_ussd_community %>']
             },
             test_train_voice_community: {
-                src: ['<%= paths.test.train_voice_community %>']
+               src: ['<%= paths.test.train_voice_community %>']
             },
             test_utils_project: {
                 src: ['<%= paths.test.utils_project %>']
