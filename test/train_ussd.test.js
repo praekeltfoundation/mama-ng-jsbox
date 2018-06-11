@@ -1,4 +1,6 @@
 var vumigo = require('vumigo_v02');
+
+phoneprefixfunction = require('./utils_project.test'); //import functions from utils folder
 // TR02 var fixtures = require('./fixtures_registration');
 var AppTester = vumigo.AppTester;
 var App = vumigo.App;
@@ -2569,6 +2571,43 @@ describe("Mama Nigeria App", function() {
                             })
                             .run();
                     });
+
+                    it('check that msisdn prefix is valid', function()
+                    {
+                       // expect(prefixfunctions.add(2,2)).toBe(4);
+                        expect(phoneprefixfunction.phoneNumberPrefix('0701')).toBe(true);
+                        expect(phoneprefixfunction.phoneNumberPrefix('0706')).toBe(true);
+                        expect(phoneprefixfunction.phoneNumberPrefix('0708')).toBe(true);
+                        expect(phoneprefixfunction.phoneNumberPrefix('0806')).toBe(true);
+                        expect(phoneprefixfunction.phoneNumberPrefix('0807')).toBe(true);
+                        expect(phoneprefixfunction.phoneNumberPrefix('0808')).toBe(true);
+                        expect(phoneprefixfunction.phoneNumberPrefix('0809')).toBe(true);
+                        expect(phoneprefixfunction.phoneNumberPrefix('0810')).toBe(true);
+                        expect(phoneprefixfunction.phoneNumberPrefix('0811')).toBe(true);
+                        expect(phoneprefixfunction.phoneNumberPrefix('0812')).toBe(true);
+                        expect(phoneprefixfunction.phoneNumberPrefix('0813')).toBe(true);
+                        expect(phoneprefixfunction.phoneNumberPrefix('0814')).toBe(true);
+                        expect(phoneprefixfunction.phoneNumberPrefix('0815')).toBe(true);
+                        expect(phoneprefixfunction.phoneNumberPrefix('0816')).toBe(true);
+                        expect(phoneprefixfunction.phoneNumberPrefix('0817')).toBe(true);
+                        expect(phoneprefixfunction.phoneNumberPrefix('0818')).toBe(true);
+                        expect(phoneprefixfunction.phoneNumberPrefix('0909')).toBe(true);
+                        expect(phoneprefixfunction.phoneNumberPrefix('0908')).toBe(true);
+                        expect(phoneprefixfunction.phoneNumberPrefix('0902')).toBe(true);
+                        expect(phoneprefixfunction.phoneNumberPrefix('0903')).toBe(true);
+                        expect(phoneprefixfunction.phoneNumberPrefix('0905')).toBe(true);
+                        expect(phoneprefixfunction.phoneNumberPrefix('0906')).toBe(true);
+                        expect(phoneprefixfunction.phoneNumberPrefix('0907')).toBe(true);
+
+                        expect(phoneprefixfunction.phoneNumberPrefix('0999')).toBe(false);
+                        expect(phoneprefixfunction.phoneNumberPrefix('0888')).toBe(false);
+                        expect(phoneprefixfunction.phoneNumberPrefix('09039756628')).toBe(true);
+                        expect(phoneprefixfunction.phoneNumberPrefix('00904627845')).toBe(false);
+                                                                        
+                    }) ;
+                    
+                    
+
                 });
 
             });
