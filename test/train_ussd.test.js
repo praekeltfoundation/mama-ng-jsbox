@@ -2575,6 +2575,7 @@ describe("Mama Nigeria App", function() {
                     it('check that msisdn prefix is valid', function()
                     {
                        // expect(prefixfunctions.add(2,2)).toBe(4);
+                       
                         expect(phoneprefixfunction.phoneNumberPrefix('0701')).toBe(true);
                         expect(phoneprefixfunction.phoneNumberPrefix('0706')).toBe(true);
                         expect(phoneprefixfunction.phoneNumberPrefix('0708')).toBe(true);

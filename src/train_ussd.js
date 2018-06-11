@@ -1,6 +1,5 @@
 go.app = function() {
-    var vumigo = require('vumigo_v02');
-  //  var phoneprefixfunction = require('./utils'); 
+    var vumigo = require('vumigo_v02'); 
     var App = vumigo.App;
     var Choice = vumigo.states.Choice;
     var ChoiceState = vumigo.states.ChoiceState;
